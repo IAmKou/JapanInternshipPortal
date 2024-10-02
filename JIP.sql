@@ -171,5 +171,16 @@ CREATE TABLE Application (
     FOREIGN KEY (student_id) REFERENCES Student(Id)
 );
 
+CREATE TABLE Message (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT NOT NULL,
+    recipient_id INT NOT NULL,
+    content TEXT NOT NULL,
+    sent_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender_id) REFERENCES Account(Id),
+    FOREIGN KEY (recipient_id) REFERENCES Account(Id)
+);
+
+
 
 
