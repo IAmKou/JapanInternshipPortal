@@ -1,4 +1,4 @@
-package com.example.model;
+package com.example.jip.models;
 
 import java.sql.Time;
 

@@ -1,4 +1,4 @@
-package com.example.model;
+package com.example.jip.models;
 
 public class List {
     private int class_id;
