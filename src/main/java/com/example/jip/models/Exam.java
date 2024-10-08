@@ -1,8 +1,13 @@
 package com.example.jip.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.sql.Date;
 
+@Setter
+@Getter
 public class Exam {
     private int id;
     private int student_id;
@@ -22,51 +27,4 @@ public class Exam {
         this.exam_date = exam_date;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getStudent_id() {
-        return student_id;
-    }
-
-    public void setStudent_id(int student_id) {
-        this.student_id = student_id;
-    }
-
-    public int getBlock() {
-        return block;
-    }
-
-    public void setBlock(int block) {
-        this.block = block;
-    }
-
-    public String getExam_name() {
-        return exam_name;
-    }
-
-    public void setExam_name(String exam_name) {
-        this.exam_name = exam_name;
-    }
-
-    public BigDecimal getMark() {
-        return mark;
-    }
-
-    public void setMark(BigDecimal mark) {
-        this.mark = mark;
-    }
-
-    public Date getExam_date() {
-        return exam_date;
-    }
-
-    public void setExam_date(Date exam_date) {
-        this.exam_date = exam_date;
-    }
 }

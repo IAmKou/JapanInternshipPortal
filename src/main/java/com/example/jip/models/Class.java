@@ -1,5 +1,10 @@
 package com.example.jip.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class Class {
     private int id;
     private String name;
@@ -15,35 +20,4 @@ public class Class {
         this.teacher_id = teacher_id;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getNumber_of_student() {
-        return number_of_student;
-    }
-
-    public void setNumber_of_student(int number_of_student) {
-        this.number_of_student = number_of_student;
-    }
-
-    public int getTeacher_id() {
-        return teacher_id;
-    }
-
-    public void setTeacher_id(int teacher_id) {
-        this.teacher_id = teacher_id;
-    }
 }
