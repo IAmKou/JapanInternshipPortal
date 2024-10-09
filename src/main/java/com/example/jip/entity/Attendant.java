@@ -1,4 +1,4 @@
-package com.example.jip.models;
+package com.example.jip.entity;
 
 import lombok.Getter;
 import lombok.Setter;
