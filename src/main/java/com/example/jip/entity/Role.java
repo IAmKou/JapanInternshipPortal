@@ -14,9 +14,10 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String name;
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Account> accounts;
 
     public Role() {}
@@ -25,5 +26,5 @@ public class Role {
         this.id = id;
         this.name = name;
     }
-
 }
+
