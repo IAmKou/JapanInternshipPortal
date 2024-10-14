@@ -35,9 +35,9 @@ public class SecurityConfig {
         http.
                 csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/index.html").hasRole("ADMIN")
-                        .requestMatchers("/index3.html").hasRole("TEACHER")
-                        .requestMatchers("/index5.html").hasRole("STUDENT")
+                        .requestMatchers("/admin.html").hasRole("ADMIN")
+                        .requestMatchers("/student.html").hasRole("STUDENT")
+                        .requestMatchers("/teacher.html").hasRole("TEACHER")
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .successHandler(successHandler)
