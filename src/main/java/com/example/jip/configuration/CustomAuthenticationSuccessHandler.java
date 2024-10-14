@@ -20,11 +20,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         boolean isTeacher = authentication.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_TEACHER"));
         if (isAdmin) {
-            response.sendRedirect("/index.html");
+            response.sendRedirect("/admin.html");
         } else if (isTeacher) {
-            response.sendRedirect("/index3.html");
+            response.sendRedirect("/student.html");
         }else{
-            response.sendRedirect("/index5.html");
+            response.sendRedirect("/teacher.html");
         }
 
     }
