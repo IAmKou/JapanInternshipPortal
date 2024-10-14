@@ -1,14 +1,18 @@
 package com.example.jip.entity;
 
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
-
+@Entity
+@Table(name="Student")
 @Setter
 @Getter
 public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String Fullname;
     private Date DoB;
