@@ -13,6 +13,7 @@ public class Manager {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String fullname;
+    private String Jname;
     private String email;
     private String phonenumber;
     private gender Gender;
@@ -21,9 +22,10 @@ public class Manager {
 
     public Manager() {}
 
-    public Manager(int id, String fullname, String email, String phonenumber, gender gender, String img, int account_id) {
+    public Manager(int id, String fullname, String jname, String email, String phonenumber, gender gender, String img, int account_id) {
         this.id = id;
         this.fullname = fullname;
+        Jname = jname;
         this.email = email;
         this.phonenumber = phonenumber;
         Gender = gender;
