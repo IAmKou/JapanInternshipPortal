@@ -2,11 +2,11 @@
 <html class="no-js" lang="">
 
 
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/add-expense.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/ReplyApplication.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>AKKHOR | Add Expense</title>
+    <title>Reply Application</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -331,10 +331,10 @@
                                     <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees Collection</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="all-expense.html" class="nav-link"><i class="fas fa-angle-right"></i>Expenses</a>
+                                    <a href="all-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Expenses</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="add-expense.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Add Expenses</a>
+                                    <a href="ReplyApplication.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Add Expenses</a>
                                 </li>
                             </ul>
                         </li>
@@ -421,12 +421,12 @@
             <div class="dashboard-content-one">
                 <!-- Breadcubs Area Start Here -->
                 <div class="breadcrumbs-area">
-                    <h3>Accounts</h3>
+                    <h3>Applications</h3>
                     <ul>
                         <li>
                             <a href="admin.html">Home</a>
                         </li>
-                        <li>Add New Expense</li>
+                        <li>Reply Application</li>
                     </ul>
                 </div>
                 <!-- Breadcubs Area End Here -->
@@ -435,7 +435,7 @@
                     <div class="card-body">
                         <div class="heading-layout1">
                             <div class="item-title">
-                                <h3>Add New Expense</h3>
+                                <h3>Reply Application</h3>
                             </div>
                            <div class="dropdown">
                                 <a class="dropdown-toggle" href="#" role="button" 
@@ -450,49 +450,42 @@
                         </div>
                         <form class="new-added-form">
                             <div class="row">
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label>Name *</label>
-                                    <input type="text" placeholder="" class="form-control">
+                                <div class="col-xl-2 col-lg-6 col-12 form-group">
+                                    <label>ID </label>
+                                    <span class="form-control" style="background-color: #f1f1f1;">{{id}}</span>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-12 form-group">
+                                    <label>Name</label>
+                                    <span class="form-control" style="background-color: #f1f1f1;">{{name}}</span>
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label>ID No *</label>
-                                    <input type="text" placeholder="" class="form-control">
+                                    <label>Application Type </label>
+                                    <span class="form-control" style="background-color: #f1f1f1;">{{type}}</span>
                                 </div>
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label>Expanse Type *</label>
-                                    <select class="select2">
-                                        <option value="">Please Select</option>
-                                        <option value="1">Salary</option>
-                                        <option value="2">Transport</option>
-                                        <option value="3">Maintanance</option>
-                                        <option value="3">Purchase</option>
-                                        <option value="3">Utilities</option>
-                                    </select>
+                                <div class="col-xl-2 col-lg-6 col-12 form-group">
+                                    <label>Date</label>
+                                    <span class="form-control" style="background-color: #f1f1f1;">{{date}}</span>
                                 </div>
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label>Amount *</label>
-                                    <input type="text" placeholder="" class="form-control">
+                                <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                    <label>Purpose</label>
+                                    <span class="form-control" style="background-color: #f1f1f1;height: 120px;">{{purpose}}</span>
                                 </div>
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label>Phone</label>
-                                    <input type="text" placeholder="" class="form-control">
+                                <div class="col-xl-2 col-lg-6 col-12 form-group">
+                                    <label>File</label>
+                                    <span class="form-control" style="background-color: #f1f1f1;">{{file}}</span>
                                 </div>
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label>E-Mail Address</label>
-                                    <input type="text" placeholder="" class="form-control">
-                                </div>
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                <div class="col-xl-2 col-lg-6 col-12 form-group">
                                     <label>Status</label>
-                                    <select class="select2">
+                                    <select class="select2" >
                                         <option value="0">Please Select</option>
-                                        <option value="1">Paid</option>
-                                        <option value="2">Due</option>
+                                        <option value="1">Approved</option>
+                                        <option value="2">Rejected</option>
                                         <option value="3">Others</option>
                                     </select>
                                 </div>
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label>Date</label>
-                                    <input type="text" placeholder="dd/mm/yy" class="form-control air-datepicker" data-position="bottom right">
+                                <div class="col-6 form-group mg-t-8">
+                                    <label>Respond</label>
+                                    <textarea placeholder="" class="form-control" style="height: 200px;"></textarea>
                                 </div>
                                 <div class="col-12 form-group mg-t-8">
                                     <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
@@ -530,5 +523,5 @@
 </body>
 
 
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/add-expense.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/ReplyApplication.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>
