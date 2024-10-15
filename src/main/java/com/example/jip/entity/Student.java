@@ -15,7 +15,9 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String Fullname;
+    private String Japanname;
     private Date DoB;
+    private String passport;
     private gender Gender;
     private String PhoneNumber;
     private String img;
@@ -24,10 +26,12 @@ public class Student {
 
     public Student() {}
 
-    public Student(int id, String fullname, Date doB, gender gender, String phoneNumber, String img, String email, int account_id) {
+    public Student(int id, String fullname, String japanname, Date doB, String passport, gender gender, String phoneNumber, String img, String email, int account_id) {
         this.id = id;
         Fullname = fullname;
+        Japanname = japanname;
         DoB = doB;
+        this.passport = passport;
         Gender = gender;
         PhoneNumber = phoneNumber;
         this.img = img;
