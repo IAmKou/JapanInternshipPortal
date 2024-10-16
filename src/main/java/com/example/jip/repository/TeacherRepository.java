@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface TeacherRepository extends CrudRepository<Teacher, Integer> {
-    Optional<Teacher> findByAccountId(Integer account_id);
+    Optional<Teacher> findById(Integer id);
 }

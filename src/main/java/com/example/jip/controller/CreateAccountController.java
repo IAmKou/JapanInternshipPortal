@@ -6,6 +6,7 @@ import com.example.jip.services.AccountServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/accounts")
@@ -15,11 +16,13 @@ public class CreateAccountController {
     private AccountServices accountServices;
 
     @PostMapping("/create")
-    public ResponseEntity<Integer> createAccount(@RequestParam String username
+    public RedirectView createAccount(@RequestParam String username
     , @RequestParam String password
     , @RequestParam int role) {
-        int accountId = accountServices.createAccount(username,password,role);
-        return ResponseEntity.ok(accountId);
+        int id = accountServices.createAccount(username,password,role);
 
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl("/create-account-student.html?id="+id);
+        return redirectView;
     }
 }

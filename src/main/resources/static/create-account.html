@@ -93,12 +93,12 @@
       body: formData
     })
             .then(response => response.json())
-            .then(accountId => {
+            .then(id => {
               const role = formData.get('role');
               if (role === '2') {
-                window.location.href = `/create-account-student.html?accountId=${accountId}`;
+                window.location.href = `/create-account-student.html?id=${id}`;
               }else{
-                window.location.href = `/create-account-tm1.html?accountId=${accountId}`;
+                window.location.href = `/create-account-tm1.html?id=${id}`;
               }
             })
             .catch(error => console.error('Error:', error));

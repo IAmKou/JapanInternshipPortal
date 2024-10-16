@@ -16,8 +16,21 @@ public class StudentServices {
     @Autowired
     private AccountRepository accountRepository;
 
-    public Student createStudent(int accountId, String fullname, String japanname, Date dob, String gender, String phoneNumber, String email) {
+    public Student createStudent(int id, String fullname, String japanname, Date dob, String gender, String phoneNumber, String email, String img, String passport) {
+        // Create a new Student object and set its properties
         Student student = new Student();
+        student.setId(id);
+        student.setFullname(fullname);
+        student.setJapanname(japanname);
+        student.setDob(dob);
+        student.setGender(Student.Gender.valueOf(gender));
+        student.setPhoneNumber(phoneNumber);
+        student.setEmail(email);
+        student.setImg(img);
+        student.setPassport(passport);
+
+        // Save the student to the database
         return studentRepository.save(student);
     }
+
 }
