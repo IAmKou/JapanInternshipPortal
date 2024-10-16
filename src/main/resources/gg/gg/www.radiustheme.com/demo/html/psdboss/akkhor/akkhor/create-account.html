@@ -56,9 +56,9 @@
         <div class="form-group">
           <label for="role">Role</label>
           <select name="role" id="role" class="form-control">
-            <option value="Manager">Manager</option>
-            <option value="Teacher">Teacher</option>
-            <option value="Student">Student</option>
+            <option value="4">Manager</option>
+            <option value="3">Teacher</option>
+            <option value="2">Student</option>
           </select>
         </div>
         <div class="form-group">
@@ -83,7 +83,26 @@
 <script src="js/main.js"></script>
 <!-- Custom script -->
 <script>
+  document.getElementById('accountForm').addEventListener('submit', function(event) {
+    event.preventDefault();
 
+    const formData = new FormData(this);
+
+    fetch('/accounts/create', {
+      method: 'POST',
+      body: formData
+    })
+            .then(response => response.json())
+            .then(accountId => {
+              const role = formData.get('role');
+              if (role === '2') {
+                window.location.href = `/create-account-student.html?accountId=${accountId}`;
+              }else{
+                window.location.href = `/create-account-tm1.html?accountId=${accountId}`;
+              }
+            })
+            .catch(error => console.error('Error:', error));
+  });
 </script>
 
 </body>
