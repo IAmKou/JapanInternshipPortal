@@ -19,10 +19,10 @@ public class CreateAccountController {
     public RedirectView createAccount(@RequestParam String username
     , @RequestParam String password
     , @RequestParam int role) {
-        int id = accountServices.createAccount(username,password,role);
+        int acccount_id = accountServices.createAccount(username,password,role);
 
         RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("/create-account-student.html?id="+id);
+        redirectView.setUrl("/create-account-student.html?account_id="+acccount_id);
         return redirectView;
     }
 }

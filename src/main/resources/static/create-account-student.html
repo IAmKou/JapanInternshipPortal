@@ -37,7 +37,7 @@
         <div class="login-box">
             <form action="/student/save" method="post" class="login-form">
                 <div class="form-row">
-                    <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="account_id" id="account_id" value="${accountId}">
                     <!-- Fullname and Japan Name -->
                     <div class="form-group col-md-6">
                         <label for="fullname">Fullname</label>
@@ -124,7 +124,7 @@
 <!-- Custom script -->
 <script>
     const urlParams = new URLSearchParams(window.location.search);
-    document.getElementById('id').value = urlParams.get('id');
+    document.getElementById('account_id').value = urlParams.get('account_id');
 
     document.getElementById('studentForm').addEventListener('submit', function(event) {
         event.preventDefault();

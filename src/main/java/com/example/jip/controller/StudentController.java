@@ -23,15 +23,16 @@ public class StudentController {
     StudentServices studentServices;
 
     @PostMapping("/save")
-    public ResponseEntity<String> saveStudent(@RequestParam int id
-            , @RequestParam String fullname
+    public ResponseEntity<String> saveStudent(
+              @RequestParam String fullname
             , @RequestParam String japanname
             , @RequestParam String dob
             , @RequestParam String gender
             , @RequestParam String email
             , @RequestParam String phoneNumber
             , @RequestParam(required = false) String img
-            , @RequestParam(required = false) String passport_img) {
+            , @RequestParam(required = false) String passport_img
+    , @RequestParam int account_id) {
         LocalDate localDate;
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Change this to match your input
@@ -41,7 +42,7 @@ public class StudentController {
         }
         Date date = Date.valueOf(localDate);
 
-        studentServices.createStudent(id, fullname, japanname, date, gender, phoneNumber, email, img, passport_img);
+        studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, passport_img,account_id);
         return ResponseEntity.ok("Student information saved successfully");
 
     }
