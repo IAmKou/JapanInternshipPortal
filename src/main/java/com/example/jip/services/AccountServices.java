@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AccountServices {
 
@@ -20,16 +22,19 @@ public class AccountServices {
     @Autowired
     private RoleRepository roleRepository;
 
+    public int createAccount(String username, String password, int role) {
+        Account account = new Account();
+        account.setUsername(username);
+        account.setPassword(passwordEncoder.encode(password));
 
-    public Account saveAccount(Account account, String roleName) {
+        Role roleEntity = roleRepository.findById(role)
+                .orElseThrow(()-> new RuntimeException("Role not found"));
+        account.setRole(roleEntity);
 
-        account.setPassword(passwordEncoder.encode(account.getPassword()));
-
-        Role role = roleRepository.findByName(roleName).orElseThrow(() ->
-                new RuntimeException("Role not found"));
-        account.setRole(role);
-
-
-        return accountRepository.save(account);
+        Account savedAccount = accountRepository.save(account);
+        return savedAccount.getId();
     }
+
+
+
 }
