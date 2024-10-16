@@ -120,6 +120,28 @@
 <script src="js/jquery.scrollUp.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
+<!-- Custom script -->
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    document.getElementById('accountId').value = urlParams.get('accountId');
+
+    document.getElementById('studentForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+
+        fetch('/students/create', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                // Redirect or display success message
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
 
 </body>
 </html>
