@@ -28,6 +28,91 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <style>
+
+        .overlay {
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Black background with 70% transparency */
+            z-index: 8; /* Behind the popup */
+        }
+
+        /* Popup container */
+        .popup {
+            display: none; /* Hidden by default */
+            position: absolute;
+            z-index: 9; /* In front of the overlay */
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 40%;
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+        }
+
+        /* Popup content */
+        .popup-content {
+            width: 100%;
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        /* Close button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Form styling */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            margin-top: 10px;
+        }
+
+        form input, form textarea {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        /* Button styling */
+        .btn {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 
 <body>
@@ -236,6 +321,7 @@
         </div>
     </div>
     <!-- Header Menu Area End Here -->
+
     <!-- Page Area Start Here -->
     <div class="dashboard-page-one">
         <!-- Sidebar Area Start Here -->
@@ -319,7 +405,7 @@
                                 <a href="all-book.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
                             </li>
                             <li class="nav-item">
-                                <a href="add-book.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New Book</a>
+                                <a href="add-book.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New Assignment</a>
                             </li>
                         </ul>
                     </li>
@@ -414,10 +500,13 @@
                         <a href="account-settings.html" class="nav-link"><i class="flaticon-settings"></i><span>Account</span></a>
                     </li>
                 </ul>
+
             </div>
+
         </div>
+
         <!-- Sidebar Area End Here -->
-        <div class="dashboard-content-one">
+         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
                 <h3>Assignment</h3>
@@ -429,6 +518,7 @@
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
+
             <!-- Teacher Table Area Start Here -->
             <div class="card height-auto">
                 <div class="card-body">
@@ -436,28 +526,23 @@
                         <div class="item-title">
                             <h3>All Assignment</h3>
                         </div>
-                        <div class="dropdown">
-                            <a class="dropdown-toggle" href="#" role="button"
-                               data-toggle="dropdown" aria-expanded="false">...</a>
 
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                            </div>
-                        </div>
                     </div>
                     <form class="mg-b-20">
                         <div class="row gutters-8">
-                            <div class="col-5-xxxl col-xl-6 col-lg-5 col-12 form-group">
+                            <!-- Search by ID -->
+                            <div class="col-md-6 col-lg-5 col-12 form-group">
                                 <input type="text" placeholder="Search by ID ..." class="form-control">
                             </div>
-                            <div class="col-6-xxxl col-xl-6 col-lg-5 col-12 form-group">
+
+                            <!-- Search by Name -->
+                            <div class="col-md-6 col-lg-5 col-12 form-group">
                                 <input type="text" placeholder="Search by Name ..." class="form-control">
                             </div>
 
-                            <div class="col-1-xxxl col-xl-2 col-lg-2 col-12 form-group">
-                                <button type="submit" class="fw-btn-fill btn-gradient-yellow">SEARCH</button>
+                            <!-- Search Button -->
+                            <div class="col-md-12 col-lg-2 col-12 form-group">
+                                <button type="submit" class="fw-btn-fill btn-gradient-yellow btn-block">SEARCH</button>
                             </div>
                         </div>
                     </form>
@@ -475,7 +560,7 @@
                                 <th>Img</th>
                                 <th>Creating Date</th>
                                 <th>End Date</th>
-                                <th></th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -496,10 +581,12 @@
                                             <span class="flaticon-more-button-of-three-dots"></span>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                            <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                            <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Delete</a>
+                                            <a class="dropdown-item" onclick="openPopup()"><i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
+
                                             <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
                                         </div>
+
                                     </div>
                                 </td>
                             </tr>
@@ -507,12 +594,36 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </div>
-            <!-- Teacher Table Area End Here -->
-            <footer class="footer-wrap-layout1">
 
-            </footer>
+                    </div>
+
+                </div>
+
+
+        </div>
+        <div id="overlay" class="overlay"></div>
+        <div id="assignmentPopup" class="popup">
+
+            <div class="popup-content">
+                <span class="close" onclick="closePopup()">&times;</span>
+                <h2>Create Assignment</h2>
+                <form>
+                    <label for="created_date">Created Date:</label>
+                    <input type="date" id="created_date" name="created_date" required>
+
+                    <label for="end_date">End Date:</label>
+                    <input type="date" id="end_date" name="end_date" required>
+
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="4" required></textarea>
+
+                    <label for="img">Image URL:</label>
+                    <input type="text" id="img" name="img">
+
+                    <button type="submit" class="btn">Submit</button>
+                </form>
+            </div>
+
         </div>
     </div>
     <!-- Page Area End Here -->
@@ -531,6 +642,20 @@
 <script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
+
+<script>
+    // Open popup and show overlay
+    function openPopup() {
+        document.getElementById('assignmentPopup').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+    // Close popup and hide overlay
+    function closePopup() {
+        document.getElementById('assignmentPopup').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+</script>
 
 </body>
 
