@@ -17,12 +17,21 @@ public class CreateAccountController {
 
     @PostMapping("/create")
     public RedirectView createAccount(@RequestParam String username
-    , @RequestParam String password
-    , @RequestParam int role) {
-        int acccount_id = accountServices.createAccount(username,password,role);
-
+            , @RequestParam String password
+            , @RequestParam int role) {
+        int acccount_id = accountServices.createAccount(username, password, role);
         RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("/create-account-student.html?account_id="+acccount_id);
+        if (role == 2) {
+            redirectView.setUrl("/create-account-student.html?account_id=" + acccount_id);
+
+        } else if (role == 3) {
+            redirectView.setUrl("/create-account-tm1.html?account_id=" + acccount_id);
+
+        } else if (role == 4) {
+            redirectView.setUrl("/create-account-tm1.html?account_id=" + acccount_id);
+        } else {
+            redirectView.setUrl("/login.html");
+        }
         return redirectView;
     }
 }
