@@ -1,0 +1,274 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Forum Page</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+  <!-- Normalize CSS -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="css/main.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- Fontawesome CSS -->
+  <link rel="stylesheet" href="css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Modernize js -->
+  <script src="js/modernizr-3.6.0.min.js"></script>
+  <style>
+    .thread-box {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      background-color: #f9f9f9;
+    }
+
+    .thread-thumbnail {
+      width: 100px;
+      height: 100px;
+      background-color: #ccc;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .thread-content {
+      display: inline-block;
+      margin-left: 20px;
+      vertical-align: top;
+      width: calc(100% - 140px);
+    }
+
+    .thread-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .thread-description {
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    .replies-count {
+      font-size: 0.9rem;
+      color: #666;
+      text-align: right;
+    }
+
+    .create-thread-btn {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .create-thread-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+<div id="wrapper" class="wrapper bg-ash">
+  <!-- Header Menu Area Start Here -->
+  <div class="navbar navbar-expand-md header-menu-one bg-light">
+    <div class="nav-bar-header-one">
+      <div class="header-logo">
+        <a href="admin.html">
+          <img src="img/logo.png" alt="logo">
+        </a>
+      </div>
+    </div>
+    <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+      <ul class="navbar-nav">
+        <li class="navbar-item header-search-bar">
+          <div class="input-group stylish-input-group">
+                            <span class="input-group-addon">
+                                <button type="submit">
+                                    <span class="flaticon-search" aria-hidden="true"></span>
+                                </button>
+                            </span>
+            <input type="text" class="form-control" placeholder="Find Something . . .">
+          </div>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <!-- Profile Dropdown -->
+        <li class="navbar-item dropdown header-admin">
+          <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+             aria-expanded="false">
+            <div class="admin-title">
+              <h5 class="item-title">Stevne Zone</h5>
+              <span>Admin</span>
+            </div>
+            <div class="admin-img">
+              <img src="img/figure/admin.jpg" alt="Admin">
+            </div>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <div class="item-header">
+              <h6 class="item-title">Steven Zone</h6>
+            </div>
+            <div class="item-content">
+              <ul class="settings-list">
+                <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
+                <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
+                <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a></li>
+                <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
+                <li><a href="login.html"><i class="flaticon-turn-off"></i>Log Out</a></li>
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <!-- Messages Dropdown -->
+        <li class="navbar-item dropdown header-message">
+          <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+             aria-expanded="false">
+            <i class="far fa-envelope"></i>
+            <div class="item-title d-md-none text-16 mg-l-10">Message</div>
+            <span>5</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <div class="item-header">
+              <h6 class="item-title">05 Messages</h6>
+            </div>
+            <div class="item-content">
+              <div class="media">
+                <div class="item-img bg-skyblue author-online">
+                  <img src="img/figure/student11.png" alt="img">
+                </div>
+                <div class="media-body space-sm">
+                  <div class="item-title">
+                    <a href="#">
+                      <span class="item-name">Maria Zaman</span>
+                      <span class="item-time">18:30</span>
+                    </a>
+                  </div>
+                  <p>What is the reason for buying this item?</p>
+                </div>
+              </div>
+              <!-- Additional messages can be listed here -->
+            </div>
+          </div>
+        </li>
+
+        <!-- Notifications Dropdown -->
+        <li class="navbar-item dropdown header-notification">
+          <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+             aria-expanded="false">
+            <i class="far fa-bell"></i>
+            <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
+            <span>8</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <div class="item-header">
+              <h6 class="item-title">03 Notifications</h6>
+            </div>
+            <div class="item-content">
+              <div class="media">
+                <div class="item-icon bg-skyblue">
+                  <i class="fas fa-check"></i>
+                </div>
+                <div class="media-body space-sm">
+                  <div class="post-title">Complete Today's Task</div>
+                  <span>1 Min ago</span>
+                </div>
+              </div>
+              <!-- Additional notifications can be listed here -->
+            </div>
+          </div>
+        </li>
+
+        <!-- Language Dropdown -->
+        <li class="navbar-item dropdown header-language">
+          <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
+             data-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-globe-americas"></i>EN
+          </a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="#">English</a>
+            <a class="dropdown-item" href="#">Spanish</a>
+            <a class="dropdown-item" href="#">French</a>
+            <a class="dropdown-item" href="#">Chinese</a>
+          </div>
+        </li>
+      </ul>
+
+
+    </div>
+  </div>
+  <!-- Header Menu Area End Here -->
+
+  <!-- Main Body Content Start Here -->
+  <div class="dashboard-content-one container">
+    <!-- Create Thread Button -->
+    <button class="create-thread-btn">Start a New Thread</button>
+
+    <!-- Thread List Start -->
+    <div class="thread-box">
+      <div class="thread-thumbnail"></div>
+      <div class="thread-content">
+        <div class="thread-title">Thread 1: Welcome to the Forum</div>
+        <div class="thread-description">This is the introductory thread where you can introduce yourself.</div>
+        <div class="replies-count">Replies: 10</div>
+      </div>
+    </div>
+
+    <div class="thread-box">
+      <div class="thread-thumbnail"></div>
+      <div class="thread-content">
+        <div class="thread-title">Thread 2: General Discussion</div>
+        <div class="thread-description">Feel free to discuss anything related to the forum's topic.</div>
+        <div class="replies-count">Replies: 25</div>
+      </div>
+    </div>
+
+    <div class="thread-box">
+      <div class="thread-thumbnail"></div>
+      <div class="thread-content">
+        <div class="thread-title">Thread 3: Feedback and Suggestions</div>
+        <div class="thread-description">We'd love to hear your thoughts on how to improve the forum.</div>
+        <div class="replies-count">Replies: 5</div>
+      </div>
+    </div>
+    <!-- Thread List End -->
+  </div>
+  <!-- Main Body Content End Here -->
+
+  <!-- Footer Start Here -->
+  <footer class="footer-wrap-layout1">
+    <div style="background-color: #333; padding: 15px;">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <p style="color: #fff;">© Copyright <a href="#" style="color: #ffcc00;">akkhor</a> 2024. All rights reserved. Designed by <a href="#" style="color: #ffcc00;">PsdBosS</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- Footer End Here -->
+</div>
+
+<!-- jquery -->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Custom js -->
+<script src="js/main.js"></script>
+
+</body>
+
+</html>
