@@ -22,7 +22,7 @@ CREATE TABLE Student (
     DoB DATE NOT NULL,
     Passport_url VARCHAR(255),
     Gender ENUM('Male', 'Female') NOT NULL,
-    PhoneNumber VARCHAR(20),
+    phone_number VARCHAR(20),
     img VARCHAR(255),
     email VARCHAR(100) NOT NULL,
     account_id INT,
@@ -34,7 +34,7 @@ CREATE TABLE Teacher (
     Fullname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     Jname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
     email VARCHAR(100) NOT NULL,
-    PhoneNumber VARCHAR(20),
+    phone_number VARCHAR(20),
     Gender ENUM('Male', 'Female') NOT NULL,
     img VARCHAR(255),
     account_id INT,
@@ -46,7 +46,7 @@ CREATE TABLE Manager (
     Fullname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     Jname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
     email VARCHAR(100) NOT NULL,
-    PhoneNumber VARCHAR(20),
+    phone_number VARCHAR(20),
     Gender ENUM('Male', 'Female') NOT NULL,
     img VARCHAR(255),
     account_id INT,
@@ -185,6 +185,16 @@ CREATE TABLE Application (
     reply_date DATE,
     FOREIGN KEY (student_id) REFERENCES Student(Id)
 );
+
+CREATE TABLE Notification (
+Id int auto_increment Primary key,
+Title varchar(100),
+content varchar(250),
+account_id int,
+ FOREIGN KEY (account_id) REFERENCES Account(Id)
+ );
+
+
 
 
 
