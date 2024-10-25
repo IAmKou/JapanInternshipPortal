@@ -3,12 +3,14 @@ package com.example.jip.controller;
 import com.example.jip.repository.StudentRepository;
 import com.example.jip.services.StudentServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,7 +45,9 @@ public class StudentController {
         Date date = Date.valueOf(localDate);
 
         studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, passport_img,account_id);
-        return ResponseEntity.ok("Student information saved successfully");
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create("/admin.html"))
+                .build();
 
     }
 
