@@ -128,7 +128,9 @@
                                     <span class="flaticon-search" aria-hidden="true"></span>
                                 </button>
                             </span>
-            <input type="text" class="form-control" placeholder="Find Something . . .">
+            <label>
+              <input type="text" class="form-control" placeholder="Find Something . . .">
+            </label>
           </div>
         </li>
       </ul>
@@ -406,14 +408,6 @@
                 <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
                   Collection</a>
               </li>
-              <li class="nav-item">
-                <a href="all-expense.html" class="nav-link"><i
-                        class="fas fa-angle-right"></i>Expenses</a>
-              </li>
-              <li class="nav-item">
-                <a href="add-expense.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
-                  Expenses</a>
-              </li>
             </ul>
           </li>
           <li class="nav-item sidebar-nav-item">
@@ -449,10 +443,7 @@
                 <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
                   Schedule</a>
               </li>
-              <li class="nav-item">
-                <a href="exam-grade.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
-                  Grades</a>
-              </li>
+
             </ul>
           </li>
           <li class="nav-item">
@@ -560,7 +551,7 @@
   <!-- Footer End Here -->
 </div>
 <!-- Page Area End Here -->
-</div>
+
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -571,5 +562,11 @@
 <script src="js/bootstrap.min.js"></script>
 <!-- Custom js -->
 <script src="js/main.js"></script>
+<script>
+  // Hide the preloader after the page loads
+  window.addEventListener("load", function() {
+    document.getElementById("preloader").style.display = "none";
+  });
+</script>
 </body>
 </html>
