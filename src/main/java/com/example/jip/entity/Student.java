@@ -31,7 +31,7 @@ public class Student {
     @Column(name = "Gender", nullable = false)
     private Gender gender;
 
-    @Column(name = "PhoneNumber")
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Column(name = "img")

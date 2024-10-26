@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="">
+<html class="no-js" lang="" xmlns="http://www.w3.org/1999/html">
 
 
 <!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/class-routine.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
@@ -348,7 +348,7 @@
                                         Collection</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="all-application.html" class="nav-link"><i
+                                    <a href="Add-material.html" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Expenses</a>
                                 </li>
                                 <li class="nav-item">
@@ -464,89 +464,20 @@
                 <!-- Breadcubs Area End Here -->
                 <!-- Class Routine Area Start Here -->
                 <div class="row">
-                    <div class="col-4-xxxl col-12">
+                    <div class="col-12-xxxl col-12">
                         <div class="card height-auto">
                             <div class="card-body">
                                 <div class="heading-layout1">
                                     <div class="item-title">
-                                        <h3>Add Class Routine</h3>
+                                        <h3>Class Schedule</h3>
                                     </div>
                                     <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                                             aria-expanded="false">...</a>
 
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="fas fa-times text-orange-red"></i>Close</a>
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <form class="new-added-form">
-                                    <div class="row">
-                                        <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                            <label>Subject Name *</label>
-                                            <input type="text" placeholder="" class="form-control">
-                                        </div>
-                                        <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                            <label>Subject Type *</label>
-                                            <select class="select2">
-                                                <option value="">Please Select</option>
-                                                <option value="1">Bangla</option>
-                                                <option value="2">English</option>
-                                                <option value="3">Mathematics</option>
-                                                <option value="3">Economics</option>
-                                                <option value="3">Chemistry</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                            <label>Select Class *</label>
-                                            <select class="select2">
-                                                <option value="0">Please Select</option>
-                                                <option value="1">Play</option>
-                                                <option value="2">Nursery</option>
-                                                <option value="3">One</option>
-                                                <option value="3">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                            <label>Select Code</label>
-                                            <select class="select2">
-                                                <option value="0">Please Select</option>
-                                                <option value="1">00524</option>
-                                                <option value="2">00525</option>
-                                                <option value="3">00526</option>
-                                                <option value="3">00527</option>
-                                                <option value="3">00528</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12 form-group mg-t-8">
-                                            <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
-                                            <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-8-xxxl col-12">
-                        <div class="card height-auto">
-                            <div class="card-body">
-                                <div class="heading-layout1">
-                                    <div class="item-title">
-                                        <h3>Class Routine</h3>
-                                    </div>
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                                            aria-expanded="false">...</a>
-
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="fas fa-times text-orange-red"></i>Close</a>
+                                            <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i
+                                                    class="fas fa-plus text-orange-red"></i>Import</a>
                                             <a class="dropdown-item" href="#"><i
                                                     class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
                                             <a class="dropdown-item" href="#"><i
@@ -816,6 +747,30 @@
             </div>
         </div>
         <!-- Page Area End Here -->
+        <div class="modal fade" id="standard-modal" tabindex="-1" role="dialog"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add schedule</h5>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/add-schedule" method="post" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            <label for="file" style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
+                            <input type="file" id="file" name="file" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Close</button>
+                            <button type="submit" class="footer-btn bg-linkedin">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- jquery-->
     <script src="js/jquery-3.3.1.min.js"></script>

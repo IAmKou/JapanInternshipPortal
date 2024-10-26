@@ -16,15 +16,15 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ADMIN"));
         boolean isTeacher = authentication.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_TEACHER"));
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("TEACHER"));
         if (isAdmin) {
             response.sendRedirect("/admin.html");
         } else if (isTeacher) {
-            response.sendRedirect("/student.html");
-        }else{
             response.sendRedirect("/teacher.html");
+        }else{
+            response.sendRedirect("/student.html");
         }
 
     }

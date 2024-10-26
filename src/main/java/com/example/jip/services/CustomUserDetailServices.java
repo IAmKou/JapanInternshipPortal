@@ -25,7 +25,7 @@ public class CustomUserDetailServices implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(username));
 
         List<GrantedAuthority> grantedAuthorities = List.of(new SimpleGrantedAuthority
-                ("ROLE_" + account.getRole().getName()));
+                (account.getRole().getName()));
 
         return new org.springframework.security.core.userdetails.User(
                 account.getUsername(),

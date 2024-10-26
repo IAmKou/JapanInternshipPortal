@@ -27,17 +27,25 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin.html").hasRole("ADMIN")
-                        .requestMatchers("/student.html").hasRole("STUDENT")
-                        .requestMatchers("/teacher.html").hasRole("TEACHER")
-                        .anyRequest().permitAll())
-//                        .anyRequest().authenticated())
-//                .formLogin(form -> form
-//                        .successHandler(successHandler)
-//                        .permitAll())
-                .logout(logout -> logout.permitAll());
+                        .requestMatchers("/admin.html").hasAuthority("ADMIN")
+                        .requestMatchers("/student.html").hasAuthority("STUDENT")
+                        .requestMatchers("/teacher.html").hasAuthority("TEACHER")
+                        .requestMatchers("/css/**", "/js/**", "/images/**","/img/**",
+                                "/webfonts/**","/fonts/**","/hts-cache/**","/style.css")
+                        .permitAll()
+                        .anyRequest().authenticated())
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login.html")
+                        .loginProcessingUrl("/perform_login")
+                        .failureUrl("/login.html?error=true")  // Redirect on failure
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/perform_logout")
+                        .logoutSuccessUrl("/login.html?logout=true")
+                        .permitAll());
         return http.build();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
