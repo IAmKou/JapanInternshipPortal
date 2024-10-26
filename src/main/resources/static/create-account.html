@@ -1,0 +1,113 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:30 GMT -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>JIP | Create Account</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+  <!-- Normalize CSS -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="css/main.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- Fontawesome CSS -->
+  <link rel="stylesheet" href="css/all.min.css">
+  <!-- Flaticon CSS -->
+  <link rel="stylesheet" href="fonts/flaticon.css">
+  <!-- Animate CSS -->
+  <link rel="stylesheet" href="css/animate.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Modernize js -->
+  <script src="js/modernizr-3.6.0.min.js"></script>
+</head>
+
+<body>
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<!-- Login Page Start Here -->
+<div class="login-page-wrap">
+  <div class="login-page-content">
+    <div class="login-box">
+      <form action="/accounts/create" method="post" class="login-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" placeholder="Enter usrename" name="username" class="form-control" id="username">
+          <i class="far fa-envelope"></i>
+        </div>
+        <div class="form-group">
+          <label for="pass">Password</label>
+          <input type="password" placeholder="Enter password" name="password" class="form-control" id="pass">
+          <i class="fas fa-lock"></i>
+        </div>
+        <div class="form-group">
+          <label for="cfpass">Re-enter Password</label>
+          <input type="password" placeholder="Confirm password" name="cfpass" class="form-control" id="cfpass">
+          <i class="fas fa-lock"></i>
+        </div>
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select name="role" id="role" class="form-control">
+            <option value="4">Manager</option>
+            <option value="3">Teacher</option>
+            <option value="2">Student</option>
+            <option value="1">Admin</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="login-btn">Next</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Login Page End Here -->
+<!-- jquery-->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Custom Js -->
+<script src="js/main.js"></script>
+<!-- Custom script -->
+<script>
+  document.getElementById('accountForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+
+    fetch('/accounts/create', {
+      method: 'POST',
+      body: formData
+    })
+            .then(response => response.json())
+            .then(id => {
+              const role = formData.get('role');
+              if (role === '2') {
+                window.location.href = `/create-account-student.html?id=${id}`;
+              }else{
+                window.location.href = `/create-account-tm1.html?id=${id}`;
+              }
+            })
+            .catch(error => console.error('Error:', error));
+  });
+</script>
+
+</body>
+
+
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:31 GMT -->
+</html>

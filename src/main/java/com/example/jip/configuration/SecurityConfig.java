@@ -9,40 +9,41 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private CustomAuthenticationSuccessHandler successHandler;
+    private final CustomAuthenticationSuccessHandler successHandler;
+    private final CustomUserDetailServices customUserDetailsService;
 
-    @Autowired
-    private CustomUserDetailServices customUserDetailsService;
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public SecurityConfig(CustomAuthenticationSuccessHandler successHandler, CustomUserDetailServices customUserDetailsService) {
+        this.successHandler = successHandler;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.
-                csrf(csrf -> csrf.disable())
+        http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin.html").hasRole("ADMIN")
-                        .requestMatchers("/student.html").hasRole("STUDENT")
-                        .requestMatchers("/teacher.html").hasRole("TEACHER")
+                        .requestMatchers("/admin.html").hasAuthority("ADMIN")
+                        .requestMatchers("/student.html").hasAuthority("STUDENT")
+                        .requestMatchers("/teacher.html").hasAuthority("TEACHER")
+                        .requestMatchers("/css/**", "/js/**", "/images/**","/img/**",
+                                "/webfonts/**","/fonts/**","/hts-cache/**","/style.css")
+                        .permitAll()
                         .anyRequest().authenticated())
-                .formLogin(form -> form
-                        .successHandler(successHandler)
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login.html")
+                        .loginProcessingUrl("/perform_login")
+                        .failureUrl("/login.html?error=true")  // Redirect on failure
                         .permitAll())
-                .logout(logout -> logout.permitAll());
+                .logout(logout -> logout
+                        .logoutUrl("/perform_logout")
+                        .logoutSuccessUrl("/login.html?logout=true")
+                        .permitAll());
+
         return http.build();
     }
 
@@ -52,15 +53,10 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return customUserDetailsService;
-    }
+    AppConfig appConfig = new AppConfig();
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(customUserDetailsService).passwordEncoder(appConfig.passwordEncoder());
     }
-
-
 }

@@ -1,3 +1,4 @@
+
 Create database JIP;
 use JIP;
 
@@ -8,7 +9,7 @@ CREATE TABLE Role (
 
 CREATE TABLE Account (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    Username VARCHAR(50) UNIQUE NOT NULL,
+    Username VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci UNIQUE NOT NULL,
     Password VARCHAR(255) NOT NULL,
     role_id INT,
     FOREIGN KEY (role_id) REFERENCES Role(Id)
@@ -17,10 +18,11 @@ CREATE TABLE Account (
 CREATE TABLE Student (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Fullname VARCHAR(100) NOT NULL,
+    Japanname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     DoB DATE NOT NULL,
     Passport_url VARCHAR(255),
     Gender ENUM('Male', 'Female') NOT NULL,
-    PhoneNumber VARCHAR(20),
+    phone_number VARCHAR(20),
     img VARCHAR(255),
     email VARCHAR(100) NOT NULL,
     account_id INT,
@@ -29,18 +31,31 @@ CREATE TABLE Student (
 
 CREATE TABLE Teacher (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    Fullname VARCHAR(100) NOT NULL,
+    Fullname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    Jname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
     email VARCHAR(100) NOT NULL,
-    PhoneNumber VARCHAR(20),
+    phone_number VARCHAR(20),
     Gender ENUM('Male', 'Female') NOT NULL,
     img VARCHAR(255),
     account_id INT,
     FOREIGN KEY (account_id) REFERENCES Account(Id)
 );
 
+CREATE TABLE Manager (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Fullname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    Jname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+    email VARCHAR(100) NOT NULL,
+    phone_number VARCHAR(20),
+    Gender ENUM('Male', 'Female') NOT NULL,
+    img VARCHAR(255),
+    account_id INT,
+    FOREIGN KEY (account_id) REFERENCES Account(Id)
+    );
+
 CREATE TABLE Class (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    Name VARCHAR(100) NOT NULL,
+    Name VARCHAR(100)  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     number_of_student INT,
     teacher_id INT,
     FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
@@ -64,8 +79,8 @@ CREATE TABLE Schedule (
     class_id INT,
     start_time TIME NOT NULL,
     end_time TIME NOT NULL,
-    description VARCHAR(255),
-    event VARCHAR(255),
+    description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    event VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     FOREIGN KEY (teacher_id) REFERENCES Teacher(Id),
     FOREIGN KEY (class_id) REFERENCES Class(Id)
 );
@@ -76,7 +91,7 @@ CREATE TABLE Attendant (
     schedule_id INT,
     status ENUM('Present', 'Absent', 'Late') NOT NULL,
     date DATE NOT NULL,
-    note VARCHAR(255),
+    note VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     FOREIGN KEY (student_id) REFERENCES Student(Id),
     FOREIGN KEY (schedule_id) REFERENCES Schedule(Id)
 );
@@ -85,7 +100,7 @@ CREATE TABLE Assignment (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     date_created DATE NOT NULL,
     end_date DATE NOT NULL,
-    description VARCHAR(255),
+    description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     teacher_id INT,
     img VARCHAR(255),
     class_id INT,
@@ -98,8 +113,8 @@ CREATE TABLE Student_assignment (
     student_id INT,
     assignment_id INT,
     mark DECIMAL(5,2),
-    description VARCHAR(255),
-    content VARCHAR(255),
+    description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    content VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     date DATE NOT NULL,
     FOREIGN KEY (student_id) REFERENCES Student(Id),
     FOREIGN KEY (assignment_id) REFERENCES Assignment(Id)
@@ -109,7 +124,7 @@ CREATE TABLE Exam (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT,
     block INT NOT NULL,
-    exam_name VARCHAR(100) NOT NULL,
+    exam_name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     mark DECIMAL(5,2) NOT NULL,
     date DATE NOT NULL,
     FOREIGN KEY (student_id) REFERENCES Student(Id)
@@ -126,7 +141,7 @@ CREATE TABLE Mark_report (
 
 CREATE TABLE Material (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    content VARCHAR(255),
+    content VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     img VARCHAR(255),
     teacher_id INT,
     date DATE NOT NULL,
@@ -142,16 +157,16 @@ CREATE TABLE Personal_material (
 
 CREATE TABLE Forum (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    topic_name VARCHAR(255),
+    topic_name VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     date_created DATE NOT NULL,
-    description TEXT,
+    description TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     creator_id INT,
     FOREIGN KEY (creator_id) REFERENCES Account(Id)
 );
 
 CREATE TABLE Comment (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    content TEXT NOT NULL,
+    content TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     date DATE NOT NULL,
     creator_id INT,
     FOREIGN KEY (creator_id) REFERENCES Account(Id)
@@ -160,26 +175,28 @@ CREATE TABLE Comment (
 CREATE TABLE Application (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     img VARCHAR(255),
-    category VARCHAR(50),
-    description TEXT,
-    content TEXT,
+    category VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    description TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    content TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     date DATE NOT NULL,
     student_id INT,
     status ENUM('Pending', 'Approved', 'Rejected') NOT NULL,
-    reply TEXT,
+    reply TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     reply_date DATE,
     FOREIGN KEY (student_id) REFERENCES Student(Id)
 );
 
-CREATE TABLE Message (
-    Id INT AUTO_INCREMENT PRIMARY KEY,
-    sender_id INT NOT NULL,
-    recipient_id INT NOT NULL,
-    content TEXT NOT NULL,
-    sent_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (sender_id) REFERENCES Account(Id),
-    FOREIGN KEY (recipient_id) REFERENCES Account(Id)
-);
+CREATE TABLE Notification (
+Id int auto_increment Primary key,
+Title varchar(100),
+content varchar(250),
+account_id int,
+ FOREIGN KEY (account_id) REFERENCES Account(Id)
+ );
+
+
+
+
 
 
 

@@ -1,0 +1,148 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>JIP | Create Account</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+    <!-- Normalize CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="css/all.min.css">
+    <!-- Flaticon CSS -->
+    <link rel="stylesheet" href="fonts/flaticon.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="css/animate.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Modernize js -->
+    <script src="js/modernizr-3.6.0.min.js"></script>
+</head>
+
+<body>
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<!-- Login Page Start Here -->
+<div class="login-page-wrap">
+    <div class="login-page-content">
+        <div class="login-box">
+            <form action="/student/save" method="post" class="login-form">
+                <div class="form-row">
+                    <input type="hidden" name="account_id" id="account_id" value="${accountId}">
+                    <!-- Fullname and Japan Name -->
+                    <div class="form-group col-md-6">
+                        <label for="fullname">Fullname</label>
+                        <input type="text" placeholder="Enter your name" name="fullname" class="form-control" id="fullname">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="jname">Japan Name</label>
+                        <input type="text" placeholder="Enter your Japan name" name="japanname" class="form-control" id="jname">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <!-- Date of Birth and Email -->
+                    <div class="form-group col-md-6">
+                        <label for="DoB">DoB</label>
+                        <input type="date" name="dob" class="form-control" id="DoB">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" placeholder="ex:abc@gmail.com" id="email" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <!-- Phone Number and Gender -->
+                    <div class="form-group col-md-6">
+                        <label for="phone">Phone Number</label>
+                        <input type="text" name="phoneNumber" placeholder="ex:012345678" id="phone" class="form-control">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label style="font-weight: bold; color: #464c4d; font-size:14px;">Gender</label></br>
+                        <div class="form-check-inline">
+                            <input type="radio" name="gender" value="Male" id="male" class="form-check-input">
+                            <label for="male" class="form-check-label">Male</label>
+                        </div>
+                        <div class="form-check-inline">
+                            <input type="radio" name="gender" value="Female" id="female" class="form-check-input">
+                            <label for="female" class="form-check-label">Female</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <!-- Profile Image and Passport Image -->
+                    <div class="form-group col-md-6">
+                        <label for="img">Profile Image</label>
+                        <input type="text" name="img" id="img" class="form-control" placeholder="link of image">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="passport">Passport Image</label>
+                        <input type="text" name="passport_img" id="passport" class="form-control" placeholder="link of image">
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-row">
+                    <div class="form-group col-md-12 text-center">
+                        <div class="col-md-4 mx-auto">
+                            <button type="submit" class="login-btn btn btn-primary btn-block">Create</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Login Page End Here -->
+<!-- jquery -->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Custom Js -->
+<script src="js/main.js"></script>
+<!-- Custom script -->
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    document.getElementById('account_id').value = urlParams.get('account_id');
+
+    document.getElementById('studentForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+
+        fetch('/student/save', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                // Redirect or display success message
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+
+</body>
+</html>
