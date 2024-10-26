@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>JIP | Assignment List</title>
+    <title>JIP | Add Assignment</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -22,102 +22,17 @@
     <link rel="stylesheet" href="fonts/flaticon.css">
     <!-- Animate CSS -->
     <link rel="stylesheet" href="css/animate.min.css">
-    <!-- Data Table CSS -->
-    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <!-- Select 2 CSS -->
+    <link rel="stylesheet" href="css/select2.min.css">
+    <!-- Date Picker CSS -->
+    <link rel="stylesheet" href="css/datepicker.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
-    <style>
-
-        .overlay {
-            display: none; /* Hidden by default */
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7); /* Black background with 70% transparency */
-            z-index: 8; /* Behind the popup */
-        }
-
-        /* Popup container */
-        .popup {
-            display: none; /* Hidden by default */
-            position: absolute;
-            z-index: 9; /* In front of the overlay */
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 40%;
-            background-color: white;
-            padding: 20px;
-            border: 1px solid #888;
-            border-radius: 20px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-
-        }
-
-        /* Popup content */
-        .popup-content {
-            width: 100%;
-            padding: 20px;
-            border-radius: 20px;
-        }
-
-        /* Close button */
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover, .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        /* Form styling */
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        form label {
-            margin-top: 10px;
-        }
-
-        form input, form textarea {
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        /* Button styling */
-        .btn {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .btn:hover {
-            background-color: #45a049;
-        }
-    </style>
 </head>
 
 <body>
-
-
 <!-- Preloader Start Here -->
 <div id="preloader"></div>
 <!-- Preloader End Here -->
@@ -321,7 +236,6 @@
         </div>
     </div>
     <!-- Header Menu Area End Here -->
-
     <!-- Page Area Start Here -->
     <div class="dashboard-page-one">
         <!-- Sidebar Area Start Here -->
@@ -402,10 +316,10 @@
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="all-book.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
+                                <a href="list-asignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All Assignment</a>
                             </li>
                             <li class="nav-item">
-                                <a href="add-book.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New Assignment</a>
+                                <a href="add-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Add New Assignment</a>
                             </li>
                         </ul>
                     </li>
@@ -500,13 +414,10 @@
                         <a href="account-settings.html" class="nav-link"><i class="flaticon-settings"></i><span>Account</span></a>
                     </li>
                 </ul>
-
             </div>
-
         </div>
-
         <!-- Sidebar Area End Here -->
-         <div class="dashboard-content-one">
+        <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
                 <h3>Assignment</h3>
@@ -514,116 +425,50 @@
                     <li>
                         <a href="index.html">Home</a>
                     </li>
-                    <li>All Assignment</li>
+                    <li>Add New Assignment</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
-
-            <!-- Teacher Table Area Start Here -->
+            <!-- Add New Assignment Area Start Here -->
             <div class="card height-auto">
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h3>All Assignment</h3>
+                            <h3>Add New Assignment</h3>
                         </div>
 
                     </div>
-                    <form class="mg-b-20">
-                        <div class="row gutters-8">
-                            <!-- Search by ID -->
-                            <div class="col-md-6 col-lg-5 col-12 form-group">
-                                <input type="text" placeholder="Search by ID ..." class="form-control">
+                    <form class="new-added-form">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                <label>Desciption *</label>
+                                <input type="text" placeholder="" class="form-control">
                             </div>
 
-                            <!-- Search by Name -->
-                            <div class="col-md-6 col-lg-5 col-12 form-group">
-                                <input type="text" placeholder="Search by Name ..." class="form-control">
+                            <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                <label>Create Date *</label>
+                                <input type="text" placeholder="" class="form-control">
                             </div>
-
-                            <!-- Search Button -->
-                            <div class="col-md-12 col-lg-2 col-12 form-group">
-                                <button type="submit" class="fw-btn-fill btn-gradient-yellow btn-block">SEARCH</button>
+                            <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                <label>End Date *</label>
+                                <input type="text" placeholder="" class="form-control">
+                            </div>
+                            <div class="col-12 form-group mg-t-8">
+                                <label class="text-dark-medium">File attach *</label>
+                                <input type="file" class="form-control-file">
+                            </div>
+                            <div class="col-12 form-group mg-t-8">
+                                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
+                                <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
                             </div>
                         </div>
                     </form>
-                    <div class="table-responsive">
-                        <table class="table display data-table text-nowrap">
-                            <thead>
-                            <tr>
-                                <th>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input checkAll">
-                                        <label class="form-check-label">ID</label>
-                                    </div>
-                                </th>
-                                <th>Description</th>
-                                <th>Img</th>
-                                <th>Creating Date</th>
-                                <th>End Date</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input">
-                                        <label class="form-check-label">#001</label>
-                                    </div>
-                                </td>
-                                <td>English Grammer</td>
-                                <td>5</td>
-                                <td>2019</td>
-                                <td>12.02.2019</td>
-                                <td>
-                                    <div class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                            <span class="flaticon-more-button-of-three-dots"></span>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Delete</a>
-                                            <a class="dropdown-item" onclick="openPopup()"><i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
-
-                                            <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                                        </div>
-
-                                    </div>
-                                </td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-
-                    </div>
-
                 </div>
-
-
-        </div>
-        <div id="overlay" class="overlay"></div>
-        <div id="assignmentPopup" class="popup">
-
-            <div class="popup-content">
-                <span class="close" onclick="closePopup()">&times;</span>
-                <h2>Create Assignment</h2>
-                <form>
-                    <label for="created_date">Created Date:</label>
-                    <input type="date" id="created_date" name="created_date" required>
-
-                    <label for="end_date">End Date:</label>
-                    <input type="date" id="end_date" name="end_date" required>
-
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description" rows="4" required></textarea>
-
-                    <label for="img">Image URL:</label>
-                    <input type="text" id="img" name="img">
-
-                    <button type="submit" class="btn">Submit</button>
-                </form>
             </div>
-
+            <!-- Add New Book Area End Here -->
+            <footer class="footer-wrap-layout1">
+                <!--                    <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a href="#">PsdBosS</a></div>-->
+            </footer>
         </div>
     </div>
     <!-- Page Area End Here -->
@@ -636,29 +481,19 @@
 <script src="js/popper.min.js"></script>
 <!-- Bootstrap js -->
 <script src="js/bootstrap.min.js"></script>
+<!-- Select 2 Js -->
+<script src="js/select2.min.js"></script>
+<!-- Date Picker Js -->
+<script src="js/datepicker.min.js"></script>
+<!-- Smoothscroll Js -->
+<script src="js/jquery.smoothscroll.min.html"></script>
 <!-- Scroll Up Js -->
 <script src="js/jquery.scrollUp.min.js"></script>
-<!-- Data Table Js -->
-<script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
-
-<script>
-    // Open popup and show overlay
-    function openPopup() {
-        document.getElementById('assignmentPopup').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
-    }
-
-    // Close popup and hide overlay
-    function closePopup() {
-        document.getElementById('assignmentPopup').style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
-    }
-</script>
 
 </body>
 
 
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/all-book.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/add-assignment.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>
