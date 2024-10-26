@@ -8,15 +8,31 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Teacher {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name="Fullname", nullable = false)
     private String Fullname;
+
+    @Column(name="Jname", nullable = false)
     private String Jname;
+
+    @Column(name="email", nullable = false)
     private String email;
+
+    @Column(name="phone_number", nullable = false)
     private String PhoneNumber;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="Gender", nullable = false)
     private gender Gender;
+
+    @Column(name="img")
     private String img;
+
+    @Column(name="account_id")
     private int account_id;
 
     public Teacher(){}
