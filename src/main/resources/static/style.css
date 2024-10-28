@@ -1185,7 +1185,6 @@ h6 {
 /*=============== 4.2 Button ==================*/
 .fw-btn-fill {
   overflow: hidden;
-  position: relative;
   display: inline-block;
   height: 44px;
   width: 100%;

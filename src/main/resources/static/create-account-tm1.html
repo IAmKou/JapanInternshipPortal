@@ -35,7 +35,9 @@
 <div class="login-page-wrap">
     <div class="login-page-content">
         <div class="login-box">
-            <form action="/accounts/create" method="post" class="login-form">
+            <form action="/tm/save" method="post" class="login-form">
+                <input type="hidden" name="account_id" id="account_id" value="${accountId}">
+                <input type="hidden" name="role" id="role" value="${role}">
                 <div class="form-row">
                     <!-- Fullname and Japan Name -->
                     <div class="form-group col-md-6">
@@ -45,7 +47,7 @@
 
                     <div class="form-group col-md-6">
                         <label for="jname">Japan Name</label>
-                        <input type="text" placeholder="Enter your Japan name" name="japanname" class="form-control" id="jname">
+                        <input type="text" placeholder="Enter your Japan name" name="jname" class="form-control" id="jname">
                     </div>
                 </div>
 
@@ -68,7 +70,13 @@
                         <label for="phone">Phone Number</label>
                         <input type="text" name="phonenumber" placeholder="ex:012345678" id="phone" class="form-control">
                     </div>
+                    <div class="form-group col-md-6">
+                        <label for="img" >Profile Image</label>
+                        <input type="text" class="form-control" placeholder="link image" name="img" id="img" >
+                    </div>
+                </div>
 
+                <div class="form-row">
                     <div class="form-group col-md-6">
                         <label style="font-weight: bold; color: #464c4d; font-size:14px;">Gender</label></br>
                         <div class="form-check-inline">
@@ -79,13 +87,6 @@
                             <input type="radio" name="gender" value="female" id="female" class="form-check-input">
                             <label for="female" class="form-check-label">Female</label>
                         </div>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="img" >Profile Image</label>
-                        <input type="text" class="form-control" placeholder="link image" name="img" id="img" >
                     </div>
                 </div>
 
