@@ -124,11 +124,11 @@
                                     <div class="media-body space-sm">
                                         <div class="item-title">
                                             <a href="#">
-                                                <span class="item-name">Maria Zaman</span> 
-                                                <span class="item-time">18:30</span> 
-                                            </a>  
+                                                <span class="item-name">Maria Zaman</span>
+                                                <span class="item-time">18:30</span>
+                                            </a>
                                         </div>
-                                        <p>What is the reason of buy this item. 
+                                        <p>What is the reason of buy this item.
                                         Is it usefull for me.....</p>
                                     </div>
                                 </div>
@@ -139,11 +139,11 @@
                                     <div class="media-body space-sm">
                                         <div class="item-title">
                                             <a href="#">
-                                                <span class="item-name">Benny Roy</span> 
-                                                <span class="item-time">10:35</span> 
-                                            </a>  
+                                                <span class="item-name">Benny Roy</span>
+                                                <span class="item-time">10:35</span>
+                                            </a>
                                         </div>
-                                        <p>What is the reason of buy this item. 
+                                        <p>What is the reason of buy this item.
                                         Is it usefull for me.....</p>
                                     </div>
                                 </div>
@@ -154,11 +154,11 @@
                                     <div class="media-body space-sm">
                                         <div class="item-title">
                                             <a href="#">
-                                                <span class="item-name">Steven</span> 
-                                                <span class="item-time">02:35</span> 
-                                            </a>  
+                                                <span class="item-name">Steven</span>
+                                                <span class="item-time">02:35</span>
+                                            </a>
                                         </div>
-                                        <p>What is the reason of buy this item. 
+                                        <p>What is the reason of buy this item.
                                         Is it usefull for me.....</p>
                                     </div>
                                 </div>
@@ -169,11 +169,11 @@
                                     <div class="media-body space-sm">
                                         <div class="item-title">
                                             <a href="#">
-                                                <span class="item-name">Joshep Joe</span> 
-                                                <span class="item-time">12:35</span> 
-                                            </a>  
+                                                <span class="item-name">Joshep Joe</span>
+                                                <span class="item-time">12:35</span>
+                                            </a>
                                         </div>
-                                        <p>What is the reason of buy this item. 
+                                        <p>What is the reason of buy this item.
                                         Is it usefull for me.....</p>
                                     </div>
                                 </div>
@@ -224,7 +224,7 @@
                         </div>
                     </li>
                      <li class="navbar-item dropdown header-language">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" 
+                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
                         data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" href="#">English</a>
@@ -437,7 +437,7 @@
                             <div class="card-body">
                                 <div class="heading-layout1">
                                     <div class="item-title">
-                                        <h3>User list</h3>
+                                        <h3>User Management</h3>
                                     </div>
                                     <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
@@ -445,8 +445,8 @@
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <a class="dropdown-item" href="create-account.html"><i
                                                     class="fas fa-plus text-orange-red"></i>Add</a>
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="fas fa-cogs text-dark-pastel-green"></i>Import</a>
+                                            <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i
+                                                    class="fas fa-file-import text-green"></i>Import</a>
                                         </div>
                                     </div>
                                 </div>
@@ -627,6 +627,30 @@
             </div>
         </div>
         <!-- Page Area End Here -->
+        <div class="modal fade" id="standard-modal" tabindex="-1" role="dialog"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add schedule</h5>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/add-schedule" method="post" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            <label for="file" style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
+                            <input type="file" id="file" name="file" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Close</button>
+                            <button type="submit" class="footer-btn bg-linkedin">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- jquery-->
     <script src="js/jquery-3.3.1.min.js"></script>
