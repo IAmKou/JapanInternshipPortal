@@ -438,24 +438,24 @@
                         </div>
 
                     </div>
-                    <form class="new-added-form">
+                    <form class="new-added-form" action="/assignment/create" method="post">
                         <div class="row">
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label>Desciption *</label>
-                                <input type="text" placeholder="" class="form-control">
+                                <input type="text" placeholder="Write description..." class="form-control" name="description" id="description">
                             </div>
 
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label>Create Date *</label>
-                                <input type="text" placeholder="" class="form-control">
+                                <input type="datetime-local" class="form-control" name="createDate" id="createDate">
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label>End Date *</label>
-                                <input type="text" placeholder="" class="form-control">
+                                <input type="datetime-local" class="form-control" name="endDate" id="endDate">
                             </div>
                             <div class="col-12 form-group mg-t-8">
                                 <label class="text-dark-medium">File attach *</label>
-                                <input type="file" class="form-control-file">
+                                <input type="file" class="form-control-file" name="img" id="img">
                             </div>
                             <div class="col-12 form-group mg-t-8">
                                 <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
