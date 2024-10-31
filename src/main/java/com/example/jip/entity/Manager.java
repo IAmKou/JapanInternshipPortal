@@ -36,6 +36,10 @@ public class Manager {
     @Column(name="account_id")
     private int account_id;
 
+    @OneToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private Account account;
+
     public Manager() {}
 
     public Manager(int id, String fullname, String jname, String email, String phonenumber, Gender gender, String img, int account_id) {
