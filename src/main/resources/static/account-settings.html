@@ -596,7 +596,40 @@
     <script src="js/datepicker.min.js"></script>
     <!-- Custom Js -->
     <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/users')
+                .then(response => response.json())
+                .then(users => {
+                    const allUserBox = document.querySelector('.all-user-box');
+                    const userDetailsBox = document.querySelector('.user-details-box tbody');
 
+                    users.forEach(user => {
+                       
+                        const userDiv = document.createElement('div');
+                        userDiv.className = 'media media-none--xs';
+                        userDiv.innerHTML = `
+                            <div class="item-img"><img src="img/figure/user1.jpg" alt="user"></div>
+                            <div class="media-body space-md">
+                                <h5 class="item-title">${user.username}</h5>
+                                <div class="item-subtitle">${user.roleName}</div>
+                            </div>
+                        `;
+                        allUserBox.appendChild(userDiv);
+
+                        // Add click event to load user details
+                        userDiv.addEventListener('click', () => {
+                            userDetailsBox.innerHTML = `
+                                <tr><td>Name:</td><td>${user.username}</td></tr>
+                                <tr><td>User Role:</td><td>${user.roleName}</td></tr>
+
+                            `;
+                        });
+                    });
+                })
+                .catch(error => console.error('Error loading users:', error));
+        });
+    </script>
 </body>
 
 
