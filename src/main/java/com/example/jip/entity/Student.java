@@ -43,6 +43,10 @@ public class Student {
     @Column(name = "account_id")
     private int accountId;
 
+    @OneToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private Account account;
+
     public Student() {}
 
     public Student(int id, String fullname, String japanname, Date dob, String passport, Gender gender, String phoneNumber, String img, String email, int accountId) {
