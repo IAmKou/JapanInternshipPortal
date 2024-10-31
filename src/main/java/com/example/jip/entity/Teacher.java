@@ -35,6 +35,10 @@ public class Teacher {
     @Column(name="account_id")
     private int account_id;
 
+    @OneToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private Account account;
+
     public Teacher(){}
 
     public Teacher(int id, String fullname, String jname, String email, String phoneNumber, gender gender, String img, int account_id) {
