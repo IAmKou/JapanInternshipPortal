@@ -7,6 +7,7 @@ import com.example.jip.entity.Student.Gender;
 import com.example.jip.repository.AccountRepository;
 import com.example.jip.repository.RoleRepository;
 import com.example.jip.repository.StudentRepository;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -49,12 +50,14 @@ public class AccountImportServices {
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
-                processRow(row);
+                try {
+                    processRow(row);
+                } catch (Exception e) {
+                    errors.add("Error in row " + row.getRowNum() + ": " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
 
-            if (!errors.isEmpty()) {
-                throw new RuntimeException("Import completed with errors: " + errors);
-            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to process file: " + e.getMessage());
@@ -65,18 +68,36 @@ public class AccountImportServices {
         try {
             String username = row.getCell(0).getStringCellValue();
             String password = row.getCell(1).getStringCellValue();
-            int roleId = (int) row.getCell(2).getNumericCellValue();
+
+            // Handle Role ID as either String or Numeric
+            int roleId = row.getCell(2).getCellType() == CellType.NUMERIC
+                    ? (int) row.getCell(2).getNumericCellValue()
+                    : Integer.parseInt(row.getCell(2).getStringCellValue());
+
             String fullName = row.getCell(3).getStringCellValue();
             String japanname = row.getCell(4).getStringCellValue();
-            LocalDate dob = row.getCell(5).getLocalDateTimeCellValue().toLocalDate();
+
+            // Handle DoB as either LocalDate from Numeric or String date format
+            LocalDate dob = row.getCell(5).getCellType() == CellType.NUMERIC
+                    ? row.getCell(5).getLocalDateTimeCellValue().toLocalDate()
+                    : LocalDate.parse(row.getCell(5).getStringCellValue());
+
             String passportUrl = row.getCell(6).getStringCellValue();
+
+            // Gender, assuming Gender is an ENUM
             Gender gender = Gender.valueOf(row.getCell(7).getStringCellValue());
-            String phoneNumber = row.getCell(8).getStringCellValue();
+
+            // Handle Phone Number as either Numeric or String
+            String phoneNumber = row.getCell(8).getCellType() == CellType.NUMERIC
+                    ? String.valueOf((long) row.getCell(8).getNumericCellValue()) // Convert to long to preserve format
+                    : row.getCell(8).getStringCellValue();
+
             String img = row.getCell(9).getStringCellValue();
             String email = row.getCell(10).getStringCellValue();
 
             if (isDuplicate(username, email, phoneNumber)) return;
 
+            // Retrieve and validate Role
             Optional<Role> roleOpt = roleRepository.findById(roleId);
             if (roleOpt.isEmpty()) {
                 errors.add("Role ID " + roleId + " does not exist for user " + username);
@@ -94,7 +115,7 @@ public class AccountImportServices {
             Student student = new Student();
             student.setFullname(fullName);
             student.setJapanname(japanname);
-            student.setDob(java.sql.Date.valueOf(dob));
+            student.setDob(java.sql.Date.valueOf(dob)); // Converting LocalDate to SQL Date
             student.setPassport(passportUrl);
             student.setGender(gender);
             student.setPhoneNumber(phoneNumber);
@@ -107,6 +128,7 @@ public class AccountImportServices {
             errors.add("Failed to process row: " + row.getRowNum() + " due to: " + e.getMessage());
         }
     }
+
 
     private boolean isDuplicate(String username, String email, String phoneNumber) {
         boolean hasError = false;
