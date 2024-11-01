@@ -33,7 +33,7 @@ public class Manager {
     @Column(name="img")
     private String img;
 
-    @Column(name="account_id")
+    @Column(name="account_id", insertable = false, updatable = false)
     private int account_id;
 
     @OneToOne
@@ -56,5 +56,4 @@ public class Manager {
     public enum Gender {
         MALE, FEMALE
     }
-
 }
