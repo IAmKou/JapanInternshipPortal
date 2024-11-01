@@ -476,15 +476,7 @@
                                     </div>
                                 </div>
                                 <div class="all-user-box">
-                                    <div class="media media-none--xs active">
-                                        <div class="item-img">
-                                            <img src="img/figure/user1.jpg" class="media-img-auto" alt="user">
-                                        </div>
-                                        <div class="media-body space-md">
-                                            <h5 class="item-title">Steven Johnson</h5>
-                                            <div class="item-subtitle">Super Admin</div>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -508,9 +500,7 @@
                                     </div>
                                 </div>
                                 <div class="user-details-box">
-                                    <div class="item-img">
-                                        <img src="img/figure/user.jpg" alt="user">
-                                    </div>
+
                                     <div class="item-content">
                                         <div class="info-table table-responsive">
                                             <table class="table text-nowrap">
@@ -566,7 +556,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="/add-schedule" method="post" enctype="multipart/form-data">
+                    <form action="/account/import/excel" method="post" enctype="multipart/form-data">
                         <div class="modal-body">
                             <label for="file" style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
                             <input type="file" id="file" name="file" required>
@@ -607,9 +597,9 @@
                     users.forEach(user => {
                        
                         const userDiv = document.createElement('div');
-                        userDiv.className = 'media media-none--xs';
+                        userDiv.className = 'media media-none--xs active';
                         userDiv.innerHTML = `
-                            <div class="item-img"><img src="img/figure/user1.jpg" alt="user"></div>
+                            <div class="item-img"><img src="${user.img}" alt="user"></div>
                             <div class="media-body space-md">
                                 <h5 class="item-title">${user.username}</h5>
                                 <div class="item-subtitle">${user.roleName}</div>
@@ -620,8 +610,8 @@
                         // Add click event to load user details
                         userDiv.addEventListener('click', () => {
                             userDetailsBox.innerHTML = `
-                                <tr><td>Name:</td><td>${user.username}</td></tr>
-                                <tr><td>User Role:</td><td>${user.roleName}</td></tr>
+                                <tr><td class="font-medium text-dark-medium">Name:</td><td>${user.username}</td></tr>
+                                <tr><td class="font-medium text-dark-medium">User Role:</td><td>${user.roleName}</td></tr>
 
                             `;
                         });
