@@ -20,7 +20,6 @@ public class ImportAccountController {
         if (!file.getOriginalFilename().endsWith(".xlsx")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid file format. Please upload an Excel file.");
         }
-
         try {
             accountImportServices.importAccounts(file);
             return ResponseEntity.ok("Data imported successfully");
