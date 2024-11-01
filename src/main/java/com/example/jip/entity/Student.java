@@ -40,7 +40,7 @@ public class Student {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "account_id")
+    @Column(name="account_id", insertable = false, updatable = false)
     private int accountId;
 
     @OneToOne
