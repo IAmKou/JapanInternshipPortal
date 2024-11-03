@@ -108,8 +108,8 @@ public class AccountImportServices {
             account.setUsername(username);
             account.setPassword(passwordEncoder.encode(password));
             account.setRole(roleOpt.get());
-            account = accountRepository.save(account);
-
+            accountRepository.save(account);
+  
             // Save Student
             Student student = new Student();
             student.setFullname(fullName);
@@ -120,7 +120,7 @@ public class AccountImportServices {
             student.setPhoneNumber(phoneNumber);
             student.setImg(img);
             student.setEmail(email);
-            student.setAccountId(account.getId());
+            student.setAccount(account);
             studentRepository.save(student);
 
         } catch (Exception e) {

@@ -31,7 +31,7 @@ public class AccountDTO {
             this.dob = student.getDob();
             this.jname = student.getJapanname();
             this.gender = student.getGender().toString();
-            System.out.println("Student details set: " + this.fullName);
+
         } else if (account.getTeacher() != null) {
             Teacher teacher = account.getTeacher();
             this.fullName = teacher.getFullname();
@@ -39,7 +39,7 @@ public class AccountDTO {
             this.phoneNumber = teacher.getPhoneNumber();
             this.jname = teacher.getJname();
             this.gender = teacher.getGender().toString();
-            System.out.println("Teacher details set: " + this.fullName);
+
         } else if (account.getManager() != null) {
             Manager manager = account.getManager();
             this.fullName = manager.getFullname();
@@ -47,7 +47,7 @@ public class AccountDTO {
             this.phoneNumber = manager.getPhoneNumber();
             this.jname = manager.getJname();
             this.gender = manager.getGender().toString();
-            System.out.println("Manager details set: " + this.fullName);
+
         } else {
             System.out.println("No profile found for account ID: " + account.getId());
         }
