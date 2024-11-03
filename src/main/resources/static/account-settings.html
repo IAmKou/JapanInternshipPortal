@@ -505,30 +505,7 @@
                                         <div class="info-table table-responsive">
                                             <table class="table text-nowrap">
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Name:</td>
-                                                        <td class="font-medium text-dark-medium">Steven Johnson</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>User Role:</td>
-                                                        <td class="font-medium text-dark-medium">Super Admin</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Gender:</td>
-                                                        <td class="font-medium text-dark-medium">Male</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Date Of Birth:</td>
-                                                        <td class="font-medium text-dark-medium">07.08.2016</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>E-mail:</td>
-                                                        <td class="font-medium text-dark-medium">stevenjohnson@gmail.com</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Phone:</td>
-                                                        <td class="font-medium text-dark-medium">+ 88 98568888418</td>
-                                                    </tr>
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -601,7 +578,7 @@
                         userDiv.innerHTML = `
                             <div class="item-img"><img src="${user.img}" alt="user"></div>
                             <div class="media-body space-md">
-                                <h5 class="item-title">${user.username}</h5>
+                                <h5 class="item-title">${user.roleName === 'ADMIN' ? user.username : user.fullName}</h5>
                                 <div class="item-subtitle">${user.roleName}</div>
                             </div>
                         `;
@@ -610,8 +587,13 @@
                         // Add click event to load user details
                         userDiv.addEventListener('click', () => {
                             userDetailsBox.innerHTML = `
-                                <tr><td class="font-medium text-dark-medium">Name:</td><td>${user.username}</td></tr>
+                                <tr><td class="font-medium text-dark-medium">Name:</td><td>${user.roleName === 'ADMIN' ? user.username : user.fullName}</td></tr>
+                                <tr><td class="font-medium text-dark-medium">Japan Name:</td><td>${user.jname}</td></tr>
                                 <tr><td class="font-medium text-dark-medium">User Role:</td><td>${user.roleName}</td></tr>
+                                <tr><td class="font-medium text-dark-medium">Gender:</td><td>${user.gender}</td></tr>
+                                ${user.profile && user.dob ? `<tr><td class="font-medium text-dark-medium">Date of Birth:</td><td>${user.dob}</td></tr>` : ''}
+                                <tr><td class="font-medium text-dark-medium">Email:</td><td>${user.email}</td></tr>
+                                <tr><td class="font-medium text-dark-medium">Phone Number:</td><td>${user.phoneNumber}</td></tr>
 
                             `;
                         });

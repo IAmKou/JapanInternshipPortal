@@ -1,12 +1,22 @@
 package com.example.jip.dto;
 
 import com.example.jip.entity.Account;
+import com.example.jip.entity.Manager;
+import com.example.jip.entity.Student;
+import com.example.jip.entity.Teacher;
+
+import java.sql.Date;
 
 public class AccountDTO {
     private Integer id;
     private String username;
     private String roleName;
-    private Object profile;  // Can be StudentDTO, TeacherDTO, or ManagerDTO
+    private String fullName;
+    private String email;
+    private String phoneNumber;
+    private Date dob;
+    private String jname;
+    private String gender;
 
     public AccountDTO(Account account) {
         this.id = account.getId();
@@ -14,11 +24,32 @@ public class AccountDTO {
         this.roleName = account.getRole().getName();
 
         if (account.getStudent() != null) {
-            this.profile = new StudentDTO(account.getStudent());
+            Student student = account.getStudent();
+            this.fullName = student.getFullname();
+            this.email = student.getEmail();
+            this.phoneNumber = student.getPhoneNumber();
+            this.dob = student.getDob();
+            this.jname = student.getJapanname();
+            this.gender = student.getGender().toString();
+            System.out.println("Student details set: " + this.fullName);
         } else if (account.getTeacher() != null) {
-            this.profile = new TeacherDTO(account.getTeacher());
+            Teacher teacher = account.getTeacher();
+            this.fullName = teacher.getFullname();
+            this.email = teacher.getEmail();
+            this.phoneNumber = teacher.getPhoneNumber();
+            this.jname = teacher.getJname();
+            this.gender = teacher.getGender().toString();
+            System.out.println("Teacher details set: " + this.fullName);
         } else if (account.getManager() != null) {
-            this.profile = new ManagerDTO(account.getManager());
+            Manager manager = account.getManager();
+            this.fullName = manager.getFullname();
+            this.email = manager.getEmail();
+            this.phoneNumber = manager.getPhoneNumber();
+            this.jname = manager.getJname();
+            this.gender = manager.getGender().toString();
+            System.out.println("Manager details set: " + this.fullName);
+        } else {
+            System.out.println("No profile found for account ID: " + account.getId());
         }
     }
 
@@ -46,11 +77,51 @@ public class AccountDTO {
         this.roleName = roleName;
     }
 
-    public Object getProfile() {
-        return profile;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setProfile(Object profile) {
-        this.profile = profile;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
+    public String getJname() {
+        return jname;
+    }
+
+    public void setJname(String jname) {
+        this.jname = jname;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

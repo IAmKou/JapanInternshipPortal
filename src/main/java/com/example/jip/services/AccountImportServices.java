@@ -53,14 +53,13 @@ public class AccountImportServices {
                 try {
                     processRow(row);
                 } catch (Exception e) {
-                    errors.add("Error in row " + row.getRowNum() + ": " + e.getMessage());
-                    e.printStackTrace();
+                    errors.add("Error in row " + (row.getRowNum() + 1) + ": " + e.getMessage());
                 }
             }
 
         } catch (Exception e) {
+            errors.add("File processing error: " + e.getMessage());
             e.printStackTrace();
-            throw new RuntimeException("Failed to process file: " + e.getMessage());
         }
     }
 
@@ -109,7 +108,7 @@ public class AccountImportServices {
             account.setUsername(username);
             account.setPassword(passwordEncoder.encode(password));
             account.setRole(roleOpt.get());
-            accountRepository.save(account);
+            account = accountRepository.save(account);
 
             // Save Student
             Student student = new Student();
