@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="">
+<html class="no-js" lang="" xmlns:th="http://www.w3.org/1999/xhtml">
 
 
 <!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/Update-student-mark-report.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
@@ -475,7 +475,7 @@
                             <div class="card-body">
                                 <div class="heading-layout1">
                                     <div class="item-title">
-                                        <h3>Mark Report for HE</h3>
+                                        <h3>Mark Report for Student ID: <span th:text="${markReport.student_id}"></span></h3> <!-- Sử dụng student_id -->
                                     </div>
 
                                 </div>
@@ -500,44 +500,46 @@
                                             <td>Participation</td>
                                             <td>Participation</td>
                                             <td>30%</td>
-                                            <td></td>
+                                            <td th:text="${markReport.avg_assignment_mark}"></td>
                                             <td></td>
                                         </tr>
                                         <tr>
                                             <td>Skill</td>
                                             <td>Skill</td>
                                             <td>30%</td>
-                                            <td></td>
+                                            <td th:text="${markReport.avgAssignmentMark}"></td>
                                             <td></td>
                                         </tr>
                                         <tr>
                                             <td rowspan="4">Học phần</td>
                                             <td>Reading</td>
                                             <td>16%</td>
-                                            <td></td>
+                                            <td th:text="${markReport.reading_mark}"></td>
                                             <td></td>
                                         </tr>
                                         <tr>
                                             <td>Listening</td>
                                             <td>16%</td>
-                                            <td></td>
+                                            <td th:text="${markReport.listening_mark}"></td>
                                             <td></td>
                                         </tr>
                                         <tr>
                                             <td>Speaking</td>
                                             <td>20%</td>
-                                            <td></td>
+                                            <td th:text="${markReport.speaking_mark}"></td>
                                             <td></td>
                                         </tr>
                                         <tr>
                                             <td>Total</td>
                                             <td>40%</td>
-                                            <td></td>
+                                            <td th:text="${markReport.totalSkillMarks}"></td> <!-- Hiển thị tổng điểm kỹ năng -->
                                             <td></td>
                                         </tr>
                                         <tr>
                                             <td style="font-weight: bold;">COURSE TOTAL</td>
                                             <td style="font-weight: bold;">AVERAGE STATUS</td>
+                                            <td style="font-weight: bold;" th:text="${markReport.courseTotal}"></td> <!-- Hiển thị tổng điểm khóa học -->
+                                            <td></td>
                                         </tr>
                                         </tbody>
                                     </table>
