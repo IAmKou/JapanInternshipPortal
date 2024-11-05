@@ -10,7 +10,7 @@ import java.sql.Date;
 @Table(name = "Student")
 @Setter
 @Getter
-public class sStudent {
+public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
