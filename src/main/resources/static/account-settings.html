@@ -535,7 +535,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="/account/import/excel" method="post" enctype="multipart/form-data">
+                    <form action="/account/import/excel" method="post" enctype="multipart/form-data" id="import">
                         <div class="modal-body">
                             <label for="file" style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
                             <input type="file" id="file" name="file" required>
@@ -637,25 +637,32 @@
     </script>
 
     <script>
-        document.getElementById('file').addEventListener('submit', function(event) {
-            event.preventDefault();  // Prevents page reload on form submission
+        document.getElementById('import').addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevents page reload
 
-            const formData = new FormData(this);  // Create FormData from the form
+            const formData = new FormData(this);
             fetch('/account/import/excel', {
                 method: 'POST',
                 body: formData,
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (response.ok) {
+                .then(response => {
+                    return response.json().then(data => ({
+                        status: response.ok,
+                        data: data
+                    }));
+                })
+                .then(result => {
+                    if (result.status) {
+                        // Success Modal
                         const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
                         successModal.show();
                     } else {
+                        // Error Modal
                         const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
-                        const errorList = document.querySelector('#long-modal .modal-body');
+                        const errorList = document.getElementById('long-modal').querySelector('.modal-body');
                         errorList.innerHTML = '';  // Clear previous errors
 
-                        data.forEach(error => {
+                        result.data.forEach(error => {
                             const errorItem = document.createElement('p');
                             errorItem.textContent = error;
                             errorList.appendChild(errorItem);
@@ -667,6 +674,7 @@
                 .catch(error => console.error('Error:', error));
         });
     </script>
+
 </body>
 
 
