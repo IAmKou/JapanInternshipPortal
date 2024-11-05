@@ -37,10 +37,9 @@ public class AccountImportServices {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private final List<String> errors = new ArrayList<>();
+    public List<String> importAccounts(MultipartFile file) {
+        List<String> errors = new ArrayList<>();  // Initialize a new list to collect errors
 
-    @Transactional
-    public void importAccounts(MultipartFile file) {
         try (InputStream inputStream = file.getInputStream();
              Workbook workbook = new XSSFWorkbook(inputStream)) {
             Sheet sheet = workbook.getSheetAt(0);
@@ -51,19 +50,24 @@ public class AccountImportServices {
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 try {
-                    processRow(row);
+                    processRow(row, errors);
                 } catch (Exception e) {
                     errors.add("Error in row " + (row.getRowNum() + 1) + ": " + e.getMessage());
                 }
             }
-
         } catch (Exception e) {
             errors.add("File processing error: " + e.getMessage());
             e.printStackTrace();
         }
+
+        return errors; // Return the list of errors, if any
     }
 
-    private void processRow(Row row) {
+    private void processRow(Row row, List<String> errors) {
+        if (isRowEmpty(row)) {
+            return;
+        }
+
         try {
             String username = row.getCell(0).getStringCellValue();
             String password = row.getCell(1).getStringCellValue();
@@ -76,45 +80,38 @@ public class AccountImportServices {
             String fullName = row.getCell(3).getStringCellValue();
             String japanname = row.getCell(4).getStringCellValue();
 
-            // Handle DoB as either LocalDate from Numeric or String date format
             LocalDate dob = row.getCell(5).getCellType() == CellType.NUMERIC
                     ? row.getCell(5).getLocalDateTimeCellValue().toLocalDate()
                     : LocalDate.parse(row.getCell(5).getStringCellValue());
 
             String passportUrl = row.getCell(6).getStringCellValue();
-
-            // Gender, assuming Gender is an ENUM
             Gender gender = Gender.valueOf(row.getCell(7).getStringCellValue());
 
-            // Handle Phone Number as either Numeric or String
             String phoneNumber = row.getCell(8).getCellType() == CellType.NUMERIC
-                    ? String.valueOf((long) row.getCell(8).getNumericCellValue()) // Convert to long to preserve format
+                    ? String.valueOf((long) row.getCell(8).getNumericCellValue())
                     : row.getCell(8).getStringCellValue();
 
             String img = row.getCell(9).getStringCellValue();
             String email = row.getCell(10).getStringCellValue();
 
-            if (isDuplicate(username, email, phoneNumber)) return;
+            if (isDuplicate(username, email, phoneNumber, errors)) return;
 
-            // Retrieve and validate Role
             Optional<Role> roleOpt = roleRepository.findById(roleId);
             if (roleOpt.isEmpty()) {
                 errors.add("Role ID " + roleId + " does not exist for user " + username);
                 return;
             }
 
-            // Save Account
             Account account = new Account();
             account.setUsername(username);
             account.setPassword(passwordEncoder.encode(password));
             account.setRole(roleOpt.get());
             accountRepository.save(account);
-  
-            // Save Student
+
             Student student = new Student();
             student.setFullname(fullName);
             student.setJapanname(japanname);
-            student.setDob(java.sql.Date.valueOf(dob)); // Converting LocalDate to SQL Date
+            student.setDob(java.sql.Date.valueOf(dob));
             student.setPassport(passportUrl);
             student.setGender(gender);
             student.setPhoneNumber(phoneNumber);
@@ -124,12 +121,20 @@ public class AccountImportServices {
             studentRepository.save(student);
 
         } catch (Exception e) {
-            errors.add("Failed to process row: " + row.getRowNum() + " due to: " + e.getMessage());
+            errors.add("Failed to process row: " + (row.getRowNum() + 1) + " due to: " + e.getMessage());
         }
     }
 
+    private boolean isRowEmpty(Row row) {
+        for (int i = 0; i <= 10; i++) {
+            if (row.getCell(i) != null && row.getCell(i).getCellType() != CellType.BLANK) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-    private boolean isDuplicate(String username, String email, String phoneNumber) {
+    private boolean isDuplicate(String username, String email, String phoneNumber, List<String> errors) {
         boolean hasError = false;
         if (accountRepository.findByUsername(username).isPresent()) {
             errors.add("Duplicate username found: " + username);
