@@ -31,7 +31,7 @@ public class SecurityConfig {
                         .requestMatchers("/student.html").hasAuthority("STUDENT")
                         .requestMatchers("/teacher.html").hasAuthority("TEACHER")
                         .requestMatchers("/css/**", "/js/**", "/images/**","/img/**",
-                                "/webfonts/**","/fonts/**","/hts-cache/**","/style.css")
+                                "/webfonts/**","/fonts/**","/hts-cache/**","/style.css","/create-account.html","/accounts/create")
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
