@@ -14,7 +14,7 @@ public class MarkReport {
     private int id;
 
     @Column(name="student_id")
-    private int studentId; // Giữ nguyên tên thuộc tính là student_id
+    private int studentId;
     private BigDecimal attendant_rate;
     private BigDecimal avg_assignment_mark;
     private BigDecimal avg_exam_mark;

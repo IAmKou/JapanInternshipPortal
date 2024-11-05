@@ -9,24 +9,28 @@ import java.math.BigDecimal;
 @Getter
 public class MarkReportDTO {
     private int id;
-    private int student_id; // Đổi thành student_id để khớp
+    private int studentId;
     private BigDecimal attendantRate;
     private BigDecimal avgAssignmentMark;
     private BigDecimal avgExamMark;
-    private BigDecimal readingMark; // Thêm thuộc tính này
-    private BigDecimal listeningMark; // Thêm thuộc tính này
-    private BigDecimal speakingMark; // Thêm thuộc tính này
+    private BigDecimal readingMark;
+    private BigDecimal listeningMark;
+    private BigDecimal speakingMark;
+    private BigDecimal totalSkillMarks;
+    private BigDecimal courseTotal;
 
     public MarkReportDTO() {}
 
-    public MarkReportDTO(int id, int student_id, BigDecimal attendantRate, BigDecimal avgAssignmentMark, BigDecimal avgExamMark, BigDecimal readingMark, BigDecimal listeningMark, BigDecimal speakingMark) {
+    public MarkReportDTO(int id, int studentId, BigDecimal attendantRate, BigDecimal avgAssignmentMark, BigDecimal avgExamMark, BigDecimal readingMark, BigDecimal listeningMark, BigDecimal speakingMark, BigDecimal totalSkillMarks, BigDecimal courseTotal) {
         this.id = id;
-        this.student_id = student_id; // Đảm bảo khớp
+        this.studentId = studentId;
         this.attendantRate = attendantRate;
         this.avgAssignmentMark = avgAssignmentMark;
         this.avgExamMark = avgExamMark;
         this.readingMark = readingMark;
         this.listeningMark = listeningMark;
         this.speakingMark = speakingMark;
+        this.totalSkillMarks = totalSkillMarks;
+        this.courseTotal = courseTotal;
     }
 }
