@@ -32,8 +32,12 @@ public class Teacher {
     @Column(name="img")
     private String img;
 
-    @Column(name="account_id")
+    @Column(name="account_id", insertable = false, updatable = false)
     private int account_id;
+
+    @OneToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private Account account;
 
     public Teacher(){}
 
