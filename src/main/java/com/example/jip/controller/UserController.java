@@ -4,9 +4,7 @@ package com.example.jip.controller;
 import com.example.jip.dto.AccountDTO;
 import com.example.jip.services.AccountServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,4 +18,10 @@ public class UserController {
     public List<AccountDTO> getAllUsers() {
         return accountServices.getAllAccountDTOs();
     }
+
+    @PutMapping("/{id}")
+    public AccountDTO updateUser(@PathVariable int id, @RequestBody AccountDTO accountDTO) {
+        return accountServices.updateAccount(id, accountDTO);
+    }
+
 }
