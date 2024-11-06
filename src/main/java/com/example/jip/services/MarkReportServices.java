@@ -20,4 +20,7 @@ public class MarkReportServices {
         markReportRepository.save(markReport);
     }
 
+    public MarkReport updateMarkReport(MarkReport markReport) {
+        return markReportRepository.save(markReport);
+    }
 }

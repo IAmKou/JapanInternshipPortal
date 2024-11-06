@@ -465,15 +465,12 @@
                 </div>
                 <!-- Breadcubs Area End Here -->
                 <div class="row">
-                    <!-- Exam Grade Add Area Start Here -->
-                    
-                    <!-- Exam Grade Add Area End Here -->
-                    <!-- Exam Grade List Area Start Here -->
+                    <!-- Update Exam Grade Start Here -->
+
                     <div class="col-8-xxxl col-12">
                         <div class="card height-auto">
                             <div class="card-body">
                                 <div class="heading-layout1">
-
                                     <div class="item-title">
                                         <h3>Teacher: .....</h3>
                                         <select style="height: 40px; font-size: 16px; padding: 8px; width: 100%;">
@@ -487,162 +484,89 @@
                                         <br>
                                         <h3>Grading Details</h3>
                                     </div>
-
                                 </div>
 
-                                <form class="mg-b-20">
+                                <!-- Form for updating grades -->
+                                <form action="/update-grade" method="POST" class="mg-b-20">
                                     <div class="row gutters-8">
-
                                         <div class="col-lg-5 col-sm-5 col-12 form-group">
-                                            <input type="text" placeholder="Search by Name..." class="form-control">
+                                            <input type="text" name="studentName" placeholder="Search by Name..." class="form-control">
                                         </div>
                                         <div class="col-lg-2 col-sm-3 col-12 form-group">
-                                            <button type="submit"
-                                                class="fw-btn-fill btn-gradient-yellow">SEARCH</button>
+                                            <button type="submit" class="fw-btn-fill btn-gradient-yellow">SEARCH</button>
                                         </div>
                                     </div>
-                                </form>
-                                <div class="table-responsive">
-                                    <table class="table display data-table text-nowrap">
-                                        <thead>
+
+                                    <div class="table-responsive">
+                                        <table class="table display data-table text-nowrap">
+                                            <thead>
                                             <tr>
                                                 <th>
-                                                        <label class="form-check-label">Roll</label>
+                                                    <label class="form-check-label">Roll</label>
                                                 </th>
                                                 <th>Name</th>
                                                 <th>Comment</th>
                                                 <th>Grade</th>
                                             </tr>
-                                        </thead>
-                                        <tbody>
+                                            </thead>
+                                            <tbody>
                                             <tr>
-                                                <td>
-
-                                                        <label class="form-check-label">1</label>
-
-                                                </td>
-                                                <th>Nguyen Van A</th>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-
+                                                <td><label class="form-check-label">1</label></td>
+                                                <td>Nguyen Van A</td>
+                                                <td><input type="text" name="student_1_comment" class="form-control" /></td>
+                                                <td><input type="text" name="student_1_grade" class="form-control" /></td>
                                             </tr>
                                             <tr>
-                                                <td>
-                                                        <label class="form-check-label">2</label>
-                                                </td>
-                                                <th>Nguyen Van B</th>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-                                                
-                                                
-
+                                                <td><label class="form-check-label">2</label></td>
+                                                <td>Nguyen Van B</td>
+                                                <td><input type="text" name="student_2_comment" class="form-control" /></td>
+                                                <td><input type="text" name="student_2_grade" class="form-control" /></td>
                                             </tr>
                                             <tr>
-                                                <td>
-
-                                                        <label class="form-check-label">3</label>
-
-                                                </td>
-                                                <th>HE1</th>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-
+                                                <td><label class="form-check-label">3</label></td>
+                                                <td>Nguyen Van C</td>
+                                                <td><input type="text" name="student_3_comment" class="form-control" /></td>
+                                                <td><input type="text" name="student_3_grade" class="form-control" /></td>
                                             </tr>
-                                            <tr>
-                                                <td>
+                                            <!-- More students can be added here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
 
-                                                        <label class="form-check-label">4</label>
-
-                                                </td>
-                                                <th>Nguyen Van C</th>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-
-                                            </tr>
-                                           
-                                            
-                                            <tr>
-                                                <td>
-
-                                                        <label class="form-check-label">5</label>
-
-                                                </td>
-                                                <th>Nguyen Van E</th>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-
-                                                
-
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                
-                            </div>
-                            <div class="button-group" style="margin: 20px ;">
-                                <button type="button" class="fw-btn-fill btn-gradient-yellow btn-sm" style="width: 80px;">Grade</button>
-
+                                    <div class="button-group" style="margin: 20px;">
+                                        <button type="submit" class="fw-btn-fill btn-gradient-yellow btn-sm" style="width: 80px;">UPDATE</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-                    <br>
-                    <br>
+
+                    <br><br>
+
+                    <!-- Grading components -->
                     <div class="grading-components">
                         <h3>Grading components</h3>
                         <fieldset>
                             <div>
-                                <label>
-                                    <input type="checkbox" name="grading_option" value="final_exam"> Participation
-                                </label>
+                                <label><input type="checkbox" name="grading_option" value="participation"> Participation</label>
                             </div>
                             <div>
-                                <label>
-                                    <input type="checkbox" name="grading_option" value="assignment"> Skills
-                                </label>
+                                <label><input type="checkbox" name="grading_option" value="skills"> Skills</label>
                             </div>
                             <div>
-                                <label>
-                                    <input type="checkbox" name="grading_option" value="assignment"> Reading
-                                </label>
+                                <label><input type="checkbox" name="grading_option" value="reading"> Reading</label>
                             </div>
                             <div>
-                                <label>
-                                    <input type="checkbox" name="grading_option" value="assignment"> Listening
-                                </label>
+                                <label><input type="checkbox" name="grading_option" value="listening"> Listening</label>
                             </div>
                             <div>
-                                <label>
-                                    <input type="checkbox" name="grading_option" value="assignment"> Speaking
-                                </label>
+                                <label><input type="checkbox" name="grading_option" value="speaking"> Speaking</label>
                             </div>
                         </fieldset>
-                       
                     </div>
-                    
-                
-                    <!-- Exam Grade List Area End Here -->
                 </div>
-                
+
+
                 <!-- All Subjects Area End Here -->
                 <footer class="footer-wrap-layout1">
                     <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by
