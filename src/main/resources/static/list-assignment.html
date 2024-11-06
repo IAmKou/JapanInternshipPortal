@@ -465,7 +465,7 @@
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="list-asignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
+                                <a href="list-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
                             </li>
                             <li class="nav-item">
                                 <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New Assignment</a>
@@ -591,24 +591,7 @@
                         </div>
 
                     </div>
-                    <form class="mg-b-20">
-                        <div class="row gutters-8">
-                            <!-- Search by ID -->
-                            <div class="col-md-6 col-lg-5 col-12 form-group">
-                                <input type="text" placeholder="Search by ID ..." class="form-control">
-                            </div>
 
-                            <!-- Search by Name -->
-                            <div class="col-md-6 col-lg-5 col-12 form-group">
-                                <input type="text" placeholder="Search by Name ..." class="form-control">
-                            </div>
-
-                            <!-- Search Button -->
-                            <div class="col-md-12 col-lg-2 col-12 form-group">
-                                <button type="submit" class="fw-btn-fill btn-gradient-yellow btn-block">SEARCH</button>
-                            </div>
-                        </div>
-                    </form>
                     <div class="table-responsive">
                         <table class="table display data-table text-nowrap">
                             <thead>
@@ -664,18 +647,16 @@
             <div class="popup-content">
                 <span class="close" onclick="closePopup()">&times;</span>
                 <h2>Create Assignment</h2>
-                <form>
-                    <label for="created_date">Created Date:</label>
-                    <input type="date" id="created_date" name="created_date" required>
+                <form action="assignment/update/" method="post">
 
                     <label for="end_date">End Date:</label>
-                    <input type="date" id="end_date" name="end_date" required>
+                    <input type="date" id="end_date" name="end_date" >
 
                     <label for="description">Description:</label>
-                    <textarea id="description" name="description" rows="4" required></textarea>
+                    <textarea id="description" name="description" rows="4" ></textarea>
 
                     <label for="img">Image URL:</label>
-                    <input type="text" id="img" name="img">
+                    <input type="file" id="img" name="img">
 
                     <button type="submit" class="btn">Submit</button>
                 </form>
@@ -777,5 +758,5 @@
 </body>
 
 
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/list-asignment.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/list-assignment.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>

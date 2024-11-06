@@ -1,20 +1,29 @@
 package com.example.jip.entity;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-
+@Entity
 @Getter
 @Setter
 public class StudentAssignment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "student_id")
     private int student_id;
+    @Column(name = "assignment_id")
     private int assignment_id;
+    @Column(name = "mark")
     private BigDecimal mark;
+    @Column(name = "description")
     private String description;
+    @Column(name = "content")
     private String content;
+    @Column(name = "date", nullable = false)
     private Date date;
 
     public StudentAssignment() {}

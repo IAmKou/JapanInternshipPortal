@@ -1,19 +1,29 @@
 package com.example.jip.entity;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
 
+@Entity
 @Setter
 @Getter
 public class Assignment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name =  "date_created", nullable = false)
     private Date created_date;
+    @Column(name =  "end_date", nullable = false)
     private Date end_date;
+    @Column(name = "description")
     private String description;
+    @Column(name = "teacher_id")
     private int teacher_id;
+    @Column(name = "img")
     private String img;
+    @Column(name = "class_id")
     private int class_id;
 
     public Assignment() {}
