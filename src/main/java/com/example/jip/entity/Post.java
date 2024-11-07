@@ -7,20 +7,20 @@ import java.sql.Date;
 
 @Getter
 @Setter
-public class Forum {
+public class Post {
     private int id;
-    private String topic_name;
+    private String replies;
     private Date date_created;
-    private String description;
     private int creator_id;
+    private byte[] image;
 
-    public Forum() {}
+    public Post() {}
 
-    public Forum(int id, String topic_name, Date date_created, String description, int creator_id) {
+    public Post(int id, String replies, Date date_created, int creator_id, byte[] image) {
         this.id = id;
-        this.topic_name = topic_name;
+        this.replies = replies;
         this.date_created = date_created;
-        this.description = description;
         this.creator_id = creator_id;
+        this.image = image;
     }
 }
