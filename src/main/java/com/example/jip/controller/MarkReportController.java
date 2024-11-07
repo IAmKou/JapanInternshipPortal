@@ -21,18 +21,25 @@ public class MarkReportController {
 
     // Hiển thị báo cáo điểm của sinh viên theo ID
     @GetMapping("/view/{studentId}")
-    public RedirectView viewMarkReport(@RequestParam int studentId) {
-        Optional<MarkReport> markReport = markReportService.getMarkReportByStudentId(studentId);
+    public String viewMarkReport(@PathVariable int studentId, Model model) {
+        Optional<MarkReport> markReportOpt = markReportService.getMarkReportByStudentId(studentId);
 
         // Kiểm tra xem báo cáo có tồn tại không
-        if (markReport.isPresent()) {
-            // Nếu báo cáo tồn tại, chuyển hướng đến trang chi tiết báo cáo
-            return new RedirectView("/view-personal-mark-report.html?studentId=" + studentId);
+        if (markReportOpt.isPresent()) {
+            MarkReport markReport = markReportOpt.get();
+
+            // Chuyển dữ liệu vào model để hiển thị trong view
+            model.addAttribute("markReport", markReport);
+
+            // Trả về tên view (sử dụng tên file HTML mà bạn muốn hiển thị)
+            return "view-personal-mark-report";  // Tên view (file .html)
         } else {
-            // Nếu không tìm thấy, chuyển hướng đến trang lỗi
-            return new RedirectView("/errorView.html?error=No mark report found for student ID: " + studentId);
+            // Nếu không tìm thấy báo cáo, trả về trang lỗi
+            model.addAttribute("error", "No mark report found for student ID: " + studentId);
+            return "errorView";  // Tên trang lỗi
         }
     }
+
 
     // Xử lý việc cập nhật báo cáo điểm của sinh viên
     @PutMapping("/update/{id}")

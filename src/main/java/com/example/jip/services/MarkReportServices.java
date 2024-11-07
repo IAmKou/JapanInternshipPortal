@@ -5,6 +5,7 @@ import com.example.jip.repository.MarkReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 @Service
 public class MarkReportServices {
@@ -37,6 +38,15 @@ public class MarkReportServices {
             return markReportRepository.save(existingMarkReport);
         } else {
             throw new RuntimeException("Cannot find MarkReport with id " + id);
+        }
+    }
+    public BigDecimal calculateCourseTotal(int studentId) {
+        Optional<MarkReport> reportOpt = getMarkReportByStudentId(studentId);
+        if (reportOpt.isPresent()) {
+            MarkReport markReport = reportOpt.get();
+            return markReport.getCourseTotal(); // sử dụng phương thức getCourseTotal() từ MarkReport
+        } else {
+            throw new RuntimeException("Cannot find MarkReport for student with id " + studentId);
         }
     }
 }
