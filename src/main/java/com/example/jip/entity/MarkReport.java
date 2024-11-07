@@ -15,6 +15,7 @@ public class MarkReport {
 
     @Column(name="student_id")
     private int studentId;
+    private String comment;
     private BigDecimal attendant_rate;
     private BigDecimal avg_assignment_mark;
     private BigDecimal avg_exam_mark;

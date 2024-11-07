@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface    MarkReportRepository extends CrudRepository<MarkReport, Integer> {
+public interface MarkReportRepository extends CrudRepository<MarkReport, Integer> {
     Optional<MarkReport> findByStudentId(int studentId);
 }

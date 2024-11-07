@@ -475,7 +475,7 @@
                             <div class="card-body">
                                 <div class="heading-layout1">
                                     <div class="item-title">
-                                        <h3>Mark Report for Student ID: <span th:text="${markReport.student_id}"></span></h3> <!-- Sử dụng student_id -->
+                                        <h3>Mark Report for Student ID: <span th:text="${markReport.studentId}"></span></h3> <!-- Hiển thị studentId -->
                                     </div>
 
                                 </div>
@@ -483,67 +483,69 @@
                                 <br>
                                 <br>
                                 <div class="table-responsive">
-                                    <table class="table display data-table text-nowrap" >
-                                        <thead>
+                                    <table class="table table-bordered table-hover table-striped align-middle text-center"
+                                           style="border: 1px solid #dee2e6; font-size: 14px;">
+                                        <thead style="background-color: #00203FFF; color: #ADEFD1FF;">
                                         <tr>
-                                            <th>
+                                            <th style="padding: 12px; font-weight: bold; border-bottom: 2px solid #dee2e6;">
                                                 <label class="form-check-label">Grade Category</label>
                                             </th>
-                                            <th>Grade Item</th>
-                                            <th>Weight</th>
-                                            <th>Value</th>
-                                            <th>Comment</th>
+                                            <th style="padding: 12px; font-weight: bold; border-bottom: 2px solid #dee2e6;">Grade Item</th>
+                                            <th style="padding: 12px; font-weight: bold; border-bottom: 2px solid #dee2e6;">Weight</th>
+                                            <th style="padding: 12px; font-weight: bold; border-bottom: 2px solid #dee2e6;">Value</th>
+                                            <th style="padding: 12px; font-weight: bold; border-bottom: 2px solid #dee2e6;">Comment</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>Participation</td>
-                                            <td>Participation</td>
-                                            <td>30%</td>
-                                            <td th:text="${markReport.avg_assignment_mark}"></td>
-                                            <td></td>
+                                        <tr style="background-color: #f9f9f9;">
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">Participation</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">Participation</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">30%</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;" th:text="${markReport.avg_assignment_mark}"></td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;"></td>
                                         </tr>
                                         <tr>
-                                            <td>Skill</td>
-                                            <td>Skill</td>
-                                            <td>30%</td>
-                                            <td th:text="${markReport.avgAssignmentMark}"></td>
-                                            <td></td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">Skill</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">Skill</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">30%</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;" th:text="${markReport.avg_exam_mark}"></td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;"></td>
+                                        </tr>
+                                        <tr style="background-color: #f9f9f9;">
+                                            <td rowspan="4" style="padding: 12px; border: 1px solid #dee2e6;">Học phần</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">Reading</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">16%</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;" th:text="${markReport.reading_mark}"></td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;"></td>
                                         </tr>
                                         <tr>
-                                            <td rowspan="4">Học phần</td>
-                                            <td>Reading</td>
-                                            <td>16%</td>
-                                            <td th:text="${markReport.reading_mark}"></td>
-                                            <td></td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">Listening</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">16%</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;" th:text="${markReport.listening_mark}"></td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;"></td>
+                                        </tr>
+                                        <tr style="background-color: #f9f9f9;">
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">Speaking</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">20%</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;" th:text="${markReport.speaking_mark}"></td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;"></td>
                                         </tr>
                                         <tr>
-                                            <td>Listening</td>
-                                            <td>16%</td>
-                                            <td th:text="${markReport.listening_mark}"></td>
-                                            <td></td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">Total</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">40%</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;" th:text="${markReport.totalSkillMarks}"></td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;"></td>
                                         </tr>
-                                        <tr>
-                                            <td>Speaking</td>
-                                            <td>20%</td>
-                                            <td th:text="${markReport.speaking_mark}"></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Total</td>
-                                            <td>40%</td>
-                                            <td th:text="${markReport.totalSkillMarks}"></td> <!-- Hiển thị tổng điểm kỹ năng -->
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: bold;">COURSE TOTAL</td>
-                                            <td style="font-weight: bold;">AVERAGE STATUS</td>
-                                            <td style="font-weight: bold;" th:text="${markReport.courseTotal}"></td> <!-- Hiển thị tổng điểm khóa học -->
-                                            <td></td>
+                                        <tr style="background-color: #e9ecef; font-weight: bold;">
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">COURSE TOTAL</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;">AVERAGE STATUS</td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;" th:text="${markReport.courseTotal}"></td>
+                                            <td style="padding: 12px; border: 1px solid #dee2e6;"></td>
                                         </tr>
                                         </tbody>
                                     </table>
                                 </div>
+
 
 
                             </div>

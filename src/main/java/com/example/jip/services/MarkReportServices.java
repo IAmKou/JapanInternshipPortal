@@ -20,7 +20,23 @@ public class MarkReportServices {
         markReportRepository.save(markReport);
     }
 
-    public MarkReport updateMarkReport(MarkReport markReport) {
-        return markReportRepository.save(markReport);
+    public MarkReport updateMarkReport(int id, MarkReport markReport) {
+        // Kiểm tra xem báo cáo điểm có tồn tại không
+        Optional<MarkReport> existingReport = markReportRepository.findById(id);
+        if (existingReport.isPresent()) {
+            MarkReport existingMarkReport = existingReport.get();
+            existingMarkReport.setStudentId(markReport.getStudentId());
+            existingMarkReport.setComment(markReport.getComment());
+            existingMarkReport.setAttendant_rate(markReport.getAttendant_rate());
+            existingMarkReport.setAvg_assignment_mark(markReport.getAvg_assignment_mark());
+            existingMarkReport.setAvg_exam_mark(markReport.getAvg_exam_mark());
+            existingMarkReport.setReading_mark(markReport.getReading_mark());
+            existingMarkReport.setListening_mark(markReport.getListening_mark());
+            existingMarkReport.setSpeaking_mark(markReport.getSpeaking_mark());
+
+            return markReportRepository.save(existingMarkReport);
+        } else {
+            throw new RuntimeException("Cannot find MarkReport with id " + id);
+        }
     }
 }
