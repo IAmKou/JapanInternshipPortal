@@ -31,7 +31,7 @@ public class TeacherServices {
         teacher.setPhoneNumber(phoneNumber);
         teacher.setGender(Teacher.gender.valueOf(gender));
         teacher.setImg(img);
-        teacher.setAccount_id(account_id);
+        teacher.setAccount(accountOpt.get());
         return teacherRepository.save(teacher);
 
     }

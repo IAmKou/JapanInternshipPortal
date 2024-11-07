@@ -32,7 +32,7 @@ public class ManagerServices {
         manager.setPhoneNumber(phoneNumber);
         manager.setGender(Manager.Gender.valueOf(gender));
         manager.setImg(img);
-        manager.setAccount_id(account_id);
+        manager.setAccount(accountOpt.get());
         return managerRepository.save(manager);
 
     }

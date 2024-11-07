@@ -33,16 +33,13 @@ public class Manager {
     @Column(name="img")
     private String img;
 
-    @Column(name="account_id", insertable = false, updatable = false)
-    private int account_id;
-
     @OneToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private Account account;
 
     public Manager() {}
 
-    public Manager(int id, String fullname, String jname, String email, String phonenumber, Gender gender, String img, int account_id) {
+    public Manager(int id, String fullname, String jname, String email, String phonenumber, Gender gender, String img, Account account) {
         this.id = id;
         Fullname = fullname;
         Jname = jname;
@@ -50,7 +47,7 @@ public class Manager {
         PhoneNumber = phonenumber;
         Gender = gender;
         this.img = img;
-        this.account_id = account_id;
+        this.account = account;
     }
 
     public enum Gender {

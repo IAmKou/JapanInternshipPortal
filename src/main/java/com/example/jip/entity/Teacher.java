@@ -32,16 +32,13 @@ public class Teacher {
     @Column(name="img")
     private String img;
 
-    @Column(name="account_id", insertable = false, updatable = false)
-    private int account_id;
-
     @OneToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private Account account;
 
     public Teacher(){}
 
-    public Teacher(int id, String fullname, String jname, String email, String phoneNumber, gender gender, String img, int account_id) {
+    public Teacher(int id, String fullname, String jname, String email, String phoneNumber, gender gender, String img, Account account) {
         this.id = id;
         Fullname = fullname;
         Jname = jname;
@@ -49,7 +46,7 @@ public class Teacher {
         PhoneNumber = phoneNumber;
         Gender = gender;
         this.img = img;
-        this.account_id = account_id;
+        this.account = account;
     }
 
     public enum gender{
