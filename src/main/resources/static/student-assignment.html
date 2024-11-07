@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>JIP | Add Assignment</title>
+    <title>JIP | Student Assignment List</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -22,17 +22,18 @@
     <link rel="stylesheet" href="fonts/flaticon.css">
     <!-- Animate CSS -->
     <link rel="stylesheet" href="css/animate.min.css">
-    <!-- Select 2 CSS -->
-    <link rel="stylesheet" href="css/select2.min.css">
-    <!-- Date Picker CSS -->
-    <link rel="stylesheet" href="css/datepicker.min.css">
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+
 </head>
 
 <body>
+
+
 <!-- Preloader Start Here -->
 <div id="preloader"></div>
 <!-- Preloader End Here -->
@@ -236,6 +237,7 @@
         </div>
     </div>
     <!-- Header Menu Area End Here -->
+
     <!-- Page Area Start Here -->
     <div class="dashboard-page-one">
         <!-- Sidebar Area Start Here -->
@@ -316,11 +318,9 @@
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All Assignment</a>
+                                <a href="student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="add-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Add New Assignment</a>
-                            </li>
+
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
@@ -414,65 +414,77 @@
                         <a href="account-settings.html" class="nav-link"><i class="flaticon-settings"></i><span>Account</span></a>
                     </li>
                 </ul>
+
             </div>
+
         </div>
+
         <!-- Sidebar Area End Here -->
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3>Assignment</h3>
+                <h3>Student Assignment</h3>
                 <ul>
                     <li>
                         <a href="index.html">Home</a>
                     </li>
-                    <li>Add New Assignment</li>
+                    <li>All Student Assignment</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
-            <!-- Add New Assignment Area Start Here -->
+
+            <!-- Teacher Table Area Start Here -->
             <div class="card height-auto">
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h3>Add New Assignment</h3>
+                            <h3>All Student Assignment</h3>
                         </div>
 
                     </div>
-                    <form class="new-added-form" action="/assignment/add" method="post">
-                        <div class="row">
-                            <input type="hidden" name="teacher_id" id="teacher_id" value="${teacher_id}">
-                            <input type="hidden" name="class_id" id="class_id" value="${class_id}">
-                            <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label for="description">Desciption *</label>
-                                <input type="text" placeholder="Write description..." class="form-control" name="description" id="description">
-                            </div>
 
-                            <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label for="createDate">Create Date </label>
-                                <input type="datetime-local" class="form-control" name="createDate" id="createDate">
-                            </div>
-                            <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label for="endDate">End Date *</label>
-                                <input type="datetime-local" class="form-control" name="endDate" id="endDate">
-                            </div>
-                            <div class="col-12 form-group mg-t-8">
-                                <label class="text-dark-medium" for="img">File attach *</label>
-                                <input type="file" class="form-control-file" name="img" id="img">
-                            </div>
-                            <div class="col-12 form-group mg-t-8">
-                                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Add</button>
-                                <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
-                            </div>
-                        </div>
-                    </form>
+                    <div class="table-responsive">
+                        <table class="table display data-table text-nowrap">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Mark</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>10</td>
+                                <td>12.02.2019</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                            <span class="flaticon-more-button-of-three-dots"></span>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" href="#"><i class="fas fa-info-circle text-orange-peel"></i>Detail</a>
+                                        </div>
+
+                                    </div>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
+
             </div>
-            <!-- Add New Book Area End Here -->
-            <footer class="footer-wrap-layout1">
-                <!--                    <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a href="#">PsdBosS</a></div>-->
-            </footer>
+
+
         </div>
+
+
     </div>
+
     <!-- Page Area End Here -->
 </div>
 <!-- jquery-->
@@ -483,19 +495,16 @@
 <script src="js/popper.min.js"></script>
 <!-- Bootstrap js -->
 <script src="js/bootstrap.min.js"></script>
-<!-- Select 2 Js -->
-<script src="js/select2.min.js"></script>
-<!-- Date Picker Js -->
-<script src="js/datepicker.min.js"></script>
-<!-- Smoothscroll Js -->
-<script src="js/jquery.smoothscroll.min.html"></script>
 <!-- Scroll Up Js -->
 <script src="js/jquery.scrollUp.min.js"></script>
+<!-- Data Table Js -->
+<script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
+
 
 </body>
 
 
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/add-assignment.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/student-assignment.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>
