@@ -1,6 +1,5 @@
-
-Create database JIP;
-use JIP;
+CREATE DATABASE JIP;
+USE JIP;
 
 CREATE TABLE Role (
     Id INT AUTO_INCREMENT PRIMARY KEY,
@@ -32,7 +31,7 @@ CREATE TABLE Student (
 CREATE TABLE Teacher (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Fullname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-    Jname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+    Jname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     email VARCHAR(100) NOT NULL,
     phone_number VARCHAR(20),
     Gender ENUM('Male', 'Female') NOT NULL,
@@ -44,18 +43,18 @@ CREATE TABLE Teacher (
 CREATE TABLE Manager (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Fullname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-    Jname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+    Jname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     email VARCHAR(100) NOT NULL,
     phone_number VARCHAR(20),
     Gender ENUM('Male', 'Female') NOT NULL,
     img VARCHAR(255),
     account_id INT,
     FOREIGN KEY (account_id) REFERENCES Account(Id)
-    );
+);
 
 CREATE TABLE Class (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    Name VARCHAR(100)  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    Name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     number_of_student INT,
     teacher_id INT,
     FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
@@ -114,7 +113,7 @@ CREATE TABLE Student_assignment (
     assignment_id INT,
     mark DECIMAL(5,2),
     description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    content VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    content VARCHAR(255) CHARACTER SET utf8mb4_unicode_ci,
     date DATE NOT NULL,
     FOREIGN KEY (student_id) REFERENCES Student(Id),
     FOREIGN KEY (assignment_id) REFERENCES Assignment(Id)
@@ -155,11 +154,21 @@ CREATE TABLE Personal_material (
     FOREIGN KEY (student_id) REFERENCES Student(Id)
 );
 
-CREATE TABLE Forum (
+CREATE TABLE Thread (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     topic_name VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     date_created DATE NOT NULL,
     description TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    image BLOB,
+    creator_id INT,
+    FOREIGN KEY (creator_id) REFERENCES Account(Id)
+);
+
+CREATE TABLE Post (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    replies VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    date_created DATE NOT NULL,
+    image BLOB,
     creator_id INT,
     FOREIGN KEY (creator_id) REFERENCES Account(Id)
 );
@@ -187,17 +196,9 @@ CREATE TABLE Application (
 );
 
 CREATE TABLE Notification (
-Id int auto_increment Primary key,
-Title varchar(100),
-content varchar(250),
-account_id int,
- FOREIGN KEY (account_id) REFERENCES Account(Id)
- );
-
-
-
-
-
-
-
-
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Title VARCHAR(100),
+    content VARCHAR(250),
+    account_id INT,
+    FOREIGN KEY (account_id) REFERENCES Account(Id)
+);
