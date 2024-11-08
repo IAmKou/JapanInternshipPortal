@@ -391,7 +391,8 @@
                                         class="fas fa-angle-right"></i>Exam Grades</a>
                             </li>
                             <li class="nav-item">
-                                <a href="/markreport/view" class="nav-link menu-active"><i class="fas fa-angle-right"></i>View Exam
+                                <a class="nav-link menu-active" href="/markreport/view"><i
+                                        class="fas fa-angle-right"></i>View Exam
                                     Grades</a>
                             </li>
                         </ul>
@@ -401,28 +402,33 @@
                         <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create material</a>
+                                <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create
+                                    material</a>
                             </li>
 
                         </ul>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="View-list-materials.html"><i class="fas fa-angle-right"></i>View list materials</a>
+                                <a class="nav-link" href="View-list-materials.html"><i class="fas fa-angle-right"></i>View
+                                    list materials</a>
                             </li>
 
                         </ul>
 
                     </li>
-                    `<li class="nav-item sidebar-nav-item">
+                    `
+                    <li class="nav-item sidebar-nav-item">
                         <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create material</a>
+                                <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create
+                                    material</a>
                             </li>
 
                         </ul>
 
-                    </li>`
+                    </li>
+                    `
                     <li class="nav-item">
                         <a class="nav-link" href="transport.html"><i
                                 class="flaticon-bus-side-view"></i><span>Transport</span></a>
@@ -599,7 +605,7 @@
                 <form action="/account/import/excel" enctype="multipart/form-data" id="import" method="post">
                     <div class="modal-body">
                         <label for="file" style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
-                        <input id="file" name="file" required type="file">
+                        <input class="form-control-file" id="file" name="file" required type="file">
                     </div>
                     <div class="modal-footer">
                         <button class="footer-btn bg-dark-low" data-dismiss="modal" type="button">Close</button>
@@ -711,17 +717,32 @@
                 editButton.addEventListener('click', () => {
                     if (currentUser && currentUser.roleName !== 'ADMIN') {
                         userDetailsBox.innerHTML = `
-                            <tr><td class="font-medium text-dark-medium">Name:</td>
-                                <td><input type="text" value="${currentUser.fullName}" id="name-input"></td></tr>
-                            <tr><td class="font-medium text-dark-medium">Japan Name:</td><td><input type="text" value="${currentUser.jname}" id="jname-input"></td></tr>
-                            <tr><td class="font-medium text-dark-medium">Gender:</td><td><input type="text" value="${currentUser.gender}" id="gender-input"></td></tr>
-                            ${currentUser.dob ? `<tr><td class="font-medium text-dark-medium">Date of Birth:</td><td><input type="date" value="${currentUser.dob}" id="dob-input"></td></tr>` : ''}
-                            <tr><td class="font-medium text-dark-medium">Email:</td><td><input type="email" value="${currentUser.email}" id="email-input"></td></tr>
-                            <tr><td class="font-medium text-dark-medium">Phone Number:</td><td><input type="text" value="${currentUser.phoneNumber}" id="phone-input"></td></tr>
-                        `;
+            <tr><td class="font-medium text-dark-medium">Name:</td>
+                <td><input type="text" value="${currentUser.fullName}" id="name-input"></td></tr>
+            <tr><td class="font-medium text-dark-medium">Japan Name:</td>
+                <td><input type="text" value="${currentUser.jname}" id="jname-input"></td></tr>
+            <tr><td class="font-medium text-dark-medium">Gender:</td>
+                <td>
+                    <div class="form-check-inline">
+                        <input type="radio" name="gender" value="Male" id="male" class="form-check-input" ${currentUser.gender === 'Male' ? 'checked' : ''}>
+                        <label for="male" class="form-check-label">Male</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input type="radio" name="gender" value="Female" id="female" class="form-check-input" ${currentUser.gender === 'Female' ? 'checked' : ''}>
+                        <label for="female" class="form-check-label">Female</label>
+                    </div>
+                </td></tr>
+            ${currentUser.dob ? `<tr><td class="font-medium text-dark-medium">Date of Birth:</td>
+                <td><input type="date" value="${currentUser.dob.split('T')[0]}" id="dob-input"></td></tr>` : ''}
+            <tr><td class="font-medium text-dark-medium">Email:</td>
+                <td><input type="email" value="${currentUser.email}" id="email-input"></td></tr>
+            <tr><td class="font-medium text-dark-medium">Phone Number:</td>
+                <td><input type="text" value="${currentUser.phoneNumber}" id="phone-input"></td></tr>
+        `;
                         saveButton.style.display = 'inline-block';
                     }
                 });
+
 
                 // Save changes
                 saveButton.addEventListener('click', () => {
@@ -738,22 +759,22 @@
                         phoneNumber: document.getElementById('phone-input')?.value || currentUser.phoneNumber
                     };
 
-                    // Send updated data to server
+
                     fetch(`/users/${updatedUser.id}`, {
                         method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify(updatedUser)
                     })
                         .then(response => response.json())
                         .then(data => {
                             console.log("User updated successfully", data);
-                            loadUserDetails(updatedUser);
-                            saveButton.style.display = 'none';
+
+                            // Reload the page to reflect the updated information
+                            window.location.reload();
                         })
                         .catch(error => console.error('Error updating user:', error));
                 });
-            })
-            .catch(error => console.error('Error loading users:', error));
+            });
     });
 </script>
 <!-- modal -->
