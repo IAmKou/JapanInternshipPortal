@@ -464,14 +464,14 @@
                                 <div class="info-table table-responsive">
                                     <table class="table text-nowrap">
                                         <tbody>
-                                        <tr>
-                                            <td>Teacher:</td>
-                                            <td class="font-medium text-dark-medium">Jessia Rose</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Create Date:</td>
-                                            <td class="font-medium text-dark-medium">07.08.2016</td>
-                                        </tr>
+<!--                                        <tr>-->
+<!--                                            <td>Teacher:</td>-->
+<!--                                            <td class="font-medium text-dark-medium">Jessia Rose</td>-->
+<!--                                        </tr>-->
+<!--                                        <tr>-->
+<!--                                            <td>Create Date:</td>-->
+<!--                                            <td class="font-medium text-dark-medium">07.08.2016</td>-->
+<!--                                        </tr>-->
                                         
                                         </tbody>
                                     </table>
@@ -615,6 +615,50 @@
     <script src="js/main.js"></script>
 
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const materialInfoBox = document.getElementById('material-info');
 
+        // Gọi API để lấy thông tin material và teacher
+        fetch('/materials')  // Đảm bảo đúng endpoint API của bạn
+            .then(response => response.json())
+            .then(material => {
+                // Hàm giúp thay thế giá trị null/undefined bằng một giá trị mặc định
+                const getValueOrDefault = (value, defaultValue) => {
+                    return value ? value : defaultValue;
+                };
+
+                // Chèn dữ liệu vào bảng, nếu dữ liệu không có thì sẽ hiển thị 'No data available'
+                materialInfoBox.innerHTML = `
+                        <tr>
+                            <td class="font-medium text-dark-medium">Material Title:</td>
+                            <td class="font-medium text-dark-medium">${getValueOrDefault(material.title, 'No data available')}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium text-dark-medium">Content:</td>
+                            <td class="font-medium text-dark-medium">${getValueOrDefault(material.content, 'No data available')}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium text-dark-medium">Teacher:</td>
+                            <td class="font-medium text-dark-medium">${getValueOrDefault(material.teacher ? material.teacher.fullName : null, 'No Teacher Assigned')}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium text-dark-medium">Create Date:</td>
+                            <td class="font-medium text-dark-medium">${getValueOrDefault(new Date(material.date).toLocaleDateString(), 'No data available')}</td>
+                        </tr>
+                    `;
+            })
+            .catch(error => {
+                console.error('Error fetching material data:', error);
+                materialInfoBox.innerHTML = `
+                    <tr>
+                        <td colspan="2" class="font-medium text-dark-medium">Error fetching material data.</td>
+                    </tr>
+                `;
+            });
+    });
+</script>
+
+</body>
 
 </html>
