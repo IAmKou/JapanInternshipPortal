@@ -1,15 +1,18 @@
 package com.example.jip.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
+@Entity
 @Getter
 @Setter
 public class Thread {
+    @Id
     @Temporal(TemporalType.DATE)
     private int id;
     private String topicName;
