@@ -23,8 +23,10 @@ public class Assignment {
     private int teacher_id;
     @Column(name = "img")
     private String img;
-    @Column(name = "class_id")
+
     private int class_id;
+
+
 
     public Assignment() {}
 
