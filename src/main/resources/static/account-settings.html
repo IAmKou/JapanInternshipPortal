@@ -718,9 +718,9 @@
                     if (currentUser && currentUser.roleName !== 'ADMIN') {
                         userDetailsBox.innerHTML = `
             <tr><td class="font-medium text-dark-medium">Name:</td>
-                <td><input type="text" value="${currentUser.fullName}" id="name-input"></td></tr>
+                <td><input type="text" value="${currentUser.fullName}" required id="name-input"></td></tr>
             <tr><td class="font-medium text-dark-medium">Japan Name:</td>
-                <td><input type="text" value="${currentUser.jname}" id="jname-input"></td></tr>
+                <td><input type="text" value="${currentUser.jname}" required id="jname-input"></td></tr>
             <tr><td class="font-medium text-dark-medium">Gender:</td>
                 <td>
                     <div class="form-check-inline">
@@ -735,9 +735,9 @@
             ${currentUser.dob ? `<tr><td class="font-medium text-dark-medium">Date of Birth:</td>
                 <td><input type="date" value="${currentUser.dob.split('T')[0]}" id="dob-input"></td></tr>` : ''}
             <tr><td class="font-medium text-dark-medium">Email:</td>
-                <td><input type="email" value="${currentUser.email}" id="email-input"></td></tr>
+                <td><input type="email" required value="${currentUser.email}" id="email-input"></td></tr>
             <tr><td class="font-medium text-dark-medium">Phone Number:</td>
-                <td><input type="text" value="${currentUser.phoneNumber}" id="phone-input"></td></tr>
+                <td><input type="text" required value="${currentUser.phoneNumber}" id="phone-input"></td></tr>
         `;
                         saveButton.style.display = 'inline-block';
                     }
