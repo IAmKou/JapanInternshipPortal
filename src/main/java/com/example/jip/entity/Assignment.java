@@ -19,6 +19,8 @@ public class Assignment {
     private Date end_date;
     @Column(name = "description")
     private String description;
+    @Column(name = "content")
+    private String content;
     @Column(name = "teacher_id")
     private int teacher_id;
     @Column(name = "img")
@@ -26,15 +28,14 @@ public class Assignment {
 
     private int class_id;
 
-
-
     public Assignment() {}
 
-    public Assignment(int id, Date created_date, Date end_date, String description, int teacher_id, String img, int class_id) {
+    public Assignment(int id, Date created_date, Date end_date, String description, String content, int teacher_id, String img, int class_id) {
         this.id = id;
         this.created_date = created_date;
         this.end_date = end_date;
         this.description = description;
+        this.content = content;
         this.teacher_id = teacher_id;
         this.img = img;
         this.class_id = class_id;

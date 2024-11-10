@@ -1,37 +1,46 @@
 package com.example.jip.services;
 
+import com.example.jip.dto.request.AssignmentCreationRequest;
+import com.example.jip.dto.request.AssignmentUpdateRequest;
+import com.example.jip.dto.response.AssignmentResponse;
 import com.example.jip.entity.Assignment;
 
+import com.example.jip.mapper.AssignmentMapper;
 import com.example.jip.repository.AssignmentRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+
 public class AssignmentServices {
 
     @Autowired
-    private AssignmentRepository assignmentRepository;
+    AssignmentRepository assignmentRepository;
 
-    public List<Assignment> getAllAssignments(){
-        return assignmentRepository.findAll();
+    @Autowired
+    AssignmentMapper assignmentMapper;
+    public List<AssignmentResponse> getAllAssignments(){
+        return assignmentRepository.findAll().stream()
+                .map(assignmentMapper::toAssignmentResponse).toList();
     }
 
-    public Assignment createAssignment(Date date_created, Date end_date, String description, int teacher_id, String img, int class_id){
+    public AssignmentResponse createAssignment(AssignmentCreationRequest request){
 
-        Assignment assignment = new Assignment();
-        assignment.setCreated_date(date_created);
-        assignment.setEnd_date(end_date);
-        assignment.setDescription(description);
-        assignment.setTeacher_id(teacher_id);
-        assignment.setImg(img);
-        assignment.setClass_id(class_id);
+        Assignment assignment = assignmentMapper.toAssignment(request);
 
         //Save assignment to database
-        return assignmentRepository.save(assignment);
+        return assignmentMapper.toAssignmentResponse(assignmentRepository.save(assignment));
+
+
     }
 
     public Assignment getAssignmentById(int assignmentId){
@@ -47,16 +56,12 @@ public class AssignmentServices {
     }
 
 
-    public Assignment updateAssignment(int assignmentId, Date endDate, String description, String img) {
-        Assignment existingAssignment = getAssignmentById(assignmentId);
-        if (existingAssignment != null) {
-            existingAssignment.setEnd_date(endDate);
-            existingAssignment.setDescription(description);
-            existingAssignment.setImg(img);
+    public AssignmentResponse updateAssignment(int assignmentId, AssignmentUpdateRequest request) {
+        Assignment assignment = assignmentRepository.findById(assignmentId)
+                .orElseThrow(() -> new NoSuchElementException("Assignment id not found!"));
+            assignmentMapper.updateAssignemt(assignment, request);
 
-            return assignmentRepository.save(existingAssignment);
-        } else {
-            throw new RuntimeException("Cant find assignment with id " + assignmentId);
-        }
+            return assignmentMapper.toAssignmentResponse(assignmentRepository.save(assignment));
+
     }
 }
