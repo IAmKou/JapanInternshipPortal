@@ -4,6 +4,7 @@ import com.example.jip.entity.Manager;
 import com.example.jip.entity.Teacher;
 
 public class TeacherDTO {
+    private int id;
     private String fullname;
     private String jname;
     private String email;
@@ -18,6 +19,13 @@ public class TeacherDTO {
         this.phoneNumber = teacher.getPhoneNumber();
         this.gender = teacher.getGender();
         this.img = teacher.getImg();
+    }
+
+    public TeacherDTO(int id, String fullname, String jname, String img) {
+        this.id = id;
+        this.fullname = fullname;
+        this.jname = jname;
+        this.img = img;
     }
 
     public String getFullname() {
@@ -66,5 +74,13 @@ public class TeacherDTO {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
