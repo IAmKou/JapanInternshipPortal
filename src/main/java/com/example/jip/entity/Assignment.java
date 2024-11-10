@@ -28,6 +28,8 @@ public class Assignment {
 
     private int class_id;
 
+
+
     public Assignment() {}
 
     public Assignment(int id, Date created_date, Date end_date, String description, String content, int teacher_id, String img, int class_id) {
