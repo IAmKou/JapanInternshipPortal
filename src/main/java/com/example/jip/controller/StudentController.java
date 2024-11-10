@@ -1,5 +1,6 @@
 package com.example.jip.controller;
 
+import com.example.jip.dto.StudentDTO;
 import com.example.jip.entity.Student;
 import com.example.jip.repository.StudentRepository;
 import com.example.jip.services.StudentServices;
@@ -51,7 +52,7 @@ public class StudentController {
     }
 
     @GetMapping("/get")
-    public List<Student> get30TopStudents() {
+    public List<StudentDTO> getTopStudents() {
         return studentRepository.findTop30UnassignedStudents();
     }
 
