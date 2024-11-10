@@ -1,8 +1,12 @@
 package com.example.jip.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
+
 @Entity
 @Table(name="Teacher")
 @Setter
@@ -35,6 +39,12 @@ public class Teacher {
     @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private Account account;
+
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Class> classes;
+
 
     public Teacher(){}
 
