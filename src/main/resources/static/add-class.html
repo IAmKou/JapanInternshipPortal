@@ -516,7 +516,7 @@
                                 </button>
                             </div>
 
-                            <div class="table-responsive"></div>
+                            <div id = "studentList" class="table-responsive"></div>
                             <div class="col-md-6 form-group"></div>
                             <div class="col-12 form-group mg-t-8">
                                 <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark"
@@ -554,6 +554,7 @@
 <script src="js/main.js"></script>
 <!-- fetch student list -->
 <script>
+    // Function to fetch students and display them in the studentList div
     function fetchStudents() {
         fetch('/student/get')
             .then(response => {
@@ -587,6 +588,7 @@
     }
 
 
+
     function submitClass() {
         const className = document.getElementById("className").value;
         const teacherId = document.getElementById("teacher").value;
@@ -595,6 +597,7 @@
             alert("Please provide both class name and teacher.");
             return;
         }
+
 
         fetch(`/classes/autoCreateWithTop30?className=${className}&teacherId=${teacherId}`, {
             method: 'POST'
@@ -605,9 +608,10 @@
                 }
                 return response.text();
             })
-            .then(data => alert(data))
-            .catch(error => alert("Error creating class: " + error));
+            .then(data => alert(data))  // Handle successful class creation
+            .catch(error => alert("Error creating class: " + error));  // Handle errors
     }
+
 
 </script>
 <!-- fetch teacher -->
@@ -627,7 +631,7 @@
                 data.forEach(teacher => {
                     const option = document.createElement('option');
                     option.value = teacher.id;
-                    option.textContent = teacher.Fullname;
+                    option.textContent = teacher.fullname;
                     teacherSelect.appendChild(option);
                 });
                 $('#teacher').select2({
