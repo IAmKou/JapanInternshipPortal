@@ -661,7 +661,36 @@
     <button id="nextPage" class="page-btn" onclick="changePage(1)">&raquo;</button>
 </div>
 
+<script>
+    let currentPage = 1;
+    const threadsPerPage = 5;
+    const threads = Array.from(document.querySelectorAll('.thread-box'));
+    const totalPages = Math.ceil(threads.length / threadsPerPage);
 
+    function showPage(page) {
+        // Hide all threads
+        threads.forEach(thread => thread.style.display = 'none');
+
+        // Show only the threads for the current page
+        const start = (page - 1) * threadsPerPage;
+        const end = start + threadsPerPage;
+        threads.slice(start, end).forEach(thread => thread.style.display = 'block');
+
+        // Update page number and button states
+        document.getElementById('pageNumber').textContent = page;
+        document.getElementById('prevPage').disabled = page === 1;
+        document.getElementById('nextPage').disabled = page === totalPages;
+    }
+
+    // Change page based on button click
+    function changePage(direction) {
+        currentPage += direction;
+        showPage(currentPage);
+    }
+
+    // Initialize pagination on page load
+    document.addEventListener('DOMContentLoaded', () => showPage(currentPage));
+</script>
 
 </body>
 </html>
