@@ -1,5 +1,7 @@
 package com.example.jip.controller;
 
+import com.example.jip.dto.request.AssignmentCreationRequest;
+import com.example.jip.dto.request.AssignmentUpdateRequest;
 import com.example.jip.entity.Assignment;
 import com.example.jip.services.AssignmentServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
-@RequestMapping("teacher/assignment")
+@RequestMapping("/assignment")
 public class AssignmentController {
     @Autowired
     AssignmentServices assignmentServices;
@@ -24,17 +26,10 @@ public class AssignmentController {
         return new RedirectView("/list-assignment.html");
     }
 
-    @PostMapping("/add")
-    public RedirectView createAssignment(@RequestParam Date end_date,
-                                         @RequestParam(required = false) String description,
-                                         @RequestParam int teacher_id,
-                                         @RequestParam(required = false) String img,
-                                         @RequestParam int class_id){
+    @PostMapping("/create")
+    public RedirectView createAssignment(@RequestBody AssignmentCreationRequest request){
 
-        LocalDate localDate = LocalDate.now();
-        Date created_Date = Date.valueOf(localDate);
-
-        assignmentServices.createAssignment(created_Date, end_date, description, teacher_id, img, class_id);
+        assignmentServices.createAssignment(request);
         return new RedirectView("/list-assignment.html");
     }
 
@@ -47,13 +42,12 @@ public class AssignmentController {
 
     @PutMapping("/update/{assignment_id}")
     public RedirectView updateAssignment(@PathVariable int assignment_id,
-                                         @RequestParam Date end_date,
-                                         @RequestParam(required = false) String description,
-                                         @RequestParam(required = false) String img){
-
-        assignmentServices.updateAssignment(assignment_id, end_date, description, img);
+                                         @RequestBody AssignmentUpdateRequest request){
+        assignmentServices.updateAssignment(assignment_id, request);
         return new RedirectView("/list-assignment.html");
     }
+
+
 
 
 

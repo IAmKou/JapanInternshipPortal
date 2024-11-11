@@ -100,6 +100,7 @@ CREATE TABLE Assignment (
     date_created DATE NOT NULL,
     end_date DATE NOT NULL,
     description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    content VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     teacher_id INT,
     img VARCHAR(255),
     class_id INT,
