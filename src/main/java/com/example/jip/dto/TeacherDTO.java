@@ -29,7 +29,6 @@ public class TeacherDTO {
     }
 
 
-
     public int getId() {
         return id;
     }
