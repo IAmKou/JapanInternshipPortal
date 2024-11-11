@@ -1,10 +1,8 @@
 package com.example.jip.services;
 
 import com.example.jip.dto.ClassDTO;
+import com.example.jip.entity.*;
 import com.example.jip.entity.Class;
-import com.example.jip.entity.Listt;
-import com.example.jip.entity.Student;
-import com.example.jip.entity.Teacher;
 import com.example.jip.repository.ClassRepository;
 import com.example.jip.repository.ListRepository;
 import com.example.jip.repository.StudentRepository;
@@ -49,6 +47,8 @@ public class ClassServices {
                     .orElseThrow(() -> new RuntimeException("Student not found with ID: " + studentId));
 
             Listt listEntry = new Listt();
+            ListId listId = new ListId(savedClass.getId(), student.getId());
+            listEntry.setId(listId);
             listEntry.setClas(savedClass);
             listEntry.setStudent(student);
 
