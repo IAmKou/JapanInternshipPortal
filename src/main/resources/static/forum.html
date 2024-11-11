@@ -77,6 +77,26 @@
         .create-thread-btn:hover {
             background-color: #0056b3;
         }
+
+        .page-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+        .page-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #pageNumber {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
     </style>
 
 </head>
@@ -640,6 +660,8 @@
     <span id="pageNumber">1</span>
     <button id="nextPage" class="page-btn" onclick="changePage(1)">&raquo;</button>
 </div>
+
+
 
 </body>
 </html>
