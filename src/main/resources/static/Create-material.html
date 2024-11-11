@@ -484,28 +484,35 @@
                             </div>
                         </div>
                         </div>
-                        <form class="new-added-form">
+                        <form id="materialForm" action="materials/create" method="POST" enctype="multipart/form-data" class="new-added-form">
                             <div class="row">
+                                <!-- Hidden input for teacher_id -->
+                                <input type="hidden" name="teacherId" id="teacherId" value="">
+
                                 <div class="col-7 form-group">
                                     <label>Title</label>
-                                    <input type="text" placeholder="" class="form-control">
+                                    <input type="text" name="title" placeholder="Enter title" class="form-control">
                                 </div>
 
                                 <div class="col-7 form-group">
                                     <label>Content</label>
-                                    <textarea class="textarea form-control" name="message" id="form-message" cols="10"
-                                        rows="9"></textarea>
+                                    <textarea class="textarea form-control" name="content" cols="10" rows="9"></textarea>
                                 </div>
+
                                 <div class="col-12 form-group">
-                                    <label class="text-dark-medium">File attach:</label>
-                                    <input type="file" class="form-control-file">
+                                    <label class="text-dark-medium">File Attach:</label>
+                                    <input type="file" name="img" class="form-control-file">
                                 </div>
+
                                 <div class="col-lg-6 col-12 form-group">
-                                    <button type="button" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" data-toggle="modal" data-target="#confirmationModal">Save</button>
+                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
                                     <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
                                 </div>
                             </div>
                         </form>
+
+
+
                     </div>
                 </div>
 
@@ -530,12 +537,7 @@
                     </div>
                 </div>
 
-                <script>
-                    function submitForm() {
-                        // Gửi form sau khi người dùng nhấn nút "Xác nhận"
-                        document.getElementById("materialForm").submit();
-                    }
-                </script>
+
                 <!-- Admit Form Area End Here -->
                 <footer class="footer-wrap-layout1">
                     <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a
@@ -563,7 +565,19 @@
     <script src="js/main.js"></script>
 
 </body>
+<script>
+    // Hàm để hiển thị modal xác nhận khi nhấn nút "Save"
+    document.getElementById("materialForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Ngăn chặn gửi form ngay lập tức
+        $('#confirmationModal').modal('show'); // Hiển thị modal xác nhận
+    });
 
+    // Hàm để gửi biểu mẫu khi người dùng nhấn "Xác nhận" trong modal
+    function submitForm() {
+        $('#confirmationModal').modal('hide'); // Đóng modal
+        document.getElementById("materialForm").submit(); // Gửi biểu mẫu
+    }
+</script>
 
 <!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/admit-form.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:46 GMT -->
 </html>

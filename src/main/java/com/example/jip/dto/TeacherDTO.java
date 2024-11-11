@@ -1,10 +1,12 @@
 package com.example.jip.dto;
 
+import com.example.jip.entity.Account;
 import com.example.jip.entity.Manager;
 import com.example.jip.entity.Teacher;
 
 public class TeacherDTO {
     private int id;
+    private Account account;
     private String fullname;
     private String jname;
     private String email;
@@ -16,6 +18,8 @@ public class TeacherDTO {
     
 
     public TeacherDTO(Teacher teacher) {
+        this.id = teacher.getId();
+        this.account = teacher.getAccount();
         this.fullname = teacher.getFullname();
         this.jname = teacher.getJname();
         this.email = teacher.getEmail();
@@ -24,13 +28,23 @@ public class TeacherDTO {
         this.img = teacher.getImg();
     }
 
-    public TeacherDTO(int id, String fullname, String jname, String img) {
-        this.id = id;
-        this.fullname = fullname;
-        this.jname = jname;
-        this.img = img;
+
+
+    public int getId() {
+        return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 
     public String getFullname() {
         return fullname;
@@ -78,13 +92,5 @@ public class TeacherDTO {
 
     public void setImg(String img) {
         this.img = img;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }
