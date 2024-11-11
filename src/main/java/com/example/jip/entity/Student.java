@@ -40,16 +40,13 @@ public class Student {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name="account_id", insertable = false, updatable = false)
-    private int accountId;
-
     @OneToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private Account account;
 
     public Student() {}
 
-    public Student(int id, String fullname, String japanname, Date dob, String passport, Gender gender, String phoneNumber, String img, String email, int accountId) {
+    public Student(int id, String fullname, String japanname, Date dob, String passport, Gender gender, String phoneNumber, String img, String email, Account account) {
         this.id = id;
         this.fullname = fullname;
         this.japanname = japanname;
@@ -59,7 +56,7 @@ public class Student {
         this.phoneNumber = phoneNumber;
         this.img = img;
         this.email = email;
-        this.accountId = accountId;
+        this.account = account;
     }
 
     public enum Gender {

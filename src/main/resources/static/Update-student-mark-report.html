@@ -386,17 +386,38 @@
                                     class="flaticon-checklist"></i><span>Attendence</span></a>
                         </li>
                         <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                            <ul class="nav sub-group-menu sub-group-active">
+                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
+                            <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
+                                    <a class="nav-link" href="exam-schedule.html"><i class="fas fa-angle-right"></i>Exam
                                         Schedule</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="View-list-student-mark-report.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Exam
+                                    <a class="nav-link" href="Update-student-mark-report.html"><i
+                                            class="fas fa-angle-right"></i>Exam Grades</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/markreport/view" class="nav-link menu-active"><i class="fas fa-angle-right"></i>View Exam
                                         Grades</a>
                                 </li>
                             </ul>
+
+                        </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create material</a>
+                                </li>
+
+                            </ul>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="View-list-materials.html"><i class="fas fa-angle-right"></i>View list materials</a>
+                                </li>
+
+                            </ul>
+
                         </li>
                         <li class="nav-item">
                             <a href="transport.html" class="nav-link"><i
@@ -465,184 +486,125 @@
                 </div>
                 <!-- Breadcubs Area End Here -->
                 <div class="row">
-                    <!-- Exam Grade Add Area Start Here -->
-                    
-                    <!-- Exam Grade Add Area End Here -->
-                    <!-- Exam Grade List Area Start Here -->
+                    <!-- Update Exam Grade Start Here -->
+
                     <div class="col-8-xxxl col-12">
                         <div class="card height-auto">
                             <div class="card-body">
                                 <div class="heading-layout1">
-
                                     <div class="item-title">
-                                        <h3>Teacher: .....</h3>
+                                        <h3>Teacher: <span th:text="${teacher.name}">Teacher Name</span></h3>
                                         <select style="height: 40px; font-size: 16px; padding: 8px; width: 100%;">
-                                            <option value="">Choose classes</option> <!-- Tùy chọn mặc định -->
-                                            <option value="class1">Lớp 1</option>
-                                            <option value="class2">Lớp 2</option>
-                                            <option value="class3">Lớp 3</option>
-                                            <option value="class4">Lớp 4</option>
+                                            <th:block th:each="classRoom : ${classRooms}">
+                                                <option th:value="${classRoom.id}" th:text="${classRoom.className}"></option>
+                                            </th:block>
                                         </select>
                                         <br>
                                         <br>
                                         <h3>Grading Details</h3>
                                     </div>
-
                                 </div>
 
-                                <form class="mg-b-20">
+                                <!-- Form for searching grades -->
+                                <form action="/search-student" method="get">
                                     <div class="row gutters-8">
-
                                         <div class="col-lg-5 col-sm-5 col-12 form-group">
-                                            <input type="text" placeholder="Search by Name..." class="form-control">
+                                            <input type="text" name="studentName" placeholder="Search by Name..." class="form-control" />
                                         </div>
                                         <div class="col-lg-2 col-sm-3 col-12 form-group">
-                                            <button type="submit"
-                                                class="fw-btn-fill btn-gradient-yellow">SEARCH</button>
+                                            <button type="submit" class="fw-btn-fill btn-gradient-yellow">SEARCH</button>
                                         </div>
                                     </div>
                                 </form>
-                                <div class="table-responsive">
-                                    <table class="table display data-table text-nowrap">
-                                        <thead>
+                                <!-- Form for updating grades -->
+                                <form action="/update-grade" method="POST" class="mg-b-20" style="width: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                                    <div class="table-responsive">
+                                        <table class="table display data-table text-nowrap" style="width: 100%;">
+                                            <thead>
                                             <tr>
-                                                <th>
-                                                        <label class="form-check-label">Roll</label>
-                                                </th>
-                                                <th>Name</th>
-                                                <th>Comment</th>
-                                                <th>Grade</th>
+                                                <th style="width: auto;">Roll</th>
+                                                <th style="width: auto;">Name</th>
+                                                <th style="width: auto;">Comment</th>
+                                                <th id="participationHeader" style="width: 12.5%; display: none;">Participation</th>
+                                                <th id="skillHeader" style="width: 12.5%; display: none;">Skills</th>
+                                                <th id="readingHeader" style="width: 12.5%; display: none;">Reading</th>
+                                                <th id="listeningHeader" style="width: 12.5%; display: none;">Listening</th>
+                                                <th id="speakingHeader" style="width: 12.5%; display: none;">Speaking</th>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="student : ${students}">
+                                                <td><label class="form-check-label" th:text="${student.rollNumber}"></label></td>
+                                                <td th:text="${student.name}"></td>
+                                                <td><input type="text" name="student_[[${student.id}]]_comment" class="form-control" style="height: 30px; font-size: 12px;" /></td>
 
-                                                        <label class="form-check-label">1</label>
-
-                                                </td>
-                                                <th>Nguyen Van A</th>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
+                                                <!-- Cột Participation -->
+                                                <td class="participationGradeCell" style="width: 12.5%; display: none;">
+                                                    <input type="text" name="student_[[${student.id}]]_participation_grade" class="form-control" style="height: 30px; font-size: 12px;" />
                                                 </td>
 
+                                                <!-- Cột Skills -->
+                                                <td class="skillsGradeCell" style="width: 12.5%; display: none;">
+                                                    <input type="text" name="student_[[${student.id}]]_skills_grade" class="form-control" style="height: 30px; font-size: 12px;" />
+                                                </td>
+
+                                                <!-- Cột Reading -->
+                                                <td class="readingGradeCell" style="width: 12.5%; display: none;">
+                                                    <input type="text" name="student_[[${student.id}]]_reading_grade" class="form-control" style="height: 30px; font-size: 12px;" />
+                                                </td>
+
+                                                <!-- Cột Listening -->
+                                                <td class="listeningGradeCell" style="width: 12.5%; display: none;">
+                                                    <input type="text" name="student_[[${student.id}]]_listening_grade" class="form-control" style="height: 30px; font-size: 12px;" />
+                                                </td>
+
+                                                <!-- Cột Speaking -->
+                                                <td class="speakingGradeCell" style="width: 12.5%; display: none;">
+                                                    <input type="text" name="student_[[${student.id}]]_speaking_grade" class="form-control" style="height: 30px; font-size: 12px;" />
+                                                </td>
                                             </tr>
-                                            <tr>
-                                                <td>
-                                                        <label class="form-check-label">2</label>
-                                                </td>
-                                                <th>Nguyen Van B</th>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-                                                
-                                                
+                                            </tbody>
+                                        </table>
 
-                                            </tr>
-                                            <tr>
-                                                <td>
+                                    </div>
 
-                                                        <label class="form-check-label">3</label>
-
-                                                </td>
-                                                <th>HE1</th>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>
-
-                                                        <label class="form-check-label">4</label>
-
-                                                </td>
-                                                <th>Nguyen Van C</th>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-
-                                            </tr>
-                                           
-                                            
-                                            <tr>
-                                                <td>
-
-                                                        <label class="form-check-label">5</label>
-
-                                                </td>
-                                                <th>Nguyen Van E</th>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control" /> <!-- Trường nhập điểm -->
-                                                </td>
-
-                                                
-
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                
-                            </div>
-                            <div class="button-group" style="margin: 20px ;">
-                                <button type="button" class="fw-btn-fill btn-gradient-yellow btn-sm" style="width: 80px;">Grade</button>
-
+                                    <div class="button-group" style="margin: 20px;">
+                                        <button type="submit" class="fw-btn-fill btn-gradient-yellow btn-sm" style="width: 80px;">UPDATE</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-                    <br>
-                    <br>
+
+                    <br><br>
+
+                    <!-- Grading components -->
                     <div class="grading-components">
                         <h3>Grading components</h3>
                         <fieldset>
                             <div>
-                                <label>
-                                    <input type="checkbox" name="grading_option" value="final_exam"> Participation
-                                </label>
+                                <label><input type="checkbox" name="grading_option" value="participation" onchange="updateGradeColumns()"> Participation</label>
                             </div>
                             <div>
-                                <label>
-                                    <input type="checkbox" name="grading_option" value="assignment"> Skills
-                                </label>
+                                <label><input type="checkbox" name="grading_option" value="skills" onchange="updateGradeColumns()"> Skills</label>
                             </div>
                             <div>
-                                <label>
-                                    <input type="checkbox" name="grading_option" value="assignment"> Reading
-                                </label>
+                                <label><input type="checkbox" name="grading_option" value="reading" onchange="updateGradeColumns()"> Reading</label>
                             </div>
                             <div>
-                                <label>
-                                    <input type="checkbox" name="grading_option" value="assignment"> Listening
-                                </label>
+                                <label><input type="checkbox" name="grading_option" value="listening" onchange="updateGradeColumns()"> Listening</label>
                             </div>
                             <div>
-                                <label>
-                                    <input type="checkbox" name="grading_option" value="assignment"> Speaking
-                                </label>
+                                <label><input type="checkbox" name="grading_option" value="speaking" onchange="updateGradeColumns()"> Speaking</label>
                             </div>
                         </fieldset>
-                       
                     </div>
-                    
-                
-                    <!-- Exam Grade List Area End Here -->
+
+
+
                 </div>
-                
+
+
                 <!-- All Subjects Area End Here -->
                 <footer class="footer-wrap-layout1">
                     <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by
@@ -672,7 +634,98 @@
     <script src="js/main.js"></script>
 
 </body>
+<script>
+    function getStudentsByClass() {
+        var classId = document.getElementById("classSelect").value;
+        if (classId) {
+            window.location.href = '/students?classId=' + classId;
+        }
+    }
+    function updateGradeColumns() {
+        // Lấy tất cả các checkbox đã chọn
+        var selectedOptions = document.querySelectorAll("input[name='grading_option']:checked");
 
+        // Tạo một mảng chứa các giá trị của checkbox đã chọn
+        var selectedValues = Array.from(selectedOptions).map(function(option) {
+            return option.value;
+        });
+
+        // Cập nhật cột "Participation"
+        var participationColumn = document.getElementById('participationHeader');
+        var participationCells = document.querySelectorAll('.participationGradeCell');
+        if (selectedValues.includes('participation')) {
+            participationColumn.style.display = 'table-cell'; // Hiển thị cột Participation
+            participationCells.forEach(function(cell) {
+                cell.style.display = 'table-cell'; // Hiển thị ô nhập điểm
+            });
+        } else {
+            participationColumn.style.display = 'none'; // Ẩn cột Participation
+            participationCells.forEach(function(cell) {
+                cell.style.display = 'none'; // Ẩn ô nhập điểm
+            });
+        }
+
+        // Cập nhật cột "Skills"
+        var skillsColumn = document.getElementById('skillHeader');
+        var skillsCells = document.querySelectorAll('.skillsGradeCell');
+        if (selectedValues.includes('skills')) {
+            skillsColumn.style.display = 'table-cell'; // Hiển thị cột Skills
+            skillsCells.forEach(function(cell) {
+                cell.style.display = 'table-cell'; // Hiển thị ô nhập điểm
+            });
+        } else {
+            skillsColumn.style.display = 'none'; // Ẩn cột Skills
+            skillsCells.forEach(function(cell) {
+                cell.style.display = 'none'; // Ẩn ô nhập điểm
+            });
+        }
+
+        // Cập nhật cột "Reading"
+        var readingColumn = document.getElementById('readingHeader');
+        var readingCells = document.querySelectorAll('.readingGradeCell');
+        if (selectedValues.includes('reading')) {
+            readingColumn.style.display = 'table-cell'; // Hiển thị cột Reading
+            readingCells.forEach(function(cell) {
+                cell.style.display = 'table-cell'; // Hiển thị ô nhập điểm
+            });
+        } else {
+            readingColumn.style.display = 'none'; // Ẩn cột Reading
+            readingCells.forEach(function(cell) {
+                cell.style.display = 'none'; // Ẩn ô nhập điểm
+            });
+        }
+
+        // Cập nhật cột "Listening"
+        var listeningColumn = document.getElementById('listeningHeader');
+        var listeningCells = document.querySelectorAll('.listeningGradeCell');
+        if (selectedValues.includes('listening')) {
+            listeningColumn.style.display = 'table-cell'; // Hiển thị cột Listening
+            listeningCells.forEach(function(cell) {
+                cell.style.display = 'table-cell'; // Hiển thị ô nhập điểm
+            });
+        } else {
+            listeningColumn.style.display = 'none'; // Ẩn cột Listening
+            listeningCells.forEach(function(cell) {
+                cell.style.display = 'none'; // Ẩn ô nhập điểm
+            });
+        }
+
+        // Cập nhật cột "Speaking"
+        var speakingColumn = document.getElementById('speakingHeader');
+        var speakingCells = document.querySelectorAll('.speakingGradeCell');
+        if (selectedValues.includes('speaking')) {
+            speakingColumn.style.display = 'table-cell'; // Hiển thị cột Speaking
+            speakingCells.forEach(function(cell) {
+                cell.style.display = 'table-cell'; // Hiển thị ô nhập điểm
+            });
+        } else {
+            speakingColumn.style.display = 'none'; // Ẩn cột Speaking
+            speakingCells.forEach(function(cell) {
+                cell.style.display = 'none'; // Ẩn ô nhập điểm
+            });
+        }
+    }
+</script>
 
 <!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/Update-student-mark-report.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>

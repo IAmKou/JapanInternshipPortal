@@ -1,8 +1,12 @@
 package com.example.jip.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
+
 @Entity
 @Table(name="Teacher")
 @Setter
@@ -32,16 +36,19 @@ public class Teacher {
     @Column(name="img")
     private String img;
 
-    @Column(name="account_id", insertable = false, updatable = false)
-    private int account_id;
-
     @OneToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private Account account;
+
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Class> classes;
+
 
     public Teacher(){}
 
-    public Teacher(int id, String fullname, String jname, String email, String phoneNumber, gender gender, String img, int account_id) {
+    public Teacher(int id, String fullname, String jname, String email, String phoneNumber, gender gender, String img, Account account) {
         this.id = id;
         Fullname = fullname;
         Jname = jname;
@@ -49,7 +56,7 @@ public class Teacher {
         PhoneNumber = phoneNumber;
         Gender = gender;
         this.img = img;
-        this.account_id = account_id;
+        this.account = account;
     }
 
     public enum gender{

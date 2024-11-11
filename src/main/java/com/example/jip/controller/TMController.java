@@ -31,10 +31,10 @@ public class TMController {
             , @RequestParam int role) {
 
         if (role == 3 ){
-            teacherServices.createTeacher(fullname, jname, gender, email, phoneNumber, img, account_id);
+            teacherServices.createTeacher(fullname, jname, email, phoneNumber, gender, img, account_id);
             return new RedirectView("/teacher.html");
         }else{
-            managerServices.createManager(fullname, jname, gender, email, phoneNumber, img, account_id);
+            managerServices.createManager(fullname, jname, email, phoneNumber, gender, img, account_id);
             return new RedirectView("/manager.html");
         }
     }

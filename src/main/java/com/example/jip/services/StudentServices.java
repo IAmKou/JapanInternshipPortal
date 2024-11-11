@@ -34,8 +34,7 @@ import java.util.Optional;
             student.setPhoneNumber(phoneNumber);
             student.setEmail(email);
             student.setImg(img);
-            student.setPassport(passport);
-            student.setAccountId(accountId);  // Use the accountId passed to the method
+            student.setAccount(accountOpt.get());
 
             // Save the student to the database
             return studentRepository.save(student);

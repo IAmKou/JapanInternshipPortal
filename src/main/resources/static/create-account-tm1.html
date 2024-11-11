@@ -36,7 +36,7 @@
     <div class="login-page-content">
         <div class="login-box">
             <form action="/tm/save" method="post" class="login-form">
-                <input type="hidden" name="account_id" id="account_id" value="${accountId}">
+                <input type="hidden" name="account_id" id="account_id" value="${account_id}">
                 <input type="hidden" name="role" id="role" value="${role}">
                 <div class="form-row">
                     <!-- Fullname and Japan Name -->
@@ -68,7 +68,7 @@
                     <!-- Phone Number and Gender -->
                     <div class="form-group col-md-6">
                         <label for="phone">Phone Number</label>
-                        <input type="text" name="phonenumber" placeholder="ex:012345678" id="phone" class="form-control">
+                        <input type="text" name="phoneNumber" placeholder="ex:012345678" id="phone" class="form-control">
                     </div>
                     <div class="form-group col-md-6">
                         <label for="img" >Profile Image</label>
@@ -80,11 +80,11 @@
                     <div class="form-group col-md-6">
                         <label style="font-weight: bold; color: #464c4d; font-size:14px;">Gender</label></br>
                         <div class="form-check-inline">
-                            <input type="radio" name="gender" value="male" id="male" class="form-check-input">
+                            <input type="radio" name="gender" value="Male" id="male" class="form-check-input">
                             <label for="male" class="form-check-label">Male</label>
                         </div>
                         <div class="form-check-inline">
-                            <input type="radio" name="gender" value="female" id="female" class="form-check-input">
+                            <input type="radio" name="gender" value="Female" id="female" class="form-check-input">
                             <label for="female" class="form-check-label">Female</label>
                         </div>
                     </div>
@@ -118,14 +118,15 @@
 <!-- Custom script -->
 <script>
     const urlParams = new URLSearchParams(window.location.search);
-    document.getElementById('accountId').value = urlParams.get('accountId');
+    document.getElementById('account_id').value = urlParams.get('account_id');
+    document.getElementById('role').value = urlParams.get('role');
 
     document.getElementById('studentForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
         const formData = new FormData(this);
 
-        fetch('/students/create', {
+        fetch('/tm/create', {
             method: 'POST',
             body: formData
         })

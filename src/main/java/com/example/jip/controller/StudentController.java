@@ -1,19 +1,20 @@
 package com.example.jip.controller;
 
+import com.example.jip.dto.StudentDTO;
+import com.example.jip.entity.Student;
+import com.example.jip.repository.StudentRepository;
 import com.example.jip.services.StudentServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/student")
@@ -21,6 +22,9 @@ import java.time.format.DateTimeParseException;
 public class StudentController {
     @Autowired
     StudentServices studentServices;
+
+    @Autowired
+    private StudentRepository studentRepository;
 
     @PostMapping("/save")
     public RedirectView saveStudent(
@@ -49,4 +53,11 @@ public class StudentController {
         studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, passport_img, account_id);
         return new RedirectView("/student.html");
     }
+
+    @GetMapping("/get")
+    public List<StudentDTO> getTopStudents() {
+        return studentRepository.findTop30UnassignedStudents();
+    }
+
+
 }

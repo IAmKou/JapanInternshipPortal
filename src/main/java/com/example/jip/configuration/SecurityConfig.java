@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .failureUrl("/login.html?error=true")  // Redirect on failure
                         .permitAll())
                 .logout(logout -> logout
-                        .logoutUrl("/perform_logout")
+                        .logoutUrl("/logout")
                         .logoutSuccessUrl("/login.html?logout=true")
                         .permitAll());
         return http.build();
