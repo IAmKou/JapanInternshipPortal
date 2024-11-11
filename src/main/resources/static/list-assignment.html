@@ -702,24 +702,22 @@
 <script src="js/main.js"></script>
 
 <script>
-    const API_BASE_URL = 'http://localhost:3306/JIP/teacher/assignment';
-    let currentAssignmentId;
+    const API_BASE_URL = 'http://localhost:8080/JIP/assignment';
 
-    // Function to fetch and display assignments in the table
     async function fetchAndDisplayAssignments() {
         try {
             const response = await fetch(`${API_BASE_URL}/list`);
             if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
+                throw new Error('Error fetching assignments: ' + response.statusText);
             }
             const assignments = await response.json();
 
+            // Clear existing rows in the table
             const tableBody = document.querySelector('table.data-table tbody');
-            tableBody.innerHTML = ''; // Clear existing rows
+            tableBody.innerHTML = '';
 
             assignments.forEach(assignment => {
                 const row = document.createElement('tr');
-
                 row.innerHTML = `
                 <td>${assignment.description}</td>
                 <td>${assignment.creatingDate}</td>
@@ -732,7 +730,7 @@
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
                                 <i class="fas fa-times text-orange-red"></i>Delete</a>
-                            <a class="dropdown-item" onclick="openPopup(${assignment.id})">
+                            <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
                                 <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
                             <a class="dropdown-item" onclick="showDetails(${assignment.id})">
                                 <i class="fas fa-info-circle text-orange-peel"></i>Detail</a>
@@ -743,54 +741,59 @@
                 tableBody.appendChild(row);
             });
         } catch (error) {
-            console.error('Error fetching assignments:', error);
+            console.error(error);
         }
     }
 
-    // Function to open popup for updating assignment
-    async function openPopup(assignmentId) {
+    // Initialize the table with assignments on page load
+    document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
+
+    //This function fetches the assignment details when you want to update it and fills in the form fields.
+    async function openUpdatePopup(assignmentId) {
         try {
-            const response = await fetch(`${API_BASE_URL}/add/${assignmentId}`);
+            const response = await fetch(`${API_BASE_URL}/update/${assignmentId}`);
             if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
+                throw new Error('Error fetching assignment for update: ' + response.statusText);
             }
             const assignment = await response.json();
 
-            // Fill form with assignment data
+            // Fill the form with the assignment data
             document.getElementById('description').value = assignment.description;
             document.getElementById('end_date').value = assignment.endDate;
             document.getElementById('content').value = assignment.content;
             document.getElementById('class_id').value = assignment.classId;
             document.getElementById('img').value = assignment.img;
 
-            // Set current assignment ID for reference
+            // Show the update popup
             currentAssignmentId = assignment.id;
-
-            // Show popup and overlay
             document.getElementById('assignmentPopup').style.display = 'flex';
             document.getElementById('overlay').style.display = 'flex';
         } catch (error) {
-            console.error('Error fetching assignment for update:', error);
+            console.error(error);
         }
     }
 
     // Function to update assignment
     async function updateAssignment(event) {
-        event.preventDefault();  // Prevent default form submission
+        event.preventDefault();
 
         const description = document.getElementById('description').value;
         const endDate = document.getElementById('end_date').value;
         const content = document.getElementById('content').value;
         const classId = document.getElementById('class_id').value;
-        const img = document.getElementById('img').value;
+        const imgFile = document.getElementById('img').files[0];
+
+        const formData = new FormData();
+        formData.append('description', description);
+        formData.append('endDate', endDate);
+        formData.append('content', content);
+        formData.append('classId', classId);
+        if (imgFile) formData.append('img', imgFile);
 
         try {
-            const response = await fetch(`${API_BASE_URL}/add/${currentAssignmentId}`, {
+            const response = await fetch(`${API_BASE_URL}/update/${currentAssignmentId}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ description, endDate, content, classId, img })
+                body: formData
             });
 
             if (response.ok) {
@@ -801,7 +804,7 @@
                 console.error('Error updating assignment:', response.statusText);
             }
         } catch (error) {
-            console.error('Error updating assignment:', error);
+            console.error(error);
         }
     }
 
@@ -812,16 +815,20 @@
     }
 
     // Function to close the delete confirmation modal
+    function openDeleteConfirmModal(assignmentId) {
+        document.getElementById('deleteConfirmModal').dataset.assignmentId = assignmentId;
+        document.getElementById('deleteConfirmModal').style.display = 'flex';
+    }
+
     function closeDeleteConfirmModal() {
         document.getElementById('deleteConfirmModal').style.display = 'none';
     }
 
-    // Function to confirm and delete the assignment
     async function confirmDelete() {
         const assignmentId = document.getElementById('deleteConfirmModal').dataset.assignmentId;
 
         try {
-            const response = await fetch(`${API_BASE_URL}/assignments/${assignmentId}`, {
+            const response = await fetch(`${API_BASE_URL}/delete/${assignmentId}`, {
                 method: 'DELETE'
             });
 
@@ -833,15 +840,34 @@
                 console.error('Error deleting assignment:', response.statusText);
             }
         } catch (error) {
-            console.error('Error deleting assignment:', error);
+            console.error(error);
         }
     }
 
-    // Initialize the table with assignments on page load
-    document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
+    //This function fetches and displays the assignment details in a modal or separate view.
+    async function showDetails(assignmentId) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/detail/${assignmentId}`);
+            if (!response.ok) {
+                throw new Error('Error fetching assignment details: ' + response.statusText);
+            }
+            const assignment = await response.json();
 
-    // Attach update form submission handler
-    document.querySelector('.new-added-form').addEventListener('submit', updateAssignment);
+            // Display details in a modal or a specific area
+            document.getElementById('assignmentDetails').innerHTML = `
+            <p>Description: ${assignment.description}</p>
+            <p>Creating Date: ${assignment.creatingDate}</p>
+            <p>End Date: ${assignment.endDate}</p>
+            <p>Content: ${assignment.content}</p>
+            <p>Class ID: ${assignment.classId}</p>
+            <img src="${assignment.img}" alt="Assignment Image" />
+        `;
+
+            document.getElementById('detailsModal').style.display = 'flex';
+        } catch (error) {
+            console.error(error);
+        }
+    }
 </script>
 
 </body>

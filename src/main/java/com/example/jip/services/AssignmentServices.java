@@ -10,7 +10,7 @@ import com.example.jip.repository.AssignmentRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,19 +20,20 @@ import java.util.NoSuchElementException;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-
 public class AssignmentServices {
 
-    @Autowired
     AssignmentRepository assignmentRepository;
 
-    @Autowired
     AssignmentMapper assignmentMapper;
+
+    @PreAuthorize("hasAuthority('TEACHER')")
     public List<AssignmentResponse> getAllAssignments(){
         return assignmentRepository.findAll().stream()
                 .map(assignmentMapper::toAssignmentResponse).toList();
     }
 
+
+    @PreAuthorize("hasAuthority('TEACHER')")
     public AssignmentResponse createAssignment(AssignmentCreationRequest request){
 
         Assignment assignment = assignmentMapper.toAssignment(request);
@@ -43,10 +44,12 @@ public class AssignmentServices {
 
     }
 
+    @PreAuthorize("hasAuthority('TEACHER')")
     public Assignment getAssignmentById(int assignmentId){
         return assignmentRepository.findById(assignmentId).orElseThrow(() -> new RuntimeException("Cant find assignment with id " + assignmentId));
     }
 
+    @PreAuthorize("hasAuthority('TEACHER')")
     public void deleteAssignmentById(int assignmentId){
         if (assignmentRepository.findById(assignmentId).isPresent()){
            assignmentRepository.deleteById(assignmentId);
@@ -55,11 +58,11 @@ public class AssignmentServices {
         }
     }
 
-
+    @PreAuthorize("hasAuthority('TEACHER')")
     public AssignmentResponse updateAssignment(int assignmentId, AssignmentUpdateRequest request) {
         Assignment assignment = assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new NoSuchElementException("Assignment id not found!"));
-            assignmentMapper.updateAssignemt(assignment, request);
+            assignmentMapper.updateAssigment(assignment, request);
 
             return assignmentMapper.toAssignmentResponse(assignmentRepository.save(assignment));
 

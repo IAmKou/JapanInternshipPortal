@@ -1,6 +1,7 @@
 package com.example.jip.controller;
 
 import com.example.jip.services.StudentServices;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import java.time.format.DateTimeParseException;
 
 @RestController
 @RequestMapping("/student")
+
 public class StudentController {
     @Autowired
     StudentServices studentServices;
@@ -41,6 +43,7 @@ public class StudentController {
             redirectView.addStaticAttribute("message", "Invalid date format. Use yyyy-MM-dd.");
             return redirectView;
         }
+
 
         Date date = Date.valueOf(localDate);
         studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, passport_img, account_id);
