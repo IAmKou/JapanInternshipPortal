@@ -12,6 +12,8 @@ public class TeacherDTO {
     private Teacher.gender gender;
     private String img;
 
+    public TeacherDTO() {}
+
     public TeacherDTO(Teacher teacher) {
         this.fullname = teacher.getFullname();
         this.jname = teacher.getJname();
@@ -27,6 +29,7 @@ public class TeacherDTO {
         this.jname = jname;
         this.img = img;
     }
+
 
     public String getFullname() {
         return fullname;

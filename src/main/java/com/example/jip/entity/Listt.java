@@ -7,7 +7,7 @@ import lombok.Setter;
 @Table(name = "List")
 @Setter
 @Getter
-public class List {
+public class Listt {
 
     @EmbeddedId
     private ListId id;
@@ -22,9 +22,9 @@ public class List {
     @JoinColumn(name = "student_id")
     private Student student;
 
-    public List(){}
+    public Listt(){}
 
-    public List(ListId id, Class clas, Student student) {
+    public Listt(ListId id, Class clas, Student student) {
         this.id = id;
         this.clas = clas;
         this.student = student;

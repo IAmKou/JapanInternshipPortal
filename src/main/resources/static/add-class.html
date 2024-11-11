@@ -496,15 +496,15 @@
                             </div>
                         </div>
                     </div>
-                    <form class="new-added-form">
+                    <form action="class/create" class="new-added-form" method="post" id="createClassForm">
                         <div class="row">
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label>Class Name</label>
-                                <input type="text" placeholder="" class="form-control">
+                                <label for="className">Class Name</label>
+                                <input type="text" id="className" placeholder="" name="className" class="form-control">
                             </div>
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label for="teacher">Teacher</label>
-                                <select id="teacher" class="select2">
+                                <select id="teacher" name="teacherId" class="select2">
 
 
                                 </select>
@@ -516,11 +516,14 @@
                                 </button>
                             </div>
 
-                            <div id = "studentList" class="table-responsive"></div>
+                            <div id = "studentList" class="table-responsive">
+                                <table class="table display data-table text-nowrap">
+                                </table>
+                            </div>
+                            <div id="studentCount"></div>
                             <div class="col-md-6 form-group"></div>
                             <div class="col-12 form-group mg-t-8">
-                                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark"
-                                        onclick="submitClass()">Save
+                                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save
                                 </button>
                                 <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
                             </div>
@@ -554,7 +557,6 @@
 <script src="js/main.js"></script>
 <!-- fetch student list -->
 <script>
-    // Function to fetch students and display them in the studentList div
     function fetchStudents() {
         fetch('/student/get')
             .then(response => {
@@ -565,31 +567,70 @@
             })
             .then(students => {
                 const studentListDiv = document.getElementById('studentList');
-                studentListDiv.innerHTML = ""; // Clear previous list if any
+                let table = studentListDiv.querySelector('.data-table');
+                if (!table) {
+                    table = document.createElement('table');
+                    table.className = 'data-table';
+                    studentListDiv.appendChild(table);
+                }
+
+                table.innerHTML = "";
 
                 if (students.length === 0) {
                     studentListDiv.innerHTML = "<p>No unassigned students available.</p>";
                     return;
                 }
 
-                // Create a list to display the students
-                const list = document.createElement('ul');
-                students.forEach(student => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = `${student.fullname}`;
-                    list.appendChild(listItem);
+                // Create header row
+                const headerRow = document.createElement('tr');
+                ['Select', 'Full Name', 'Japan Name', 'Gender'].forEach(text => {
+                    const headerCell = document.createElement('th');
+                    headerCell.textContent = text;
+                    headerRow.appendChild(headerCell);
                 });
-                studentListDiv.appendChild(list);
+                table.appendChild(headerRow);
+
+                // Add rows for students
+                students.forEach(student => {
+                    const row = document.createElement('tr');
+
+                    // Checkbox for selection, checked by default
+                    const selectCell = document.createElement('td');
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.value = student.id;
+                    checkbox.className = 'studentCheckbox';
+                    checkbox.checked = true;  // Default to checked
+                    selectCell.appendChild(checkbox);
+                    row.appendChild(selectCell);
+
+                    const fullnameCell = document.createElement('td');
+                    fullnameCell.textContent = student.fullname;
+                    row.appendChild(fullnameCell);
+
+                    const japannameCell = document.createElement('td');
+                    japannameCell.textContent = student.jname;
+                    row.appendChild(japannameCell);
+
+                    const genderCell = document.createElement('td');
+                    genderCell.textContent = student.gender;
+                    row.appendChild(genderCell);
+
+                    table.appendChild(row);
+                });
+
+                const studentCountDiv = document.getElementById('studentCount');
+                studentCountDiv.textContent = `Total Students: ${students.length}`;
             })
             .catch(error => {
                 console.error("Error fetching students:", error);
-                alert("There was an error fetching students. Please try again.");
+                alert("There was an error fetching students");
             });
     }
 
+    function submitClass(event) {
+        event.preventDefault();
 
-
-    function submitClass() {
         const className = document.getElementById("className").value;
         const teacherId = document.getElementById("teacher").value;
 
@@ -598,9 +639,27 @@
             return;
         }
 
+        // Gather IDs of unchecked students
+        const uncheckedStudents = Array.from(document.querySelectorAll('.studentCheckbox:not(:checked)'))
+            .map(checkbox => checkbox.value);
 
-        fetch(`/classes/autoCreateWithTop30?className=${className}&teacherId=${teacherId}`, {
-            method: 'POST'
+        // Gather all student IDs, excluding unchecked ones
+        const allStudents = Array.from(document.querySelectorAll('.studentCheckbox'))
+            .filter(checkbox => !uncheckedStudents.includes(checkbox.value))
+            .map(checkbox => checkbox.value);
+
+        const data = {
+            className,
+            teacherId,
+            studentIds: allStudents
+        };
+
+        fetch('/class/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
         })
             .then(response => {
                 if (!response.ok) {
@@ -611,7 +670,6 @@
             .then(data => alert(data))  // Handle successful class creation
             .catch(error => alert("Error creating class: " + error));  // Handle errors
     }
-
 
 </script>
 <!-- fetch teacher -->

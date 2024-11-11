@@ -8,6 +8,8 @@ public class ClassDTO {
 
     public ClassDTO() {}
 
+
+
     public ClassDTO(int id, String name, int numberOfStudents, TeacherDTO teacher) {
         this.id = id;
         this.name = name;
