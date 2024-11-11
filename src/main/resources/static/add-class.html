@@ -101,7 +101,7 @@
                                 <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
                                 </li>
                                 <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                <li><a href="login.html"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
                     </div>
@@ -516,7 +516,7 @@
                                 </button>
                             </div>
 
-                            <div id = "studentList" class="table-responsive">
+                            <div id="studentList" class="table-responsive">
                                 <table class="table display data-table text-nowrap">
                                 </table>
                             </div>
@@ -627,30 +627,28 @@
                 alert("There was an error fetching students");
             });
     }
+</script>
 
-    function submitClass(event) {
+<script>
+    document.getElementById('createClassForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
         const className = document.getElementById("className").value;
-        const teacherId = document.getElementById("teacher").value;
+        const teacherId = parseInt(document.getElementById("teacher").value);
+        const allStudents = Array.from(document.querySelectorAll('.studentCheckbox:checked'))
+            .map(checkbox => parseInt(checkbox.value));
 
         if (!className || !teacherId) {
             alert("Please provide both class name and teacher.");
             return;
         }
 
-        // Gather IDs of unchecked students
-        const uncheckedStudents = Array.from(document.querySelectorAll('.studentCheckbox:not(:checked)'))
-            .map(checkbox => checkbox.value);
-
-        // Gather all student IDs, excluding unchecked ones
-        const allStudents = Array.from(document.querySelectorAll('.studentCheckbox'))
-            .filter(checkbox => !uncheckedStudents.includes(checkbox.value))
-            .map(checkbox => checkbox.value);
-
         const data = {
-            className,
-            teacherId,
+            name : className,
+            numberOfStudents: allStudents.length,
+            teacher: {
+                id: teacherId
+            },
             studentIds: allStudents
         };
 
@@ -667,10 +665,9 @@
                 }
                 return response.text();
             })
-            .then(data => alert(data))  // Handle successful class creation
-            .catch(error => alert("Error creating class: " + error));  // Handle errors
-    }
-
+            .then(data => alert(data))  // Display success message
+            .catch(error => alert("Error creating class: " + error));
+    });
 </script>
 <!-- fetch teacher -->
 <script>
