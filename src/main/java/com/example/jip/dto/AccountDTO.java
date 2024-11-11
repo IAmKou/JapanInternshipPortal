@@ -53,6 +53,9 @@ public class AccountDTO {
         }
     }
 
+    public AccountDTO() {
+    }
+
     public Integer getId() {
         return id;
     }
