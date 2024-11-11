@@ -14,6 +14,8 @@ public class TeacherDTO {
     private Teacher.gender gender;
     private String img;
 
+
+
     public TeacherDTO(Teacher teacher) {
         this.id = teacher.getId();
         this.account = teacher.getAccount();
@@ -24,6 +26,8 @@ public class TeacherDTO {
         this.gender = teacher.getGender();
         this.img = teacher.getImg();
     }
+
+
 
     public int getId() {
         return id;
