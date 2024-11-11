@@ -572,8 +572,34 @@
                     <div class="thread-description">We'd love to hear your thoughts on how to improve the forum.</div>
                 </div>
             </div>
+
+            <div class="thread-box">
+                <div class="thread-thumbnail"></div>
+                <div class="thread-content">
+                    <div class="thread-title">Thread 4: Feedback and Suggestions</div>
+                    <div class="thread-description">We'd love to hear your thoughts on how to improve the forum.</div>
+                </div>
+            </div>
+
+            <div class="thread-box">
+                <div class="thread-thumbnail"></div>
+                <div class="thread-content">
+                    <div class="thread-title">Thread 5: Feedback and Suggestions</div>
+                    <div class="thread-description">We'd love to hear your thoughts on how to improve the forum.</div>
+                </div>
+            </div>
             <!-- Thread List End -->
+
+            <!-- Pagination Controls -->
+            <div class="pagination-controls text-center" style="margin-top: 20px;">
+                <button id="prevPage" class="page-btn" onclick="changePage(-1)" disabled>&laquo;</button>
+                <span id="pageNumber">1</span>
+                <button id="nextPage" class="page-btn" onclick="changePage(1)">&raquo;</button>
+            </div>
+
         </div>
+
+
         <!-- Main Body Content End Here -->
     </div>
 
@@ -618,6 +644,7 @@
             </div>
         </div>
     </div>
+
     <!-- Footer Start Here -->
     <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
         <div style="background-color: #ec9006; padding: 15px;">
@@ -654,12 +681,7 @@
 <!-- Custom Js -->
 <script src="js/main.js"></script>
 
-<!-- Pagination Controls -->
-<div class="pagination-controls text-center" style="margin-top: 20px;">
-    <button id="prevPage" class="page-btn" onclick="changePage(-1)" disabled>&laquo;</button>
-    <span id="pageNumber">1</span>
-    <button id="nextPage" class="page-btn" onclick="changePage(1)">&raquo;</button>
-</div>
+
 
 <script>
     let currentPage = 1;
