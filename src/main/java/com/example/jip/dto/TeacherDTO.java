@@ -28,7 +28,12 @@ public class TeacherDTO {
         this.img = teacher.getImg();
     }
 
-
+    public TeacherDTO(int id, String fullname, String jname, String img) {
+        this.id = id;
+        this.fullname = fullname;
+        this.jname = jname;
+        this.img = img;
+    }
 
     public int getId() {
         return id;
