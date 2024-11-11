@@ -14,7 +14,8 @@ public class TeacherDTO {
     private Teacher.gender gender;
     private String img;
 
-
+    public TeacherDTO() {}
+    
 
     public TeacherDTO(Teacher teacher) {
         this.id = teacher.getId();

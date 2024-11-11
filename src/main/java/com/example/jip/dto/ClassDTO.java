@@ -1,30 +1,21 @@
 package com.example.jip.dto;
 
+import java.util.List;
+
 public class ClassDTO {
-    private int id;
     private String name;
     private int numberOfStudents;
     private TeacherDTO teacher;
+    private List<Integer> studentIds; // Add this field
 
     public ClassDTO() {}
 
-
-
-    public ClassDTO(int id, String name, int numberOfStudents, TeacherDTO teacher) {
-        this.id = id;
+    public ClassDTO(String name, int numberOfStudents, TeacherDTO teacher, List<Integer> studentIds) {
         this.name = name;
         this.numberOfStudents = numberOfStudents;
         this.teacher = teacher;
+        this.studentIds = studentIds;
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -47,5 +38,13 @@ public class ClassDTO {
 
     public void setTeacher(TeacherDTO teacher) {
         this.teacher = teacher;
+    }
+
+    public List<Integer> getStudentIds() {
+        return studentIds;
+    }
+
+    public void setStudentIds(List<Integer> studentIds) {
+        this.studentIds = studentIds;
     }
 }
