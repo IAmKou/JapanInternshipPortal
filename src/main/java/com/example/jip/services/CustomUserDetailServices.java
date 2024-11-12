@@ -1,5 +1,6 @@
 package com.example.jip.services;
 
+import com.example.jip.configuration.CustomUserDetail;
 import com.example.jip.entity.Account;
 import com.example.jip.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,11 @@ public class CustomUserDetailServices implements UserDetailsService {
         List<GrantedAuthority> grantedAuthorities = List.of(new SimpleGrantedAuthority
                 (account.getRole().getName()));
 
-        return new org.springframework.security.core.userdetails.User(
+        return new CustomUserDetail(
                 account.getUsername(),
                 account.getPassword(),
+                account.getId(),
+                account.getRole().getId(),
                 grantedAuthorities);
     }
 }
