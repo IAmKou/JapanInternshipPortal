@@ -31,16 +31,15 @@ public class ClassServices {
         Teacher teacher = teacherRepository.findById(classDTO.getTeacher().getId())
                 .orElseThrow(() -> new RuntimeException("Teacher not found with ID: " + classDTO.getTeacher().getId()));
 
-        // Create and save the Class entity
+
         Class newClass = new Class();
         newClass.setName(classDTO.getName());
         newClass.setTeacher(teacher);
         newClass.setNumber_of_student(studentIds.size());
 
-        // Save the Class entity
+
         Class savedClass = classRepository.save(newClass);
 
-        // Create and save entries in List table to link students to this class
         for (Integer studentId : studentIds) {
             Student student = studentRepository.findById(studentId)
                     .orElseThrow(() -> new RuntimeException("Student not found with ID: " + studentId));
@@ -51,7 +50,6 @@ public class ClassServices {
             listEntry.setClas(savedClass);
             listEntry.setStudent(student);
 
-            // Save each List entry
             listRepository.save(listEntry);
         }
 
