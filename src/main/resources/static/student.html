@@ -83,8 +83,8 @@
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
                         <div class="admin-title">
-                            <h5 class="item-title">Stevne Zone</h5>
-                            <span>Admin</span>
+                            <h5 class="item-title userFullName"></h5>
+                            <span class = "userRole"></span>
                         </div>
                         <div class="admin-img">
                             <img src="img/figure/admin.jpg" alt="Admin">
@@ -92,7 +92,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="item-header">
-                            <h6 class="item-title">Steven Zone</h6>
+                            <h6 class="item-title userFullName"></h6>
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
@@ -518,7 +518,7 @@
                                         <img src="img/figure/student.png" class="media-img-auto" alt="student">
                                     </div>
                                     <div class="media-body">
-                                        <h3 class="item-title">Jessia Rose</h3>
+                                        <h3 class="item-title userFullName"></h3>
                                     </div>
                                 </div>
                                 <div class="table-responsive info-table">
@@ -526,27 +526,27 @@
                                         <tbody>
                                         <tr>
                                             <td>Name:</td>
-                                            <td class="font-medium text-dark-medium">Jessia Rose</td>
+                                            <td class="font-medium text-dark-medium userFullName"></td>
                                         </tr>
                                         <tr>
                                             <td>Japan Name:</td>
-                                            <td class="font-medium text-dark-medium">Fahim Rahman</td>
+                                            <td class="font-medium text-dark-medium" id="userJapanname"></td>
                                         </tr>
                                         <tr>
                                             <td>Gender:</td>
-                                            <td class="font-medium text-dark-medium">Female</td>
+                                            <td class="font-medium text-dark-medium" id="userGender"></td>
                                         </tr>
                                         <tr>
                                             <td>Date Of Birth:</td>
-                                            <td class="font-medium text-dark-medium">07.08.2006</td>
+                                            <td class="font-medium text-dark-medium" id="userDob"></td>
                                         </tr>
                                         <tr>
                                             <td>E-Mail:</td>
-                                            <td class="font-medium text-dark-medium">jessiarose@gmail.com</td>
+                                            <td class="font-medium text-dark-medium" id="userEmail"></td>
                                         </tr>
                                         <tr>
                                             <td>Phone:</td>
-                                            <td class="font-medium text-dark-medium">+ 88 9856418</td>
+                                            <td class="font-medium text-dark-medium" id="userPhone"></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -1120,8 +1120,45 @@
 <script src="js/main.js"></script>
 <!-- fetch profile -->
 <script>
+    (async function fetchUserData() {
+        try {
+            const response = await fetch('/user-detail');
+            if (response.ok) {
+                const userData = await response.json();
+                sessionStorage.setItem('userDetails', JSON.stringify(userData));
+                console.log("User data stored in sessionStorage:", userData);
+                
+                updateUserDetails(userData);
+            } else {
+                console.error("Failed to fetch user details:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error fetching user details:", error);
+        }
+    })();
 
+
+    function updateUserDetails(userDetails) {
+        if (userDetails) {
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            const userRoleElements = document.querySelectorAll('.userRole');
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+            document.getElementById('userJapanname').textContent = userDetails.jname;
+            document.getElementById('userGender').textContent = userDetails.gender;
+            document.getElementById('userEmail').textContent = userDetails.email;
+            document.getElementById('userDob').textContent = userDetails.dob;
+            document.getElementById('userPhone').textContent = userDetails.phoneNumber;
+        } else {
+            console.error("User details not found in sessionStorage");
+        }
+    }
 </script>
+
 
 </body>
 

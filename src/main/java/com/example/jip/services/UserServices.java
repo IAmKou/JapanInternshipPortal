@@ -1,36 +1,23 @@
 package com.example.jip.services;
 
-import com.example.jip.entity.Manager;
-import com.example.jip.entity.Student;
-import com.example.jip.entity.Teacher;
-import com.example.jip.repository.ManagerRepository;
-import com.example.jip.repository.StudentRepository;
-import com.example.jip.repository.TeacherRepository;
+import com.example.jip.dto.AccountDTO;
+import com.example.jip.entity.Account;
+import com.example.jip.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.NoSuchElementException;
+
 
 @Service
 public class UserServices {
     @Autowired
-    private StudentRepository studentRepository;
+    private AccountRepository accountRepository;
 
-    @Autowired
-    private TeacherRepository teacherRepository;
-
-    @Autowired
-    private ManagerRepository managerRepository;
-
-    public Optional<Student> getStudentByAccountId(int accountId) {
-        return studentRepository.findByAccount_id(accountId);
+    public AccountDTO getProfileById(int id) {
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Account not found with id " + id));
+         return new AccountDTO(account);
     }
-    public Optional<Teacher> getTeacherByAccountId(int accountId) {
-        return teacherRepository.findByAccount_id(accountId);
-    }
-    public Optional<Manager> getManagerByAccountId(int accountId) {
-        return managerRepository.findByAccount_id(accountId);
-    }
-
 
 }

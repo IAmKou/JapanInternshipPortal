@@ -9,16 +9,15 @@ public class CustomUserDetail implements UserDetails {
     private String username;
     private String password;
     private int accountId;
-    private int roleId;
+
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetail(String username, String password, int accountId, int roleId, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetail(String username, String password, int accountId, Collection<? extends GrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
         this.accountId = accountId;
         this.authorities = authorities;
-        this.roleId = roleId;
     }
 
     public int getAccountId() {
@@ -59,10 +58,4 @@ public class CustomUserDetail implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-    public int getRoleId() {
-        return roleId;
-    }
-
-
 }
-
