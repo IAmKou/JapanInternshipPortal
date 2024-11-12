@@ -396,6 +396,24 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create
+                                        material</a>
+                                </li>
+
+                            </ul>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="View-list-materials.html"><i class="fas fa-angle-right"></i>View
+                                        list materials</a>
+                                </li>
+
+                            </ul>
+
+                        </li>
                         <li class="nav-item">
                             <a href="transport.html" class="nav-link"><i
                                     class="flaticon-bus-side-view"></i><span>Transport</span></a>
@@ -487,7 +505,7 @@
                         <form id="materialForm" action="materials/create" method="POST" enctype="multipart/form-data" class="new-added-form">
                             <div class="row">
                                 <!-- Hidden input for teacher_id -->
-                                <input type="hidden" name="teacherId" id="teacherId" value="">
+                                <input type="hidden" name="teacher_id" id="teacherId" value="">
 
                                 <div class="col-7 form-group">
                                     <label>Title</label>
@@ -575,6 +593,19 @@
     // Hàm để gửi biểu mẫu khi người dùng nhấn "Xác nhận" trong modal
     function submitForm() {
         $('#confirmationModal').modal('hide'); // Đóng modal
+
+        // Lấy giá trị teacherId từ trường ẩn
+        const teacherId = document.getElementById('teacherId').value;
+
+        // Kiểm tra xem teacherId có hợp lệ không
+        console.log('Teacher ID:', teacherId);  // In ra giá trị của teacherId để kiểm tra
+
+        if (!teacherId || teacherId.trim() === "") {
+            alert('Teacher ID is required.');
+            return;
+        }
+
+        // Nếu có, gửi form
         document.getElementById("materialForm").submit(); // Gửi biểu mẫu
     }
 </script>

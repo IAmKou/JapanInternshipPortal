@@ -14,6 +14,7 @@ public class TeacherDTO {
     private Teacher.gender gender;
     private String img;
 
+    public TeacherDTO() {}
 
 
     public TeacherDTO(Teacher teacher) {
@@ -27,6 +28,12 @@ public class TeacherDTO {
         this.img = teacher.getImg();
     }
 
+    public TeacherDTO(int id, String fullname, String jname, String img){
+        this.id = id;
+        this.fullname = fullname;
+        this.jname = jname;
+        this.img = img;
+    }
 
 
     public int getId() {
