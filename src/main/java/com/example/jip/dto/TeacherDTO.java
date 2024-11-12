@@ -15,7 +15,6 @@ public class TeacherDTO {
     private String img;
 
     public TeacherDTO() {}
-    
 
     public TeacherDTO(Teacher teacher) {
         this.id = teacher.getId();
