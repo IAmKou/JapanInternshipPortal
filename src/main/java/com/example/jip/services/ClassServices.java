@@ -28,7 +28,6 @@ public class ClassServices {
     private TeacherRepository teacherRepository;
 
     public Class saveClassWithStudents(ClassDTO classDTO, List<Integer> studentIds) {
-        // Convert TeacherDTO to Teacher entity
         Teacher teacher = teacherRepository.findById(classDTO.getTeacher().getId())
                 .orElseThrow(() -> new RuntimeException("Teacher not found with ID: " + classDTO.getTeacher().getId()));
 
