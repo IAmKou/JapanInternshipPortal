@@ -15,11 +15,6 @@ public class TeacherDTO {
     private String img;
 
     public TeacherDTO() {}
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> a37265f0064c61f663ad8a86ed4408b3c376f2c2
 
     public TeacherDTO(Teacher teacher) {
         this.id = teacher.getId();
