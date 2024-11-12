@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
     Optional<Teacher> findById(Integer id);
+    Optional<Teacher> findByAccount_id(Integer account_id);
 
 
 }
