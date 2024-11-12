@@ -584,7 +584,26 @@
 
 </body>
 <script>
-    // Hàm để hiển thị modal xác nhận khi nhấn nút "Save"
+    document.addEventListener("DOMContentLoaded", function() {
+        // Gọi API để lấy thông tin giáo viên hiện tại
+        fetch("/teachers/current")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to fetch teacher data");
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Giả sử dữ liệu trả về có thuộc tính "id" cho teacherId
+                const teacherId = data.id;
+                console.log("Teacher ID: ", teacherId); // Kiểm tra giá trị teacherId
+                document.getElementById("teacherId").value = teacherId; // Gán vào trường ẩn
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    });
+
     document.getElementById("materialForm").addEventListener("submit", function(event) {
         event.preventDefault(); // Ngăn chặn gửi form ngay lập tức
         $('#confirmationModal').modal('show'); // Hiển thị modal xác nhận
@@ -598,15 +617,13 @@
         const teacherId = document.getElementById('teacherId').value;
 
         // Kiểm tra xem teacherId có hợp lệ không
-        console.log('Teacher ID:', teacherId);  // In ra giá trị của teacherId để kiểm tra
-
         if (!teacherId || teacherId.trim() === "") {
             alert('Teacher ID is required.');
             return;
         }
 
-        // Nếu có, gửi form
-        document.getElementById("materialForm").submit(); // Gửi biểu mẫu
+        // Gửi form
+        document.getElementById("materialForm").submit();
     }
 </script>
 
