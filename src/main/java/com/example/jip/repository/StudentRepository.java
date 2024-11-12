@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ public interface StudentRepository extends CrudRepository<Student, Integer> {
     Optional<Student> findById(Integer id);
     Optional<Student> findByEmail(String email);
     Optional<Student> findByPhoneNumber(String phoneNumber);
+    Optional<Student> findByAccount_id(Integer account_id);
 
 
     @Query("SELECT new com.example.jip.dto.StudentDTO(s) " +
