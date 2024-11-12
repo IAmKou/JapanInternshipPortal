@@ -1,13 +1,12 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.ClassDTO;
-import com.example.jip.dto.TeacherDTO;
+import com.example.jip.repository.ClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.jip.services.ClassServices;
 import com.example.jip.entity.Class;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/class")
@@ -15,21 +14,26 @@ public class ClassController {
     @Autowired
     private ClassServices classServices;
 
+    @Autowired
+    private ClassRepository classRepository;
+
     @PostMapping("/create")
-    public String createClass(@RequestParam String className, @RequestParam int teacherId,  @RequestBody List<Integer> studentIds) {
-        ClassDTO classDTO = new ClassDTO();
-        classDTO.setName(className);
-        classDTO.setNumberOfStudents(studentIds.size());
+    public String createClass(@RequestBody ClassDTO classDTO) {
+        if (classDTO.getName() == null || classDTO.getName().isEmpty()) {
+            throw new IllegalArgumentException("Class name is required");
+        }
+        if (classDTO.getTeacher() == null || classDTO.getTeacher().getId() == 0) {
+            throw new IllegalArgumentException("Teacher ID is required");
+        }
+        int classCount = classRepository.countByTeacherId(classDTO.getTeacher().getId());
+        if (classCount >= 3) {
+            return "This teacher already has the maximum number of classes (3).";
+        }
 
-        TeacherDTO teacherDTO = new TeacherDTO();
-        teacherDTO.setId(teacherId);
-        classDTO.setTeacher(teacherDTO);
 
-        Class savedClass = classServices.saveClassWithStudents(classDTO, studentIds);
+        Class savedClass = classServices.saveClassWithStudents(classDTO, classDTO.getStudentIds());
         return "Class " + savedClass.getName() + " created with ID: " + savedClass.getId();
-
-
-
     }
+
 
 }

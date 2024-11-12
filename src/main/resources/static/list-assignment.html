@@ -89,7 +89,7 @@
             margin-top: 10px;
         }
 
-        form input, form textarea {
+        form input, form textarea, form select {
             padding: 10px;
             margin-top: 5px;
             border: 1px solid #ccc;
@@ -619,41 +619,32 @@
                         <table class="table display data-table text-nowrap">
                             <thead>
                             <tr>
-                                <th>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input checkAll">
-                                        <label class="form-check-label">ID</label>
-                                    </div>
-                                </th>
+                                <th>Description</th>
                                 <th>Creating Date</th>
                                 <th>End Date</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input">
-                                        <label class="form-check-label">#001</label>
-                                    </div>
-                                </td>
-                                <td>2019</td>
-                                <td>12.02.2019</td>
-                                <td>
-                                    <div class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                            <span class="flaticon-more-button-of-three-dots"></span>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" onclick="openDeleteConfirmModal()"><i class="fas fa-times text-orange-red"></i>Delete</a>
-                                            <a class="dropdown-item" onclick="openPopup()"><i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
-                                            <a class="dropdown-item" href="#"><i class="fas fa-info-circle text-orange-peel"></i>Detail</a>
-                                        </div>
+<!--                            <tr>-->
 
-                                    </div>
-                                </td>
-                            </tr>
+<!--                                <td>Assignment 1</td>-->
+<!--                                <td>2019</td>-->
+<!--                                <td>12.02.2019</td>-->
+<!--                                <td>-->
+<!--                                    <div class="dropdown">-->
+<!--                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">-->
+<!--                                            <span class="flaticon-more-button-of-three-dots"></span>-->
+<!--                                        </a>-->
+<!--                                        <div class="dropdown-menu dropdown-menu-right">-->
+<!--                                            <a class="dropdown-item" onclick="openDeleteConfirmModal()"><i class="fas fa-times text-orange-red"></i>Delete</a>-->
+<!--                                            <a class="dropdown-item" onclick="openPopup()"><i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>-->
+<!--                                            <a class="dropdown-item" href="#"><i class="fas fa-info-circle text-orange-peel"></i>Detail</a>-->
+<!--                                        </div>-->
+
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
 
                             </tbody>
                         </table>
@@ -669,14 +660,26 @@
         <div id="assignmentPopup" class="popup">
             <div class="popup-content">
                 <span class="close" onclick="closePopup()">&times;</span>
-                <h2>Create Assignment</h2>
-                <form action="assignment/update/" method="post">
+                <h2>Update Assignment</h2>
+                <form class="new-added-form" action="javascript:void(0);" onsubmit="updateAssignment(event)">
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" name="description" ></input>
 
                     <label for="end_date">End Date:</label>
                     <input type="date" id="end_date" name="end_date" >
 
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description" rows="4" ></textarea>
+                    <label for="content">Description:</label>
+                    <textarea id="content" name="content" rows="4" ></textarea>
+
+
+                    <label for="class_id">For Class *</label>
+                        <select  name="class_id" id="class_id" >
+                            <option value="">Please Select Class *</option>
+                            <option value="1">Class 1</option>
+                            <option value="2">Class 2</option>
+                            <option value="3">Class 3</option>
+                        </select>
+
 
                     <label for="img">Image URL:</label>
                     <input type="file" id="img" name="img">
@@ -701,31 +704,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog"
-             aria-hidden="true">
-            <div class="modal-dialog success-modal-content" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"
-                                aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="success-message">
-                            <div class="item-icon">
-                                <i class="fas fa-exclamation"></i>
-                            </div>
-                            <h3 class="item-title">You want to delete this file ?</h3>
-                        </div> </div>
-                    <div class="modal-footer">
-                        <button type="button" class="footer-btn bg-linkedin">Ok</button>
-                        <button type="button" class="footer-btn bg-dark-low"
-                                data-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 
     <!-- Page Area End Here -->
@@ -746,40 +725,174 @@
 <script src="js/main.js"></script>
 
 <script>
-    // Open popup and show overlay
-    function openPopup() {
-        document.getElementById('assignmentPopup').style.display = 'flex';
-        document.getElementById('overlay').style.display = 'flex';
+    const API_BASE_URL = 'http://localhost:8080/JIP/assignment';
+
+    async function fetchAndDisplayAssignments() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/list`);
+            if (!response.ok) {
+                throw new Error('Error fetching assignments: ' + response.statusText);
+            }
+            const assignments = await response.json();
+
+            // Clear existing rows in the table
+            const tableBody = document.querySelector('table.data-table tbody');
+            tableBody.innerHTML = '';
+
+            assignments.forEach(assignment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>${assignment.description}</td>
+                <td>${assignment.creatingDate}</td>
+                <td>${assignment.endDate}</td>
+                <td>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="flaticon-more-button-of-three-dots"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
+                                <i class="fas fa-times text-orange-red"></i>Delete</a>
+                            <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
+                                <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
+                            <a class="dropdown-item" onclick="showDetails(${assignment.id})">
+                                <i class="fas fa-info-circle text-orange-peel"></i>Detail</a>
+                        </div>
+                    </div>
+                </td>
+            `;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error(error);
+        }
     }
 
-    // Close popup and hide overlay
-    function closePopup() {
-        document.getElementById('assignmentPopup').style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
+    // Initialize the table with assignments on page load
+    document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
+
+    //This function fetches the assignment details when you want to update it and fills in the form fields.
+    async function openUpdatePopup(assignmentId) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/update/${assignmentId}`);
+            if (!response.ok) {
+                throw new Error('Error fetching assignment for update: ' + response.statusText);
+            }
+            const assignment = await response.json();
+
+            // Fill the form with the assignment data
+            document.getElementById('description').value = assignment.description;
+            document.getElementById('end_date').value = assignment.endDate;
+            document.getElementById('content').value = assignment.content;
+            document.getElementById('class_id').value = assignment.classId;
+            document.getElementById('img').value = assignment.img;
+
+            // Show the update popup
+            currentAssignmentId = assignment.id;
+            document.getElementById('assignmentPopup').style.display = 'flex';
+            document.getElementById('overlay').style.display = 'flex';
+        } catch (error) {
+            console.error(error);
+        }
     }
+
+    // Function to update assignment
+    async function updateAssignment(event) {
+        event.preventDefault();
+
+        const description = document.getElementById('description').value;
+        const endDate = document.getElementById('end_date').value;
+        const content = document.getElementById('content').value;
+        const classId = document.getElementById('class_id').value;
+        const imgFile = document.getElementById('img').files[0];
+
+        const formData = new FormData();
+        formData.append('description', description);
+        formData.append('endDate', endDate);
+        formData.append('content', content);
+        formData.append('classId', classId);
+        if (imgFile) formData.append('img', imgFile);
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/update/${currentAssignmentId}`, {
+                method: 'PUT',
+                body: formData
+            });
+
+            if (response.ok) {
+                alert('Assignment updated successfully!');
+                closePopup();
+                fetchAndDisplayAssignments();
+            } else {
+                console.error('Error updating assignment:', response.statusText);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     // Function to open the delete confirmation modal
-    function openDeleteConfirmModal() {
-
+    function openDeleteConfirmModal(assignmentId) {
+        document.getElementById('deleteConfirmModal').dataset.assignmentId = assignmentId;
         document.getElementById('deleteConfirmModal').style.display = 'flex';
     }
 
     // Function to close the delete confirmation modal
+    function openDeleteConfirmModal(assignmentId) {
+        document.getElementById('deleteConfirmModal').dataset.assignmentId = assignmentId;
+        document.getElementById('deleteConfirmModal').style.display = 'flex';
+    }
+
     function closeDeleteConfirmModal() {
         document.getElementById('deleteConfirmModal').style.display = 'none';
     }
 
-    // Function to handle the delete confirmation
-    function confirmDelete() {
-        // Add your delete logic here (e.g., send a delete request to the server)
-        alert('Assignment deleted successfully!');
+    async function confirmDelete() {
+        const assignmentId = document.getElementById('deleteConfirmModal').dataset.assignmentId;
 
-        // Close the modal after deletion
-        closeDeleteConfirmModal();
+        try {
+            const response = await fetch(`${API_BASE_URL}/delete/${assignmentId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                alert('Assignment deleted successfully!');
+                fetchAndDisplayAssignments();
+                closeDeleteConfirmModal();
+            } else {
+                console.error('Error deleting assignment:', response.statusText);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    //This function fetches and displays the assignment details in a modal or separate view.
+    async function showDetails(assignmentId) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/detail/${assignmentId}`);
+            if (!response.ok) {
+                throw new Error('Error fetching assignment details: ' + response.statusText);
+            }
+            const assignment = await response.json();
+
+            // Display details in a modal or a specific area
+            document.getElementById('assignmentDetails').innerHTML = `
+            <p>Description: ${assignment.description}</p>
+            <p>Creating Date: ${assignment.creatingDate}</p>
+            <p>End Date: ${assignment.endDate}</p>
+            <p>Content: ${assignment.content}</p>
+            <p>Class ID: ${assignment.classId}</p>
+            <img src="${assignment.img}" alt="Assignment Image" />
+        `;
+
+            document.getElementById('detailsModal').style.display = 'flex';
+        } catch (error) {
+            console.error(error);
+        }
     }
 </script>
 
 </body>
 
-
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/list-assignment.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>

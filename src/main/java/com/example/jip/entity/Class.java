@@ -13,7 +13,7 @@ public class Class {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "Name", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "number_of_student", nullable = false)
@@ -23,6 +23,7 @@ public class Class {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
+
 
     public Class(){}
 
