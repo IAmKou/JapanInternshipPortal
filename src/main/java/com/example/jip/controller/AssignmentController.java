@@ -30,7 +30,7 @@ public class AssignmentController {
     public RedirectView createAssignment(@RequestBody AssignmentCreationRequest request){
 
         assignmentServices.createAssignment(request);
-        return new RedirectView("/list-assignment.html");
+        return new RedirectView("/add-assignment.html");
     }
 
 

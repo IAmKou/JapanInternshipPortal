@@ -15,6 +15,8 @@ public class AssignmentResponse {
      Date created_date;
      Date end_date;
      String description;
+     String content;
      int teacher_id;
      String img;
+     int class_id;
 }
