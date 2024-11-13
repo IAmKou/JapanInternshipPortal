@@ -203,3 +203,12 @@ CREATE TABLE Notification (
     account_id INT,
     FOREIGN KEY (account_id) REFERENCES Account(Id)
 );
+
+Create table Report(
+Id int auto_increment primary key,
+Title varchar(100),
+Content varchar(100),
+reporter_id int,
+foreign key (reporter_id) references Account(id)
+);
+
