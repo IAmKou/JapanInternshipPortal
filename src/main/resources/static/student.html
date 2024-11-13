@@ -84,7 +84,7 @@
                        aria-expanded="false">
                         <div class="admin-title">
                             <h5 class="item-title userFullName"></h5>
-                            <span class = "userRole"></span>
+                            <span class="userRole"></span>
                         </div>
                         <div class="admin-img">
                             <img src="img/figure/admin.jpg" alt="Admin">
@@ -503,12 +503,8 @@
                                        aria-expanded="false">...</a>
 
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#"><i
-                                                class="fas fa-times text-orange-red"></i>Close</a>
-                                        <a class="dropdown-item" href="#"><i
-                                                class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                        <a class="dropdown-item" href="#"><i
-                                                class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#report"><i
+                                                class="fas fa-times text-orange-red "></i>Report</a>
                                     </div>
                                 </div>
                             </div>
@@ -1084,6 +1080,57 @@
                     </div>
                 </div>
             </div>
+            <!-- modal -->
+            <div class="ui-modal-box">
+                <div class="modal-box">
+                    <div class="modal sign-up-modal fade" id="report" tabindex="-1" role="dialog"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="close-btn">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="item-logo">
+                                        <img src="img/logo2.png" alt="logo">
+                                    </div>
+                                    <form class="login-form">
+                                        <div class="row gutters-15">
+                                            <div class="form-group col-12">
+                                                <input type="text" placeholder="Name" class="form-control">
+                                            </div>
+                                            <div class="form-group col-12">
+                                                <input type="text" placeholder="E-mail"
+                                                       class="form-control">
+                                            </div>
+                                            <div class="form-group col-12">
+                                                <input type="text" placeholder="Password"
+                                                       class="form-control">
+                                            </div>
+                                            <div class="form-group col-12">
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input"
+                                                           id="remember-me">
+                                                    <label for="remember-me" class="form-check-label">I
+                                                        agree to tha terms & condition</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-12">
+                                                <button type="submit" class="login-btn">Create
+                                                    Account
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Footer Area Start Here -->
             <footer class="footer-wrap-layout1">
                 <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a
@@ -1127,8 +1174,8 @@
                 const userData = await response.json();
                 sessionStorage.setItem('userDetails', JSON.stringify(userData));
                 console.log("User data stored in sessionStorage:", userData);
-                
-                updateUserDetails(userData);
+
+                getUserDetails(userData);
             } else {
                 console.error("Failed to fetch user details:", response.statusText);
             }
@@ -1138,7 +1185,7 @@
     })();
 
 
-    function updateUserDetails(userDetails) {
+    function getUserDetails(userDetails) {
         if (userDetails) {
             const userFullNameElements = document.querySelectorAll('.userFullName');
             userFullNameElements.forEach(element => {
