@@ -80,8 +80,8 @@
                         <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                             aria-expanded="false">
                             <div class="admin-title">
-                                <h5 class="item-title">Stevne Zone</h5>
-                                <span>Admin</span>
+                                <h5 class="item-title userFullName"></h5>
+                                <span class="userRole"></span>
                             </div>
                             <div class="admin-img">
                                 <img src="img/figure/admin.jpg" alt="Admin">
@@ -89,7 +89,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="item-header">
-                                <h6 class="item-title">Steven Zone</h6>
+                                <h6 class="item-title userFullName"></h6>
                             </div>
                             <div class="item-content">
                                 <ul class="settings-list">
@@ -375,20 +375,17 @@
 
                         </li>
                         <li class="nav-item sidebar-nav-item">
-                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create material</a>
+                                    <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
+                                        material</a>
                                 </li>
-
-                            </ul>
-                            <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="View-list-materials.html"><i class="fas fa-angle-right"></i>View list materials</a>
+                                    <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>View
+                                        list materials</a>
                                 </li>
-
                             </ul>
-
                         </li>
                         <li class="nav-item">
                             <a href="transport.html" class="nav-link"><i class="flaticon-bus-side-view"></i><span>Transport</span></a>
@@ -541,7 +538,22 @@
     <script src="js/jquery.scrollUp.min.js"></script>
     <!-- Custom Js -->
     <script src="js/main.js"></script>
-
+    <!-- fetch user -->
+    <script>
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails) {
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            const userRoleElements = document.querySelectorAll('.userRole');
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+        }else{
+            console.error("User details not found in sessionStorage");
+        }
+    </script>
 </body>
 
 
