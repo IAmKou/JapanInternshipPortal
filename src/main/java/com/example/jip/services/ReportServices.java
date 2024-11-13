@@ -25,7 +25,7 @@ public class ReportServices {
 
         Report report = new Report();
         report.setTitle(title);
-        report.setContent(content);
+        report.setContent(content + "; User id : " + reporter_id);
         report.setAccount(accountOpt.get());
 
         return reportRepository.save(report);
