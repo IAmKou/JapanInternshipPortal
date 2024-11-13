@@ -78,8 +78,6 @@ public class AccountServices {
             manager.setJname(accountDTO.getJname());
             manager.setGender(manager.getGender());
         }
-
-
         accountRepository.save(account);
 
         return new AccountDTO(account);

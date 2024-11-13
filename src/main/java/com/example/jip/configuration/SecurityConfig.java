@@ -39,7 +39,8 @@ public class SecurityConfig {
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login.html")
                         .loginProcessingUrl("/perform_login")
-                        .failureUrl("/login.html?error=true")  // Redirect on failure
+                        .failureUrl("/login.html?error=true")// Redirect on failure
+                        .successHandler(successHandler)//Redirect on success
                         .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
