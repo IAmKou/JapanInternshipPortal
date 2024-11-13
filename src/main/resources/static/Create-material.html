@@ -502,130 +502,112 @@
                             </div>
                         </div>
                         </div>
-                        <form id="materialForm" action="materials/create" method="POST" enctype="multipart/form-data" class="new-added-form">
-                            <div class="row">
-                                <!-- Hidden input for teacher_id -->
-                                <input type="hidden" name="teacher_id" id="teacherId" value="">
+                            <form id="materialForm" action="materials/create" method="POST" enctype="multipart/form-data" class="new-added-form">
+                                <div class="row">
+                                    <!-- Hidden input for teacher_id -->
+                                    <input type="hidden" name="teacher_id" id="teacherId" value="">
 
-                                <div class="col-7 form-group">
-                                    <label>Title</label>
-                                    <input type="text" name="title" placeholder="Enter title" class="form-control">
+                                    <div class="col-7 form-group">
+                                        <label>Title</label>
+                                        <input type="text" name="title" placeholder="Enter title" class="form-control">
+                                    </div>
+
+                                    <div class="col-7 form-group">
+                                        <label>Content</label>
+                                        <textarea class="textarea form-control" name="content" cols="10" rows="9"></textarea>
+                                    </div>
+
+                                    <div class="col-12 form-group">
+                                        <label class="text-dark-medium">File Attach:</label>
+                                        <input type="file" name="img" class="form-control-file">
+                                    </div>
+
+                                    <div class="col-lg-6 col-12 form-group">
+                                        <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
+                                        <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
+                                    </div>
                                 </div>
-
-                                <div class="col-7 form-group">
-                                    <label>Content</label>
-                                    <textarea class="textarea form-control" name="content" cols="10" rows="9"></textarea>
-                                </div>
-
-                                <div class="col-12 form-group">
-                                    <label class="text-dark-medium">File Attach:</label>
-                                    <input type="file" name="img" class="form-control-file">
-                                </div>
-
-                                <div class="col-lg-6 col-12 form-group">
-                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
-                                    <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
-                                </div>
-                            </div>
-                        </form>
+                            </form>
 
 
 
+                        </div>
                     </div>
-                </div>
 
-                <!-- Modal -->
-                <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Confirm Save</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                Bạn có chắc chắn muốn lưu lại thông tin này không?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                <button type="button" class="btn btn-primary" onclick="submitForm()">Xác nhận</button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirm Save</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Bạn có chắc chắn muốn lưu lại thông tin này không?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                    <button type="button" class="btn btn-primary" onclick="submitForm()">Xác nhận</button>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+
+                    <!-- Admit Form Area End Here -->
+                    <footer class="footer-wrap-layout1">
+                        <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a
+                                href="#">PsdBosS</a></div>
+                    </footer>
                 </div>
-
-
-                <!-- Admit Form Area End Here -->
-                <footer class="footer-wrap-layout1">
-                    <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a
-                            href="#">PsdBosS</a></div>
-                </footer>
             </div>
+            <!-- Page Area End Here -->
         </div>
-        <!-- Page Area End Here -->
-    </div>
-    <!-- jquery-->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <!-- Plugins js -->
-    <script src="js/plugins.js"></script>
-    <!-- Popper js -->
-    <script src="js/popper.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Select 2 Js -->
-    <script src="js/select2.min.js"></script>
-    <!-- Date Picker Js -->
-    <script src="js/datepicker.min.js"></script>
-    <!-- Scroll Up Js -->
-    <script src="js/jquery.scrollUp.min.js"></script>
-    <!-- Custom Js -->
-    <script src="js/main.js"></script>
+        <!-- jquery-->
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <!-- Plugins js -->
+        <script src="js/plugins.js"></script>
+        <!-- Popper js -->
+        <script src="js/popper.min.js"></script>
+        <!-- Bootstrap js -->
+        <script src="js/bootstrap.min.js"></script>
+        <!-- Select 2 Js -->
+        <script src="js/select2.min.js"></script>
+        <!-- Date Picker Js -->
+        <script src="js/datepicker.min.js"></script>
+        <!-- Scroll Up Js -->
+        <script src="js/jquery.scrollUp.min.js"></script>
+        <!-- Custom Js -->
+        <script src="js/main.js"></script>
 
-</body>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Gọi API để lấy thông tin giáo viên hiện tại
-        fetch("/teachers/current")
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Failed to fetch teacher data");
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Giả sử dữ liệu trả về có thuộc tính "id" cho teacherId
-                const teacherId = data.id;
-                console.log("Teacher ID: ", teacherId); // Kiểm tra giá trị teacherId
-                document.getElementById("teacherId").value = teacherId; // Gán vào trường ẩn
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
-    });
+    </body>
+    <script>
 
-    document.getElementById("materialForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Ngăn chặn gửi form ngay lập tức
-        $('#confirmationModal').modal('show'); // Hiển thị modal xác nhận
-    });
 
-    // Hàm để gửi biểu mẫu khi người dùng nhấn "Xác nhận" trong modal
-    function submitForm() {
-        $('#confirmationModal').modal('hide'); // Đóng modal
+        document.getElementById("materialForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Ngăn chặn gửi form ngay lập tức
+            $('#confirmationModal').modal('show'); // Hiển thị modal xác nhận
+        });
 
-        // Lấy giá trị teacherId từ trường ẩn
-        const teacherId = document.getElementById('teacherId').value;
+        // Hàm để gửi biểu mẫu khi người dùng nhấn "Xác nhận" trong modal
+        function submitForm() {
+            $('#confirmationModal').modal('hide'); // Đóng modal
 
-        // Kiểm tra xem teacherId có hợp lệ không
-        if (!teacherId || teacherId.trim() === "") {
-            alert('Teacher ID is required.');
-            return;
+            // Lấy giá trị teacherId từ trường ẩn
+            const teacherId = document.getElementById('teacherId').value;
+
+            // Kiểm tra xem teacherId có hợp lệ không
+            if (!teacherId || teacherId.trim() === "") {
+                alert('Teacher ID is required.');
+                return;
+            }
+
+            // Gửi form
+            document.getElementById("materialForm").submit();
         }
-
-        // Gửi form
-        document.getElementById("materialForm").submit();
-    }
-</script>
+    </script>
 
 <!-- Mirrored from admit-form.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:46 GMT -->
 </html>
