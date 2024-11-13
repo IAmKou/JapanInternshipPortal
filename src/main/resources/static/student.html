@@ -1097,30 +1097,18 @@
                                     <div class="item-logo">
                                         <img src="img/logo2.png" alt="logo">
                                     </div>
-                                    <form class="login-form">
+                                    <form class="login-form" method="post" action="report/create">
                                         <div class="row gutters-15">
-                                            <div class="form-group col-12">
-                                                <input type="text" placeholder="Name" class="form-control">
+                                            <div class="form-group col-6 mx-auto align-self-center">
+                                                <input type="text" name="title" value="Wrong Information" readonly class="form-control">
                                             </div>
                                             <div class="form-group col-12">
-                                                <input type="text" placeholder="E-mail"
+                                                <input type="text" name="content" placeholder="Input wrong information here"
                                                        class="form-control">
                                             </div>
+                                            <input type="hidden" name="reporter_id" id="userId" value="">
                                             <div class="form-group col-12">
-                                                <input type="text" placeholder="Password"
-                                                       class="form-control">
-                                            </div>
-                                            <div class="form-group col-12">
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input"
-                                                           id="remember-me">
-                                                    <label for="remember-me" class="form-check-label">I
-                                                        agree to tha terms & condition</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-12">
-                                                <button type="submit" class="login-btn">Create
-                                                    Account
+                                                <button type="submit" class="login-btn">Send
                                                 </button>
                                             </div>
                                         </div>
@@ -1200,6 +1188,7 @@
             document.getElementById('userEmail').textContent = userDetails.email;
             document.getElementById('userDob').textContent = userDetails.dob;
             document.getElementById('userPhone').textContent = userDetails.phoneNumber;
+            document.getElementById('userId').value = userDetails.id;
         } else {
             console.error("User details not found in sessionStorage");
         }
