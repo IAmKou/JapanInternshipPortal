@@ -2,6 +2,7 @@ package com.example.jip.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 import java.time.Instant;
@@ -12,10 +13,11 @@ import java.time.Instant;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AssignmentCreationRequest {
-    Date created_date = new Date(System.currentTimeMillis());
+    Date created_date;
     Date end_date;
     String description;
     String content;
     int teacher_id;
-    String img;
+    MultipartFile imgFile;
+
 }

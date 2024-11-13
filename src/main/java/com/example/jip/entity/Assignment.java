@@ -1,46 +1,41 @@
 package com.example.jip.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
-import java.sql.Date;
+import java.util.Date;
+import java.util.List;
 
 @Entity
-@Setter
+@Table(name = "assignment")
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Assignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name =  "date_created", nullable = false)
-    private Date created_date;
-    @Column(name =  "end_date", nullable = false)
-    private Date end_date;
+    int id;
+    @Column(name =  "date_created")
+    Date created_date;
+    @Column(name =  "end_date")
+    Date end_date;
     @Column(name = "description")
-    private String description;
+    String description;
     @Column(name = "content")
-    private String content;
-    @Column(name = "teacher_id")
-    private int teacher_id;
+    String content;
+
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    Teacher teacher;
+
+    @ManyToOne
+    @JoinColumn(name = "class_id")
+    private Class classEntity;
+
     @Column(name = "img")
-    private String img;
-
-    private int class_id;
-
-
-
-    public Assignment() {}
-
-    public Assignment(int id, Date created_date, Date end_date, String description, String content, int teacher_id, String img, int class_id) {
-        this.id = id;
-        this.created_date = created_date;
-        this.end_date = end_date;
-        this.description = description;
-        this.content = content;
-        this.teacher_id = teacher_id;
-        this.img = img;
-        this.class_id = class_id;
-    }
+    String img;
 
 }
