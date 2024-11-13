@@ -505,7 +505,7 @@
                             <form id="materialForm" action="materials/create" method="POST" enctype="multipart/form-data" class="new-added-form">
                                 <div class="row">
                                     <!-- Hidden input for teacher_id -->
-                                    <input type="hidden" name="teacher_id" id="teacherId" value="">
+                                    <input type="hidden" name="teacher_id" id="userId" value="">
 
                                     <div class="col-7 form-group">
                                         <label>Title</label>
@@ -596,18 +596,31 @@
             $('#confirmationModal').modal('hide'); // Đóng modal
 
             // Lấy giá trị teacherId từ trường ẩn
-            const teacherId = document.getElementById('teacherId').value;
+            
 
             // Kiểm tra xem teacherId có hợp lệ không
-            if (!teacherId || teacherId.trim() === "") {
-                alert('Teacher ID is required.');
-                return;
-            }
+
 
             // Gửi form
             document.getElementById("materialForm").submit();
         }
     </script>
+<script>
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    if (userDetails) {
+        document.getElementById('userId').value = userDetails.id;
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        userFullNameElements.forEach(element => {
+            element.textContent = userDetails.fullName;
+        });
+        const userRoleElements = document.querySelectorAll('.userRole');
+        userRoleElements.forEach(element => {
+            element.textContent = userDetails.roleName;
+        });
+    }else{
+        console.error("User details not found in sessionStorage");
+    }
+</script>
 
 <!-- Mirrored from admit-form.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:46 GMT -->
 </html>

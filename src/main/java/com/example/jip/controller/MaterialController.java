@@ -2,8 +2,10 @@ package com.example.jip.controller;
 
 import com.example.jip.dto.MaterialDTO;
 import com.example.jip.dto.TeacherDTO;
+import com.example.jip.entity.Account;
 import com.example.jip.entity.Material;
 import com.example.jip.entity.Teacher;
+import com.example.jip.repository.AccountRepository;
 import com.example.jip.repository.MaterialRepository;
 import com.example.jip.repository.TeacherRepository;
 import com.example.jip.services.MaterialServices;
@@ -33,6 +35,9 @@ public class MaterialController {
     @Autowired
     private MaterialServices materialServices;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
 
     @PostMapping("/create")
     public ResponseEntity<String> createMaterial(
@@ -40,10 +45,12 @@ public class MaterialController {
             @RequestParam("content") String content,
             @RequestParam(value = "img", required = false) MultipartFile img,
             @RequestParam("teacher_id") int teacherId  // Lấy teacherId từ request
+
     ) {
         try {
+
             // Tìm teacher dựa vào teacherId trong database
-            Optional<Teacher> teacherOptional = teacherRepository.findById(teacherId);
+            Optional<Teacher> teacherOptional = teacherRepository.findByAccount_id(teacherId);
             if (!teacherOptional.isPresent()) {
                 return ResponseEntity.status(400).body("Teacher with ID " + teacherId + " not found.");
             }
@@ -61,9 +68,10 @@ public class MaterialController {
             materialDTO.setContent(content);
             materialDTO.setImg(img != null && !img.isEmpty() ? materialServices.saveImage(img) : null);
 
+            int id = teacherOptional.get().getId();
             // Gán TeacherDTO vào MaterialDTO
             TeacherDTO teacherDTO = new TeacherDTO();
-            teacherDTO.setId(teacherId);  // Gán teacherId vào DTO
+            teacherDTO.setId(id);  // Gán teacherId vào DTO
             materialDTO.setTeacher(teacherDTO);
 
             // Gọi service để lưu material mới
