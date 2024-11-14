@@ -374,7 +374,7 @@
                                 class="flaticon-open-book"></i><span>Subject</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="class-routine.html"><i class="flaticon-calendar"></i><span>Class Routine</span></a>
+                        <a class="nav-link" href="class-list.html"><i class="flaticon-calendar"></i><span>Class Routine</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="student-attendence.html"><i class="flaticon-checklist"></i><span>Attendence</span></a>
@@ -552,7 +552,6 @@
                                 </div>
                             </div>
                             <div class="user-details-box">
-
                                 <div class="item-content">
                                     <div class="info-table table-responsive">
                                         <table class="table text-nowrap">
@@ -808,7 +807,7 @@
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
 
-        if (userDetails.roleName === "Admin") {
+        if (userDetails.roleName === "ADMIN") {
             // Display only username and role for Admin
             userFullNameElements.forEach(element => {
                 element.textContent = userDetails.username;
