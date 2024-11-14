@@ -42,39 +42,26 @@ public class AssignmentServices {
                 .map(assignmentMapper::toAssignmentResponse).toList();
     }
 
-
+    @Transactional
     @PreAuthorize("hasAuthority('TEACHER')")
     public AssignmentResponse createAssignment(AssignmentCreationRequest request){
 
-        // Convert the request to an Assignment entity
-        Assignment assignment = assignmentMapper.toAssignment(request);
 
-        assignment.setCreated_date(new Date()); // Set the current date and time
-
-        // Check if file is provided and validate
-        if (request.getImgFile() != null && !request.getImgFile().isEmpty()) {
-            FileUploadUtil.assertAllowed(request.getImgFile(), FileUploadUtil.IMAGE_PATTERN);
-
-            // Upload the file and get the response with URL
-            final String fileName = FileUploadUtil.getFileName(request.getImgFile().getOriginalFilename());
-            final CloudinaryResponse response = this.cloudinaryService.uploadFile(request.getImgFile(), fileName);
-
+//            FileUploadUtil.assertAllowed(request.getImgFile(), FileUploadUtil.IMAGE_PATTERN);
+           // Upload the file and get the response with URL
+            final CloudinaryResponse response = cloudinaryService.uploadFile(request.getImgFile());
+            // Convert the request to an Assignment entity
+            Assignment assignment = assignmentMapper.toAssignment(request);
             // Set the image URL in the Assignment entity (not the file object)
             assignment.setImg(response.getUrl());
-        }
+
         // Save assignment to database
         return assignmentMapper.toAssignmentResponse(assignmentRepository.save(assignment));
 
     }
 
-    @Transactional
-    public void uploadImage(int id, final MultipartFile file) {
-        final Assignment assignment = assignmentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Assignment not found"));
 
 
-        assignmentRepository.save(assignment);
-    }
 
 //    @Transactional
 //    public void uploadImage(final Integer id, final MultipartFile file) {

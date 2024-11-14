@@ -8,11 +8,13 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
+    show-sql: true
+
   servlet:
     multipart:
       enabled: true
-      max-file-size: 10MB  # Set this to your desired size (e.g., 10MB, 20MB, etc.)
-      max-request-size: 10MB  # Set this to your desired size (e.g., 10MB, 20MB, etc.)
+      max-file-size: 500MB  # Set this to your desired size (e.g., 10MB, 20MB, etc.)
+      max-request-size: 500MB  # Set this to your desired size (e.g., 10MB, 20MB, etc.)
 
 cloudinary:
   cloud-name: dmlethtuv

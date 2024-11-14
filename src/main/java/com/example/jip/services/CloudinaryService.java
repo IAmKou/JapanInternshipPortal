@@ -2,6 +2,7 @@ package com.example.jip.services;
 import com.example.jip.dto.response.CloudinaryResponse;
 import com.example.jip.exception.FuncErrorException;
 import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,26 +14,29 @@ import com.cloudinary.utils.ObjectUtils;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CloudinaryService {
-    @Autowired
-    private Cloudinary cloudinary;
+
+    Cloudinary cloudinary;
 
     @Transactional
-    public CloudinaryResponse uploadFile(final MultipartFile file, final String fileName) {
+    public CloudinaryResponse uploadFile(MultipartFile file) {
         try {
-            final Map result = this.cloudinary.uploader()
+             Map result = cloudinary.uploader()
                     .upload(file.getBytes(),
                             Map.of("public_id",
-                                    fileName));
+                                    UUID.randomUUID().toString()));
             final String url      = (String) result.get("secure_url");
-            final String publicId = (String) result.get("public_id");
-            return CloudinaryResponse.builder().publicId(publicId).url(url)
+            return CloudinaryResponse.builder()
+                    .url(url)
                     .build();
 
-        } catch (final Exception e) {
+        } catch (final IOException e) {
             throw new FuncErrorException("Failed to upload file");
         }
     }

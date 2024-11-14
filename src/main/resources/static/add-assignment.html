@@ -458,9 +458,9 @@
                         </div>
 
                     </div>
-                    <form class="new-added-form" action="http://localhost:8080/assignment/create" method="post" enctype="multipart/form-data" onsubmit="addAssignment(event)">
+                    <form class="new-added-form" action="/assignment/create" method="post" enctype="multipart/form-data" onsubmit="addAssignment(event)">
                         <div class="row">
-
+<!--                            <input type="hidden" name="teacher_id" id="teacher_id" value="${teacher_id}">-->
 
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label for="description">Desciption *</label>
@@ -472,7 +472,7 @@
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label for="createDate">Create Date </label>
-                                <input type="date" value="getCurrentDay()" class="form-control" name="createDate" id="createDate" readonly>
+                                <input type="date" class="form-control" name="createDate" id="createDate" readonly>
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label for="endDate">End Date *</label>
@@ -489,8 +489,8 @@
                                 </select>
                             </div>
                             <div class="col-12 form-group mg-t-8">
-                                <label class="text-dark-medium" for="img">File attach *</label>
-                                <input type="file" class="form-control-file" name="img" id="img" required>
+                                <label class="text-dark-medium" for="imgFile">File attach *</label>
+                                <input type="file" class="form-control-file" name="imgFile" id="imgFile" required>
                             </div>
                             <div class="col-12 form-group mg-t-8">
                                 <button type="submit" onclick="addAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Add</button>
@@ -535,33 +535,24 @@
     });
 
     function addAssignment(event) {
-        event.preventDefault();  // Prevent the form from submitting the traditional way
+        event.preventDefault();
 
-        // Set the current date for the createDate field again before form submission
-        const currentDate = new Date().toISOString().split("T")[0];
-        document.getElementById("createDate").value = currentDate;
-
-        // Create a FormData object to hold the form data
-        const form = event.target.closest('form');  // Get the form element
+        const form = event.target.closest('form');
         const formData = new FormData(form);
 
-        // Send the form data to the backend using fetch
-        fetch('http://localhost:8080/assignment/create', {
+        fetch('/assignment/create', {
             method: 'POST',
-            body: formData,  // The FormData object contains both text fields and files
+            body: formData,
         })
             .then(response => {
                 if (response.ok) {
-                    // If the request is successful, handle the response (like a redirect or message)
                     alert('Assignment added successfully!');
-                    window.location.href = '/list-assignment.html';  // Redirect to assignment list page
+                    window.location.href = '/list-assignment.html';
                 } else {
-                    // Handle error response
                     alert('Failed to create assignment. Please try again.');
                 }
             })
             .catch(error => {
-                // Catch any network errors
                 console.error('Error:', error);
                 alert('An error occurred. Please try again.');
             });

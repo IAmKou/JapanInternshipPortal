@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.awt.*;
@@ -27,7 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AssignmentController {
-    @Autowired
+
     AssignmentServices assignmentServices;
 
     @GetMapping("/list")
@@ -37,9 +38,11 @@ public class AssignmentController {
     }
 
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public RedirectView createAssignment(@ModelAttribute AssignmentCreationRequest request) throws IOException {
+    public RedirectView createAssignment(@ModelAttribute AssignmentCreationRequest request,
+                                         @RequestParam("imgFile") MultipartFile imgFile) throws IOException {
         try {
             log.info("Received request: " + request);  // Log the incoming request for debugging
+            request.setImgFile(imgFile);  // Set imgFile to the request object explicitly
             assignmentServices.createAssignment(request);
             return new RedirectView("/add-assignment.html");
         } catch (Exception e) {
