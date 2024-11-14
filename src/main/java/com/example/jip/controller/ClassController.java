@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import com.example.jip.services.ClassServices;
 import com.example.jip.entity.Class;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/class")
@@ -32,7 +35,14 @@ public class ClassController {
 
 
         Class savedClass = classServices.saveClassWithStudents(classDTO, classDTO.getStudentIds());
-        return "Class " + savedClass.getName() + " created with ID: " + savedClass.getId();
+        return "Class " + savedClass.getName() + "created successfully";
+    }
+
+    @GetMapping("/get")
+    public List<ClassDTO> getClasses() {
+        return classRepository.findAll().stream()
+                .map(ClassDTO::new)
+                .collect(Collectors.toList());
     }
 
 

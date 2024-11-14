@@ -372,7 +372,7 @@
                                 class="flaticon-open-book"></i><span>Subject</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="class-routine.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class Routine</span></a>
+                        <a href="class-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class Routine</span></a>
                     </li>
                     <li class="nav-item">
                         <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
@@ -551,6 +551,8 @@
 <script src="js/main.js"></script>
 <!-- fetch student list -->
 <script>
+    let allStudentIds = [];
+
     function fetchStudents() {
         fetch('/student/get')
             .then(response => {
@@ -575,9 +577,12 @@
                     return;
                 }
 
+                // Reset the array and add all student IDs
+                allStudentIds = students.map(student => student.id);
+
                 // Create header row
                 const headerRow = document.createElement('tr');
-                ['Select', 'Full Name', 'Japan Name', 'Gender'].forEach(text => {
+                ['Full Name', 'Japan Name', 'Gender'].forEach(text => {
                     const headerCell = document.createElement('th');
                     headerCell.textContent = text;
                     headerRow.appendChild(headerCell);
@@ -587,16 +592,6 @@
                 // Add rows for students
                 students.forEach(student => {
                     const row = document.createElement('tr');
-
-                    // Checkbox for selection, checked by default
-                    const selectCell = document.createElement('td');
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.value = student.id;
-                    checkbox.className = 'studentCheckbox';
-                    checkbox.checked = true;  // Default to checked
-                    selectCell.appendChild(checkbox);
-                    row.appendChild(selectCell);
 
                     const fullnameCell = document.createElement('td');
                     fullnameCell.textContent = student.fullname;
@@ -621,16 +616,12 @@
                 alert("There was an error fetching students");
             });
     }
-</script>
 
-<script>
     document.getElementById('createClassForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
         const className = document.getElementById("className").value;
         const teacherId = parseInt(document.getElementById("teacher").value);
-        const allStudents = Array.from(document.querySelectorAll('.studentCheckbox:checked'))
-            .map(checkbox => parseInt(checkbox.value));
 
         if (!className || !teacherId) {
             alert("Please provide both class name and teacher.");
@@ -638,12 +629,12 @@
         }
 
         const data = {
-            name : className,
-            numberOfStudents: allStudents.length,
+            name: className,
+            numberOfStudents: allStudentIds.length,  // Set the count to total students fetched
             teacher: {
                 id: teacherId
             },
-            studentIds: allStudents
+            studentIds: allStudentIds // Include all fetched student IDs
         };
 
         fetch('/class/create', {
@@ -659,7 +650,18 @@
                 }
                 return response.text();
             })
-            .then(data => alert(data))  // Display success message
+            .then(data => {
+                alert(data);
+
+
+                document.getElementById("createClassForm").reset();
+
+
+                const studentListDiv = document.getElementById('studentList');
+                studentListDiv.innerHTML = "";
+                const studentCountDiv = document.getElementById('studentCount');
+                studentCountDiv.textContent = "";
+            })
             .catch(error => alert("Error creating class: " + error));
     });
 </script>
@@ -702,7 +704,7 @@
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
 
-        if (userDetails.roleName === "Admin") {
+        if (userDetails.roleName === "ADMIN") {
             userFullNameElements.forEach(element => {
                 element.textContent = userDetails.username;
             });
