@@ -7,6 +7,7 @@ import com.example.jip.repository.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,9 +26,14 @@ public class ReportServices {
 
         Report report = new Report();
         report.setTitle(title);
-        report.setContent(content);
+        report.setContent(content + "; User id : " + reporter_id);
         report.setAccount(accountOpt.get());
 
         return reportRepository.save(report);
+    }
+
+    public List<Report> getAllReport(){
+        List<Report> reports = reportRepository.findAll();
+        return reports;
     }
 }
