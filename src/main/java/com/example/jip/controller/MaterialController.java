@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/materials")
@@ -84,12 +85,6 @@ public class MaterialController {
             redirectAttributes.addFlashAttribute("error", "Failed to create material: " + e.getMessage());
             return new RedirectView("/materials/create");
         }
-    }
-
-    @GetMapping("/list")
-    public ResponseEntity<List<Material>> getAllMaterials() {
-        List<Material> materials = materialRepository.findAll();
-        return ResponseEntity.ok(materials);
     }
 
     // API lấy chi tiết tài liệu theo ID
@@ -166,4 +161,28 @@ public class MaterialController {
         // Trả về kết quả thành công
         return ResponseEntity.ok("Cập nhật tài liệu thành công!");
         }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<MaterialDTO>> getAllMaterials() {
+        List<Material> materials = materialRepository.findAll();
+        List<MaterialDTO> materialDTOs = materials.stream().map(material -> {
+            MaterialDTO dto = new MaterialDTO();
+            dto.setId(material.getId());
+            dto.setTitle(material.getTitle());
+            dto.setImg(material.getImg());
+            return dto;
+        }).collect(Collectors.toList());
+        return ResponseEntity.ok(materialDTOs);
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteMaterial(@PathVariable("id") int materialId) {
+        Optional<Material> materialOptional = materialRepository.findById(materialId);
+
+        if (!materialOptional.isPresent()) {
+            return ResponseEntity.notFound().build();  // Trả về lỗi nếu không tìm thấy tài liệu
+        }
+
+        materialRepository.deleteById(materialId);  // Xóa tài liệu khỏi database
+        return ResponseEntity.ok("Xóa tài liệu thành công!");  // Trả về phản hồi thành công
+    }
 }
