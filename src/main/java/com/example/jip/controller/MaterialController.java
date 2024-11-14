@@ -17,8 +17,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
-import java.sql.Date;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -40,49 +44,126 @@ public class MaterialController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<String> createMaterial(
+    public RedirectView createMaterial(
             @RequestParam("title") String title,
             @RequestParam("content") String content,
             @RequestParam(value = "img", required = false) MultipartFile img,
-            @RequestParam("teacher_id") int teacherId  // Lấy teacherId từ request
-
+            @RequestParam("teacher_id") int teacherId,
+            RedirectAttributes redirectAttributes
     ) {
         try {
-
-            // Tìm teacher dựa vào teacherId trong database
             Optional<Teacher> teacherOptional = teacherRepository.findByAccount_id(teacherId);
             if (!teacherOptional.isPresent()) {
-                return ResponseEntity.status(400).body("Teacher with ID " + teacherId + " not found.");
+                redirectAttributes.addFlashAttribute("error", "Teacher with ID " + teacherId + " not found.");
+                return new RedirectView("/materials/create");
             }
 
             Teacher teacher = teacherOptional.get();
+            Date createdDate = new Date();  // Current date
 
-            // Các bước tiếp theo để lưu Material
-            LocalDate localDate = LocalDate.now();
-            java.sql.Date created_Date = Date.valueOf(localDate);
-
-            // Tạo MaterialDTO và gán các giá trị
             MaterialDTO materialDTO = new MaterialDTO();
-            materialDTO.setCreated_date(created_Date);
+            materialDTO.setCreated_date(createdDate);
             materialDTO.setTitle(title);
             materialDTO.setContent(content);
             materialDTO.setImg(img != null && !img.isEmpty() ? materialServices.saveImage(img) : null);
 
-            int id = teacherOptional.get().getId();
-            // Gán TeacherDTO vào MaterialDTO
             TeacherDTO teacherDTO = new TeacherDTO();
-            teacherDTO.setId(id);  // Gán teacherId vào DTO
+            teacherDTO.setId(teacher.getId());
             materialDTO.setTeacher(teacherDTO);
 
-            // Gọi service để lưu material mới
             Material savedMaterial = materialServices.createMaterial(materialDTO);
 
-            return ResponseEntity.ok("Material '" + savedMaterial.getTitle() + "' created with ID: " + savedMaterial.getId());
+            redirectAttributes.addFlashAttribute("success", "Material '" + savedMaterial.getTitle() + "' created successfully!");
+
+            // Redirect to View-material-details.html with the new material ID
+            return new RedirectView("/View-material-details.html?id=" + savedMaterial.getId());
         } catch (IOException e) {
-            return ResponseEntity.status(500).body("File upload failed: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "File upload failed: " + e.getMessage());
+            return new RedirectView("/materials/create");
         } catch (RuntimeException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("Failed to create material: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Failed to create material: " + e.getMessage());
+            return new RedirectView("/materials/create");
         }
     }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<Material>> getAllMaterials() {
+        List<Material> materials = materialRepository.findAll();
+        return ResponseEntity.ok(materials);
+    }
+
+    // API lấy chi tiết tài liệu theo ID
+    @GetMapping("/details/{id}")
+    // Update the method signature
+    public ResponseEntity<MaterialDTO> getMaterialDetails(@PathVariable("id") int materialId) {
+        Optional<Material> materialOptional = materialRepository.findById(materialId);
+
+        if (!materialOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Material material = materialOptional.get();
+
+        // Tạo DTO và gán dữ liệu
+        MaterialDTO materialDTO = new MaterialDTO();
+        materialDTO.setId(material.getId());
+        materialDTO.setTitle(material.getTitle());
+        materialDTO.setContent(material.getContent());
+        materialDTO.setImg(material.getImg());
+        if (material.getCreated_date() != null) {
+            // Nếu material có ngày, trực tiếp gán ngày vào DTO mà không cần định dạng thành String
+            materialDTO.setCreated_date(material.getCreated_date());
+        }
+        // Gán thông tin teacher
+
+
+        if (material.getTeacher() != null) {
+            TeacherDTO teacherDTO = new TeacherDTO();
+            teacherDTO.setId(material.getTeacher().getId());
+            teacherDTO.setFullname(material.getTeacher().getFullname());
+            materialDTO.setTeacher(teacherDTO);
+        } else {
+            // Nếu không có teacher, bạn có thể để nó là null hoặc xử lý sao cho hợp lý
+            materialDTO.setTeacher(null);
+        }
+
+        return ResponseEntity.ok(materialDTO);
+
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateMaterial(
+            @PathVariable("id") int materialId,  // Lấy ID tài liệu từ URL
+            @RequestParam("title") String title,
+            @RequestParam("content") String content,
+            @RequestParam(value = "img", required = false) MultipartFile img,  // File ảnh (nếu có)
+            RedirectAttributes redirectAttributes
+    ) {
+        Optional<Material> materialOptional = materialRepository.findById(materialId);
+
+        if (!materialOptional.isPresent()) {
+            return ResponseEntity.notFound().build();  // Nếu không tìm thấy tài liệu với ID này
+        }
+
+        Material material = materialOptional.get();
+
+        // Cập nhật các thông tin
+        material.setTitle(title);
+        material.setContent(content);
+
+        // Nếu có file mới, lưu file và cập nhật
+        if (img != null && !img.isEmpty()) {
+            try {
+                String savedImagePath = materialServices.saveImage(img);  // Lưu ảnh và nhận đường dẫn
+                material.setImg(savedImagePath);  // Cập nhật ảnh mới
+            } catch (IOException e) {
+                return ResponseEntity.status(500).body("Lỗi khi tải ảnh lên: " + e.getMessage());
+            }
+        }
+
+        // Lưu lại tài liệu đã cập nhật vào cơ sở dữ liệu
+        materialRepository.save(material);
+
+        // Trả về kết quả thành công
+        return ResponseEntity.ok("Cập nhật tài liệu thành công!");
+        }
 }
