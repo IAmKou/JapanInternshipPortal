@@ -42,10 +42,9 @@ public class AssignmentServices {
                 .map(assignmentMapper::toAssignmentResponse).toList();
     }
 
-    @Transactional
+
     @PreAuthorize("hasAuthority('TEACHER')")
     public AssignmentResponse createAssignment(AssignmentCreationRequest request){
-
 
 //            FileUploadUtil.assertAllowed(request.getImgFile(), FileUploadUtil.IMAGE_PATTERN);
            // Upload the file and get the response with URL

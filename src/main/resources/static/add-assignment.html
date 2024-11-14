@@ -471,12 +471,12 @@
                                 <input type="text" placeholder="Write content..." class="form-control" name="content" id="content" required>
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label for="createDate">Create Date </label>
-                                <input type="date" class="form-control" name="createDate" id="createDate" readonly>
+                                <label for="created_date">Create Date </label>
+                                <input type="date" class="form-control" name="created_date" id="created_date" readonly>
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label for="endDate">End Date *</label>
-                                <input type="date" class="form-control" name="endDate" id="endDate" required>
+                                <label for="end_date">End Date *</label>
+                                <input type="date" class="form-control" name="end_date" id="end_date" required>
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label for="class_id">For Class *</label>
@@ -529,9 +529,8 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Set the current date in the createDate field when the page loads
         const currentDate = new Date().toISOString().split("T")[0];
-        document.getElementById("createDate").value = currentDate;
+        document.getElementById("created_date").value = currentDate;
     });
 
     function addAssignment(event) {
@@ -557,6 +556,7 @@
                 alert('An error occurred. Please try again.');
             });
     }
+
 
 </script>
 

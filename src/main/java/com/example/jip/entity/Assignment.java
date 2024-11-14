@@ -20,8 +20,10 @@ public class Assignment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     @Column(name =  "date_created")
+    @Temporal(TemporalType.DATE)
     Date created_date;
     @Column(name =  "end_date")
+    @Temporal(TemporalType.DATE)
     Date end_date;
     @Column(name = "description")
     String description;
