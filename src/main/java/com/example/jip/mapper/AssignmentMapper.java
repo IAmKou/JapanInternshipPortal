@@ -12,6 +12,10 @@ import org.mapstruct.MappingTarget;
 public interface AssignmentMapper {
     Assignment toAssignment(AssignmentCreationRequest assignmentCreationRequest);
 
+    @Mapping(target = "description", source = "description")
+    @Mapping(target = "content", source = "content")
+    @Mapping(target = "end_date", source = "end_date")
+    @Mapping(target = "created_date", source = "created_date")
     AssignmentResponse toAssignmentResponse(Assignment assignment);
 
     void updateAssigment(@MappingTarget Assignment assignment, AssignmentUpdateRequest assignmentUpdateRequest);
