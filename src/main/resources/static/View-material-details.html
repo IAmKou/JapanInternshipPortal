@@ -338,7 +338,7 @@
                             <a href="#" class="nav-link"><i class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-class.html" class="nav-link"><i class="fas fa-angle-right"></i>All Classes</a>
+                                    <a href="all-class-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All Classes</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="add-class.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New Class</a>
@@ -349,7 +349,7 @@
                             <a href="all-subject.html" class="nav-link"><i class="flaticon-open-book"></i><span>Subject</span></a>
                         </li>
                         <li class="nav-item">
-                            <a href="class-routine.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class Routine</span></a>
+                            <a href="class-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class Routine</span></a>
                         </li>
                         <li class="nav-item">
                             <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
@@ -439,7 +439,11 @@
                                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editModal"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                    <a class="dropdown-item editButton" href="#" data-toggle="modal" data-target="#editModal" class="editButton">
+                                        <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
+                                    </a>
+
+
                                     <button type="button" class="dropdown-item" data-toggle="modal" data-target="#confirmationModal">
                                         <i class="fas fa-trash text-orange-peel"></i>Delete
                                     </button>
@@ -449,11 +453,13 @@
 
                         <div class="single-info-details">
                             <div class="item-img">
-                                <img src="img/figure/student1.jpg" alt="student">
+                                <!-- Hình ảnh sẽ được cập nhật qua JavaScript -->
+                                <img id="materialImg" src="" alt="Material Image">
                             </div>
                             <div class="item-content">
                                 <div class="header-inline item-header">
-                                    <h3 class="text-dark-medium font-medium">Title</h3>
+                                    <!-- Tiêu đề sẽ được cập nhật qua JavaScript -->
+                                    <h3 class="text-dark-medium font-medium" id="title"></h3>
                                     <div class="header-elements">
                                         <ul>
                                             <li><a href="#"><i class="far fa-edit"></i></a></li>
@@ -462,20 +468,18 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <p>Aliquam erat volutpat. Curabiene natis massa sedde lacu stiquen sodale word moun taiery.Aliquam erat volutpaturabiene natis massa sedde sodale word moun taiery.</p>
+                                <!-- Nội dung sẽ được cập nhật qua JavaScript -->
+                                <p id="content"></p>
                                 <div class="info-table table-responsive">
-                                    <table class="table text-nowrap">
-                                        <tbody>
-<!--                                        <tr>-->
-<!--                                            <td>Teacher:</td>-->
-<!--                                            <td class="font-medium text-dark-medium">Jessia Rose</td>-->
-<!--                                        </tr>-->
-<!--                                        <tr>-->
-<!--                                            <td>Create Date:</td>-->
-<!--                                            <td class="font-medium text-dark-medium">07.08.2016</td>-->
-<!--                                        </tr>-->
-                                        
-                                        </tbody>
+                                    <table>
+                                        <tr>
+                                            <td>Teacher:</td>
+                                            <td><span id="teacher"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Create Date: </td>
+                                            <td><span id="created_date"></span></td>
+                                        </tr>
                                     </table>
                                 </div>
                             </div>
@@ -552,14 +556,12 @@
                                 <form id="editForm">
                                     <div class="form-group">
                                         <label for="materialTitle">Title</label>
-                                        <input type="text" class="form-control" id="materialTitle" value="Current Title">
+                                        <input type="text" class="form-control" id="materialTitle">
                                     </div>
                                     <div class="form-group">
-                                        <label for="materialDescription">Content</label>
-                                        <textarea class="form-control" id="materialDescription">Current Description</textarea>
+                                        <label for="materialContent">Content</label>
+                                        <textarea class="form-control" id="materialContent"></textarea>
                                     </div>
-
-
                                     <div class="form-group">
                                         <label for="materialFile">File</label>
                                         <input type="file" class="form-control" id="materialFile">
@@ -618,64 +620,100 @@
 
 </body>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const materialInfoBox = document.getElementById('material-info');
+    // Lấy materialId từ tham số URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const materialId = urlParams.get('id'); // Lấy tham số 'id' từ URL
 
-        // Gọi API để lấy thông tin material và teacher
-        fetch('/materials')  // Đảm bảo đúng endpoint API của bạn
+    if (materialId) {
+        fetch(`http://localhost:8080/materials/details/${materialId}`)
             .then(response => response.json())
-            .then(material => {
-                // Hàm giúp thay thế giá trị null/undefined bằng một giá trị mặc định
-                const getValueOrDefault = (value, defaultValue) => {
-                    return value ? value : defaultValue;
-                };
+            .then(data => {
+                // Cập nhật các phần tử HTML với dữ liệu từ API
+                document.getElementById('title').textContent = data.title;
+                document.getElementById('content').textContent = data.content;
+                document.getElementById('teacher').textContent = data.teacher ? data.teacher.fullname : 'Không có giáo viên'; // Kiểm tra teacher
+                document.getElementById('created_date').textContent = data.created_date ? new Date(data.created_date).toLocaleDateString() : 'Không có ngày tạo'; // Kiểm tra created_date
 
-                // Chèn dữ liệu vào bảng, nếu dữ liệu không có thì sẽ hiển thị 'No data available'
-                materialInfoBox.innerHTML = `
-                        <tr>
-                            <td class="font-medium text-dark-medium">Material Title:</td>
-                            <td class="font-medium text-dark-medium">${getValueOrDefault(material.title, 'No data available')}</td>
-                        </tr>
-                        <tr>
-                            <td class="font-medium text-dark-medium">Content:</td>
-                            <td class="font-medium text-dark-medium">${getValueOrDefault(material.content, 'No data available')}</td>
-                        </tr>
-                        <tr>
-                            <td class="font-medium text-dark-medium">Teacher:</td>
-                            <td class="font-medium text-dark-medium">${getValueOrDefault(material.teacher ? material.teacher.fullName : null, 'No Teacher Assigned')}</td>
-                        </tr>
-                        <tr>
-                            <td class="font-medium text-dark-medium">Create Date:</td>
-                            <td class="font-medium text-dark-medium">${getValueOrDefault(new Date(material.date).toLocaleDateString(), 'No data available')}</td>
-                        </tr>
-                    `;
+                // Nếu có hình ảnh, cập nhật thẻ img
+                if (data.img) {
+                    document.getElementById('materialImg').src = data.img;
+                }
             })
             .catch(error => {
-                console.error('Error fetching material data:', error);
-                materialInfoBox.innerHTML = `
-                    <tr>
-                        <td colspan="2" class="font-medium text-dark-medium">Error fetching material data.</td>
-                    </tr>
-                `;
+                console.error('Lỗi khi lấy dữ liệu:', error);
             });
-    });
-</script>
-<!-- fetch profile -->
-<script>
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    if (userDetails) {
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        userFullNameElements.forEach(element => {
-            element.textContent = userDetails.fullName;
-        });
-        const userRoleElements = document.querySelectorAll('.userRole');
-        userRoleElements.forEach(element => {
-            element.textContent = userDetails.roleName;
-        });
     } else {
-        console.error("User details not found in sessionStorage");
+        console.error('Không tìm thấy Material ID trong URL.');
     }
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelector('.editButton').addEventListener('click', function (event) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const materialId = urlParams.get('id');
+            console.log(materialId);  // Kiểm tra giá trị materialId
+
+            if (materialId) {
+                fetch(`http://localhost:8080/materials/details/${materialId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);  // Kiểm tra dữ liệu trả về từ API
+                        document.getElementById('materialTitle').value = data.title;
+                        document.getElementById('materialContent').value = data.content;
+                        document.getElementById('materialFile').value = data.file;
+                    })
+                    .catch(error => {
+                        console.error('Lỗi khi lấy dữ liệu:', error);
+                    });
+            } else {
+                console.error('Không tìm thấy Material ID trong URL.');
+            }
+        });
+        document.getElementById('saveChanges').addEventListener('click', function () {
+            // Lấy thông tin từ các input trong modal
+            const title = document.getElementById('materialTitle').value;
+            const content = document.getElementById('materialContent').value;
+            const file = document.getElementById('materialFile').files[0]; // Nếu có file
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const materialId = urlParams.get('id'); // materialId từ URL
+
+            // Kiểm tra các giá trị
+            if (materialId && title && content) {
+                const formData = new FormData();
+                formData.append('title', title);
+                formData.append('content', content);
+                if (file) {
+                    formData.append('file', file); // Nếu có file thì gửi file lên
+                }
+
+                // Gửi dữ liệu cập nhật đến API
+                fetch(`http://localhost:8080/materials/update/${materialId}`, {
+                    method: 'PUT',  // Sử dụng PUT để cập nhật
+                    body: formData,
+                })
+                    .then(response => response.text())  // Đảm bảo phản hồi từ API là chuỗi
+                    .then(data => {
+                        if (data === "Cập nhật tài liệu thành công!") {
+                            alert('Cập nhật thành công!');
+                            // Đóng modal
+                            $('#editModal').modal('hide');
+                            // Tải lại trang để cập nhật thông tin mới
+                            window.location.reload(); // Tải lại trang để cập nhật thông tin mới
+                        } else {
+                            alert('Có lỗi xảy ra. Vui lòng thử lại!');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Lỗi khi gửi yêu cầu cập nhật:', error);
+                    });
+            } else {
+                alert('Vui lòng điền đầy đủ thông tin!');
+            }
+        });
+    });
+
 </script>
+
+
 </body>
 
 </html>
