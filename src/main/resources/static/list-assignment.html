@@ -620,7 +620,7 @@
                                 <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="assignment_list">
 <!--                            <tr>-->
 
 <!--                                <td>Assignment 1</td>-->
@@ -720,46 +720,51 @@
 <script src="js/main.js"></script>
 
 <script>
-    const API_BASE_URL = 'http://localhost:8080/jip/assignment';
+    let selectedAssignmetId;  // Biến để lưu AssignmentId của
+
+    const API_BASE_URL = '/assignment';
 
     async function fetchAndDisplayAssignments() {
         try {
+            console.log('Fetching assignments...');
             const response = await fetch(`${API_BASE_URL}/list`);
+            console.log('Response received:', response);
             if (!response.ok) {
                 throw new Error('Error fetching assignments: ' + response.statusText);
             }
             const assignments = await response.json();
+            console.log('Assignments data:', assignments);
 
             // Clear existing rows in the table
-            const tableBody = document.querySelector('table.data-table tbody');
+            const tableBody = document.getElementById('assignment_list');
             tableBody.innerHTML = '';
 
             assignments.forEach(assignment => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                <td>${assignment.description}</td>
-                <td>${assignment.creatingDate}</td>
-                <td>${assignment.endDate}</td>
-                <td>
-                    <div class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <span class="flaticon-more-button-of-three-dots"></span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
-                                <i class="fas fa-times text-orange-red"></i>Delete</a>
-                            <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
-                                <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
-                            <a class="dropdown-item" onclick="showDetails(${assignment.id})">
-                                <i class="fas fa-info-circle text-orange-peel"></i>Detail</a>
+                    <td>${assignment.description}</td>
+                    <td>${assignment.created_date}</td>
+                    <td>${assignment.end_date}</td>
+                    <td>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="flaticon-more-button-of-three-dots"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
+                                    <i class="fas fa-times text-orange-red"></i>Delete</a>
+                                <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
+                                    <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
+                                <a class="dropdown-item" onclick="showDetails(${assignment.id})">
+                                    <i class="fas fa-info-circle text-orange-peel"></i>Detail</a>
+                            </div>
                         </div>
-                    </div>
-                </td>
-            `;
+                    </td>
+                `;
                 tableBody.appendChild(row);
             });
         } catch (error) {
-            console.error(error);
+            console.error('Error:', error);
         }
     }
 
