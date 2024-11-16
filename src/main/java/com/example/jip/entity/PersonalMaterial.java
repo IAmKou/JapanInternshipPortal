@@ -1,20 +1,31 @@
 package com.example.jip.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+@Entity
 @Getter
 @Setter
 public class PersonalMaterial {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int student_id;
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id", nullable = false)
+    private Student student;
+
+    @Column(name = "material_link")
     private String material_link;
 
     public PersonalMaterial() {}
 
-    public PersonalMaterial(int id, int student_id, String material_link) {
+    public PersonalMaterial(int id, Student student, String material_link) {
         this.id = id;
-        this.student_id = student_id;
+        this.student = student;
         this.material_link = material_link;
     }
 }
