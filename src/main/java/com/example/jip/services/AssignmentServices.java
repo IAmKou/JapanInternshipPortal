@@ -14,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -79,13 +80,18 @@ public class AssignmentServices {
         Assignment assignment = assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new NoSuchElementException("Assignment id not found!"));
 
-            final CloudinaryResponse response = cloudinaryService.uploadFile(request.getImgFile());
+            MultipartFile imgFile = request.getImgFile();
 
             assignment.setEnd_date(request.getEnd_date());
             assignment.setDescription(request.getDescription());
             assignment.setContent(request.getContent());
-            assignment.setImg(request.getImg());
-            assignment.setImg(response.getUrl());
+
+
+
+            if (imgFile != null && !imgFile.isEmpty()) {
+                CloudinaryResponse response = cloudinaryService.uploadFile(imgFile);
+                assignment.setImg(response.getUrl());
+        }
 
             return assignmentRepository.save(assignment);
 
