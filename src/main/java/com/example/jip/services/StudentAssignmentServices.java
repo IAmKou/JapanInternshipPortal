@@ -1,8 +1,8 @@
 package com.example.jip.services;
 
 
-import com.example.jip.dto.response.StudentAssignmentResponse;
-import com.example.jip.mapper.StudentAssignmentMapper;
+
+import com.example.jip.entity.StudentAssignment;
 import com.example.jip.repository.StudentAssignmentRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +20,11 @@ public class StudentAssignmentServices {
 
     StudentAssignmentRepository studentAssignmentRepository;
 
-    StudentAssignmentMapper studentAssignmentMapper;
+
 
     @PreAuthorize("hasAuthority('STUDENT')")
-    public List<StudentAssignmentResponse> getAllStudentAssignments(){
-        return studentAssignmentRepository.findAll().stream()
-                .map(studentAssignmentMapper::toStudentAssignmentResponse).toList();
+    public List<StudentAssignment> getAllStudentAssignments(){
+        return studentAssignmentRepository.findAll();
     }
-
-
 
 }

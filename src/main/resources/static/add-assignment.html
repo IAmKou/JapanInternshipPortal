@@ -341,7 +341,7 @@
                         <a href="#" class="nav-link"><i class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="all-class.html" class="nav-link"><i class="fas fa-angle-right"></i>All Classes</a>
+                                <a href="all-class-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All Classes</a>
                             </li>
                             <li class="nav-item">
                                 <a href="add-class.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New Class</a>
@@ -462,9 +462,9 @@
                         </div>
 
                     </div>
-                    <form class="new-added-form" action="teacher/assignment/add" method="post">
+                    <form class="new-added-form" action="/assignment/create" method="post" enctype="multipart/form-data" onsubmit="addAssignment(event)">
                         <div class="row">
-                            <input type="hidden" name="teacher_id" id="teacher_id" value="${teacher_id}">
+                            <input type="hidden" name="teacher_id" id="userId">
 
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label for="description">Desciption *</label>
@@ -475,12 +475,12 @@
                                 <input type="text" placeholder="Write content..." class="form-control" name="content" id="content" required>
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label for="createDate">Create Date </label>
-                                <input type="date" value="getCurrentDate()" class="form-control" name="createDate" id="createDate" readonly>
+                                <label for="created_date">Create Date </label>
+                                <input type="date" class="form-control" name="created_date" id="created_date" readonly>
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label for="endDate">End Date *</label>
-                                <input type="date" class="form-control" name="endDate" id="endDate" required>
+                                <label for="end_date">End Date *</label>
+                                <input type="date" class="form-control" name="end_date" id="end_date" required>
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label for="class_id">For Class *</label>
@@ -493,11 +493,11 @@
                                 </select>
                             </div>
                             <div class="col-12 form-group mg-t-8">
-                                <label class="text-dark-medium" for="img">File attach *</label>
-                                <input type="file" class="form-control-file" name="img" id="img" required>
+                                <label class="text-dark-medium" for="imgFile">File attach *</label>
+                                <input type="file" class="form-control-file" name="imgFile" id="imgFile" required>
                             </div>
                             <div class="col-12 form-group mg-t-8">
-                                <button type="submit" onclick="addAssignment()" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Add</button>
+                                <button type="submit" onclick="addAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Add</button>
                                 <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
                             </div>
                         </div>
@@ -506,7 +506,7 @@
             </div>
             <!-- Add New Book Area End Here -->
             <footer class="footer-wrap-layout1">
-                <!--                    <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a href="#">PsdBosS</a></div>-->
+
             </footer>
         </div>
     </div>
@@ -530,75 +530,57 @@
 <script src="js/jquery.scrollUp.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
+
 <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        // Function to format the date as 'YYYY-MM-DDTHH:MM'
-        function getCurrentDate() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JS
-            const day = String(now.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
-
-        // Set the createDate to the current date and time when the page loads
-        const createDateInput = document.getElementById('createDate');
-        createDateInput.value = getCurrentDate();
-
-        document.querySelector('.new-added-form').addEventListener('submit', function(e) {
-            // Prevent the default form submission behavior
-            e.preventDefault();
-
-            // Get form elements
-            const teacherId = document.getElementById('teacher_id').value;
-            const classId = document.getElementById('class_id').value;
-            const description = document.getElementById('description').value;
-            const content = document.getElementById('content').value;
-            const endDate = document.getElementById('endDate').value;
-            const img = document.getElementById('img').files[0];
-
-            // Basic validation
-            if (!description || !content || !endDate || !img) {
-                alert('Please fill in all required fields and attach a file.');
-                return;
-            }
-
-            // Create a FormData object for file upload
-            const formData = new FormData();
-            formData.append('teacher_id', teacherId);
-            formData.append('class_id', classId);
-            formData.append('description', description);
-            formData.append('content', content);
-            formData.append('createDate', createDateInput.value);
-            formData.append('endDate', endDate);
-            formData.append('img', img);
-
-            // Send the form data to the server using Fetch API
-            fetch('/assignment/add', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Success:', data);
-                    alert('Assignment added successfully!');
-                    // Optionally reset the form
-                    document.querySelector('.new-added-form').reset();
-
-                    // Reset createDate to the current date after form reset
-                    createDateInput.value = getCurrentDate();
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    alert('Error adding assignment.');
-                });
-        });
+    document.addEventListener("DOMContentLoaded", function() {
+        const currentDate = new Date().toISOString().split("T")[0];
+        document.getElementById("created_date").value = currentDate;
     });
-</script>
-<!-- fetch user -->
-<script>
+
+    function addAssignment(event) {
+        event.preventDefault();
+
+        const form = event.target.closest('form');
+        const formData = new FormData(form);
+
+        fetch('/assignment/create', {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Assignment added successfully!');
+                    window.location.href = '/list-assignment.html';
+                } else {
+                    alert('Failed to create assignment. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+    }
+
+    (async function fetchUserData() {
+        try {
+            const response = await fetch('/user-detail');
+            if (response.ok) {
+                const userData = await response.json();
+                sessionStorage.setItem('userDetails', JSON.stringify(userData));
+                console.log("User data stored in sessionStorage:", userData);
+
+                getUserDetails(userData);
+            } else {
+                console.error("Failed to fetch user details:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error fetching user details:", error);
+        }
+    })();
+
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
     if (userDetails) {
+        document.getElementById('userId').value = userDetails.id;
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
 
@@ -646,7 +628,10 @@
     } else {
         console.error("User details not found in sessionStorage");
     }
+
 </script>
+
+
 </body>
 
 

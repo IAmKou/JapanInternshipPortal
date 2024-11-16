@@ -362,7 +362,7 @@
                                     class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-class.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    <a href="all-class-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
                                         Classes</a>
                                 </li>
                                 <li class="nav-item">
@@ -545,6 +545,46 @@
                 </footer>
             </div>
         </div>
+        <!-- modal -->
+        <div class="ui-modal-box">
+            <div class="modal-box">
+                <div class="modal sign-up-modal fade" id="report" tabindex="-1" role="dialog"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="close-btn">
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="item-logo">
+                                    <img src="img/logo2.png" alt="logo">
+                                </div>
+                                <form class="login-form" method="post" action="report/create">
+                                    <div class="row gutters-15">
+                                        <div class="form-group col-6 mx-auto align-self-center">
+                                            <input type="text" id="className" name="className" placeholder="Class Name" class="form-control">
+                                        </div>
+                                        <div class="form-group col-12">
+                                            <label for="teacher">Teacher</label>
+                                            <select id="teacher" name="teacherId" class="select2">
+
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-12">
+                                            <button type="submit" class="login-btn">Send
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Page Area End Here -->
         <div class="modal fade" id="standard-modal" tabindex="-1" role="dialog"
              aria-hidden="true">
@@ -631,7 +671,9 @@
                         const dropdownMenu = document.createElement('div');
                         dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
                         dropdownMenu.innerHTML = `
-          <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+          <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal" ><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+          <a class="dropdown-item" href="/all-class-student.html"><i class="fas fa-glasses text-dark-pastel-green"></i>View Student</a>
+          <a class="dropdown-item" href="#"><i class="fas fa-glasses text-dark-pastel-green"></i>Delete</a>
         `;
                         dropdown.appendChild(dropdownMenu);
                         actionsCell.appendChild(dropdown);
