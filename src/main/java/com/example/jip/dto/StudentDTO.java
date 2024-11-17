@@ -22,10 +22,12 @@ public class StudentDTO {
         this.img = student.getImg();
     }
 
-    public StudentDTO(int id, String fullname, String jname, Student.Gender gender, String img) {
+
+    public StudentDTO() {}
+
+    public StudentDTO(int id, String fullname,Student.Gender gender, String img) {
         this.id = id;
         this.fullname = fullname;
-        this.jname = jname;
         this.gender = gender;
         this.img = img;
     }

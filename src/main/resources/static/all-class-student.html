@@ -483,14 +483,13 @@
                             </div>
                         </form>
                         <div class="table-responsive">
-                            <table class="table display data-table text-nowrap">
+                            <table class="table display text-nowrap">
                                 <thead>
                                     <tr>
                                         <th>Id</th>
                                         <th>Photo</th>
                                         <th>Name</th>
                                         <th>Gender</th>
-                                        <th>E-mail</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -500,7 +499,6 @@
                                         <td class="text-center"><img src="img/figure/student2.png" alt="student"></td>
                                         <td>Mark Willy</td>
                                         <td>Male</td>
-                                        <td>kazifahim93@gmail.com</td>
                                          <td>
                                             <div class="dropdown">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -569,6 +567,67 @@
             console.error("User details not found in sessionStorage");
         }
     </script>
+    <!-- fetch student -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tableBody = document.querySelector('.table tbody');
+
+            fetch("/class/getAll")
+                .then(response => response.json())
+                .then(student => {
+                    student.forEach(student => {
+                        const row = document.createElement('tr');
+
+                        // id cell
+                        const idCell = document.createElement('td');
+                        idCell.textContent = student.id;
+                        row.appendChild(idCell);
+
+                        // img cell
+                        const teacherNameCell = document.createElement('td');
+                        teacherNameCell.textContent = student.img;
+                        row.appendChild(teacherNameCell);
+
+                        // Name cell
+                        const nameCell = document.createElement('td');
+                        nameCell.textContent = student.fullname;
+                        row.appendChild(nameCell);
+
+                        // gender cell
+                        const nos = document.createElement('td');
+                        nos.textContent = student.gender;
+                        row.appendChild(nos);
+
+                        // Actions cell
+                        const actionsCell = document.createElement('td');
+                        const dropdown = document.createElement('div');
+                        dropdown.className = 'dropdown';
+                        const dropdownToggle = document.createElement('a');
+                        dropdownToggle.href = '#';
+                        dropdownToggle.className = 'dropdown-toggle';
+                        dropdownToggle.setAttribute('data-toggle', 'dropdown');
+                        dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
+                        dropdown.appendChild(dropdownToggle);
+
+                        const dropdownMenu = document.createElement('div');
+                        dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
+                        dropdownMenu.innerHTML = `
+          <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal" ><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+          <a class="dropdown-item" href="/all-class-student.html"><i class="fas fa-glasses text-dark-pastel-green"></i>View Student</a>
+          <a class="dropdown-item" href="#"><i class="fas fa-glasses text-dark-pastel-green"></i>Delete</a>
+        `;
+                        dropdown.appendChild(dropdownMenu);
+                        actionsCell.appendChild(dropdown);
+                        row.appendChild(actionsCell);
+
+                        // Append the row to the table body
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching reports:', error));
+        });
+    </script>
+
 </body>
 
 
