@@ -510,12 +510,16 @@
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
-                                    material</a>
+                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create material</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>View
-                                    list materials</a>
+                            <li class="nav-item" id="teacher-view">
+                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
+                            </li>
+                            <li class="nav-item" id="student-view">
+                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
+                            </li>
+                            <li class="nav-item" id="student-view1">
+                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list materials</a>
                             </li>
                         </ul>
                     </li>
@@ -620,7 +624,7 @@
                                 <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="assignment_list">
 <!--                            <tr>-->
 
 <!--                                <td>Assignment 1</td>-->
@@ -634,7 +638,6 @@
 <!--                                        <div class="dropdown-menu dropdown-menu-right">-->
 <!--                                            <a class="dropdown-item" onclick="openDeleteConfirmModal()"><i class="fas fa-times text-orange-red"></i>Delete</a>-->
 <!--                                            <a class="dropdown-item" onclick="openPopup()"><i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>-->
-<!--                                            <a class="dropdown-item" href="#"><i class="fas fa-info-circle text-orange-peel"></i>Detail</a>-->
 <!--                                        </div>-->
 
 <!--                                    </div>-->
@@ -656,14 +659,14 @@
             <div class="popup-content">
                 <span class="close" onclick="closePopup()">&times;</span>
                 <h2>Update Assignment</h2>
-                <form class="new-added-form" action="javascript:void(0);" onsubmit="updateAssignment(event)">
+                <form class="new-added-form" action="javascript:void(0);"  onsubmit="updateAssignment(event)">
                     <label for="description">Description:</label>
                     <input type="text" id="description" name="description" ></input>
 
                     <label for="end_date">End Date:</label>
                     <input type="date" id="end_date" name="end_date" >
 
-                    <label for="content">Description:</label>
+                    <label for="content">Content:</label>
                     <textarea id="content" name="content" rows="4" ></textarea>
 
 
@@ -674,7 +677,6 @@
                             <option value="2">Class 2</option>
                             <option value="3">Class 3</option>
                         </select>
-
 
                     <label for="img">Image URL:</label>
                     <input type="file" id="img" name="img">
@@ -720,56 +722,58 @@
 <script src="js/main.js"></script>
 
 <script>
-    const API_BASE_URL = 'http://localhost:8080/JIP/assignment';
+
+    const API_BASE_URL = '/assignment';
+    let currentAssignmentId = null;
 
     async function fetchAndDisplayAssignments() {
         try {
+            console.log('Fetching assignments...');
             const response = await fetch(`${API_BASE_URL}/list`);
+            console.log('Response received:', response);
             if (!response.ok) {
                 throw new Error('Error fetching assignments: ' + response.statusText);
             }
             const assignments = await response.json();
+            console.log('Assignments data:', assignments);
 
             // Clear existing rows in the table
-            const tableBody = document.querySelector('table.data-table tbody');
+            const tableBody = document.getElementById('assignment_list');
             tableBody.innerHTML = '';
 
             assignments.forEach(assignment => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                <td>${assignment.description}</td>
-                <td>${assignment.creatingDate}</td>
-                <td>${assignment.endDate}</td>
-                <td>
-                    <div class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <span class="flaticon-more-button-of-three-dots"></span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
-                                <i class="fas fa-times text-orange-red"></i>Delete</a>
-                            <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
-                                <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
-                            <a class="dropdown-item" onclick="showDetails(${assignment.id})">
-                                <i class="fas fa-info-circle text-orange-peel"></i>Detail</a>
+                    <a href="view-assignment-details.html?id=${assignment.id}" target="_blank">${assignment.description}</a>
+                    <td>${assignment.created_date}</td>
+                    <td>${assignment.end_date}</td>
+                    <td>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="flaticon-more-button-of-three-dots"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
+                                    <i class="fas fa-times text-orange-red"></i>Delete</a>
+                                <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
+                                    <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
+
+                            </div>
                         </div>
-                    </div>
-                </td>
-            `;
+                    </td>
+                `;
                 tableBody.appendChild(row);
             });
         } catch (error) {
-            console.error(error);
+            console.error('Error:', error);
         }
     }
 
-    // Initialize the table with assignments on page load
-    document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
 
-    //This function fetches the assignment details when you want to update it and fills in the form fields.
+    // Function to open the update popup
     async function openUpdatePopup(assignmentId) {
         try {
-            const response = await fetch(`${API_BASE_URL}/update/${assignmentId}`);
+            const response = await fetch(`${API_BASE_URL}/${assignmentId}`);
             if (!response.ok) {
                 throw new Error('Error fetching assignment for update: ' + response.statusText);
             }
@@ -777,10 +781,10 @@
 
             // Fill the form with the assignment data
             document.getElementById('description').value = assignment.description;
-            document.getElementById('end_date').value = assignment.endDate;
+            document.getElementById('end_date').value = assignment.end_date;
             document.getElementById('content').value = assignment.content;
-            document.getElementById('class_id').value = assignment.classId;
-            document.getElementById('img').value = assignment.img;
+            document.getElementById('class_id').value = assignment.class_id;
+            // document.getElementById('img').value = assignment.imgFile;
 
             // Show the update popup
             currentAssignmentId = assignment.id;
@@ -803,7 +807,7 @@
 
         const formData = new FormData();
         formData.append('description', description);
-        formData.append('endDate', endDate);
+        formData.append('end_date', endDate);
         formData.append('content', content);
         formData.append('classId', classId);
         if (imgFile) formData.append('img', imgFile);
@@ -818,13 +822,24 @@
                 alert('Assignment updated successfully!');
                 closePopup();
                 fetchAndDisplayAssignments();
+            } else if (response.status === 404) {
+                alert('Assignment not found!');
+                closePopup();
             } else {
                 console.error('Error updating assignment:', response.statusText);
             }
         } catch (error) {
-            console.error(error);
+            console.error('Error:', error);
         }
     }
+
+    // Function to close the update popup
+    function closePopup() {
+        document.getElementById('assignmentPopup').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+
 
     // Function to open the delete confirmation modal
     function openDeleteConfirmModal(assignmentId) {
@@ -833,15 +848,11 @@
     }
 
     // Function to close the delete confirmation modal
-    function openDeleteConfirmModal(assignmentId) {
-        document.getElementById('deleteConfirmModal').dataset.assignmentId = assignmentId;
-        document.getElementById('deleteConfirmModal').style.display = 'flex';
-    }
-
     function closeDeleteConfirmModal() {
         document.getElementById('deleteConfirmModal').style.display = 'none';
     }
 
+    // Function to confirm delete
     async function confirmDelete() {
         const assignmentId = document.getElementById('deleteConfirmModal').dataset.assignmentId;
 
@@ -854,37 +865,70 @@
                 alert('Assignment deleted successfully!');
                 fetchAndDisplayAssignments();
                 closeDeleteConfirmModal();
+            } else if (response.status === 404) {
+                alert('Assignment not found!');
+                closeDeleteConfirmModal();
             } else {
                 console.error('Error deleting assignment:', response.statusText);
             }
         } catch (error) {
-            console.error(error);
+            console.error('Error:', error);
         }
     }
 
-    //This function fetches and displays the assignment details in a modal or separate view.
-    async function showDetails(assignmentId) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/detail/${assignmentId}`);
-            if (!response.ok) {
-                throw new Error('Error fetching assignment details: ' + response.statusText);
-            }
-            const assignment = await response.json();
+    // Initialize the table with assignments on page load
+    document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
+</script>
+<!-- fetch user -->
+<script>
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    if (userDetails) {
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        const userRoleElements = document.querySelectorAll('.userRole');
 
-            // Display details in a modal or a specific area
-            document.getElementById('assignmentDetails').innerHTML = `
-            <p>Description: ${assignment.description}</p>
-            <p>Creating Date: ${assignment.creatingDate}</p>
-            <p>End Date: ${assignment.endDate}</p>
-            <p>Content: ${assignment.content}</p>
-            <p>Class ID: ${assignment.classId}</p>
-            <img src="${assignment.img}" alt="Assignment Image" />
-        `;
+        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
+        if (userDetails.roleName === "ADMIN") {
+            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.username;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
 
-            document.getElementById('detailsModal').style.display = 'flex';
-        } catch (error) {
-            console.error(error);
+            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
+            document.getElementById("teacher-view").style.display = "none";
+            document.getElementById("student-view").style.display = "none";
+        } else if (userDetails.roleName === "TEACHER") {
+            // Hiển thị đầy đủ tên và vai trò cho giáo viên
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+
+            // Chỉ hiển thị mục của giáo viên
+            document.getElementById("teacher-view").style.display = "block";
+            document.getElementById("student-view").style.display = "none";
+        } else if (userDetails.roleName === "STUDENT") {
+            // Hiển thị đầy đủ tên và vai trò cho học sinh
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+
+            // Chỉ hiển thị mục của học sinh
+            document.getElementById("teacher-view").style.display = "none";
+            document.getElementById("student-view").style.display = "block";
+            document.getElementById("student-view1").style.display = "block";
+        } else {
+            console.warn("Role not recognized: ", userDetails.roleName);
         }
+    } else {
+        console.error("User details not found in sessionStorage");
     }
 </script>
 

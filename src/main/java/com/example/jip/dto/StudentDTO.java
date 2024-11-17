@@ -13,6 +13,8 @@ public class StudentDTO {
     private String img;
 
 
+    public StudentDTO() {
+    }
 
     public StudentDTO(Student student) {
         this.id = student.getId();

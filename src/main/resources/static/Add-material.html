@@ -377,13 +377,15 @@
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                             <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
-                                        material</a>
+
+                                <li class="nav-item" id="teacher-view">
+                                    <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>View
-                                        list materials</a>
+                                <li class="nav-item" id="student-view">
+                                    <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
+                                </li>
+                                <li class="nav-item" id="student-view1">
+                                    <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list materials</a>
                                 </li>
                             </ul>
                         </li>
@@ -442,7 +444,7 @@
                     <h3>Add Material</h3>
                     <ul>
                         <li>
-                            <a href="admin.html">Home</a>
+                            <a href="student.html">Home</a>
                         </li>
                         <li>Add Material</li>
                     </ul>
@@ -460,59 +462,17 @@
                         </div>
                         <div class="table-responsive">
                             <table class="table display data-table text-nowrap">
-                                <tbody>
-                                    <tr>
-                                        <td>#0021</td>
-                                         <td>
-                                                <a href="#"  aria-expanded="false">
-                                                    <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow" style="padding: 8px 16px; font-size: 14px;">Add material</button>
-                                                </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>#0021</td>
-                                        <td>
-                                            <a href="#"  aria-expanded="false">
-                                                <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow" style="padding: 8px 16px; font-size: 14px;">Add material</button>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>#0021</td>
-                                        <td>
-                                            <a href="#"  aria-expanded="false">
-                                                <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow" style="padding: 8px 16px; font-size: 14px;">Add material</button>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>#0021</td>
-                                        <td>
-                                            <a href="#"  aria-expanded="false">
-                                                <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow" style="padding: 8px 16px; font-size: 14px;">Add material</button>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>#0021</td>
-                                        <td>
-                                            <a href="#"  aria-expanded="false">
-                                                <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow" style="padding: 8px 16px; font-size: 14px;">Add material</button>
-                                            </a>
-
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>#0021</td>
-                                        <td>
-                                            <a href="#"  aria-expanded="false">
-                                                <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow" style="padding: 8px 16px; font-size: 14px;">Add material</button>
-                                            </a>
-
-                                        </td>
-                                    </tr>
+                                <thead>
+                                <tr>
+                                    <input type="hidden" name="student_id" id="userId" value="">
+                                    <!-- Các tiêu đề cột sẽ nằm ở đây -->
+                                </tr>
+                                </thead>
+                                <tbody id="material-list">
+                                <!-- Danh sách materials sẽ được thêm vào đây từ JavaScript -->
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                 </div>
@@ -542,17 +502,160 @@
     <script>
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
         if (userDetails) {
+            document.getElementById('userId').value = userDetails.id;
             const userFullNameElements = document.querySelectorAll('.userFullName');
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
             const userRoleElements = document.querySelectorAll('.userRole');
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-        }else{
+
+            // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
+            if (userDetails.roleName === "ADMIN") {
+                // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.username;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+
+                // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
+                document.getElementById("teacher-view").style.display = "none";
+                document.getElementById("student-view").style.display = "none";
+            } else if (userDetails.roleName === "TEACHER") {
+                // Hiển thị đầy đủ tên và vai trò cho giáo viên
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+
+                // Chỉ hiển thị mục của giáo viên
+                document.getElementById("teacher-view").style.display = "block";
+                document.getElementById("student-view").style.display = "none";
+            } else if (userDetails.roleName === "STUDENT") {
+                // Hiển thị đầy đủ tên và vai trò cho học sinh
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+
+                // Chỉ hiển thị mục của học sinh
+                document.getElementById("teacher-view").style.display = "none";
+                document.getElementById("student-view").style.display = "block";
+                document.getElementById("student-view1").style.display = "block";
+            } else {
+                console.warn("Role not recognized: ", userDetails.roleName);
+            }
+        } else {
             console.error("User details not found in sessionStorage");
         }
+    </script>
+    <script>
+        let selectedMaterialId;  // Biến để lưu materialId của tài liệu cần xóa
+
+        function addMaterial(material) {
+            // Lấy studentId từ phần tử ẩn có id là 'userId'
+            const studentId = document.getElementById('userId').value;
+            const materialLink = `/materials/details/${material.id}`;  // Sử dụng material.id chính xác
+
+            // Kiểm tra nếu studentId hoặc material.id bị thiếu
+            if (!studentId || !material.id) {
+                alert('Không thể thêm material vì thiếu thông tin student ID hoặc material ID.');
+                return;
+            }
+
+            // Tạo dữ liệu URLSearchParams cho POST request
+            const data = new URLSearchParams();
+            data.append('student_id', studentId);
+            data.append('material_link', materialLink);
+
+            // Gửi yêu cầu thêm material
+            fetch('/studentMaterials/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'  // Đảm bảo gửi dưới dạng form-urlencoded
+                },
+                body: data.toString()  // Chuyển đổi URLSearchParams thành chuỗi để gửi
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        throw new Error('Có lỗi xảy ra khi thêm material');
+                    }
+                })
+                .then(responseData => {
+                    alert('Material đã được thêm vào cơ sở dữ liệu.');
+                    console.log("Response from server:", responseData);
+                })
+                .catch(error => {
+                    console.error('Error adding material:', error);
+                    alert('Có lỗi xảy ra khi thêm material.');
+                });
+        }
+
+        // Hàm lấy danh sách materials từ API và hiển thị
+        function fetchMaterials() {
+
+
+            fetch('/materials/list')
+                .then(response => response.json())
+                .then(data => {
+                    const materialList = document.getElementById('material-list');
+                    materialList.innerHTML = '';  // Xóa nội dung hiện tại
+
+                    // Hiển thị từng material trong danh sách
+                    data.forEach(material => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                    <td class="text-left">
+                        <a href="View-material-details.html?id=${material.id}" target="_blank">${material.title}</a>
+                    </td>
+                    <td>
+                        <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow"
+                                style="padding: 8px 16px; font-size: 14px;"
+                                onclick="addMaterial({ id: '${material.id}'})">Add material</button>
+                    </td>
+                `;
+                        materialList.appendChild(row);
+                    });
+
+                    // Khởi tạo hoặc cập nhật DataTable
+                    if ($.fn.dataTable.isDataTable('.data-table')) {
+                        var table = $('.data-table').DataTable();
+                        table.clear();
+                        table.rows.add(materialList.rows);
+                        table.draw();
+                    } else {
+                        $('.data-table').DataTable({
+                            "bSort": false,
+                            "bPaginate": false,
+                            "bInfo": false,
+                            "bFilter": false,
+                            "autoWidth": false,
+                            "columnDefs": [{ "targets": 'no-sort', "orderable": false }],
+                            "header": false,
+                            "ordering": false,
+                            "scrollY": "300px",
+                            "scrollCollapse": true,
+                            "paging": false
+                        });
+                    }
+                })
+                .catch(error => console.error('Error fetching materials:', error));
+        }
+
+        // Gọi hàm fetchMaterials khi trang được tải
+        document.addEventListener('DOMContentLoaded', function () {
+            const thead = document.querySelector('.data-table thead');
+            if (thead) {
+                thead.style.display = 'none';
+            }
+
+            // Gọi hàm fetchMaterials để tải dữ liệu
+            fetchMaterials();
+        });
     </script>
 </body>
 

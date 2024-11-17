@@ -38,7 +38,7 @@ public class Assignment {
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id")
-    private Class classEntity;
+    Class classEntity;
 
     @Column(name = "img")
     String img;
