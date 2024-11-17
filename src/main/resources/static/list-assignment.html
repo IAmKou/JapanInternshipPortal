@@ -638,7 +638,6 @@
 <!--                                        <div class="dropdown-menu dropdown-menu-right">-->
 <!--                                            <a class="dropdown-item" onclick="openDeleteConfirmModal()"><i class="fas fa-times text-orange-red"></i>Delete</a>-->
 <!--                                            <a class="dropdown-item" onclick="openPopup()"><i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>-->
-<!--                                            <a class="dropdown-item" href="#"><i class="fas fa-info-circle text-orange-peel"></i>Detail</a>-->
 <!--                                        </div>-->
 
 <!--                                    </div>-->
@@ -660,14 +659,14 @@
             <div class="popup-content">
                 <span class="close" onclick="closePopup()">&times;</span>
                 <h2>Update Assignment</h2>
-                <form class="new-added-form" action="javascript:void(0);" onsubmit="updateAssignment(event)">
+                <form class="new-added-form" action="javascript:void(0);"  onsubmit="updateAssignment(event)">
                     <label for="description">Description:</label>
                     <input type="text" id="description" name="description" ></input>
 
                     <label for="end_date">End Date:</label>
                     <input type="date" id="end_date" name="end_date" >
 
-                    <label for="content">Description:</label>
+                    <label for="content">Content:</label>
                     <textarea id="content" name="content" rows="4" ></textarea>
 
 
@@ -678,7 +677,6 @@
                             <option value="2">Class 2</option>
                             <option value="3">Class 3</option>
                         </select>
-
 
                     <label for="img">Image URL:</label>
                     <input type="file" id="img" name="img">
@@ -724,9 +722,9 @@
 <script src="js/main.js"></script>
 
 <script>
-    let selectedAssignmetId;  // Biến để lưu AssignmentId của
 
     const API_BASE_URL = '/assignment';
+    let currentAssignmentId = null;
 
     async function fetchAndDisplayAssignments() {
         try {
@@ -746,7 +744,7 @@
             assignments.forEach(assignment => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${assignment.description}</td>
+                    <a href="view-assignment-details.html?id=${assignment.id}" target="_blank">${assignment.description}</a>
                     <td>${assignment.created_date}</td>
                     <td>${assignment.end_date}</td>
                     <td>
@@ -759,8 +757,7 @@
                                     <i class="fas fa-times text-orange-red"></i>Delete</a>
                                 <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
                                     <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
-                                <a class="dropdown-item" onclick="showDetails(${assignment.id})">
-                                    <i class="fas fa-info-circle text-orange-peel"></i>Detail</a>
+
                             </div>
                         </div>
                     </td>
@@ -772,13 +769,11 @@
         }
     }
 
-    // Initialize the table with assignments on page load
-    document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
 
-    //This function fetches the assignment details when you want to update it and fills in the form fields.
+    // Function to open the update popup
     async function openUpdatePopup(assignmentId) {
         try {
-            const response = await fetch(`${API_BASE_URL}/update/${assignmentId}`);
+            const response = await fetch(`${API_BASE_URL}/${assignmentId}`);
             if (!response.ok) {
                 throw new Error('Error fetching assignment for update: ' + response.statusText);
             }
@@ -786,10 +781,10 @@
 
             // Fill the form with the assignment data
             document.getElementById('description').value = assignment.description;
-            document.getElementById('end_date').value = assignment.endDate;
+            document.getElementById('end_date').value = assignment.end_date;
             document.getElementById('content').value = assignment.content;
-            document.getElementById('class_id').value = assignment.classId;
-            document.getElementById('img').value = assignment.img;
+            document.getElementById('class_id').value = assignment.class_id;
+            // document.getElementById('img').value = assignment.imgFile;
 
             // Show the update popup
             currentAssignmentId = assignment.id;
@@ -812,7 +807,7 @@
 
         const formData = new FormData();
         formData.append('description', description);
-        formData.append('endDate', endDate);
+        formData.append('end_date', endDate);
         formData.append('content', content);
         formData.append('classId', classId);
         if (imgFile) formData.append('img', imgFile);
@@ -827,13 +822,24 @@
                 alert('Assignment updated successfully!');
                 closePopup();
                 fetchAndDisplayAssignments();
+            } else if (response.status === 404) {
+                alert('Assignment not found!');
+                closePopup();
             } else {
                 console.error('Error updating assignment:', response.statusText);
             }
         } catch (error) {
-            console.error(error);
+            console.error('Error:', error);
         }
     }
+
+    // Function to close the update popup
+    function closePopup() {
+        document.getElementById('assignmentPopup').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+
 
     // Function to open the delete confirmation modal
     function openDeleteConfirmModal(assignmentId) {
@@ -842,15 +848,11 @@
     }
 
     // Function to close the delete confirmation modal
-    function openDeleteConfirmModal(assignmentId) {
-        document.getElementById('deleteConfirmModal').dataset.assignmentId = assignmentId;
-        document.getElementById('deleteConfirmModal').style.display = 'flex';
-    }
-
     function closeDeleteConfirmModal() {
         document.getElementById('deleteConfirmModal').style.display = 'none';
     }
 
+    // Function to confirm delete
     async function confirmDelete() {
         const assignmentId = document.getElementById('deleteConfirmModal').dataset.assignmentId;
 
@@ -863,38 +865,19 @@
                 alert('Assignment deleted successfully!');
                 fetchAndDisplayAssignments();
                 closeDeleteConfirmModal();
+            } else if (response.status === 404) {
+                alert('Assignment not found!');
+                closeDeleteConfirmModal();
             } else {
                 console.error('Error deleting assignment:', response.statusText);
             }
         } catch (error) {
-            console.error(error);
+            console.error('Error:', error);
         }
     }
 
-    //This function fetches and displays the assignment details in a modal or separate view.
-    async function showDetails(assignmentId) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/detail/${assignmentId}`);
-            if (!response.ok) {
-                throw new Error('Error fetching assignment details: ' + response.statusText);
-            }
-            const assignment = await response.json();
-
-            // Display details in a modal or a specific area
-            document.getElementById('assignmentDetails').innerHTML = `
-            <p>Description: ${assignment.description}</p>
-            <p>Creating Date: ${assignment.creatingDate}</p>
-            <p>End Date: ${assignment.endDate}</p>
-            <p>Content: ${assignment.content}</p>
-            <p>Class ID: ${assignment.classId}</p>
-            <img src="${assignment.img}" alt="Assignment Image" />
-        `;
-
-            document.getElementById('detailsModal').style.display = 'flex';
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    // Initialize the table with assignments on page load
+    document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
 </script>
 <!-- fetch user -->
 <script>

@@ -4,9 +4,7 @@ import com.example.jip.dto.StudentDTO;
 import com.example.jip.entity.Student;
 import com.example.jip.repository.StudentRepository;
 import com.example.jip.services.StudentServices;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -15,6 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/student")
@@ -59,5 +58,8 @@ public class StudentController {
         return studentRepository.findTop30UnassignedStudents();
     }
 
-
+    @GetMapping("/getAll")
+    public Iterable<Student> getAllStudents() {
+        return studentRepository.findAll();
+    }
 }

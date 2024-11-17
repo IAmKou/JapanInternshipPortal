@@ -52,11 +52,18 @@ CREATE TABLE Manager (
     FOREIGN KEY (account_id) REFERENCES Account(Id)
 );
 
+create table Lesson ( 
+Id int auto_increment primary key,
+Name varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+);
+
 CREATE TABLE Class (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     number_of_student INT,
     teacher_id INT,
+    lesson_id INT,
+    foreign key (lesson_id) references Lesson(Id),
     FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
 );
 
@@ -211,4 +218,3 @@ Content varchar(100),
 reporter_id int,
 foreign key (reporter_id) references Account(id)
 );
-
