@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.time.Instant;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -21,9 +22,8 @@ public class AssignmentCreationRequest {
     Date end_date;
     String description;
     String content;
-    MultipartFile imgFile;
+    MultipartFile[] imgFile;
     TeacherDTO teacher;
-    ClassDTO classEntity;
-
+    List<Class> classList;
 
 }

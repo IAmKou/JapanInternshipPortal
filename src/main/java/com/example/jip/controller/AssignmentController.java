@@ -7,8 +7,10 @@ import com.example.jip.dto.request.AssignmentUpdateRequest;
 import com.example.jip.entity.Assignment;
 import com.example.jip.entity.Teacher;
 import com.example.jip.repository.AccountRepository;
+import com.example.jip.repository.AssignmentRepository;
 import com.example.jip.repository.TeacherRepository;
 import com.example.jip.services.AssignmentServices;
+import com.example.jip.services.CloudinaryService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -35,7 +38,10 @@ public class AssignmentController {
     AssignmentServices assignmentServices;
 
     TeacherRepository teacherRepository;
-    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
+    AssignmentRepository assignmentRepository;
+
+    CloudinaryService cloudinaryService;
 
 
     @GetMapping("/list")
@@ -44,12 +50,13 @@ public class AssignmentController {
     }
 
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public RedirectView createAssignment(@ModelAttribute AssignmentCreationRequest request,
-                                         @RequestParam("teacher_id") int teacherId,
-                                         @RequestParam("imgFile") MultipartFile imgFile) throws IOException {
+    public ResponseEntity<?> createAssignment(@ModelAttribute AssignmentCreationRequest request,
+                                         @RequestParam("teacher_id") int teacherId) throws IOException {
         try {
-            log.info("Received request: " + request);  // Log the incoming request for debugging
-            request.setImgFile(imgFile);  // Set imgFile to the request object
+            log.info("Received request: " + request);
+            for (int i = 0; i < request.getImgFile().length; i++) {
+                log.info("Received file: " + request.getImgFile()[i].getOriginalFilename());
+            }
 
             Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
             TeacherDTO teacherDTO = new TeacherDTO();
@@ -57,7 +64,7 @@ public class AssignmentController {
             request.setTeacher(teacherDTO);
 
             assignmentServices.createAssignment(request);
-            return new RedirectView("/add-assignment.html");
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             log.error("Error creating assignment", e);
             throw new RuntimeException("Failed to create assignment", e);
@@ -66,7 +73,7 @@ public class AssignmentController {
 
 
     @DeleteMapping("/delete/{assignment_id}")
-    public ResponseEntity<Void> deleteAssignment(@PathVariable("assignment_id") int assignment_id) {
+    public ResponseEntity<?> deleteAssignment(@PathVariable("assignment_id") int assignment_id) {
         try {
             assignmentServices.deleteAssignmentById(assignment_id);
             return ResponseEntity.noContent().build(); // Return 204 No Content on successful deletion
@@ -85,11 +92,31 @@ public class AssignmentController {
         }
     }
 
+    @GetMapping("/files/{assignmentId}")
+    public ResponseEntity<List<String>> getAssignmentFiles(@PathVariable int assignmentId) {
+        Assignment assignment = assignmentRepository.findById(assignmentId)
+                .orElseThrow(() -> new RuntimeException("Assignment not found"));
+
+        String folderName = assignment.getDescription(); // Assuming folder name is stored in the description
+        List<String> fileUrls = cloudinaryService.listFilesInFolder(folderName);
+        return ResponseEntity.ok(fileUrls);
+    }
+
     @PutMapping("/update/{assignment_id}")
-    public ResponseEntity<Void> updateAssignment(@PathVariable("assignment_id") int assignment_id,
-                                                 @ModelAttribute AssignmentUpdateRequest request)  {
+    public ResponseEntity<?> updateAssignment(@PathVariable("assignment_id") int assignment_id,
+                                              @ModelAttribute AssignmentUpdateRequest request) {
         try {
             log.info("Received request: " + request);  // Log the incoming request for debugging
+
+            MultipartFile[] imgFiles = request.getImgFile();
+            if (imgFiles != null) {
+                for (MultipartFile imgFile : imgFiles) {
+                    log.info("Received file: " + imgFile.getOriginalFilename()); // Log the file name
+                }
+            } else {
+                log.info("No files received.");
+            }
+
             assignmentServices.updateAssignment(assignment_id, request);
             return ResponseEntity.noContent().build(); // Return 204 No Content on successful update
         } catch (NoSuchElementException e) {
@@ -97,5 +124,6 @@ public class AssignmentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 Not Found if assignment doesn't exist
         }
     }
-
 }
+
+

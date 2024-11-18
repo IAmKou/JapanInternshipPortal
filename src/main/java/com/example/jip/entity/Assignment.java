@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,12 +36,13 @@ public class Assignment {
     @JoinColumn(name = "teacher_id")
     Teacher teacher;
 
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "class_id")
-    Class classEntity;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id", fetch = FetchType.EAGER)
+    List<Class> classList = new ArrayList<>();
+
 
     @Column(name = "img")
-    String img;
+    String imgUrl;
+
+
 
 }

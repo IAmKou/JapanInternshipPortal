@@ -678,8 +678,9 @@
                             <option value="3">Class 3</option>
                         </select>
 
+
                     <label for="img">Image URL:</label>
-                    <input type="file" id="img" name="img">
+                    <input type="file" id="img" name="imgFile" multiple>
 
                     <button type="submit" class="btn">Submit</button>
                 </form>
@@ -744,7 +745,7 @@
             assignments.forEach(assignment => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <a href="view-assignment-details.html?id=${assignment.id}" target="_blank">${assignment.description}</a>
+                    <a href="/${assignment.id}" target="_blank">${assignment.description}</a>
                     <td>${assignment.created_date}</td>
                     <td>${assignment.end_date}</td>
                     <td>
@@ -768,17 +769,15 @@
             console.error('Error:', error);
         }
     }
-
-
-    // Function to open the update popup
+    // Function to open the update popup async
     async function openUpdatePopup(assignmentId) {
         try {
             const response = await fetch(`${API_BASE_URL}/${assignmentId}`);
             if (!response.ok) {
                 throw new Error('Error fetching assignment for update: ' + response.statusText);
             }
-            const assignment = await response.json();
 
+            const assignment = await response.json();
             // Fill the form with the assignment data
             document.getElementById('description').value = assignment.description;
             document.getElementById('end_date').value = assignment.end_date;
@@ -795,7 +794,6 @@
         }
     }
 
-    // Function to update assignment
     async function updateAssignment(event) {
         event.preventDefault();
 
@@ -803,19 +801,22 @@
         const endDate = document.getElementById('end_date').value;
         const content = document.getElementById('content').value;
         const classId = document.getElementById('class_id').value;
-        const imgFile = document.getElementById('img').files[0];
+        const imgFiles = document.getElementById('img').files;
 
         const formData = new FormData();
         formData.append('description', description);
         formData.append('end_date', endDate);
         formData.append('content', content);
         formData.append('classId', classId);
-        if (imgFile) formData.append('img', imgFile);
+
+        for (let i = 0; i < imgFiles.length; i++) {
+            formData.append('imgFile', imgFiles[i]); // Match the backend field
+        }
 
         try {
             const response = await fetch(`${API_BASE_URL}/update/${currentAssignmentId}`, {
                 method: 'PUT',
-                body: formData
+                body: formData,
             });
 
             if (response.ok) {
@@ -831,50 +832,50 @@
         } catch (error) {
             console.error('Error:', error);
         }
-    }
-
-    // Function to close the update popup
-    function closePopup() {
-        document.getElementById('assignmentPopup').style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
-    }
 
 
-
-    // Function to open the delete confirmation modal
-    function openDeleteConfirmModal(assignmentId) {
-        document.getElementById('deleteConfirmModal').dataset.assignmentId = assignmentId;
-        document.getElementById('deleteConfirmModal').style.display = 'flex';
-    }
-
-    // Function to close the delete confirmation modal
-    function closeDeleteConfirmModal() {
-        document.getElementById('deleteConfirmModal').style.display = 'none';
-    }
-
-    // Function to confirm delete
-    async function confirmDelete() {
-        const assignmentId = document.getElementById('deleteConfirmModal').dataset.assignmentId;
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/delete/${assignmentId}`, {
-                method: 'DELETE'
-            });
-
-            if (response.ok) {
-                alert('Assignment deleted successfully!');
-                fetchAndDisplayAssignments();
-                closeDeleteConfirmModal();
-            } else if (response.status === 404) {
-                alert('Assignment not found!');
-                closeDeleteConfirmModal();
-            } else {
-                console.error('Error deleting assignment:', response.statusText);
+        // Function to close the update popup
+        function closePopup() {
+            document.getElementById('assignmentPopup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
             }
-        } catch (error) {
-            console.error('Error:', error);
         }
-    }
+
+
+        // Function to open the delete confirmation modal
+        function openDeleteConfirmModal(assignmentId) {
+            document.getElementById('deleteConfirmModal').dataset.assignmentId = assignmentId;
+            document.getElementById('deleteConfirmModal').style.display = 'flex';
+        }
+
+        // Function to close the delete confirmation modal
+        function closeDeleteConfirmModal() {
+            document.getElementById('deleteConfirmModal').style.display = 'none';
+        }
+
+        // Function to confirm delete
+        async function confirmDelete() {
+            const assignmentId = document.getElementById('deleteConfirmModal').dataset.assignmentId;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/delete/${assignmentId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('Assignment deleted successfully!');
+                    fetchAndDisplayAssignments();
+                    closeDeleteConfirmModal();
+                } else if (response.status === 404) {
+                    alert('Assignment not found!');
+                    closeDeleteConfirmModal();
+                } else {
+                    console.error('Error deleting assignment:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
 
     // Initialize the table with assignments on page load
     document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
