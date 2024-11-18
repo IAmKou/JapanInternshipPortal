@@ -1,6 +1,7 @@
 package com.example.jip.services;
 
 import com.example.jip.dto.ClassDTO;
+import com.example.jip.dto.StudentDTO;
 import com.example.jip.entity.*;
 import com.example.jip.entity.Class;
 import com.example.jip.repository.ClassRepository;
@@ -54,5 +55,9 @@ public class ClassServices {
         }
 
         return savedClass;
+    }
+
+    public List<StudentDTO> getStudentByClassId(int classId){
+        return listRepository.findStudentsByClassId(classId);
     }
 }
