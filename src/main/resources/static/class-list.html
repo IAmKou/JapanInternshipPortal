@@ -259,7 +259,7 @@
                                             class="fas fa-angle-right"></i>Students</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="index4.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
+                                    <a href="manager.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="teacher.html" class="nav-link"><i
@@ -672,7 +672,7 @@
                         dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
                         dropdownMenu.innerHTML = `
           <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal" ><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-          <a class="dropdown-item" href="/all-class-student.html"><i class="fas fa-glasses text-dark-pastel-green"></i>View Student</a>
+          <a class="dropdown-item" href="/all-class-student.html?classId=${clasz.id}"><i class="fas fa-glasses text-dark-pastel-green"></i>View Student</a>
           <a class="dropdown-item" href="#"><i class="fas fa-glasses text-dark-pastel-green"></i>Delete</a>
         `;
                         dropdown.appendChild(dropdownMenu);
