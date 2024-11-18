@@ -429,9 +429,17 @@
                             <a href="notice-board.html" class="nav-link"><i
                                     class="flaticon-script"></i><span>Notice</span></a>
                         </li>
-                        <li class="nav-item">
-                            <a href="messaging.html" class="nav-link"><i
-                                    class="flaticon-chat"></i><span>Messeage</span></a>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send application</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My application</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-menu-1"></i><span>UI Elements</span></a>
@@ -496,10 +504,7 @@
                             </div>
                             <form class="new-added-form">
                                 <div class="row">
-                                    <div class="col-12 form-group">
-                                        <label>Roll No (MSSV) *</label>
-                                        <input type="text" placeholder="" class="form-control" required>
-                                    </div>
+
                                     <div class="col-12 form-group">
                                         <label>Name</label>
                                         <input type="text" placeholder="" class="form-control">
@@ -508,11 +513,12 @@
                                         <label>Application type *</label>
                                         <select class="select2">
                                             <option value="">Please Select</option>
-                                            <option value="1">Bangla</option>
-                                            <option value="2">English</option>
-                                            <option value="3">Mathematics</option>
-                                            <option value="3">Economics</option>
-                                            <option value="3">Chemistry</option>
+                                            <option value="1">Đơn xin nghỉ học</option>
+                                            <option value="2">Đơn xin đi thực tập tại FPT Japan</option>
+                                            <option value="3">Các loại đơn khác</option>
+                                            <option value="4">Đơn xin đổi lịch giảng dạy </option>
+                                            <option value="5">Đơn xin đổi giáo viên</option>
+                                            <option value="6">Các loại đơn khác</option>
                                         </select>
                                     </div>
                                     <div class="col-12 form-group">
@@ -619,13 +625,16 @@
     <!-- fetch user -->
     <script>
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
         if (userDetails) {
+            // Cập nhật thông tin người dùng vào các trường input
+            document.getElementById('userId').value = userDetails.id;
             const userFullNameElements = document.querySelectorAll('.userFullName');
             const userRoleElements = document.querySelectorAll('.userRole');
 
-            // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
+            // Hiển thị thông tin người dùng dựa trên vai trò
             if (userDetails.roleName === "ADMIN") {
-                // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
+                // Hiển thị tên đăng nhập và vai trò cho ADMIN
                 userFullNameElements.forEach(element => {
                     element.textContent = userDetails.username;
                 });
@@ -633,9 +642,12 @@
                     element.textContent = userDetails.roleName;
                 });
 
-                // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
+                // Ẩn các mục của Teacher và Student vì ADMIN không cần xem
                 document.getElementById("teacher-view").style.display = "none";
                 document.getElementById("student-view").style.display = "none";
+
+                // Nếu ADMIN cần xem thông tin nào đó, bạn có thể hiển thị phần này ở đây
+
             } else if (userDetails.roleName === "TEACHER") {
                 // Hiển thị đầy đủ tên và vai trò cho giáo viên
                 userFullNameElements.forEach(element => {
@@ -645,9 +657,12 @@
                     element.textContent = userDetails.roleName;
                 });
 
-                // Chỉ hiển thị mục của giáo viên
+                // Chỉ hiển thị phần dành cho giáo viên
                 document.getElementById("teacher-view").style.display = "block";
                 document.getElementById("student-view").style.display = "none";
+
+                // Nếu giáo viên cần xem phần mục nào đó, bạn có thể hiển thị tại đây
+
             } else if (userDetails.roleName === "STUDENT") {
                 // Hiển thị đầy đủ tên và vai trò cho học sinh
                 userFullNameElements.forEach(element => {
@@ -657,17 +672,53 @@
                     element.textContent = userDetails.roleName;
                 });
 
-                // Chỉ hiển thị mục của học sinh
+                // Chỉ hiển thị phần dành cho học sinh
                 document.getElementById("teacher-view").style.display = "none";
                 document.getElementById("student-view").style.display = "block";
                 document.getElementById("student-view1").style.display = "block";
+
+                // Nếu học sinh cần xem phần mục nào đó, bạn có thể hiển thị tại đây
+
             } else {
                 console.warn("Role not recognized: ", userDetails.roleName);
+            }
+
+            // Thêm điều kiện thay đổi nội dung của các option trong dropdown select
+            const applicationTypeSelect = document.querySelector('.select2');
+            applicationTypeSelect.innerHTML = ''; // Xóa tất cả các option cũ
+
+            if (userDetails.roleName === "STUDENT") {
+                const options = [
+                    { value: "1", text: "Đơn xin nghỉ học" },
+                    { value: "2", text: "Đơn xin đi thực tập tại FPT Japan" },
+                    { value: "3", text: "Các loại đơn khác" }
+                ];
+
+                options.forEach(option => {
+                    const newOption = document.createElement('option');
+                    newOption.value = option.value;
+                    newOption.textContent = option.text;
+                    applicationTypeSelect.appendChild(newOption);
+                });
+            } else if (userDetails.roleName === "TEACHER") {
+                const options = [
+                    { value: "4", text: "Đơn xin đổi lịch giảng dạy" },
+                    { value: "5", text: "Đơn xin đổi giáo viên" },
+                    { value: "6", text: "Các loại đơn khác" }
+                ];
+
+                options.forEach(option => {
+                    const newOption = document.createElement('option');
+                    newOption.value = option.value;
+                    newOption.textContent = option.text;
+                    applicationTypeSelect.appendChild(newOption);
+                });
             }
         } else {
             console.error("User details not found in sessionStorage");
         }
     </script>
+
 </body>
 
 
