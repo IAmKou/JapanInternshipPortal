@@ -1,6 +1,4 @@
-package com.example.jip.dto.response;
-
-import com.example.jip.dto.StudentDTO;
+package com.example.jip.dto;
 
 public class PersonalMaterialDTO {
     private int id;

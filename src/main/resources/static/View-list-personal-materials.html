@@ -356,25 +356,11 @@
                         <li class="nav-item">
                             <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
                         </li>
+
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                             <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
-                                        material</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>View
-                                        list materials</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create material</a>
-                                </li>
+
                                 <li class="nav-item" id="teacher-view">
                                     <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
                                 </li>
@@ -567,6 +553,7 @@
         // Hàm lấy danh sách materials từ API và hiển thị trên frontend
         function fetchMaterials() {
             const studentId = userDetails.id;  // Lấy student_id từ userDetails
+            console.log("Student ID: ", userDetails.id);
             fetch('/studentMaterials/list?student_id=' + studentId)  // Truyền student_id vào query string
                 .then(response => response.json())
                 .then(data => {
@@ -575,25 +562,26 @@
 
                     // Duyệt qua tất cả materials để hiển thị
                     data.forEach(material => {
+                        console.log('Material:', material);
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                    <td class="text-left">
-                        <a href="${material.material_link}" target="_blank">${material.material_link}</a>
-                    </td>
-                    <td>
-                        <div class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="flaticon-more-button-of-three-dots"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                <button type="button" class="dropdown-item" onclick="openDeleteModal('${material.id}')">
-                                    <i class="fas fa-trash text-orange-peel"></i>Delete
-                                </button>
-                            </div>
+                <td class="text-left">
+                    <a href="${material.material_link}" target="_blank">${material.title}</a>
+                </td>
+                <td>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="flaticon-more-button-of-three-dots"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
+                            <button type="button" class="dropdown-item" onclick="openDeleteModal('${material.id}')">
+                                <i class="fas fa-trash text-orange-peel"></i>Remove
+                            </button>
                         </div>
-                    </td>
-                `;
+                    </div>
+                </td>
+            `;
                         materialList.appendChild(row);
                     });
 
@@ -640,7 +628,7 @@
         // Hàm xóa tài liệu
         function deleteMaterial(materialId) {
             // Gửi yêu cầu DELETE đến API
-            fetch(`/materials/delete/${materialId}`, {
+            fetch(`/studentMaterials/delete/${materialId}`, {
                 method: 'DELETE'
             })
                 .then(response => {

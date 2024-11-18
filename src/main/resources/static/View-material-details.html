@@ -357,7 +357,7 @@
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                             <ul class="nav sub-group-menu">
-                                <li class="nav-item">
+                                <li class="nav-item" id="teacher_view1">
                                     <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create material</a>
                                 </li>
                                 <li class="nav-item" id="teacher-view">
@@ -748,6 +748,8 @@
 
             // Chỉ hiển thị mục của giáo viên
             document.getElementById("teacher-view").style.display = "block";
+            document.getElementById("teacher-view1").style.display = "block";
+            document.getElementById("student-view1").style.display = "none";
             document.getElementById("student-view").style.display = "none";
         } else if (userDetails.roleName === "STUDENT") {
             // Hiển thị đầy đủ tên và vai trò cho học sinh
@@ -759,6 +761,7 @@
             });
 
             // Chỉ hiển thị mục của học sinh
+            document.getElementById("teacher-view1").style.display = "none";
             document.getElementById("teacher-view").style.display = "none";
             document.getElementById("student-view").style.display = "block";
             document.getElementById("student-view1").style.display = "block";
