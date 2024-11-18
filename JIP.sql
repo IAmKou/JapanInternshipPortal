@@ -1,5 +1,5 @@
-CREATE DATABASE JIP;
-USE JIP;
+CREATE DATABASE jip;
+USE jip;
 
 CREATE TABLE Role (
     Id INT AUTO_INCREMENT PRIMARY KEY,
@@ -62,8 +62,6 @@ CREATE TABLE Class (
     Name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     number_of_student INT,
     teacher_id INT,
-    lesson_id INT,
-    foreign key (lesson_id) references Lesson(Id),
     FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
 );
 
@@ -83,10 +81,12 @@ CREATE TABLE Schedule (
     slot_number INT NOT NULL CHECK(slot_number BETWEEN 1 AND 4),
     teacher_id INT,
     class_id INT,
+    lesson_id INT,
     start_time TIME NOT NULL,
     end_time TIME NOT NULL,
     description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     event VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    foreign key (lesson_id) references Lesson(Id),
     FOREIGN KEY (teacher_id) REFERENCES Teacher(Id),
     FOREIGN KEY (class_id) REFERENCES Class(Id)
 );
@@ -121,7 +121,7 @@ CREATE TABLE Student_assignment (
     assignment_id INT,
     mark DECIMAL(5,2),
     description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    content VARCHAR(255) CHARACTER SET utf8mb4_unicode_ci,
+    content VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     date DATE NOT NULL,
     FOREIGN KEY (student_id) REFERENCES Student(Id),
     FOREIGN KEY (assignment_id) REFERENCES Assignment(Id)

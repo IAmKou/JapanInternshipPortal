@@ -22,4 +22,6 @@ public interface StudentRepository extends CrudRepository<Student, Integer> {
             "ORDER BY s.fullname ASC limit 30")
     List<StudentDTO> findTop30UnassignedStudents();
 
+
+
 }
