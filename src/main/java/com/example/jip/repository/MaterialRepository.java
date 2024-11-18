@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface MaterialRepository extends JpaRepository<Material, Integer> {
+    Optional<Material> findByTitle(String title);
 
 
 

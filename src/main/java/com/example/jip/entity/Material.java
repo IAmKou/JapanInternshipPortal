@@ -33,6 +33,7 @@ public class Material {
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
 
+
     public Material() {}
 
     public Material(int id, String title, String content, String img, Date created_date, Teacher teacher) {
