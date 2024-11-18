@@ -4,14 +4,24 @@ public class PersonalMaterialDTO {
     private int id;
     private String material_link;
     private StudentDTO student;
+    private MaterialDTO material; // Chứa đối tượng MaterialDTO
 
     public PersonalMaterialDTO() {
     }
 
-    public PersonalMaterialDTO(int id, String material_link, StudentDTO student) {
+    public PersonalMaterialDTO(int id, String material_link, StudentDTO student, MaterialDTO material) {
         this.id = id;
         this.material_link = material_link;
         this.student = student;
+        this.material = material;
+    }
+
+    public MaterialDTO getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(MaterialDTO material) {
+        this.material = material;
     }
 
     public int getId() {

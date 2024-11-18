@@ -21,11 +21,16 @@ public class PersonalMaterial {
     @Column(name = "material_link")
     private String material_link;
 
+    @ManyToOne(fetch = FetchType.LAZY)  // Liên kết với Material
+    @JoinColumn(name = "material_id", nullable = false)
+    private Material material;  // Trường liên kết với Material
+
     public PersonalMaterial() {}
 
-    public PersonalMaterial(int id, Student student, String material_link) {
+    public PersonalMaterial(int id, Student student, String material_link, Material material) {
         this.id = id;
         this.student = student;
         this.material_link = material_link;
+        this.material = material;
     }
 }

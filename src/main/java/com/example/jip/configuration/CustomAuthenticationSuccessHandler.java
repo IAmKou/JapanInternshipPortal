@@ -19,10 +19,14 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ADMIN"));
         boolean isTeacher = authentication.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("TEACHER"));
+        boolean isManager = authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("MANAGER"));
         if (isAdmin) {
             response.sendRedirect("/admin.html");
         } else if (isTeacher) {
             response.sendRedirect("/teacher.html");
+        }else if (isManager) {
+            response.sendRedirect("/manager.html");
         }else{
             response.sendRedirect("/student.html");
         }

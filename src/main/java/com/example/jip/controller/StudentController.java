@@ -2,6 +2,7 @@ package com.example.jip.controller;
 
 import com.example.jip.dto.StudentDTO;
 import com.example.jip.entity.Student;
+import com.example.jip.repository.ListRepository;
 import com.example.jip.repository.StudentRepository;
 import com.example.jip.services.StudentServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class StudentController {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    ListRepository listRepository;
 
     @PostMapping("/save")
     public RedirectView saveStudent(
@@ -59,7 +63,7 @@ public class StudentController {
     }
 
     @GetMapping("/getAll")
-    public Iterable<Student> getAllStudents() {
-        return studentRepository.findAll();
+    public List<StudentDTO> getStudentByClassId(@RequestParam int class_id) {
+        return listRepository.findStudentsByClassId(class_id);
     }
 }
