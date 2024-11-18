@@ -572,8 +572,9 @@
                     } else {
                         // Tạo dữ liệu URLSearchParams cho POST request
                         const data = new URLSearchParams();
-                        data.append('student_id', studentId);
-                        data.append('material_link', materialLink);
+                        data.append('student_id', studentId);  // Gửi student_id
+                        data.append('material_link', materialLink);  // Gửi material_link
+                        data.append('material_id', material.id);  // Gửi material_id
 
                         // Gửi yêu cầu thêm material
                         fetch('/studentMaterials/add', {
@@ -591,15 +592,15 @@
                                     const materialList = document.getElementById('material-list');
                                     const row = document.createElement('tr');
                                     row.innerHTML = `
-                                    <td class="text-left">
-                                        <a href="View-material-details.html?id=${material.id}" target="_blank">${material.title}</a>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow"
-                                                style="padding: 8px 16px; font-size: 14px;"
-                                                onclick="addMaterial({ id: '${material.id}'})">Add material</button>
-                                    </td>
-                                `;
+                                <td class="text-left">
+                                    <a href="View-material-details.html?id=${material.id}" target="_blank">${material.title}</a>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow"
+                                            style="padding: 8px 16px; font-size: 14px;"
+                                            onclick="addMaterial({ id: '${material.id}', title: '${material.title}' })">Add material</button>
+                                </td>
+                            `;
                                     materialList.appendChild(row);
                                 } else {
                                     throw new Error('Có lỗi xảy ra khi thêm material');
@@ -607,7 +608,7 @@
                             })
                             .catch(error => {
                                 console.error('Error adding material:', error);
-                                alert('Material đã tồn tại ');
+                                alert('Material đã tồn tại');
                             });
                     }
                 })
@@ -651,7 +652,7 @@
                         <td>
                             <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow"
                                     style="padding: 8px 16px; font-size: 14px;"
-                                    onclick="addMaterial({ id: '${material.id}'})">Add material</button>
+                                    onclick="addMaterial({ id: '${material.id}',title: '${material.title}'})">Add material</button>
                         </td>
                     `;
                                 materialList.appendChild(row);

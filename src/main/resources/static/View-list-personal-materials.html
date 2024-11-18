@@ -557,31 +557,33 @@
             fetch('/studentMaterials/list?student_id=' + studentId)  // Truyền student_id vào query string
                 .then(response => response.json())
                 .then(data => {
+                    console.log("Data from API:", data); // Kiểm tra dữ liệu từ API
                     const materialList = document.getElementById('material-list');
                     materialList.innerHTML = '';  // Xóa nội dung hiện tại
 
                     // Duyệt qua tất cả materials để hiển thị
                     data.forEach(material => {
-                        console.log('Material:', material);
+                        console.log("Material Title: ", material.material.title);  // Truy cập title từ material.material
+                        const safeTitle = material.material && material.material.title ? material.material.title : "No material available";
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                <td class="text-left">
-                    <a href="${material.material_link}" target="_blank">${material.title}</a>
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <span class="flaticon-more-button-of-three-dots"></span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                            <button type="button" class="dropdown-item" onclick="openDeleteModal('${material.id}')">
-                                <i class="fas fa-trash text-orange-peel"></i>Remove
-                            </button>
+                    <td class="text-left">
+                        <a href="${material.material_link}" target="_blank">${safeTitle}</a>
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="flaticon-more-button-of-three-dots"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
+                                <button type="button" class="dropdown-item" onclick="openDeleteModal('${material.id}')">
+                                    <i class="fas fa-trash text-orange-peel"></i>Remove
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </td>
-            `;
+                    </td>
+                `;
                         materialList.appendChild(row);
                     });
 
