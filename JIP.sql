@@ -151,7 +151,6 @@ CREATE TABLE Material (
     content VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     img VARCHAR(255),
     teacher_id INT,
-    date DATE NOT NULL,
     FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
 );
 
@@ -193,14 +192,15 @@ CREATE TABLE Application (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     img VARCHAR(255),
     category VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    description TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     content TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     date DATE NOT NULL,
     student_id INT,
+    teacher_id INT,
     status ENUM('Pending', 'Approved', 'Rejected') NOT NULL,
     reply TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     reply_date DATE,
-    FOREIGN KEY (student_id) REFERENCES Student(Id)
+    FOREIGN KEY (student_id) REFERENCES Student(Id),
+    FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
 );
 
 CREATE TABLE Notification (
