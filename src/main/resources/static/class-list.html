@@ -34,719 +34,801 @@
 </head>
 
 <body>
-    <!-- Preloader Start Here -->
-    <div id="preloader"></div>
-    <!-- Preloader End Here -->
-    <div id="wrapper" class="wrapper bg-ash">
-       <!-- Header Menu Area Start Here -->
-        <div class="navbar navbar-expand-md header-menu-one bg-light">
-            <div class="nav-bar-header-one">
-                <div class="header-logo">
-                    <a href="admin.html">
-                        <img src="img/logo.png" alt="logo">
-                    </a>
-                </div>
-                  <div class="toggle-button sidebar-toggle">
-                    <button type="button" class="item-link">
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<div id="wrapper" class="wrapper bg-ash">
+    <!-- Header Menu Area Start Here -->
+    <div class="navbar navbar-expand-md header-menu-one bg-light">
+        <div class="nav-bar-header-one">
+            <div class="header-logo">
+                <a href="admin.html">
+                    <img src="img/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="toggle-button sidebar-toggle">
+                <button type="button" class="item-link">
                         <span class="btn-icon-wrap">
                             <span></span>
                             <span></span>
                             <span></span>
                         </span>
-                    </button>
-                </div>
-            </div>
-            <div class="d-md-none mobile-nav-bar">
-               <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse" data-target="#mobile-navbar" aria-expanded="false">
-                    <i class="far fa-arrow-alt-circle-down"></i>
-                </button>
-                <button type="button" class="navbar-toggler sidebar-toggle-mobile">
-                    <i class="fas fa-bars"></i>
                 </button>
             </div>
-            <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
-                <ul class="navbar-nav">
-                    <li class="navbar-item header-search-bar">
-                        <div class="input-group stylish-input-group">
+        </div>
+        <div class="d-md-none mobile-nav-bar">
+            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse"
+                    data-target="#mobile-navbar" aria-expanded="false">
+                <i class="far fa-arrow-alt-circle-down"></i>
+            </button>
+            <button type="button" class="navbar-toggler sidebar-toggle-mobile">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+            <ul class="navbar-nav">
+                <li class="navbar-item header-search-bar">
+                    <div class="input-group stylish-input-group">
                             <span class="input-group-addon">
                                 <button type="submit">
                                     <span class="flaticon-search" aria-hidden="true"></span>
                                 </button>
                             </span>
-                            <input type="text" class="form-control" placeholder="Find Something . . .">
-                        </div>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="navbar-item dropdown header-admin">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <div class="admin-title">
-                                <h5 class="item-title userFullName"></h5>
-                                <span class="userRole"></span>
-                            </div>
-                            <div class="admin-img">
-                                <img src="img/figure/admin.jpg" alt="Admin">
-                            </div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title userFullName"></h6>
-                            </div>
-                            <div class="item-content">
-                                <ul class="settings-list">
-                                    <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
-                                    <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
-                                    <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a></li>
-                                    <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                    <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="navbar-item dropdown header-message">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="far fa-envelope"></i>
-                            <div class="item-title d-md-none text-16 mg-l-10">Message</div>
-                            <span>5</span>
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title">05 Message</h6>
-                            </div>
-                            <div class="item-content">
-                                <div class="media">
-                                    <div class="item-img bg-skyblue author-online">
-                                        <img src="img/figure/student11.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Maria Zaman</span> 
-                                                <span class="item-time">18:30</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-img bg-yellow author-online">
-                                        <img src="img/figure/student12.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Benny Roy</span> 
-                                                <span class="item-time">10:35</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-img bg-pink">
-                                        <img src="img/figure/student13.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Steven</span> 
-                                                <span class="item-time">02:35</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-img bg-violet-blue">
-                                        <img src="img/figure/student11.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Joshep Joe</span> 
-                                                <span class="item-time">12:35</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="navbar-item dropdown header-notification">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="far fa-bell"></i>
-                            <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
-                            <span>8</span>
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title">03 Notifiacations</h6>
-                            </div>
-                            <div class="item-content">
-                                <div class="media">
-                                    <div class="item-icon bg-skyblue">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Complete Today Task</div>
-                                        <span>1 Mins ago</span>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-icon bg-orange">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Director Metting</div>
-                                        <span>20 Mins ago</span>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-icon bg-violet-blue">
-                                        <i class="fas fa-cogs"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Update Password</div>
-                                        <span>45 Mins ago</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                     <li class="navbar-item dropdown header-language">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" 
-                        data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#">English</a>
-                            <a class="dropdown-item" href="#">Spanish</a>
-                            <a class="dropdown-item" href="#">Franchis</a>
-                            <a class="dropdown-item" href="#">Chiness</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <!-- Header Menu Area End Here -->
-        <!-- Page Area Start Here -->
-        <div class="dashboard-page-one">
-            <!-- Sidebar Area Start Here -->
-            <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
-               <div class="mobile-sidebar-header d-md-none">
-                    <div class="header-logo">
-                        <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                        <input type="text" class="form-control" placeholder="Find Something . . .">
                     </div>
-               </div>
-                <div class="sidebar-menu-content">
-                    <ul class="nav nav-sidebar-menu sidebar-toggle-view">
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="navbar-item dropdown header-admin">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <div class="admin-title">
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
+                        </div>
+                        <div class="admin-img">
+                            <img src="img/figure/admin.jpg" alt="Admin">
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title userFullName"></h6>
+                        </div>
+                        <div class="item-content">
+                            <ul class="settings-list">
+                                <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
+                                <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
+                                <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="student.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Students</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="manager.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="teacher.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Teachers</a>
-                                </li>
+                                <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="all-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                        Students</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="student-details.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Student Details</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="admit-form.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Admission Form</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="student-promotion.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Student Promotion</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i
-                                    class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="all-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                        Teachers</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="teacher-details.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Teacher Details</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="add-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
-                                        Teacher</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="teacher-payment.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Payment</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Parents</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="all-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                        Parents</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="parents-details.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Parents Details</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="add-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
-                                        Parent</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Library</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                        Book</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
-                                        Book</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-technological"></i><span>Acconunt</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
-                                        Collection</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="Add-material.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Expenses</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="ReplyApplication.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
-                                        Expenses</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i
-                                    class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="all-class-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                        Classes</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="add-class.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
-                                        Class</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="all-subject.html" class="nav-link"><i
-                                    class="flaticon-open-book"></i><span>Subject</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="class-list.html" class="nav-link menu-active"><i class="flaticon-calendar"></i><span class="menu-active">Class
-                                    Routine</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="student-attendence.html" class="nav-link"><i
-                                    class="flaticon-checklist"></i><span>Attendence</span></a>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
-                                        Schedule</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="Update-student-mark-report.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
-                                        Grades</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create material</a>
-                                </li>
-                                <li class="nav-item" id="teacher-view">
-                                    <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
-                                </li>
-                                <li class="nav-item" id="student-view">
-                                    <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
-                                </li>
-                                <li class="nav-item" id="student-view1">
-                                    <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list materials</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="transport.html" class="nav-link"><i
-                                    class="flaticon-bus-side-view"></i><span>Transport</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="hostel.html" class="nav-link"><i class="flaticon-bed"></i><span>Hostel</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="notice-board.html" class="nav-link"><i
-                                    class="flaticon-script"></i><span>Notice</span></a>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send application</a>
-                                </li>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item dropdown header-message">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <i class="far fa-envelope"></i>
+                        <div class="item-title d-md-none text-16 mg-l-10">Message</div>
+                        <span>5</span>
+                    </a>
 
-                                <li class="nav-item">
-                                    <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My application</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-menu-1"></i><span>UI Elements</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="notification-alart.html" class="nav-link"><i class="fas fa-angle-right"></i>Alart</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="button.html" class="nav-link"><i class="fas fa-angle-right"></i>Button</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="grid.html" class="nav-link"><i class="fas fa-angle-right"></i>Grid</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="modal.html" class="nav-link"><i class="fas fa-angle-right"></i>Modal</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="progress-bar.html" class="nav-link"><i class="fas fa-angle-right"></i>Progress Bar</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="ui-tab.html" class="nav-link"><i class="fas fa-angle-right"></i>Tab</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="ui-widget.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Widget</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="map.html" class="nav-link"><i
-                                    class="flaticon-planet-earth"></i><span>Map</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="account-settings.html" class="nav-link"><i
-                                    class="flaticon-settings"></i><span>Account</span></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <!-- Sidebar Area End Here -->
-            <div class="dashboard-content-one">
-                <!-- Breadcubs Area Start Here -->
-                <div class="breadcrumbs-area">
-                    <h3>Class List</h3>
-                    <ul>
-                        <li>
-                            <a href="admin.html">Home</a>
-                        </li>
-                        <li>List</li>
-                    </ul>
-                </div>
-                <!-- Breadcubs Area End Here -->
-                <!-- Class Routine Area Start Here -->
-                <div class="row">
-                    <div class="col-12-xxxl col-12">
-                        <div class="card height-auto">
-                            <div class="card-body">
-                                <div class="heading-layout1">
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title">05 Message</h6>
+                        </div>
+                        <div class="item-content">
+                            <div class="media">
+                                <div class="item-img bg-skyblue author-online">
+                                    <img src="img/figure/student11.png" alt="img">
+                                </div>
+                                <div class="media-body space-sm">
                                     <div class="item-title">
-                                        <h3>Class List</h3>
+                                        <a href="#">
+                                            <span class="item-name">Maria Zaman</span>
+                                            <span class="item-time">18:30</span>
+                                        </a>
                                     </div>
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                                            aria-expanded="false">...</a>
-
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i
-                                                    class="fas fa-plus text-orange-red"></i>Import</a>
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                                        </div>
-                                    </div>
+                                    <p>What is the reason of buy this item.
+                                        Is it usefull for me.....</p>
                                 </div>
-                                <form class="mg-b-20">
-                                    <div class="row gutters-8">
-                                        <div class="col-lg-4 col-12 form-group">
-                                            <input type="text" placeholder="Search by Day ..." class="form-control">
-                                        </div>
-                                        <div class="col-lg-3 col-12 form-group">
-                                            <input type="text" placeholder="Search by Class ..." class="form-control">
-                                        </div>
-                                        <div class="col-lg-3 col-12 form-group">
-                                            <input type="text" placeholder="Search by Section ..." class="form-control">
-                                        </div>
-                                        <div class="col-lg-2 col-12 form-group">
-                                            <button type="submit"
-                                                class="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                                        </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-img bg-yellow author-online">
+                                    <img src="img/figure/student12.png" alt="img">
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="item-title">
+                                        <a href="#">
+                                            <span class="item-name">Benny Roy</span>
+                                            <span class="item-time">10:35</span>
+                                        </a>
                                     </div>
-                                </form>
-                                <div class="table-responsive">
-                                    <table class="table display text-nowrap">
-                                        <thead>
-                                            <tr>
-                                                <th>Class</th>
-                                                <th>Name</th>
-                                                <th>Teacher</th>
-                                                <th>Number of Student</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
+                                    <p>What is the reason of buy this item.
+                                        Is it usefull for me.....</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-img bg-pink">
+                                    <img src="img/figure/student13.png" alt="img">
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="item-title">
+                                        <a href="#">
+                                            <span class="item-name">Steven</span>
+                                            <span class="item-time">02:35</span>
+                                        </a>
+                                    </div>
+                                    <p>What is the reason of buy this item.
+                                        Is it usefull for me.....</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-img bg-violet-blue">
+                                    <img src="img/figure/student11.png" alt="img">
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="item-title">
+                                        <a href="#">
+                                            <span class="item-name">Joshep Joe</span>
+                                            <span class="item-time">12:35</span>
+                                        </a>
+                                    </div>
+                                    <p>What is the reason of buy this item.
+                                        Is it usefull for me.....</p>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </li>
+                <li class="navbar-item dropdown header-notification">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <i class="far fa-bell"></i>
+                        <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
+                        <span>8</span>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title">03 Notifiacations</h6>
+                        </div>
+                        <div class="item-content">
+                            <div class="media">
+                                <div class="item-icon bg-skyblue">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Complete Today Task</div>
+                                    <span>1 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-orange">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Director Metting</div>
+                                    <span>20 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-violet-blue">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Update Password</div>
+                                    <span>45 Mins ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item dropdown header-language">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
+                       data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#">English</a>
+                        <a class="dropdown-item" href="#">Spanish</a>
+                        <a class="dropdown-item" href="#">Franchis</a>
+                        <a class="dropdown-item" href="#">Chiness</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Header Menu Area End Here -->
+    <!-- Page Area Start Here -->
+    <div class="dashboard-page-one">
+        <!-- Sidebar Area Start Here -->
+        <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+            <div class="mobile-sidebar-header d-md-none">
+                <div class="header-logo">
+                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
-                <!-- Class Routine Area End Here -->
-                <footer class="footer-wrap-layout1">
-                    <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by
-                        <a href="#">PsdBosS</a></div>
-                </footer>
+            </div>
+            <div class="sidebar-menu-content">
+                <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="student.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Students</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="manager.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="teacher.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Teachers</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="all-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    Students</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="student-details.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Student Details</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="admit-form.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Admission Form</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="student-promotion.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Student Promotion</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i
+                                class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="all-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    Teachers</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="teacher-details.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Teacher Details</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="add-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                    Teacher</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="teacher-payment.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Payment</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Parents</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="all-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    Parents</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="parents-details.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Parents Details</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="add-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                    Parent</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Library</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    Book</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                    Book</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-technological"></i><span>Acconunt</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
+                                    Collection</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="Add-material.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Expenses</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="ReplyApplication.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                    Expenses</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="all-class-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    Classes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="add-class.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                    Class</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="all-subject.html" class="nav-link"><i
+                                class="flaticon-open-book"></i><span>Subject</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="class-list.html" class="nav-link menu-active"><i class="flaticon-calendar"></i><span
+                                class="menu-active">Class
+                                    Routine</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="student-attendence.html" class="nav-link"><i
+                                class="flaticon-checklist"></i><span>Attendence</span></a>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
+                                    Schedule</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="Update-student-mark-report.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Exam
+                                    Grades</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
+                                    material</a>
+                            </li>
+                            <li class="nav-item" id="teacher-view">
+                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    materials</a>
+                            </li>
+                            <li class="nav-item" id="student-view">
+                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    materials</a>
+                            </li>
+                            <li class="nav-item" id="student-view1">
+                                <a href="View-list-personal-materials.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>My list materials</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="transport.html" class="nav-link"><i
+                                class="flaticon-bus-side-view"></i><span>Transport</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="hostel.html" class="nav-link"><i class="flaticon-bed"></i><span>Hostel</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="notice-board.html" class="nav-link"><i
+                                class="flaticon-script"></i><span>Notice</span></a>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                    application</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                    application</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-menu-1"></i><span>UI Elements</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="notification-alart.html" class="nav-link"><i class="fas fa-angle-right"></i>Alart</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="button.html" class="nav-link"><i class="fas fa-angle-right"></i>Button</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="grid.html" class="nav-link"><i class="fas fa-angle-right"></i>Grid</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="modal.html" class="nav-link"><i class="fas fa-angle-right"></i>Modal</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="progress-bar.html" class="nav-link"><i class="fas fa-angle-right"></i>Progress
+                                    Bar</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="ui-tab.html" class="nav-link"><i class="fas fa-angle-right"></i>Tab</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="ui-widget.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Widget</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="map.html" class="nav-link"><i
+                                class="flaticon-planet-earth"></i><span>Map</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="account-settings.html" class="nav-link"><i
+                                class="flaticon-settings"></i><span>Account</span></a>
+                    </li>
+                </ul>
             </div>
         </div>
-        <!-- modal -->
-        <div class="ui-modal-box">
-            <div class="modal-box">
-                <div class="modal sign-up-modal fade" id="report" tabindex="-1" role="dialog"
-                     aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <div class="close-btn">
-                                    <button type="button" class="close" data-dismiss="modal"
-                                            aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+        <!-- Sidebar Area End Here -->
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <h3>Class List</h3>
+                <ul>
+                    <li>
+                        <a href="admin.html">Home</a>
+                    </li>
+                    <li>List</li>
+                </ul>
+            </div>
+            <!-- Breadcubs Area End Here -->
+            <!-- Class Routine Area Start Here -->
+            <div class="row">
+                <div class="col-12-xxxl col-12">
+                    <div class="card height-auto">
+                        <div class="card-body">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3>Class List</h3>
                                 </div>
-                                <div class="item-logo">
-                                    <img src="img/logo2.png" alt="logo">
-                                </div>
-                                <form class="login-form" method="post" action="report/create">
-                                    <div class="row gutters-15">
-                                        <div class="form-group col-6 mx-auto align-self-center">
-                                            <input type="text" id="className" name="className" placeholder="Class Name" class="form-control">
-                                        </div>
-                                        <div class="form-group col-12">
-                                            <label for="teacher">Teacher</label>
-                                            <select id="teacher" name="teacherId" class="select2">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                                       aria-expanded="false">...</a>
 
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-12">
-                                            <button type="submit" class="login-btn">Send
-                                            </button>
-                                        </div>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i
+                                                class="fas fa-plus text-orange-red"></i>Import</a>
+                                        <a class="dropdown-item" href="#"><i
+                                                class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                        <a class="dropdown-item" href="#"><i
+                                                class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
                                     </div>
-                                </form>
+                                </div>
+                            </div>
+                            <form class="mg-b-20">
+                                <div class="row gutters-8">
+                                    <div class="col-lg-4 col-12 form-group">
+                                        <input type="text" placeholder="Search by Day ..." class="form-control">
+                                    </div>
+                                    <div class="col-lg-3 col-12 form-group">
+                                        <input type="text" placeholder="Search by Class ..." class="form-control">
+                                    </div>
+                                    <div class="col-lg-3 col-12 form-group">
+                                        <input type="text" placeholder="Search by Section ..." class="form-control">
+                                    </div>
+                                    <div class="col-lg-2 col-12 form-group">
+                                        <button type="submit"
+                                                class="fw-btn-fill btn-gradient-yellow">SEARCH
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="table-responsive">
+                                <table class="table display text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>Class</th>
+                                        <th>Name</th>
+                                        <th>Teacher</th>
+                                        <th>Number of Student</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- Class Routine Area End Here -->
+            <footer class="footer-wrap-layout1">
+                <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by
+                    <a href="#">PsdBosS</a></div>
+            </footer>
         </div>
-        <!-- Page Area End Here -->
-        <div class="modal fade" id="standard-modal" tabindex="-1" role="dialog"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Add schedule</h5>
-                        <button type="button" class="close" data-dismiss="modal"
-                                aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form action="/add-schedule" method="post" enctype="multipart/form-data">
+    </div>
+    <!-- modal -->
+    <div class="ui-modal-box">
+        <div class="modal-box">
+            <div class="modal sign-up-modal fade" id="report" tabindex="-1" role="dialog"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
                         <div class="modal-body">
-                            <label for="file" style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
-                            <input type="file" id="file" name="file" required>
+                            <div class="close-btn">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="item-logo">
+                                <img src="img/logo2.png" alt="logo">
+                            </div>
+                            <form class="login-form" method="post" action="report/create">
+                                <div class="row gutters-15">
+                                    <div class="form-group col-6 mx-auto align-self-center">
+                                        <input type="text" id="className" name="className" placeholder="Class Name"
+                                               class="form-control">
+                                    </div>
+                                    <div class="form-group col-12">
+                                        <label for="teacher">Teacher</label>
+                                        <select id="teacher" name="teacherId" class="select2">
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-12">
+                                        <button type="submit" class="login-btn">Send
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Close</button>
-                            <button type="submit" class="footer-btn bg-linkedin">Submit</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- jquery-->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <!-- Plugins js -->
-    <script src="js/plugins.js"></script>
-    <!-- Popper js -->
-    <script src="js/popper.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Select 2 Js -->
-    <script src="js/select2.min.js"></script>
-    <!-- Scroll Up Js -->
-    <script src="js/jquery.scrollUp.min.js"></script>
-    <!-- Data Table Js -->
-    <script src="js/jquery.dataTables.min.js"></script>
-    <!-- Custom Js -->
-    <script src="js/main.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const tableBody = document.querySelector('.table tbody');
+    <!-- Page Area End Here -->
+    <div class="modal fade" id="standard-modal" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add schedule</h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/add-schedule" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <label for="file" style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
+                        <input type="file" id="file" name="file" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Close</button>
+                        <button type="submit" class="footer-btn bg-linkedin">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- confirm modal -->
+    <div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog success-modal-content" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
-            fetch("/class/get")
-                .then(response => response.json())
-                .then(clasz => {
-                    clasz.forEach(clasz => {
-                        const row = document.createElement('tr');
+                <div class="modal-body">
+                    <div class="success-message">
+                        <div class="item-icon">
+                            <i class="fas fa-exclamation"></i>
+                        </div>
+                        <h3 class="item-title">You want to delete this class?</h3>
+                    </div>
+                </div>
 
-                        // id cell
-                        const idCell = document.createElement('td');
-                        idCell.textContent = clasz.id;
-                        row.appendChild(idCell);
+                <div class="modal-footer">
+                    <input type="hidden" name="id" id="Cid">
+                    <button type="button" id="confirm-delete" class="footer-btn bg-linkedin">Ok</button>
+                    <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- jquery-->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Select 2 Js -->
+<script src="js/select2.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Data Table Js -->
+<script src="js/jquery.dataTables.min.js"></script>
+<!-- Custom Js -->
+<script src="js/main.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tableBody = document.querySelector('.table tbody');
+        const confirmationModal = document.querySelector('#confirmation-modal');
+        const confirmButton = confirmationModal.querySelector('.footer-btn.bg-linkedin');
+        let currentClassId = null;
 
-                        // Name cell
-                        const nameCell = document.createElement('td');
-                        nameCell.textContent = clasz.name;
-                        row.appendChild(nameCell);
+        // Fetch classes and populate the table
+        fetch("/class/get")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch class data');
+                }
+                return response.json();
+            })
+            .then(clasz => {
+                clasz.forEach(clasz => {
+                    const row = document.createElement('tr');
 
-                        // Teacher Name cell
-                        const teacherNameCell = document.createElement('td');
-                        teacherNameCell.textContent = clasz.teacherName;
-                        row.appendChild(teacherNameCell);
+                    // ID cell
+                    const idCell = document.createElement('td');
+                    idCell.textContent = clasz.id;
+                    row.appendChild(idCell);
 
-                        // Number of Student cell
-                        const nos = document.createElement('td');
-                        nos.textContent = clasz.numberOfStudents;
-                        row.appendChild(nos);
+                    // Name cell
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = clasz.name;
+                    row.appendChild(nameCell);
 
-                        // Actions cell
-                        const actionsCell = document.createElement('td');
-                        const dropdown = document.createElement('div');
-                        dropdown.className = 'dropdown';
-                        const dropdownToggle = document.createElement('a');
-                        dropdownToggle.href = '#';
-                        dropdownToggle.className = 'dropdown-toggle';
-                        dropdownToggle.setAttribute('data-toggle', 'dropdown');
-                        dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
-                        dropdown.appendChild(dropdownToggle);
+                    // Teacher Name cell
+                    const teacherNameCell = document.createElement('td');
+                    teacherNameCell.textContent = clasz.teacherName;
+                    row.appendChild(teacherNameCell);
 
-                        const dropdownMenu = document.createElement('div');
-                        dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
-                        dropdownMenu.innerHTML = `
-          <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal" ><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-          <a class="dropdown-item" href="/all-class-student.html?classId=${clasz.id}"><i class="fas fa-glasses text-dark-pastel-green"></i>View Student</a>
-          <a class="dropdown-item" href="#"><i class="fas fa-glasses text-dark-pastel-green"></i>Delete</a>
-        `;
-                        dropdown.appendChild(dropdownMenu);
-                        actionsCell.appendChild(dropdown);
-                        row.appendChild(actionsCell);
+                    // Number of Students cell
+                    const nos = document.createElement('td');
+                    nos.textContent = clasz.numberOfStudents;
+                    row.appendChild(nos);
 
-                        // Append the row to the table body
-                        tableBody.appendChild(row);
+                    // Actions cell with dropdown
+                    const actionsCell = document.createElement('td');
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'dropdown';
+
+                    const dropdownToggle = document.createElement('a');
+                    dropdownToggle.href = '#';
+                    dropdownToggle.className = 'dropdown-toggle';
+                    dropdownToggle.setAttribute('data-toggle', 'dropdown');
+                    dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
+                    dropdown.appendChild(dropdownToggle);
+
+                    const dropdownMenu = document.createElement('div');
+                    dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
+                    dropdownMenu.innerHTML = `
+                    <a class="dropdown-item delete-class" data-id="${clasz.id}">
+                        <i class="fas fa-trash-alt text-danger"></i> Delete
+                    </a>
+                    <a class="dropdown-item" href="/all-class-student.html?classId=${clasz.id}">
+                        <i class="fas fa-glasses text-dark-pastel-green"></i> View Students
+                    </a>
+                `;
+                    dropdown.appendChild(dropdownMenu);
+                    actionsCell.appendChild(dropdown);
+                    row.appendChild(actionsCell);
+
+                    tableBody.appendChild(row);
+                });
+
+                // Attach event listeners to delete buttons
+                const deleteButtons = document.querySelectorAll('.delete-class');
+                deleteButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        currentClassId = this.getAttribute('data-id');
+                        $('#confirmation-modal').modal('show'); // Show modal
                     });
+                });
+            })
+            .catch(error => console.error('Error fetching class data:', error));
+
+        // Confirm delete action
+        confirmButton.addEventListener('click', function () {
+            if (currentClassId) {
+                fetch(`/class/delete/${currentClassId}`, {
+                    method: 'DELETE',
                 })
-                .catch(error => console.error('Error fetching reports:', error));
-        });
-    </script>
-
-    <!-- fetch user -->
-    <script>
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-        if (userDetails) {
-            const userFullNameElements = document.querySelectorAll('.userFullName');
-            const userRoleElements = document.querySelectorAll('.userRole');
-
-            // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-            if (userDetails.roleName === "ADMIN") {
-                // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.username;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
-
-                // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "none";
-            } else if (userDetails.roleName === "TEACHER") {
-                // Hiển thị đầy đủ tên và vai trò cho giáo viên
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.fullName;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
-
-                // Chỉ hiển thị mục của giáo viên
-                document.getElementById("teacher-view").style.display = "block";
-                document.getElementById("student-view").style.display = "none";
-            } else if (userDetails.roleName === "STUDENT") {
-                // Hiển thị đầy đủ tên và vai trò cho học sinh
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.fullName;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
-
-                // Chỉ hiển thị mục của học sinh
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "block";
-                document.getElementById("student-view1").style.display = "block";
-            } else {
-                console.warn("Role not recognized: ", userDetails.roleName);
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Class deleted successfully!');
+                            location.reload(); // Refresh the page
+                        } else {
+                            throw new Error('Failed to delete class');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error deleting class:', error);
+                        alert('Failed to delete the class. Please try again.');
+                    });
             }
+        });
+    });
+</script>
+
+<!-- fetch user -->
+<script>
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    if (userDetails) {
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        const userRoleElements = document.querySelectorAll('.userRole');
+
+        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
+        if (userDetails.roleName === "ADMIN") {
+            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.username;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+
+            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
+            document.getElementById("teacher-view").style.display = "none";
+            document.getElementById("student-view").style.display = "none";
+        } else if (userDetails.roleName === "TEACHER") {
+            // Hiển thị đầy đủ tên và vai trò cho giáo viên
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+
+            // Chỉ hiển thị mục của giáo viên
+            document.getElementById("teacher-view").style.display = "block";
+            document.getElementById("student-view").style.display = "none";
+        } else if (userDetails.roleName === "STUDENT") {
+            // Hiển thị đầy đủ tên và vai trò cho học sinh
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+
+            // Chỉ hiển thị mục của học sinh
+            document.getElementById("teacher-view").style.display = "none";
+            document.getElementById("student-view").style.display = "block";
+            document.getElementById("student-view1").style.display = "block";
         } else {
-            console.error("User details not found in sessionStorage");
+            console.warn("Role not recognized: ", userDetails.roleName);
         }
-    </script>
+    } else {
+        console.error("User details not found in sessionStorage");
+    }
+</script>
 </body>
 
 

@@ -35,7 +35,7 @@ public class ClassController {
 
 
         Class savedClass = classServices.saveClassWithStudents(classDTO, classDTO.getStudentIds());
-        return "Class " + savedClass.getName() + "created successfully";
+        return "Class " + savedClass.getName() + " created successfully";
     }
 
     @GetMapping("/get")
@@ -45,5 +45,12 @@ public class ClassController {
                 .collect(Collectors.toList());
     }
 
-
+    @DeleteMapping("/delete/{id}")
+    public boolean deleteClass(@PathVariable int id) {
+        if (classRepository.existsById(id)) {
+            classRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }

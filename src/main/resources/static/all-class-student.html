@@ -580,61 +580,79 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const tableBody = document.querySelector('.table tbody');
+            const urlParams = new URLSearchParams(window.location.search);
+            const classId = urlParams.get('classId');
 
-            fetch("/class/getAll")
-                .then(response => response.json())
-                .then(student => {
-                    student.forEach(student => {
-                        const row = document.createElement('tr');
+            // Ensure classId is valid before proceeding
+            if (classId) {
+                fetch(`/student/${classId}/getAll`) // Use backticks here
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(students => {
+                        students.forEach(student => {
+                            const row = document.createElement('tr');
 
-                        // id cell
-                        const idCell = document.createElement('td');
-                        idCell.textContent = student.id;
-                        row.appendChild(idCell);
+                            // id cell
+                            const idCell = document.createElement('td');
+                            idCell.textContent = student.id;
+                            row.appendChild(idCell);
 
-                        // img cell
-                        const teacherNameCell = document.createElement('td');
-                        teacherNameCell.textContent = student.img;
-                        row.appendChild(teacherNameCell);
+                            // image cell
+                            const imgCell = document.createElement('td');
+                            const imgElement = document.createElement('img');
+                            imgElement.src = student.img;
+                            imgElement.alt = "Student Image";
+                            imgElement.style.width = "50px";
+                            imgElement.style.height = "50px";
+                            imgElement.style.objectFit = "cover";
+                            imgCell.appendChild(imgElement);
+                            row.appendChild(imgCell);
 
-                        // Name cell
-                        const nameCell = document.createElement('td');
-                        nameCell.textContent = student.fullname;
-                        row.appendChild(nameCell);
+                            // Name cell
+                            const nameCell = document.createElement('td');
+                            nameCell.textContent = student.fullname;
+                            row.appendChild(nameCell);
 
-                        // gender cell
-                        const nos = document.createElement('td');
-                        nos.textContent = student.gender;
-                        row.appendChild(nos);
+                            // gender cell
+                            const nos = document.createElement('td');
+                            nos.textContent = student.gender;
+                            row.appendChild(nos);
 
-                        // Actions cell
-                        const actionsCell = document.createElement('td');
-                        const dropdown = document.createElement('div');
-                        dropdown.className = 'dropdown';
-                        const dropdownToggle = document.createElement('a');
-                        dropdownToggle.href = '#';
-                        dropdownToggle.className = 'dropdown-toggle';
-                        dropdownToggle.setAttribute('data-toggle', 'dropdown');
-                        dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
-                        dropdown.appendChild(dropdownToggle);
+                            // Actions cell
+                            const actionsCell = document.createElement('td');
+                            const dropdown = document.createElement('div');
+                            dropdown.className = 'dropdown';
+                            const dropdownToggle = document.createElement('a');
+                            dropdownToggle.href = '#';
+                            dropdownToggle.className = 'dropdown-toggle';
+                            dropdownToggle.setAttribute('data-toggle', 'dropdown');
+                            dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
+                            dropdown.appendChild(dropdownToggle);
 
-                        const dropdownMenu = document.createElement('div');
-                        dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
-                        dropdownMenu.innerHTML = `
-          <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal" ><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-          <a class="dropdown-item" href="/all-class-student.html"><i class="fas fa-glasses text-dark-pastel-green"></i>View Student</a>
-          <a class="dropdown-item" href="#"><i class="fas fa-glasses text-dark-pastel-green"></i>Delete</a>
-        `;
-                        dropdown.appendChild(dropdownMenu);
-                        actionsCell.appendChild(dropdown);
-                        row.appendChild(actionsCell);
+                            const dropdownMenu = document.createElement('div');
+                            dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
+                            dropdownMenu.innerHTML = `
+                        <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                        <a class="dropdown-item" href="#"><i class="fas fa-glasses text-dark-pastel-green"></i>Delete</a>
+                    `;
+                            dropdown.appendChild(dropdownMenu);
+                            actionsCell.appendChild(dropdown);
+                            row.appendChild(actionsCell);
 
-                        // Append the row to the table body
-                        tableBody.appendChild(row);
-                    });
-                })
-                .catch(error => console.error('Error fetching reports:', error));
+                            // Append the row to the table body
+                            tableBody.appendChild(row);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching students:', error));
+            } else {
+                console.error("classId is missing from the URL.");
+            }
         });
+
     </script>
 
 </body>
