@@ -65,7 +65,7 @@ public class ApplicationController {
                     applicationDTO.setTeacher(teacherDTO);
                 } else {
                     redirectAttributes.addFlashAttribute("error", "Teacher với ID " + teacherId + " không tồn tại.");
-                    return new RedirectView("/applications/create");
+                    return new RedirectView("/application/create");
                 }
             } else if (studentId != null) {  // Nếu không có teacher_id thì lấy student_id
                 Optional<Student> studentOptional = studentRepository.findByAccount_id(studentId);
@@ -76,14 +76,14 @@ public class ApplicationController {
                     applicationDTO.setStudent(studentDTO);
                 } else {
                     redirectAttributes.addFlashAttribute("error", "Student với ID " + studentId + " không tồn tại.");
-                    return new RedirectView("/applications/create");
+                    return new RedirectView("/application/create");
                 }
             }
 
             // Nếu cả hai ID đều không có, báo lỗi
             if (teacherId == null && studentId == null) {
                 redirectAttributes.addFlashAttribute("error", "Cả Teacher ID và Student ID đều không được cung cấp.");
-                return new RedirectView("/applications/create");
+                return new RedirectView("/application/create");
             }
 
             applicationDTO.setStatus(ApplicationDTO.status.Pending);
@@ -98,10 +98,10 @@ public class ApplicationController {
 
         } catch (IOException e) {
             redirectAttributes.addFlashAttribute("error", "File upload failed: " + e.getMessage());
-            return new RedirectView("/applications/create");
+            return new RedirectView("/application/create");
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", "Failed to create application: " + e.getMessage());
-            return new RedirectView("/applications/create");
+            return new RedirectView("/application/create");
         }
     }
 }

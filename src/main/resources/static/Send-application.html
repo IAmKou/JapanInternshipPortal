@@ -509,7 +509,7 @@
                                     <input type="hidden" name="student_id" id="studentId" value="">
 
 
-                                    <!-- Tên đơn -->
+                                    <!-- Tên nguoi -->
                                     <div class="col-12 form-group">
                                         <label>Name</label>
                                         <input type="text" name="name" placeholder="Enter the your name" class="form-control" required>
@@ -583,72 +583,55 @@
 
     <!-- fetch user -->
     <script>
-
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
         if (userDetails) {
             // Cập nhật thông tin người dùng vào các trường input
-            if (userDetails.roleName === "TEACHER") {
-                document.getElementById('teacherId').value = userDetails.id;
-            } else if (userDetails.roleName === "STUDENT") {
-                document.getElementById('studentId').value = userDetails.id;
-            }
-
             const userFullNameElements = document.querySelectorAll('.userFullName');
             const userRoleElements = document.querySelectorAll('.userRole');
 
+            // Cập nhật teacher_id hoặc student_id dựa vào role của user
+            if (userDetails.roleName === "TEACHER") {
+                document.getElementById('teacherId').value = userDetails.id;
+                document.getElementById('studentId').value = ''; // Đảm bảo trường student_id là null
+            } else if (userDetails.roleName === "STUDENT") {
+                document.getElementById('studentId').value = userDetails.id;
+                document.getElementById('teacherId').value = ''; // Đảm bảo trường teacher_id là null
+            }
+
             // Hiển thị thông tin người dùng dựa trên vai trò
             if (userDetails.roleName === "ADMIN") {
-                // Hiển thị tên đăng nhập và vai trò cho ADMIN
                 userFullNameElements.forEach(element => {
                     element.textContent = userDetails.username;
                 });
                 userRoleElements.forEach(element => {
                     element.textContent = userDetails.roleName;
                 });
-
-                // Ẩn các mục của Teacher và Student vì ADMIN không cần xem
                 document.getElementById("teacher-view").style.display = "none";
                 document.getElementById("student-view").style.display = "none";
-
-                // Nếu ADMIN cần xem thông tin nào đó, bạn có thể hiển thị phần này ở đây
-
             } else if (userDetails.roleName === "TEACHER") {
-                // Hiển thị đầy đủ tên và vai trò cho giáo viên
                 userFullNameElements.forEach(element => {
                     element.textContent = userDetails.fullName;
                 });
                 userRoleElements.forEach(element => {
                     element.textContent = userDetails.roleName;
                 });
-
-                // Chỉ hiển thị phần dành cho giáo viên
                 document.getElementById("teacher-view").style.display = "block";
                 document.getElementById("student-view").style.display = "none";
-
-                // Nếu giáo viên cần xem phần mục nào đó, bạn có thể hiển thị tại đây
-
+                document.getElementById("student-view1").style.display = "none";
             } else if (userDetails.roleName === "STUDENT") {
-                // Hiển thị đầy đủ tên và vai trò cho học sinh
                 userFullNameElements.forEach(element => {
                     element.textContent = userDetails.fullName;
                 });
                 userRoleElements.forEach(element => {
                     element.textContent = userDetails.roleName;
                 });
-
-                // Chỉ hiển thị phần dành cho học sinh
                 document.getElementById("teacher-view").style.display = "none";
                 document.getElementById("student-view").style.display = "block";
                 document.getElementById("student-view1").style.display = "block";
-
-                // Nếu học sinh cần xem phần mục nào đó, bạn có thể hiển thị tại đây
-
-            } else {
-                console.warn("Role not recognized: ", userDetails.roleName);
             }
 
-            // Thêm điều kiện thay đổi nội dung của các option trong dropdown select
+            // Cập nhật dropdown danh mục
             const applicationTypeSelect = document.querySelector('.select2');
             applicationTypeSelect.innerHTML = ''; // Xóa tất cả các option cũ
 

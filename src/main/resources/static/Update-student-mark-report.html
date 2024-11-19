@@ -640,150 +640,61 @@
     <!-- Custom Js -->
     <script src="js/main.js"></script>
 
+    <!-- fetch user -->
+    <script>
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails) {
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            const userRoleElements = document.querySelectorAll('.userRole');
+
+            // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
+            if (userDetails.roleName === "ADMIN") {
+                // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.username;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+
+                // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
+                document.getElementById("teacher-view").style.display = "none";
+                document.getElementById("student-view").style.display = "none";
+            } else if (userDetails.roleName === "TEACHER") {
+                // Hiển thị đầy đủ tên và vai trò cho giáo viên
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+
+                // Chỉ hiển thị mục của giáo viên
+                document.getElementById("teacher-view").style.display = "block";
+                document.getElementById("student-view").style.display = "none";
+                document.getElementById("student-view1").style.display = "none";
+            } else if (userDetails.roleName === "STUDENT") {
+                // Hiển thị đầy đủ tên và vai trò cho học sinh
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+
+                // Chỉ hiển thị mục của học sinh
+                document.getElementById("teacher-view").style.display = "none";
+                document.getElementById("student-view").style.display = "block";
+                document.getElementById("student-view1").style.display = "block";
+            } else {
+                console.warn("Role not recognized: ", userDetails.roleName);
+            }
+        } else {
+            console.error("User details not found in sessionStorage");
+        }
+    </script>
 </body>
-<script>
-    function getStudentsByClass() {
-        var classId = document.getElementById("classSelect").value;
-        if (classId) {
-            window.location.href = '/students?classId=' + classId;
-        }
-    }
-    function updateGradeColumns() {
-        // Lấy tất cả các checkbox đã chọn
-        var selectedOptions = document.querySelectorAll("input[name='grading_option']:checked");
 
-        // Tạo một mảng chứa các giá trị của checkbox đã chọn
-        var selectedValues = Array.from(selectedOptions).map(function(option) {
-            return option.value;
-        });
 
-        // Cập nhật cột "Participation"
-        var participationColumn = document.getElementById('participationHeader');
-        var participationCells = document.querySelectorAll('.participationGradeCell');
-        if (selectedValues.includes('participation')) {
-            participationColumn.style.display = 'table-cell'; // Hiển thị cột Participation
-            participationCells.forEach(function(cell) {
-                cell.style.display = 'table-cell'; // Hiển thị ô nhập điểm
-            });
-        } else {
-            participationColumn.style.display = 'none'; // Ẩn cột Participation
-            participationCells.forEach(function(cell) {
-                cell.style.display = 'none'; // Ẩn ô nhập điểm
-            });
-        }
-
-        // Cập nhật cột "Skills"
-        var skillsColumn = document.getElementById('skillHeader');
-        var skillsCells = document.querySelectorAll('.skillsGradeCell');
-        if (selectedValues.includes('skills')) {
-            skillsColumn.style.display = 'table-cell'; // Hiển thị cột Skills
-            skillsCells.forEach(function(cell) {
-                cell.style.display = 'table-cell'; // Hiển thị ô nhập điểm
-            });
-        } else {
-            skillsColumn.style.display = 'none'; // Ẩn cột Skills
-            skillsCells.forEach(function(cell) {
-                cell.style.display = 'none'; // Ẩn ô nhập điểm
-            });
-        }
-
-        // Cập nhật cột "Reading"
-        var readingColumn = document.getElementById('readingHeader');
-        var readingCells = document.querySelectorAll('.readingGradeCell');
-        if (selectedValues.includes('reading')) {
-            readingColumn.style.display = 'table-cell'; // Hiển thị cột Reading
-            readingCells.forEach(function(cell) {
-                cell.style.display = 'table-cell'; // Hiển thị ô nhập điểm
-            });
-        } else {
-            readingColumn.style.display = 'none'; // Ẩn cột Reading
-            readingCells.forEach(function(cell) {
-                cell.style.display = 'none'; // Ẩn ô nhập điểm
-            });
-        }
-
-        // Cập nhật cột "Listening"
-        var listeningColumn = document.getElementById('listeningHeader');
-        var listeningCells = document.querySelectorAll('.listeningGradeCell');
-        if (selectedValues.includes('listening')) {
-            listeningColumn.style.display = 'table-cell'; // Hiển thị cột Listening
-            listeningCells.forEach(function(cell) {
-                cell.style.display = 'table-cell'; // Hiển thị ô nhập điểm
-            });
-        } else {
-            listeningColumn.style.display = 'none'; // Ẩn cột Listening
-            listeningCells.forEach(function(cell) {
-                cell.style.display = 'none'; // Ẩn ô nhập điểm
-            });
-        }
-
-        // Cập nhật cột "Speaking"
-        var speakingColumn = document.getElementById('speakingHeader');
-        var speakingCells = document.querySelectorAll('.speakingGradeCell');
-        if (selectedValues.includes('speaking')) {
-            speakingColumn.style.display = 'table-cell'; // Hiển thị cột Speaking
-            speakingCells.forEach(function(cell) {
-                cell.style.display = 'table-cell'; // Hiển thị ô nhập điểm
-            });
-        } else {
-            speakingColumn.style.display = 'none'; // Ẩn cột Speaking
-            speakingCells.forEach(function(cell) {
-                cell.style.display = 'none'; // Ẩn ô nhập điểm
-            });
-        }
-    }
-</script>
-<!-- fetch user -->
-<script>
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    if (userDetails) {
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
-
-        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-        if (userDetails.roleName === "ADMIN") {
-            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.username;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "TEACHER") {
-            // Hiển thị đầy đủ tên và vai trò cho giáo viên
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Chỉ hiển thị mục của giáo viên
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "STUDENT") {
-            // Hiển thị đầy đủ tên và vai trò cho học sinh
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Chỉ hiển thị mục của học sinh
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
-        } else {
-            console.warn("Role not recognized: ", userDetails.roleName);
-        }
-    } else {
-        console.error("User details not found in sessionStorage");
-    }
-</script>
 <!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/Update-student-mark-report.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>

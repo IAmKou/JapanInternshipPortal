@@ -511,7 +511,6 @@
     <script>
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
         if (userDetails) {
-            document.getElementById('userId').value = userDetails.id;
             const userFullNameElements = document.querySelectorAll('.userFullName');
             const userRoleElements = document.querySelectorAll('.userRole');
 
@@ -540,6 +539,7 @@
                 // Chỉ hiển thị mục của giáo viên
                 document.getElementById("teacher-view").style.display = "block";
                 document.getElementById("student-view").style.display = "none";
+                document.getElementById("student-view1").style.display = "none";
             } else if (userDetails.roleName === "STUDENT") {
                 // Hiển thị đầy đủ tên và vai trò cho học sinh
                 userFullNameElements.forEach(element => {
