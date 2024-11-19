@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -62,8 +63,14 @@ public class StudentController {
         return studentRepository.findTop30UnassignedStudents();
     }
 
-    @GetMapping("/getAll")
-    public List<StudentDTO> getStudentByClassId(@RequestParam int class_id) {
-        return listRepository.findStudentsByClassId(class_id);
+    @GetMapping("/{classId}/getAll")
+    public List<StudentDTO> getStudentByClassId(@PathVariable Integer classId) {
+        if (classId == null) {
+            throw new IllegalArgumentException("classId must not be null");
+        }
+        List<Student> results = listRepository.findStudentsByClassId(classId);
+        return results.stream()
+                .map(StudentDTO::new)
+                .collect(Collectors.toList());
     }
 }

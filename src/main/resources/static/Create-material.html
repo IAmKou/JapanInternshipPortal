@@ -406,12 +406,8 @@
                                 <li class="nav-item" id="teacher-view">
                                     <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
                                 </li>
-                                <li class="nav-item" id="student-view">
-                                    <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
-                                </li>
-                                <li class="nav-item" id="student-view1">
-                                    <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list materials</a>
-                                </li>
+
+
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -513,7 +509,7 @@
                             <form id="materialForm" action="materials/create" method="POST" enctype="multipart/form-data" class="new-added-form">
                                 <div class="row">
                                     <!-- Hidden input for user_id-->
-                                    <input type="hidden" name="user_id" id="userId" value="">
+                                    <input type="hidden" name="teacher_id" id="userId" value="">
 
                                     <div class="col-7 form-group">
                                         <label>Title</label>
@@ -611,7 +607,6 @@
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
     if (userDetails) {
-        document.getElementById('userId').value = userDetails.id;
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
 
@@ -640,6 +635,7 @@
             // Chỉ hiển thị mục của giáo viên
             document.getElementById("teacher-view").style.display = "block";
             document.getElementById("student-view").style.display = "none";
+            document.getElementById("student-view1").style.display = "none";
         } else if (userDetails.roleName === "STUDENT") {
             // Hiển thị đầy đủ tên và vai trò cho học sinh
             userFullNameElements.forEach(element => {

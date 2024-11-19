@@ -56,8 +56,4 @@ public class ClassServices {
 
         return savedClass;
     }
-
-    public List<StudentDTO> getStudentByClassId(int classId){
-        return listRepository.findStudentsByClassId(classId);
-    }
 }
