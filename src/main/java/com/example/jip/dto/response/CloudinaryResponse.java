@@ -10,5 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CloudinaryResponse {
-    private String url;
+    private String url;// Public URL of the file
+    private String publicId;  // Unique identifier for the file
+    private String folder;    // Folder path
 }

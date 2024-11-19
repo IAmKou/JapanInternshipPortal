@@ -503,7 +503,7 @@
                             </div>
                             <div class="col-12 form-group mg-t-8">
                                 <label class="text-dark-medium" for="imgFile">File attach *</label>
-                                <input type="file" class="form-control-file" name="imgFile" id="imgFile" required>
+                                <input type="file" class="form-control-file" name="imgFile" id="imgFile" required multiple>
                             </div>
                             <div class="col-12 form-group mg-t-8">
                                 <button type="submit" onclick="addAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Add</button>
@@ -546,28 +546,38 @@
         document.getElementById("created_date").value = currentDate;
     });
 
-    function addAssignment(event) {
+    async function addAssignment(event) {
         event.preventDefault();
 
         const form = event.target.closest('form');
         const formData = new FormData(form);
 
-        fetch('/assignment/create', {
-            method: 'POST',
-            body: formData,
-        })
-            .then(response => {
-                if (response.ok) {
-                    alert('Assignment added successfully!');
-                    window.location.href = '/list-assignment.html';
-                } else {
-                    alert('Failed to create assignment. Please try again.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
+        const imgFiles = document.getElementById('imgFile').files;
+        if (imgFiles.length === 0) {
+            alert('Please select at least one file.');
+            return;
+        }
+
+        for (let i = 0; i < imgFiles.length; i++) {
+            formData.append('imgFiles', imgFiles[i]);
+        }
+
+        try {
+            const response = await fetch('/assignment/create', {
+                method: 'POST',
+                body: formData,
             });
+
+            if (response.ok) {
+                alert('Assignment added successfully!');
+                window.location.href = '/list-assignment.html';
+            } else {
+                alert('Failed to create assignment. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        }
     }
 
     (async function fetchUserData() {
