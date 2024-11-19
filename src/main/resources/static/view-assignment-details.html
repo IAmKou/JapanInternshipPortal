@@ -455,56 +455,42 @@
                     <div class="card-body">
                         <div class="heading-layout1">
                             <div class="item-title">
-                                <div class="header-inline item-header">
-                                    <h3 class="text-dark-medium font-medium">Description</h3>
-                                </div>
-                                <p></p>
-                                <h4>Aliquam erat volutpat. Curabiene natis massa sedde lacu stiquen sodale
-                                    word moun taiery.Aliquam erat volutpaturabiene natis massa sedde  sodale
-                                    word moun taiery.</h4>
+                                <h3 class="text-dark-medium font-medium">Description</h3>
+                                <p id="assignment-description"></p>
                             </div>
-
                         </div>
+
                         <div class="single-info-details">
-
                             <div class="item-content">
-                                <div class="header-inline item-header">
-                                    <h3 class="text-dark-medium font-medium">Content</h3>
-                                </div>
-                                <p>Aliquam erat volutpat. Curabiene natis massa sedde lacu stiquen sodale 
-                                word moun taiery.Aliquam erat volutpaturabiene natis massa sedde  sodale 
-                                word moun taiery.</p>
-                                <div class="info-table table-responsive">
-                                    <table class="table text-nowrap">
-                                        <tbody>
-                                            <tr>
-                                                <td>Created Date:</td>
-                                                <td class="font-medium text-dark-medium">69/69/2002</td>
-                                            </tr>
-                                            <tr>
-                                                <td>End Date:</td>
-                                                <td class="font-medium text-dark-medium">69/69/2002</td>
-                                            </tr>
-                                            <tr>
-                                                <td>For Class:</td>
-                                                <td class="font-medium text-dark-medium">1, 2, 3</td>
-                                            </tr>
-                                            <tr>
-                                                <td>File:</td>
-                                                <td class="font-medium text-dark-medium">1, 2, 3</td>
-                                            </tr>
-
-
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <h3 class="text-dark-medium font-medium">Content</h3>
+                                <p id="assignment-content"></p>
+                                <table class="table text-nowrap">
+                                    <tbody>
+                                    <tr>
+                                        <td>Created Date:</td>
+                                        <td id="created-date"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>End Date:</td>
+                                        <td id="end-date"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>For Class:</td>
+                                        <td id="assignment-classes"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>File:</td>
+                                        <td id="assignment-files"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- Student Table Area End Here -->
                 <footer class="footer-wrap-layout1">
-                    <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a href="#">PsdBosS</a></div>
+
                 </footer>
             </div>
         </div>
@@ -524,7 +510,42 @@
     <script src="js/main.js"></script>
     <!-- fetch user -->
     <script>
+        async function fetchAssignmentDetails() {
+            // Get assignment ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const assignmentId = urlParams.get('id');
 
+            if (!assignmentId) {
+                alert('Assignment ID is missing in the URL.');
+                return;
+            }
+
+            try {
+                // Fetch assignment details from backend
+                const response = await fetch(`/assignment/${assignmentId}`);
+
+                if (!response.ok) {
+                    throw new Error('Error fetching assignment details');
+                }
+
+                const assignment = await response.json();
+                console.log('Assignment details:', assignment);
+
+                // Populate the page with assignment details
+                document.getElementById('assignment-description').textContent = assignment.description;
+                document.getElementById('assignment-content').textContent = assignment.content;
+                document.getElementById('created-date').textContent = assignment.created_date;
+                document.getElementById('end-date').textContent = assignment.end_date;
+                document.getElementById('assignment-classes').textContent = assignment.classes.join(", ");
+                document.getElementById('assignment-files').textContent = assignment.files.join(", ");
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while fetching the assignment details.');
+            }
+        }
+
+        // Call the function on page load
+        fetchAssignmentDetails();
     </script>
 </body>
 

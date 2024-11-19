@@ -480,25 +480,25 @@
                                 <input type="text" placeholder="Write description..." class="form-control" name="description" id="description" required>
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label for="description">Content *</label>
-                                <input type="text" placeholder="Write content..." class="form-control" name="content" id="content" required>
-                            </div>
-                            <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label for="created_date">Create Date </label>
                                 <input type="date" class="form-control" name="created_date" id="created_date" readonly>
                             </div>
-                            <div class="col-xl-4 col-lg-6 col-12 form-group">
+                            <div class="col-xl-4 col-lg-12 col-12 form-group">
                                 <label for="end_date">End Date *</label>
                                 <input type="date" class="form-control" name="end_date" id="end_date" required>
                             </div>
-                            <div class="col-xl-4 col-lg-6 col-12 form-group">
+                            <div class="col-xl-6 col-lg-12 col-12 form-group">
+                                <label for="content">Content *</label>
+                                <textarea id="content" placeholder="Write content..."  class="form-control" name="content" rows="4" required></textarea>
+                            </div>
+                            <div class="col-xl-6 col-lg-12 col-12 form-group">
                                 <label for="class_id">For Class *</label>
 
-                                <select class="select2" name="class_id" id="class_id" required>
-                                    <option value="">Please Select Class *</option>
-                                    <option value="1">Class 1</option>
-                                    <option value="2">Class 2</option>
-                                    <option value="3">Class 3</option>
+                                <select  name="class_id" id="class_id" multiple>
+<!--                                    <option value="">Please Select Class *</option>-->
+<!--                                    <option value="1">Class 1</option>-->
+<!--                                    <option value="2">Class 2</option>-->
+<!--                                    <option value="3">Class 3</option>-->
                                 </select>
                             </div>
                             <div class="col-12 form-group mg-t-8">
@@ -552,14 +552,23 @@
         const form = event.target.closest('form');
         const formData = new FormData(form);
 
-        const imgFiles = document.getElementById('imgFile').files;
-        if (imgFiles.length === 0) {
-            alert('Please select at least one file.');
-            return;
-        }
+        // Get selected class IDs from the <select> element
+        const classSelect = document.getElementById('class_id');
+        const selectedClasses = Array.from(classSelect.selectedOptions).map(option => option.value);
 
+        // Append selected class IDs to the form data
+        selectedClasses.forEach(classId => {
+            formData.append('classIds', classId);
+        });
+
+        // Append image files to the form data
+        const imgFiles = document.getElementById('imgFile').files;
         for (let i = 0; i < imgFiles.length; i++) {
-            formData.append('imgFiles', imgFiles[i]);
+            const file = imgFiles[i];
+            if (!uniqueFiles.has(file.name)) {
+                uniqueFiles.add(file.name);
+                formData.append('imgFile', file);
+            }
         }
 
         try {
@@ -579,6 +588,41 @@
             alert('An error occurred. Please try again.');
         }
     }
+
+
+    async function populateClasses() {
+        try {
+            // Fetch classes from the backend
+            const response = await fetch('/class/get');
+            if (!response.ok) {
+                throw new Error(`Failed to fetch classes: ${response.statusText}`);
+            }
+
+            const classes = await response.json();
+
+            // Get the select element
+            const classSelect = document.getElementById('class_id');
+
+            // Clear existing options
+            classSelect.innerHTML = '';
+
+            // Populate options
+            classes.forEach((cls) => {
+                const option = document.createElement('option');
+                option.value = cls.id; // Use class ID as value
+                option.textContent = cls.name; // Use class name as display text
+                classSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error populating classes:', error);
+            alert('Could not fetch classes. Please try again later.');
+        }
+    }
+
+    // Call the function on page load
+    document.addEventListener('DOMContentLoaded', populateClasses);
+
+
 
     (async function fetchUserData() {
         try {

@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class CloudinaryService {
 
     Cloudinary cloudinary;
@@ -76,14 +78,14 @@ public class CloudinaryService {
         }
     }
 
-    @Transactional
-    public void deleteFiles(List<String> publicIds) {
+    public void deleteFolder(String folderPath) {
         try {
-            for (String publicId : publicIds) {
-                cloudinary.uploader().destroy(publicId, Map.of());
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to delete files", e);
+            // Delete all resources in the folder
+            cloudinary.api().deleteResourcesByPrefix(folderPath, ObjectUtils.emptyMap());
+            // Delete the folder itself
+            cloudinary.api().deleteFolder(folderPath, ObjectUtils.emptyMap());
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete folder in Cloudinary: " + folderPath, e);
         }
     }
 }

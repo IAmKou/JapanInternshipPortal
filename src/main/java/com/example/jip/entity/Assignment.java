@@ -1,13 +1,12 @@
 package com.example.jip.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "assignment")
@@ -36,13 +35,17 @@ public class Assignment {
     @JoinColumn(name = "teacher_id")
     Teacher teacher;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id", fetch = FetchType.EAGER)
-    List<Class> classList = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "assignment_class",
+            joinColumns = @JoinColumn(name = "assignment_id"),
+            inverseJoinColumns = @JoinColumn(name = "class_id")
+    )
+    @JsonManagedReference
+    Set<Class> classes = new HashSet<>();
 
 
     @Column(name = "img")
     String imgUrl;
-
-
 
 }
