@@ -511,7 +511,6 @@
     <!-- fetch user -->
     <script>
         async function fetchAssignmentDetails() {
-            // Get assignment ID from URL
             const urlParams = new URLSearchParams(window.location.search);
             const assignmentId = urlParams.get('id');
 
@@ -521,8 +520,7 @@
             }
 
             try {
-                // Fetch assignment details from backend
-                const response = await fetch(`/assignment/${assignmentId}`);
+                const response = await fetch(`/assignment/detail/${assignmentId}`);
 
                 if (!response.ok) {
                     throw new Error('Error fetching assignment details');
@@ -531,13 +529,32 @@
                 const assignment = await response.json();
                 console.log('Assignment details:', assignment);
 
-                // Populate the page with assignment details
-                document.getElementById('assignment-description').textContent = assignment.description;
-                document.getElementById('assignment-content').textContent = assignment.content;
-                document.getElementById('created-date').textContent = assignment.created_date;
-                document.getElementById('end-date').textContent = assignment.end_date;
-                document.getElementById('assignment-classes').textContent = assignment.classes.join(", ");
-                document.getElementById('assignment-files').textContent = assignment.files.join(", ");
+                // Populate description and content
+                document.getElementById('assignment-description').textContent = assignment.description || "No description provided";
+                document.getElementById('assignment-content').textContent = assignment.content || "No content provided";
+                document.getElementById('created-date').textContent = assignment.created_date || "N/A";
+                document.getElementById('end-date').textContent = assignment.end_date || "N/A";
+
+                // Display class names
+                const classes = assignment.classes || [];
+                document.getElementById('assignment-classes').textContent = classes.length > 0 ? classes.join(", ") : "No classes assigned";
+
+                // Display file download links
+                const files = assignment.files || [];
+                const filesContainer = document.getElementById('assignment-files');
+                filesContainer.innerHTML = ""; // Clear any existing content
+                if (files.length > 0) {
+                    files.forEach(fileUrl => {
+                        const link = document.createElement('a');
+                        link.href = fileUrl;
+                        link.textContent = fileUrl.split('/').pop(); // Display the file name
+                        link.target = '_blank';
+                        link.style.display = 'block'; // Show each file on a new line
+                        filesContainer.appendChild(link);
+                    });
+                } else {
+                    filesContainer.textContent = "No files uploaded";
+                }
             } catch (error) {
                 console.error('Error:', error);
                 alert('An error occurred while fetching the assignment details.');

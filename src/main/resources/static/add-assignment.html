@@ -491,7 +491,7 @@
                                 <label for="content">Content *</label>
                                 <textarea id="content" placeholder="Write content..."  class="form-control" name="content" rows="4" required></textarea>
                             </div>
-                            <div class="col-xl-6 col-lg-12 col-12 form-group">
+                            <div class="col-xl-12 col-lg-24 col-12 form-group">
                                 <label for="class_id">For Class *</label>
 
                                 <select  name="class_id" id="class_id" multiple>
@@ -563,6 +563,7 @@
 
         // Append image files to the form data
         const imgFiles = document.getElementById('imgFile').files;
+        const uniqueFiles = new Set();
         for (let i = 0; i < imgFiles.length; i++) {
             const file = imgFiles[i];
             if (!uniqueFiles.has(file.name)) {
@@ -643,6 +644,7 @@
 
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
     if (userDetails) {
+        document.getElementById('userId').value = userDetails.id;
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
 
@@ -671,7 +673,6 @@
             // Chỉ hiển thị mục của giáo viên
             document.getElementById("teacher-view").style.display = "block";
             document.getElementById("student-view").style.display = "none";
-            document.getElementById("student-view1").style.display = "none";
         } else if (userDetails.roleName === "STUDENT") {
             // Hiển thị đầy đủ tên và vai trò cho học sinh
             userFullNameElements.forEach(element => {

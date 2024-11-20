@@ -59,6 +59,38 @@ public class CloudinaryService {
     }
 
     @Transactional
+    public List<String> getFilesFromFolder(String folderName) {
+        try {
+            // Adjust folder path
+            String cloudinaryFolderPath =  folderName;
+
+            // Log folder path for debugging
+            System.out.println("Searching for files in folder: " + cloudinaryFolderPath);
+
+            Map result = cloudinary.search()
+                    .expression("folder:" + cloudinaryFolderPath)
+                    .maxResults(50) // Optional: Limit results
+                    .execute();
+
+            // Log full response for debugging
+            System.out.println("Cloudinary search response: " + result);
+
+            // Extract secure URLs of files
+            List<Map> resources = (List<Map>) result.get("resources");
+            if (resources == null) {
+                throw new RuntimeException("No resources found in folder: " + folderName);
+            }
+
+            return resources.stream()
+                    .map(resource -> (String) resource.get("secure_url"))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to retrieve files from folder: " + folderName, e);
+        }
+    }
+
+    @Transactional
     public List<String> listFilesInFolder(String folderName) {
         try {
             Map result = cloudinary.api().resources(ObjectUtils.asMap(

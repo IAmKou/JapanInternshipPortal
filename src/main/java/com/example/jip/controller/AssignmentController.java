@@ -4,6 +4,7 @@ import com.example.jip.configuration.CustomAuthenticationSuccessHandler;
 import com.example.jip.dto.TeacherDTO;
 import com.example.jip.dto.request.AssignmentCreationRequest;
 import com.example.jip.dto.request.AssignmentUpdateRequest;
+import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.entity.Assignment;
 import com.example.jip.entity.Teacher;
 import com.example.jip.repository.AccountRepository;
@@ -91,6 +92,12 @@ public class AssignmentController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+
+    @GetMapping("/detail/{assignment_id}")
+    public ResponseEntity<AssignmentResponse> getAssignment2(@PathVariable("assignment_id") int assignmentId) {
+        AssignmentResponse response = assignmentServices.getAssignmentById2(assignmentId);
+        return ResponseEntity.ok(response);
     }
 
 //    @GetMapping("/files/{assignmentId}")

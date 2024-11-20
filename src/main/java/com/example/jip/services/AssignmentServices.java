@@ -3,6 +3,7 @@ package com.example.jip.services;
 import com.example.jip.dto.request.AssignmentCreationRequest;
 import com.example.jip.dto.request.AssignmentUpdateRequest;
 import com.example.jip.dto.response.CloudinaryResponse;
+import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.entity.Assignment;
 import com.example.jip.entity.Class;
 
@@ -11,8 +12,7 @@ import com.example.jip.repository.AssignmentRepository;
 import com.example.jip.repository.ClassRepository;
 import com.example.jip.repository.TeacherRepository;
 import jakarta.transaction.Transactional;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import lombok.extern.slf4j.Slf4j;
@@ -64,8 +64,9 @@ public class AssignmentServices {
 
         MultipartFile[] imgFiles = request.getImgFile();
         if (imgFiles != null && imgFiles.length > 0) {
+            Set<String> uploadedFiles = new HashSet<>();
             for (MultipartFile imgFile : imgFiles) {
-                if (!imgFile.isEmpty()) {
+                if (!imgFile.isEmpty() && uploadedFiles.add(imgFile.getOriginalFilename())) {
                     cloudinaryService.uploadFileToFolder(imgFile, folderName);
                 } else {
                     log.warn("Duplicate or empty file skipped: " + imgFile.getOriginalFilename());
@@ -95,6 +96,32 @@ public class AssignmentServices {
     @PreAuthorize("hasAuthority('TEACHER')")
     public Assignment getAssignmentById(int assignmentId) {
         return assignmentRepository.findById(assignmentId).orElseThrow(() -> new RuntimeException("Cant find assignment with id " + assignmentId));
+    }
+
+    @PreAuthorize("hasAuthority('TEACHER')")
+    public AssignmentResponse getAssignmentById2(int assignmentId) {
+        Assignment assignment = assignmentRepository.findById(assignmentId)
+                .orElseThrow(() -> new RuntimeException("Can't find assignment with id " + assignmentId));
+
+        // Map Assignment entity to AssignmentResponse
+        AssignmentResponse response = new AssignmentResponse();
+        response.setDescription(assignment.getDescription());
+        response.setContent(assignment.getContent());
+        response.setCreated_date(assignment.getCreated_date());
+        response.setEnd_date(assignment.getEnd_date());
+
+        // Convert associated class entities to class names
+        List<String> classNames = assignment.getClasses().stream()
+                .map(Class::getName) // Assuming `Class` entity has a `getName` method
+                .collect(Collectors.toList());
+        response.setClasses(classNames);
+
+        // Fetch file URLs from Cloudinary folder
+        String folderName = assignment.getDescription(); // Assuming description matches folder name
+        List<String> fileUrls = cloudinaryService.getFilesFromFolder(folderName);
+        response.setFiles(fileUrls);
+
+        return response;
     }
 
     @PreAuthorize("hasAuthority('TEACHER')")
