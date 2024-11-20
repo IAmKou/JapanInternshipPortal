@@ -193,12 +193,12 @@ CREATE TABLE Application (
     img VARCHAR(255),
     category VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     content TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    date DATE NOT NULL,
+    date_created DATETIME NOT NULL,
     student_id INT,
     teacher_id INT,
     status ENUM('Pending', 'Approved', 'Rejected') NOT NULL,
     reply TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    reply_date DATE,
+    date_replied DATETIME,
     FOREIGN KEY (student_id) REFERENCES Student(Id),
     FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
 );

@@ -11,6 +11,7 @@ import com.example.jip.repository.StudentRepository;
 import com.example.jip.repository.TeacherRepository;
 import com.example.jip.services.ApplicationServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,7 +39,7 @@ public class ApplicationController {
     private ApplicationServices applicationServices;
 
     @PostMapping("/create")
-    public RedirectView createApplication(
+    public ResponseEntity<String> createApplication(
             @RequestParam("name") String name,
             @RequestParam("category") String category,
             @RequestParam("content") String content,
@@ -64,8 +65,8 @@ public class ApplicationController {
                     teacherDTO.setId(teacher.getId());
                     applicationDTO.setTeacher(teacherDTO);
                 } else {
-                    redirectAttributes.addFlashAttribute("error", "Teacher với ID " + teacherId + " không tồn tại.");
-                    return new RedirectView("/application/create");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Teacher with ID " + teacherId + " not found.");
                 }
             } else if (studentId != null) {  // Nếu không có teacher_id thì lấy student_id
                 Optional<Student> studentOptional = studentRepository.findByAccount_id(studentId);
@@ -75,15 +76,15 @@ public class ApplicationController {
                     studentDTO.setId(student.getId());
                     applicationDTO.setStudent(studentDTO);
                 } else {
-                    redirectAttributes.addFlashAttribute("error", "Student với ID " + studentId + " không tồn tại.");
-                    return new RedirectView("/application/create");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Student with ID " + studentId + " not found.");
                 }
             }
 
             // Nếu cả hai ID đều không có, báo lỗi
             if (teacherId == null && studentId == null) {
-                redirectAttributes.addFlashAttribute("error", "Cả Teacher ID và Student ID đều không được cung cấp.");
-                return new RedirectView("/application/create");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Both Teacher ID and Student ID must be provided.");
             }
 
             applicationDTO.setStatus(ApplicationDTO.status.Pending);
@@ -93,15 +94,16 @@ public class ApplicationController {
             // Lưu Application
             Application savedApplication = applicationServices.createApplication(applicationDTO);
 
-            redirectAttributes.addFlashAttribute("success", "Application '" + applicationDTO.getCategory() + "' created successfully!");
-            return new RedirectView("/View-my-application.html?id=" + savedApplication.getId());
+            // Trả về ResponseEntity với thông tin ứng dụng vừa tạo
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Application '" + applicationDTO.getCategory() + "' created successfully with ID: " + savedApplication.getId());
 
         } catch (IOException e) {
-            redirectAttributes.addFlashAttribute("error", "File upload failed: " + e.getMessage());
-            return new RedirectView("/application/create");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("File upload failed: " + e.getMessage());
         } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("error", "Failed to create application: " + e.getMessage());
-            return new RedirectView("/application/create");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to create application: " + e.getMessage());
         }
     }
 }

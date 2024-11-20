@@ -55,7 +55,8 @@ public class ApplicationServices {
         application.setContent(applicationDTO.getContent());
         application.setImg(applicationDTO.getImg());
         application.setCreated_date(applicationDTO.getCreated_date());
-        application.setStatus(Application.status.Pending);  // Trạng thái mặc định khi tạo mới
+        application.setStatus(Application.status.Pending);  // Chuyển đổi từ enum của DTO sang Entity
+        // Trạng thái mặc định khi tạo mới
 
         // Nếu có TeacherDTO, tìm Teacher và gán vào Application
         if (teacherId != null) {
