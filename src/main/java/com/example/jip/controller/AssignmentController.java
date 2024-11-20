@@ -4,6 +4,7 @@ import com.example.jip.configuration.CustomAuthenticationSuccessHandler;
 import com.example.jip.dto.TeacherDTO;
 import com.example.jip.dto.request.AssignmentCreationRequest;
 import com.example.jip.dto.request.AssignmentUpdateRequest;
+import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.entity.Assignment;
 import com.example.jip.entity.Teacher;
 import com.example.jip.repository.AccountRepository;
@@ -58,6 +59,7 @@ public class AssignmentController {
                 log.info("Received file: " + request.getImgFile()[i].getOriginalFilename());
             }
 
+            log.info("Received classIds: " + request.getClassIds());
             Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
             TeacherDTO teacherDTO = new TeacherDTO();
             teacherDTO.setId(teacherOpt.get().getId());
@@ -92,38 +94,45 @@ public class AssignmentController {
         }
     }
 
-    @GetMapping("/files/{assignmentId}")
-    public ResponseEntity<List<String>> getAssignmentFiles(@PathVariable int assignmentId) {
-        Assignment assignment = assignmentRepository.findById(assignmentId)
-                .orElseThrow(() -> new RuntimeException("Assignment not found"));
-
-        String folderName = assignment.getDescription(); // Assuming folder name is stored in the description
-        List<String> fileUrls = cloudinaryService.listFilesInFolder(folderName);
-        return ResponseEntity.ok(fileUrls);
+    @GetMapping("/detail/{assignment_id}")
+    public ResponseEntity<AssignmentResponse> getAssignment2(@PathVariable("assignment_id") int assignmentId) {
+        AssignmentResponse response = assignmentServices.getAssignmentById2(assignmentId);
+        return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/update/{assignment_id}")
-    public ResponseEntity<?> updateAssignment(@PathVariable("assignment_id") int assignment_id,
-                                              @ModelAttribute AssignmentUpdateRequest request) {
-        try {
-            log.info("Received request: " + request);  // Log the incoming request for debugging
+//    @GetMapping("/files/{assignmentId}")
+//    public ResponseEntity<List<String>> getAssignmentFiles(@PathVariable int assignmentId) {
+//        Assignment assignment = assignmentRepository.findById(assignmentId)
+//                .orElseThrow(() -> new RuntimeException("Assignment not found"));
+//
+//        String folderName = assignment.getDescription(); // Assuming folder name is stored in the description
+//        List<String> fileUrls = cloudinaryService.listFilesInFolder(folderName);
+//        return ResponseEntity.ok(fileUrls);
+//    }
 
-            MultipartFile[] imgFiles = request.getImgFile();
-            if (imgFiles != null) {
-                for (MultipartFile imgFile : imgFiles) {
-                    log.info("Received file: " + imgFile.getOriginalFilename()); // Log the file name
+        @PutMapping("/update/{assignment_id}")
+        public ResponseEntity<?> updateAssignment(@PathVariable("assignment_id") int assignment_id,
+                                                  @ModelAttribute AssignmentUpdateRequest request) {
+            try {
+                log.info("Received request: " + request);  // Log the incoming request for debugging
+
+
+                if (request.getImgFile() != null) {
+                    for (MultipartFile imgFile : request.getImgFile()) {
+                        log.info("Received file: " + imgFile.getOriginalFilename()); // Log the file name
+                    }
+                } else {
+                    log.info("No files received.");
                 }
-            } else {
-                log.info("No files received.");
-            }
 
-            assignmentServices.updateAssignment(assignment_id, request);
-            return ResponseEntity.noContent().build(); // Return 204 No Content on successful update
-        } catch (NoSuchElementException e) {
-            log.error("Assignment not found", e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 Not Found if assignment doesn't exist
+                log.info("Received classIds: " + request.getClassIds());
+                assignmentServices.updateAssignment(assignment_id, request);
+                return ResponseEntity.noContent().build(); // Return 204 No Content on successful update
+            } catch (NoSuchElementException e) {
+                log.error("Assignment not found", e);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 Not Found if assignment doesn't exist
+            }
         }
-    }
 }
 
 

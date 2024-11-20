@@ -24,6 +24,6 @@ public class AssignmentCreationRequest {
     String content;
     MultipartFile[] imgFile;
     TeacherDTO teacher;
-    List<Class> classList;
+    List<Integer> classIds;
 
 }

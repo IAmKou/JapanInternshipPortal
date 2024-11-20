@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class CloudinaryService {
 
     Cloudinary cloudinary;
@@ -57,6 +59,38 @@ public class CloudinaryService {
     }
 
     @Transactional
+    public List<String> getFilesFromFolder(String folderName) {
+        try {
+            // Adjust folder path
+            String cloudinaryFolderPath =  folderName;
+
+            // Log folder path for debugging
+            System.out.println("Searching for files in folder: " + cloudinaryFolderPath);
+
+            Map result = cloudinary.search()
+                    .expression("folder:" + cloudinaryFolderPath)
+                    .maxResults(50) // Optional: Limit results
+                    .execute();
+
+            // Log full response for debugging
+            System.out.println("Cloudinary search response: " + result);
+
+            // Extract secure URLs of files
+            List<Map> resources = (List<Map>) result.get("resources");
+            if (resources == null) {
+                throw new RuntimeException("No resources found in folder: " + folderName);
+            }
+
+            return resources.stream()
+                    .map(resource -> (String) resource.get("secure_url"))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to retrieve files from folder: " + folderName, e);
+        }
+    }
+
+    @Transactional
     public List<String> listFilesInFolder(String folderName) {
         try {
             Map result = cloudinary.api().resources(ObjectUtils.asMap(
@@ -76,14 +110,14 @@ public class CloudinaryService {
         }
     }
 
-    @Transactional
-    public void deleteFiles(List<String> publicIds) {
+    public void deleteFolder(String folderPath) {
         try {
-            for (String publicId : publicIds) {
-                cloudinary.uploader().destroy(publicId, Map.of());
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to delete files", e);
+            // Delete all resources in the folder
+            cloudinary.api().deleteResourcesByPrefix(folderPath, ObjectUtils.emptyMap());
+            // Delete the folder itself
+            cloudinary.api().deleteFolder(folderPath, ObjectUtils.emptyMap());
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete folder in Cloudinary: " + folderPath, e);
         }
     }
 }
