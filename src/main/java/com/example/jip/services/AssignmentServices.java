@@ -116,8 +116,19 @@ public class AssignmentServices {
                 .collect(Collectors.toList());
         response.setClasses(classNames);
 
+        // Extract folder name from image URL
+        String imgUrl = assignment.getImgUrl();
+        String folderName;
+
+        if (imgUrl != null && imgUrl.contains("/image/upload/")) {
+            folderName = imgUrl.split("/image/upload/")[1].split("/")[0];
+        } else {
+            throw new RuntimeException("Invalid folder URL: " + imgUrl);
+        }
+
+        System.out.println("Extracted Folder Name: " + folderName);
+
         // Fetch file URLs from Cloudinary folder
-        String folderName = assignment.getDescription(); // Assuming description matches folder name
         List<String> fileUrls = cloudinaryService.getFilesFromFolder(folderName);
         response.setFiles(fileUrls);
 
