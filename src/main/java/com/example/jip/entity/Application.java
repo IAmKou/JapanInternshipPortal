@@ -31,13 +31,14 @@ public class Application {
     @Column(name =  "date_created", nullable = false)
     private Date created_date;
 
-    @Column(name =  "status")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private status status;
 
     @Column(name =  "reply")
     private String reply;
 
-    @Column(name =  "date_replied", nullable = false)
+    @Column(name =  "date_replied")
     private Date replied_date;
 
     @JsonBackReference

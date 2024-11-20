@@ -487,7 +487,8 @@
                     <h3>Send Application</h3>
                     <ul>
                         <li>
-                            <a href="admin.html">Home</a>
+                            <a href="teacher.html" id="teacher-view2">Home</a>
+                            <a href="student.html" id="student-view2">Home</a>
                         </li>
                         <li>Send Application</li>
                     </ul>
@@ -503,29 +504,28 @@
                                 </div>
 
                             </div>
-                            <form class="new-added-form" method="POST" action="application/create" enctype="multipart/form-data">
+                            <form id="applicationForm" method="POST" action="application/create" enctype="multipart/form-data" class="new-added-form">
                                 <div class="row">
                                     <input type="hidden" name="teacher_id" id="teacherId" value="">
                                     <input type="hidden" name="student_id" id="studentId" value="">
 
-
-                                    <!-- Tên nguoi -->
+                                    <!-- Tên người -->
                                     <div class="col-12 form-group">
                                         <label>Name</label>
-                                        <input type="text" name="name" placeholder="Enter the your name" class="form-control" required>
+                                        <input type="text" name="name" placeholder="Enter your name" class="form-control" required>
                                     </div>
 
                                     <!-- Loại đơn -->
                                     <div class="col-12 form-group">
                                         <label>Application type *</label>
                                         <select class="select2" name="category" required>
-                                            <option value="">Please Select</option>
-                                            <option value="1">Đơn xin nghỉ học</option>
-                                            <option value="2">Đơn xin đi thực tập tại FPT Japan</option>
-                                            <option value="3">Các loại đơn khác</option>
-                                            <option value="4">Đơn xin đổi lịch giảng dạy</option>
-                                            <option value="5">Đơn xin đổi giáo viên</option>
-                                            <option value="6">Các loại đơn khác</option>
+                                            <option value="0">Please Select</option>
+                                            <option value="Đơn xin nghỉ học">Đơn xin nghỉ học</option>
+                                            <option value="Đơn xin đi thực tập tại FPT Japan">Đơn xin đi thực tập</option>
+                                            <option value="Các loại đơn khác">Các loại đơn khác</option>
+                                            <option value="Đơn xin đổi lịch giảng dạy">Đơn xin đổi lịch giảng dạy</option>
+                                            <option value="Đơn xin đổi giáo viên">Đơn xin đổi giáo viên</option>
+                                            <option value="Các loại đơn khác">Các loại đơn khác</option>
                                         </select>
                                     </div>
 
@@ -538,7 +538,7 @@
                                     <!-- Tệp đính kèm -->
                                     <div class="col-12 form-group">
                                         <label class="text-dark-medium">File attach:</label>
-                                        <input type="file" name="img" class="form-control-file" >
+                                        <input type="file" name="img" class="form-control-file">
                                     </div>
 
                                     <!-- Các nút -->
@@ -548,6 +548,7 @@
                                     </div>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -581,95 +582,142 @@
     <script src="js/main.js"></script>
 
 
-    <!-- fetch user -->
-    <script>
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-
-        if (userDetails) {
-            // Cập nhật thông tin người dùng vào các trường input
-            const userFullNameElements = document.querySelectorAll('.userFullName');
-            const userRoleElements = document.querySelectorAll('.userRole');
-
-            // Cập nhật teacher_id hoặc student_id dựa vào role của user
-            if (userDetails.roleName === "TEACHER") {
-                document.getElementById('teacherId').value = userDetails.id;
-                document.getElementById('studentId').value = ''; // Đảm bảo trường student_id là null
-            } else if (userDetails.roleName === "STUDENT") {
-                document.getElementById('studentId').value = userDetails.id;
-                document.getElementById('teacherId').value = ''; // Đảm bảo trường teacher_id là null
-            }
-
-            // Hiển thị thông tin người dùng dựa trên vai trò
-            if (userDetails.roleName === "ADMIN") {
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.username;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "none";
-            } else if (userDetails.roleName === "TEACHER") {
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.fullName;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
-                document.getElementById("teacher-view").style.display = "block";
-                document.getElementById("student-view").style.display = "none";
-                document.getElementById("student-view1").style.display = "none";
-            } else if (userDetails.roleName === "STUDENT") {
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.fullName;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "block";
-                document.getElementById("student-view1").style.display = "block";
-            }
-
-            // Cập nhật dropdown danh mục
-            const applicationTypeSelect = document.querySelector('.select2');
-            applicationTypeSelect.innerHTML = ''; // Xóa tất cả các option cũ
-
-            if (userDetails.roleName === "STUDENT") {
-                const options = [
-                    { value: "1", text: "Đơn xin nghỉ học" },
-                    { value: "2", text: "Đơn xin đi thực tập tại FPT Japan" },
-                    { value: "3", text: "Các loại đơn khác" }
-                ];
-
-                options.forEach(option => {
-                    const newOption = document.createElement('option');
-                    newOption.value = option.value;
-                    newOption.textContent = option.text;
-                    applicationTypeSelect.appendChild(newOption);
-                });
-            } else if (userDetails.roleName === "TEACHER") {
-                const options = [
-                    { value: "4", text: "Đơn xin đổi lịch giảng dạy" },
-                    { value: "5", text: "Đơn xin đổi giáo viên" },
-                    { value: "6", text: "Các loại đơn khác" }
-                ];
-
-                options.forEach(option => {
-                    const newOption = document.createElement('option');
-                    newOption.value = option.value;
-                    newOption.textContent = option.text;
-                    applicationTypeSelect.appendChild(newOption);
-                });
-            }
-        } else {
-            console.error("User details not found in sessionStorage");
-        }
-    </script>
-
 </body>
+<!-- fetch user -->
+<script>
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+    if (userDetails) {
+        // Cập nhật thông tin người dùng vào các trường input
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        const userRoleElements = document.querySelectorAll('.userRole');
+
+        // Cập nhật teacher_id hoặc student_id dựa vào role của user
+        if (userDetails.roleName === "TEACHER") {
+            document.getElementById('teacherId').value = userDetails.id;
+            document.getElementById('studentId').value = ''; // Đảm bảo trường student_id là null
+        } else if (userDetails.roleName === "STUDENT") {
+            document.getElementById('studentId').value = userDetails.id;
+            document.getElementById('teacherId').value = ''; // Đảm bảo trường teacher_id là null
+        }
+
+        // Hiển thị thông tin người dùng dựa trên vai trò
+        if (userDetails.roleName === "ADMIN") {
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.username;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+            document.getElementById("teacher-view").style.display = "none";
+            document.getElementById("student-view").style.display = "none";
+        } else if (userDetails.roleName === "TEACHER") {
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+            document.getElementById("teacher-view").style.display = "block";
+            document.getElementById("student-view").style.display = "none";
+            document.getElementById("student-view1").style.display = "none";
+            document.getElementById("teacher-view2").style.display = "block";
+        } else if (userDetails.roleName === "STUDENT") {
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+            document.getElementById("teacher-view").style.display = "none";
+            document.getElementById("student-view").style.display = "block";
+            document.getElementById("student-view1").style.display = "block";
+            document.getElementById("student-view2").style.display = "block";
+        }
+
+        // Cập nhật dropdown danh mục
+        const applicationTypeSelect = document.querySelector('.select2');
+        applicationTypeSelect.innerHTML = ''; // Xóa tất cả các option cũ
+
+        if (userDetails.roleName === "STUDENT") {
+            const options = [
+                { value: "Đơn xin nghỉ học", text: "Đơn xin nghỉ học" },
+                { value: "Đơn xin đi thực tập tại FPT Japan", text: "Đơn xin đi thực tập tại FPT Japan" },
+                { value: "Các loại đơn khác", text: "Các loại đơn khác" }
+            ];
+
+            options.forEach(option => {
+                const newOption = document.createElement('option');
+                newOption.value = option.value;
+                newOption.textContent = option.text;
+                applicationTypeSelect.appendChild(newOption);
+            });
+        } else if (userDetails.roleName === "TEACHER") {
+            const options = [
+                { value: "Đơn xin đổi lịch giảng dạy", text: "Đơn xin đổi lịch giảng dạy" },
+                { value: "Đơn xin đổi giáo viên", text: "Đơn xin đổi giáo viên" },
+                { value: "Các loại đơn khác", text: "Các loại đơn khác" }
+            ];
+
+            options.forEach(option => {
+                const newOption = document.createElement('option');
+                newOption.value = option.value;
+                newOption.textContent = option.text;
+                applicationTypeSelect.appendChild(newOption);
+            });
+        }
+    } else {
+        console.error("User details not found in sessionStorage");
+    }
+</script>
+<!--    <script>-->
+<!--        document.getElementById("applicationForm").addEventListener("submit", function(event) {-->
+<!--            event.preventDefault();  // Ngừng hành động mặc định của form (không reload trang)-->
+
+<!--            const teacherId = document.getElementById('teacherId').value.trim();-->
+<!--            const studentId = document.getElementById('studentId').value.trim();-->
+
+<!--            // Kiểm tra teacherId và studentId-->
+<!--            if (!teacherId && !studentId) {-->
+<!--                alert("Cả teacher_id và student_id đều chưa được xác định.");-->
+<!--                return;-->
+<!--            }-->
+
+<!--            // Lấy form và tạo đối tượng FormData từ form-->
+<!--            const form = event.target;-->
+<!--            const formData = new FormData(form);-->
+
+<!--            // Gửi form qua Fetch API-->
+<!--            fetch(form.action, {-->
+<!--                method: "POST",  // Phương thức HTTP POST-->
+<!--                body: formData  // Dữ liệu từ form-->
+<!--            })-->
+<!--                .then(response => {-->
+<!--                    // Kiểm tra mã trạng thái HTTP trước khi chuyển đổi JSON-->
+<!--                    if (!response.ok) {-->
+<!--                        throw new Error(`HTTP error! Status: ${response.status}`);-->
+<!--                    }-->
+<!--                    return response.json();-->
+<!--                })-->
+<!--                .then(data => {-->
+<!--                    // Kiểm tra dữ liệu trả về từ server-->
+<!--                    if (data.success) {-->
+<!--                        console.log("Success:", data);-->
+
+<!--                        // Chuyển hướng đến trang khác với ID đơn-->
+<!--                        window.location.href = "/View-my-application.html?id=" + data.id;-->
+<!--                    } else {-->
+<!--                        console.error("Error:", data.message || "Có lỗi xảy ra.");-->
+<!--                        alert(data.message || "Có lỗi xảy ra khi gửi đơn. Vui lòng thử lại.");-->
+<!--                    }-->
+<!--                })-->
+<!--                .catch(error => {-->
+<!--                    // Xử lý lỗi bất thường, chẳng hạn như lỗi kết nối hoặc phản hồi không hợp lệ-->
+<!--                    console.error("Fetch error:", error);-->
+<!--                    alert("Đã xảy ra lỗi trong quá trình gửi yêu cầu. Vui lòng thử lại.");-->
+<!--                });-->
+<!--        });-->
+<!--    </script>-->
 
 
-
-<!-- Mirrored from admit-form.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:46 GMT -->
 </html>

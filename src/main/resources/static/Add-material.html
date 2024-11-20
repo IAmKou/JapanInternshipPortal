@@ -511,6 +511,7 @@
     <script>
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
         if (userDetails) {
+            document.getElementById('userId').value = userDetails.id;
             const userFullNameElements = document.querySelectorAll('.userFullName');
             const userRoleElements = document.querySelectorAll('.userRole');
 
