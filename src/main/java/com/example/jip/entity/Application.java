@@ -1,13 +1,11 @@
 package com.example.jip.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -18,15 +16,40 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String img;
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "category", nullable = false)
     private String category;
-    private String description;
+
+    @Column(name = "content", nullable = false)
     private String content;
-    private Date date;
-    private int student_id;
+
+    @Column(name = "img")
+    private String img;
+
+    @Column(name =  "date_created", nullable = false)
+    private Date created_date;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private status status;
+
+    @Column(name =  "reply")
     private String reply;
-    private Date reply_date;
+
+    @Column(name =  "date_replied")
+    private Date replied_date;
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "teacher_id", nullable = true)
+    private Teacher teacher;
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id", nullable = true)
+    private Student student;
 
     public enum status{
         Pending, Approved, Rejected
@@ -34,16 +57,17 @@ public class Application {
 
     public Application() {}
 
-    public Application(int id, String img, String category, String description, String content, Date date, int student_id, Application.status status, String reply, Date reply_date) {
+    public Application(int id, String name, String category, String content, String img, Date created_date, Application.status status, String reply, Date replied_date, Teacher teacher, Student student) {
         this.id = id;
-        this.img = img;
+        this.name = name;
         this.category = category;
-        this.description = description;
         this.content = content;
-        this.date = date;
-        this.student_id = student_id;
+        this.img = img;
+        this.created_date = created_date;
         this.status = status;
         this.reply = reply;
-        this.reply_date = reply_date;
+        this.replied_date = replied_date;
+        this.teacher = teacher;
+        this.student = student;
     }
 }

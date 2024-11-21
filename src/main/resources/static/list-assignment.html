@@ -634,24 +634,7 @@
                             </tr>
                             </thead>
                             <tbody id="assignment_list">
-<!--                            <tr>-->
-
-<!--                                <td>Assignment 1</td>-->
-<!--                                <td>2019</td>-->
-<!--                                <td>12.02.2019</td>-->
-<!--                                <td>-->
-<!--                                    <div class="dropdown">-->
-<!--                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">-->
-<!--                                            <span class="flaticon-more-button-of-three-dots"></span>-->
-<!--                                        </a>-->
-<!--                                        <div class="dropdown-menu dropdown-menu-right">-->
-<!--                                            <a class="dropdown-item" onclick="openDeleteConfirmModal()"><i class="fas fa-times text-orange-red"></i>Delete</a>-->
-<!--                                            <a class="dropdown-item" onclick="openPopup()"><i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>-->
-<!--                                        </div>-->
-
-<!--                                    </div>-->
-<!--                                </td>-->
-<!--                            </tr>-->
+                                <-- List assignment in here -->
 
                             </tbody>
                         </table>
@@ -678,13 +661,12 @@
                     <label for="content">Content:</label>
                     <textarea id="content" name="content" rows="4" ></textarea>
 
-
                     <label for="class_id">For Class *</label>
-                        <select  name="class_id" id="class_id" >
-                            <option value="">Please Select Class *</option>
-                            <option value="1">Class 1</option>
-                            <option value="2">Class 2</option>
-                            <option value="3">Class 3</option>
+                        <select  name="class_id" id="class_id" multiple>
+<!--                            <option value="">Please Select Class *</option>-->
+<!--                            <option value="1">Class 1</option>-->
+<!--                            <option value="2">Class 2</option>-->
+<!--                            <option value="3">Class 3</option>-->
                         </select>
 
 
@@ -754,7 +736,7 @@
             assignments.forEach(assignment => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <a href="/${assignment.id}" target="_blank">${assignment.description}</a>
+                    <a href="/view-assignment-details.html?id=${assignment.id}" target="_blank">${assignment.description}</a>
                     <td>${assignment.created_date}</td>
                     <td>${assignment.end_date}</td>
                     <td>
@@ -767,7 +749,6 @@
                                     <i class="fas fa-times text-orange-red"></i>Delete</a>
                                 <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
                                     <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
-
                             </div>
                         </div>
                     </td>
@@ -778,6 +759,7 @@
             console.error('Error:', error);
         }
     }
+
     // Function to open the update popup async
     async function openUpdatePopup(assignmentId) {
         try {
@@ -787,6 +769,30 @@
             }
 
             const assignment = await response.json();
+
+            // Fetch all classes
+            const classResponse = await fetch(`/class/get`);
+            if (!classResponse.ok) {
+                throw new Error('Error fetching classes: ' + classResponse.statusText);
+            }
+            const classes = await classResponse.json();
+
+            // Populate the class select list
+            const classSelect = document.getElementById('class_id');
+            classSelect.innerHTML = ''; // Clear any existing options
+            classes.forEach((cls) => {
+                const option = document.createElement('option');
+                option.value = cls.id;
+                option.textContent = cls.name;
+
+                // Preselect classes already assigned to the assignment
+                if (assignment.classList && assignment.classList.some((aClass) => aClass.id === cls.id)) {
+                    option.selected = true;
+                }
+
+                classSelect.appendChild(option);
+            });
+
             // Fill the form with the assignment data
             document.getElementById('description').value = assignment.description;
             document.getElementById('end_date').value = assignment.end_date;
@@ -809,14 +815,20 @@
         const description = document.getElementById('description').value;
         const endDate = document.getElementById('end_date').value;
         const content = document.getElementById('content').value;
-        const classId = document.getElementById('class_id').value;
+
+        // Get selected class IDs
+        const classSelect = document.getElementById('class_id');
+        const selectedClasses = Array.from(classSelect.selectedOptions).map((opt) => opt.value)
+
         const imgFiles = document.getElementById('img').files;
 
         const formData = new FormData();
         formData.append('description', description);
         formData.append('end_date', endDate);
         formData.append('content', content);
-        formData.append('classId', classId);
+        selectedClasses.forEach((classId) => {
+            formData.append('classIds', classId);
+        });
 
         for (let i = 0; i < imgFiles.length; i++) {
             formData.append('imgFile', imgFiles[i]); // Match the backend field
@@ -921,6 +933,7 @@
             // Chỉ hiển thị mục của giáo viên
             document.getElementById("teacher-view").style.display = "block";
             document.getElementById("student-view").style.display = "none";
+            document.getElementById("student-view1").style.display = "none";
         } else if (userDetails.roleName === "STUDENT") {
             // Hiển thị đầy đủ tên và vai trò cho học sinh
             userFullNameElements.forEach(element => {

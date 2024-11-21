@@ -4,6 +4,7 @@ import com.example.jip.dto.ClassDTO;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
@@ -12,7 +13,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AssignmentUpdateRequest {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -20,7 +20,8 @@ public class AssignmentUpdateRequest {
     String description;
     String content;
     MultipartFile[] imgFile;
-    List<Class> classList;
+
+    List<Integer> classIds;
     // List of public IDs of files to delete
 //    List<String> filesToDelete;
 }

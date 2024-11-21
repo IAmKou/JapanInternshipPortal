@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "Class")
 @Setter
@@ -23,6 +27,10 @@ public class Class {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
+
+    @ManyToMany(mappedBy = "classes")
+    @JsonBackReference
+    private Set<Assignment> assignments = new HashSet<>();
 
 
     public Class(){}
