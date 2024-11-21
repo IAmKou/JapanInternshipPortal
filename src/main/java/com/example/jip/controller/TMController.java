@@ -32,10 +32,10 @@ public class TMController {
 
         if (role == 3 ){
             teacherServices.createTeacher(fullname, jname, email, phoneNumber, gender, img, account_id);
-            return new RedirectView("/teacher.html");
+            return new RedirectView("/account-settings.html");
         }else{
             managerServices.createManager(fullname, jname, email, phoneNumber, gender, img, account_id);
-            return new RedirectView("/manager.html");
+            return new RedirectView("/account-settings.html");
         }
     }
 }
