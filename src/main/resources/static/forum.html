@@ -470,16 +470,16 @@
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create material</a>
+                                <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
                             </li>
 
                         </ul>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="View-list-materials.html"><i class="fas fa-angle-right"></i>View list materials</a>
+                                <a class="nav-link" href="Create-material.html.html"><i class="fas fa-angle-right"></i>Create Thread</a>
                             </li>
 
                         </ul>
@@ -555,51 +555,52 @@
                 Create Thread
             </button>
             <!-- Thread List Start -->
-            <div class="thread-box">
-                <div class="thread-thumbnail"></div>
-                <div class="thread-content">
-                    <div class="thread-title">Thread 1: Welcome to the Forum</div>
-                    <div class="thread-description">This is the introductory thread where you can introduce yourself.
-                    </div>
-                </div>
-            </div>
+            <div id="threadList"></div>
+<!--            <div class="thread-box">-->
+<!--                <div class="thread-thumbnail"></div>-->
+<!--                <div class="thread-content">-->
+<!--                    <div class="thread-title">Thread 1: Welcome to the Forum</div>-->
+<!--                    <div class="thread-description">This is the introductory thread where you can introduce yourself.-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
-            <div class="thread-box">
-                <div class="thread-thumbnail"></div>
-                <div class="thread-content">
-                    <div class="thread-title">Thread 2: General Discussion</div>
-                    <div class="thread-description">Feel free to discuss anything related to the forum's topic.</div>
-                </div>
-            </div>
+<!--            <div class="thread-box">-->
+<!--                <div class="thread-thumbnail"></div>-->
+<!--                <div class="thread-content">-->
+<!--                    <div class="thread-title">Thread 2: General Discussion</div>-->
+<!--                    <div class="thread-description">Feel free to discuss anything related to the forum's topic.</div>-->
+<!--                </div>-->
+<!--            </div>-->
 
-            <div class="thread-box">
-                <div class="thread-thumbnail"></div>
-                <div class="thread-content">
-                    <div class="thread-title">Thread 3: Feedback and Suggestions</div>
-                    <div class="thread-description">We'd love to hear your thoughts on how to improve the forum.</div>
-                </div>
-            </div>
+<!--            <div class="thread-box">-->
+<!--                <div class="thread-thumbnail"></div>-->
+<!--                <div class="thread-content">-->
+<!--                    <div class="thread-title">Thread 3: Feedback and Suggestions</div>-->
+<!--                    <div class="thread-description">We'd love to hear your thoughts on how to improve the forum.</div>-->
+<!--                </div>-->
+<!--            </div>-->
 
-            <div class="thread-box">
-                <div class="thread-thumbnail"></div>
-                <div class="thread-content">
-                    <div class="thread-title">Thread 4: Feedback and Suggestions</div>
-                    <div class="thread-description">We'd love to hear your thoughts on how to improve the forum.</div>
-                </div>
-            </div>
+<!--            <div class="thread-box">-->
+<!--                <div class="thread-thumbnail"></div>-->
+<!--                <div class="thread-content">-->
+<!--                    <div class="thread-title">Thread 4: Feedback and Suggestions</div>-->
+<!--                    <div class="thread-description">We'd love to hear your thoughts on how to improve the forum.</div>-->
+<!--                </div>-->
+<!--            </div>-->
 
-            <div class="thread-box">
-                <div class="thread-thumbnail"></div>
-                <div class="thread-content">
-                    <div class="thread-title">Thread 5: Feedback and Suggestions</div>
-                    <div class="thread-description">We'd love to hear your thoughts on how to improve the forum.</div>
-                </div>
-            </div>
+<!--            <div class="thread-box">-->
+<!--                <div class="thread-thumbnail"></div>-->
+<!--                <div class="thread-content">-->
+<!--                    <div class="thread-title">Thread 5: Feedback and Suggestions</div>-->
+<!--                    <div class="thread-description">We'd love to hear your thoughts on how to improve the forum.</div>-->
+<!--                </div>-->
+<!--            </div>-->
             <!-- Thread List End -->
 
             <!-- Pagination Controls -->
             <div class="pagination-controls text-center" style="margin-top: 20px;">
-                <button id="prevPage" class="page-btn" onclick="changePage(-1)" disabled>&laquo;</button>
+                <button id="prevPage" class="page-btn" onclick="changePage(-1)">&laquo;</button>
                 <span id="pageNumber">1</span>
                 <button id="nextPage" class="page-btn" onclick="changePage(1)">&raquo;</button>
             </div>
@@ -688,37 +689,178 @@
 <!-- Custom Js -->
 <script src="js/main.js"></script>
 
-
-
 <script>
     let currentPage = 1;
-    const threadsPerPage = 5;
-    const threads = Array.from(document.querySelectorAll('.thread-box'));
-    const totalPages = Math.ceil(threads.length / threadsPerPage);
-
-    function showPage(page) {
-        // Hide all threads
-        threads.forEach(thread => thread.style.display = 'none');
-
-        // Show only the threads for the current page
-        const start = (page - 1) * threadsPerPage;
-        const end = start + threadsPerPage;
-        threads.slice(start, end).forEach(thread => thread.style.display = 'block');
-
-        // Update page number and button states
-        document.getElementById('pageNumber').textContent = page;
-        document.getElementById('prevPage').disabled = page === 1;
-        document.getElementById('nextPage').disabled = page === totalPages;
+    const threadsPerPage = 5; // Number of threads per page
+    const threadList = document.getElementById("threadList");
+    const pageNumber = document.getElementById("pageNumber");
+    const prevPageButton = document.getElementById("prevPage");
+    const nextPageButton = document.getElementById("nextPage");
+    // Fetch threads from the server
+    function fetchThreads(page) {
+        fetch(`/thread?page=${page}&size=${threadsPerPage}`)
+            .then(response => response.json())
+            .then(data => {
+                renderThreads(data.content);
+                updatePagination(data.totalPages);
+            })
+            .catch(error => console.error("Error fetching threads:", error));
     }
 
-    // Change page based on button click
+    // Render threads on the page
+    function renderThreads(threads) {
+        threadList.innerHTML = ""; // Clear existing threads
+        threads.forEach(thread => {
+            const threadBox = document.createElement("div");
+            threadBox.className = "thread-box";
+            threadBox.innerHTML = `
+                <div class="thread-thumbnail">
+                    <img src="${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">
+                </div>
+                <div class="thread-content">
+                    <div class="thread-title"><a href="post.html?id=${thread.id}">${thread.topicName}</a></div>
+                    <div class="thread-description">${thread.description}</div>
+                </div>`;
+            threadList.appendChild(threadBox);
+        });
+    }
+
+    // Update pagination controls
+    function updatePagination(total) {
+        // console.log(`Updating pagination. Total Pages: ${total}, Current Page: ${currentPage}`);  // Debug log
+
+        // Disable or enable buttons based on the current page
+        prevPageButton.disabled = currentPage === 1;
+        nextPageButton.disabled = currentPage === total;
+
+        // Log button states for debugging
+        // console.log("Prev Button Disabled:", prevPageButton.disabled);
+        // console.log("Next Button Disabled:", nextPageButton.disabled);
+    }
+
+    // Change page on button click
     function changePage(direction) {
         currentPage += direction;
-        showPage(currentPage);
+        pageNumber.textContent = currentPage;
+        fetchThreads(currentPage);
     }
 
     // Initialize pagination on page load
-    document.addEventListener('DOMContentLoaded', () => showPage(currentPage));
+    document.addEventListener("DOMContentLoaded", () => fetchThreads(currentPage));
+</script>
+
+
+<!--<script>-->
+<!--    let currentPage = 1;-->
+<!--    const threadsPerPage = 5;-->
+<!--    const threads = Array.from(document.querySelectorAll('.thread-box'));-->
+<!--    const totalPages = Math.ceil(threads.length / threadsPerPage);-->
+
+<!--    function showPage(page) {-->
+<!--        // Hide all threads-->
+<!--        threads.forEach(thread => thread.style.display = 'none');-->
+
+<!--        // Show only the threads for the current page-->
+<!--        const start = (page - 1) * threadsPerPage;-->
+<!--        const end = start + threadsPerPage;-->
+<!--        threads.slice(start, end).forEach(thread => thread.style.display = 'block');-->
+
+<!--        // Update page number and button states-->
+<!--        document.getElementById('pageNumber').textContent = page;-->
+<!--        document.getElementById('prevPage').disabled = page === 1;-->
+<!--        document.getElementById('nextPage').disabled = page === totalPages;-->
+<!--    }-->
+
+<!--    // Change page based on button click-->
+<!--    function changePage(direction) {-->
+<!--        currentPage += direction;-->
+<!--        showPage(currentPage);-->
+<!--    }-->
+
+<!--    // Initialize pagination on page load-->
+<!--    document.addEventListener('DOMContentLoaded', () => showPage(currentPage));-->
+<!--</script>-->
+<!--&lt;!&ndash;Fetch thread&ndash;&gt;-->
+<!--<script>-->
+<!--    const threadList = document.getElementById("threadList");-->
+<!--    function fetchThreads() {-->
+<!--        fetch(`/thread?page=${currentPage}&size=${threadsPerPage}`) // Adjust API parameters if needed-->
+<!--            .then(response => response.json())-->
+<!--            .then(data =>{-->
+<!--                renderThreads(data.content)-->
+<!--            })-->
+<!--            .catch(error => console.error("Error fetching threads:", error));-->
+<!--    }-->
+
+<!--    function renderThreads(threads) {-->
+<!--        threadList.innerHTML = ""; // Clear existing threads-->
+<!--        threads.forEach(thread => {-->
+<!--            const threadBox = document.createElement("div");-->
+<!--            threadBox.className = "thread-box";-->
+<!--            threadBox.innerHTML = `-->
+<!--                <div class="thread-thumbnail">-->
+<!--                    <img src="${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">-->
+<!--                </div>-->
+<!--                <div class="thread-content">-->
+<!--                    <div class="thread-title"><a href="post.html?id=${thread.id}">${thread.topicName}</a></div>-->
+<!--                    <div class="thread-description">${thread.description}</div>-->
+<!--                </div>`;-->
+<!--            threadList.appendChild(threadBox);-->
+<!--        });-->
+<!--    }-->
+<!--    document.addEventListener("DOMContentLoaded", () => fetchThreads(currentPage));-->
+<!--</script>-->
+<!-- fetch user -->
+<script>
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    if (userDetails) {
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        const userRoleElements = document.querySelectorAll('.userRole');
+
+        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
+        if (userDetails.roleName === "ADMIN") {
+            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.username;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+
+            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
+            document.getElementById("teacher-view").style.display = "none";
+            document.getElementById("student-view").style.display = "none";
+        } else if (userDetails.roleName === "TEACHER") {
+            // Hiển thị đầy đủ tên và vai trò cho giáo viên
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+
+            // Chỉ hiển thị mục của giáo viên
+            document.getElementById("teacher-view").style.display = "block";
+            document.getElementById("student-view").style.display = "none";
+        } else if (userDetails.roleName === "STUDENT") {
+            // Hiển thị đầy đủ tên và vai trò cho học sinh
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+
+            // Chỉ hiển thị mục của học sinh
+            document.getElementById("teacher-view").style.display = "none";
+            document.getElementById("student-view").style.display = "block";
+            document.getElementById("student-view1").style.display = "block";
+        } else {
+            console.warn("Role not recognized: ", userDetails.roleName);
+        }
+    } else {
+        console.error("User details not found in sessionStorage");
+    }
 </script>
 <!-- fetch user -->
 <script>
