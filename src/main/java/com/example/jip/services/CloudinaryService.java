@@ -1,6 +1,8 @@
 package com.example.jip.services;
+import com.cloudinary.Search;
 import com.cloudinary.api.exceptions.BadRequest;
 import com.example.jip.dto.response.CloudinaryResponse;
+import com.example.jip.exception.CloudinaryFolderAccessException;
 import com.example.jip.exception.FuncErrorException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -15,6 +17,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -58,35 +61,44 @@ public class CloudinaryService {
         return cloudinary.url().generate(folderName); // Get the folder URL
     }
 
-    @Transactional
-    public List<String> getFilesFromFolder(String folderName) {
+    public List<Map<String, Object>> getFilesFromFolder(String folderName) {
         try {
-            // Adjust folder path
-            String cloudinaryFolderPath =  folderName;
-
-            // Log folder path for debugging
-            System.out.println("Searching for files in folder: " + cloudinaryFolderPath);
-
-            Map result = cloudinary.search()
-                    .expression("folder:" + cloudinaryFolderPath)
-                    .maxResults(50) // Optional: Limit results
-                    .execute();
-
-            // Log full response for debugging
-            System.out.println("Cloudinary search response: " + result);
-
-            // Extract secure URLs of files
-            List<Map> resources = (List<Map>) result.get("resources");
-            if (resources == null) {
-                throw new RuntimeException("No resources found in folder: " + folderName);
+            folderName = folderName.replaceAll("[^a-zA-Z0-9_/\\-]", "").trim(); // Sanitize input
+            if (folderName.isEmpty()) {
+                throw new IllegalArgumentException("Folder name cannot be empty.");
             }
 
-            return resources.stream()
-                    .map(resource -> (String) resource.get("secure_url"))
-                    .collect(Collectors.toList());
+            // Perform Cloudinary search
+            Search search = cloudinary.search().expression("folder:" + folderName);
+            Map<String, Object> results = search.execute();
+
+            // Return the resources (files)
+            if (results.containsKey("resources")) {
+                return (List<Map<String, Object>>) results.get("resources");
+            } else {
+                return Collections.emptyList();
+            }
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to retrieve files from folder: " + folderName, e);
+            throw new CloudinaryFolderAccessException("Failed to retrieve files from folder: " + folderName, e);
+        }
+    }
+
+
+
+    public void deleteFolder(String folderName) {
+        try {
+            log.info("Deleting all resources in folder: {}", folderName);
+
+            // Delete all resources in the folder
+            Map result = cloudinary.api().deleteResourcesByPrefix(folderName, ObjectUtils.emptyMap());
+            log.info("Deleted resources: {}", result);
+
+            // Delete the folder itself
+            cloudinary.api().deleteFolder(folderName, ObjectUtils.emptyMap());
+            log.info("Deleted folder: {}", folderName);
+        } catch (Exception e) {
+            log.error("Error deleting Cloudinary folder: {}", folderName, e);
+            throw new RuntimeException("Failed to delete folder in Cloudinary: " + folderName, e);
         }
     }
 
@@ -107,17 +119,6 @@ public class CloudinaryService {
             throw new RuntimeException("Failed to list files in folder: " + folderName, e);
         } catch (Exception e) {
             throw new RuntimeException("Unexpected error while listing files in folder", e);
-        }
-    }
-
-    public void deleteFolder(String folderPath) {
-        try {
-            // Delete all resources in the folder
-            cloudinary.api().deleteResourcesByPrefix(folderPath, ObjectUtils.emptyMap());
-            // Delete the folder itself
-            cloudinary.api().deleteFolder(folderPath, ObjectUtils.emptyMap());
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to delete folder in Cloudinary: " + folderPath, e);
         }
     }
 }

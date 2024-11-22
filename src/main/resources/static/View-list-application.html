@@ -2,11 +2,11 @@
 <html class="no-js" lang="">
 
 
-<!-- Mirrored from admit-form.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:43 GMT -->
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/all-student.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:41 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Reply application</title>
+    <title>View My Application</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -23,10 +23,8 @@
     <link rel="stylesheet" href="fonts/flaticon.css">
     <!-- Animate CSS -->
     <link rel="stylesheet" href="css/animate.min.css">
-    <!-- Select 2 CSS -->
-    <link rel="stylesheet" href="css/select2.min.css">
-    <!-- Date Picker CSS -->
-    <link rel="stylesheet" href="css/datepicker.min.css">
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
@@ -271,7 +269,7 @@
                             <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
                             <ul class="nav sub-group-menu sub-group-active">
                                 <li class="nav-item">
-                                    <a href="all-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    <a href="all-student.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All
                                         Students</a>
                                 </li>
                                 <li class="nav-item">
@@ -279,7 +277,7 @@
                                             class="fas fa-angle-right"></i>Student Details</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="admit-form.html" class="nav-link menu-active"><i
+                                    <a href="admit-form.html" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Admission Form</a>
                                 </li>
                                 <li class="nav-item">
@@ -464,60 +462,42 @@
             <div class="dashboard-content-one">
                 <!-- Breadcubs Area Start Here -->
                 <div class="breadcrumbs-area">
-                    <h3>Reply Application</h3>
+                    <h3>View My Application</h3>
                     <ul>
                         <li>
                             <a href="admin.html">Home</a>
                         </li>
-                        <li>Reply Application</li>
+                        <li>View My Application</li>
                     </ul>
                 </div>
                 <!-- Breadcubs Area End Here -->
-                <!-- Admit Form Area Start Here -->
-                <div class="card height-auto">
-                    <div class="card-body">
-                        <form class="new-added-form">
-                            <div class="row">
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label style="font-weight: bold;">Name </label>
-                                    <input type="text" id="name" placeholder="" class="form-control" readonly>
-                                </div>
-
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label style="font-weight: bold;">Application type</label>
-                                    <input type="text" id="applicationType" placeholder="" class="form-control" readonly>
-                                </div>
-
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label style="font-weight: bold;">Create Date</label>
-                                    <input type="text" id="createDate" placeholder="" class="form-control" readonly>
-                                </div>
-                                <div class="col-lg-6 col-12 form-group">
-                                    <label style="font-weight: bold;">Purpose</label>
-                                    <textarea class="textarea form-control"  id="content" cols="8" rows="5"></textarea>
-                                </div>
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label for="status" style="font-weight: bold;">Status</label>
-                                    <select id="status" name="status" class="select2" >
-                                        <option value="">Please Select Status *</option>
-                                        <option value="Approved">Approved</option>
-                                        <option value="Rejected"    >Rejected</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-lg-6 col-12 form-group">
-                                    <label style="font-weight: bold;">Respond</label>
-                                    <textarea class="textarea form-control"  id="reply" cols="8" rows="5"></textarea>
-                                </div>
-
-                                <div class="col-12 form-group mg-t-8">
-                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark"  id="saveChanges">Save</button>
-                                </div>
+                <!-- Student Table Area Start Here -->
+                <div id="application-view">
+                    <!-- Bảng yêu cầu chung -->
+                    <div class="card height-auto">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table display data-table text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Purpose</th>
+                                        <th>Create Date</th>
+                                        <th>Process Note</th>
+                                        <th>File</th>
+                                        <th>Status</th>
+                                        <th>Time Response</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="application-table-body">
+                                    <!-- Rows will be dynamically inserted here -->
+                                    </tbody>
+                                </table>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
-                <!-- Admit Form Area End Here -->
+                <!-- Student Table Area End Here -->
                 <footer class="footer-wrap-layout1">
                     <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a
                             href="#">PsdBosS</a></div>
@@ -534,162 +514,168 @@
     <script src="js/popper.min.js"></script>
     <!-- Bootstrap js -->
     <script src="js/bootstrap.min.js"></script>
-    <!-- Select 2 Js -->
-    <script src="js/select2.min.js"></script>
-    <!-- Date Picker Js -->
-    <script src="js/datepicker.min.js"></script>
     <!-- Scroll Up Js -->
     <script src="js/jquery.scrollUp.min.js"></script>
+    <!-- Data Table Js -->
+    <script src="js/jquery.dataTables.min.js"></script>
     <!-- Custom Js -->
     <script src="js/main.js"></script>
+    <!-- fetch user -->
+    <script>
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails) {
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            const userRoleElements = document.querySelectorAll('.userRole');
 
-</body>
-<!-- fetch user -->
-<script>
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    if (userDetails) {
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
+            // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
+            if (userDetails.roleName === "ADMIN") {
+                // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.username;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
 
-        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-        if (userDetails.roleName === "ADMIN") {
-            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.username;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
+                // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
+                document.getElementById("teacher-view").style.display = "none";
+                document.getElementById("student-view").style.display = "none";
+            } else if (userDetails.roleName === "TEACHER") {
 
-            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "TEACHER") {
+                // Hiển thị đầy đủ tên và vai trò cho giáo viên
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
 
-            // Hiển thị đầy đủ tên và vai trò cho giáo viên
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
+                // Chỉ hiển thị mục của giáo viên
+                document.getElementById("teacher-view5").style.display = "block";
+                document.getElementById("student-view5").style.display = "none";
+                document.getElementById("teacher-view").style.display = "block";
+                document.getElementById("student-view").style.display = "none";
+                document.getElementById("student-view1").style.display = "none";
+                document.getElementById("teacher-view3").style.display = "block";
+                document.getElementById("manager-view").style.display = "none";
+            } else if (userDetails.roleName === "STUDENT") {
+                // Hiển thị đầy đủ tên và vai trò cho học sinh
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
 
-            // Chỉ hiển thị mục của giáo viên
-            document.getElementById("teacher-view5").style.display = "block";
-            document.getElementById("student-view5").style.display = "none";
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
-            document.getElementById("student-view1").style.display = "none";
-            document.getElementById("teacher-view3").style.display = "block";
-            document.getElementById("manager-view").style.display = "none";
-        } else if (userDetails.roleName === "STUDENT") {
-            // Hiển thị đầy đủ tên và vai trò cho học sinh
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
+                // Chỉ hiển thị mục của học sinh
+                document.getElementById("teacher-view").style.display = "none";
+                document.getElementById("student-view").style.display = "block";
+                document.getElementById("student-view1").style.display = "block";
+                document.getElementById("teacher-view3").style.display = "none";
+                document.getElementById("teacher-view5").style.display = "none";
+                document.getElementById("student-view5").style.display = "block";
+                document.getElementById("manager-view").style.display = "none";
+            } else if (userDetails.roleName === "MANAGER") {
+                // Hiển thị đầy đủ tên và vai trò cho Manager
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
 
-            // Chỉ hiển thị mục của học sinh
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
-            document.getElementById("teacher-view3").style.display = "none";
-            document.getElementById("teacher-view5").style.display = "none";
-            document.getElementById("student-view5").style.display = "block";
-            document.getElementById("manager-view").style.display = "none";
-        } else if (userDetails.roleName === "MANAGER") {
-            // Hiển thị đầy đủ tên và vai trò cho Manager
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Chỉ hiển thị mục của Manager
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-            document.getElementById("student-view1").style.display = "none";
-            document.getElementById("teacher-view3").style.display = "none";
-            document.getElementById("teacher-view5").style.display = "none";
-            document.getElementById("student-view5").style.display = "none";
-            document.getElementById("manager-view").style.display = "block"; // Thêm ID cho phần này
+                // Chỉ hiển thị mục của Manager
+                document.getElementById("teacher-view").style.display = "none";
+                document.getElementById("student-view").style.display = "none";
+                document.getElementById("student-view1").style.display = "none";
+                document.getElementById("teacher-view3").style.display = "none";
+                document.getElementById("teacher-view5").style.display = "none";
+                document.getElementById("student-view5").style.display = "none";
+                document.getElementById("manager-view").style.display = "block"; // Thêm ID cho phần này
+            } else {
+                console.warn("Role not recognized: ", userDetails.roleName);
+            }
         } else {
-            console.warn("Role not recognized: ", userDetails.roleName);
+            console.error("User details not found in sessionStorage");
         }
-    } else {
-        console.error("User details not found in sessionStorage");
-    }
-</script>
-<script>
-    // Lấy ID từ URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const applicationId = urlParams.get('id'); // Lấy 'id' từ URL
+    </script>
 
-    // Kiểm tra nếu applicationId không hợp lệ
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+            let url = '/application/list'; // URL mặc định.
 
-        // Gọi API để lấy chi tiết ứng dụng và điền vào form
-        fetch(`/application/details/${applicationId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data) {
-                    // Điền thông tin vào form
-                    document.getElementById("name").value = data.name;
-                    document.getElementById("applicationType").value = data.category;
-                    document.getElementById("content").value = data.content;
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch applications');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const tableBody = document.getElementById('application-table-body');
 
-                    // Format ngày tạo
-                    const createdDate = new Date(data.created_date);
-                    const formattedDate = `${String(createdDate.getDate()).padStart(2, '0')}/${String(createdDate.getMonth() + 1).padStart(2, '0')}/${createdDate.getFullYear()}`;
-                    document.getElementById("createDate").value = formattedDate;
+                    if (tableBody) {
+                        // Hiển thị bảng chung cho tất cả
+                        tableBody.innerHTML = ''; // Xóa các hàng cũ
 
-                    // Gán trạng thái mặc định
-                    document.getElementById("status").value = data.status;
-                    document.getElementById("reply").value = data.reply || ''; // Tránh null
+                        data.forEach(application => {
+                            const content = application.content || 'N/A';
+                            const formattedContent = wrapText(content, 50); // Hàm tự động xuống dòng
+
+                            const category = application.category || 'N/A';
+                            const formattedCategory = wrapText(category, 8); // Xử lý category
+
+                            const reply = application.reply || 'N/A';
+                            const formattedReply = wrapText(reply, 30); // Hàm tự động xuống dòng cho reply
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                    <td style="font-weight: bold;">${formattedCategory}</td>
+                    <td style="font-weight: bold;">${formattedContent}</td>
+                    <td style="font-weight: bold;">${application.created_date ? new Date(application.created_date).toLocaleDateString() : 'N/A'}</td>
+                    <td style="font-weight: bold;">${formattedReply || 'N/A'}</td>
+                    <td style="font-weight: bold;">
+                        ${application.img ? `<a href="${application.img}" target="_blank">Download</a>` : 'N/A'}
+                    </td>
+                    <td style="font-weight: bold;">${application.status || 'N/A'}</td>
+                    <td style="font-weight: bold;">
+    ${application.replied_date ? new Date(application.replied_date).toLocaleDateString() + '<br>' + new Date(application.replied_date).toLocaleTimeString() : 'N/A'}
+</td>
+                    <td style="font-weight: bold;">
+                        <button onclick="window.location.href='Reply-application.html?id=${application.id}'" class="btn btn-primary">Reply</button>
+                    </td>
+                    `;
+                            tableBody.appendChild(row);
+                        });
+                    } else {
+                        console.error('Table body not found');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching applications:', error);
+                });
+        });
+        function wrapText(text, maxLength) {
+            let result = '';
+            let currentLine = '';
+
+            const words = text.split(' '); // Chia văn bản thành các từ
+
+            words.forEach(word => {
+                if (currentLine.length + word.length + 1 > maxLength) {
+                    result += currentLine + '<br>';
+                    currentLine = word;
+                } else {
+                    currentLine += (currentLine.length ? ' ' : '') + word;
                 }
-            })
-            .catch(error => {
-                console.error('Lỗi khi lấy thông tin ứng dụng:', error);
-                alert('Không thể tải chi tiết ứng dụng.');
             });
 
+            result += currentLine; // Thêm phần còn lại vào cuối
+            return result;
+        }
+    </script>
+</body>
 
 
-
-</script>
-<script>
-    document.getElementById("saveChanges").addEventListener("click", function(event) {
-        event.preventDefault();  // Ngừng reload trang
-
-        const applicationId = new URLSearchParams(window.location.search).get('id');
-        const status = document.getElementById("status").value;
-        const reply = document.getElementById("reply").value;
-
-        fetch(`/application/update/${applicationId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                status: status, // Đảm bảo gửi đúng giá trị
-                reply: reply
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message) {
-                    alert(data.message);  // Hiển thị thông báo thành công hoặc lỗi
-                }
-            })
-            .catch(error => {
-                console.error('Lỗi khi cập nhật:', error);
-                alert('Có lỗi xảy ra khi cập nhật thông tin.');
-            });
-    });
-</script>
-
-
-<!-- Mirrored from admit-form.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:46 GMT -->
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/all-student.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:41 GMT -->
 </html>

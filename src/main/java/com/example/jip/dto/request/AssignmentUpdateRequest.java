@@ -20,8 +20,7 @@ public class AssignmentUpdateRequest {
     String description;
     String content;
     MultipartFile[] imgFile;
-
     List<Integer> classIds;
-    // List of public IDs of files to delete
-//    List<String> filesToDelete;
+    // List name files of this assignment
+    List<String> files;//get file names of this assignment
 }
