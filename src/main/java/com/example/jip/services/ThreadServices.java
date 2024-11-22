@@ -35,13 +35,25 @@ public class ThreadServices {
 
         return threadRepository.save(thread);
     }
-    public String getCreatorName(int creatorId){
+
+    public String getCreatorName(int creatorId) {
         return this.accountRepository.findById(creatorId).orElseThrow().getUsername();
     }
-    public Page<Thread> getAllThread(Pageable pageable){
+
+    public Page<Thread> getAllThread(Pageable pageable) {
         return (Page<Thread>) this.threadRepository.findAll(pageable);
     }
-    public Thread getThreadById(int id){
+
+    public Thread getThreadById(int id) {
         return threadRepository.findById(id).orElseThrow();
     }
+
+    public void deleteThread(int id) {
+        if (threadRepository.existsById(id)) {
+            threadRepository.deleteById(id); // Xóa thread theo ID
+        } else {
+            throw new IllegalArgumentException("Thread not found with id: " + id);
+        }
+    }
+
 }

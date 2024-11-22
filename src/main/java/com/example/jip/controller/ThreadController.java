@@ -60,4 +60,14 @@ public class ThreadController {
 
         return new RedirectView("/forum.html");
     }
+
+    @DeleteMapping("/{id}")
+    public String deleteThread(@PathVariable("id") int id) {
+        try {
+            threadService.deleteThread(id); // Gọi service để xóa thread
+            return "Thread deleted successfully!";
+        } catch (Exception e) {
+            return "Error deleting thread: " + e.getMessage();
+        }
+    }
 }
