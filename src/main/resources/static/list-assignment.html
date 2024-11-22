@@ -634,7 +634,7 @@
                             </tr>
                             </thead>
                             <tbody id="assignment_list">
-                                <-- List assignment in here -->
+
 
                             </tbody>
                         </table>
@@ -668,9 +668,10 @@
 <!--                            <option value="2">Class 2</option>-->
 <!--                            <option value="3">Class 3</option>-->
                         </select>
+                    <label for="assignment-files">Files:</label>
+                    <div id="assignment-files"></div>
 
-
-                    <label for="img">Image URL:</label>
+                    <label for="img">Upload Files:</label>
                     <input type="file" id="img" name="imgFile" multiple>
 
                     <button type="submit" class="btn">Submit</button>
@@ -789,7 +790,6 @@
                 if (assignment.classList && assignment.classList.some((aClass) => aClass.id === cls.id)) {
                     option.selected = true;
                 }
-
                 classSelect.appendChild(option);
             });
 
@@ -798,7 +798,24 @@
             document.getElementById('end_date').value = assignment.end_date;
             document.getElementById('content').value = assignment.content;
             document.getElementById('class_id').value = assignment.class_id;
-            // document.getElementById('img').value = assignment.imgFile;
+
+            // Display file download links
+            const files = assignment.files || [];
+            console.log('Files:', files);
+            const filesContainer = document.getElementById('assignment-files');
+            filesContainer.innerHTML = ""; // Clear any existing content
+            if (files.length > 0) {
+                files.forEach(fileUrl => {
+                    const link = document.createElement('a');
+                    link.href = fileUrl;
+                    link.textContent = fileUrl.split('/').pop(); // Display the file name
+                    link.target = '_blank';
+                    link.style.display = 'block'; // Show each file on a new line
+                    filesContainer.appendChild(link);
+                });
+            } else {
+                filesContainer.textContent = "No files uploaded";
+            }
 
             // Show the update popup
             currentAssignmentId = assignment.id;

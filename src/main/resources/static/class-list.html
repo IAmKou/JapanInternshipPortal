@@ -512,8 +512,6 @@
                                        aria-expanded="false">...</a>
 
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i
-                                                class="fas fa-plus text-orange-red"></i>Import</a>
                                         <a class="dropdown-item" href="#"><i
                                                 class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
                                         <a class="dropdown-item" href="#"><i
@@ -565,39 +563,33 @@
             </footer>
         </div>
     </div>
-    <!-- modal -->
+    <!-- Page Area End Here -->
+    <!-- update modal -->
     <div class="ui-modal-box">
         <div class="modal-box">
-            <div class="modal sign-up-modal fade" id="report" tabindex="-1" role="dialog"
-                 aria-hidden="true">
+            <div class="modal sign-up-modal fade" id="update-modal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-body">
                             <div class="close-btn">
-                                <button type="button" class="close" data-dismiss="modal"
-                                        aria-label="Close">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="item-logo">
                                 <img src="img/logo2.png" alt="logo">
                             </div>
-                            <form class="login-form" method="post" action="report/create">
-                                <div class="row gutters-15">
-                                    <div class="form-group col-6 mx-auto align-self-center">
-                                        <input type="text" id="className" name="className" placeholder="Class Name"
-                                               class="form-control">
-                                    </div>
-                                    <div class="form-group col-12">
-                                        <label for="teacher">Teacher</label>
-                                        <select id="teacher" name="teacherId" class="select2">
-
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-12">
-                                        <button type="submit" class="login-btn">Send
-                                        </button>
-                                    </div>
+                            <form id="update-class-form">
+                                <input type="hidden" name="classId" id="classId" value="">
+                                <div class="form-group col-12">
+                                    <label for="teacherId">Teacher</label>
+                                    <select id="teacherId" name="teacherId" class="select2"></select>
+                                </div>
+                                <div class="form-group col-12">
+                                    <input type="text" id="className" name="name" placeholder="New class name" class="form-control">
+                                </div>
+                                <div class="form-group col-12">
+                                    <button type="button" class="login-btn" id="update-class-btn">Update Class</button>
                                 </div>
                             </form>
                         </div>
@@ -606,31 +598,7 @@
             </div>
         </div>
     </div>
-    <!-- Page Area End Here -->
-    <div class="modal fade" id="standard-modal" tabindex="-1" role="dialog"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add schedule</h5>
-                    <button type="button" class="close" data-dismiss="modal"
-                            aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="/add-schedule" method="post" enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <label for="file" style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
-                        <input type="file" id="file" name="file" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Close</button>
-                        <button type="submit" class="footer-btn bg-linkedin">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+
     <!-- confirm modal -->
     <div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog success-modal-content" role="document">
@@ -680,6 +648,10 @@
         const tableBody = document.querySelector('.table tbody');
         const confirmationModal = document.querySelector('#confirmation-modal');
         const confirmButton = confirmationModal.querySelector('.footer-btn.bg-linkedin');
+        const updateModal = document.querySelector('#update-modal');
+        const updateClassForm = document.querySelector('#update-class-form');
+        const updateClassBtn = document.querySelector('#update-class-btn');
+
         let currentClassId = null;
 
         // Fetch classes and populate the table
@@ -735,6 +707,9 @@
                     <a class="dropdown-item" href="/all-class-student.html?classId=${clasz.id}">
                         <i class="fas fa-glasses text-dark-pastel-green"></i> View Students
                     </a>
+                    <a class="dropdown-item update-class" data-id="${clasz.id}" data-name="${clasz.name}""
+                        <i class="fas fa-cogs"></i> Update
+                    </a>
                 `;
                     dropdown.appendChild(dropdownMenu);
                     actionsCell.appendChild(dropdown);
@@ -743,12 +718,28 @@
                     tableBody.appendChild(row);
                 });
 
-                // Attach event listeners to delete buttons
-                const deleteButtons = document.querySelectorAll('.delete-class');
-                deleteButtons.forEach(button => {
+                // Attach event listeners for delete buttons
+                document.querySelectorAll('.delete-class').forEach(button => {
                     button.addEventListener('click', function () {
                         currentClassId = this.getAttribute('data-id');
                         $('#confirmation-modal').modal('show'); // Show modal
+                    });
+                });
+
+                // Attach event listeners for update buttons
+                document.querySelectorAll('.update-class').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const classId = this.getAttribute('data-id');
+                        const className = this.getAttribute('data-name');
+
+
+                        // Populate modal fields
+                        document.getElementById('classId').value = classId;
+                        document.getElementById('className').value = className;
+
+
+                        // Show modal
+                        $('#update-modal').modal('show');
                     });
                 });
             })
@@ -774,7 +765,73 @@
                     });
             }
         });
+
+        // Handle class update via JSON
+        updateClassBtn.addEventListener('click', function () {
+            const classId = document.getElementById('classId').value;
+            const className = document.getElementById('className').value;
+            const teacherId = document.getElementById('teacherId').value;
+
+            fetch('/class/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: classId,
+                    name: className,
+                    teacher: {
+                        id: teacherId
+                    }
+                }),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Class updated successfully!');
+                        location.reload(); // Refresh the page
+                    } else {
+                        throw new Error('Failed to update class');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating class:', error);
+                    alert('Failed to update the class. Please try again.');
+                });
+        });
     });
+
+</script>
+<!-- fetch teacher -->
+<script>
+    document.addEventListener('DOMContentLoaded', loadTeachers);
+
+    function loadTeachers() {
+        fetch('/teachers')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load teachers');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const teacherSelect = document.getElementById('teacherId');
+                console.log(document.getElementById('teacherId'));
+                data.forEach(teacher => {
+                    const option = document.createElement('option');
+                    option.value = teacher.id;
+                    option.textContent = teacher.fullname;
+                    teacherSelect.appendChild(option);
+                });
+                $('#teacher').select2({
+                    placeholder: "Select a teacher",
+                    allowClear: true
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching teachers:', error);
+                alert("There was an error fetching the teachers. Please try again.");
+            });
+    }
 </script>
 
 <!-- fetch user -->

@@ -543,6 +543,22 @@
             </ul>
 
           </li>
+          <li class="nav-item sidebar-nav-item">
+            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
+            <ul class="nav sub-group-menu">
+              <li class="nav-item">
+                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list threads</a>
+              </li>
+
+            </ul>
+            <ul class="nav sub-group-menu">
+              <li class="nav-item">
+                <a class="nav-link" href="Create-material.html.html"><i class="fas fa-angle-right"></i>Create Thread</a>
+              </li>
+
+            </ul>
+
+          </li>
           <li class="nav-item">
             <a href="transport.html" class="nav-link"><i
                     class="flaticon-bus-side-view"></i><span>Transport</span></a>
@@ -602,36 +618,36 @@
 
     <div class="post-container">
       <!-- Post Header -->
-      <div class="post-header">
-        <h2>Thread Post Title</h2>
+      <div class="post-header"  id="threadTitle">
+<!--        <h2>Thread Post Title</h2>-->
       </div>
 
       <!-- Image Section -->
-      <div class="post-image">
-        <img src="image-url.jpg" alt="Post Image">
+      <div class="post-image" id="threadImage">
+<!--        <img src="image-url.jpg" alt="Post Image" >-->
       </div>
 
       <!-- Description Section -->
-      <div class="post-description">
-        <p>This is a description of the post. It provides context and details about the post's content, inviting other users to engage with it.</p>
+      <div class="post-description" id="threadDescription">
+<!--        <p>This is a description of the post. It provides context and details about the post's content, inviting other users to engage with it.</p>-->
       </div>
 
       <!-- Comment Section -->
-      <div class="comment-section">
-        <h3>Comments</h3>
+<!--      <div class="comment-section">-->
+<!--        <h3>Comments</h3>-->
 
-        <!-- Example Comment 1 -->
-        <div class="comment">
-          <div class="user-name">User123</div>
-          <div class="user-text">This is a sample comment for the post. Great post!</div>
-        </div>
+<!--        &lt;!&ndash; Example Comment 1 &ndash;&gt;-->
+<!--        <div class="comment">-->
+<!--          <div class="user-name">User123</div>-->
+<!--          <div class="user-text">This is a sample comment for the post. Great post!</div>-->
+<!--        </div>-->
 
-        <!-- Example Comment 2 -->
-        <div class="comment">
-          <div class="user-name">User456</div>
-          <div class="user-text">Thanks for sharing! I found this very useful.</div>
-        </div>
-      </div>
+<!--        &lt;!&ndash; Example Comment 2 &ndash;&gt;-->
+<!--        <div class="comment">-->
+<!--          <div class="user-name">User456</div>-->
+<!--          <div class="user-text">Thanks for sharing! I found this very useful.</div>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
     <!-- Main Body Content End Here -->
   </div>
@@ -746,6 +762,27 @@
   // Initialize pagination on page load
   document.addEventListener('DOMContentLoaded', () => showPage(currentPage));
 </script>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const threadId = urlParams.get('id');
 
+  if (threadId) {
+    // Use the threadId to fetch the thread's details
+    fetch(`/thread/${threadId}`)
+            .then(response => response.json())
+            .then(thread => renderThreadDetails(thread))
+            .catch(error => console.error("Error fetching thread details:", error));
+  } else {
+    console.error("No thread ID found in URL.");
+  }
+  function renderThreadDetails(thread) {
+    const threadTitle = document.getElementById('threadTitle');
+    const threadDescription = document.getElementById('threadDescription');
+    const threadImage = document.getElementById('threadImage');
+    threadTitle.innerHTML = `<h2>${thread.topicName}</h2>`;
+    threadDescription.innerHTML = `<p>${thread.description}</p>`;
+    threadImage.innerHTML = `<img src="data:image/png;base64,${thread.image}"/>`
+  }
+</script>
 </body>
 </html>

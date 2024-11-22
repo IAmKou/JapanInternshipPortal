@@ -1,10 +1,12 @@
 <!doctype html>
-<html class="no-js" lang="">
+<html class="no-js" lang="" xmlns="http://www.w3.org/1999/html">
 
+
+<!-- Mirrored from class-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Forum Page</title>
+    <title>JIP | Class List</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -19,89 +21,16 @@
     <link rel="stylesheet" href="css/all.min.css">
     <!-- Flaticon CSS -->
     <link rel="stylesheet" href="fonts/flaticon.css">
-    <!-- Full Calender CSS -->
-    <link rel="stylesheet" href="css/fullcalendar.min.css">
     <!-- Animate CSS -->
     <link rel="stylesheet" href="css/animate.min.css">
+    <!-- Select 2 CSS -->
+    <link rel="stylesheet" href="css/select2.min.css">
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
-
-    <style>
-        .thread-box {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            background-color: #f9f9f9;
-        }
-
-        .thread-thumbnail {
-            width: 100px;
-            height: 100px;
-            background-color: #ccc;
-            display: inline-block;
-            vertical-align: top;
-        }
-
-        .thread-content {
-            display: inline-block;
-            margin-left: 20px;
-            vertical-align: top;
-            width: calc(100% - 140px);
-        }
-
-        .thread-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .thread-description {
-            color: #555;
-            margin-bottom: 10px;
-        }
-
-        .create-thread-btn {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
-
-        .create-thread-btn:hover {
-            background-color: #0056b3;
-        }
-
-        .page-btn {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            font-size: 16px;
-            border-radius: 5px;
-            margin: 0 10px;
-            cursor: pointer;
-        }
-        .page-btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-        #pageNumber {
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .modal-trigger {
-            display: inline-block; /* Makes the link behave like a block for easier centering */
-            text-align: center; /* Centers the text horizontally */
-        }
-    </style>
-
 </head>
 
 <body>
@@ -137,7 +66,6 @@
             </button>
         </div>
         <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
-            <!-- Search Bar Start Here -->
             <ul class="navbar-nav">
                 <li class="navbar-item header-search-bar">
                     <div class="input-group stylish-input-group">
@@ -146,20 +74,17 @@
                                     <span class="flaticon-search" aria-hidden="true"></span>
                                 </button>
                             </span>
-                        <label>
-                            <input type="text" class="form-control" placeholder="Find Something . . .">
-                        </label>
+                        <input type="text" class="form-control" placeholder="Find Something . . .">
                     </div>
                 </li>
             </ul>
             <ul class="navbar-nav">
-                <!-- Profile Dropdown -->
                 <li class="navbar-item dropdown header-admin">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
                         <div class="admin-title">
-                            <h5 class="item-title">Stevne Zone</h5>
-                            <span>Admin</span>
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
                         </div>
                         <div class="admin-img">
                             <img src="img/figure/admin.jpg" alt="Admin">
@@ -167,7 +92,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="item-header">
-                            <h6 class="item-title">Steven Zone</h6>
+                            <h6 class="item-title userFullName"></h6>
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
@@ -181,7 +106,6 @@
                         </div>
                     </div>
                 </li>
-                <!-- Messages Dropdown -->
                 <li class="navbar-item dropdown header-message">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
@@ -192,7 +116,7 @@
 
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="item-header">
-                            <h6 class="item-title">05 Messages</h6>
+                            <h6 class="item-title">05 Message</h6>
                         </div>
                         <div class="item-content">
                             <div class="media">
@@ -206,7 +130,8 @@
                                             <span class="item-time">18:30</span>
                                         </a>
                                     </div>
-                                    <p>What is the reason for buying this item?</p>
+                                    <p>What is the reason of buy this item.
+                                        Is it usefull for me.....</p>
                                 </div>
                             </div>
                             <div class="media">
@@ -257,7 +182,6 @@
                         </div>
                     </div>
                 </li>
-                <!-- Notifications Dropdown -->
                 <li class="navbar-item dropdown header-notification">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
@@ -268,7 +192,7 @@
 
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="item-header">
-                            <h6 class="item-title">03 Notifications</h6>
+                            <h6 class="item-title">03 Notifiacations</h6>
                         </div>
                         <div class="item-content">
                             <div class="media">
@@ -276,8 +200,8 @@
                                     <i class="fas fa-check"></i>
                                 </div>
                                 <div class="media-body space-sm">
-                                    <div class="post-title">Complete Today's Task</div>
-                                    <span>1 Min ago</span>
+                                    <div class="post-title">Complete Today Task</div>
+                                    <span>1 Mins ago</span>
                                 </div>
                             </div>
                             <div class="media">
@@ -301,16 +225,14 @@
                         </div>
                     </div>
                 </li>
-
-                <!-- Language Dropdown -->
                 <li class="navbar-item dropdown header-language">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
                        data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#">English</a>
                         <a class="dropdown-item" href="#">Spanish</a>
-                        <a class="dropdown-item" href="#">French</a>
-                        <a class="dropdown-item" href="#">Chinese</a>
+                        <a class="dropdown-item" href="#">Franchis</a>
+                        <a class="dropdown-item" href="#">Chiness</a>
                     </div>
                 </li>
             </ul>
@@ -427,6 +349,14 @@
                                 <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
                                     Collection</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="Add-material.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Expenses</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="ReplyApplication.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                    Expenses</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
@@ -448,7 +378,8 @@
                                 class="flaticon-open-book"></i><span>Subject</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="class-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class
+                        <a href="class-list.html" class="nav-link menu-active"><i class="flaticon-calendar"></i><span
+                                class="menu-active">Class
                                     Routine</span></a>
                     </li>
                     <li class="nav-item">
@@ -456,32 +387,37 @@
                                 class="flaticon-checklist"></i><span>Attendence</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create material</a>
+                                <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
+                                    Schedule</a>
                             </li>
-                            <li class="nav-item" id="teacher-view">
-                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
-                            </li>
-                            <li class="nav-item" id="student-view">
-                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
-                            </li>
-                            <li class="nav-item" id="student-view1">
-                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list materials</a>
+                            <li class="nav-item">
+                                <a href="Update-student-mark-report.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Exam
+                                    Grades</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
+                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
+                                    material</a>
                             </li>
-                        </ul>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create Thread</a>
+                            <li class="nav-item" id="teacher-view">
+                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    materials</a>
+                            </li>
+                            <li class="nav-item" id="student-view">
+                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    materials</a>
+                            </li>
+                            <li class="nav-item" id="student-view1">
+                                <a href="View-list-personal-materials.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>My list materials</a>
                             </li>
                         </ul>
                     </li>
@@ -500,11 +436,13 @@
                         <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send application</a>
+                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                    application</a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My application</a>
+                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                    application</a>
                             </li>
                         </ul>
                     </li>
@@ -548,44 +486,147 @@
             </div>
         </div>
         <!-- Sidebar Area End Here -->
-        <!-- Main Body Content Start Here -->
-        <div class="dashboard-content-one container">
-            <!-- Create Thread Button -->
-            <a href="create-forum.html"
-            <button class="modal-trigger" href="create-forum.html">
-                Create Thread
-            </button>
-            </a>
-            <!-- Thread List Start -->
-            <div id="threadList"></div>
-            <!-- Thread List End -->
-            <!-- Pagination Controls -->
-            <div class="pagination-controls text-center" style="margin-top: 20px;">
-                <button id="prevPage" class="page-btn" onclick="changePage(-1)">&laquo;</button>
-                <span id="pageNumber">1</span>
-                <button id="nextPage" class="page-btn" onclick="changePage(1)">&raquo;</button>
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <h3>Class List</h3>
+                <ul>
+                    <li>
+                        <a href="admin.html">Home</a>
+                    </li>
+                    <li>List</li>
+                </ul>
             </div>
-        </div>
-        <!-- Main Body Content End Here -->
-    </div>
+            <!-- Breadcubs Area End Here -->
+            <!-- Class Routine Area Start Here -->
+            <div class="row">
+                <div class="col-12-xxxl col-12">
+                    <div class="card height-auto">
+                        <div class="card-body">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3>Class List</h3>
+                                </div>
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                                       aria-expanded="false">...</a>
 
-    <!-- Footer Start Here -->
-    <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
-        <div style="background-color: #ec9006; padding: 15px;">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
-                            rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#"><i
+                                                class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                        <a class="dropdown-item" href="#"><i
+                                                class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <form class="mg-b-20">
+                                <div class="row gutters-8">
+                                    <div class="col-lg-4 col-12 form-group">
+                                        <input type="text" placeholder="Search by Day ..." class="form-control">
+                                    </div>
+                                    <div class="col-lg-3 col-12 form-group">
+                                        <input type="text" placeholder="Search by Class ..." class="form-control">
+                                    </div>
+                                    <div class="col-lg-3 col-12 form-group">
+                                        <input type="text" placeholder="Search by Section ..." class="form-control">
+                                    </div>
+                                    <div class="col-lg-2 col-12 form-group">
+                                        <button type="submit"
+                                                class="fw-btn-fill btn-gradient-yellow">SEARCH
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="table-responsive">
+                                <table class="table display text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>Class</th>
+                                        <th>Name</th>
+                                        <th>Teacher</th>
+                                        <th>Number of Student</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Class Routine Area End Here -->
+            <footer class="footer-wrap-layout1">
+                <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by
+                    <a href="#">PsdBosS</a></div>
+            </footer>
+        </div>
+    </div>
+    <!-- Page Area End Here -->
+    <!-- update modal -->
+    <div class="ui-modal-box">
+        <div class="modal-box">
+            <div class="modal sign-up-modal fade" id="update-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="close-btn">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="item-logo">
+                                <img src="img/logo2.png" alt="logo">
+                            </div>
+                            <form id="update-class-form">
+                                <input type="hidden" name="classId" id="classId" value="">
+                                <div class="form-group col-12">
+                                    <label for="teacherId">Teacher</label>
+                                    <select id="teacherId" name="teacherId" class="select2"></select>
+                                </div>
+                                <div class="form-group col-12">
+                                    <input type="text" id="className" name="name" placeholder="New class name" class="form-control">
+                                </div>
+                                <div class="form-group col-12">
+                                    <button type="button" class="login-btn" id="update-class-btn">Update Class</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </footer>
-    <!-- Footer End Here -->
-</div>
-<!-- Page Area End Here -->
+    </div>
 
+    <!-- confirm modal -->
+    <div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog success-modal-content" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="success-message">
+                        <div class="item-icon">
+                            <i class="fas fa-exclamation"></i>
+                        </div>
+                        <h3 class="item-title">You want to delete this class?</h3>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <input type="hidden" name="id" id="Cid">
+                    <button type="button" id="confirm-delete" class="footer-btn bg-linkedin">Ok</button>
+                    <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -598,69 +639,81 @@
 <script src="js/select2.min.js"></script>
 <!-- Scroll Up Js -->
 <script src="js/jquery.scrollUp.min.js"></script>
-<!-- Date Picker Js -->
-<script src="js/datepicker.min.js"></script>
 <!-- Data Table Js -->
 <script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
-
 <script>
-    let currentPage = 1;
-    const threadsPerPage = 5; // Number of threads per page
-    const threadList = document.getElementById("threadList");
-    const pageNumber = document.getElementById("pageNumber");
-    const prevPageButton = document.getElementById("prevPage");
-    const nextPageButton = document.getElementById("nextPage");
-    // Fetch threads from the server
-    function fetchThreads(page) {
-        fetch(`/thread?page=${page}&size=${threadsPerPage}`)
-            .then(response => response.json())
-            .then(data => {
-                renderThreads(data.content);
-                updatePagination(data.totalPages);
+    document.addEventListener('DOMContentLoaded', function () {
+        const tableBody = document.querySelector('.table tbody');
+
+
+        // Fetch classes and populate the table
+        fetch("/class/getByTid")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch class data');
+                }
+                return response.json();
             })
-            .catch(error => console.error("Error fetching threads:", error));
-    }
+            .then(clasz => {
+                clasz.forEach(clasz => {
+                    const row = document.createElement('tr');
 
-    // Render threads on the page
-    function renderThreads(threads) {
-        threadList.innerHTML = ""; // Clear existing threads
-        threads.forEach(thread => {
-            const threadBox = document.createElement("div");
-            threadBox.className = "thread-box";
-            threadBox.innerHTML = `
-                <div class="thread-thumbnail">
-                    <img src="data:image/png;base64,${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">
-                </div>
-                <div class="thread-content">
-                    <div class="thread-title"><a href="post.html?id=${thread.id}">${thread.topicName}</a></div>
-                    <div class="thread-description">${thread.description}</div>
-                </div>`;
-            threadList.appendChild(threadBox);
-        });
-    }
+                    // ID cell
+                    const idCell = document.createElement('td');
+                    idCell.textContent = clasz.id;
+                    row.appendChild(idCell);
 
-    // Update pagination controls
-    function updatePagination(total) {
-        // console.log(`Updating pagination. Total Pages: ${total}, Current Page: ${currentPage}`);  // Debug log
-        // Disable or enable buttons based on the current page
-        prevPageButton.disabled = currentPage === 1;
-        nextPageButton.disabled = currentPage === total;
-        // Log button states for debugging
-        // console.log("Prev Button Disabled:", prevPageButton.disabled);
-        // console.log("Next Button Disabled:", nextPageButton.disabled);
-    }
+                    // Name cell
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = clasz.name;
+                    row.appendChild(nameCell);
 
-    // Change page on button click
-    function changePage(direction) {
-        currentPage += direction;
-        pageNumber.textContent = currentPage;
-        fetchThreads(currentPage);
-    }
-    // Initialize pagination on page load
-    document.addEventListener("DOMContentLoaded", () => fetchThreads(currentPage));
+                    // Teacher Name cell
+                    const teacherNameCell = document.createElement('td');
+                    teacherNameCell.textContent = clasz.teacherName;
+                    row.appendChild(teacherNameCell);
+
+                    // Number of Students cell
+                    const nos = document.createElement('td');
+                    nos.textContent = clasz.numberOfStudents;
+                    row.appendChild(nos);
+
+                    // Actions cell with dropdown
+                    const actionsCell = document.createElement('td');
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'dropdown';
+
+                    const dropdownToggle = document.createElement('a');
+                    dropdownToggle.href = '#';
+                    dropdownToggle.className = 'dropdown-toggle';
+                    dropdownToggle.setAttribute('data-toggle', 'dropdown');
+                    dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
+                    dropdown.appendChild(dropdownToggle);
+
+                    const dropdownMenu = document.createElement('div');
+                    dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
+                    dropdownMenu.innerHTML = `
+
+                    <a class="dropdown-item" href="/all-class-student.html?classId=${clasz.id}">
+                        <i class="fas fa-glasses text-dark-pastel-green"></i> View Students
+                    </a>
+
+                `;
+                    dropdown.appendChild(dropdownMenu);
+                    actionsCell.appendChild(dropdown);
+                    row.appendChild(actionsCell);
+
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching class data:', error));
+    });
+
 </script>
+
+
 <!-- fetch user -->
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -677,6 +730,7 @@
             userRoleElements.forEach(element => {
                 element.textContent = userDetails.roleName;
             });
+
             // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
             document.getElementById("teacher-view").style.display = "none";
             document.getElementById("student-view").style.display = "none";
@@ -712,59 +766,8 @@
         console.error("User details not found in sessionStorage");
     }
 </script>
-<!-- fetch user -->
-<script>
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    if (userDetails) {
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
-
-        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-        if (userDetails.roleName === "ADMIN") {
-            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.username;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "TEACHER") {
-            // Hiển thị đầy đủ tên và vai trò cho giáo viên
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Chỉ hiển thị mục của giáo viên
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
-            document.getElementById("student-view1").style.display = "none";
-        } else if (userDetails.roleName === "STUDENT") {
-            // Hiển thị đầy đủ tên và vai trò cho học sinh
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Chỉ hiển thị mục của học sinh
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
-        } else {
-            console.warn("Role not recognized: ", userDetails.roleName);
-        }
-    } else {
-        console.error("User details not found in sessionStorage");
-    }
-</script>
-
 </body>
+
+
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/class-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>

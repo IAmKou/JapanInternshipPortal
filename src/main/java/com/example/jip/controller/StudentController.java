@@ -55,7 +55,7 @@ public class StudentController {
 
         Date date = Date.valueOf(localDate);
         studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, passport_img, account_id);
-        return new RedirectView("/student.html");
+        return new RedirectView("/account-settings.html");
     }
 
     @GetMapping("/get")

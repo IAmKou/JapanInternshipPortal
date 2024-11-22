@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ClassServices {
@@ -55,5 +56,24 @@ public class ClassServices {
         }
 
         return savedClass;
+    }
+
+    public ClassDTO updateClass (int id, ClassDTO classDTO) {
+        Class newClass = classRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Class not found with id " + id));
+        if (classDTO.getName() != null && !classDTO.getName().isEmpty()) {
+            newClass.setName(classDTO.getName());
+        }
+
+        if (classDTO.getTeacher() != null) {
+            Teacher newTeacher = teacherRepository.findById(classDTO.getTeacher().getId())
+                    .orElseThrow(() -> new NoSuchElementException("Teacher not found with id " + classDTO.getTeacher().getId()));
+            newClass.setTeacher(newTeacher);
+        }
+
+        classRepository.save(newClass);
+
+
+        return new ClassDTO(newClass);
     }
 }

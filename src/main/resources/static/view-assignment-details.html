@@ -444,7 +444,7 @@
                     <h3>Assignment Detail</h3>
                     <ul>
                         <li>
-                            <a href="admin.html">Home</a>
+                            <a href="list-assignment.html">All Assignment</a>
                         </li>
                         <li>Assignment Details</li>
                     </ul>
@@ -541,6 +541,7 @@
 
                 // Display file download links
                 const files = assignment.files || [];
+                console.log('Files:', files);
                 const filesContainer = document.getElementById('assignment-files');
                 filesContainer.innerHTML = ""; // Clear any existing content
                 if (files.length > 0) {

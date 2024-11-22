@@ -55,6 +55,7 @@ public class AssignmentController {
                                          @RequestParam("teacher_id") int teacherId) throws IOException {
         try {
             log.info("Received request: " + request);
+
             for (int i = 0; i < request.getImgFile().length; i++) {
                 log.info("Received file: " + request.getImgFile()[i].getOriginalFilename());
             }

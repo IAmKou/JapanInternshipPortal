@@ -8,6 +8,8 @@ import com.example.jip.entity.Assignment;
 import com.example.jip.entity.Class;
 
 import com.example.jip.entity.Teacher;
+import com.example.jip.exception.CloudinaryFolderAccessException;
+import com.example.jip.exception.InvalidImageUrlException;
 import com.example.jip.repository.AssignmentRepository;
 import com.example.jip.repository.ClassRepository;
 import com.example.jip.repository.TeacherRepository;
@@ -103,26 +105,34 @@ public class AssignmentServices {
         Assignment assignment = assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new RuntimeException("Can't find assignment with id " + assignmentId));
 
-        // Map Assignment entity to AssignmentResponse
         AssignmentResponse response = new AssignmentResponse();
         response.setDescription(assignment.getDescription());
         response.setContent(assignment.getContent());
         response.setCreated_date(assignment.getCreated_date());
         response.setEnd_date(assignment.getEnd_date());
+        response.setClasses(assignment.getClasses().stream()
+                .map(Class::getName)
+                .collect(Collectors.toList()));
 
-        // Convert associated class entities to class names
-        List<String> classNames = assignment.getClasses().stream()
-                .map(Class::getName) // Assuming `Class` entity has a `getName` method
-                .collect(Collectors.toList());
-        response.setClasses(classNames);
+        // Use folder name to fetch files
+        String folderName = assignment.getDescription();
+        if (folderName == null || folderName.isEmpty()) {
+            throw new RuntimeException("Folder name is not set for assignment ID: " + assignmentId);
+        }
 
-        // Fetch file URLs from Cloudinary folder
-        String folderName = assignment.getDescription(); // Assuming description matches folder name
-        List<String> fileUrls = cloudinaryService.getFilesFromFolder(folderName);
-        response.setFiles(fileUrls);
+        try {
+            List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
+            List<String> fileUrls = resources.stream()
+                    .map(resource -> (String) resource.get("url"))
+                    .collect(Collectors.toList());
+            response.setFiles(fileUrls);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to retrieve files from folder: " + folderName, e);
+        }
 
         return response;
     }
+
 
     @PreAuthorize("hasAuthority('TEACHER')")
     public void deleteAssignmentById(int assignmentId) {
@@ -135,17 +145,14 @@ public class AssignmentServices {
 
         // Handle image deletion
         String imageUrl = assignment.getImgUrl();
-        if (imageUrl != null && !imageUrl.isEmpty()) {
-            try {
+        try {
                 String folderPath = extractFolderPath(imageUrl);
                 log.info("Deleting folder: {}", folderPath);
                 cloudinaryService.deleteFolder(folderPath);
             } catch (Exception e) {
                 log.error("Failed to delete Cloudinary folder", e);
                 throw e;
-            }
         }
-
         // Delete assignment
         assignmentRepository.deleteById(assignmentId);
         log.info("Assignment deleted successfully.");
@@ -179,19 +186,28 @@ public class AssignmentServices {
                 .orElseThrow(() -> new NoSuchElementException("Assignment id not found!"));
 
         MultipartFile[] newFiles = request.getImgFile();
-        String folderName = request.getDescription();
+        String folderName = request.getDescription(); //Folder name = assignment's description
+
+        if (folderName == null || folderName.isEmpty()) {
+            throw new RuntimeException("Folder name is not set for assignment ID: " + assignmentId);
+        }
+
+        try {
+            List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
+            List<String> fileUrls = resources.stream()
+                    .map(resource -> (String) resource.get("url"))
+                    .collect(Collectors.toList());
+            request.setFiles(fileUrls);
+            log.info("Current Files: " + request.getFiles());
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to retrieve files from folder: " + folderName, e);
+        }
 
         // Append new files if provided
         if (newFiles != null && newFiles.length > 0) {
             for (MultipartFile file : newFiles) {
                 if (!file.isEmpty()) {
-                    CloudinaryResponse response = cloudinaryService.uploadFileToFolder(file, folderName);
-                    String existingUrls = assignment.getImgUrl(); // Assuming imgUrl stores all file URLs as a comma-separated string
-                    if (existingUrls == null || existingUrls.isEmpty()) {
-                        assignment.setImgUrl(response.getUrl());
-                    } else {
-                        assignment.setImgUrl(existingUrls + "," + response.getUrl());
-                    }
+                    cloudinaryService.uploadFileToFolder(file, folderName);
                 }
             }
         }
