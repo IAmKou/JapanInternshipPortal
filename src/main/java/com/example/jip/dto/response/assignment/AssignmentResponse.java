@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AssignmentResponse {
+    int id;
     String description;
     String content;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
