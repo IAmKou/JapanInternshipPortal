@@ -11,32 +11,32 @@ public class ApplicationDTO {
     private String content;
     private String img;
     private Date created_date;
-    private status status;
+    private Status status; // Đổi tên enum
     private String reply;
     private Date replied_date;
     private TeacherDTO teacher;
     private StudentDTO student;
 
-    public enum status{
+    public static enum Status {
         Pending, Approved, Rejected
     }
 
-    public ApplicationDTO() {}
-
-    public ApplicationDTO(int id, String name, String category, String content, String img, Date created_date, ApplicationDTO.status status, String reply, Date replied_date, TeacherDTO teacher, StudentDTO student) {
-        this.id = id;
-        this.name = name;
-        this.category = category;
-        this.content = content;
-        this.img = img;
-        this.created_date = created_date;
-        this.status = status;
-        this.reply = reply;
-        this.replied_date = replied_date;
-        this.teacher = teacher;
-        this.student = student;
+    // Cập nhật phương thức toDTOStatus để chuyển từ entity status sang DTO status
+    public static ApplicationDTO.Status toDTOStatus(Application.Status entityStatus) { // Chú ý kiểu của entityStatus
+        if (entityStatus == null) return null;
+        switch (entityStatus) {
+            case Pending:
+                return ApplicationDTO.Status.Pending;
+            case Approved:
+                return ApplicationDTO.Status.Approved;
+            case Rejected:
+                return ApplicationDTO.Status.Rejected;
+            default:
+                throw new IllegalArgumentException("Unknown status: " + entityStatus);
+        }
     }
 
+    // Getters and setters...
     public int getId() {
         return id;
     }
@@ -85,11 +85,11 @@ public class ApplicationDTO {
         this.created_date = created_date;
     }
 
-    public ApplicationDTO.status getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(ApplicationDTO.status status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

@@ -409,7 +409,7 @@
                   Students</a>
               </li>
               <li class="nav-item">
-                <a href="student-details.html" class="nav-link"><i
+                <a href="users-details.html" class="nav-link"><i
                         class="fas fa-angle-right"></i>Student Details</a>
               </li>
               <li class="nav-item">
@@ -525,7 +525,6 @@
                   Grades</a>
               </li>
             </ul>
-
           </li>
           <li class="nav-item sidebar-nav-item">
             <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Material</span></a>
@@ -533,15 +532,12 @@
               <li class="nav-item">
                 <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create material</a>
               </li>
-
             </ul>
             <ul class="nav sub-group-menu">
               <li class="nav-item">
                 <a class="nav-link" href="View-list-materials.html"><i class="fas fa-angle-right"></i>View list materials</a>
               </li>
-
             </ul>
-
           </li>
           <li class="nav-item sidebar-nav-item">
             <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
@@ -549,15 +545,12 @@
               <li class="nav-item">
                 <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list threads</a>
               </li>
-
             </ul>
             <ul class="nav sub-group-menu">
               <li class="nav-item">
                 <a class="nav-link" href="Create-material.html.html"><i class="fas fa-angle-right"></i>Create Thread</a>
               </li>
-
             </ul>
-
           </li>
           <li class="nav-item">
             <a href="transport.html" class="nav-link"><i
@@ -617,37 +610,19 @@
     <!-- Main Body Content Start Here -->
 
     <div class="post-container">
+      <div style="display: flex" >
       <!-- Post Header -->
-      <div class="post-header"  id="threadTitle">
-<!--        <h2>Thread Post Title</h2>-->
+      <div class="post-header" style="flex-grow: 8" id="threadTitle">
       </div>
-
+        <div class="post-header" style="flex-grow: 2"  id="threadMaker">
+      </div>
+      </div>
       <!-- Image Section -->
       <div class="post-image" id="threadImage">
-<!--        <img src="image-url.jpg" alt="Post Image" >-->
       </div>
-
       <!-- Description Section -->
       <div class="post-description" id="threadDescription">
-<!--        <p>This is a description of the post. It provides context and details about the post's content, inviting other users to engage with it.</p>-->
       </div>
-
-      <!-- Comment Section -->
-<!--      <div class="comment-section">-->
-<!--        <h3>Comments</h3>-->
-
-<!--        &lt;!&ndash; Example Comment 1 &ndash;&gt;-->
-<!--        <div class="comment">-->
-<!--          <div class="user-name">User123</div>-->
-<!--          <div class="user-text">This is a sample comment for the post. Great post!</div>-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; Example Comment 2 &ndash;&gt;-->
-<!--        <div class="comment">-->
-<!--          <div class="user-name">User456</div>-->
-<!--          <div class="user-text">Thanks for sharing! I found this very useful.</div>-->
-<!--        </div>-->
-<!--      </div>-->
     </div>
     <!-- Main Body Content End Here -->
   </div>
@@ -779,9 +754,11 @@
     const threadTitle = document.getElementById('threadTitle');
     const threadDescription = document.getElementById('threadDescription');
     const threadImage = document.getElementById('threadImage');
+    const threadMaker = document.getElementById('threadMaker');
     threadTitle.innerHTML = `<h2>${thread.topicName}</h2>`;
-    threadDescription.innerHTML = `<p>${thread.description}</p>`;
-    threadImage.innerHTML = `<img src="${thread.image}"/>`
+    threadDescription.innerHTML = `<p>${thread.description}</p> `;
+    threadMaker.innerHTML = `<p style="float: bottom">${thread.creatorName}</p>`;
+    threadImage.innerHTML = `<img src="data:image/png;base64,${thread.image}"/>`
   }
 </script>
 </body>

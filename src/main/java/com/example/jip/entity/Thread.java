@@ -1,9 +1,6 @@
 package com.example.jip.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +16,9 @@ public class Thread {
     private Date dateCreated;
     private String description;
     private int creatorId;
+
+    @Lob
+    @Column(columnDefinition="BLOB")
     private byte[] image;
 
     public Thread() {}

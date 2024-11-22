@@ -2,10 +2,11 @@
 <html class="no-js" lang="">
 
 
+<!-- Mirrored from users-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:41 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>JIP | Assignment List</title>
+    <title>AKKHOR | Students Details</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -22,170 +23,13 @@
     <link rel="stylesheet" href="fonts/flaticon.css">
     <!-- Animate CSS -->
     <link rel="stylesheet" href="css/animate.min.css">
-    <!-- Data Table CSS -->
-    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
-    <style>
-
-        /* Overlay */
-        .overlay {
-            display: none; /* Hidden by default */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7); /* Black background with 70% transparency */
-            z-index: 8; /* Behind the popup */
-        }
-
-        /* Popup container */
-        .popup {
-            display: none; /* Hidden by default */
-            position: fixed; /* Fixed positioning for proper centering */
-            z-index: 9; /* In front of the overlay */
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%; /* Adjust width for responsiveness */
-            max-width: 600px; /* Maximum width */
-            max-height: 90%; /* Prevent overflow of the screen */
-            background-color: white;
-            padding: 20px;
-            border: 1px solid #888;
-            border-radius: 20px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            overflow: hidden; /* Hide overflow by default */
-        }
-
-        /* Popup content */
-        .popup-content {
-            width: 100%;
-            max-height: 100%;
-            overflow-y: auto; /* Enable vertical scrolling */
-            padding: 20px;
-            border-radius: 20px;
-        }
-
-        /* Close button */
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover, .close:focus {
-            color: black;
-            text-decoration: none;
-        }
-
-        /* Form styling */
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        form label {
-            margin-top: 10px;
-        }
-
-        form input, form textarea, form select {
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        /* Button styling */
-        .btn {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .btn:hover {
-            background-color: #45a049;
-        }
-
-        /* Modal Background (Overlay) */
-        .modal-background {
-            display: none; /* Hidden by default */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Black with transparency */
-            justify-content: center;
-            align-items: center;
-            z-index: 2000; /* High z-index to stay above other content */
-        }
-
-        /* Modal Content Box */
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            width: 350px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            text-align: center;
-        }
-
-        /* Buttons inside the modal */
-        .modal-buttons {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-
-        /* Confirm Button Style */
-        .confirm-btn {
-            background-color: #dc3545; /* Red background for delete */
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        /* Confirm Button Hover Effect */
-        .confirm-btn:hover {
-            background-color: #c82333; /* Darker red on hover */
-        }
-
-        /* Cancel Button Style */
-        .cancel-btn {
-            background-color: #6c757d; /* Gray background for cancel */
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        /* Cancel Button Hover Effect */
-        .cancel-btn:hover {
-            background-color: #5a6268; /* Darker gray on hover */
-        }
-    </style>
 </head>
 
 <body>
-
-
 <!-- Preloader Start Here -->
 <div id="preloader"></div>
 <!-- Preloader End Here -->
@@ -194,7 +38,7 @@
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
-                <a href="index.html">
+                <a href="admin.html">
                     <img src="img/logo.png" alt="logo">
                 </a>
             </div>
@@ -209,7 +53,8 @@
             </div>
         </div>
         <div class="d-md-none mobile-nav-bar">
-            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse" data-target="#mobile-navbar" aria-expanded="false">
+            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse"
+                    data-target="#mobile-navbar" aria-expanded="false">
                 <i class="far fa-arrow-alt-circle-down"></i>
             </button>
             <button type="button" class="navbar-toggler sidebar-toggle-mobile">
@@ -249,7 +94,8 @@
                             <ul class="settings-list">
                                 <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
                                 <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
-                                <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a></li>
+                                <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
+                                </li>
                                 <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
                                 <li><a href="login.html"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
@@ -389,14 +235,13 @@
         </div>
     </div>
     <!-- Header Menu Area End Here -->
-
     <!-- Page Area Start Here -->
     <div class="dashboard-page-one">
         <!-- Sidebar Area Start Here -->
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="index.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
@@ -405,47 +250,55 @@
                         <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="index.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
+                                <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
                             </li>
                             <li class="nav-item">
-                                <a href="index3.html" class="nav-link"><i class="fas fa-angle-right"></i>Students</a>
+                                <a href="student.html" class="nav-link"><i class="fas fa-angle-right"></i>Students</a>
                             </li>
                             <li class="nav-item">
                                 <a href="manager.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
                             </li>
                             <li class="nav-item">
-                                <a href="index5.html" class="nav-link"><i class="fas fa-angle-right"></i>Teachers</a>
+                                <a href="teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>Teachers</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="all-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All Students</a>
+                                <a href="all-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    Students</a>
                             </li>
                             <li class="nav-item">
-                                <a href="users-details.html" class="nav-link"><i class="fas fa-angle-right"></i>Student Details</a>
+                                <a href="users-details.html" class="nav-link menu-active"><i
+                                        class="fas fa-angle-right"></i>Student Details</a>
                             </li>
                             <li class="nav-item">
-                                <a href="admit-form.html" class="nav-link"><i class="fas fa-angle-right"></i>Admission Form</a>
+                                <a href="admit-form.html" class="nav-link"><i class="fas fa-angle-right"></i>Admission
+                                    Form</a>
                             </li>
                             <li class="nav-item">
-                                <a href="student-promotion.html" class="nav-link"><i class="fas fa-angle-right"></i>Student Promotion</a>
+                                <a href="student-promotion.html" class="nav-link"><i class="fas fa-angle-right"></i>Student
+                                    Promotion</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
+                        <a href="#" class="nav-link"><i
+                                class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="all-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>All Teachers</a>
+                                <a href="all-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    Teachers</a>
                             </li>
                             <li class="nav-item">
-                                <a href="teacher-details.html" class="nav-link"><i class="fas fa-angle-right"></i>Teacher Details</a>
+                                <a href="teacher-details.html" class="nav-link"><i class="fas fa-angle-right"></i>Teacher
+                                    Details</a>
                             </li>
                             <li class="nav-item">
-                                <a href="add-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>Add Teacher</a>
+                                <a href="add-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                    Teacher</a>
                             </li>
                             <li class="nav-item">
                                 <a href="teacher-payment.html" class="nav-link"><i class="fas fa-angle-right"></i>Payment</a>
@@ -456,10 +309,12 @@
                         <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Parents</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="all-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>All Parents</a>
+                                <a href="all-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    Parents</a>
                             </li>
                             <li class="nav-item">
-                                <a href="parents-details.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents Details</a>
+                                <a href="parents-details.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents
+                                    Details</a>
                             </li>
                             <li class="nav-item">
                                 <a href="add-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>Add Parent</a>
@@ -467,13 +322,15 @@
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
-                        <ul class="nav sub-group-menu sub-group-active">
+                        <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Library</span></a>
+                        <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="list-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
+                                <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    Book</a>
                             </li>
                             <li class="nav-item">
-                                <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New Assignment</a>
+                                <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                    Book</a>
                             </li>
                         </ul>
                     </li>
@@ -481,32 +338,39 @@
                         <a href="#" class="nav-link"><i class="flaticon-technological"></i><span>Acconunt</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees Collection</a>
+                                <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
+                                    Collection</a>
                             </li>
                             <li class="nav-item">
-                                <a href="all-expense.html" class="nav-link"><i class="fas fa-angle-right"></i>Expenses</a>
+                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Expenses</a>
                             </li>
                             <li class="nav-item">
-                                <a href="add-expense.html" class="nav-link"><i class="fas fa-angle-right"></i>Add Expenses</a>
+                                <a href="ReplyApplication.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                    Expenses</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
+                        <a href="#" class="nav-link"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="all-class-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All Classes</a>
+                                <a href="all-class-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    Classes</a>
                             </li>
                             <li class="nav-item">
-                                <a href="add-class.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New Class</a>
+                                <a href="add-class.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                    Class</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="all-subject.html" class="nav-link"><i class="flaticon-open-book"></i><span>Subject</span></a>
+                        <a href="all-subject.html" class="nav-link"><i
+                                class="flaticon-open-book"></i><span>Subject</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="class-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class Routine</span></a>
+                        <a href="class-list.html" class="nav-link"><i
+                                class="flaticon-calendar"></i><span>Class Routine</span></a>
                     </li>
                     <li class="nav-item">
                         <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
@@ -515,16 +379,20 @@
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create material</a>
+                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
+                                    material</a>
                             </li>
                             <li class="nav-item" id="teacher-view">
-                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
+                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    materials</a>
                             </li>
                             <li class="nav-item" id="student-view">
-                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
+                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    materials</a>
                             </li>
                             <li class="nav-item" id="student-view1">
-                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list materials</a>
+                                <a href="View-list-personal-materials.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>My list materials</a>
                             </li>
                         </ul>
                     </li>
@@ -532,20 +400,23 @@
                         <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create material</a>
+                                <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create
+                                    material</a>
                             </li>
 
                         </ul>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="View-list-materials.html"><i class="fas fa-angle-right"></i>View list materials</a>
+                                <a class="nav-link" href="View-list-materials.html"><i class="fas fa-angle-right"></i>View
+                                    list materials</a>
                             </li>
 
                         </ul>
 
                     </li>
                     <li class="nav-item">
-                        <a href="transport.html" class="nav-link"><i class="flaticon-bus-side-view"></i><span>Transport</span></a>
+                        <a href="transport.html" class="nav-link"><i
+                                class="flaticon-bus-side-view"></i><span>Transport</span></a>
                     </li>
                     <li class="nav-item">
                         <a href="hostel.html" class="nav-link"><i class="flaticon-bed"></i><span>Hostel</span></a>
@@ -557,11 +428,13 @@
                         <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send application</a>
+                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                    application</a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My application</a>
+                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                    application</a>
                             </li>
                         </ul>
                     </li>
@@ -581,7 +454,8 @@
                                 <a href="modal.html" class="nav-link"><i class="fas fa-angle-right"></i>Modal</a>
                             </li>
                             <li class="nav-item">
-                                <a href="progress-bar.html" class="nav-link"><i class="fas fa-angle-right"></i>Progress Bar</a>
+                                <a href="progress-bar.html" class="nav-link"><i class="fas fa-angle-right"></i>Progress
+                                    Bar</a>
                             </li>
                             <li class="nav-item">
                                 <a href="ui-tab.html" class="nav-link"><i class="fas fa-angle-right"></i>Tab</a>
@@ -596,107 +470,109 @@
                         <a href="map.html" class="nav-link"><i class="flaticon-planet-earth"></i><span>Map</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="account-settings.html" class="nav-link"><i class="flaticon-settings"></i><span>Account</span></a>
+                        <a href="account-settings.html" class="nav-link"><i
+                                class="flaticon-settings"></i><span>Account</span></a>
                     </li>
                 </ul>
-
             </div>
-<html resource="template/teacher-sidebar.html"></html>
         </div>
-
         <!-- Sidebar Area End Here -->
-         <div class="dashboard-content-one">
+        <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3>Assignment</h3>
+                <h3>Students</h3>
                 <ul>
                     <li>
-                        <a href="teacher.html">Home</a>
+                        <a href="admin.html">Home</a>
                     </li>
-                    <li>All Assignment</li>
+                    <li>Student Details</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
-
-            <!-- Teacher Table Area Start Here -->
+            <!-- Student Details Area Start Here -->
             <div class="card height-auto">
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h3>All Assignment</h3>
+                            <h3>About Me</h3>
                         </div>
+                        <div class="dropdown">
+                            <a class="dropdown-toggle" href="#" role="button"
+                               data-toggle="dropdown" aria-expanded="false">...</a>
 
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="table-responsive">
-                        <table class="table display data-table text-nowrap">
-                            <thead>
-                            <tr>
-                                <th>Description</th>
-                                <th>Creating Date</th>
-                                <th>End Date</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody id="assignment_list">
-
-
-                            </tbody>
-                        </table>
+                    <div class="single-info-details">
+                        <div class="item-img">
+                            <img src="img/figure/student1.jpg" alt="student">
+                        </div>
+                        <div class="item-content">
+                            <div class="header-inline item-header">
+                                <h3 class="text-dark-medium font-medium" id="name"></h3>
+                                <div class="header-elements">
+                                    <ul>
+                                        <li><a href="#"><i class="far fa-edit"></i></a></li>
+                                        <li><a href="#"><i class="fas fa-print"></i></a></li>
+                                        <li><a href="#"><i class="fas fa-download"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="info-table table-responsive">
+                                <table class="table text-nowrap">
+                                    <tbody>
+                                    <tr>
+                                        <td>Id:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Name:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Japan Name:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Gender:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date Of Birth:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>E-mail:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phone:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-
+                    <label for="card">Passport: </label><br/>
+                    <div class="single-info-details">
+                        <div class="item-img" style="width: 300px; height: 300px">
+                            <img src="img/figure/card.jpg" alt="card" id="card">
+                        </div>
                     </div>
-
                 </div>
-
-
-        </div>
-        <div id="overlay" class="overlay">
-            <div id="assignmentPopup" class="popup">
-                <div class="popup-content">
-                    <span class="close" onclick="closePopup()">&times;</span>
-                    <h2>Update Assignment</h2>
-                    <form class="new-added-form" action="javascript:void(0);" onsubmit="updateAssignment(event)">
-                        <label for="description">Description:</label>
-                        <input type="text" id="description" name="description" />
-
-                        <label for="end_date">End Date:</label>
-                        <input type="date" id="end_date" name="end_date" />
-
-                        <label for="content">Content:</label>
-                        <textarea id="content" name="content" rows="4"></textarea>
-
-                        <label for="class_id">For Class *</label>
-                        <select name="class_id" id="class_id" multiple></select>
-
-                        <label for="assignment-files">Files:</label>
-                        <div id="assignment-files"></div>
-
-                        <label for="img">Upload Files:</label>
-                        <input type="file" id="img" name="imgFile" multiple />
-
-                        <button type="submit" class="btn">Submit</button>
-                    </form>
-                </div>
+                <!-- Student Details Area End Here -->
+                <footer class="footer-wrap-layout1">
+                    <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a
+                            href="#">PsdBosS</a></div>
+                </footer>
             </div>
         </div>
-        <!-- Confirmation Modal -->
-        <div id="deleteConfirmModal" class="modal-background">
-            <div class="modal-content">
-                <h3>Delete Assignment</h3>
-                <p>Are you sure you want to delete this assignment?</p>
-
-                <!-- Modal Buttons -->
-                <div class="modal-buttons">
-                    <button class="confirm-btn" onclick="confirmDelete()">Confirm</button>
-                    <button class="cancel-btn" onclick="closeDeleteConfirmModal()">Cancel</button>
-                </div>
-            </div>
-        </div>
-
-
     </div>
-
     <!-- Page Area End Here -->
 </div>
 <!-- jquery-->
@@ -709,216 +585,8 @@
 <script src="js/bootstrap.min.js"></script>
 <!-- Scroll Up Js -->
 <script src="js/jquery.scrollUp.min.js"></script>
-<!-- Data Table Js -->
-<script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
-
-<script>
-
-    const API_BASE_URL = '/assignment';
-    let currentAssignmentId = null;
-
-    async function fetchAndDisplayAssignments() {
-        try {
-            console.log('Fetching assignments...');
-            const response = await fetch(`${API_BASE_URL}/list`);
-            console.log('Response received:', response);
-            if (!response.ok) {
-                throw new Error('Error fetching assignments: ' + response.statusText);
-            }
-            const assignments = await response.json();
-            console.log('Assignments data:', assignments);
-
-            // Clear existing rows in the table
-            const tableBody = document.getElementById('assignment_list');
-            tableBody.innerHTML = '';
-
-            assignments.forEach(assignment => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <a href="/view-assignment-details.html?id=${assignment.id}" target="_blank">${assignment.description}</a>
-                    <td>${assignment.created_date}</td>
-                    <td>${assignment.end_date}</td>
-                    <td>
-                        <div class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="flaticon-more-button-of-three-dots"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
-                                    <i class="fas fa-times text-orange-red"></i>Delete</a>
-                                <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
-                                    <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
-                            </div>
-                        </div>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-
-    // Function to open the update popup async
-    async function openUpdatePopup(assignmentId) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/detail/${assignmentId}`);
-            if (!response.ok) {
-                throw new Error('Error fetching assignment for update: ' + response.statusText);
-            }
-
-            const assignment = await response.json();
-
-            // Fetch all classes
-            const classResponse = await fetch(`/class/get`);
-            if (!classResponse.ok) {
-                throw new Error('Error fetching classes: ' + classResponse.statusText);
-            }
-            const classes = await classResponse.json();
-
-            // Populate the class select list
-            const classSelect = document.getElementById('class_id');
-            classSelect.innerHTML = ''; // Clear any existing options
-            classes.forEach((cls) => {
-                const option = document.createElement('option');
-                option.value = cls.id;
-                option.textContent = cls.name;
-
-                // Preselect classes already assigned to the assignment
-                if (assignment.classList && assignment.classList.some((aClass) => aClass.id === cls.id)) {
-                    option.selected = true;
-                }
-                classSelect.appendChild(option);
-            });
-
-            // Fill the form with the assignment data
-            document.getElementById('description').value = assignment.description;
-            document.getElementById('end_date').value = assignment.end_date;
-            document.getElementById('content').value = assignment.content;
-            document.getElementById('class_id').value = assignment.class_id;
-
-            // Display file download links
-            const files = assignment.files || [];
-            console.log('Files:', files);
-            const filesContainer = document.getElementById('assignment-files');
-            filesContainer.innerHTML = ""; // Clear any existing content
-            if (files.length > 0) {
-                files.forEach(fileUrl => {
-                    const link = document.createElement('a');
-                    link.href = fileUrl;
-                    link.textContent = `📄 ${fileUrl.split('/').pop()}`; // Add a file icon
-                    link.target = '_blank';
-                    link.rel = 'noopener noreferrer';
-                    link.style.display = 'block';
-                    filesContainer.appendChild(link);
-                });
-            } else {
-                filesContainer.textContent = "No files uploaded";
-            }
-
-            // Show the update popup
-            currentAssignmentId = assignment.id;
-            document.getElementById('assignmentPopup').style.display = 'flex';
-            document.getElementById('overlay').style.display = 'flex';
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    async function updateAssignment(event) {
-        event.preventDefault();
-
-        const description = document.getElementById('description').value;
-        const endDate = document.getElementById('end_date').value;
-        const content = document.getElementById('content').value;
-
-        // Get selected class IDs
-        const classSelect = document.getElementById('class_id');
-        const selectedClasses = Array.from(classSelect.selectedOptions).map((opt) => opt.value)
-
-        const imgFiles = document.getElementById('img').files;
-
-        const formData = new FormData();
-        formData.append('description', description);
-        formData.append('end_date', endDate);
-        formData.append('content', content);
-        selectedClasses.forEach((classId) => {
-            formData.append('classIds', classId);
-        });
-
-        for (let i = 0; i < imgFiles.length; i++) {
-            formData.append('imgFile', imgFiles[i]); // Match the backend field
-        }
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/update/${currentAssignmentId}`, {
-                method: 'PUT',
-                body: formData,
-            });
-
-            if (response.ok) {
-                alert('Assignment updated successfully!');
-                closePopup();
-                fetchAndDisplayAssignments();
-            } else if (response.status === 404) {
-                alert('Assignment not found!');
-                closePopup();
-            } else {
-                console.error('Error updating assignment:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-
-        // Function to close the update popup
-        function closePopup() {
-            document.getElementById('assignmentPopup').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-            }
-
-
-
-        // Function to open the delete confirmation modal
-        function openDeleteConfirmModal(assignmentId) {
-            document.getElementById('deleteConfirmModal').dataset.assignmentId = assignmentId;
-            document.getElementById('deleteConfirmModal').style.display = 'flex';
-        }
-
-        // Function to close the delete confirmation modal
-        function closeDeleteConfirmModal() {
-            document.getElementById('deleteConfirmModal').style.display = 'none';
-        }
-
-        // Function to confirm delete
-        async function confirmDelete() {
-            const assignmentId = document.getElementById('deleteConfirmModal').dataset.assignmentId;
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/delete/${assignmentId}`, {
-                    method: 'DELETE'
-                });
-
-                if (response.ok) {
-                    alert('Assignment deleted successfully!');
-                    fetchAndDisplayAssignments();
-                    closeDeleteConfirmModal();
-                } else if (response.status === 404) {
-                    alert('Assignment not found!');
-                    closeDeleteConfirmModal();
-                } else {
-                    console.error('Error deleting assignment:', response.statusText);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-
-    // Initialize the table with assignments on page load
-    document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
-</script>
 <!-- fetch user -->
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -971,21 +639,42 @@
     } else {
         console.error("User details not found in sessionStorage");
     }
-
-    // Function to load the sidebar
-    function loadSidebar() {
-        fetch('teacher-sidebar.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('sidebar-container').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading sidebar:', error));
-    }
-
-    // Call the function when the page loads
-    document.addEventListener('DOMContentLoaded', loadSidebar);
 </script>
-
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const userId = new URLSearchParams(window.location.search).get('userId');
+        if (userId) {
+            fetch(`/${userId}/userDetail`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch student details');
+                    }
+                    return response.json();
+                })
+                .then(user => {
+                    document.querySelector('.info-table tbody').innerHTML = `
+                    <tr><td>Id:</td><td>${user.id}</td></tr>
+                    <tr><td>Name:</td><td>${user.fullName}</td></tr>
+                    <tr><td>Japan Name:</td><td>${user.jname}</td></tr>
+                    <tr><td>Gender:</td><td>${user.gender}</td></tr>
+                    <tr><td>Date Of Birth:</td><td>${user.dob}</td></tr>
+                    <tr><td>Email:</td><td>${user.email}</td></tr>
+                    <tr><td>Phone:</td><td>${user.phoneNumber}</td></tr>
+                `;
+                    document.getElementById('card').src = user.passport_img || 'img/default-passport.png';
+                    document.getElementById('name').textContent = user.fullName;
+                })
+                .catch(error => {
+                    console.error('Error fetching student:', error);
+                    alert('Failed to load student details.');
+                });
+        } else {
+            console.error('userId is missing from the URL.');
+        }
+    });
+</script>
 </body>
 
+
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/users-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:43 GMT -->
 </html>

@@ -2,11 +2,11 @@
 <html class="no-js" lang="">
 
 
-<!-- Mirrored from student-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:41 GMT -->
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/all-student.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:41 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>AKKHOR | Students Details</title>
+    <title>View My Application</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="fonts/flaticon.css">
     <!-- Animate CSS -->
     <link rel="stylesheet" href="css/animate.min.css">
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
@@ -34,7 +36,7 @@
     <div id="preloader"></div>
     <!-- Preloader End Here -->
     <div id="wrapper" class="wrapper bg-ash">
-         <!-- Header Menu Area Start Here -->
+        <!-- Header Menu Area Start Here -->
         <div class="navbar navbar-expand-md header-menu-one bg-light">
             <div class="nav-bar-header-one">
                 <div class="header-logo">
@@ -78,8 +80,8 @@
                         <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                             aria-expanded="false">
                             <div class="admin-title">
-                                <h5 class="item-title">Stevne Zone</h5>
-                                <span>Admin</span>
+                                <h5 class="item-title userFullName"></h5>
+                                <span class="userRole"></span>
                             </div>
                             <div class="admin-img">
                                 <img src="img/figure/admin.jpg" alt="Admin">
@@ -87,7 +89,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="item-header">
-                                <h6 class="item-title">Steven Zone</h6>
+                                <h6 class="item-title userFullName"></h6>
                             </div>
                             <div class="item-content">
                                 <ul class="settings-list">
@@ -236,7 +238,7 @@
         <!-- Page Area Start Here -->
         <div class="dashboard-page-one">
             <!-- Sidebar Area Start Here -->
-           <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+            <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
                <div class="mobile-sidebar-header d-md-none">
                     <div class="header-logo">
                         <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
@@ -251,13 +253,15 @@
                                     <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="student.html" class="nav-link"><i class="fas fa-angle-right"></i>Students</a>
+                                    <a href="student.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Students</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="manager.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>Teachers</a>
+                                    <a href="teacher.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Teachers</a>
                                 </li>
                             </ul>
                         </li>
@@ -265,33 +269,42 @@
                             <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
                             <ul class="nav sub-group-menu sub-group-active">
                                 <li class="nav-item">
-                                    <a href="all-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All Students</a>
+                                    <a href="all-student.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All
+                                        Students</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="student-details.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Student Details</a>
+                                    <a href="student-details.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Student Details</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="admit-form.html" class="nav-link"><i class="fas fa-angle-right"></i>Admission Form</a>
+                                    <a href="admit-form.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Admission Form</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="student-promotion.html" class="nav-link"><i class="fas fa-angle-right"></i>Student Promotion</a>
+                                    <a href="student-promotion.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Student Promotion</a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
+                            <a href="#" class="nav-link"><i
+                                    class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>All Teachers</a>
+                                    <a href="all-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                        Teachers</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="teacher-details.html" class="nav-link"><i class="fas fa-angle-right"></i>Teacher Details</a>
+                                    <a href="teacher-details.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Teacher Details</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="add-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>Add Teacher</a>
+                                    <a href="add-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                        Teacher</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="teacher-payment.html" class="nav-link"><i class="fas fa-angle-right"></i>Payment</a>
+                                    <a href="teacher-payment.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Payment</a>
                                 </li>
                             </ul>
                         </li>
@@ -299,13 +312,16 @@
                             <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Parents</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>All Parents</a>
+                                    <a href="all-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                        Parents</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="parents-details.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents Details</a>
+                                    <a href="parents-details.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Parents Details</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="add-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>Add Parent</a>
+                                    <a href="add-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                        Parent</a>
                                 </li>
                             </ul>
                         </li>
@@ -313,10 +329,12 @@
                             <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Library</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All Book</a>
+                                    <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                        Book</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New Book</a>
+                                    <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                        Book</a>
                                 </li>
                             </ul>
                         </li>
@@ -324,91 +342,85 @@
                             <a href="#" class="nav-link"><i class="flaticon-technological"></i><span>Acconunt</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees Collection</a>
+                                    <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
+                                        Collection</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Expenses</a>
+                                    <a href="Add-material.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Expenses</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="ReplyApplication.html" class="nav-link"><i class="fas fa-angle-right"></i>Add Expenses</a>
+                                    <a href="ReplyApplication.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                        Expenses</a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
+                            <a href="#" class="nav-link"><i
+                                    class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-class-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All Classes</a>
+                                    <a href="all-class-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                        Classes</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="add-class.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New Class</a>
+                                    <a href="add-class.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                        Class</a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="all-subject.html" class="nav-link"><i class="flaticon-open-book"></i><span>Subject</span></a>
+                            <a href="all-subject.html" class="nav-link"><i
+                                    class="flaticon-open-book"></i><span>Subject</span></a>
                         </li>
                         <li class="nav-item">
-                            <a href="class-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class Routine</span></a>
+                            <a href="class-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class
+                                    Routine</span></a>
                         </li>
                         <li class="nav-item">
-                            <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
+                            <a href="student-attendence.html" class="nav-link"><i
+                                    class="flaticon-checklist"></i><span>Attendence</span></a>
                         </li>
                         <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create material</a>
+                                    <a class="nav-link" href="exam-schedule.html"><i class="fas fa-angle-right"></i>Exam
+                                        Schedule</a>
                                 </li>
-                                <li class="nav-item" id="teacher-view">
-                                    <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
-                                </li>
-                                <li class="nav-item" id="student-view">
-                                    <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
-                                </li>
-                                <li class="nav-item" id="student-view1">
-                                    <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list materials</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                            <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create material</a>
+                                    <a class="nav-link" href="Update-student-mark-report.html"><i
+                                            class="fas fa-angle-right"></i>Exam Grades</a>
                                 </li>
-
-                            </ul>
-                            <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="View-list-materials.html"><i class="fas fa-angle-right"></i>View list materials</a>
+                                    <a href="/markreport/view" class="nav-link menu-active"><i class="fas fa-angle-right"></i>View Exam
+                                        Grades</a>
                                 </li>
-
                             </ul>
 
                         </li>
+
                         <li class="nav-item">
-                            <a href="transport.html" class="nav-link"><i class="flaticon-bus-side-view"></i><span>Transport</span></a>
+                            <a href="transport.html" class="nav-link"><i
+                                    class="flaticon-bus-side-view"></i><span>Transport</span></a>
                         </li>
                         <li class="nav-item">
                             <a href="hostel.html" class="nav-link"><i class="flaticon-bed"></i><span>Hostel</span></a>
                         </li>
                         <li class="nav-item">
-                            <a href="notice-board.html" class="nav-link"><i class="flaticon-script"></i><span>Notice</span></a>
+                            <a href="notice-board.html" class="nav-link"><i
+                                    class="flaticon-script"></i><span>Notice</span></a>
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                             <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send application</a>
-                                </li>
 
-                                <li class="nav-item">
-                                    <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My application</a>
+                                <li class="nav-item" id="manager-view">
+                                    <a href="View-list-application.html" class="nav-link"><i class="fas fa-angle-right"></i>List Applications</a>
                                 </li>
                             </ul>
                         </li>
-                         <li class="nav-item sidebar-nav-item">
+                        <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-menu-1"></i><span>UI Elements</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
@@ -436,10 +448,12 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="map.html" class="nav-link"><i class="flaticon-planet-earth"></i><span>Map</span></a>
+                            <a href="map.html" class="nav-link"><i
+                                    class="flaticon-planet-earth"></i><span>Map</span></a>
                         </li>
                         <li class="nav-item">
-                            <a href="account-settings.html" class="nav-link"><i class="flaticon-settings"></i><span>Account</span></a>
+                            <a href="account-settings.html" class="nav-link"><i
+                                    class="flaticon-settings"></i><span>Account</span></a>
                         </li>
                     </ul>
                 </div>
@@ -448,104 +462,47 @@
             <div class="dashboard-content-one">
                 <!-- Breadcubs Area Start Here -->
                 <div class="breadcrumbs-area">
-                    <h3>Students</h3>
+                    <h3>View My Application</h3>
                     <ul>
                         <li>
                             <a href="admin.html">Home</a>
                         </li>
-                        <li>Student Details</li>
+                        <li>View My Application</li>
                     </ul>
                 </div>
                 <!-- Breadcubs Area End Here -->
-                <!-- Student Details Area Start Here -->
-                <div class="card height-auto">
-                    <div class="card-body">
-                        <div class="heading-layout1">
-                            <div class="item-title">
-                                <h3>About Me</h3>
-                            </div>
-                           <div class="dropdown">
-                                <a class="dropdown-toggle" href="#" role="button" 
-                                data-toggle="dropdown" aria-expanded="false">...</a>
-        
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single-info-details">
-                            <div class="item-img">
-                                <img src="img/figure/student1.jpg" alt="student">
-                            </div>
-                            <div class="item-content">
-                                <div class="header-inline item-header">
-                                    <h3 class="text-dark-medium font-medium">Jessia Rose</h3>
-                                    <div class="header-elements">
-                                        <ul>
-                                            <li><a href="#"><i class="far fa-edit"></i></a></li>
-                                            <li><a href="#"><i class="fas fa-print"></i></a></li>
-                                            <li><a href="#"><i class="fas fa-download"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <p>Aliquam erat volutpat. Curabiene natis massa sedde lacu stiquen sodale 
-                                word moun taiery.Aliquam erat volutpaturabiene natis massa sedde  sodale 
-                                word moun taiery.</p>
-                                <div class="info-table table-responsive">
-                                    <table class="table text-nowrap">
-                                        <tbody>
-                                            <tr>
-                                                <td>Name:</td>
-                                                <td class="font-medium text-dark-medium">Jessia Rose</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Gender:</td>
-                                                <td class="font-medium text-dark-medium">Female</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Date Of Birth:</td>
-                                                <td class="font-medium text-dark-medium">07.08.2016</td>
-                                            </tr>
-                                            <tr>
-                                                <td>E-mail:</td>
-                                                <td class="font-medium text-dark-medium">jessiarose@gmail.com</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Class:</td>
-                                                <td class="font-medium text-dark-medium">2</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Section:</td>
-                                                <td class="font-medium text-dark-medium">Pink</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Roll:</td>
-                                                <td class="font-medium text-dark-medium">10005</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Phone:</td>
-                                                <td class="font-medium text-dark-medium">+ 88 98568888418</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                <!-- Student Table Area Start Here -->
+                <div id="application-view">
+                    <!-- Bảng yêu cầu chung -->
+                    <div class="card height-auto">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table display data-table text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Purpose</th>
+                                        <th>Create Date</th>
+                                        <th>Process Note</th>
+                                        <th>File</th>
+                                        <th>Status</th>
+                                        <th>Time Response</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="application-table-body">
+                                    <!-- Rows will be dynamically inserted here -->
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <label for="card">Passport: </label><br/>
-                        <div class="single-info-details">
-                            <div class="item-img" style="width: 300px; height: 300px">
-                                <img src="img/figure/card.jpg" alt="card" id="card">
-                            </div>
                     </div>
                 </div>
-                <!-- Student Details Area End Here -->
+                <!-- Student Table Area End Here -->
                 <footer class="footer-wrap-layout1">
-                    <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a href="#">PsdBosS</a></div>
+                    <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a
+                            href="#">PsdBosS</a></div>
                 </footer>
             </div>
-        </div>
         </div>
         <!-- Page Area End Here -->
     </div>
@@ -559,6 +516,8 @@
     <script src="js/bootstrap.min.js"></script>
     <!-- Scroll Up Js -->
     <script src="js/jquery.scrollUp.min.js"></script>
+    <!-- Data Table Js -->
+    <script src="js/jquery.dataTables.min.js"></script>
     <!-- Custom Js -->
     <script src="js/main.js"></script>
     <!-- fetch user -->
@@ -582,6 +541,7 @@
                 document.getElementById("teacher-view").style.display = "none";
                 document.getElementById("student-view").style.display = "none";
             } else if (userDetails.roleName === "TEACHER") {
+
                 // Hiển thị đầy đủ tên và vai trò cho giáo viên
                 userFullNameElements.forEach(element => {
                     element.textContent = userDetails.fullName;
@@ -591,9 +551,13 @@
                 });
 
                 // Chỉ hiển thị mục của giáo viên
+                document.getElementById("teacher-view5").style.display = "block";
+                document.getElementById("student-view5").style.display = "none";
                 document.getElementById("teacher-view").style.display = "block";
                 document.getElementById("student-view").style.display = "none";
                 document.getElementById("student-view1").style.display = "none";
+                document.getElementById("teacher-view3").style.display = "block";
+                document.getElementById("manager-view").style.display = "none";
             } else if (userDetails.roleName === "STUDENT") {
                 // Hiển thị đầy đủ tên và vai trò cho học sinh
                 userFullNameElements.forEach(element => {
@@ -607,6 +571,27 @@
                 document.getElementById("teacher-view").style.display = "none";
                 document.getElementById("student-view").style.display = "block";
                 document.getElementById("student-view1").style.display = "block";
+                document.getElementById("teacher-view3").style.display = "none";
+                document.getElementById("teacher-view5").style.display = "none";
+                document.getElementById("student-view5").style.display = "block";
+                document.getElementById("manager-view").style.display = "none";
+            } else if (userDetails.roleName === "MANAGER") {
+                // Hiển thị đầy đủ tên và vai trò cho Manager
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+
+                // Chỉ hiển thị mục của Manager
+                document.getElementById("teacher-view").style.display = "none";
+                document.getElementById("student-view").style.display = "none";
+                document.getElementById("student-view1").style.display = "none";
+                document.getElementById("teacher-view3").style.display = "none";
+                document.getElementById("teacher-view5").style.display = "none";
+                document.getElementById("student-view5").style.display = "none";
+                document.getElementById("manager-view").style.display = "block"; // Thêm ID cho phần này
             } else {
                 console.warn("Role not recognized: ", userDetails.roleName);
             }
@@ -614,8 +599,83 @@
             console.error("User details not found in sessionStorage");
         }
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+            let url = '/application/list'; // URL mặc định.
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch applications');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const tableBody = document.getElementById('application-table-body');
+
+                    if (tableBody) {
+                        // Hiển thị bảng chung cho tất cả
+                        tableBody.innerHTML = ''; // Xóa các hàng cũ
+
+                        data.forEach(application => {
+                            const content = application.content || 'N/A';
+                            const formattedContent = wrapText(content, 50); // Hàm tự động xuống dòng
+
+                            const category = application.category || 'N/A';
+                            const formattedCategory = wrapText(category, 8); // Xử lý category
+
+                            const reply = application.reply || 'N/A';
+                            const formattedReply = wrapText(reply, 30); // Hàm tự động xuống dòng cho reply
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                    <td style="font-weight: bold;">${formattedCategory}</td>
+                    <td style="font-weight: bold;">${formattedContent}</td>
+                    <td style="font-weight: bold;">${application.created_date ? new Date(application.created_date).toLocaleDateString() : 'N/A'}</td>
+                    <td style="font-weight: bold;">${formattedReply || 'N/A'}</td>
+                    <td style="font-weight: bold;">
+                        ${application.img ? `<a href="${application.img}" target="_blank">Download</a>` : 'N/A'}
+                    </td>
+                    <td style="font-weight: bold;">${application.status || 'N/A'}</td>
+                    <td style="font-weight: bold;">
+    ${application.replied_date ? new Date(application.replied_date).toLocaleDateString() + '<br>' + new Date(application.replied_date).toLocaleTimeString() : 'N/A'}
+</td>
+                    <td style="font-weight: bold;">
+                        <button onclick="window.location.href='Reply-application.html?id=${application.id}'" class="btn btn-primary">Reply</button>
+                    </td>
+                    `;
+                            tableBody.appendChild(row);
+                        });
+                    } else {
+                        console.error('Table body not found');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching applications:', error);
+                });
+        });
+        function wrapText(text, maxLength) {
+            let result = '';
+            let currentLine = '';
+
+            const words = text.split(' '); // Chia văn bản thành các từ
+
+            words.forEach(word => {
+                if (currentLine.length + word.length + 1 > maxLength) {
+                    result += currentLine + '<br>';
+                    currentLine = word;
+                } else {
+                    currentLine += (currentLine.length ? ' ' : '') + word;
+                }
+            });
+
+            result += currentLine; // Thêm phần còn lại vào cuối
+            return result;
+        }
+    </script>
 </body>
 
 
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/student-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:43 GMT -->
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/all-student.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:41 GMT -->
 </html>

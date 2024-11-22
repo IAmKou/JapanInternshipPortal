@@ -96,7 +96,10 @@
             font-size: 18px;
             font-weight: bold;
         }
-
+        .modal-trigger {
+            display: inline-block; /* Makes the link behave like a block for easier centering */
+            text-align: center; /* Centers the text horizontally */
+        }
     </style>
 
 </head>
@@ -352,7 +355,7 @@
                                     Students</a>
                             </li>
                             <li class="nav-item">
-                                <a href="student-details.html" class="nav-link"><i
+                                <a href="users-details.html" class="nav-link"><i
                                         class="fas fa-angle-right"></i>Student Details</a>
                             </li>
                             <li class="nav-item">
@@ -548,9 +551,11 @@
         <!-- Main Body Content Start Here -->
         <div class="dashboard-content-one container">
             <!-- Create Thread Button -->
-            <button type="button" class="modal-trigger" data-toggle="modal" data-target="#sign-up" href="create-forum.html">
+            <a href="create-forum.html">
+            <button class="modal-trigger" href="create-forum.html">
                 Create Thread
             </button>
+            </a>
             <!-- Thread List Start -->
             <div id="threadList"></div>
             <!-- Thread List End -->
@@ -626,11 +631,18 @@
             threadBox.className = "thread-box";
             threadBox.innerHTML = `
                 <div class="thread-thumbnail">
-                    <img src="${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">
+                    <img src="data:image/png;base64,${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">
                 </div>
                 <div class="thread-content">
-                    <div class="thread-title"><a href="post.html?id=${thread.id}">${thread.topicName}</a></div>
-                    <div class="thread-description">${thread.description}</div>
+                    <div class="" style="display: flex">
+                        <div style="flex-grow: 8">
+                         <div class="thread-title"><a href="post.html?id=${thread.id}">${thread.topicName}</a></div>
+                        <div class="thread-description">${thread.description}</div>
+                    </div>
+                        <div class="thread-description" style="flex-grow: 2;text-align: end;">${thread.creatorName}</div>
+                </div>
+
+
                 </div>`;
             threadList.appendChild(threadBox);
         });
