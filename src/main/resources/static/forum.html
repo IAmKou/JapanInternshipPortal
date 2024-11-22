@@ -96,7 +96,10 @@
             font-size: 18px;
             font-weight: bold;
         }
-
+        .modal-trigger {
+            display: inline-block; /* Makes the link behave like a block for easier centering */
+            text-align: center; /* Centers the text horizontally */
+        }
     </style>
 
 </head>
@@ -548,9 +551,11 @@
         <!-- Main Body Content Start Here -->
         <div class="dashboard-content-one container">
             <!-- Create Thread Button -->
-            <button type="button" class="modal-trigger" data-toggle="modal" data-target="#sign-up" href="create-forum.html">
+            <a href="create-forum.html"
+            <button class="modal-trigger" href="create-forum.html">
                 Create Thread
             </button>
+            </a>
             <!-- Thread List Start -->
             <div id="threadList"></div>
             <!-- Thread List End -->
