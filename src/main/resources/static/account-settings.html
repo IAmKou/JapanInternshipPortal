@@ -280,6 +280,108 @@
                 </ul>
             </div>
         </div>
+        <div class="dashboard-content-one">
+            <div class="breadcrumbs-area">
+                <h3>Account Setting</h3>
+                <ul>
+                    <li>
+                        <a href="admin.html">Home</a>
+                    </li>
+                    <li>Setting</li>
+                </ul>
+            </div>
+            <!-- Breadcubs Area End Here -->
+            <!-- Account Settings Area Start Here -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3>User Management</h3>
+                                    <div id="successMessage" class="alert alert-success" style="display: none;" role="alert"></div>
+                                </div>
+                                <div class="dropdown">
+                                    <a aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown" href="#"
+                                       role="button">...</a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="create-account.html"><i
+                                                class="fas fa-plus text-orange-red"></i>Add</a>
+                                        <a class="dropdown-item" data-target="#standard-modal" data-toggle="modal"><i
+                                                class="fas fa-file-import text-green"></i>Import</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <form class="new-added-form">
+                                <div class="row">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12-xxxl col-12">
+                        <div class="card height-auto">
+                            <div class="card-body">
+                                <div class="heading-layout1">
+                                    <div class="item-title">
+                                        <h3>User List</h3>
+                                    </div>
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                                           aria-expanded="false">...</a>
+
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" href="#"><i
+                                                    class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                            <a class="dropdown-item" href="#"><i
+                                                    class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form class="mg-b-20">
+                                    <div class="row gutters-8">
+                                        <div class="col-lg-4 col-12 form-group">
+                                            <input type="text" placeholder="Search by Id ..." class="form-control">
+                                        </div>
+                                        <div class="col-lg-3 col-12 form-group">
+                                            <input type="text" placeholder="Search by Name ..." class="form-control">
+                                        </div>
+                                        <div class="col-lg-3 col-12 form-group">
+                                            <input type="text" placeholder="Search by Role ..." class="form-control">
+                                        </div>
+                                        <div class="col-lg-2 col-12 form-group">
+                                            <button type="submit"
+                                                    class="fw-btn-fill btn-gradient-yellow">SEARCH
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="table-responsive">
+                                    <table class="table display text-nowrap">
+                                        <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Image</th>
+                                            <th>Name</th>
+                                            <th>Role</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer-wrap-layout1">
+                <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a
+                        href="#">PsdBosS</a></div>
+            </footer>
+        </div>
     </div>
     <!-- Page Area End Here -->
     <div aria-hidden="true" class="modal fade" id="standard-modal" role="dialog"
@@ -355,119 +457,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- fetch user & update Js -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const allUserBox = document.querySelector('.all-user-box');
-        const userDetailsBox = document.querySelector('.user-details-box tbody');
-        const editButton = document.querySelector('.edit-button');
-        const saveButton = document.querySelector('.save-button');
-        let currentUser = null;
 
-        fetch('/users')
-            .then(response => response.json())
-            .then(users => {
-                users.forEach(user => {
-                    // Create user divs
-                    const userDiv = document.createElement('div');
-                    userDiv.className = 'media media-none--xs active';
-                    userDiv.innerHTML = `
-                        <div class="item-img"><img src="${user.img}" alt="user"></div>
-                        <div class="media-body space-md">
-                            <h5 class="item-title">${user.roleName === 'ADMIN' ? user.username : user.fullName}</h5>
-                            <div class="item-subtitle">${user.roleName}</div>
-                        </div>
-                    `;
-                    allUserBox.appendChild(userDiv);
-
-                    // Load user details on click
-                    userDiv.addEventListener('click', () => {
-                        currentUser = user;
-                        loadUserDetails(user);
-                        // Disable edit button for admin users
-                        editButton.disabled = (user.roleName === 'ADMIN');
-                        saveButton.style.display = 'none';
-                    });
-                });
-
-                // Load user details function
-                function loadUserDetails(user) {
-                    userDetailsBox.innerHTML = `
-                        <tr><td class="font-medium text-dark-medium">Name:</td>
-                            <td>${user.roleName === 'ADMIN' ? user.username : user.fullName}</td></tr>
-                        ${user.roleName !== 'ADMIN' ? `
-                            <tr><td class="font-medium text-dark-medium">Japan Name:</td><td>${user.jname}</td></tr>
-                            <tr><td class="font-medium text-dark-medium">Gender:</td><td>${user.gender}</td></tr>
-                            ${user.dob ? `<tr><td class="font-medium text-dark-medium">Date of Birth:</td><td>${user.dob}</td></tr>` : ''}
-                            <tr><td class="font-medium text-dark-medium">Email:</td><td>${user.email}</td></tr>
-                            <tr><td class="font-medium text-dark-medium">Phone Number:</td><td>${user.phoneNumber}</td></tr>
-                        ` : ''}
-                    `;
-                }
-
-                // Edit functionality
-                editButton.addEventListener('click', () => {
-                    if (currentUser && currentUser.roleName !== 'ADMIN') {
-                        userDetailsBox.innerHTML = `
-            <tr><td class="font-medium text-dark-medium">Name:</td>
-                <td><input type="text" value="${currentUser.fullName}" required id="name-input"></td></tr>
-            <tr><td class="font-medium text-dark-medium">Japan Name:</td>
-                <td><input type="text" value="${currentUser.jname}" required id="jname-input"></td></tr>
-            <tr><td class="font-medium text-dark-medium">Gender:</td>
-                <td>
-                    <div class="form-check-inline">
-                        <input type="radio" name="gender" value="Male" id="male" class="form-check-input" ${currentUser.gender === 'Male' ? 'checked' : ''}>
-                        <label for="male" class="form-check-label">Male</label>
-                    </div>
-                    <div class="form-check-inline">
-                        <input type="radio" name="gender" value="Female" id="female" class="form-check-input" ${currentUser.gender === 'Female' ? 'checked' : ''}>
-                        <label for="female" class="form-check-label">Female</label>
-                    </div>
-                </td></tr>
-            ${currentUser.dob ? `<tr><td class="font-medium text-dark-medium">Date of Birth:</td>
-                <td><input type="date" value="${currentUser.dob.split('T')[0]}" id="dob-input"></td></tr>` : ''}
-            <tr><td class="font-medium text-dark-medium">Email:</td>
-                <td><input type="email" required value="${currentUser.email}" id="email-input"></td></tr>
-            <tr><td class="font-medium text-dark-medium">Phone Number:</td>
-                <td><input type="text" required value="${currentUser.phoneNumber}" id="phone-input"></td></tr>
-        `;
-                        saveButton.style.display = 'inline-block';
-                    }
-                });
-
-
-                // Save changes
-                saveButton.addEventListener('click', () => {
-                    if (!currentUser) return;
-
-                    // Get new values from inputs
-                    const updatedUser = {
-                        ...currentUser,
-                        fullName: document.getElementById('name-input').value,
-                        jname: document.getElementById('jname-input')?.value || currentUser.jname,
-                        gender: document.getElementById('gender-input')?.value || currentUser.gender,
-                        dob: document.getElementById('dob-input')?.value || currentUser.dob,
-                        email: document.getElementById('email-input')?.value || currentUser.email,
-                        phoneNumber: document.getElementById('phone-input')?.value || currentUser.phoneNumber
-                    };
-
-
-                    fetch(`/users/${updatedUser.id}`, {
-                        method: 'PUT',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify(updatedUser)
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log("User updated successfully", data);
-
-                            // Reload the page to reflect the updated information
-                            window.location.reload();
-                        })
-                        .catch(error => console.error('Error updating user:', error));
-                });
-            });
-    });
-</script>
 <!-- modal -->
 <script>
     document.getElementById('import').addEventListener('submit', function (event) {
@@ -558,6 +548,95 @@
         }
     } else {
         console.error("User details not found in sessionStorage");
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tableBody = document.querySelector('.table tbody');
+
+        fetch(`/users`) // Use backticks here for the URL if needed
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(users => {
+                console.log(users); // Check what data you get from the backend
+                users.forEach(user => {  // Ensure 'users' is an array here
+                    const row = document.createElement('tr');
+
+                    // id cell
+                    const idCell = document.createElement('td');
+                    idCell.textContent = user.id; // Correcting to 'user'
+                    row.appendChild(idCell);
+
+                    // image cell
+                    const imgCell = document.createElement('td');
+                    const imgElement = document.createElement('img');
+                    imgElement.src = user.img;  // Correcting to 'user'
+                    imgElement.alt = "User Image";  // Alt text should be relevant
+                    imgElement.style.width = "50px";
+                    imgElement.style.height = "50px";
+                    imgElement.style.objectFit = "cover";
+                    imgCell.appendChild(imgElement);
+                    row.appendChild(imgCell);
+
+                    // name cell
+                    const nameCell = document.createElement('td');
+                    if (user.roleName === "ADMIN") {
+                        nameCell.textContent = user.username;  // Correcting to 'user'
+                    } else {
+                        nameCell.textContent = user.fullName;  // Correcting to 'user'
+                    }
+                    row.appendChild(nameCell);
+
+                    // gender (or role) cell
+                    const roleCell = document.createElement('td');
+                    roleCell.textContent = user.roleName;  // Correcting to 'user'
+                    row.appendChild(roleCell);
+
+                    // Actions cell
+                    const actionsCell = document.createElement('td');
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'dropdown';
+                    const dropdownToggle = document.createElement('a');
+                    dropdownToggle.href = '#';
+                    dropdownToggle.className = 'dropdown-toggle';
+                    dropdownToggle.setAttribute('data-toggle', 'dropdown');
+                    dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
+                    dropdown.appendChild(dropdownToggle);
+
+                    const dropdownMenu = document.createElement('div');
+                    dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
+                    dropdownMenu.innerHTML = `
+                    <a class="dropdown-item" href="#"><i class="fas fa-glasses text-dark-pastel-green"></i>User Details</a>
+                `;
+                    dropdown.appendChild(dropdownMenu);
+                    actionsCell.appendChild(dropdown);
+                    row.appendChild(actionsCell);
+
+                    // Append the row to the table body
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching users:', error));
+    });
+</script>
+
+<script>
+    // Function to extract query parameter by name
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+    // Check if there's a success message and display it
+    const message = getQueryParam("message");
+    if (message) {
+        const successMessageElement = document.getElementById("successMessage");
+        successMessageElement.innerText = message;  // Set the message text
+        successMessageElement.style.display = "block";  // Make the message visible
     }
 </script>
 
