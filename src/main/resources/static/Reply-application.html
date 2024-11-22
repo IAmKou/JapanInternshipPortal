@@ -82,8 +82,8 @@
                         <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                             aria-expanded="false">
                             <div class="admin-title">
-                                <h5 class="item-title">Stevne Zone</h5>
-                                <span>Admin</span>
+                                <h5 class="item-title userFullName"></h5>
+                                <span class="userRole"></span>
                             </div>
                             <div class="admin-img">
                                 <img src="img/figure/admin.jpg" alt="Admin">
@@ -91,7 +91,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="item-header">
-                                <h6 class="item-title">Steven Zone</h6>
+                                <h6 class="item-title userFullName"></h6>
                             </div>
                             <div class="item-content">
                                 <ul class="settings-list">
@@ -241,51 +241,221 @@
         <div class="dashboard-page-one">
             <!-- Sidebar Area Start Here -->
             <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
-                <div class="mobile-sidebar-header d-md-none">
+               <div class="mobile-sidebar-header d-md-none">
                     <div class="header-logo">
                         <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
                     </div>
-                </div>
+               </div>
                 <div class="sidebar-menu-content">
                     <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="manager.html" class="nav-link"><i class="fas fa-angle-right"></i>Manager</a>
+                                    <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="student.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Students</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="manager.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="teacher.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Teachers</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
+                            <ul class="nav sub-group-menu sub-group-active">
+                                <li class="nav-item">
+                                    <a href="all-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                        Students</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="student-details.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Student Details</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="admit-form.html" class="nav-link menu-active"><i
+                                            class="fas fa-angle-right"></i>Admission Form</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="student-promotion.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Student Promotion</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i
+                                    class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="all-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                        Teachers</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="teacher-details.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Teacher Details</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="add-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                        Teacher</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="teacher-payment.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Payment</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Parents</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="all-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                        Parents</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="parents-details.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Parents Details</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="add-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                        Parent</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Library</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                        Book</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                        Book</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-technological"></i><span>Acconunt</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
+                                        Collection</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="Add-material.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Expenses</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="ReplyApplication.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                        Expenses</a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i
                                     class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                            <ul class="nav sub-group-menu sub-group-active">
+                            <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="add-class.html" class="nav-link menu-active"><i class="flaticon-classmates"></i>Add
-                                        New Class</a>
+                                    <a href="all-class-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                        Classes</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="class-list.html" class="nav-link menu-active"><i class="flaticon-calendar"></i><span>All Class</span></a>
+                                    <a href="add-class.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                        Class</a>
                                 </li>
                             </ul>
                         </li>
-
+                        <li class="nav-item">
+                            <a href="all-subject.html" class="nav-link"><i
+                                    class="flaticon-open-book"></i><span>Subject</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="class-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class
+                                    Routine</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="student-attendence.html" class="nav-link"><i
+                                    class="flaticon-checklist"></i><span>Attendence</span></a>
+                        </li>
                         <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
+                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
                                     <a class="nav-link" href="exam-schedule.html"><i class="fas fa-angle-right"></i>Exam
                                         Schedule</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="Update-student-mark-report.html"><i
+                                            class="fas fa-angle-right"></i>Exam Grades</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/markreport/view" class="nav-link menu-active"><i class="fas fa-angle-right"></i>View Exam
+                                        Grades</a>
+                                </li>
                             </ul>
+
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="transport.html" class="nav-link"><i
+                                    class="flaticon-bus-side-view"></i><span>Transport</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="hostel.html" class="nav-link"><i class="flaticon-bed"></i><span>Hostel</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="notice-board.html" class="nav-link"><i
+                                    class="flaticon-script"></i><span>Notice</span></a>
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                             <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="application-list.html" class="nav-link"><i class="fas fa-angle-right"></i>List application</a>
+
+                                <li class="nav-item" id="manager-view">
+                                    <a href="View-list-application.html" class="nav-link"><i class="fas fa-angle-right"></i>List Applications</a>
                                 </li>
                             </ul>
+                        </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-menu-1"></i><span>UI Elements</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="notification-alart.html" class="nav-link"><i class="fas fa-angle-right"></i>Alart</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="button.html" class="nav-link"><i class="fas fa-angle-right"></i>Button</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="grid.html" class="nav-link"><i class="fas fa-angle-right"></i>Grid</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="modal.html" class="nav-link"><i class="fas fa-angle-right"></i>Modal</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="progress-bar.html" class="nav-link"><i class="fas fa-angle-right"></i>Progress Bar</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="ui-tab.html" class="nav-link"><i class="fas fa-angle-right"></i>Tab</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="ui-widget.html" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Widget</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="map.html" class="nav-link"><i
+                                    class="flaticon-planet-earth"></i><span>Map</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="account-settings.html" class="nav-link"><i
+                                    class="flaticon-settings"></i><span>Account</span></a>
                         </li>
                     </ul>
                 </div>
@@ -309,42 +479,39 @@
                         <form class="new-added-form">
                             <div class="row">
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label>Application type </label>
-                                    <input type="text" placeholder="" class="form-control" readonly>
+                                    <label style="font-weight: bold;">Name </label>
+                                    <input type="text" id="name" placeholder="" class="form-control" readonly>
+                                </div>
+
+                                <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                    <label style="font-weight: bold;">Application type</label>
+                                    <input type="text" id="applicationType" placeholder="" class="form-control" readonly>
+                                </div>
+
+                                <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                    <label style="font-weight: bold;">Create Date</label>
+                                    <input type="text" id="createDate" placeholder="" class="form-control" readonly>
+                                </div>
+                                <div class="col-lg-6 col-12 form-group">
+                                    <label style="font-weight: bold;">Purpose</label>
+                                    <textarea class="textarea form-control"  id="content" cols="8" rows="5"></textarea>
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label>Student Roll no (MSSV) </label>
-                                    <input type="text" placeholder="" class="form-control " readonly>
-                                </div>
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label>Student Name </label>
-                                    <input type="text" placeholder="" class="form-control" readonly>
-                                </div>
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label>Status </label>
-                                    <select class="select2">
+                                    <label for="status" style="font-weight: bold;">Status</label>
+                                    <select id="status" name="status" class="select2" >
                                         <option value="">Please Select Status *</option>
-                                        <option value="1">Approved</option>
-                                        <option value="2">Rejected</option>
+                                        <option value="Approved">Approved</option>
+                                        <option value="Rejected"    >Rejected</option>
                                     </select>
                                 </div>
 
-
-
-
-
                                 <div class="col-lg-6 col-12 form-group">
-                                    <label>Respond</label>
-                                    <textarea class="textarea form-control" name="message" id="form-message" cols="10"
-                                        rows="9"></textarea>
+                                    <label style="font-weight: bold;">Respond</label>
+                                    <textarea class="textarea form-control"  id="reply" cols="8" rows="5"></textarea>
                                 </div>
-                                <div class="col-lg-6 col-12 form-group mg-t-30">
-                                    <label class="text-dark-medium">File attach:</label>
-                                    <input type="file" class="form-control-file">
-                                </div>
-                                <div class="col-12 form-group mg-t-8">
-                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
 
+                                <div class="col-12 form-group mg-t-8">
+                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark"  id="saveChanges">Save</button>
                                 </div>
                             </div>
                         </form>
@@ -398,6 +565,7 @@
             document.getElementById("teacher-view").style.display = "none";
             document.getElementById("student-view").style.display = "none";
         } else if (userDetails.roleName === "TEACHER") {
+
             // Hiển thị đầy đủ tên và vai trò cho giáo viên
             userFullNameElements.forEach(element => {
                 element.textContent = userDetails.fullName;
@@ -407,9 +575,13 @@
             });
 
             // Chỉ hiển thị mục của giáo viên
+            document.getElementById("teacher-view5").style.display = "block";
+            document.getElementById("student-view5").style.display = "none";
             document.getElementById("teacher-view").style.display = "block";
             document.getElementById("student-view").style.display = "none";
             document.getElementById("student-view1").style.display = "none";
+            document.getElementById("teacher-view3").style.display = "block";
+            document.getElementById("manager-view").style.display = "none";
         } else if (userDetails.roleName === "STUDENT") {
             // Hiển thị đầy đủ tên và vai trò cho học sinh
             userFullNameElements.forEach(element => {
@@ -423,12 +595,99 @@
             document.getElementById("teacher-view").style.display = "none";
             document.getElementById("student-view").style.display = "block";
             document.getElementById("student-view1").style.display = "block";
+            document.getElementById("teacher-view3").style.display = "none";
+            document.getElementById("teacher-view5").style.display = "none";
+            document.getElementById("student-view5").style.display = "block";
+            document.getElementById("manager-view").style.display = "none";
+        } else if (userDetails.roleName === "MANAGER") {
+            // Hiển thị đầy đủ tên và vai trò cho Manager
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+
+            // Chỉ hiển thị mục của Manager
+            document.getElementById("teacher-view").style.display = "none";
+            document.getElementById("student-view").style.display = "none";
+            document.getElementById("student-view1").style.display = "none";
+            document.getElementById("teacher-view3").style.display = "none";
+            document.getElementById("teacher-view5").style.display = "none";
+            document.getElementById("student-view5").style.display = "none";
+            document.getElementById("manager-view").style.display = "block"; // Thêm ID cho phần này
         } else {
             console.warn("Role not recognized: ", userDetails.roleName);
         }
     } else {
         console.error("User details not found in sessionStorage");
     }
+</script>
+<script>
+    // Lấy ID từ URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const applicationId = urlParams.get('id'); // Lấy 'id' từ URL
+
+    // Kiểm tra nếu applicationId không hợp lệ
+
+        // Gọi API để lấy chi tiết ứng dụng và điền vào form
+        fetch(`/application/details/${applicationId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    // Điền thông tin vào form
+                    document.getElementById("name").value = data.name;
+                    document.getElementById("applicationType").value = data.category;
+                    document.getElementById("content").value = data.content;
+
+                    // Format ngày tạo
+                    const createdDate = new Date(data.created_date);
+                    const formattedDate = `${String(createdDate.getDate()).padStart(2, '0')}/${String(createdDate.getMonth() + 1).padStart(2, '0')}/${createdDate.getFullYear()}`;
+                    document.getElementById("createDate").value = formattedDate;
+
+                    // Gán trạng thái mặc định
+                    document.getElementById("status").value = data.status;
+                    document.getElementById("reply").value = data.reply || ''; // Tránh null
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi khi lấy thông tin ứng dụng:', error);
+                alert('Không thể tải chi tiết ứng dụng.');
+            });
+
+
+
+
+</script>
+<script>
+    document.getElementById("saveChanges").addEventListener("click", function(event) {
+        event.preventDefault();  // Ngừng reload trang
+
+        const applicationId = new URLSearchParams(window.location.search).get('id');
+        const status = document.getElementById("status").value;
+        const reply = document.getElementById("reply").value;
+
+        fetch(`/application/update/${applicationId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                status: status, // Đảm bảo gửi đúng giá trị
+                reply: reply
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);  // Hiển thị thông báo thành công hoặc lỗi
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi khi cập nhật:', error);
+                alert('Có lỗi xảy ra khi cập nhật thông tin.');
+            });
+    });
 </script>
 
 

@@ -409,7 +409,7 @@
                   Students</a>
               </li>
               <li class="nav-item">
-                <a href="student-details.html" class="nav-link"><i
+                <a href="users-details.html" class="nav-link"><i
                         class="fas fa-angle-right"></i>Student Details</a>
               </li>
               <li class="nav-item">
@@ -617,11 +617,15 @@
     <!-- Main Body Content Start Here -->
 
     <div class="post-container">
+      <div style="display: flex" >
       <!-- Post Header -->
-      <div class="post-header"  id="threadTitle">
+      <div class="post-header" style="flex-grow: 8" id="threadTitle">
 <!--        <h2>Thread Post Title</h2>-->
       </div>
+        <div class="post-header" style="flex-grow: 2"  id="threadMaker">
 
+      </div>
+      </div>
       <!-- Image Section -->
       <div class="post-image" id="threadImage">
 <!--        <img src="image-url.jpg" alt="Post Image" >-->
@@ -779,8 +783,10 @@
     const threadTitle = document.getElementById('threadTitle');
     const threadDescription = document.getElementById('threadDescription');
     const threadImage = document.getElementById('threadImage');
+    const threadMaker = document.getElementById('threadMaker');
     threadTitle.innerHTML = `<h2>${thread.topicName}</h2>`;
-    threadDescription.innerHTML = `<p>${thread.description}</p>`;
+    threadDescription.innerHTML = `<p>${thread.description}</p> `;
+    threadMaker.innerHTML = `<p style="float: bottom">${thread.creatorName}</p>`;
     threadImage.innerHTML = `<img src="data:image/png;base64,${thread.image}"/>`
   }
 </script>

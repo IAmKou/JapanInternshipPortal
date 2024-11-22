@@ -72,7 +72,7 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="img" >Profile Image</label>
-                        <input type="text" class="form-control" placeholder="link image" name="img" id="img" >
+                        <input type="file" class="form-control" name="img" id="img" >
                     </div>
                 </div>
 
@@ -94,7 +94,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-12 text-center">
                         <div class="col-md-4 mx-auto">
-                            <button type="submit" class="login-btn btn btn-primary btn-block">Create</button>
+                            <button type="submit" id="submit-btn" class="login-btn btn btn-primary btn-block">Create</button>
                         </div>
                     </div>
                 </div>
@@ -138,6 +138,125 @@
             .catch(error => console.error('Error:', error));
     });
 </script>
+<!-- validation script -->
+<script>
+    // Function to validate email
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Generic email regex
+        const eduEmailRegex = /^[^\s@]+@fpt\.edu\.vn$/; // Regex for emails ending with @fpt.edu.vn
 
+        // Check if the email matches either generic or educational domain
+        return emailRegex.test(email) || eduEmailRegex.test(email);
+    }
+
+    // Function to validate phone number
+    function isValidPhoneNumber(phone) {
+        const phoneRegex = /^0\d{4,12}$/; // Must start with '0' and have 5-13 digits
+        return phoneRegex.test(phone);
+    }
+
+    // Function to check if a valid gender is selected
+    function isGenderSelected() {
+        return document.querySelector('input[name="gender"]:checked') !== null;
+    }
+
+    // Function to check if the date is valid and the user is at least 18 years old
+    function isValidDateOfBirth(date) {
+        const today = new Date();
+        const dob = new Date(date);
+
+        // Check if the selected date is not in the future
+        if (dob > today) {
+            return false;
+        }
+
+        // Calculate age by subtracting the birth year from the current year
+        let age = today.getFullYear() - dob.getFullYear();
+        const monthDifference = today.getMonth() - dob.getMonth();
+
+        // Adjust for whether the birthdate has passed this year
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < dob.getDate())) {
+            age--;
+        }
+
+        // Ensure the user is at least 18 years old
+        return age >= 18;
+    }
+
+    // Function to validate file input for images (excluding GIFs and videos)
+    function validateImageFile(inputId, allowedTypes, maxSizeMB) {
+        const fileInput = document.getElementById(inputId);
+        const file = fileInput.files[0]; // Get the first selected file
+
+        if (!file) {
+            alert(`Please select a file for ${inputId}.`);
+            return false;
+        }
+
+        // Check file type
+        const fileType = file.type;
+        if (!allowedTypes.includes(fileType)) {
+            alert(`Invalid file type for ${inputId}. Allowed types: ${allowedTypes.join(', ')}`);
+            return false;
+        }
+
+        // Check file size
+        const maxSizeBytes = maxSizeMB * 1024 * 1024; // Convert MB to bytes
+        if (file.size > maxSizeBytes) {
+            alert(`File size for ${inputId} exceeds the limit of ${maxSizeMB} MB.`);
+            return false;
+        }
+
+        return true;
+    }
+
+    // Add event listener to the form
+    document.querySelector('.login-form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent form submission for validation
+
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const dob = document.getElementById('DoB').value.trim();
+
+        // Validate email
+        if (!isValidEmail(email)) {
+            alert('Please enter a valid email address (e.g., abc@domain.com or abc@fpt.edu.vn).');
+            return;
+        }
+
+        // Validate phone number
+        if (!isValidPhoneNumber(phone)) {
+            alert('Please enter a valid phone number starting with 0, containing 5 to 13 digits.');
+            return;
+        }
+
+        // Validate gender selection
+        if (!isGenderSelected()) {
+            alert('Please select your gender.');
+            return;
+        }
+
+        // Validate date of birth - must not be empty and must be at least 18 years old
+        if (!dob) {
+            alert('Please enter your date of birth.');
+            return;
+        }
+        if (!isValidDateOfBirth(dob)) {
+            alert('You must be at least 18 years old to register.');
+            return;
+        }
+
+        // Allowed image types (excluding GIFs)
+        const allowedImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+        // Validate profile image
+        const profileImageValid = validateImageFile('img', allowedImageTypes, 2); // Allow JPEG and PNG up to 2 MB
+        if (!profileImageValid) return;
+
+        // If all validations pass, disable the button and proceed with form submission
+        this.submit();
+        disableButton();
+    });
+</script>
 </body>
 </html>

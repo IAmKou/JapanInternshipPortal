@@ -15,16 +15,27 @@ public class ThreadDTO {
     private Date dateCreated;
     private String description;
     private int creatorId;
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    private String creatorName;
     private byte[] image;
 
     public ThreadDTO() {}
 
-    public ThreadDTO(int id, String topicName, Date dateCreated, String description, int creatorId, byte[] image) {
+    public ThreadDTO(int id, String topicName, Date dateCreated, String description, int creatorId, byte[] image, String creatorName) {
         this.id = id;
         this.topicName = topicName;
         this.dateCreated = dateCreated;
         this.description = description;
         this.creatorId = creatorId;
+        this.creatorName = creatorName;
         this.image = image;
     }
 

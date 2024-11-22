@@ -38,3 +38,4 @@ out/
 
 # Ignore environment configuration
 src/main/resources/application.yml
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
