@@ -1,10 +1,12 @@
 <!doctype html>
 <html class="no-js" lang="">
 
+
+<!-- Mirrored from admit-form.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:43 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Forum Page</title>
+    <title>Create A Thread</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -19,86 +21,16 @@
     <link rel="stylesheet" href="css/all.min.css">
     <!-- Flaticon CSS -->
     <link rel="stylesheet" href="fonts/flaticon.css">
-    <!-- Full Calender CSS -->
-    <link rel="stylesheet" href="css/fullcalendar.min.css">
     <!-- Animate CSS -->
     <link rel="stylesheet" href="css/animate.min.css">
+    <!-- Select 2 CSS -->
+    <link rel="stylesheet" href="css/select2.min.css">
+    <!-- Date Picker CSS -->
+    <link rel="stylesheet" href="css/datepicker.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
-
-    <style>
-        .thread-box {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            background-color: #f9f9f9;
-        }
-
-        .thread-thumbnail {
-            width: 100px;
-            height: 100px;
-            background-color: #ccc;
-            display: inline-block;
-            vertical-align: top;
-        }
-
-        .thread-content {
-            display: inline-block;
-            margin-left: 20px;
-            vertical-align: top;
-            width: calc(100% - 140px);
-        }
-
-        .thread-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .thread-description {
-            color: #555;
-            margin-bottom: 10px;
-        }
-
-        .create-thread-btn {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
-
-        .create-thread-btn:hover {
-            background-color: #0056b3;
-        }
-
-        .page-btn {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            font-size: 16px;
-            border-radius: 5px;
-            margin: 0 10px;
-            cursor: pointer;
-        }
-        .page-btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-        #pageNumber {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-    </style>
-
 </head>
 
 <body>
@@ -125,8 +57,7 @@
             </div>
         </div>
         <div class="d-md-none mobile-nav-bar">
-            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse"
-                    data-target="#mobile-navbar" aria-expanded="false">
+            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse" data-target="#mobile-navbar" aria-expanded="false">
                 <i class="far fa-arrow-alt-circle-down"></i>
             </button>
             <button type="button" class="navbar-toggler sidebar-toggle-mobile">
@@ -134,7 +65,6 @@
             </button>
         </div>
         <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
-            <!-- Search Bar Start Here -->
             <ul class="navbar-nav">
                 <li class="navbar-item header-search-bar">
                     <div class="input-group stylish-input-group">
@@ -143,14 +73,11 @@
                                     <span class="flaticon-search" aria-hidden="true"></span>
                                 </button>
                             </span>
-                        <label>
-                            <input type="text" class="form-control" placeholder="Find Something . . .">
-                        </label>
+                        <input type="text" class="form-control" placeholder="Find Something . . .">
                     </div>
                 </li>
             </ul>
             <ul class="navbar-nav">
-                <!-- Profile Dropdown -->
                 <li class="navbar-item dropdown header-admin">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
@@ -170,15 +97,13 @@
                             <ul class="settings-list">
                                 <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
                                 <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
-                                <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
-                                </li>
+                                <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a></li>
                                 <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
                                 <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
                     </div>
                 </li>
-                <!-- Messages Dropdown -->
                 <li class="navbar-item dropdown header-message">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
@@ -189,7 +114,7 @@
 
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="item-header">
-                            <h6 class="item-title">05 Messages</h6>
+                            <h6 class="item-title">05 Message</h6>
                         </div>
                         <div class="item-content">
                             <div class="media">
@@ -203,7 +128,8 @@
                                             <span class="item-time">18:30</span>
                                         </a>
                                     </div>
-                                    <p>What is the reason for buying this item?</p>
+                                    <p>What is the reason of buy this item.
+                                        Is it usefull for me.....</p>
                                 </div>
                             </div>
                             <div class="media">
@@ -254,7 +180,6 @@
                         </div>
                     </div>
                 </li>
-                <!-- Notifications Dropdown -->
                 <li class="navbar-item dropdown header-notification">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
@@ -265,7 +190,7 @@
 
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="item-header">
-                            <h6 class="item-title">03 Notifications</h6>
+                            <h6 class="item-title">03 Notifiacations</h6>
                         </div>
                         <div class="item-content">
                             <div class="media">
@@ -273,8 +198,8 @@
                                     <i class="fas fa-check"></i>
                                 </div>
                                 <div class="media-body space-sm">
-                                    <div class="post-title">Complete Today's Task</div>
-                                    <span>1 Min ago</span>
+                                    <div class="post-title">Complete Today Task</div>
+                                    <span>1 Mins ago</span>
                                 </div>
                             </div>
                             <div class="media">
@@ -298,16 +223,14 @@
                         </div>
                     </div>
                 </li>
-
-                <!-- Language Dropdown -->
                 <li class="navbar-item dropdown header-language">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
                        data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#">English</a>
                         <a class="dropdown-item" href="#">Spanish</a>
-                        <a class="dropdown-item" href="#">French</a>
-                        <a class="dropdown-item" href="#">Chinese</a>
+                        <a class="dropdown-item" href="#">Franchis</a>
+                        <a class="dropdown-item" href="#">Chiness</a>
                     </div>
                 </li>
             </ul>
@@ -346,7 +269,7 @@
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
                                 <a href="all-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
                                     Students</a>
@@ -356,7 +279,7 @@
                                         class="fas fa-angle-right"></i>Student Details</a>
                             </li>
                             <li class="nav-item">
-                                <a href="admit-form.html" class="nav-link"><i
+                                <a href="admit-form.html" class="nav-link menu-active"><i
                                         class="fas fa-angle-right"></i>Admission Form</a>
                             </li>
                             <li class="nav-item">
@@ -424,6 +347,14 @@
                                 <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
                                     Collection</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="Add-material.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Expenses</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="ReplyApplication.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                    Expenses</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
@@ -453,6 +384,20 @@
                                 class="flaticon-checklist"></i><span>Attendence</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
+                                    Schedule</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="Update-student-mark-report.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
+                                    Grades</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
@@ -461,29 +406,7 @@
                             <li class="nav-item" id="teacher-view">
                                 <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
                             </li>
-                            <li class="nav-item" id="student-view">
-                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
-                            </li>
-                            <li class="nav-item" id="student-view1">
-                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list materials</a>
-                            </li>
                         </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
-                            </li>
-
-                        </ul>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create Thread</a>
-                            </li>
-
-                        </ul>
-
                     </li>
                     <li class="nav-item">
                         <a href="transport.html" class="nav-link"><i
@@ -524,8 +447,7 @@
                                 <a href="modal.html" class="nav-link"><i class="fas fa-angle-right"></i>Modal</a>
                             </li>
                             <li class="nav-item">
-                                <a href="progress-bar.html" class="nav-link"><i class="fas fa-angle-right"></i>Progress
-                                    Bar</a>
+                                <a href="progress-bar.html" class="nav-link"><i class="fas fa-angle-right"></i>Progress Bar</a>
                             </li>
                             <li class="nav-item">
                                 <a href="ui-tab.html" class="nav-link"><i class="fas fa-angle-right"></i>Tab</a>
@@ -548,128 +470,103 @@
             </div>
         </div>
         <!-- Sidebar Area End Here -->
-        <!-- Main Body Content Start Here -->
-        <div class="dashboard-content-one container">
-            <!-- Create Thread Button -->
-            <button type="button" class="modal-trigger" data-toggle="modal" data-target="#sign-up">
-                Create Thread
-            </button>
-            <!-- Thread List Start -->
-            <div id="threadList"></div>
-<!--            <div class="thread-box">-->
-<!--                <div class="thread-thumbnail"></div>-->
-<!--                <div class="thread-content">-->
-<!--                    <div class="thread-title">Thread 1: Welcome to the Forum</div>-->
-<!--                    <div class="thread-description">This is the introductory thread where you can introduce yourself.-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <h3>Create Thread</h3>
+                <ul>
+                    <li>
+                        <a href="admin.html">Home</a>
+                    </li>
+                    <li>Create Thread</li>
+                </ul>
+            </div>
+            <!-- Breadcubs Area End Here -->
+            <!-- Admit Form Area Start Here -->
+            <div class="card height-auto">
+                <div class="card-body">
+                    <div class="heading-layout1">
+                        <div class="item-title">
+                            <h3>Creating A Thread</h3>
+                        </div>
 
-<!--            <div class="thread-box">-->
-<!--                <div class="thread-thumbnail"></div>-->
-<!--                <div class="thread-content">-->
-<!--                    <div class="thread-title">Thread 2: General Discussion</div>-->
-<!--                    <div class="thread-description">Feel free to discuss anything related to the forum's topic.</div>-->
-<!--                </div>-->
-<!--            </div>-->
+                        <div class="dropdown">
+                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                               aria-expanded="false">...</a>
 
-<!--            <div class="thread-box">-->
-<!--                <div class="thread-thumbnail"></div>-->
-<!--                <div class="thread-content">-->
-<!--                    <div class="thread-title">Thread 3: Feedback and Suggestions</div>-->
-<!--                    <div class="thread-description">We'd love to hear your thoughts on how to improve the forum.</div>-->
-<!--                </div>-->
-<!--            </div>-->
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#"><i
+                                        class="fas fa-times text-orange-red"></i>Close</a>
+                                <a class="dropdown-item" href="#"><i
+                                        class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                <a class="dropdown-item" href="#"><i
+                                        class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                            </div>
+                        </div>
+                    </div>
+                    <form id="materialForm" action="materials/create" method="POST" enctype="multipart/form-data" class="new-added-form">
+                        <div class="row">
+                            <!-- Hidden input for user_id-->
+                            <input type="hidden" name="teacher_id" id="userId" value="">
 
-<!--            <div class="thread-box">-->
-<!--                <div class="thread-thumbnail"></div>-->
-<!--                <div class="thread-content">-->
-<!--                    <div class="thread-title">Thread 4: Feedback and Suggestions</div>-->
-<!--                    <div class="thread-description">We'd love to hear your thoughts on how to improve the forum.</div>-->
-<!--                </div>-->
-<!--            </div>-->
+                            <div class="col-7 form-group">
+                                <label>Title</label>
+                                <input type="text" name="title" placeholder="Enter title" class="form-control">
+                            </div>
 
-<!--            <div class="thread-box">-->
-<!--                <div class="thread-thumbnail"></div>-->
-<!--                <div class="thread-content">-->
-<!--                    <div class="thread-title">Thread 5: Feedback and Suggestions</div>-->
-<!--                    <div class="thread-description">We'd love to hear your thoughts on how to improve the forum.</div>-->
-<!--                </div>-->
-<!--            </div>-->
-            <!-- Thread List End -->
+                            <div class="col-7 form-group">
+                                <label>Content</label>
+                                <textarea class="textarea form-control" name="content" cols="10" rows="9"></textarea>
+                            </div>
 
-            <!-- Pagination Controls -->
-            <div class="pagination-controls text-center" style="margin-top: 20px;">
-                <button id="prevPage" class="page-btn" onclick="changePage(-1)">&laquo;</button>
-                <span id="pageNumber">1</span>
-                <button id="nextPage" class="page-btn" onclick="changePage(1)">&raquo;</button>
+                            <div class="col-12 form-group">
+                                <label class="text-dark-medium">File Attach:</label>
+                                <input type="file" name="img" class="form-control-file">
+                            </div>
+
+                            <div class="col-lg-6 col-12 form-group">
+                                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
+                                <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+
+
+
+                </div>
             </div>
 
-        </div>
-
-
-        <!-- Main Body Content End Here -->
-    </div>
-
-    <div class="ui-modal-box">
-        <div class="modal-box">
-            <div class="modal sign-up-modal fade" id="sign-up" tabindex="-1" role="dialog"
-                 aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
+            <!-- Modal -->
+            <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
                     <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Confirm Save</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                         <div class="modal-body">
-                            <div class="close-btn">
-                                <button type="button" class="close" data-dismiss="modal"
-                                        aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="item-logo">
-                                <img src="img/logo2.png" alt="logo">
-                            </div>
-                            <form class="login-form">
-                              <form action="/upload" method="post" enctype="multipart/form-data">
-                                <input type="file" id="imageUpload" name="image" accept="image/*" required>
-                                <button type="submit">Upload</button>
-                              </form>
-                                <div class="row gutters-15">
-                                    <div class="form-group col-12">
-                                        <input type="text" placeholder="Thread Name" class="form-control">
-                                    </div>
-                                  <div class="form-group col-12">
-                                    <textarea placeholder="Description" class="form-control" rows="8" ></textarea>
-                                  </div>
-                                    <div class="form-group col-12">
-                                        <button type="submit" class="login-btn">Create
-                                            Thread
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
+                            Bạn có chắc chắn muốn lưu lại thông tin này không?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                            <button type="button" class="btn btn-primary" onclick="submitForm()">Xác nhận</button>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+            <!-- Admit Form Area End Here -->
+            <footer class="footer-wrap-layout1">
+                <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a
+                        href="#">PsdBosS</a></div>
+            </footer>
         </div>
     </div>
-
-    <!-- Footer Start Here -->
-    <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
-        <div style="background-color: #ec9006; padding: 15px;">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
-                            rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer End Here -->
+    <!-- Page Area End Here -->
 </div>
-<!-- Page Area End Here -->
-
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -680,192 +577,35 @@
 <script src="js/bootstrap.min.js"></script>
 <!-- Select 2 Js -->
 <script src="js/select2.min.js"></script>
-<!-- Scroll Up Js -->
-<script src="js/jquery.scrollUp.min.js"></script>
 <!-- Date Picker Js -->
 <script src="js/datepicker.min.js"></script>
-<!-- Data Table Js -->
-<script src="js/jquery.dataTables.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
 
+</body>
 <script>
-    let currentPage = 1;
-    const threadsPerPage = 5; // Number of threads per page
-    const threadList = document.getElementById("threadList");
-    const pageNumber = document.getElementById("pageNumber");
-    const prevPageButton = document.getElementById("prevPage");
-    const nextPageButton = document.getElementById("nextPage");
-    // Fetch threads from the server
-    function fetchThreads(page) {
-        fetch(`/thread?page=${page}&size=${threadsPerPage}`)
-            .then(response => response.json())
-            .then(data => {
-                renderThreads(data.content);
-                updatePagination(data.totalPages);
-            })
-            .catch(error => console.error("Error fetching threads:", error));
+
+
+    document.getElementById("materialForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Ngăn chặn gửi form ngay lập tức
+        $('#confirmationModal').modal('show'); // Hiển thị modal xác nhận
+    });
+
+    // Hàm để gửi biểu mẫu khi người dùng nhấn "Xác nhận" trong modal
+    function submitForm() {
+        $('#confirmationModal').modal('hide'); // Đóng modal
+
+        // Gửi form
+        document.getElementById("materialForm").submit();
     }
-
-    // Render threads on the page
-    function renderThreads(threads) {
-        threadList.innerHTML = ""; // Clear existing threads
-        threads.forEach(thread => {
-            const threadBox = document.createElement("div");
-            threadBox.className = "thread-box";
-            threadBox.innerHTML = `
-                <div class="thread-thumbnail">
-                    <img src="${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">
-                </div>
-                <div class="thread-content">
-                    <div class="thread-title"><a href="post.html?id=${thread.id}">${thread.topicName}</a></div>
-                    <div class="thread-description">${thread.description}</div>
-                </div>`;
-            threadList.appendChild(threadBox);
-        });
-    }
-
-    // Update pagination controls
-    function updatePagination(total) {
-        // console.log(`Updating pagination. Total Pages: ${total}, Current Page: ${currentPage}`);  // Debug log
-
-        // Disable or enable buttons based on the current page
-        prevPageButton.disabled = currentPage === 1;
-        nextPageButton.disabled = currentPage === total;
-
-        // Log button states for debugging
-        // console.log("Prev Button Disabled:", prevPageButton.disabled);
-        // console.log("Next Button Disabled:", nextPageButton.disabled);
-    }
-
-    // Change page on button click
-    function changePage(direction) {
-        currentPage += direction;
-        pageNumber.textContent = currentPage;
-        fetchThreads(currentPage);
-    }
-
-    // Initialize pagination on page load
-    document.addEventListener("DOMContentLoaded", () => fetchThreads(currentPage));
 </script>
 
-
-<!--<script>-->
-<!--    let currentPage = 1;-->
-<!--    const threadsPerPage = 5;-->
-<!--    const threads = Array.from(document.querySelectorAll('.thread-box'));-->
-<!--    const totalPages = Math.ceil(threads.length / threadsPerPage);-->
-
-<!--    function showPage(page) {-->
-<!--        // Hide all threads-->
-<!--        threads.forEach(thread => thread.style.display = 'none');-->
-
-<!--        // Show only the threads for the current page-->
-<!--        const start = (page - 1) * threadsPerPage;-->
-<!--        const end = start + threadsPerPage;-->
-<!--        threads.slice(start, end).forEach(thread => thread.style.display = 'block');-->
-
-<!--        // Update page number and button states-->
-<!--        document.getElementById('pageNumber').textContent = page;-->
-<!--        document.getElementById('prevPage').disabled = page === 1;-->
-<!--        document.getElementById('nextPage').disabled = page === totalPages;-->
-<!--    }-->
-
-<!--    // Change page based on button click-->
-<!--    function changePage(direction) {-->
-<!--        currentPage += direction;-->
-<!--        showPage(currentPage);-->
-<!--    }-->
-
-<!--    // Initialize pagination on page load-->
-<!--    document.addEventListener('DOMContentLoaded', () => showPage(currentPage));-->
-<!--</script>-->
-<!--&lt;!&ndash;Fetch thread&ndash;&gt;-->
-<!--<script>-->
-<!--    const threadList = document.getElementById("threadList");-->
-<!--    function fetchThreads() {-->
-<!--        fetch(`/thread?page=${currentPage}&size=${threadsPerPage}`) // Adjust API parameters if needed-->
-<!--            .then(response => response.json())-->
-<!--            .then(data =>{-->
-<!--                renderThreads(data.content)-->
-<!--            })-->
-<!--            .catch(error => console.error("Error fetching threads:", error));-->
-<!--    }-->
-
-<!--    function renderThreads(threads) {-->
-<!--        threadList.innerHTML = ""; // Clear existing threads-->
-<!--        threads.forEach(thread => {-->
-<!--            const threadBox = document.createElement("div");-->
-<!--            threadBox.className = "thread-box";-->
-<!--            threadBox.innerHTML = `-->
-<!--                <div class="thread-thumbnail">-->
-<!--                    <img src="${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">-->
-<!--                </div>-->
-<!--                <div class="thread-content">-->
-<!--                    <div class="thread-title"><a href="post.html?id=${thread.id}">${thread.topicName}</a></div>-->
-<!--                    <div class="thread-description">${thread.description}</div>-->
-<!--                </div>`;-->
-<!--            threadList.appendChild(threadBox);-->
-<!--        });-->
-<!--    }-->
-<!--    document.addEventListener("DOMContentLoaded", () => fetchThreads(currentPage));-->
-<!--</script>-->
-<!-- fetch user -->
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
     if (userDetails) {
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
-
-        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-        if (userDetails.roleName === "ADMIN") {
-            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.username;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "TEACHER") {
-            // Hiển thị đầy đủ tên và vai trò cho giáo viên
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Chỉ hiển thị mục của giáo viên
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "STUDENT") {
-            // Hiển thị đầy đủ tên và vai trò cho học sinh
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Chỉ hiển thị mục của học sinh
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
-        } else {
-            console.warn("Role not recognized: ", userDetails.roleName);
-        }
-    } else {
-        console.error("User details not found in sessionStorage");
-    }
-</script>
-<!-- fetch user -->
-<script>
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    if (userDetails) {
+        document.getElementById('userId').value = userDetails.id;
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
 
@@ -916,5 +656,5 @@
     }
 </script>
 
-</body>
+<!-- Mirrored from admit-form.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:46 GMT -->
 </html>
