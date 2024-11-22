@@ -29,6 +29,8 @@
     <link href="css/select2.min.css" rel="stylesheet">
     <!-- Date Picker CSS -->
     <link href="css/datepicker.min.css" rel="stylesheet">
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
     <!-- Custom CSS -->
     <link href="style.css" rel="stylesheet">
     <!-- Modernize js -->
@@ -450,6 +452,10 @@
 <script src="js/jquery.scrollUp.min.js"></script>
 <!-- Select 2 Js -->
 <script src="js/select2.min.js"></script>
+<!-- Data Table Js -->
+<script src="js/jquery.dataTables.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
 <!-- Date Picker Js -->
 <script src="js/datepicker.min.js"></script>
 <!-- Custom Js -->
@@ -611,7 +617,7 @@
                     const dropdownMenu = document.createElement('div');
                     dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
                     dropdownMenu.innerHTML = `
-                    <a class="dropdown-item" href="#"><i class="fas fa-glasses text-dark-pastel-green"></i>User Details</a>
+                    <a class="dropdown-item" href="users-details.html?userId=${user.id}"><i class="fas fa-glasses text-dark-pastel-green"></i>User Details</a>
                 `;
                     dropdown.appendChild(dropdownMenu);
                     actionsCell.appendChild(dropdown);
