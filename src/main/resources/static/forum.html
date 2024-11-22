@@ -631,7 +631,7 @@
             threadBox.className = "thread-box";
             threadBox.innerHTML = `
                 <div class="thread-thumbnail">
-                    <img src="${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">
+                    <img src="data:image/png;base64,${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">
                 </div>
                 <div class="thread-content">
                     <div class="thread-title"><a href="post.html?id=${thread.id}">${thread.topicName}</a></div>

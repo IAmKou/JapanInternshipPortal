@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,11 +39,11 @@ public class ThreadController {
 
     @GetMapping("/add-thread")
     public String showAddThreadForm() {
-        return "add-thread"; // File HTML để hiển thị form
+        return "create-forum"; // File HTML để hiển thị form
     }
 
     @PostMapping("/add-thread")
-    public String addThread(
+    public RedirectView addThread(
             @RequestParam("topicName") String topicName,
             @RequestParam("description") String description,
             @RequestParam("creatorId") int creatorId,
@@ -56,6 +57,6 @@ public class ThreadController {
             model.addAttribute("message", "Error saving thread: " + e.getMessage());
         }
 
-        return "add-thread";
+        return new RedirectView("/forum.html");
     }
 }

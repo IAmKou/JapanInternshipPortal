@@ -473,12 +473,12 @@
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3>Create Thread</h3>
+                <h3>Create Forum</h3>
                 <ul>
                     <li>
                         <a href="admin.html">Home</a>
                     </li>
-                    <li>Create Thread</li>
+                    <li>Create Forum</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
@@ -487,7 +487,7 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h3>Creating A Thread</h3>
+                            <h3>Creating A Forum</h3>
                         </div>
 
                         <div class="dropdown">
@@ -504,24 +504,24 @@
                             </div>
                         </div>
                     </div>
-                    <form id="materialForm" action="materials/create" method="POST" enctype="multipart/form-data" class="new-added-form">
+                    <form id="materialForm" action="/thread/add-thread" method="POST" enctype="multipart/form-data" class="new-added-form">
                         <div class="row">
                             <!-- Hidden input for user_id-->
-                            <input type="hidden" name="teacher_id" id="userId" value="">
+                            <input type="hidden" name="creatorId" id="userId" value="">
 
                             <div class="col-7 form-group">
-                                <label>Title</label>
-                                <input type="text" name="title" placeholder="Enter title" class="form-control">
+                                <label>Topic Name</label>
+                                <input type="text" name="topicName" placeholder="Enter title" class="form-control">
                             </div>
 
                             <div class="col-7 form-group">
-                                <label>Content</label>
-                                <textarea class="textarea form-control" name="content" cols="10" rows="9"></textarea>
+                                <label>Description</label>
+                                <textarea class="textarea form-control" name="description" cols="10" rows="9"></textarea>
                             </div>
 
                             <div class="col-12 form-group">
                                 <label class="text-dark-medium">File Attach:</label>
-                                <input type="file" name="img" class="form-control-file">
+                                <input type="file" name="imageFile" class="form-control-file">
                             </div>
 
                             <div class="col-lg-6 col-12 form-group">

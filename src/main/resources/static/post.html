@@ -781,7 +781,7 @@
     const threadImage = document.getElementById('threadImage');
     threadTitle.innerHTML = `<h2>${thread.topicName}</h2>`;
     threadDescription.innerHTML = `<p>${thread.description}</p>`;
-    threadImage.innerHTML = `<img src="${thread.image}"/>`
+    threadImage.innerHTML = `<img src="data:image/png;base64,${thread.image}"/>`
   }
 </script>
 </body>
