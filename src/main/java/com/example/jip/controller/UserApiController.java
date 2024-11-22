@@ -2,11 +2,13 @@ package com.example.jip.controller;
 
 import com.example.jip.configuration.CustomUserDetail;
 import com.example.jip.dto.AccountDTO;
+import com.example.jip.repository.AccountRepository;
 import com.example.jip.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserApiController {
     @Autowired
     private UserServices userServices;
+    @Autowired
+    private AccountRepository accountRepository;
 
     @GetMapping("/user-detail")
     public AccountDTO getUser() {
@@ -24,5 +28,10 @@ public class UserApiController {
             return userServices.getProfileById(accountId);
         }
         return null;
+    }
+
+    @GetMapping("/{userId}/userDetail")
+    public AccountDTO getUser(@PathVariable int userId) {
+        return userServices.getProfileById(userId);
     }
 }
