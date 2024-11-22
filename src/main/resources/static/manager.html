@@ -405,9 +405,14 @@
                             <a href="notice-board.html" class="nav-link"><i
                                     class="flaticon-script"></i><span>Notice</span></a>
                         </li>
-                        <li class="nav-item">
-                            <a href="messaging.html" class="nav-link"><i
-                                    class="flaticon-chat"></i><span>Messeage</span></a>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+                            <ul class="nav sub-group-menu">
+
+                                <li class="nav-item" id="manager-view">
+                                    <a href="View-list-application.html" class="nav-link"><i class="fas fa-angle-right"></i>List Applications</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-menu-1"></i><span>UI Elements</span></a>
@@ -1359,6 +1364,85 @@
     <!-- Custom Js -->
     <script src="js/main.js"></script>
 
+    <script>
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails) {
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            const userRoleElements = document.querySelectorAll('.userRole');
+
+            // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
+            if (userDetails.roleName === "ADMIN") {
+                // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.username;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+
+                // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
+                document.getElementById("teacher-view").style.display = "none";
+                document.getElementById("student-view").style.display = "none";
+                document.getElementById("manager-view").style.display = "none";
+            } else if (userDetails.roleName === "TEACHER") {
+
+                // Hiển thị đầy đủ tên và vai trò cho giáo viên
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+
+                // Chỉ hiển thị mục của giáo viên
+                document.getElementById("teacher-view5").style.display = "block";
+                document.getElementById("student-view5").style.display = "none";
+                document.getElementById("teacher-view").style.display = "block";
+                document.getElementById("student-view").style.display = "none";
+                document.getElementById("student-view1").style.display = "none";
+                document.getElementById("teacher-view3").style.display = "block";
+                document.getElementById("manager-view").style.display = "none";
+            } else if (userDetails.roleName === "STUDENT") {
+                // Hiển thị đầy đủ tên và vai trò cho học sinh
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+
+                // Chỉ hiển thị mục của học sinh
+                document.getElementById("teacher-view").style.display = "none";
+                document.getElementById("student-view").style.display = "block";
+                document.getElementById("student-view1").style.display = "block";
+                document.getElementById("teacher-view3").style.display = "none";
+                document.getElementById("teacher-view5").style.display = "none";
+                document.getElementById("student-view5").style.display = "block";
+                document.getElementById("manager-view").style.display = "none";
+            } else if (userDetails.roleName === "MANAGER") {
+                // Hiển thị đầy đủ tên và vai trò cho Manager
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+
+                // Chỉ hiển thị mục của Manager
+                document.getElementById("teacher-view").style.display = "none";
+                document.getElementById("student-view").style.display = "none";
+                document.getElementById("student-view1").style.display = "none";
+                document.getElementById("teacher-view3").style.display = "none";
+                document.getElementById("teacher-view5").style.display = "none";
+                document.getElementById("student-view5").style.display = "none";
+                document.getElementById("manager-view").style.display = "block"; // Thêm ID cho phần này
+            } else {
+                console.warn("Role not recognized: ", userDetails.roleName);
+            }
+        } else {
+            console.error("User details not found in sessionStorage");
+        }
+    </script>
 </body>
 
 

@@ -487,8 +487,8 @@
                     <h3>Send Application</h3>
                     <ul>
                         <li>
-                            <a href="teacher.html" id="teacher-view2">Home</a>
-                            <a href="student.html" id="student-view2">Home</a>
+                            <a href="home.html">Home</a>
+
                         </li>
                         <li>Send Application</li>
                     </ul>
@@ -511,13 +511,13 @@
 
                                     <!-- Tên người -->
                                     <div class="col-12 form-group">
-                                        <label>Name</label>
+                                        <label style="font-weight: bold;">Name</label>
                                         <input type="text" name="name" placeholder="Enter your name" class="form-control" required>
                                     </div>
 
                                     <!-- Loại đơn -->
                                     <div class="col-12 form-group">
-                                        <label>Application type *</label>
+                                        <label style="font-weight: bold;">Application type *</label>
                                         <select class="select2" name="category" required>
                                             <option value="0">Please Select</option>
                                             <option value="Đơn xin nghỉ học">Đơn xin nghỉ học</option>
@@ -531,7 +531,7 @@
 
                                     <!-- Lý do -->
                                     <div class="col-12 form-group">
-                                        <label>Reason</label>
+                                        <label style="font-weight: bold;">Reason</label>
                                         <textarea class="textarea form-control" name="content" id="form-message" cols="10" rows="9" required></textarea>
                                     </div>
 
@@ -621,8 +621,9 @@
             document.getElementById("teacher-view").style.display = "block";
             document.getElementById("student-view").style.display = "none";
             document.getElementById("student-view1").style.display = "none";
-            document.getElementById("teacher-view2").style.display = "block";
             document.getElementById("teacher-view3").style.display = "block";
+
+
         } else if (userDetails.roleName === "STUDENT") {
             userFullNameElements.forEach(element => {
                 element.textContent = userDetails.fullName;
@@ -633,8 +634,9 @@
             document.getElementById("teacher-view").style.display = "none";
             document.getElementById("student-view").style.display = "block";
             document.getElementById("student-view1").style.display = "block";
-            document.getElementById("student-view2").style.display = "block";
             document.getElementById("teacher-view3").style.display = "none";
+
+
         }
 
         // Cập nhật dropdown danh mục
@@ -672,6 +674,8 @@
         console.error("User details not found in sessionStorage");
     }
 </script>
+
+
 <!--    <script>-->
 <!--        document.getElementById("applicationForm").addEventListener("submit", function(event) {-->
 <!--            event.preventDefault();  // Ngừng hành động mặc định của form (không reload trang)-->

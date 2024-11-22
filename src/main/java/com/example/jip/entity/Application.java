@@ -33,7 +33,7 @@ public class Application {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private status status;
+    private Status status;
 
     @Column(name =  "reply")
     private String reply;
@@ -51,13 +51,13 @@ public class Application {
     @JoinColumn(name = "student_id", nullable = true)
     private Student student;
 
-    public enum status{
+    public enum Status { // Đổi từ 'status' thành 'Status'
         Pending, Approved, Rejected
     }
 
     public Application() {}
 
-    public Application(int id, String name, String category, String content, String img, Date created_date, Application.status status, String reply, Date replied_date, Teacher teacher, Student student) {
+    public Application(int id, String name, String category, String content, String img, Date created_date, Status status, String reply, Date replied_date, Teacher teacher, Student student) {
         this.id = id;
         this.name = name;
         this.category = category;
