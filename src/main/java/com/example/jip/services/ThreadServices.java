@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +23,7 @@ public class ThreadServices {
         thread.setTopicName(topicName);
         thread.setDescription(description);
         thread.setCreatorId(creatorId);
-        thread.setDateCreated((java.sql.Date) new Date());
+        thread.setDateCreated(new Date(System.currentTimeMillis()));
 
         // Chuyển file ảnh thành mảng byte và lưu vào database
         if (imageFile != null && !imageFile.isEmpty()) {
