@@ -84,6 +84,17 @@ public class CloudinaryService {
         }
     }
 
+    public void deleteFile(String fileUrl, String folderName) {
+        try {
+            String publicId = fileUrl.substring(fileUrl.lastIndexOf(folderName), fileUrl.lastIndexOf('.'));
+            Map result = cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+            log.info("File deleted: {}. Result: {}", publicId, result);
+        } catch (Exception e) {
+            log.error("Error deleting file: {}", fileUrl, e);
+            throw new RuntimeException("Failed to delete file: " + fileUrl, e);
+        }
+    }
+
     private String sanitizeFolderName(String folderName) {
         return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim();
     }

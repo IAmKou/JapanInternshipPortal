@@ -2,6 +2,7 @@ package com.example.jip.services;
 
 import com.example.jip.dto.request.AssignmentCreationRequest;
 import com.example.jip.dto.request.AssignmentUpdateRequest;
+import com.example.jip.dto.request.FileDeleteRequest;
 import com.example.jip.dto.response.CloudinaryResponse;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.entity.Assignment;
@@ -186,7 +187,7 @@ public class AssignmentServices {
                 .orElseThrow(() -> new NoSuchElementException("Assignment id not found!"));
 
         MultipartFile[] newFiles = request.getImgFile();
-        String folderName = "assignments/" + assignment.getDescription(); //Folder name = assignment's description
+        String folderName = sanitizeFolderName("assignments/" + assignment.getDescription()); //Folder name = assignment's description
 
         if (folderName == null || folderName.isEmpty()) {
             throw new RuntimeException("Folder name is not set for assignment ID: " + assignmentId);
@@ -225,6 +226,16 @@ public class AssignmentServices {
             assignment.setContent(request.getContent());
         }
         return assignmentRepository.save(assignment);
+    }
+
+    @PreAuthorize("hasAuthority('TEACHER')")
+    public void deleteFile(FileDeleteRequest request){
+    // Sanitize folder name and delete the file
+        String folderName = sanitizeFolderName("assignments/" + assignmentRepository.findById(request.getAssignmentId())
+                .orElseThrow(() -> new NoSuchElementException("Assignment not found!"))
+                .getDescription());
+
+        cloudinaryService.deleteFile(request.getFileUrl(), folderName);
     }
 
 }
