@@ -8,6 +8,7 @@ import com.example.jip.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -48,13 +49,6 @@ public class AccountServices {
     public AccountDTO updateAccount(int id, AccountDTO accountDTO) {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Account not found with id " + id));
-
-
-        account.getRole().setName(accountDTO.getRoleName()); // Check if role is changeable
-        if (!accountDTO.getRoleName().equals("ADMIN")) {
-            account.setUsername(accountDTO.getUsername());
-        }
-
         if (account.getStudent() != null) {
             Student student = account.getStudent();
             student.setFullname(accountDTO.getFullName());
