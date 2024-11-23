@@ -29,6 +29,8 @@
     <link href="css/select2.min.css" rel="stylesheet">
     <!-- Date Picker CSS -->
     <link href="css/datepicker.min.css" rel="stylesheet">
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
     <!-- Custom CSS -->
     <link href="style.css" rel="stylesheet">
     <!-- Modernize js -->
@@ -247,241 +249,40 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img alt="logo" src="img/logo1.png"></a>
+                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="admin.html"><i class="fas fa-angle-right"></i>Admin</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="student.html"><i class="fas fa-angle-right"></i>Students</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="manager.html"><i class="fas fa-angle-right"></i>Parents</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="teacher.html"><i class="fas fa-angle-right"></i>Teachers</a>
+                                <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-classmates"></i><span>Students</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Parents</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="all-student.html"><i class="fas fa-angle-right"></i>All
-                                    Students</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="student-details.html"><i class="fas fa-angle-right"></i>Student
-                                    Details</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="admit-form.html"><i class="fas fa-angle-right"></i>Admission
-                                    Form</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="student-promotion.html"><i class="fas fa-angle-right"></i>Student
-                                    Promotion</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i
-                                class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="all-teacher.html"><i class="fas fa-angle-right"></i>All
-                                    Teachers</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="teacher-details.html"><i class="fas fa-angle-right"></i>Teacher
-                                    Details</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="add-teacher.html"><i class="fas fa-angle-right"></i>Add
-                                    Teacher</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="teacher-payment.html"><i class="fas fa-angle-right"></i>Payment</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-couple"></i><span>Parents</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="all-parents.html"><i class="fas fa-angle-right"></i>All
+                                <a href="all-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>All
                                     Parents</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="parents-details.html"><i class="fas fa-angle-right"></i>Parents
-                                    Details</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="add-parents.html"><i class="fas fa-angle-right"></i>Add Parent</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-books"></i><span>Library</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="list-asignment.html"><i class="fas fa-angle-right"></i>All
-                                    Book</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="add-assignment.html"><i class="fas fa-angle-right"></i>Add New
-                                    Book</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-technological"></i><span>Acconunt</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="all-fees.html"><i class="fas fa-angle-right"></i>All Fees
-                                    Collection</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="Add-material.html"><i class="fas fa-angle-right"></i>Expenses</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="ReplyApplication.html"><i class="fas fa-angle-right"></i>Add
-                                    Expenses</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i
-                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="all-class-student.html"><i class="fas fa-angle-right"></i>All Classes</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="add-class.html"><i class="fas fa-angle-right"></i>Add New
-                                    Class</a>
-                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="all-subject.html"><i
-                                class="flaticon-open-book"></i><span>Subject</span></a>
+                        <a href="notice-board.html" class="nav-link"><i
+                                class="flaticon-script"></i><span>Notification</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="class-list.html"><i class="flaticon-calendar"></i><span>Class Routine</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="student-attendence.html"><i class="flaticon-checklist"></i><span>Attendence</span></a>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="exam-schedule.html"><i class="fas fa-angle-right"></i>Exam
-                                    Schedule</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="Update-student-mark-report.html"><i
-                                        class="fas fa-angle-right"></i>Exam Grades</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link menu-active" href="/markreport/view"><i
-                                        class="fas fa-angle-right"></i>View Exam
-                                    Grades</a>
-                            </li>
-                        </ul>
-
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create material</a>
-                            </li>
-                            <li class="nav-item" id="teacher-view">
-                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
-                            </li>
-                            <li class="nav-item" id="student-view">
-                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
-                            </li>
-                            <li class="nav-item" id="student-view1">
-                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list materials</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="transport.html"><i
-                                class="flaticon-bus-side-view"></i><span>Transport</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="hostel.html"><i class="flaticon-bed"></i><span>Hostel</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="notice-board.html"><i class="flaticon-script"></i><span>Notice</span></a>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send application</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My application</a>
-                            </li>
-                            <li class="nav-item" id="manager-view">
-                                <a href="View-list-application.html" class="nav-link"><i class="fas fa-angle-right"></i>List Applications</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-menu-1"></i><span>UI Elements</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="notification-alart.html"><i class="fas fa-angle-right"></i>Alart</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="button.html"><i class="fas fa-angle-right"></i>Button</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="grid.html"><i class="fas fa-angle-right"></i>Grid</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="modal.html"><i class="fas fa-angle-right"></i>Modal</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="progress-bar.html"><i class="fas fa-angle-right"></i>Progress
-                                    Bar</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="ui-tab.html"><i class="fas fa-angle-right"></i>Tab</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="ui-widget.html"><i
-                                        class="fas fa-angle-right"></i>Widget</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="map.html"><i class="flaticon-planet-earth"></i><span>Map</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link menu-active" href="account-settings.html"><i
-                                class="flaticon-settings"></i><span>Account</span></a>
+                        <a href="account-settings.html" class="nav-link"><i
+                                class="flaticon-settings"></i><span>Account List</span></a>
                     </li>
                 </ul>
             </div>
         </div>
-        <!-- Sidebar Area End Here -->
         <div class="dashboard-content-one">
-            <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
                 <h3>Account Setting</h3>
                 <ul>
@@ -500,6 +301,7 @@
                             <div class="heading-layout1">
                                 <div class="item-title">
                                     <h3>User Management</h3>
+                                    <div id="successMessage" class="alert alert-success" style="display: none;" role="alert"></div>
                                 </div>
                                 <div class="dropdown">
                                     <a aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown" href="#"
@@ -519,69 +321,64 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-4-xxxl col-xl-5">
-                    <div class="card account-settings-box height-auto">
-                        <div class="card-body">
-                            <div class="heading-layout1 mg-b-20">
-                                <div class="item-title">
-                                    <h3>All User</h3>
-                                </div>
-                                <div class="dropdown">
-                                    <a aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown"
-                                       href="#" role="button">...</a>
+                <div class="row">
+                    <div class="col-12-xxxl col-12">
+                        <div class="card height-auto">
+                            <div class="card-body">
+                                <div class="heading-layout1">
+                                    <div class="item-title">
+                                        <h3>User List</h3>
+                                    </div>
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                                           aria-expanded="false">...</a>
 
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                        <a class="dropdown-item" href="#"><i
-                                                class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                        <a class="dropdown-item" href="#"><i
-                                                class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" href="#"><i
+                                                    class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                            <a class="dropdown-item" href="#"><i
+                                                    class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="all-user-box">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-8-xxxl col-xl-7">
-                    <div class="card account-settings-box">
-                        <div class="card-body">
-                            <div class="heading-layout1 mg-b-20">
-                                <div class="item-title">
-                                    <h3>User Details</h3>
-                                </div>
-                                <div class="dropdown">
-                                    <a aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown"
-                                       href="#" role="button">...</a>
-
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                        <a class="dropdown-item edit-button" href="#"><i
-                                                class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                        <a class="dropdown-item" href="#"><i
-                                                class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                                <form class="mg-b-20">
+                                    <div class="row gutters-8">
+                                        <div class="col-lg-4 col-12 form-group">
+                                            <input type="text" placeholder="Search by Id ..." class="form-control">
+                                        </div>
+                                        <div class="col-lg-3 col-12 form-group">
+                                            <input type="text" placeholder="Search by Name ..." class="form-control">
+                                        </div>
+                                        <div class="col-lg-3 col-12 form-group">
+                                            <input type="text" placeholder="Search by Role ..." class="form-control">
+                                        </div>
+                                        <div class="col-lg-2 col-12 form-group">
+                                            <button type="submit"
+                                                    class="fw-btn-fill btn-gradient-yellow">SEARCH
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="user-details-box">
-                                <div class="item-content">
-                                    <div class="info-table table-responsive">
-                                        <table class="table text-nowrap">
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <button class="save-button" style="display:none;">Save</button>
+                                </form>
+                                <div class="table-responsive">
+                                    <table class="table display text-nowrap">
+                                        <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Image</th>
+                                            <th>Name</th>
+                                            <th>Role</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Account Settings Area End Here -->
             <footer class="footer-wrap-layout1">
                 <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a
                         href="#">PsdBosS</a></div>
@@ -655,6 +452,10 @@
 <script src="js/jquery.scrollUp.min.js"></script>
 <!-- Select 2 Js -->
 <script src="js/select2.min.js"></script>
+<!-- Data Table Js -->
+<script src="js/jquery.dataTables.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
 <!-- Date Picker Js -->
 <script src="js/datepicker.min.js"></script>
 <!-- Custom Js -->
@@ -662,119 +463,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- fetch user & update Js -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const allUserBox = document.querySelector('.all-user-box');
-        const userDetailsBox = document.querySelector('.user-details-box tbody');
-        const editButton = document.querySelector('.edit-button');
-        const saveButton = document.querySelector('.save-button');
-        let currentUser = null;
 
-        fetch('/users')
-            .then(response => response.json())
-            .then(users => {
-                users.forEach(user => {
-                    // Create user divs
-                    const userDiv = document.createElement('div');
-                    userDiv.className = 'media media-none--xs active';
-                    userDiv.innerHTML = `
-                        <div class="item-img"><img src="${user.img}" alt="user"></div>
-                        <div class="media-body space-md">
-                            <h5 class="item-title">${user.roleName === 'ADMIN' ? user.username : user.fullName}</h5>
-                            <div class="item-subtitle">${user.roleName}</div>
-                        </div>
-                    `;
-                    allUserBox.appendChild(userDiv);
-
-                    // Load user details on click
-                    userDiv.addEventListener('click', () => {
-                        currentUser = user;
-                        loadUserDetails(user);
-                        // Disable edit button for admin users
-                        editButton.disabled = (user.roleName === 'ADMIN');
-                        saveButton.style.display = 'none';
-                    });
-                });
-
-                // Load user details function
-                function loadUserDetails(user) {
-                    userDetailsBox.innerHTML = `
-                        <tr><td class="font-medium text-dark-medium">Name:</td>
-                            <td>${user.roleName === 'ADMIN' ? user.username : user.fullName}</td></tr>
-                        ${user.roleName !== 'ADMIN' ? `
-                            <tr><td class="font-medium text-dark-medium">Japan Name:</td><td>${user.jname}</td></tr>
-                            <tr><td class="font-medium text-dark-medium">Gender:</td><td>${user.gender}</td></tr>
-                            ${user.dob ? `<tr><td class="font-medium text-dark-medium">Date of Birth:</td><td>${user.dob}</td></tr>` : ''}
-                            <tr><td class="font-medium text-dark-medium">Email:</td><td>${user.email}</td></tr>
-                            <tr><td class="font-medium text-dark-medium">Phone Number:</td><td>${user.phoneNumber}</td></tr>
-                        ` : ''}
-                    `;
-                }
-
-                // Edit functionality
-                editButton.addEventListener('click', () => {
-                    if (currentUser && currentUser.roleName !== 'ADMIN') {
-                        userDetailsBox.innerHTML = `
-            <tr><td class="font-medium text-dark-medium">Name:</td>
-                <td><input type="text" value="${currentUser.fullName}" required id="name-input"></td></tr>
-            <tr><td class="font-medium text-dark-medium">Japan Name:</td>
-                <td><input type="text" value="${currentUser.jname}" required id="jname-input"></td></tr>
-            <tr><td class="font-medium text-dark-medium">Gender:</td>
-                <td>
-                    <div class="form-check-inline">
-                        <input type="radio" name="gender" value="Male" id="male" class="form-check-input" ${currentUser.gender === 'Male' ? 'checked' : ''}>
-                        <label for="male" class="form-check-label">Male</label>
-                    </div>
-                    <div class="form-check-inline">
-                        <input type="radio" name="gender" value="Female" id="female" class="form-check-input" ${currentUser.gender === 'Female' ? 'checked' : ''}>
-                        <label for="female" class="form-check-label">Female</label>
-                    </div>
-                </td></tr>
-            ${currentUser.dob ? `<tr><td class="font-medium text-dark-medium">Date of Birth:</td>
-                <td><input type="date" value="${currentUser.dob.split('T')[0]}" id="dob-input"></td></tr>` : ''}
-            <tr><td class="font-medium text-dark-medium">Email:</td>
-                <td><input type="email" required value="${currentUser.email}" id="email-input"></td></tr>
-            <tr><td class="font-medium text-dark-medium">Phone Number:</td>
-                <td><input type="text" required value="${currentUser.phoneNumber}" id="phone-input"></td></tr>
-        `;
-                        saveButton.style.display = 'inline-block';
-                    }
-                });
-
-
-                // Save changes
-                saveButton.addEventListener('click', () => {
-                    if (!currentUser) return;
-
-                    // Get new values from inputs
-                    const updatedUser = {
-                        ...currentUser,
-                        fullName: document.getElementById('name-input').value,
-                        jname: document.getElementById('jname-input')?.value || currentUser.jname,
-                        gender: document.getElementById('gender-input')?.value || currentUser.gender,
-                        dob: document.getElementById('dob-input')?.value || currentUser.dob,
-                        email: document.getElementById('email-input')?.value || currentUser.email,
-                        phoneNumber: document.getElementById('phone-input')?.value || currentUser.phoneNumber
-                    };
-
-
-                    fetch(`/users/${updatedUser.id}`, {
-                        method: 'PUT',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify(updatedUser)
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log("User updated successfully", data);
-
-                            // Reload the page to reflect the updated information
-                            window.location.reload();
-                        })
-                        .catch(error => console.error('Error updating user:', error));
-                });
-            });
-    });
-</script>
 <!-- modal -->
 <script>
     document.getElementById('import').addEventListener('submit', function (event) {
@@ -834,9 +523,7 @@
             // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
             document.getElementById("teacher-view").style.display = "none";
             document.getElementById("student-view").style.display = "none";
-            document.getElementById("manager-view").style.display = "none";
         } else if (userDetails.roleName === "TEACHER") {
-
             // Hiển thị đầy đủ tên và vai trò cho giáo viên
             userFullNameElements.forEach(element => {
                 element.textContent = userDetails.fullName;
@@ -846,13 +533,9 @@
             });
 
             // Chỉ hiển thị mục của giáo viên
-            document.getElementById("teacher-view5").style.display = "block";
-            document.getElementById("student-view5").style.display = "none";
             document.getElementById("teacher-view").style.display = "block";
             document.getElementById("student-view").style.display = "none";
             document.getElementById("student-view1").style.display = "none";
-            document.getElementById("teacher-view3").style.display = "block";
-            document.getElementById("manager-view").style.display = "none";
         } else if (userDetails.roleName === "STUDENT") {
             // Hiển thị đầy đủ tên và vai trò cho học sinh
             userFullNameElements.forEach(element => {
@@ -866,32 +549,100 @@
             document.getElementById("teacher-view").style.display = "none";
             document.getElementById("student-view").style.display = "block";
             document.getElementById("student-view1").style.display = "block";
-            document.getElementById("teacher-view3").style.display = "none";
-            document.getElementById("teacher-view5").style.display = "none";
-            document.getElementById("student-view5").style.display = "block";
-            document.getElementById("manager-view").style.display = "none";
-        } else if (userDetails.roleName === "MANAGER") {
-            // Hiển thị đầy đủ tên và vai trò cho Manager
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Chỉ hiển thị mục của Manager
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-            document.getElementById("student-view1").style.display = "none";
-            document.getElementById("teacher-view3").style.display = "none";
-            document.getElementById("teacher-view5").style.display = "none";
-            document.getElementById("student-view5").style.display = "none";
-            document.getElementById("manager-view").style.display = "block"; // Thêm ID cho phần này
         } else {
             console.warn("Role not recognized: ", userDetails.roleName);
         }
     } else {
         console.error("User details not found in sessionStorage");
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tableBody = document.querySelector('.table tbody');
+
+        fetch(`/users`) // Use backticks here for the URL if needed
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(users => {
+                console.log(users); // Check what data you get from the backend
+                users.forEach(user => {  // Ensure 'users' is an array here
+                    const row = document.createElement('tr');
+
+                    // id cell
+                    const idCell = document.createElement('td');
+                    idCell.textContent = user.id; // Correcting to 'user'
+                    row.appendChild(idCell);
+
+                    // image cell
+                    const imgCell = document.createElement('td');
+                    const imgElement = document.createElement('img');
+                    imgElement.src = user.img;  // Correcting to 'user'
+                    imgElement.alt = "User Image";  // Alt text should be relevant
+                    imgElement.style.width = "50px";
+                    imgElement.style.height = "50px";
+                    imgElement.style.objectFit = "cover";
+                    imgCell.appendChild(imgElement);
+                    row.appendChild(imgCell);
+
+                    // name cell
+                    const nameCell = document.createElement('td');
+                    if (user.roleName === "ADMIN") {
+                        nameCell.textContent = user.username;  // Correcting to 'user'
+                    } else {
+                        nameCell.textContent = user.fullName;  // Correcting to 'user'
+                    }
+                    row.appendChild(nameCell);
+
+                    // gender (or role) cell
+                    const roleCell = document.createElement('td');
+                    roleCell.textContent = user.roleName;  // Correcting to 'user'
+                    row.appendChild(roleCell);
+
+                    // Actions cell
+                    const actionsCell = document.createElement('td');
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'dropdown';
+                    const dropdownToggle = document.createElement('a');
+                    dropdownToggle.href = '#';
+                    dropdownToggle.className = 'dropdown-toggle';
+                    dropdownToggle.setAttribute('data-toggle', 'dropdown');
+                    dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
+                    dropdown.appendChild(dropdownToggle);
+
+                    const dropdownMenu = document.createElement('div');
+                    dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
+                    dropdownMenu.innerHTML = `
+                    <a class="dropdown-item" href="users-details.html?userId=${user.id}"><i class="fas fa-glasses text-dark-pastel-green"></i>User Details</a>
+                `;
+                    dropdown.appendChild(dropdownMenu);
+                    actionsCell.appendChild(dropdown);
+                    row.appendChild(actionsCell);
+
+                    // Append the row to the table body
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching users:', error));
+    });
+</script>
+
+<script>
+    // Function to extract query parameter by name
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+    // Check if there's a success message and display it
+    const message = getQueryParam("message");
+    if (message) {
+        const successMessageElement = document.getElementById("successMessage");
+        successMessageElement.innerText = message;  // Set the message text
+        successMessageElement.style.display = "block";  // Make the message visible
     }
 </script>
 

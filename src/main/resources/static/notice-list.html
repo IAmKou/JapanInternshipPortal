@@ -2,11 +2,11 @@
 <html class="no-js" lang="">
 
 
-<!-- Mirrored from map.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
+<!-- Mirrored from notice-board.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>AKKHOR | Map</title>
+    <title>AKKHOR | Notice Board</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -23,6 +23,10 @@
     <link rel="stylesheet" href="fonts/flaticon.css">
     <!-- Animate CSS -->
     <link rel="stylesheet" href="css/animate.min.css">
+    <!-- Date Picker CSS -->
+    <link rel="stylesheet" href="css/datepicker.min.css">
+    <!-- Select 2 CSS -->
+    <link rel="stylesheet" href="css/select2.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
@@ -34,7 +38,7 @@
     <div id="preloader"></div>
     <!-- Preloader End Here -->
     <div id="wrapper" class="wrapper bg-ash">
-         <!-- Header Menu Area Start Here -->
+       <!-- Header Menu Area Start Here -->
         <div class="navbar navbar-expand-md header-menu-one bg-light">
             <div class="nav-bar-header-one">
                 <div class="header-logo">
@@ -78,8 +82,8 @@
                         <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                             aria-expanded="false">
                             <div class="admin-title">
-                                <h5 class="item-title">Stevne Zone</h5>
-                                <span>Admin</span>
+                                <h5 class="item-title class userFullName"></h5>
+                                <span class="userRole"></span>
                             </div>
                             <div class="admin-img">
                                 <img src="img/figure/admin.jpg" alt="Admin">
@@ -87,7 +91,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="item-header">
-                                <h6 class="item-title">Steven Zone</h6>
+                                <h6 class="item-title userFullName"></h6>
                             </div>
                             <div class="item-content">
                                 <ul class="settings-list">
@@ -236,12 +240,12 @@
         <!-- Page Area Start Here -->
         <div class="dashboard-page-one">
             <!-- Sidebar Area Start Here -->
-           <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
-               <div class="mobile-sidebar-header d-md-none">
+            <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+                <div class="mobile-sidebar-header d-md-none">
                     <div class="header-logo">
                         <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
                     </div>
-               </div>
+                </div>
                 <div class="sidebar-menu-content">
                     <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                         <li class="nav-item sidebar-nav-item">
@@ -250,165 +254,24 @@
                                 <li class="nav-item">
                                     <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="student.html" class="nav-link"><i class="fas fa-angle-right"></i>Students</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="manager.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>Teachers</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="all-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All Students</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="users-details.html" class="nav-link"><i class="fas fa-angle-right"></i>Student Details</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="admit-form.html" class="nav-link"><i class="fas fa-angle-right"></i>Admission Form</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="student-promotion.html" class="nav-link"><i class="fas fa-angle-right"></i>Student Promotion</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="all-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>All Teachers</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="teacher-details.html" class="nav-link"><i class="fas fa-angle-right"></i>Teacher Details</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="add-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>Add Teacher</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="teacher-payment.html" class="nav-link"><i class="fas fa-angle-right"></i>Payment</a>
-                                </li>
                             </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Parents</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>All Parents</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="parents-details.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents Details</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="add-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>Add Parent</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Library</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All Book</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New Book</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-technological"></i><span>Acconunt</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees Collection</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Expenses</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="ReplyApplication.html" class="nav-link"><i class="fas fa-angle-right"></i>Add Expenses</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="all-class-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All Classes</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="add-class.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New Class</a>
+                                    <a href="all-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                        Parents</a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="all-subject.html" class="nav-link"><i class="flaticon-open-book"></i><span>Subject</span></a>
+                            <a href="notice-board.html" class="nav-link"><i
+                                    class="flaticon-script"></i><span>Notification</span></a>
                         </li>
                         <li class="nav-item">
-                            <a href="class-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class Routine</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam Schedule</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="Update-student-mark-report.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam Grades</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="transport.html" class="nav-link"><i class="flaticon-bus-side-view"></i><span>Transport</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="hostel.html" class="nav-link"><i class="flaticon-bed"></i><span>Hostel</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="notice-board.html" class="nav-link"><i class="flaticon-script"></i><span>Notice</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="messaging.html" class="nav-link"><i class="flaticon-chat"></i><span>Messeage</span></a>
-                        </li>
-                         <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-menu-1"></i><span>UI Elements</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="notification-alart.html" class="nav-link"><i class="fas fa-angle-right"></i>Alart</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="button.html" class="nav-link"><i class="fas fa-angle-right"></i>Button</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="grid.html" class="nav-link"><i class="fas fa-angle-right"></i>Grid</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="modal.html" class="nav-link"><i class="fas fa-angle-right"></i>Modal</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="progress-bar.html" class="nav-link"><i class="fas fa-angle-right"></i>Progress Bar</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="ui-tab.html" class="nav-link"><i class="fas fa-angle-right"></i>Tab</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="ui-widget.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Widget</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="map.html" class="nav-link menu-active"><i class="flaticon-planet-earth"></i><span>Map</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="account-settings.html" class="nav-link"><i class="flaticon-settings"></i><span>Account</span></a>
+                            <a href="account-settings.html" class="nav-link"><i
+                                    class="flaticon-settings"></i><span>Account List</span></a>
                         </li>
                     </ul>
                 </div>
@@ -417,27 +280,28 @@
             <div class="dashboard-content-one">
                 <!-- Breadcubs Area Start Here -->
                 <div class="breadcrumbs-area">
-                    <h3>Admin Dashboard</h3>
+                    <h3>Notification Board</h3>
                     <ul>
                         <li>
                             <a href="admin.html">Home</a>
                         </li>
-                        <li>Map</li>
+                        <li>Notice</li>
                     </ul>
                 </div>
                 <!-- Breadcubs Area End Here -->
-                <!-- Google Map Area Start Here -->
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card google-map-area">
+                    <!-- All Notice Area Start Here -->
+                    <div class="col-8-xxxl col-12">
+                        <div class="card height-auto">
                             <div class="card-body">
                                 <div class="heading-layout1">
                                     <div class="item-title">
-                                        <h3>Marker Map</h3>
+                                        <h3>Notice Board</h3>
                                     </div>
-                                   <div class="dropdown">
+                                     <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" 
                                         data-toggle="dropdown" aria-expanded="false">...</a>
+                
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
                                             <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
@@ -445,16 +309,92 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="default-map">
-                                    <div id="markergoogleMap" style="width:100%; height:660px; border-radius: 4px;"></div>
+                                <form class="mg-b-20">
+                                    <div class="row gutters-8">
+                                        <div class="col-lg-5 col-12 form-group">
+                                            <input type="text" placeholder="Search by Date ..." class="form-control">
+                                        </div>
+                                        <div class="col-lg-5 col-12 form-group">
+                                            <input type="text" placeholder="Search by Title ..." class="form-control">
+                                        </div>
+                                        <div class="col-lg-2 col-12 form-group">
+                                            <button type="submit" class="fw-btn-fill btn-gradient-yellow">SEARCH</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="notice-board-wrap">
+                                    <div class="notice-list">
+                                        <div class="post-date bg-skyblue">16 June, 2019</div>
+                                        <h6 class="notice-title"><a href="#">Great School Great School manag mene esom  
+                                            text of the printing Great School manag mene esom  text of the printing manag 
+                                            mene esom  text of the printing.</a></h6>
+                                        <div class="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
+                                    </div>
+                                    <div class="notice-list">
+                                        <div class="post-date bg-yellow">16 June, 2019</div>
+                                        <h6 class="notice-title"><a href="#">Great School Great School manag mene esom  
+                                            text of the printing Great School manag mene esom  text of the printing manag 
+                                            mene esom  text of the printing.</a></h6>
+                                        <div class="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
+                                    </div>
+                                    <div class="notice-list">
+                                        <div class="post-date bg-pink">16 June, 2019</div>
+                                        <h6 class="notice-title"><a href="#">Great School Great School manag mene esom  
+                                            text of the printing Great School manag mene esom  text of the printing manag 
+                                            mene esom  text of the printing.</a></h6>
+                                        <div class="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
+                                    </div>
+                                    <div class="notice-list">
+                                        <div class="post-date bg-skyblue">16 June, 2019</div>
+                                        <h6 class="notice-title"><a href="#">Great School Great School manag mene esom  
+                                            text of the printing Great School manag mene esom  text of the printing manag 
+                                            mene esom  text of the printing.</a></h6>
+                                        <div class="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
+                                    </div>
+                                    <div class="notice-list">
+                                        <div class="post-date bg-yellow">16 June, 2019</div>
+                                        <h6 class="notice-title"><a href="#">Great School Great School manag mene esom  
+                                            text of the printing Great School manag mene esom  text of the printing manag 
+                                            mene esom  text of the printing.</a></h6>
+                                        <div class="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
+                                    </div>
+                                    <div class="notice-list">
+                                        <div class="post-date bg-pink">16 June, 2019</div>
+                                        <h6 class="notice-title"><a href="#">Great School Great School manag mene esom  
+                                            text of the printing Great School manag mene esom  text of the printing manag 
+                                            mene esom  text of the printing.</a></h6>
+                                        <div class="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
+                                    </div>
+                                    <div class="notice-list">
+                                        <div class="post-date bg-skyblue">16 June, 2019</div>
+                                        <h6 class="notice-title"><a href="#">Great School Great School manag mene esom  
+                                            text of the printing Great School manag mene esom  text of the printing manag 
+                                            mene esom  text of the printing.</a></h6>
+                                        <div class="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
+                                    </div>
+                                    <div class="notice-list">
+                                        <div class="post-date bg-yellow">16 June, 2019</div>
+                                        <h6 class="notice-title"><a href="#">Great School Great School manag mene esom  
+                                            text of the printing Great School manag mene esom  text of the printing manag 
+                                            mene esom  text of the printing.</a></h6>
+                                        <div class="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
+                                    </div>
+                                    <div class="notice-list">
+                                        <div class="post-date bg-pink">16 June, 2019</div>
+                                        <h6 class="notice-title"><a href="#">Great School Great School manag mene esom  
+                                            text of the printing Great School manag mene esom  text of the printing manag 
+                                            mene esom  text of the printing.</a></h6>
+                                        <div class="entry-meta">  Jennyfar Lopez / <span>5 min ago</span></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!-- All Notice Area End Here -->
                 </div>
-                <!-- Google Map Area End Here -->
                 <footer class="footer-wrap-layout1">
-                    <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a href="#">PsdBosS</a></div>
+                    <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by
+                        <a href="#">PsdBosS</a></div>
                 </footer>
             </div>
         </div>
@@ -468,17 +408,44 @@
     <script src="js/popper.min.js"></script>
     <!-- Bootstrap js -->
     <script src="js/bootstrap.min.js"></script>
+    <!-- Select 2 Js -->
+    <script src="js/select2.min.js"></script>
     <!-- Scroll Up Js -->
     <script src="js/jquery.scrollUp.min.js"></script>
-    <!-- Google Map js -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtmXSwv4YmAKtcZyyad9W7D4AC08z0Rb4"></script>
-    <!-- Map Init js -->
-    <script src="js/google-marker-map.js"></script>
+    <!-- Date Picker Js -->
+    <script src="js/datepicker.min.js"></script>
     <!-- Custom Js -->
     <script src="js/main.js"></script>
+    <!-- fetch user -->
+    <script>
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails) {
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            const userRoleElements = document.querySelectorAll('.userRole');
 
+            if (userDetails.roleName === "Admin") {
+                // Display only username and role for Admin
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.username;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+            } else {
+                // Display full profile for other roles
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+            }
+        }else{
+            console.error("User details not found in sessionStorage");
+        }
+    </script>
 </body>
 
 
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/map.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:51 GMT -->
+<!-- Mirrored from notice-board.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>

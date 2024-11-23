@@ -62,6 +62,7 @@
                         <button type="submit" class="login-btn">Login</button>
                     </div>
                 </form>
+                <p id="error-message" style="color:red;"></p>
             </div>
         </div>
     </div>
@@ -78,6 +79,12 @@
     <script src="/js/jquery.scrollUp.min.js"></script>
     <!-- Custom Js -->
     <script src="/js/main.js"></script>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('error')) {
+        document.getElementById('error-message').textContent = 'Invalid username or password. Please try again.';
+    }
+</script>
 
 </body>
 

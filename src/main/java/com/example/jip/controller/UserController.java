@@ -5,6 +5,7 @@ import com.example.jip.dto.AccountDTO;
 import com.example.jip.services.AccountServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,8 +20,9 @@ public class UserController {
         return accountServices.getAllAccountDTOs();
     }
 
-    @PutMapping("/{id}")
-    public AccountDTO updateUser(@PathVariable int id, @RequestBody AccountDTO accountDTO) {
+    @PostMapping("/{id}")
+    public AccountDTO updateUser(@PathVariable int id,
+                                 @ModelAttribute AccountDTO accountDTO) {
         return accountServices.updateAccount(id, accountDTO);
     }
 

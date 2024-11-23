@@ -10,20 +10,18 @@ import com.example.jip.repository.StudentRepository;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFPictureData;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
+import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AccountImportServices {
@@ -33,15 +31,17 @@ public class AccountImportServices {
     @Autowired
     private StudentRepository studentRepository;
     @Autowired
-    private RoleRepository roleRepository;  // Injecting RoleRepository
+    private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     public List<String> importAccounts(MultipartFile file) {
-        List<String> errors = new ArrayList<>();  // Initialize a new list to collect errors
+        List<String> errors = new ArrayList<>();
 
         try (InputStream inputStream = file.getInputStream();
-             Workbook workbook = new XSSFWorkbook(inputStream)) {
+             XSSFWorkbook workbook = new XSSFWorkbook(inputStream)) {
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
 
@@ -50,7 +50,7 @@ public class AccountImportServices {
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 try {
-                    processRow(row, errors);
+                    processRow(row, errors, workbook);
                 } catch (Exception e) {
                     errors.add("Error in row " + (row.getRowNum() + 1) + ": " + e.getMessage());
                 }
@@ -60,10 +60,10 @@ public class AccountImportServices {
             e.printStackTrace();
         }
 
-        return errors; // Return the list of errors, if any
+        return errors;
     }
 
-    private void processRow(Row row, List<String> errors) {
+    private void processRow(Row row, List<String> errors, XSSFWorkbook workbook) {
         if (isRowEmpty(row)) {
             return;
         }
@@ -72,7 +72,6 @@ public class AccountImportServices {
             String username = row.getCell(0).getStringCellValue();
             String password = row.getCell(1).getStringCellValue();
 
-            // Handle Role ID as either String or Numeric
             int roleId = row.getCell(2).getCellType() == CellType.NUMERIC
                     ? (int) row.getCell(2).getNumericCellValue()
                     : Integer.parseInt(row.getCell(2).getStringCellValue());
@@ -91,7 +90,10 @@ public class AccountImportServices {
                     ? String.valueOf((long) row.getCell(8).getNumericCellValue())
                     : row.getCell(8).getStringCellValue();
 
-            String img = row.getCell(9).getStringCellValue();
+            // Extract image path or URL from Excel
+            String imgPath = row.getCell(9).getStringCellValue(); // Assuming the image is in column 9
+            String imgUrl = uploadImageToCloudinary(imgPath, workbook); // Pass workbook to extract embedded images
+
             String email = row.getCell(10).getStringCellValue();
 
             if (isDuplicate(username, email, phoneNumber, errors)) return;
@@ -115,7 +117,7 @@ public class AccountImportServices {
             student.setPassport(passportUrl);
             student.setGender(gender);
             student.setPhoneNumber(phoneNumber);
-            student.setImg(img);
+            student.setImg(imgUrl);  // Save Cloudinary URL for the image
             student.setEmail(email);
             student.setAccount(account);
             studentRepository.save(student);
@@ -123,6 +125,37 @@ public class AccountImportServices {
         } catch (Exception e) {
             errors.add("Failed to process row: " + (row.getRowNum() + 1) + " due to: " + e.getMessage());
         }
+    }
+
+    private String uploadImageToCloudinary(String imgPath, XSSFWorkbook workbook) {
+        try {
+            // If the image path is not a URL but embedded in the Excel, extract it.
+            if (imgPath != null && imgPath.startsWith("http")) {
+                return imgPath; // If it's a URL, return it directly.
+            }
+
+            // Extract image from workbook if it's embedded
+            byte[] imageBytes = getImageBytesFromExcel(workbook);
+            if (imageBytes != null) {
+                MultipartFile imageFile = new MockMultipartFile("file", "image.jpg", "image/jpeg", imageBytes);
+                return cloudinaryService.uploadImage(imageFile); // Upload to Cloudinary and return URL
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Image extraction or upload failed: " + e.getMessage());
+        }
+        return null;
+    }
+
+    private byte[] getImageBytesFromExcel(XSSFWorkbook workbook) {
+        for (XSSFPictureData pictureData : workbook.getAllPictures()) {
+            try {
+                return pictureData.getData();  // Return first image found
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to extract image: " + e.getMessage());
+            }
+        }
+        return null;  // If no image is found
     }
 
     private boolean isRowEmpty(Row row) {

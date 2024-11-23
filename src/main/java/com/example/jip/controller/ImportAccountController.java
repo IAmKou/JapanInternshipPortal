@@ -15,7 +15,7 @@ import java.util.List;
 public class ImportAccountController {
 
     @Autowired
-    private AccountImportServices accountImportServices;
+    AccountImportServices accountImportServices;
 
     @PostMapping("/excel")
     public ResponseEntity<?> importFile(@RequestParam("file") MultipartFile file) {

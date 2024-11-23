@@ -7,6 +7,7 @@ import com.example.jip.repository.StudentRepository;
 import com.example.jip.services.StudentServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.sql.Date;
@@ -40,7 +41,8 @@ public class StudentController {
             , @RequestParam String phoneNumber
             , @RequestParam(required = false) String img
             , @RequestParam(required = false) String passport_img
-            , @RequestParam int account_id) {
+            , @RequestParam int account_id
+            , RedirectAttributes redirectAttributes) {
 
         LocalDate localDate;
         try {
@@ -55,6 +57,7 @@ public class StudentController {
 
         Date date = Date.valueOf(localDate);
         studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, passport_img, account_id);
+        redirectAttributes.addFlashAttribute("successMessage", "Student saved successfully!");
         return new RedirectView("/account-settings.html");
     }
 

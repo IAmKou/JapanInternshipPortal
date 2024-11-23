@@ -4,6 +4,7 @@ import com.example.jip.configuration.CustomAuthenticationSuccessHandler;
 import com.example.jip.dto.TeacherDTO;
 import com.example.jip.dto.request.AssignmentCreationRequest;
 import com.example.jip.dto.request.AssignmentUpdateRequest;
+import com.example.jip.dto.request.FileDeleteRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.entity.Assignment;
 import com.example.jip.entity.Teacher;
@@ -40,9 +41,6 @@ public class AssignmentController {
 
     TeacherRepository teacherRepository;
 
-    AssignmentRepository assignmentRepository;
-
-    CloudinaryService cloudinaryService;
 
 
     @GetMapping("/list")
@@ -52,7 +50,7 @@ public class AssignmentController {
 
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createAssignment(@ModelAttribute AssignmentCreationRequest request,
-                                         @RequestParam("teacher_id") int teacherId) throws IOException {
+                                              @RequestParam("teacher_id") int teacherId) throws IOException {
         try {
             log.info("Received request: " + request);
 
@@ -85,22 +83,18 @@ public class AssignmentController {
         }
     }
 
-    @GetMapping("/{assignment_id}")
-    public ResponseEntity<Assignment> getAssignment(@PathVariable("assignment_id") int assignment_id) {
-        Assignment assignment = assignmentServices.getAssignmentById(assignment_id);
-        if (assignment != null) {
-            return ResponseEntity.ok(assignment);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
 
     @GetMapping("/detail/{assignment_id}")
-    public ResponseEntity<AssignmentResponse> getAssignment2(@PathVariable("assignment_id") int assignmentId) {
-        AssignmentResponse response = assignmentServices.getAssignmentById2(assignmentId);
+    public ResponseEntity<AssignmentResponse> getAssignmentById(@PathVariable("assignment_id") int assignmentId) {
+        log.info("Received assignmentId: " + assignmentId);
+        AssignmentResponse response = assignmentServices.getAssignmentById(assignmentId);
+        log.info("Files: " + response.getFiles());
+    if(response != null)  {
         return ResponseEntity.ok(response);
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
-
+}
 //    @GetMapping("/files/{assignmentId}")
 //    public ResponseEntity<List<String>> getAssignmentFiles(@PathVariable int assignmentId) {
 //        Assignment assignment = assignmentRepository.findById(assignmentId)
@@ -134,6 +128,17 @@ public class AssignmentController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 Not Found if assignment doesn't exist
             }
         }
+
+    @DeleteMapping("/delete-file")
+    public ResponseEntity<?> deleteFile(@RequestBody FileDeleteRequest request) {
+        try {
+            assignmentServices.deleteFile(request);
+            return ResponseEntity.ok("File deleted successfully.");
+        } catch (Exception e) {
+            log.error("Error deleting file: {}", request.getFileUrl(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting file.");
+        }
+    }
 }
 
 

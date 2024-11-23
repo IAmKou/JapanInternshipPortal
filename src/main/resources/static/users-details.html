@@ -1,12 +1,12 @@
 <!doctype html>
-<html class="no-js" lang="" xmlns="http://www.w3.org/1999/html">
+<html class="no-js" lang="">
 
 
-<!-- Mirrored from class-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
+<!-- Mirrored from users-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:41 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>JIP | Report List</title>
+    <title>AKKHOR | Students Details</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -23,10 +23,6 @@
     <link rel="stylesheet" href="fonts/flaticon.css">
     <!-- Animate CSS -->
     <link rel="stylesheet" href="css/animate.min.css">
-    <!-- Select 2 CSS -->
-    <link rel="stylesheet" href="css/select2.min.css">
-    <!-- Data Table CSS -->
-    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
@@ -83,8 +79,8 @@
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
                         <div class="admin-title">
-                            <h5 class="item-title userFullName"></h5>
-                            <span class="userRole"></span>
+                            <h5 class="item-title">Stevne Zone</h5>
+                            <span>Admin</span>
                         </div>
                         <div class="admin-img">
                             <img src="img/figure/admin.jpg" alt="Admin">
@@ -92,7 +88,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="item-header">
-                            <h6 class="item-title userFullName"></h6>
+                            <h6 class="item-title">Steven Zone</h6>
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
@@ -101,7 +97,7 @@
                                 <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
                                 </li>
                                 <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                                <li><a href="login.html"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
                     </div>
@@ -277,106 +273,89 @@
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3>Class Routine</h3>
+                <h3>Users</h3>
                 <ul>
                     <li>
                         <a href="admin.html">Home</a>
                     </li>
-                    <li>Routine</li>
+                    <li>Users Details</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
-            <!-- Class Routine Area Start Here -->
-            <div class="row">
-                <div class="col-12-xxxl col-12">
-                    <div class="card height-auto">
-                        <div class="card-body">
-                            <div class="heading-layout1">
-                                <div class="item-title">
-                                    <h3>Class Schedule</h3>
-                                </div>
-                                <div class="dropdown">
-                                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                                       aria-expanded="false">...</a>
-
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i
-                                                class="fas fa-plus text-orange-red"></i>Import</a>
-                                        <a class="dropdown-item" href="#"><i
-                                                class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                        <a class="dropdown-item" href="#"><i
-                                                class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+            <!-- Student Details Area Start Here -->
+            <div class="card height-auto">
+                <div class="card-body">
+                    <div class="single-info-details">
+                        <div class="item-img">
+                            <img src="img/figure/student1.jpg" alt="student" id="img">
+                        </div>
+                        <div class="item-content">
+                            <div class="header-inline item-header">
+                                <h3 class="text-dark-medium font-medium" id="name"></h3>
+                                <div class="heading-layout1">
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" href="#" role="button"
+                                           data-toggle="dropdown" aria-expanded="false">...</a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" id="editButton"><i
+                                                    class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <form class="mg-b-20">
-                                <div class="row gutters-8">
-                                    <div class="col-lg-4 col-12 form-group">
-                                        <input type="text" placeholder="Search by Day ..." class="form-control">
-                                    </div>
-                                    <div class="col-lg-3 col-12 form-group">
-                                        <input type="text" placeholder="Search by Class ..." class="form-control">
-                                    </div>
-                                    <div class="col-lg-3 col-12 form-group">
-                                        <input type="text" placeholder="Search by Section ..." class="form-control">
-                                    </div>
-                                    <div class="col-lg-2 col-12 form-group">
-                                        <button type="submit"
-                                                class="fw-btn-fill btn-gradient-yellow">SEARCH
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                            <div class="table-responsive">
-                                <table class="table display data-table text-nowrap">
-                                    <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Content</th>
-                                        <th>Reporter Id</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
+                            <div class="info-table table-responsive">
+                                <table class="table text-nowrap" id="userInfoTable">
                                     <tbody>
+                                    <tr>
+                                        <td>Id:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Name:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Japan Name:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Gender:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date Of Birth:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>E-mail:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phone:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
+                    <label for="card">Passport: </label><br/>
+                    <div class="single-info-details">
+                        <div class="item-img" style="width: 300px; height: 300px">
+                            <img src="img/figure/card.jpg" alt="card" id="card">
+                        </div>
+                    </div>
+                    <button class="save-button" style="display: none;">Save</button>
                 </div>
+                <!-- Student Details Area End Here -->
+                <footer class="footer-wrap-layout1">
+                    <div class="copyright">© Copyrights <a href="#">JIP</a> 2024. All rights reserved. Designed by <a
+                            href="#">PsdBosS</a></div>
+                </footer>
             </div>
-            <!-- Class Routine Area End Here -->
-            <footer class="footer-wrap-layout1">
-                <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by
-                    <a href="#">PsdBosS</a></div>
-            </footer>
         </div>
     </div>
     <!-- Page Area End Here -->
-    <div class="modal fade" id="standard-modal" tabindex="-1" role="dialog"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add schedule</h5>
-                    <button type="button" class="close" data-dismiss="modal"
-                            aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="/add-schedule" method="post" enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <label for="file" style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
-                        <input type="file" id="file" name="file" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Close</button>
-                        <button type="submit" class="footer-btn bg-linkedin">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 </div>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
@@ -386,68 +365,10 @@
 <script src="js/popper.min.js"></script>
 <!-- Bootstrap js -->
 <script src="js/bootstrap.min.js"></script>
-<!-- Select 2 Js -->
-<script src="js/select2.min.js"></script>
 <!-- Scroll Up Js -->
 <script src="js/jquery.scrollUp.min.js"></script>
-<!-- Data Table Js -->
-<script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
-<!-- fetch report list -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const tableBody = document.querySelector('.table tbody');
-
-        fetch("/report/get")
-            .then(response => response.json())
-            .then(reports => {
-                reports.forEach(report => {
-                    const row = document.createElement('tr');
-
-                    // Title cell
-                    const titleCell = document.createElement('td');
-                    titleCell.textContent = report.title;
-                    row.appendChild(titleCell);
-
-                    // Content cell
-                    const contentCell = document.createElement('td');
-                    contentCell.textContent = report.content;
-                    row.appendChild(contentCell);
-
-                    // Reporter Id cell
-                    const reporterIdCell = document.createElement('td');
-                    reporterIdCell.textContent = report.reporter_id;
-                    row.appendChild(reporterIdCell);
-
-                    // Actions cell
-                    const actionsCell = document.createElement('td');
-                    const dropdown = document.createElement('div');
-                    dropdown.className = 'dropdown';
-                    const dropdownToggle = document.createElement('a');
-                    dropdownToggle.href = '#';
-                    dropdownToggle.className = 'dropdown-toggle';
-                    dropdownToggle.setAttribute('data-toggle', 'dropdown');
-                    dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
-                    dropdown.appendChild(dropdownToggle);
-
-                    const dropdownMenu = document.createElement('div');
-                    dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
-                    dropdownMenu.innerHTML = `
-          <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-          <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-          <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-        `;
-                    dropdown.appendChild(dropdownMenu);
-                    actionsCell.appendChild(dropdown);
-                    row.appendChild(actionsCell);
-
-                    tableBody.appendChild(row);
-                });
-            })
-            .catch(error => console.error('Error fetching reports:', error));
-    });
-</script>
 <!-- fetch user -->
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -502,8 +423,124 @@
     }
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const userId = new URLSearchParams(window.location.search).get('userId');
+        let currentUser = null;
+
+        // Initially hide the save button
+        document.querySelector('.save-button').style.display = 'none';
+
+        // Fetch user details
+        fetch(`/${userId}/userDetail`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch student details');
+                }
+                return response.json();
+            })
+            .then(user => {
+                currentUser = user;
+
+                // Populate user details table
+                document.querySelector('.info-table tbody').innerHTML = `
+                <tr><td>Id:</td><td>${user.id}</td></tr>
+                <tr><td>Name:</td><td>${user.fullName}</td></tr>
+                <tr><td>Japan Name:</td><td>${user.jname}</td></tr>
+                <tr><td>Gender:</td><td>${user.gender}</td></tr>
+                <tr><td>Date Of Birth:</td><td>${user.dob}</td></tr>
+                <tr><td>Email:</td><td>${user.email}</td></tr>
+                <tr><td>Phone:</td><td>${user.phoneNumber}</td></tr>
+            `;
+
+                // Set images
+                document.getElementById('card').src = user.passport_img;
+                document.getElementById('img').src = user.img;
+                document.getElementById('name').textContent = user.fullName;
+
+                // Enable editing when the edit button is clicked
+                document.querySelector('#editButton').addEventListener('click', () => {
+                    document.querySelector('#userInfoTable').innerHTML = `
+                    <tr><td class="font-medium text-dark-medium">Name:</td>
+                        <td><input type="text" value="${user.fullName}" required id="name-input"></td></tr>
+                    <tr><td class="font-medium text-dark-medium">Japan Name:</td>
+                        <td><input type="text" value="${user.jname}" required id="jname-input"></td></tr>
+                        <tr><td class="font-medium text-dark-medium">Role Name:</td>
+                        <td><input type="text" value="${user.roleName}" required id="rname-input"></td></tr>
+                    <tr><td class="font-medium text-dark-medium">Gender:</td>
+                        <td>
+                            <div class="form-check-inline">
+                                <input type="radio" name="gender" value="Male" id="male" class="form-check-input" ${user.gender === 'Male' ? 'checked' : ''}>
+                                <label for="male" class="form-check-label">Male</label>
+                            </div>
+                            <div class="form-check-inline">
+                                <input type="radio" name="gender" value="Female" id="female" class="form-check-input" ${user.gender === 'Female' ? 'checked' : ''}>
+                                <label for="female" class="form-check-label">Female</label>
+                            </div>
+                        </td></tr>
+                    ${user.dob ? `<tr><td class="font-medium text-dark-medium">Date of Birth:</td>
+                        <td><input type="date" value="${user.dob.split('T')[0]}" id="dob-input"></td></tr>` : ''}
+                    <tr><td class="font-medium text-dark-medium">Email:</td>
+                        <td><input type="email" required value="${user.email}" id="email-input"></td></tr>
+                    <tr><td class="font-medium text-dark-medium">Phone Number:</td>
+                        <td><input type="text" required value="${user.phoneNumber}" id="phone-input"></td></tr>
+                `;
+                    // Show the save button after editing
+                    document.querySelector('.save-button').style.display = 'inline-block';
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching student details:', error);
+                alert('Failed to load student details.');
+            });
+
+        // Save changes when the save button is clicked
+        document.querySelector('.save-button').addEventListener('click', () => {
+            if (!currentUser) {
+                console.error('No current user found');
+                return;
+            }
+
+            // Get updated values from inputs
+            const updatedUser = {
+                ...currentUser,
+                fullName: document.getElementById('name-input').value,
+                jname: document.getElementById('jname-input').value || currentUser.jname,
+                rname: document.getElementById('rname-input').value || currentUser.jname,
+                gender: document.querySelector('input[name="gender"]:checked')?.value || currentUser.gender,
+                dob: document.getElementById('dob-input')?.value || currentUser.dob,
+                email: document.getElementById('email-input').value || currentUser.email,
+                phoneNumber: document.getElementById('phone-input').value || currentUser.phoneNumber
+            };
+
+            // Prepare form data for user details
+            const formData = new FormData();
+            formData.append('fullName', updatedUser.fullName);
+            formData.append('jname', updatedUser.jname);
+            formData.append('rname', updatedUser.rname);
+            formData.append('gender', updatedUser.gender);
+            formData.append('dob', updatedUser.dob);
+            formData.append('email', updatedUser.email);
+            formData.append('phoneNumber', updatedUser.phoneNumber);
+
+            // Send the update request
+            fetch(`/users/${userId}`, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("User updated successfully", data);
+                    window.location.reload(); // Reload page to reflect updated data
+                })
+                .catch(error => {
+                    console.error('Error updating user:', error);
+                });
+        });
+    });
+</script>
 </body>
 
 
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/class-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/users-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:43 GMT -->
 </html>
