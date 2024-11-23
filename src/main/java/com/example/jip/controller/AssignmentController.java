@@ -40,9 +40,6 @@ public class AssignmentController {
 
     TeacherRepository teacherRepository;
 
-    AssignmentRepository assignmentRepository;
-
-    CloudinaryService cloudinaryService;
 
 
     @GetMapping("/list")

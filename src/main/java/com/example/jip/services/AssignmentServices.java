@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -107,7 +108,7 @@ public class AssignmentServices {
                 .collect(Collectors.toList()));
 
         // Retrieve file URLs from Cloudinary
-        String folderName = sanitizeFolderName(assignment.getImgUrl());
+        String folderName = assignment.getImgUrl();
         try {
             List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
             List<String> fileUrls = resources.stream()
@@ -156,9 +157,8 @@ public class AssignmentServices {
     }
 
     private String sanitizeFolderName(String folderName) {
-        return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim();
+        return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim().replace(" ", "_");
     }
-
 
     private String extractFolderPath(String imageUrl) {
         if (imageUrl == null || imageUrl.isEmpty()) {

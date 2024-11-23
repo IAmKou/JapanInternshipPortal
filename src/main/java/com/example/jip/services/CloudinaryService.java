@@ -31,16 +31,16 @@ public class CloudinaryService {
 
     Cloudinary cloudinary;
 
-    @Transactional
     public CloudinaryResponse uploadFileToFolder(MultipartFile file, String folderName) {
+        log.info("Uploading to folder: {}", folderName);
         try {
             folderName = sanitizeFolderName(folderName);
             Map<String, Object> uploadParams = Map.of(
                     "folder", folderName,
                     "public_id", UUID.randomUUID().toString()
             );
-
             Map result = cloudinary.uploader().upload(file.getBytes(), uploadParams);
+            log.info("Upload response: {}", result);
             return CloudinaryResponse.builder()
                     .url((String) result.get("secure_url"))
                     .publicId((String) result.get("public_id"))
@@ -51,11 +51,12 @@ public class CloudinaryService {
         }
     }
 
+
     public List<Map<String, Object>> getFilesFromFolder(String folderName) {
         try {
-            folderName = sanitizeFolderName(folderName);
+            folderName = sanitizeFolderName(folderName); // Sanitize the folder name
             Search search = cloudinary.search()
-                    .expression("folder:" + folderName) // Specify folder search
+                    .expression("folder:" + folderName) // Properly handle folder names with spaces
                     .maxResults(50); // Limit results for testing
 
             Map<String, Object> results = search.execute();
