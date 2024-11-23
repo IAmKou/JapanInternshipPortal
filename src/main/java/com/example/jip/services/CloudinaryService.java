@@ -88,5 +88,10 @@ public class CloudinaryService {
         return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim();
     }
 
+    public String uploadImage(MultipartFile file) throws Exception {
+        var uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+        return (String) uploadResult.get("secure_url");
+    }
+
 }
 
