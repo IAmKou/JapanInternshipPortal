@@ -13,6 +13,5 @@ import lombok.experimental.FieldDefaults;
 public class FileDeleteRequest {
     String fileUrl;
     int assignmentId;
-
 }
 
