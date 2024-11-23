@@ -551,7 +551,7 @@
         <!-- Main Body Content Start Here -->
         <div class="dashboard-content-one container">
             <!-- Create Thread Button -->
-            <a href="create-forum.html"
+            <a href="create-forum.html">
             <button class="modal-trigger" href="create-forum.html">
                 Create Thread
             </button>
@@ -634,8 +634,15 @@
                     <img src="data:image/png;base64,${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">
                 </div>
                 <div class="thread-content">
-                    <div class="thread-title"><a href="post.html?id=${thread.id}">${thread.topicName}</a></div>
-                    <div class="thread-description">${thread.description}</div>
+                    <div class="" style="display: flex">
+                        <div style="flex-grow: 8">
+                         <div class="thread-title"><a href="post.html?id=${thread.id}">${thread.topicName}</a></div>
+                        <div class="thread-description">${thread.description}</div>
+                    </div>
+                        <div class="thread-description" style="flex-grow: 2;text-align: end;">${thread.creatorName}</div>
+                </div>
+
+
                 </div>`;
             threadList.appendChild(threadBox);
         });

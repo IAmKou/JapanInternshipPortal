@@ -9,10 +9,12 @@ import com.example.jip.entity.Class;
 
 import com.example.jip.entity.Teacher;
 import com.example.jip.exception.CloudinaryFolderAccessException;
+import com.example.jip.exception.FuncErrorException;
 import com.example.jip.exception.InvalidImageUrlException;
 import com.example.jip.repository.AssignmentRepository;
 import com.example.jip.repository.ClassRepository;
 import com.example.jip.repository.TeacherRepository;
+import com.example.jip.util.FileUploadUtil;
 import jakarta.transaction.Transactional;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -41,6 +44,7 @@ public class AssignmentServices {
 
     ClassRepository classRepository;
 
+
     @PreAuthorize("hasAuthority('TEACHER')")
     public List<Assignment> getAllAssignments() {
         return assignmentRepository.findAll();
@@ -51,61 +55,50 @@ public class AssignmentServices {
     @Transactional
     public Assignment createAssignment(AssignmentCreationRequest request) {
         Teacher teacher = teacherRepository.findById(request.getTeacher().getId())
-                .orElseThrow(() -> new RuntimeException("Teacher ID not found : " + request.getTeacher().getId()));
-//            FileUploadUtil.assertAllowed(request.getImgFile(), FileUploadUtil.IMAGE_PATTERN);
+                .orElseThrow(() -> new RuntimeException("Teacher ID not found: " + request.getTeacher().getId()));
 
-        // Convert the request to an Assignment entity
+        // Create Assignment entity
         Assignment assignment = new Assignment();
         assignment.setCreated_date(request.getCreated_date());
         assignment.setEnd_date(request.getEnd_date());
         assignment.setDescription(request.getDescription());
         assignment.setContent(request.getContent());
 
+        // Sanitize and create folder name
+        String folderName = sanitizeFolderName("assignments/" + request.getDescription());
+        assignment.setImgUrl(folderName); // Set folder URL
 
-        String folderName = assignment.getDescription(); // Create a folder path
-
+        // Handle file uploads
         MultipartFile[] imgFiles = request.getImgFile();
         if (imgFiles != null && imgFiles.length > 0) {
-            Set<String> uploadedFiles = new HashSet<>();
-            for (MultipartFile imgFile : imgFiles) {
-                if (!imgFile.isEmpty() && uploadedFiles.add(imgFile.getOriginalFilename())) {
-                    cloudinaryService.uploadFileToFolder(imgFile, folderName);
-                } else {
-                    log.warn("Duplicate or empty file skipped: " + imgFile.getOriginalFilename());
-                }
-            }
+            uploadFilesToFolder(imgFiles, folderName);
         }
 
         // Handle class associations
         if (request.getClassIds() != null && !request.getClassIds().isEmpty()) {
             Set<Class> classes = request.getClassIds().stream()
                     .map(classId -> classRepository.findById(classId)
-                            .orElseThrow(() -> new NoSuchElementException("Class not found: " + classId)))
+                            .orElseThrow(() -> new RuntimeException("Class not found: " + classId)))
                     .collect(Collectors.toSet());
             assignment.setClasses(classes);
         }
 
-        String folderUrl = cloudinaryService.getFolderUrl(folderName);
-        assignment.setImgUrl(folderUrl);
         assignment.setTeacher(teacher);
 
-        // Save assignment to database
+        // Save the assignment
         return assignmentRepository.save(assignment);
-
     }
 
 
-    @PreAuthorize("hasAuthority('TEACHER')")
-    public Assignment getAssignmentById(int assignmentId) {
-        return assignmentRepository.findById(assignmentId).orElseThrow(() -> new RuntimeException("Cant find assignment with id " + assignmentId));
-    }
+
 
     @PreAuthorize("hasAuthority('TEACHER')")
-    public AssignmentResponse getAssignmentById2(int assignmentId) {
+    public AssignmentResponse getAssignmentById(int assignmentId) {
         Assignment assignment = assignmentRepository.findById(assignmentId)
-                .orElseThrow(() -> new RuntimeException("Can't find assignment with id " + assignmentId));
+                .orElseThrow(() -> new RuntimeException("Assignment not found with ID: " + assignmentId));
 
         AssignmentResponse response = new AssignmentResponse();
+        response.setId(assignment.getId());
         response.setDescription(assignment.getDescription());
         response.setContent(assignment.getContent());
         response.setCreated_date(assignment.getCreated_date());
@@ -114,50 +107,58 @@ public class AssignmentServices {
                 .map(Class::getName)
                 .collect(Collectors.toList()));
 
-        // Use folder name to fetch files
-        String folderName = assignment.getDescription();
-        if (folderName == null || folderName.isEmpty()) {
-            throw new RuntimeException("Folder name is not set for assignment ID: " + assignmentId);
-        }
-
+        // Retrieve file URLs from Cloudinary
+        String folderName = assignment.getImgUrl();
         try {
             List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
             List<String> fileUrls = resources.stream()
                     .map(resource -> (String) resource.get("url"))
                     .collect(Collectors.toList());
+
+            if (fileUrls.isEmpty()) {
+                log.warn("No files found for assignment with ID: {}", assignmentId);
+            }
             response.setFiles(fileUrls);
+
         } catch (Exception e) {
-            throw new RuntimeException("Failed to retrieve files from folder: " + folderName, e);
+            log.error("Error retrieving files for assignment with ID: {}", assignmentId, e);
+            response.setFiles(Collections.emptyList());
         }
 
         return response;
     }
 
 
+
     @PreAuthorize("hasAuthority('TEACHER')")
+    @Transactional
     public void deleteAssignmentById(int assignmentId) {
-        log.info("Deleting assignment with ID: {}", assignmentId);
-
-        // Fetch assignment
         Assignment assignment = assignmentRepository.findById(assignmentId)
-                .orElseThrow(() -> new RuntimeException("Assignment not found: " + assignmentId));
-        log.info("Fetched assignment: {}", assignment);
+                .orElseThrow(() -> new RuntimeException("Assignment not found with ID: " + assignmentId));
 
-        // Handle image deletion
-        String imageUrl = assignment.getImgUrl();
-        try {
-                String folderPath = extractFolderPath(imageUrl);
-                log.info("Deleting folder: {}", folderPath);
-                cloudinaryService.deleteFolder(folderPath);
-            } catch (Exception e) {
-                log.error("Failed to delete Cloudinary folder", e);
-                throw e;
-        }
-        // Delete assignment
+        String folderPath = sanitizeFolderName(assignment.getImgUrl());
+        cloudinaryService.deleteFolder(folderPath);
+
         assignmentRepository.deleteById(assignmentId);
-        log.info("Assignment deleted successfully.");
     }
 
+    private void uploadFilesToFolder(MultipartFile[] files, String folderName) {
+        Set<String> uploadedFiles = new HashSet<>();
+        for (MultipartFile file : files) {
+            if (!file.isEmpty() && uploadedFiles.add(file.getOriginalFilename())) {
+                try {
+                    FileUploadUtil.assertAllowed(file, FileUploadUtil.IMAGE_PATTERN);
+                    cloudinaryService.uploadFileToFolder(file, folderName);
+                } catch (Exception e) {
+                    throw new RuntimeException("Error uploading file: " + file.getOriginalFilename(), e);
+                }
+            }
+        }
+    }
+
+    private String sanitizeFolderName(String folderName) {
+        return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim().replace(" ", "_");
+    }
 
     private String extractFolderPath(String imageUrl) {
         if (imageUrl == null || imageUrl.isEmpty()) {
@@ -178,7 +179,6 @@ public class AssignmentServices {
     }
 
 
-
     @PreAuthorize("hasAuthority('TEACHER')")
     @Transactional
     public Assignment updateAssignment(int assignmentId, AssignmentUpdateRequest request) {
@@ -186,27 +186,18 @@ public class AssignmentServices {
                 .orElseThrow(() -> new NoSuchElementException("Assignment id not found!"));
 
         MultipartFile[] newFiles = request.getImgFile();
-        String folderName = request.getDescription(); //Folder name = assignment's description
+        String folderName = "assignments/" + assignment.getDescription(); //Folder name = assignment's description
 
         if (folderName == null || folderName.isEmpty()) {
             throw new RuntimeException("Folder name is not set for assignment ID: " + assignmentId);
         }
 
-        try {
-            List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
-            List<String> fileUrls = resources.stream()
-                    .map(resource -> (String) resource.get("url"))
-                    .collect(Collectors.toList());
-            request.setFiles(fileUrls);
-            log.info("Current Files: " + request.getFiles());
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to retrieve files from folder: " + folderName, e);
-        }
 
         // Append new files if provided
         if (newFiles != null && newFiles.length > 0) {
             for (MultipartFile file : newFiles) {
                 if (!file.isEmpty()) {
+                    FileUploadUtil.assertAllowed(file, FileUploadUtil.IMAGE_PATTERN);
                     cloudinaryService.uploadFileToFolder(file, folderName);
                 }
             }

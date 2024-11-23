@@ -30,6 +30,7 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
 
+        /* Overlay */
         .overlay {
             display: none; /* Hidden by default */
             position: fixed;
@@ -44,23 +45,27 @@
         /* Popup container */
         .popup {
             display: none; /* Hidden by default */
-            position: absolute;
+            position: fixed; /* Fixed positioning for proper centering */
             z-index: 9; /* In front of the overlay */
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            width: 40%;
+            width: 90%; /* Adjust width for responsiveness */
+            max-width: 600px; /* Maximum width */
+            max-height: 90%; /* Prevent overflow of the screen */
             background-color: white;
             padding: 20px;
             border: 1px solid #888;
             border-radius: 20px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-
+            overflow: hidden; /* Hide overflow by default */
         }
 
         /* Popup content */
         .popup-content {
             width: 100%;
+            max-height: 100%;
+            overflow-y: auto; /* Enable vertical scrolling */
             padding: 20px;
             border-radius: 20px;
         }
@@ -71,12 +76,12 @@
             float: right;
             font-size: 28px;
             font-weight: bold;
+            cursor: pointer;
         }
 
         .close:hover, .close:focus {
             color: black;
             text-decoration: none;
-            cursor: pointer;
         }
 
         /* Form styling */
@@ -596,7 +601,7 @@
                 </ul>
 
             </div>
-
+<html resource="template/teacher-sidebar.html"></html>
         </div>
 
         <!-- Sidebar Area End Here -->
@@ -606,7 +611,7 @@
                 <h3>Assignment</h3>
                 <ul>
                     <li>
-                        <a href="index.html">Home</a>
+                        <a href="teacher.html">Home</a>
                     </li>
                     <li>All Assignment</li>
                 </ul>
@@ -647,38 +652,33 @@
 
         </div>
         <div id="overlay" class="overlay">
-        <div id="assignmentPopup" class="popup">
-            <div class="popup-content">
-                <span class="close" onclick="closePopup()">&times;</span>
-                <h2>Update Assignment</h2>
-                <form class="new-added-form" action="javascript:void(0);"  onsubmit="updateAssignment(event)">
-                    <label for="description">Description:</label>
-                    <input type="text" id="description" name="description" ></input>
+            <div id="assignmentPopup" class="popup">
+                <div class="popup-content">
+                    <span class="close" onclick="closePopup()">&times;</span>
+                    <h2>Update Assignment</h2>
+                    <form class="new-added-form" action="javascript:void(0);" onsubmit="updateAssignment(event)">
+                        <label for="description">Description:</label>
+                        <input type="text" id="description" name="description" />
 
-                    <label for="end_date">End Date:</label>
-                    <input type="date" id="end_date" name="end_date" >
+                        <label for="end_date">End Date:</label>
+                        <input type="date" id="end_date" name="end_date" />
 
-                    <label for="content">Content:</label>
-                    <textarea id="content" name="content" rows="4" ></textarea>
+                        <label for="content">Content:</label>
+                        <textarea id="content" name="content" rows="4"></textarea>
 
-                    <label for="class_id">For Class *</label>
-                        <select  name="class_id" id="class_id" multiple>
-<!--                            <option value="">Please Select Class *</option>-->
-<!--                            <option value="1">Class 1</option>-->
-<!--                            <option value="2">Class 2</option>-->
-<!--                            <option value="3">Class 3</option>-->
-                        </select>
-                    <label for="assignment-files">Files:</label>
-                    <div id="assignment-files"></div>
+                        <label for="class_id">For Class *</label>
+                        <select name="class_id" id="class_id" multiple></select>
 
-                    <label for="img">Upload Files:</label>
-                    <input type="file" id="img" name="imgFile" multiple>
+                        <label for="assignment-files">Files:</label>
+                        <div id="assignment-files"></div>
 
-                    <button type="submit" class="btn">Submit</button>
-                </form>
+                        <label for="img">Upload Files:</label>
+                        <input type="file" id="img" name="imgFile" multiple />
+
+                        <button type="submit" class="btn">Submit</button>
+                    </form>
+                </div>
             </div>
-
-        </div>
         </div>
         <!-- Confirmation Modal -->
         <div id="deleteConfirmModal" class="modal-background">
@@ -764,7 +764,7 @@
     // Function to open the update popup async
     async function openUpdatePopup(assignmentId) {
         try {
-            const response = await fetch(`${API_BASE_URL}/${assignmentId}`);
+            const response = await fetch(`${API_BASE_URL}/detail/${assignmentId}`);
             if (!response.ok) {
                 throw new Error('Error fetching assignment for update: ' + response.statusText);
             }
@@ -808,9 +808,10 @@
                 files.forEach(fileUrl => {
                     const link = document.createElement('a');
                     link.href = fileUrl;
-                    link.textContent = fileUrl.split('/').pop(); // Display the file name
+                    link.textContent = `📄 ${fileUrl.split('/').pop()}`; // Add a file icon
                     link.target = '_blank';
-                    link.style.display = 'block'; // Show each file on a new line
+                    link.rel = 'noopener noreferrer';
+                    link.style.display = 'block';
                     filesContainer.appendChild(link);
                 });
             } else {
@@ -870,14 +871,14 @@
         } catch (error) {
             console.error('Error:', error);
         }
-
+    }
 
         // Function to close the update popup
         function closePopup() {
             document.getElementById('assignmentPopup').style.display = 'none';
             document.getElementById('overlay').style.display = 'none';
             }
-        }
+
 
 
         // Function to open the delete confirmation modal
@@ -970,6 +971,19 @@
     } else {
         console.error("User details not found in sessionStorage");
     }
+
+    // Function to load the sidebar
+    function loadSidebar() {
+        fetch('teacher-sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar-container').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading sidebar:', error));
+    }
+
+    // Call the function when the page loads
+    document.addEventListener('DOMContentLoaded', loadSidebar);
 </script>
 
 </body>

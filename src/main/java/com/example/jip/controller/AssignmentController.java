@@ -40,9 +40,6 @@ public class AssignmentController {
 
     TeacherRepository teacherRepository;
 
-    AssignmentRepository assignmentRepository;
-
-    CloudinaryService cloudinaryService;
 
 
     @GetMapping("/list")
@@ -52,7 +49,7 @@ public class AssignmentController {
 
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createAssignment(@ModelAttribute AssignmentCreationRequest request,
-                                         @RequestParam("teacher_id") int teacherId) throws IOException {
+                                              @RequestParam("teacher_id") int teacherId) throws IOException {
         try {
             log.info("Received request: " + request);
 
@@ -85,22 +82,18 @@ public class AssignmentController {
         }
     }
 
-    @GetMapping("/{assignment_id}")
-    public ResponseEntity<Assignment> getAssignment(@PathVariable("assignment_id") int assignment_id) {
-        Assignment assignment = assignmentServices.getAssignmentById(assignment_id);
-        if (assignment != null) {
-            return ResponseEntity.ok(assignment);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
 
     @GetMapping("/detail/{assignment_id}")
-    public ResponseEntity<AssignmentResponse> getAssignment2(@PathVariable("assignment_id") int assignmentId) {
-        AssignmentResponse response = assignmentServices.getAssignmentById2(assignmentId);
+    public ResponseEntity<AssignmentResponse> getAssignmentById(@PathVariable("assignment_id") int assignmentId) {
+        log.info("Received assignmentId: " + assignmentId);
+        AssignmentResponse response = assignmentServices.getAssignmentById(assignmentId);
+        log.info("Files: " + response.getFiles());
+    if(response != null)  {
         return ResponseEntity.ok(response);
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
-
+}
 //    @GetMapping("/files/{assignmentId}")
 //    public ResponseEntity<List<String>> getAssignmentFiles(@PathVariable int assignmentId) {
 //        Assignment assignment = assignmentRepository.findById(assignmentId)

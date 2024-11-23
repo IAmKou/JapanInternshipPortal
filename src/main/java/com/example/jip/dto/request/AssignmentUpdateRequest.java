@@ -22,5 +22,4 @@ public class AssignmentUpdateRequest {
     MultipartFile[] imgFile;
     List<Integer> classIds;
     // List name files of this assignment
-    List<String> files;//get file names of this assignment
 }
