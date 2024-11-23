@@ -801,22 +801,40 @@
 
             // Display file download links
             const files = assignment.files || [];
-            console.log('Files:', files);
             const filesContainer = document.getElementById('assignment-files');
             filesContainer.innerHTML = ""; // Clear any existing content
             if (files.length > 0) {
                 files.forEach(fileUrl => {
+                    const fileRow = document.createElement('div');
+                    fileRow.style.display = 'flex';
+                    fileRow.style.alignItems = 'center';
+                    fileRow.style.marginBottom = '8px';
+
+                    // File link
                     const link = document.createElement('a');
                     link.href = fileUrl;
-                    link.textContent = `📄 ${fileUrl.split('/').pop()}`; // Add a file icon
+                    link.textContent = fileUrl.split('/').pop();
                     link.target = '_blank';
                     link.rel = 'noopener noreferrer';
-                    link.style.display = 'block';
-                    filesContainer.appendChild(link);
+                    link.style.flex = '1';
+
+                    // Delete icon
+                    const deleteIcon = document.createElement('span');
+                    deleteIcon.textContent = '🗑️'; // Use any icon or emoji
+                    deleteIcon.style.cursor = 'pointer';
+                    deleteIcon.style.marginLeft = '10px';
+                    deleteIcon.title = 'Delete this file';
+                    deleteIcon.onclick = () => deleteFile(fileUrl, assignmentId, fileRow);
+
+                    // Append link and icon to the container
+                    fileRow.appendChild(link);
+                    fileRow.appendChild(deleteIcon);
+                    filesContainer.appendChild(fileRow);
                 });
             } else {
                 filesContainer.textContent = "No files uploaded";
             }
+
 
             // Show the update popup
             currentAssignmentId = assignment.id;
@@ -824,6 +842,27 @@
             document.getElementById('overlay').style.display = 'flex';
         } catch (error) {
             console.error(error);
+        }
+    }
+
+    async function deleteFile(fileUrl, assignmentId, fileRow) {
+        if (!confirm('Are you sure you want to delete this file?')) return;
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/delete-file`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fileUrl, assignmentId })
+            });
+
+            if (response.ok) {
+                alert('File deleted successfully!');
+                fileRow.remove(); // Remove the file row from the DOM
+            } else {
+                alert('Failed to delete the file. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error deleting file:', error);
         }
     }
 

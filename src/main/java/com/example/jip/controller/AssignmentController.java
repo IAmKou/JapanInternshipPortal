@@ -4,6 +4,7 @@ import com.example.jip.configuration.CustomAuthenticationSuccessHandler;
 import com.example.jip.dto.TeacherDTO;
 import com.example.jip.dto.request.AssignmentCreationRequest;
 import com.example.jip.dto.request.AssignmentUpdateRequest;
+import com.example.jip.dto.request.FileDeleteRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.entity.Assignment;
 import com.example.jip.entity.Teacher;
@@ -127,6 +128,17 @@ public class AssignmentController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 Not Found if assignment doesn't exist
             }
         }
+
+    @DeleteMapping("/delete-file")
+    public ResponseEntity<?> deleteFile(@RequestBody FileDeleteRequest request) {
+        try {
+            assignmentServices.deleteFile(request);
+            return ResponseEntity.ok("File deleted successfully.");
+        } catch (Exception e) {
+            log.error("Error deleting file: {}", request.getFileUrl(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting file.");
+        }
+    }
 }
 
 
