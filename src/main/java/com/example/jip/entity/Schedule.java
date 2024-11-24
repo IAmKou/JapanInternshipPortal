@@ -1,35 +1,53 @@
 package com.example.jip.entity;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Date;
 import java.sql.Time;
-
+@Entity
+@Table(name="Schedule")
 @Setter
 @Getter
 public class Schedule {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int block;
-    private int week_number;
+
+    @Column(name="Date")
+    private Date date;
+
+    @Column(name="day_of_week")
     private dayOfWeek day_of_week;
-    private int slot_number;
-    private int teacher_id;
-    private int class_id;
+
+    @Column(name="location")
+    private String location;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="class_id")
+    private Class clasz;
+
+    @Column(name = "start_time")
     private Time start_time;
+
+    @Column(name = "end_time")
     private Time end_time;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "event")
     private String event;
 
     public Schedule() {}
 
-    public Schedule(int id, int block, int week_number, dayOfWeek day_of_week, int slot_number, int teacher_id, int class_id, Time start_time, Time end_time, String description, String event) {
+    public Schedule(int id, Date date, dayOfWeek day_of_week, String location, Class clasz, Time start_time, Time end_time, String description, String event) {
         this.id = id;
-        this.block = block;
-        this.week_number = week_number;
+        this.date = date;
         this.day_of_week = day_of_week;
-        this.slot_number = slot_number;
-        this.teacher_id = teacher_id;
-        this.class_id = class_id;
+        this.location = location;
+        this.clasz = clasz;
         this.start_time = start_time;
         this.end_time = end_time;
         this.description = description;

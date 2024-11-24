@@ -32,6 +32,11 @@ public class Class {
     @JsonBackReference
     private Set<Assignment> assignments = new HashSet<>();
 
+    @OneToMany(mappedBy = "clasz", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Schedule> schedules = new HashSet<>();
+
+
+
 
     public Class(){}
 

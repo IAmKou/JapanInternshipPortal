@@ -1,10 +1,12 @@
 <!doctype html>
 <html class="no-js" lang="">
 
+
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/class-routine.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Forum Page</title>
+    <title>JIP | Class Schedule</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -19,77 +21,16 @@
     <link rel="stylesheet" href="css/all.min.css">
     <!-- Flaticon CSS -->
     <link rel="stylesheet" href="fonts/flaticon.css">
-    <!-- Full Calender CSS -->
-    <link rel="stylesheet" href="css/fullcalendar.min.css">
     <!-- Animate CSS -->
     <link rel="stylesheet" href="css/animate.min.css">
+    <!-- Select 2 CSS -->
+    <link rel="stylesheet" href="css/select2.min.css">
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
-
-    <style>
-
-        .post-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
-
-        .post-header h2 {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .post-image {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .post-image img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-
-        .post-description {
-            font-size: 16px;
-            color: #555;
-            line-height: 1.6;
-            text-wrap: wrap;
-            display: block;
-            overflow: hidden;
-            word-break: break-word;
-        }
-
-        .comment .user-name {
-            font-weight: bold;
-            color: #0073e6;
-        }
-
-        .comment .user-text {
-            margin-top: 5px;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .page-btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-
-        #pageNumber {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-    </style>
-
 </head>
 
 <body>
@@ -101,7 +42,7 @@
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
-                <a href="admin.html">
+                <a href="index.html">
                     <img src="img/logo.png" alt="logo">
                 </a>
             </div>
@@ -125,7 +66,6 @@
             </button>
         </div>
         <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
-            <!-- Search Bar Start Here -->
             <ul class="navbar-nav">
                 <li class="navbar-item header-search-bar">
                     <div class="input-group stylish-input-group">
@@ -134,14 +74,11 @@
                                     <span class="flaticon-search" aria-hidden="true"></span>
                                 </button>
                             </span>
-                        <label>
-                            <input type="text" class="form-control" placeholder="Find Something . . .">
-                        </label>
+                        <input type="text" class="form-control" placeholder="Find Something . . .">
                     </div>
                 </li>
             </ul>
             <ul class="navbar-nav">
-                <!-- Profile Dropdown -->
                 <li class="navbar-item dropdown header-admin">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
@@ -164,12 +101,11 @@
                                 <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
                                 </li>
                                 <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                                <li><a href="login.html"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
                     </div>
                 </li>
-                <!-- Messages Dropdown -->
                 <li class="navbar-item dropdown header-message">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
@@ -180,7 +116,7 @@
 
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="item-header">
-                            <h6 class="item-title">05 Messages</h6>
+                            <h6 class="item-title">05 Message</h6>
                         </div>
                         <div class="item-content">
                             <div class="media">
@@ -194,7 +130,8 @@
                                             <span class="item-time">18:30</span>
                                         </a>
                                     </div>
-                                    <p>What is the reason for buying this item?</p>
+                                    <p>What is the reason of buy this item.
+                                        Is it usefull for me.....</p>
                                 </div>
                             </div>
                             <div class="media">
@@ -245,7 +182,6 @@
                         </div>
                     </div>
                 </li>
-                <!-- Notifications Dropdown -->
                 <li class="navbar-item dropdown header-notification">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
@@ -256,7 +192,7 @@
 
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="item-header">
-                            <h6 class="item-title">03 Notifications</h6>
+                            <h6 class="item-title">03 Notifiacations</h6>
                         </div>
                         <div class="item-content">
                             <div class="media">
@@ -264,8 +200,8 @@
                                     <i class="fas fa-check"></i>
                                 </div>
                                 <div class="media-body space-sm">
-                                    <div class="post-title">Complete Today's Task</div>
-                                    <span>1 Min ago</span>
+                                    <div class="post-title">Complete Today Task</div>
+                                    <span>1 Mins ago</span>
                                 </div>
                             </div>
                             <div class="media">
@@ -289,16 +225,14 @@
                         </div>
                     </div>
                 </li>
-
-                <!-- Language Dropdown -->
                 <li class="navbar-item dropdown header-language">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
                        data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#">English</a>
                         <a class="dropdown-item" href="#">Spanish</a>
-                        <a class="dropdown-item" href="#">French</a>
-                        <a class="dropdown-item" href="#">Chinese</a>
+                        <a class="dropdown-item" href="#">Franchis</a>
+                        <a class="dropdown-item" href="#">Chiness</a>
                     </div>
                 </li>
             </ul>
@@ -311,7 +245,7 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="index.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
@@ -320,17 +254,17 @@
                         <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
+                                <a href="index.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
                             </li>
                             <li class="nav-item">
-                                <a href="student.html" class="nav-link"><i
+                                <a href="index3.html" class="nav-link"><i
                                         class="fas fa-angle-right"></i>Students</a>
                             </li>
                             <li class="nav-item">
-                                <a href="manager.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
+                                <a href="index4.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
                             </li>
                             <li class="nav-item">
-                                <a href="teacher.html" class="nav-link"><i
+                                <a href="index5.html" class="nav-link"><i
                                         class="fas fa-angle-right"></i>Teachers</a>
                             </li>
                         </ul>
@@ -343,7 +277,7 @@
                                     Students</a>
                             </li>
                             <li class="nav-item">
-                                <a href="users-details.html" class="nav-link"><i
+                                <a href="student-details.html" class="nav-link"><i
                                         class="fas fa-angle-right"></i>Student Details</a>
                             </li>
                             <li class="nav-item">
@@ -399,11 +333,11 @@
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Library</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                <a href="all-book.html" class="nav-link"><i class="fas fa-angle-right"></i>All
                                     Book</a>
                             </li>
                             <li class="nav-item">
-                                <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                <a href="add-book.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
                                     Book</a>
                             </li>
                         </ul>
@@ -415,6 +349,14 @@
                                 <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
                                     Collection</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="all-expense.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Expenses</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="add-expense.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                    Expenses</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
@@ -422,7 +364,7 @@
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="all-class-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                <a href="all-class.html" class="nav-link"><i class="fas fa-angle-right"></i>All
                                     Classes</a>
                             </li>
                             <li class="nav-item">
@@ -436,7 +378,8 @@
                                 class="flaticon-open-book"></i><span>Subject</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="class-routine.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class
+                        <a href="class-routine.html" class="nav-link menu-active"><i class="flaticon-calendar"></i><span
+                                class="menu-active">Class
                                     Routine</span></a>
                     </li>
                     <li class="nav-item">
@@ -444,50 +387,15 @@
                                 class="flaticon-checklist"></i><span>Attendence</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="exam-schedule.html"><i class="fas fa-angle-right"></i>Exam
+                                <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
                                     Schedule</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="Update-student-mark-report.html"><i
-                                        class="fas fa-angle-right"></i>Exam Grades</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/markreport/view" class="nav-link menu-active"><i
-                                        class="fas fa-angle-right"></i>View Exam
+                                <a href="exam-grade.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
                                     Grades</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create
-                                    material</a>
-                            </li>
-                        </ul>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="View-list-materials.html"><i class="fas fa-angle-right"></i>View
-                                    list materials</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
-                                    threads</a>
-                            </li>
-                        </ul>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="Create-material.html.html"><i class="fas fa-angle-right"></i>Create
-                                    Thread</a>
                             </li>
                         </ul>
                     </li>
@@ -546,88 +454,110 @@
             </div>
         </div>
         <!-- Sidebar Area End Here -->
-        <!-- Main Body Content Start Here -->
-
-        <div class="post-container">
-            <div style="display: flex">
-                <!-- Post Header -->
-                <div class="post-header" style="flex-grow: 8" id="threadTitle">
-                </div>
-                <div class="post-header" style="flex-grow: 2" id="threadMaker">
-                </div>
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <h3>Class Routine</h3>
+                <ul>
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>Routine</li>
+                </ul>
             </div>
-            <!-- Image Section -->
-            <div class="post-image" id="threadImage">
-            </div>
-            <!-- Description Section -->
-            <div class="post-description" id="threadDescription">
-            </div>
-        </div>
-        <!-- Main Body Content End Here -->
-    </div>
+            <!-- Breadcubs Area End Here -->
+            <!-- Class Routine Area Start Here -->
+            <div class="row">
+                <div class="col-12-xxxl col-12">
+                    <div class="card height-auto">
+                        <div class="card-body">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3>Class Schedule</h3>
+                                </div>
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                                       aria-expanded="false">...</a>
 
-
-
-
-    <div class="ui-modal-box">
-        <div class="modal-box">
-            <div class="modal sign-up-modal fade" id="sign-up" tabindex="-1" role="dialog"
-                 aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <div class="close-btn">
-                                <button type="button" class="close" data-dismiss="modal"
-                                        aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="item-logo">
-                                <img src="img/logo2.png" alt="logo">
-                            </div>
-                            <form class="login-form">
-                                <form action="/upload" method="post" enctype="multipart/form-data">
-                                    <input type="file" id="imageUpload" name="image" accept="image/*" required>
-                                    <button type="submit">Upload</button>
-                                </form>
-                                <div class="row gutters-15">
-                                    <div class="form-group col-12">
-                                        <input type="text" placeholder="Thread Name" class="form-control">
-                                    </div>
-                                    <div class="form-group col-12">
-                                        <textarea placeholder="Description" class="form-control" rows="8"></textarea>
-                                    </div>
-                                    <div class="form-group col-12">
-                                        <button type="submit" class="login-btn">Create
-                                            Thread
-                                        </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-target="#standard-modal" data-toggle="modal"><i
+                                                class="fas fa-file-import text-green"></i>Import</a>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table display data-table text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input checkAll">
+                                                <label class="form-check-label">Day</label>
+                                            </div>
+                                        </th>
+                                        <th>Class</th>
+                                        <th>Subject</th>
+                                        <th>Location</th>
+                                        <th>Teacher</th>
+                                        <th>Time</th>
+                                        <th>Date</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input">
+                                                <label class="form-check-label">Sunday</label>
+                                            </div>
+                                        </td>
+                                        <td>4</td>
+                                        <td>Accounting</td>
+                                        <td>A</td>
+                                        <td>Mike John</td>
+                                        <td>10.00 am-11.00 am</td>
+                                        <td>20/06/2019</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- Class Routine Area End Here -->
+            <footer class="footer-wrap-layout1">
+                <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by
+                    <a href="#">PsdBosS</a></div>
+            </footer>
         </div>
     </div>
-
-    <!-- Footer Start Here -->
-    <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
-        <div style="background-color: #ec9006; padding: 15px;">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
-                            rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
-                    </div>
+    <!-- Page Area End Here -->
+    <div aria-hidden="true" class="modal fade" id="standard-modal" role="dialog"
+         tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add schedule</h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal"
+                            type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+                <form action="/schedule/import" enctype="multipart/form-data" id="import" method="post">
+                    <div class="modal-body">
+                        <label for="file" style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
+                        <input class="form-control-file" id="file" name="file" required type="file">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="footer-btn bg-dark-low" data-dismiss="modal" type="button">Close</button>
+                        <button class="footer-btn bg-linkedin" type="submit">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
-    </footer>
-    <!-- Footer End Here -->
+    </div>
 </div>
-<!-- Page Area End Here -->
-
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -640,68 +570,13 @@
 <script src="js/select2.min.js"></script>
 <!-- Scroll Up Js -->
 <script src="js/jquery.scrollUp.min.js"></script>
-<!-- Date Picker Js -->
-<script src="js/datepicker.min.js"></script>
 <!-- Data Table Js -->
 <script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
 
-
-<script>
-    let currentPage = 1;
-    const threadsPerPage = 5;
-    const threads = Array.from(document.querySelectorAll('.thread-box'));
-    const totalPages = Math.ceil(threads.length / threadsPerPage);
-
-    function showPage(page) {
-        // Hide all threads
-        threads.forEach(thread => thread.style.display = 'none');
-
-        // Show only the threads for the current page
-        const start = (page - 1) * threadsPerPage;
-        const end = start + threadsPerPage;
-        threads.slice(start, end).forEach(thread => thread.style.display = 'block');
-
-        // Update page number and button states
-        document.getElementById('pageNumber').textContent = page;
-        document.getElementById('prevPage').disabled = page === 1;
-        document.getElementById('nextPage').disabled = page === totalPages;
-    }
-
-    // Change page based on button click
-    function changePage(direction) {
-        currentPage += direction;
-        showPage(currentPage);
-    }
-
-    // Initialize pagination on page load
-    document.addEventListener('DOMContentLoaded', () => showPage(currentPage));
-</script>
-<script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const threadId = urlParams.get('id');
-
-    if (threadId) {
-        // Use the threadId to fetch the thread's details
-        fetch(`/thread/${threadId}`)
-            .then(response => response.json())
-            .then(thread => renderThreadDetails(thread))
-            .catch(error => console.error("Error fetching thread details:", error));
-    } else {
-        console.error("No thread ID found in URL.");
-    }
-
-    function renderThreadDetails(thread) {
-        const threadTitle = document.getElementById('threadTitle');
-        const threadDescription = document.getElementById('threadDescription');
-        const threadImage = document.getElementById('threadImage');
-        const threadMaker = document.getElementById('threadMaker');
-        threadTitle.innerHTML = `<h2>${thread.topicName}</h2>`;
-        threadDescription.innerHTML = `<p>${thread.description}</p> `;
-        threadMaker.innerHTML = `<p style="float: bottom">${thread.creatorName}</p>`;
-        threadImage.innerHTML = `<img src="data:image/png;base64,${thread.image}"/>`
-    }
-</script>
 </body>
+
+
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/class-routine.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>
