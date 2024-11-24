@@ -1,4 +1,4 @@
-CREATE DATABASE jip;
+DateCREATE DATABASE jip;
 USE jip;
 
 CREATE TABLE Role (
@@ -60,6 +60,7 @@ Name varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 CREATE TABLE Class (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    location varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     number_of_student INT,
     teacher_id INT,
     FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
@@ -77,7 +78,6 @@ CREATE TABLE Schedule (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Date date,
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') NOT NULL,
-    location varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     teacher_id INT,
     class_id INT,
     lesson_id INT,
