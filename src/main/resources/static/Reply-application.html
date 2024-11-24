@@ -476,46 +476,58 @@
                 <!-- Admit Form Area Start Here -->
                 <div class="card height-auto">
                     <div class="card-body">
+                        <!-- Hiển thị thông tin tĩnh -->
+                        <div class="single-info-details">
+                            <div class="item-content">
+                                <h3 class="text-dark-medium font-medium">Application Details</h3>
+                                <table class="table text-nowrap">
+                                    <tbody>
+                                    <tr>
+                                        <td><strong>Name:</strong></td>
+                                        <td id="name">N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Purpose:</strong></td>
+                                        <td id="content">N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Application Type:</strong></td>
+                                        <td id="applicationType">N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Create Date:</strong></td>
+                                        <td id="createDate">N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>File:</strong></td>
+                                        <td id="imgFile">
+
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Phần cập nhật -->
                         <form class="new-added-form">
                             <div class="row">
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label style="font-weight: bold;">Name </label>
-                                    <input type="text" id="name" placeholder="" class="form-control" readonly>
-                                </div>
-
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label style="font-weight: bold;">Application type</label>
-                                    <input type="text" id="applicationType" placeholder="" class="form-control" readonly>
-                                </div>
-
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label style="font-weight: bold;">Create Date</label>
-                                    <input type="text" id="createDate" placeholder="" class="form-control" readonly>
-                                </div>
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label style="font-weight: bold;">File</label>
-                                    <input type="file" id="imgFile" placeholder="" class="form-control" readonly>
-                                </div>
-                                <div class="col-lg-6 col-12 form-group">
-                                    <label style="font-weight: bold;">Purpose</label>
-                                    <textarea class="textarea form-control"  id="content" cols="8" rows="5"></textarea>
-                                </div>
-                                <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label for="status" style="font-weight: bold;">Status</label>
-                                    <select id="status" name="status" class="select2" >
+                                <div class="col-xl-2 col-lg-6 col-12 form-group">
+                                    <label for="status" style="font-weight: bold;">Status:</label>
+                                    <select id="status" name="status" class="select2">
                                         <option value="">Please Select Status *</option>
                                         <option value="Approved">Approved</option>
-                                        <option value="Rejected"    >Rejected</option>
+                                        <option value="Rejected">Rejected</option>
                                     </select>
                                 </div>
 
                                 <div class="col-lg-6 col-12 form-group">
-                                    <label style="font-weight: bold;">Respond</label>
-                                    <textarea class="textarea form-control"  id="reply" cols="8" rows="5"></textarea>
+                                    <label style="font-weight: bold;">Respond:</label>
+                                    <textarea class="textarea form-control" id="reply" cols="8" rows="5"></textarea>
                                 </div>
 
                                 <div class="col-12 form-group mg-t-8">
-                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark"  id="saveChanges">Save</button>
+                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" id="saveChanges">Save</button>
                                 </div>
                             </div>
                         </form>
@@ -630,38 +642,52 @@
 <script>
     // Lấy ID từ URL
     const urlParams = new URLSearchParams(window.location.search);
-    const applicationId = urlParams.get('id'); // Lấy 'id' từ URL
+    const applicationId = urlParams.get('id');
 
     // Kiểm tra nếu applicationId không hợp lệ
 
-        // Gọi API để lấy chi tiết ứng dụng và điền vào form
-        fetch(`/application/details/${applicationId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data) {
-                    // Điền thông tin vào form
-                    document.getElementById("name").value = data.name;
-                    document.getElementById("applicationType").value = data.category;
-                    document.getElementById("content").value = data.content;
 
-                    // Format ngày tạo
-                    const createdDate = new Date(data.created_date);
-                    const formattedDate = `${String(createdDate.getDate()).padStart(2, '0')}/${String(createdDate.getMonth() + 1).padStart(2, '0')}/${createdDate.getFullYear()}`;
-                    document.getElementById("createDate").value = formattedDate;
+    // Gọi API để lấy chi tiết ứng dụng và hiển thị vào bảng
+    fetch(`/application/details/${applicationId}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Received Data:', data);
+            if (data) {
+                // Hiển thị thông tin tĩnh trong bảng
+                document.getElementById("name").textContent = data.name || "N/A";
+                document.getElementById("applicationType").textContent = data.category || "N/A";
+                document.getElementById("content").innerHTML = formatContent(data.content || "N/A");
 
-                    // Gán trạng thái mặc định
-                    document.getElementById("status").value = data.status;
-                    document.getElementById("reply").value = data.reply || ''; // Tránh null
+                const createdDate = new Date(data.created_date);
+                document.getElementById("createDate").textContent = createdDate
+                    ? `${String(createdDate.getDate()).padStart(2, '0')}/${String(createdDate.getMonth() + 1).padStart(2, '0')}/${createdDate.getFullYear()}`
+                    : "N/A";
+
+                // Hiển thị tất cả các ảnh từ fileUrls
+                const filesContainer = document.getElementById('imgFile');
+                filesContainer.innerHTML = "";  // Clear any existing content
+
+                // Kiểm tra xem img có tồn tại trong dữ liệu không
+                if (data.img) {
+                    // Lấy tên tệp từ URL
+                    const fileName = data.img.split('/').pop();  // Tách tên tệp từ URL
+
+                    // Tạo một thẻ <a> để liên kết đến hình ảnh
+                    const link = document.createElement('a');
+                    link.href = data.img;  // URL của hình ảnh
+                    link.textContent = fileName;  // Hiển thị tên tệp (mặc định là tên file)
+                    link.target = '_blank';  // Mở hình ảnh trong tab mới
+
+                    // Thêm thẻ <a> vào container
+                    filesContainer.appendChild(link);
+                } else {
+                    filesContainer.innerHTML = "";
                 }
-            })
-            .catch(error => {
-                console.error('Lỗi khi lấy thông tin ứng dụng:', error);
-                alert('Không thể tải chi tiết ứng dụng.');
-            });
-
-
-
-
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching application details:', error);
+        });
 </script>
 <script>
     document.getElementById("saveChanges").addEventListener("click", function(event) {
@@ -693,7 +719,31 @@
             });
     });
 </script>
+<script>
+    function formatContent(content) {
+        // Tách nội dung thành các từ
+        const words = content.split(' ');
+        const maxLength = 100;  // Độ dài tối đa của mỗi dòng
 
+        let formattedContent = '';
+        let line = '';
 
+        words.forEach(word => {
+            if ((line + word).length > maxLength) {
+                // Nếu dòng hiện tại quá dài, thêm thẻ <br> để xuống dòng
+                formattedContent += line.trim() + '<br>';
+                line = word + ' ';  // Bắt đầu dòng mới với từ hiện tại
+            } else {
+                // Nếu dòng chưa quá dài, thêm từ vào dòng hiện tại
+                line += word + ' ';
+            }
+        });
+
+        // Thêm dòng cuối cùng (nếu có)
+        formattedContent += line.trim();
+
+        return formattedContent;
+    }
+</script>
 <!-- Mirrored from admit-form.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:46 GMT -->
 </html>

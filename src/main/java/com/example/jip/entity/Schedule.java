@@ -25,16 +25,8 @@ public class Schedule {
     private String location;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="teacher_id")
-    private Teacher teacher;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="class_id")
     private Class clasz;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lesson_id")
-    private Lesson lesson;
 
     @Column(name = "start_time")
     private Time start_time;
@@ -50,14 +42,12 @@ public class Schedule {
 
     public Schedule() {}
 
-    public Schedule(int id, Date date, dayOfWeek day_of_week, String location, Teacher teacher, Class clasz, Lesson lesson, Time start_time, Time end_time, String description, String event) {
+    public Schedule(int id, Date date, dayOfWeek day_of_week, String location, Class clasz, Time start_time, Time end_time, String description, String event) {
         this.id = id;
         this.date = date;
         this.day_of_week = day_of_week;
         this.location = location;
-        this.teacher = teacher;
         this.clasz = clasz;
-        this.lesson = lesson;
         this.start_time = start_time;
         this.end_time = end_time;
         this.description = description;
