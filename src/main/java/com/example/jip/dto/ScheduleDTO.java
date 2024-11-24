@@ -1,6 +1,5 @@
 package com.example.jip.dto;
 
-import com.example.jip.entity.Lesson;
 import com.example.jip.entity.Schedule;
 
 import java.sql.Date;
@@ -9,11 +8,11 @@ import java.sql.Time;
 public class ScheduleDTO {
     private Date date;
     private Schedule.dayOfWeek dayOfWeek;
-    private String lessonName;
+    private String className;
     private Time startTime;
     private Time endTime;
     private String description;
-    private Lesson lesson;
+    private Class clasz;
 
     public ScheduleDTO() {
     }
@@ -21,19 +20,12 @@ public class ScheduleDTO {
     public ScheduleDTO(Schedule schedule) {
         this.date = schedule.getDate();
         this.dayOfWeek = schedule.getDay_of_week();
-        this.lessonName = lesson.getName();
+        this.className = schedule.getClass().getName();
         this.startTime = schedule.getStart_time();
         this.endTime = schedule.getEnd_time();
         this.description = schedule.getDescription();
     }
 
-    public Lesson getLesson() {
-        return lesson;
-    }
-
-    public void setLesson(Lesson lesson) {
-        this.lesson = lesson;
-    }
 
     public Date getDate() {
         return date;
@@ -49,14 +41,6 @@ public class ScheduleDTO {
 
     public void setDayOfWeek(Schedule.dayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
-    }
-
-    public String getLessonName() {
-        return lessonName;
-    }
-
-    public void setLessonName(String lessonName) {
-        this.lessonName = lessonName;
     }
 
     public Time getStartTime() {
@@ -81,5 +65,21 @@ public class ScheduleDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public Class getClasz() {
+        return clasz;
+    }
+
+    public void setClasz(Class clasz) {
+        this.clasz = clasz;
     }
 }
