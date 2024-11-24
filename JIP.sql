@@ -76,9 +76,10 @@ CREATE TABLE List (
 CREATE TABLE Schedule (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     block INT NOT NULL,
+    Date date,
     week_number INT NOT NULL,
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') NOT NULL,
-    slot_number INT NOT NULL CHECK(slot_number BETWEEN 1 AND 4),
+    location varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     teacher_id INT,
     class_id INT,
     lesson_id INT,
@@ -151,6 +152,7 @@ CREATE TABLE Material (
     content VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     img VARCHAR(255),
     teacher_id INT,
+    date DATE NOT NULL,
     FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
 );
 
@@ -192,15 +194,14 @@ CREATE TABLE Application (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     img VARCHAR(255),
     category VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    description TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     content TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    date_created DATETIME NOT NULL,
+    date DATE NOT NULL,
     student_id INT,
-    teacher_id INT,
     status ENUM('Pending', 'Approved', 'Rejected') NOT NULL,
     reply TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    date_replied DATETIME,
-    FOREIGN KEY (student_id) REFERENCES Student(Id),
-    FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
+    reply_date DATE,
+    FOREIGN KEY (student_id) REFERENCES Student(Id)
 );
 
 CREATE TABLE Notification (
