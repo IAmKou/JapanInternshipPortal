@@ -76,7 +76,6 @@ CREATE TABLE List (
 CREATE TABLE Schedule (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Date date,
-    week_number INT NOT NULL,
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') NOT NULL,
     location varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     teacher_id INT,
