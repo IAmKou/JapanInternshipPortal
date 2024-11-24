@@ -12,21 +12,17 @@ import java.sql.Date;
 public class ThreadDTO {
     private int id;
     private String topicName;
-    private Date dateCreated;
+    private java.sql.Date dateCreated;
     private String description;
     private int creatorId;
-
     public String getCreatorName() {
         return creatorName;
     }
-
     public void setCreatorName(String creatorName) {
         this.creatorName = creatorName;
     }
-
     private String creatorName;
     private byte[] image;
-
     public ThreadDTO() {}
 
     public ThreadDTO(int id, String topicName, Date dateCreated, String description, int creatorId, byte[] image, String creatorName) {

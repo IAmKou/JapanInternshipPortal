@@ -3,22 +3,24 @@ package com.example.jip.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Date;
+import java.util.Date;
 @Entity
 @Getter
 @Setter
 public class Thread {
     @Id
-    @Temporal(TemporalType.DATE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String topicName;
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
     @Lob
     @Column(columnDefinition="LONGTEXT")
     private String description;
     private int creatorId;
-
     @Lob
     @Column(columnDefinition="LONGBLOB")
     private byte[] image;

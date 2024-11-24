@@ -38,6 +38,7 @@
         }
 
         .thread-title a {
+            font-size: large;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -634,15 +635,22 @@
     const prevPageButton = document.getElementById("prevPage");
     const nextPageButton = document.getElementById("nextPage");
 
+    let totalPages = 1; // Initialize totalPages
+
     // Fetch threads from the server
     function fetchThreads(page) {
+        // Ensure page number is correct for API (backend expects page 0-based)
         fetch(`/thread?page=${page}&size=${threadsPerPage}`)
             .then(response => response.json())
             .then(data => {
                 renderThreads(data.content);
-                updatePagination(data.totalPages);
+                totalPages = data.totalPages; // Capture totalPages from the backend
+                updatePagination(); // Update pagination buttons
             })
-            .catch(error => console.error("Error fetching threads:", error));
+            .catch(error => {
+                console.error("Error fetching threads:", error);
+                alert("Error fetching threads");
+            });
     }
 
     // Render threads on the page
@@ -651,108 +659,117 @@
         threads.forEach(thread => {
             const threadBox = document.createElement("div");
             threadBox.className = "thread-box";
+            threadBox.setAttribute("data-thread-id", thread.id); // Add data-thread-id for easier access
+
+            // Format the dateCreated field
+            const formattedDate = new Date(thread.dateCreated).toLocaleString();
+
             threadBox.innerHTML = `
-                <div class="thread-thumbnail">
-                    <img src="data:image/png;base64,${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">
-                </div>
-                <div class="thread-content">
-                <div class="card height-auto">
+        <div class="thread-thumbnail">
+            <img src="data:image/png;base64,${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">
+        </div>
+        <div class="thread-content">
+            <div class="card height-auto">
                 <div class="heading-layout1">
-                <div class="item-title d-flex justify-content-between align-items-center">
-                <div class="thread-title">
-                    <a href="post.html?id=${thread.id}">${thread.topicName}</a>
-                </div>
-                <div class="spacer"></div>
-                <div class="dropdown">
-                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Delete</a>
-                        <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                        <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                    <div class="item-title d-flex justify-content-between align-items-center">
+                        <div class="thread-title">
+                            <a href="post.html?id=${thread.id}">${thread.topicName}</a>
+                        </div>
+                        <div class="spacer"></div>
+                        <div class="dropdown">
+                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item delete-thread" href="#" data-thread-id="${thread.id}">
+                                    <i class="fas fa-times text-orange-red"></i>Delete
+                                </a>
+                                <a class="dropdown-item edit-thread" href="#" data-thread-id="${thread.id}"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                </div>
-                </div>
-                </div>
-                        <div class="thread-description">${thread.description}</div>
-                </div>
-                    <div class="thread-description" style="flex-grow: 2;text-align: end;">Creator :${thread.creatorName}</div>
-                </div>`;
+                <div class="thread-description">${thread.description}</div>
+                <div class="thread-date">Created on: ${formattedDate}</div>
+                <div class="thread-author" style="flex-grow: 2; text-align: end;">Author: ${thread.creatorName}</div>
+            </div>
+        </div>`;
             threadList.appendChild(threadBox);
         });
     }
 
-    // Update pagination controls
-    function updatePagination(total) {
-        // console.log(`Updating pagination. Total Pages: ${total}, Current Page: ${currentPage}`);  // Debug log
-        // Disable or enable buttons based on the current page
-        prevPageButton.disabled = currentPage === 1;
-        nextPageButton.disabled = currentPage === total;
-        // Log button states for debugging
-        // console.log("Prev Button Disabled:", prevPageButton.disabled);
-        // console.log("Next Button Disabled:", nextPageButton.disabled);
-    }
+    // Event listener to handle editing threads
+    document.addEventListener('click', function(event) {
+        if (event.target && event.target.matches('a.edit-thread')) {
+            const threadId = event.target.getAttribute('data-thread-id');
 
-    // Change page on button click
-    function changePage(direction) {
-        currentPage += direction;
-        pageNumber.textContent = currentPage;
-        fetchThreads(currentPage);
-    }
-
-    // Initialize pagination on page load
-    document.addEventListener("DOMContentLoaded", () => fetchThreads(currentPage));
-</script>
-<!-- fetch user -->
-<script>
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    if (userDetails) {
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
-
-        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-        if (userDetails.roleName === "ADMIN") {
-            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.username;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "TEACHER") {
-            // Hiển thị đầy đủ tên và vai trò cho giáo viên
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Chỉ hiển thị mục của giáo viên
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "STUDENT") {
-            // Hiển thị đầy đủ tên và vai trò cho học sinh
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Chỉ hiển thị mục của học sinh
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
-        } else {
-            console.warn("Role not recognized: ", userDetails.roleName);
+            // Redirect to the edit page
+            window.location.href = `/edit-thread.html?id=${threadId}`;
         }
-    } else {
-        console.error("User details not found in sessionStorage");
+    });
+
+    // Event listener to handle deleting threads
+    document.addEventListener("click", function(event) {
+        if (event.target && event.target.matches("a.delete-thread")) {
+            const threadId = event.target.getAttribute("data-thread-id");
+
+            // Call the delete function
+            deleteThread(threadId);
+        }
+    });
+
+    // Function to delete a thread
+    function deleteThread(threadId) {
+        fetch(`/thread/delete/${threadId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then(response => {
+                if (response.ok) {
+                    // If delete is successful, remove the thread from the UI
+                    const threadBox = document.querySelector(`[data-thread-id="${threadId}"]`).closest(".thread-box");
+                    threadBox.remove(); // Remove the thread element from the DOM
+                    alert("Thread deleted successfully.");
+                } else {
+                    alert("Failed to delete thread.");
+                }
+            })
+            .catch(error => {
+                console.error("Error deleting thread:", error);
+                alert("Error deleting thread.");
+            });
     }
+
+    // Update pagination buttons based on totalPages
+    function updatePagination() {
+        pageNumber.textContent = `Page ${currentPage} of ${totalPages}`;
+
+        // Enable/Disable the "Previous" button
+        prevPageButton.disabled = currentPage === 1;
+
+        // Enable/Disable the "Next" button
+        nextPageButton.disabled = currentPage === totalPages;
+    }
+
+    // Pagination button handlers
+    prevPageButton.addEventListener("click", () => {
+        if (currentPage > 1) {
+            currentPage--;
+            fetchThreads(currentPage); // Fetch new page
+        }
+    });
+
+    nextPageButton.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            fetchThreads(currentPage); // Fetch new page
+        }
+    });
+
+    // Call fetchThreads to load the threads when the page first loads
+    fetchThreads(currentPage);
+
 </script>
 <!-- fetch user -->
 <script>
@@ -770,7 +787,6 @@
             userRoleElements.forEach(element => {
                 element.textContent = userDetails.roleName;
             });
-
             // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
             document.getElementById("teacher-view").style.display = "none";
             document.getElementById("student-view").style.display = "none";
@@ -786,7 +802,6 @@
             // Chỉ hiển thị mục của giáo viên
             document.getElementById("teacher-view").style.display = "block";
             document.getElementById("student-view").style.display = "none";
-            document.getElementById("student-view1").style.display = "none";
         } else if (userDetails.roleName === "STUDENT") {
             // Hiển thị đầy đủ tên và vai trò cho học sinh
             userFullNameElements.forEach(element => {
