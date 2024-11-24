@@ -10,6 +10,8 @@ import com.example.jip.repository.ApplicationRepository;
 import com.example.jip.repository.StudentRepository;
 import com.example.jip.repository.TeacherRepository;
 import com.example.jip.services.ApplicationServices;
+import com.example.jip.services.CloudinaryService;
+import com.example.jip.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,12 +40,15 @@ public class ApplicationController {
     @Autowired
     private ApplicationServices applicationServices;
 
+    @Autowired
+    private CloudinaryService cloudinaryService;
+
     @PostMapping("/create")
     public RedirectView createApplication(
             @RequestParam("name") String name,
             @RequestParam("category") String category,
             @RequestParam("content") String content,
-            @RequestParam(value = "img", required = false) MultipartFile img,
+            @RequestParam(value = "imgFile", required = false) MultipartFile imgFile,
             @RequestParam(value = "teacher_id", required = false) Integer teacherId,
             @RequestParam(value = "student_id", required = false) Integer studentId,
             RedirectAttributes redirectAttributes
@@ -54,7 +59,16 @@ public class ApplicationController {
             applicationDTO.setName(name);
             applicationDTO.setCategory(category);
             applicationDTO.setContent(content);
-            applicationDTO.setImg(img != null && !img.isEmpty() ? applicationServices.saveImage(img) : null);
+
+            // Sanitize and create folder name
+            String folderName = sanitizeFolderName("application/" + applicationDTO.getName());
+            applicationDTO.setImg(folderName); // Gán folderName vào img dưới dạng List<String>
+
+            // Xử lý upload file
+            if (imgFile != null && !imgFile.isEmpty()) {
+                MultipartFile[] imgFiles = {imgFile}; // Chuyển file đơn thành mảng
+                uploadFilesToFolder(imgFiles, folderName); // Gọi hàm xử lý upload
+            }
 
             // Kiểm tra và lấy teacher_id nếu có, nếu không thì lấy student_id
             if (teacherId != null) {
@@ -100,10 +114,7 @@ public class ApplicationController {
 
             // Redirect đến trang 'View-my-application.html'
             return new RedirectView("/View-my-application.html"); // Chuyển hướng đến trang xem ứng dụng đã tạo
-        } catch (IOException e) {
-            redirectAttributes.addFlashAttribute("error", "File upload failed: " + e.getMessage());
-            return new RedirectView("/create");
-        } catch (RuntimeException e) {
+        }  catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", "Failed to create application: " + e.getMessage());
             return new RedirectView("/create");
         }
@@ -130,11 +141,30 @@ public class ApplicationController {
                             dto.setName(application.getName());
                             dto.setCategory(application.getCategory());
                             dto.setCreated_date(application.getCreated_date());
-                            dto.setImg(application.getImg());
                             dto.setReply(application.getReply());
                             dto.setContent(application.getContent());
                             dto.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
                             dto.setReplied_date(application.getReplied_date());
+
+                            // Lấy ảnh từ Cloudinary
+                            String folderName = application.getImg(); // Lấy tên thư mục từ database (imgUrl)
+                            try {
+                                List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
+                                List<String> fileUrls = resources.stream()
+                                        .map(resource -> (String) resource.get("url"))
+                                        .collect(Collectors.toList());
+
+                                if (fileUrls.isEmpty()) {
+                                    System.out.println("No files found for application with ID: " + application.getId());
+                                }
+                                dto.setImgFromList(fileUrls); // Thiết lập danh sách URL tệp vào DTO
+
+                            } catch (Exception e) {
+                                System.err.println("Error retrieving files for application with ID: " + application.getId());
+                                e.printStackTrace();
+                                dto.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
+                            }
+
                             return dto;
                         }).collect(Collectors.toList());
             }
@@ -152,11 +182,30 @@ public class ApplicationController {
                             dto.setName(application.getName());
                             dto.setCategory(application.getCategory());
                             dto.setCreated_date(application.getCreated_date());
-                            dto.setImg(application.getImg());
                             dto.setReply(application.getReply());
                             dto.setContent(application.getContent());
                             dto.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
                             dto.setReplied_date(application.getReplied_date());
+
+                            // Lấy ảnh từ Cloudinary
+                            String folderName = application.getImg(); // Lấy tên thư mục từ database (imgUrl)
+                            try {
+                                List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
+                                List<String> fileUrls = resources.stream()
+                                        .map(resource -> (String) resource.get("url"))
+                                        .collect(Collectors.toList());
+
+                                if (fileUrls.isEmpty()) {
+                                    System.out.println("No files found for application with ID: " + application.getId());
+                                }
+                                dto.setImgFromList(fileUrls); // Thiết lập danh sách URL tệp vào DTO
+
+                            } catch (Exception e) {
+                                System.err.println("Error retrieving files for application with ID: " + application.getId());
+                                e.printStackTrace();
+                                dto.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
+                            }
+
                             return dto;
                         }).collect(Collectors.toList());
             }
@@ -170,11 +219,30 @@ public class ApplicationController {
                             dto.setName(application.getName());
                             dto.setCategory(application.getCategory());
                             dto.setCreated_date(application.getCreated_date());
-                            dto.setImg(application.getImg());
                             dto.setReply(application.getReply());
                             dto.setContent(application.getContent());
                             dto.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
                             dto.setReplied_date(application.getReplied_date());
+
+                            // Lấy ảnh từ Cloudinary
+                            String folderName = application.getImg(); // Lấy tên thư mục từ database (imgUrl)
+                            try {
+                                List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
+                                List<String> fileUrls = resources.stream()
+                                        .map(resource -> (String) resource.get("url"))
+                                        .collect(Collectors.toList());
+
+                                if (fileUrls.isEmpty()) {
+                                    System.out.println("No files found for application with ID: " + application.getId());
+                                }
+                                dto.setImgFromList(fileUrls);  // Gọi phương thức để chuyển đổi List<String> thành String
+
+                            } catch (Exception e) {
+                                System.err.println("Error retrieving files for application with ID: " + application.getId());
+                                e.printStackTrace();
+                                dto.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
+                            }
+
                             return dto;
                         }).collect(Collectors.toList());
             }
@@ -189,6 +257,7 @@ public class ApplicationController {
             return ResponseEntity.status(500).body(Collections.emptyList());
         }
     }
+
     @GetMapping("/details/{id}")
     public ResponseEntity<ApplicationDTO> getApplicationDetails(@PathVariable("id") Integer applicationId) {
         Optional<Application> applicationOptional = applicationRepository.findById(applicationId);
@@ -199,17 +268,39 @@ public class ApplicationController {
             applicationDTO.setName(application.getName());
             applicationDTO.setCategory(application.getCategory());
             applicationDTO.setCreated_date(application.getCreated_date());
-            applicationDTO.setImg(application.getImg());
             applicationDTO.setReply(application.getReply());
             applicationDTO.setContent(application.getContent());
             applicationDTO.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
             applicationDTO.setReplied_date(application.getReplied_date());
+
+            // Lấy ảnh từ Cloudinary
+            // Lấy ảnh từ Cloudinary
+            String folderName = application.getImg();
+            System.out.println("Folder Name: " + folderName); // Lấy tên thư mục từ database (imgUrl)
+            try {
+                List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
+                List<String> fileUrls = resources.stream()
+                        .map(resource -> (String) resource.get("url"))
+                        .collect(Collectors.toList());
+                System.out.println("File URLs: " + fileUrls);
+
+                if (fileUrls.isEmpty()) {
+                    System.out.println("No files found for application with ID: " + application.getId());
+                }
+                applicationDTO.setImgFromList(fileUrls);  // Gọi phương thức để chuyển đổi List<String> thành String
+                System.out.println("Img from list (after set): " + applicationDTO.getImg());
+            } catch (Exception e) {
+                System.err.println("Error retrieving files for application with ID: " + application.getId());
+                e.printStackTrace();
+                applicationDTO.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
+            }
 
             return ResponseEntity.ok(applicationDTO);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<Map<String, String>> updateApplication(
             @PathVariable("id") Integer applicationId,
@@ -247,6 +338,23 @@ public class ApplicationController {
         applicationRepository.save(application);
 
         return ResponseEntity.ok(Map.of("message", "Application reply success!"));
+    }
+    private void uploadFilesToFolder(MultipartFile[] files, String folderName) {
+        Set<String> uploadedFiles = new HashSet<>();
+        for (MultipartFile file : files) {
+            if (!file.isEmpty() && uploadedFiles.add(file.getOriginalFilename())) {
+                try {
+                    FileUploadUtil.assertAllowed(file, FileUploadUtil.IMAGE_PATTERN);
+                    cloudinaryService.uploadFileToFolder(file, folderName);
+                } catch (Exception e) {
+                    throw new RuntimeException("Error uploading file: " + file.getOriginalFilename(), e);
+                }
+            }
+        }
+    }
+
+    private String sanitizeFolderName(String folderName) {
+        return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim().replace(" ", "_");
     }
 
 }
