@@ -75,7 +75,6 @@ CREATE TABLE List (
 
 CREATE TABLE Schedule (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    block INT NOT NULL,
     Date date,
     week_number INT NOT NULL,
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') NOT NULL,
