@@ -78,7 +78,6 @@ CREATE TABLE Schedule (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Date date,
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') NOT NULL,
-    teacher_id INT,
     class_id INT,
     lesson_id INT,
     start_time TIME NOT NULL,
@@ -86,7 +85,6 @@ CREATE TABLE Schedule (
     description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     event VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     foreign key (lesson_id) references Lesson(Id),
-    FOREIGN KEY (teacher_id) REFERENCES Teacher(Id),
     FOREIGN KEY (class_id) REFERENCES Class(Id)
 );
 
