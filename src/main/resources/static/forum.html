@@ -3,39 +3,48 @@
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
     <title>Forum Page</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+    <link href="img/favicon.png" rel="shortcut icon" type="image/x-icon">
     <!-- Normalize CSS -->
-    <link rel="stylesheet" href="css/normalize.css">
+    <link href="css/normalize.css" rel="stylesheet">
     <!-- Main CSS -->
-    <link rel="stylesheet" href="css/main.css">
+    <link href="css/main.css" rel="stylesheet">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="css/all.min.css">
+    <link href="css/all.min.css" rel="stylesheet">
     <!-- Flaticon CSS -->
-    <link rel="stylesheet" href="fonts/flaticon.css">
+    <link href="fonts/flaticon.css" rel="stylesheet">
     <!-- Full Calender CSS -->
-    <link rel="stylesheet" href="css/fullcalendar.min.css">
+    <link href="css/fullcalendar.min.css" rel="stylesheet">
     <!-- Animate CSS -->
-    <link rel="stylesheet" href="css/animate.min.css">
+    <link href="css/animate.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link href="style.css" rel="stylesheet">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
 
     <style>
-        .thread-box {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            background-color: #f9f9f9;
-            box-sizing: border-box;
+        .item-title {
+            display: flex;
+            align-items: center;
+        }
+        .spacer {
+            flex: 1;
+        }
+
+        .thread-title a {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dropdown {
+            margin-left: auto;
         }
 
         .thread-thumbnail {
@@ -74,21 +83,6 @@
             overflow: hidden;
         }
 
-        .create-thread-btn {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
-
-        .create-thread-btn:hover {
-            background-color: #0056b3;
-        }
-
         .page-btn {
             background-color: #007bff;
             color: #fff;
@@ -99,18 +93,27 @@
             margin: 0 10px;
             cursor: pointer;
         }
+
         .page-btn:disabled {
             background-color: #ccc;
             cursor: not-allowed;
         }
+
         #pageNumber {
             font-size: 18px;
             font-weight: bold;
         }
+
         .modal-trigger {
             display: inline-block; /* Makes the link behave like a block for easier centering */
             text-align: center; /* Centers the text horizontally */
         }
+
+        .dropdown-x {
+            margin-right: 14px;
+            width: 22px;
+        }
+
     </style>
 
 </head>
@@ -119,17 +122,17 @@
 <!-- Preloader Start Here -->
 <div id="preloader"></div>
 <!-- Preloader End Here -->
-<div id="wrapper" class="wrapper bg-ash">
+<div class="wrapper bg-ash" id="wrapper">
     <!-- Header Menu Area Start Here -->
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
                 <a href="admin.html">
-                    <img src="img/logo.png" alt="logo">
+                    <img alt="logo" src="img/logo.png">
                 </a>
             </div>
             <div class="toggle-button sidebar-toggle">
-                <button type="button" class="item-link">
+                <button class="item-link" type="button">
                         <span class="btn-icon-wrap">
                             <span></span>
                             <span></span>
@@ -139,11 +142,11 @@
             </div>
         </div>
         <div class="d-md-none mobile-nav-bar">
-            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse"
-                    data-target="#mobile-navbar" aria-expanded="false">
+            <button aria-expanded="false" class="navbar-toggler pulse-animation" data-target="#mobile-navbar"
+                    data-toggle="collapse" type="button">
                 <i class="far fa-arrow-alt-circle-down"></i>
             </button>
-            <button type="button" class="navbar-toggler sidebar-toggle-mobile">
+            <button class="navbar-toggler sidebar-toggle-mobile" type="button">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -154,11 +157,11 @@
                     <div class="input-group stylish-input-group">
                             <span class="input-group-addon">
                                 <button type="submit">
-                                    <span class="flaticon-search" aria-hidden="true"></span>
+                                    <span aria-hidden="true" class="flaticon-search"></span>
                                 </button>
                             </span>
                         <label>
-                            <input type="text" class="form-control" placeholder="Find Something . . .">
+                            <input class="form-control" placeholder="Find Something . . ." type="text">
                         </label>
                     </div>
                 </li>
@@ -166,14 +169,14 @@
             <ul class="navbar-nav">
                 <!-- Profile Dropdown -->
                 <li class="navbar-item dropdown header-admin">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
                         <div class="admin-title">
                             <h5 class="item-title">Stevne Zone</h5>
                             <span>Admin</span>
                         </div>
                         <div class="admin-img">
-                            <img src="img/figure/admin.jpg" alt="Admin">
+                            <img alt="Admin" src="img/figure/admin.jpg">
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -194,8 +197,8 @@
                 </li>
                 <!-- Messages Dropdown -->
                 <li class="navbar-item dropdown header-message">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
                         <i class="far fa-envelope"></i>
                         <div class="item-title d-md-none text-16 mg-l-10">Message</div>
                         <span>5</span>
@@ -208,7 +211,7 @@
                         <div class="item-content">
                             <div class="media">
                                 <div class="item-img bg-skyblue author-online">
-                                    <img src="img/figure/student11.png" alt="img">
+                                    <img alt="img" src="img/figure/student11.png">
                                 </div>
                                 <div class="media-body space-sm">
                                     <div class="item-title">
@@ -222,7 +225,7 @@
                             </div>
                             <div class="media">
                                 <div class="item-img bg-yellow author-online">
-                                    <img src="img/figure/student12.png" alt="img">
+                                    <img alt="img" src="img/figure/student12.png">
                                 </div>
                                 <div class="media-body space-sm">
                                     <div class="item-title">
@@ -237,7 +240,7 @@
                             </div>
                             <div class="media">
                                 <div class="item-img bg-pink">
-                                    <img src="img/figure/student13.png" alt="img">
+                                    <img alt="img" src="img/figure/student13.png">
                                 </div>
                                 <div class="media-body space-sm">
                                     <div class="item-title">
@@ -252,7 +255,7 @@
                             </div>
                             <div class="media">
                                 <div class="item-img bg-violet-blue">
-                                    <img src="img/figure/student11.png" alt="img">
+                                    <img alt="img" src="img/figure/student11.png">
                                 </div>
                                 <div class="media-body space-sm">
                                     <div class="item-title">
@@ -270,8 +273,8 @@
                 </li>
                 <!-- Notifications Dropdown -->
                 <li class="navbar-item dropdown header-notification">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
                         <i class="far fa-bell"></i>
                         <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
                         <span>8</span>
@@ -315,8 +318,8 @@
 
                 <!-- Language Dropdown -->
                 <li class="navbar-item dropdown header-language">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
-                       data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown"
+                       href="#" role="button"><i class="fas fa-globe-americas"></i>EN</a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#">English</a>
                         <a class="dropdown-item" href="#">Spanish</a>
@@ -334,152 +337,156 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="admin.html"><img alt="logo" src="img/logo1.png"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <a class="nav-link" href="#"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
+                                <a class="nav-link" href="admin.html"><i class="fas fa-angle-right"></i>Admin</a>
                             </li>
                             <li class="nav-item">
-                                <a href="student.html" class="nav-link"><i
+                                <a class="nav-link" href="student.html"><i
                                         class="fas fa-angle-right"></i>Students</a>
                             </li>
                             <li class="nav-item">
-                                <a href="manager.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
+                                <a class="nav-link" href="manager.html"><i class="fas fa-angle-right"></i>Parents</a>
                             </li>
                             <li class="nav-item">
-                                <a href="teacher.html" class="nav-link"><i
+                                <a class="nav-link" href="teacher.html"><i
                                         class="fas fa-angle-right"></i>Teachers</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
+                        <a class="nav-link" href="#"><i class="flaticon-classmates"></i><span>Students</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="all-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                <a class="nav-link" href="all-student.html"><i class="fas fa-angle-right"></i>All
                                     Students</a>
                             </li>
                             <li class="nav-item">
-                                <a href="users-details.html" class="nav-link"><i
+                                <a class="nav-link" href="users-details.html"><i
                                         class="fas fa-angle-right"></i>Student Details</a>
                             </li>
                             <li class="nav-item">
-                                <a href="admit-form.html" class="nav-link"><i
+                                <a class="nav-link" href="admit-form.html"><i
                                         class="fas fa-angle-right"></i>Admission Form</a>
                             </li>
                             <li class="nav-item">
-                                <a href="student-promotion.html" class="nav-link"><i
+                                <a class="nav-link" href="student-promotion.html"><i
                                         class="fas fa-angle-right"></i>Student Promotion</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i
+                        <a class="nav-link" href="#"><i
                                 class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="all-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                <a class="nav-link" href="all-teacher.html"><i class="fas fa-angle-right"></i>All
                                     Teachers</a>
                             </li>
                             <li class="nav-item">
-                                <a href="teacher-details.html" class="nav-link"><i
+                                <a class="nav-link" href="teacher-details.html"><i
                                         class="fas fa-angle-right"></i>Teacher Details</a>
                             </li>
                             <li class="nav-item">
-                                <a href="add-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                <a class="nav-link" href="add-teacher.html"><i class="fas fa-angle-right"></i>Add
                                     Teacher</a>
                             </li>
                             <li class="nav-item">
-                                <a href="teacher-payment.html" class="nav-link"><i
+                                <a class="nav-link" href="teacher-payment.html"><i
                                         class="fas fa-angle-right"></i>Payment</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Parents</span></a>
+                        <a class="nav-link" href="#"><i class="flaticon-couple"></i><span>Parents</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="all-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                <a class="nav-link" href="all-parents.html"><i class="fas fa-angle-right"></i>All
                                     Parents</a>
                             </li>
                             <li class="nav-item">
-                                <a href="parents-details.html" class="nav-link"><i
+                                <a class="nav-link" href="parents-details.html"><i
                                         class="fas fa-angle-right"></i>Parents Details</a>
                             </li>
                             <li class="nav-item">
-                                <a href="add-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                <a class="nav-link" href="add-parents.html"><i class="fas fa-angle-right"></i>Add
                                     Parent</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Library</span></a>
+                        <a class="nav-link" href="#"><i class="flaticon-books"></i><span>Library</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                <a class="nav-link" href="list-assignment.html"><i class="fas fa-angle-right"></i>All
                                     Book</a>
                             </li>
                             <li class="nav-item">
-                                <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                <a class="nav-link" href="add-assignment.html"><i class="fas fa-angle-right"></i>Add New
                                     Book</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-technological"></i><span>Acconunt</span></a>
+                        <a class="nav-link" href="#"><i class="flaticon-technological"></i><span>Acconunt</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
+                                <a class="nav-link" href="all-fees.html"><i class="fas fa-angle-right"></i>All Fees
                                     Collection</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i
+                        <a class="nav-link" href="#"><i
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="all-class-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                <a class="nav-link" href="all-class-student.html"><i class="fas fa-angle-right"></i>All
                                     Classes</a>
                             </li>
                             <li class="nav-item">
-                                <a href="add-class.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                <a class="nav-link" href="add-class.html"><i class="fas fa-angle-right"></i>Add New
                                     Class</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="all-subject.html" class="nav-link"><i
+                        <a class="nav-link" href="all-subject.html"><i
                                 class="flaticon-open-book"></i><span>Subject</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="class-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class
+                        <a class="nav-link" href="class-list.html"><i class="flaticon-calendar"></i><span>Class
                                     Routine</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="student-attendence.html" class="nav-link"><i
+                        <a class="nav-link" href="student-attendence.html"><i
                                 class="flaticon-checklist"></i><span>Attendence</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create material</a>
+                                <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create
+                                    material</a>
                             </li>
                             <li class="nav-item" id="teacher-view">
-                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
+                                <a class="nav-link" href="View-list-materials.html"><i class="fas fa-angle-right"></i>List
+                                    materials</a>
                             </li>
                             <li class="nav-item" id="student-view">
-                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
+                                <a class="nav-link" href="Add-material.html"><i class="fas fa-angle-right"></i>List
+                                    materials</a>
                             </li>
                             <li class="nav-item" id="student-view1">
-                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list materials</a>
+                                <a class="nav-link" href="View-list-personal-materials.html"><i
+                                        class="fas fa-angle-right"></i>My list materials</a>
                             </li>
                         </ul>
                     </li>
@@ -492,67 +499,70 @@
                         </ul>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create Thread</a>
+                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create
+                                    Thread</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="transport.html" class="nav-link"><i
+                        <a class="nav-link" href="transport.html"><i
                                 class="flaticon-bus-side-view"></i><span>Transport</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="hostel.html" class="nav-link"><i class="flaticon-bed"></i><span>Hostel</span></a>
+                        <a class="nav-link" href="hostel.html"><i class="flaticon-bed"></i><span>Hostel</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="notice-board.html" class="nav-link"><i
+                        <a class="nav-link" href="notice-board.html"><i
                                 class="flaticon-script"></i><span>Notice</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+                        <a class="nav-link" href="#"><i class="flaticon-chat"></i><span>Application</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send application</a>
+                                <a class="nav-link" href="Send-application.html"><i class="fas fa-angle-right"></i>Send
+                                    application</a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My application</a>
+                                <a class="nav-link" href="View-my-application.html"><i class="fas fa-angle-right"></i>My
+                                    application</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-menu-1"></i><span>UI Elements</span></a>
+                        <a class="nav-link" href="#"><i class="flaticon-menu-1"></i><span>UI Elements</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="notification-alart.html" class="nav-link"><i class="fas fa-angle-right"></i>Alart</a>
+                                <a class="nav-link" href="notification-alart.html"><i class="fas fa-angle-right"></i>Alart</a>
                             </li>
                             <li class="nav-item">
-                                <a href="button.html" class="nav-link"><i class="fas fa-angle-right"></i>Button</a>
+                                <a class="nav-link" href="button.html"><i class="fas fa-angle-right"></i>Button</a>
                             </li>
                             <li class="nav-item">
-                                <a href="grid.html" class="nav-link"><i class="fas fa-angle-right"></i>Grid</a>
+                                <a class="nav-link" href="grid.html"><i class="fas fa-angle-right"></i>Grid</a>
                             </li>
                             <li class="nav-item">
-                                <a href="modal.html" class="nav-link"><i class="fas fa-angle-right"></i>Modal</a>
+                                <a class="nav-link" href="modal.html"><i class="fas fa-angle-right"></i>Modal</a>
                             </li>
                             <li class="nav-item">
-                                <a href="progress-bar.html" class="nav-link"><i class="fas fa-angle-right"></i>Progress
+                                <a class="nav-link" href="progress-bar.html"><i class="fas fa-angle-right"></i>Progress
                                     Bar</a>
                             </li>
                             <li class="nav-item">
-                                <a href="ui-tab.html" class="nav-link"><i class="fas fa-angle-right"></i>Tab</a>
+                                <a class="nav-link" href="ui-tab.html"><i class="fas fa-angle-right"></i>Tab</a>
                             </li>
                             <li class="nav-item">
-                                <a href="ui-widget.html" class="nav-link"><i
+                                <a class="nav-link" href="ui-widget.html"><i
                                         class="fas fa-angle-right"></i>Widget</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="map.html" class="nav-link"><i
+                        <a class="nav-link" href="map.html"><i
                                 class="flaticon-planet-earth"></i><span>Map</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="account-settings.html" class="nav-link"><i
+                        <a class="nav-link" href="account-settings.html"><i
                                 class="flaticon-settings"></i><span>Account</span></a>
                     </li>
                 </ul>
@@ -563,18 +573,18 @@
         <div class="dashboard-content-one container">
             <!-- Create Thread Button -->
             <a href="create-forum.html">
-            <button class="modal-trigger" href="create-forum.html">
-                Create Thread
-            </button>
+                <button class="modal-trigger" href="create-forum.html">
+                    Create Thread
+                </button>
             </a>
             <!-- Thread List Start -->
             <div id="threadList"></div>
             <!-- Thread List End -->
             <!-- Pagination Controls -->
             <div class="pagination-controls text-center" style="margin-top: 20px;">
-                <button id="prevPage" class="page-btn" onclick="changePage(-1)">&laquo;</button>
+                <button class="page-btn" id="prevPage" onclick="changePage(-1)">&laquo;</button>
                 <span id="pageNumber">1</span>
-                <button id="nextPage" class="page-btn" onclick="changePage(1)">&raquo;</button>
+                <button class="page-btn" id="nextPage" onclick="changePage(1)">&raquo;</button>
             </div>
         </div>
         <!-- Main Body Content End Here -->
@@ -623,6 +633,7 @@
     const pageNumber = document.getElementById("pageNumber");
     const prevPageButton = document.getElementById("prevPage");
     const nextPageButton = document.getElementById("nextPage");
+
     // Fetch threads from the server
     function fetchThreads(page) {
         fetch(`/thread?page=${page}&size=${threadsPerPage}`)
@@ -645,11 +656,25 @@
                     <img src="data:image/png;base64,${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">
                 </div>
                 <div class="thread-content">
-                    <div>
-                        <div>
-                         <div class="thread-title"><a href="post.html?id=${thread.id}">${thread.topicName}</a></div>
-                        <div class="thread-description">${thread.description}</div>
+                <div class="card height-auto">
+                <div class="heading-layout1">
+                <div class="item-title d-flex justify-content-between align-items-center">
+                <div class="thread-title">
+                    <a href="post.html?id=${thread.id}">${thread.topicName}</a>
+                </div>
+                <div class="spacer"></div>
+                <div class="dropdown">
+                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Delete</a>
+                        <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                        <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
                     </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                        <div class="thread-description">${thread.description}</div>
                 </div>
                     <div class="thread-description" style="flex-grow: 2;text-align: end;">Creator :${thread.creatorName}</div>
                 </div>`;
@@ -674,6 +699,7 @@
         pageNumber.textContent = currentPage;
         fetchThreads(currentPage);
     }
+
     // Initialize pagination on page load
     document.addEventListener("DOMContentLoaded", () => fetchThreads(currentPage));
 </script>
