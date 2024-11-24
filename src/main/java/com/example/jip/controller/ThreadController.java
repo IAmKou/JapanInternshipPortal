@@ -52,6 +52,9 @@ public class ThreadController {
             Model model) {
 
         try {
+            // Log the size of the uploaded image
+            long imageSize = imageFile.getSize(); // Get size in bytes
+            System.out.println("Uploaded image size: " + imageSize + " bytes");
             threadService.addThread(topicName, description, creatorId, imageFile);
             model.addAttribute("message", "Thread added successfully!");
         } catch (IOException e) {

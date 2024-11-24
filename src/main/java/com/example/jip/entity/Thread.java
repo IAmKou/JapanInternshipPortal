@@ -14,11 +14,13 @@ public class Thread {
     private int id;
     private String topicName;
     private Date dateCreated;
+    @Lob
+    @Column(columnDefinition="LONGTEXT")
     private String description;
     private int creatorId;
 
     @Lob
-    @Column(columnDefinition="BLOB")
+    @Column(columnDefinition="LONGBLOB")
     private byte[] image;
 
     public Thread() {}
