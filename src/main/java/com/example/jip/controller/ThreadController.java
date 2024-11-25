@@ -31,7 +31,6 @@ public class ThreadController {
     @Autowired
     ThreadServices threadService;
 
-    private static final Logger logger = LoggerFactory.getLogger(ThreadController.class);
     @GetMapping()
     public Page<ThreadDTO> showAllThread(@RequestParam int page, @RequestParam int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -49,17 +48,21 @@ public class ThreadController {
     }
 
     @GetMapping("/{id}")
-    public ThreadDTO findThreadById(@PathVariable("id") int id) {
+    public ResponseEntity<ThreadDTO> findThreadById(@PathVariable("id") int id) {
         Thread thread = threadService.getThreadById(id);
-        return new ThreadDTO(
+        if (thread == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        ThreadDTO threadDTO = new ThreadDTO(
                 thread.getId(),
                 thread.getTopicName(),
-                new java.sql.Date(thread.getDateCreated().getTime()), // Explicit conversion
+                new java.sql.Date(thread.getDateCreated().getTime()),
                 thread.getDescription(),
                 thread.getCreatorId(),
                 thread.getImage(),
                 threadService.getCreatorName(thread.getCreatorId())
         );
+        return ResponseEntity.ok(threadDTO);
     }
 
     @GetMapping("/add-thread")
@@ -105,45 +108,46 @@ public class ThreadController {
         // Proceed to delete the thread
         threadService.deleteThread(threadId);
 
-        // Log the deleted thread ID
-        logger.info("Thread with ID {} has been deleted by user {}", threadId, currentUsername);
-
         return ResponseEntity.ok("Thread deleted successfully");
     }
 
-//    @PutMapping("/edit/{threadId}")
-//    public ResponseEntity<String> editThread(@PathVariable int threadId,
-//                                             @RequestParam String topicName,
-//                                             @RequestParam String description,
-//                                             @RequestParam(required = false) MultipartFile imageFile,
-//                                             Authentication authentication) {
-//        // Retrieve the thread by its ID
-//        Thread thread = threadService.getThreadById(threadId);
-//
-//        if (thread == null) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Thread not found");
-//        }
-//
-//        // Check if the current user is authorized to edit the thread
-//        String currentUsername = authentication.getName();
-//        if (!threadService.isCreator(currentUsername, thread.getCreatorId())) {
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to edit this thread.");
-//        }
-//
-//        // Proceed to edit the thread
-//        thread.setTopicName(topicName);
-//        thread.setDescription(description);
-//
-//        if (imageFile != null && !imageFile.isEmpty()) {
-//            // Save the new image file (you can add logic to handle image saving)
-//            thread.setImage(imageFile.getOriginalFilename()); // Just an example; you should handle the file saving and path management.
-//        }
-//
-//        threadService.updateThread(thread); // Call your service to update the thread in the database
-//
-//        // Log the edited thread ID
-//        logger.info("Thread with ID {} has been edited by user {}", threadId, currentUsername);
-//
-//        return ResponseEntity.ok("Thread updated successfully");
-//    }
+    @PutMapping("/edit/{threadId}")
+    public ResponseEntity<String> editThread(@PathVariable int threadId,
+                                             @RequestParam String topicName,
+                                             @RequestParam String description,
+                                             @RequestParam(required = false) MultipartFile imageFile,
+                                             Authentication authentication) {
+        // Retrieve the thread by its ID
+        Thread thread = threadService.getThreadById(threadId);
+
+        if (thread == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Thread not found");
+        }
+
+        // Check if the current user is authorized to edit the thread
+        String currentUsername = authentication.getName();
+        if (!threadService.isCreator(currentUsername, thread.getCreatorId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to edit this thread.");
+        }
+
+        // Update thread fields
+        thread.setTopicName(topicName);
+        thread.setDescription(description);
+
+        // Process the image file if provided
+        if (imageFile != null && !imageFile.isEmpty()) {
+            try {
+                byte[] imageBytes = imageFile.getBytes(); // Get binary data
+                thread.setImage(imageBytes);
+            } catch (IOException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Error processing the uploaded image.");
+            }
+        }
+
+        // Save updated thread
+        threadService.updateThread(thread);
+
+        return ResponseEntity.ok("Thread updated successfully");
+    }
 }
