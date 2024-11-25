@@ -53,10 +53,13 @@
             height: 100px;
             background-color: #ccc;
             display: inline-block;
-            vertical-align: top;
             object-fit: cover;
-            max-width: 100%;
-            text-overflow: ellipsis;
+        }
+
+        .thread-thumbnail img {
+            width: 100%; /* Đặt chiều rộng tối đa của ảnh bằng khung */
+            height: 100%; /* Đặt chiều cao tối đa của ảnh bằng khung */
+            object-fit: cover; /* Co giãn và cắt ảnh để lấp đầy khung */
         }
 
         .thread-content {
