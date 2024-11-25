@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -21,15 +21,19 @@ public class ScheduleController {
     ScheduleServices scheduleServices;
 
     @PostMapping("/import")
-    public ResponseEntity<?> importFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> importSchedules(@RequestParam("file") MultipartFile file) {
         if (!file.getOriginalFilename().endsWith(".xlsx")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(List.of("Invalid file format. Please upload an Excel file."));
         }
-        try{
-            scheduleServices.importSchedules(file.getInputStream());
-            return ResponseEntity.ok("Schedules imported successfully.");
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body("Error importing schedules: " + e.getMessage());
+        try (InputStream inputStream = file.getInputStream()) {
+            List<String> errors = scheduleServices.importSchedules(inputStream);
+            if (errors.isEmpty()) {
+                return ResponseEntity.ok("Schedules imported successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error importing schedules: " + e.getMessage());
         }
     }
 }
