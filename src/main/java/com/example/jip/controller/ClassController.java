@@ -27,7 +27,7 @@ public class ClassController {
     @Autowired
     private ListRepository listRepository;
 
-    @PostMapping("/create")
+    @PostMapping(value = "/create", consumes = "application/json", produces = "text/plain")
     public String createClass(@RequestBody ClassDTO classDTO) {
         if (classDTO.getName() == null || classDTO.getName().isEmpty()) {
             throw new IllegalArgumentException("Class name is required");
@@ -67,8 +67,8 @@ public class ClassController {
     }
 
     @GetMapping("/getByTid")
-    public List<ClassDTO> getClassByTid(@RequestParam int tid) {
-        return classRepository.findByTeacherId(tid).stream()
+    public List<ClassDTO> getClassByTid(@RequestParam int teacherId) {
+        return classRepository.findByTeacherId(teacherId).stream()
                 .map(ClassDTO::new)
                 .collect(Collectors.toList());
     }

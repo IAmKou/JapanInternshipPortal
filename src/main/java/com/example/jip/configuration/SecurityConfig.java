@@ -31,8 +31,8 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin.html").hasAuthority("ADMIN")
-                        .requestMatchers("/student.html", "list-student-assignment.html","forum.html").hasAuthority("STUDENT")
-                        .requestMatchers("/teacher.html", "add-assignment.html", "list-assignment.html","forum.html" ).hasAuthority("TEACHER")
+                        .requestMatchers("/student.html", "student-assignment.html").hasAuthority("STUDENT")
+                        .requestMatchers("/teacher.html", "add-assignment.html", "list-assignment.html").hasAuthority("TEACHER")
                         .requestMatchers("/manager.html").hasAuthority("MANAGER")
                         .requestMatchers("/css/**", "/js/**", "/images/**","/img/**",
                                 "/webfonts/**","/fonts/**","/hts-cache/**","/style.css","/create-account.html","/accounts/create")
