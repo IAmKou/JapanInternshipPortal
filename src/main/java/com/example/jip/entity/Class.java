@@ -23,13 +23,11 @@ public class Class {
     @Column(name = "number_of_student", nullable = false)
     private int number_of_student;
 
-    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
 
     @ManyToMany(mappedBy = "classes")
-    @JsonBackReference
     private Set<Assignment> assignments = new HashSet<>();
 
     @OneToMany(mappedBy = "clasz", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

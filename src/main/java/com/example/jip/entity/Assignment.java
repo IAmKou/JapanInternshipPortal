@@ -30,7 +30,7 @@ public class Assignment {
     @Column(name = "content")
     String content;
 
-    @JsonBackReference
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id")
     Teacher teacher;
@@ -41,7 +41,7 @@ public class Assignment {
             joinColumns = @JoinColumn(name = "assignment_id"),
             inverseJoinColumns = @JoinColumn(name = "class_id")
     )
-    @JsonManagedReference
+
     Set<Class> classes = new HashSet<>();
 
 

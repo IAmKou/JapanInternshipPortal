@@ -27,7 +27,7 @@ public class ClassController {
     @Autowired
     private ListRepository listRepository;
 
-    @PostMapping("/create")
+    @PostMapping(value = "/create", consumes = "application/json", produces = "text/plain")
     public String createClass(@RequestBody ClassDTO classDTO) {
         if (classDTO.getName() == null || classDTO.getName().isEmpty()) {
             throw new IllegalArgumentException("Class name is required");
