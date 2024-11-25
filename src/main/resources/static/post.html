@@ -566,9 +566,6 @@
         <!-- Main Body Content End Here -->
     </div>
 
-
-
-
     <div class="ui-modal-box">
         <div class="modal-box">
             <div class="modal sign-up-modal fade" id="sign-up" tabindex="-1" role="dialog"
@@ -652,7 +649,7 @@
     let currentPage = 1;
     const threadsPerPage = 5;
     const threads = Array.from(document.querySelectorAll('.thread-box'));
-    const totalPages = Math.ceil(threads.length / threadsPerPage);
+    let totalPages = Math.ceil(threads.length / threadsPerPage);
 
     function showPage(page) {
         // Hide all threads

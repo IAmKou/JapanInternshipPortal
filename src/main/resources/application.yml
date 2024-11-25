@@ -21,3 +21,6 @@ cloudinary:
   api-key: 151443119214651
   api-secret: LRXCKQiCmQNqx-GP4RFnOdf_xwY
 
+logging:
+  level:
+    com.example.jip.controller.ThreadController: DEBUG
