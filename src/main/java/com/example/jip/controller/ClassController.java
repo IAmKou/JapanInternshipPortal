@@ -67,8 +67,8 @@ public class ClassController {
     }
 
     @GetMapping("/getByTid")
-    public List<ClassDTO> getClassByTid(@RequestParam int tid) {
-        return classRepository.findByTeacherId(tid).stream()
+    public List<ClassDTO> getClassByTid(@RequestParam int teacherId) {
+        return classRepository.findByTeacherId(teacherId).stream()
                 .map(ClassDTO::new)
                 .collect(Collectors.toList());
     }
