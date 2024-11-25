@@ -19,10 +19,10 @@ public class Assignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    @Column(name =  "date_created")
+    @Column(name =  "date_created", nullable = false)
     @Temporal(TemporalType.DATE)
     Date created_date;
-    @Column(name =  "end_date")
+    @Column(name =  "end_date", nullable = false)
     @Temporal(TemporalType.DATE)
     Date end_date;
     @Column(name = "description")
@@ -32,7 +32,7 @@ public class Assignment {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "teacher_id")
+    @JoinColumn(name = "teacher_id", nullable = false)
     Teacher teacher;
 
     @ManyToMany
@@ -41,9 +41,11 @@ public class Assignment {
             joinColumns = @JoinColumn(name = "assignment_id"),
             inverseJoinColumns = @JoinColumn(name = "class_id")
     )
-    @JsonManagedReference
     Set<Class> classes = new HashSet<>();
 
+
+    @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<StudentAssignment> studentAssignments = new HashSet<>();
 
     @Column(name = "img")
     String imgUrl;

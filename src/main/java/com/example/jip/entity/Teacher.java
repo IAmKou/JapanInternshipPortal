@@ -2,15 +2,20 @@ package com.example.jip.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="Teacher")
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Teacher {
 
     @Id
@@ -40,13 +45,14 @@ public class Teacher {
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private Account account;
 
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<Assignment> assignments = new HashSet<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Class> classes;
 
 
-    public Teacher(){}
 
     public Teacher(int id, String fullname, String jname, String email, String phoneNumber, gender gender, String img, Account account) {
         this.id = id;

@@ -1,5 +1,7 @@
 package com.example.jip.services;
 
+import com.cloudinary.Cloudinary;
+import com.example.jip.dto.response.CloudinaryResponse;
 import com.example.jip.entity.Account;
 import com.example.jip.entity.Role;
 import com.example.jip.entity.Student;
@@ -90,13 +92,13 @@ public class AccountImportServices {
                     ? String.valueOf((long) row.getCell(8).getNumericCellValue())
                     : row.getCell(8).getStringCellValue();
 
+            String email = row.getCell(9).getStringCellValue();
+            if (isDuplicate(username, email, phoneNumber, errors)) return;
             // Extract image path or URL from Excel
-            String imgPath = row.getCell(9).getStringCellValue(); // Assuming the image is in column 9
+            String imgPath = row.getCell(10).getStringCellValue(); // Assuming the image is in column 9
             String imgUrl = uploadImageToCloudinary(imgPath, workbook); // Pass workbook to extract embedded images
 
-            String email = row.getCell(10).getStringCellValue();
 
-            if (isDuplicate(username, email, phoneNumber, errors)) return;
 
             Optional<Role> roleOpt = roleRepository.findById(roleId);
             if (roleOpt.isEmpty()) {
@@ -136,9 +138,11 @@ public class AccountImportServices {
 
             // Extract image from workbook if it's embedded
             byte[] imageBytes = getImageBytesFromExcel(workbook);
+            //Em luong co the check lai ham vs sua lai file excel nhe, e vinh test add dc vao file r
             if (imageBytes != null) {
                 MultipartFile imageFile = new MockMultipartFile("file", "image.jpg", "image/jpeg", imageBytes);
-                return cloudinaryService.uploadImage(imageFile); // Upload to Cloudinary and return URL
+                CloudinaryResponse response = cloudinaryService.uploadFileToFolder(imageFile, "Account/" ); // Upload to Cloudinary and return URL
+                return response.getUrl();
             }
 
         } catch (Exception e) {
@@ -147,6 +151,9 @@ public class AccountImportServices {
         return null;
     }
 
+    private String sanitizeFolderName(String folderName) {
+        return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim().replace(" ", "_");
+    }
     private byte[] getImageBytesFromExcel(XSSFWorkbook workbook) {
         for (XSSFPictureData pictureData : workbook.getAllPictures()) {
             try {
