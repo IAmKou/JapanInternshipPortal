@@ -286,7 +286,9 @@
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="class-list-teacher.html" class="nav-link"><i class="flaticon-calendar"></i><span>My Class</span></a>
+                                <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
+                                    <i class="flaticon-menu"></i><span>Class List</span>
+                                </a>
                             </li>
                         </ul>
                     </li>
@@ -349,10 +351,10 @@
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3>Admin Dashboard</h3>
+                <h3>Teacher Dashboard</h3>
                 <ul>
                     <li>
-                        <a href="admin.html">Home</a>
+                        <a href="teacher.html">Home</a>
                     </li>
                     <li>Teachers</li>
                 </ul>
@@ -984,6 +986,7 @@
                 console.log("User data stored in sessionStorage:", userData);
 
                 getUserDetails(userData);
+                setRedirectLink(userData.id); // Set the redirect link after fetching data
             } else {
                 console.error("Failed to fetch user details:", response.statusText);
             }
@@ -992,52 +995,33 @@
         }
     })();
 
-
     function getUserDetails(userDetails) {
         if (userDetails) {
-            // Hiển thị thông tin cá nhân
+            // Display user details
             document.querySelectorAll('.userFullName').forEach(element => {
                 element.textContent = userDetails.fullName;
             });
             document.querySelectorAll('.userRole').forEach(element => {
                 element.textContent = userDetails.roleName;
             });
-            document.getElementById('userJapanname').textContent = userDetails.jname;
-            document.getElementById('userGender').textContent = userDetails.gender;
-            document.getElementById('userEmail').textContent = userDetails.email;
-            document.getElementById('userDob').textContent = userDetails.dob;
-            document.getElementById('userPhone').textContent = userDetails.phoneNumber;
             document.getElementById('userId').value = userDetails.id;
-
-            // Kiểm tra vai trò người dùng và hiển thị các mục điều hướng tương ứng
-            if (userDetails.roleName === "ADMIN") {
-                // Ẩn các mục của giáo viên và học sinh cho ADMIN
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "none";
-                document.getElementById("student-view1").style.display = "none";
-            } else if (userDetails.roleName === "TEACHER") {
-                // Chỉ hiển thị mục điều hướng của giáo viên
-                document.getElementById("teacher-view").style.display = "block";
-                document.getElementById("student-view").style.display = "none";
-                document.getElementById("student-view1").style.display = "none";
-            } else if (userDetails.roleName === "STUDENT") {
-                // Chỉ hiển thị mục điều hướng của học sinh
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "block";
-                document.getElementById("student-view1").style.display = "block";
-            } else {
-                console.warn("Role not recognized:", userDetails.roleName);
-            }
         } else {
             console.error("User details not found in sessionStorage");
         }
     }
 
-    // Lấy dữ liệu userDetails từ sessionStorage và gọi hàm getUserDetails
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    getUserDetails(userDetails);
-</script>
+    function submitForm() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+</script>
 </body>
 
 

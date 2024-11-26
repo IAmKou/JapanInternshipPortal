@@ -318,7 +318,7 @@
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
+                                <a href="list-student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
                             </li>
 
                         </ul>
@@ -456,10 +456,10 @@
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3>Student Assignment</h3>
+                <h3>Assignment for Student</h3>
                 <ul>
                     <li>
-                        <a href="index.html">Home</a>
+                        <a href="student.html">Home</a>
                     </li>
                     <li>All Student Assignment</li>
                 </ul>
@@ -471,7 +471,7 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h3>All Student Assignment</h3>
+                            <h3>All Assignment for Student</h3>
                         </div>
 
                     </div>
@@ -481,28 +481,27 @@
                             <thead>
                             <tr>
                                 <th>Description</th>
-                                <th>Mark</th>
-                                <th>Date</th>
-                                <th>Action</th>
+                                <th>Creating Date</th>
+                                <th>End Date</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>abc</td>
-                                <td>10</td>
-                                <td>12.02.2019</td>
-                                <td>
-                                    <div class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                            <span class="flaticon-more-button-of-three-dots"></span>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#"><i class="fas fa-info-circle text-orange-peel"></i>Detail</a>
-                                        </div>
+                            <tbody id="assignment_list">
+<!--                            <tr>-->
+<!--                                <td>abc</td>-->
+<!--                                <td>10</td>-->
+<!--                                <td>12.02.2019</td>-->
+<!--                                <td>-->
+<!--                                    <div class="dropdown">-->
+<!--                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">-->
+<!--                                            <span class="flaticon-more-button-of-three-dots"></span>-->
+<!--                                        </a>-->
+<!--                                        <div class="dropdown-menu dropdown-menu-right">-->
+<!--                                            <a class="dropdown-item" href="#"><i class="fas fa-info-circle text-orange-peel"></i>Detail</a>-->
+<!--                                        </div>-->
 
-                                    </div>
-                                </td>
-                            </tr>
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
 
                             </tbody>
                         </table>
@@ -534,63 +533,80 @@
 <script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
-<!-- fetch user -->
-<!-- fetch user -->
+
 <script>
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    if (userDetails) {
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
+    async function fetchAndDisplayAssignments() {
+        try {
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
-        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-        if (userDetails.roleName === "ADMIN") {
-            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.username;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
+            if (!userDetails || !userDetails.id) {
+                throw new Error("Account ID is missing in session storage.");
+            }
 
-            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "TEACHER") {
-            // Hiển thị đầy đủ tên và vai trò cho giáo viên
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
+            const accountId = userDetails.id;
+            console.log("Fetched Account ID from sessionStorage:", accountId);
 
-            // Chỉ hiển thị mục của giáo viên
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
-            document.getElementById("student-view1").style.display = "none";
-        } else if (userDetails.roleName === "STUDENT") {
-            // Hiển thị đầy đủ tên và vai trò cho học sinh
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
+            // Fetch the student ID using the account ID
+            const studentIdResponse = await fetch(`/student-assignment/get-student-id?accountId=${accountId}`);
+            if (!studentIdResponse.ok) {
+                throw new Error("Failed to fetch student ID.");
+            }
 
-            // Chỉ hiển thị mục của học sinh
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
-        } else {
-            console.warn("Role not recognized: ", userDetails.roleName);
+            const studentId = await studentIdResponse.json();
+            console.log("Mapped Student ID:", studentId);
+
+            // Fetch assignments using the student ID
+            const assignmentResponse = await fetch(`/student-assignment/list-assignment?studentId=${studentId}`);
+            if (!assignmentResponse.ok) {
+                throw new Error(`Error fetching assignments: ${assignmentResponse.statusText}`);
+            }
+
+            const assignments = await assignmentResponse.json();
+            console.log("Fetched Assignments:", assignments);
+
+            // Clear and populate the table
+            const tableBody = document.getElementById('assignment_list');
+            tableBody.innerHTML = '';
+            if (assignments.length === 0) {
+                const noDataRow = document.createElement('tr');
+                noDataRow.innerHTML = `
+                <td colspan="3" class="text-center">No assignments found.</td>
+            `;
+                tableBody.appendChild(noDataRow);
+                return;
+            }
+
+            assignments.forEach(assignment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>
+                    <a href="/submit-assignment.html?id=${assignment.id}" target="_blank">
+                        ${assignment.description}
+                    </a>
+                </td>
+                <td>${new Date(assignment.created_date).toLocaleDateString()}</td>
+                <td>${new Date(assignment.end_date).toLocaleDateString()}</td>
+            `;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Error:", error);
+
+            const tableBody = document.getElementById('assignment_list');
+            tableBody.innerHTML = `
+            <tr>
+                <td colspan="3" class="text-center text-danger">Failed to load assignments. Please try again later.</td>
+            </tr>
+        `;
         }
-    } else {
-        console.error("User details not found in sessionStorage");
     }
+
+    document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
 </script>
+
 
 </body>
 
 
-<!-- Mirrored from student-assignment.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
+<!-- Mirrored from list-student-assignment.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>
