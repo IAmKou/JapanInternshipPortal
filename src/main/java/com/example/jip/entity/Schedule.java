@@ -18,7 +18,8 @@ public class Schedule {
     @Column(name="Date")
     private Date date;
 
-    @Column(name="day_of_week")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "day_of_week", nullable = false)
     private dayOfWeek day_of_week;
 
     @Column(name="location")
