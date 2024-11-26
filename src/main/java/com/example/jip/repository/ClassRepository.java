@@ -11,4 +11,7 @@ public interface ClassRepository extends JpaRepository<Class,Integer> {
 
     List<Class> findByTeacherId(Integer teacherId);
     Optional<Class> findByName(String name);
+    Optional<Class> findById(Integer id);
+
+
 }
