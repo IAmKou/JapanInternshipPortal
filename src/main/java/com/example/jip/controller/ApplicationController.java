@@ -273,7 +273,7 @@ public class ApplicationController {
             applicationDTO.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
             applicationDTO.setReplied_date(application.getReplied_date());
 
-            // Lấy ảnh từ Cloudinary
+
             // Lấy ảnh từ Cloudinary
             String folderName = application.getImg();
             System.out.println("Folder Name: " + folderName); // Lấy tên thư mục từ database (imgUrl)

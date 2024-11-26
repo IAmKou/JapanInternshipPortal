@@ -53,7 +53,7 @@ public class MaterialServices {
         material.setContent(materialDTO.getContent());
         material.setImg(materialDTO.getImg()); // Lưu img dưới dạng String
         material.setTeacher(teacher);
-        material.setCreated_date(new Date());
+        material.setCreated_date(materialDTO.getCreated_date());
 
         return materialRepository.save(material);
     }
