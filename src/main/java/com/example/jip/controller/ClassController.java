@@ -69,8 +69,8 @@ public class ClassController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/getByTid")
-    public List<ClassDTO> getClassByTid(@RequestParam int teacherId) {
+    @GetMapping("/getByTid/{teacherId}")
+    public List<ClassDTO> getClassByTid(@PathVariable int teacherId) {
         return classRepository.findByTeacherId(teacherId).stream()
                 .map(ClassDTO::new)
                 .collect(Collectors.toList());

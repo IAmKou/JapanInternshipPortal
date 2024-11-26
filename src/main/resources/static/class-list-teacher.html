@@ -500,17 +500,14 @@
         // Check if teacherId is present in the URL
         if (teacherId) {
             // Fetch classes for the given teacherId and populate the table
-            fetch(`/class/getByTid?teacherId=${teacherId}`)  // Include teacherId in the request
+            fetch(`/class/getByTid/${teacherId}`)  // Include teacherId in the request
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Failed to fetch class data');
                     }
                     return response.json();
                 })
-                .then(text => {
-                console.log('Response text:', text);  // Log the raw response to check for HTML
-                try {
-                    const clasz = JSON.parse(text);  // Attempt to parse as JSON
+                .then(clasz => {
                     clasz.forEach(clasz => {
                         const row = document.createElement('tr');
 
@@ -549,8 +546,11 @@
                         const dropdownMenu = document.createElement('div');
                         dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
                         dropdownMenu.innerHTML = `
+                        <a class="dropdown-item" href="/attendant.html?classId=${clasz.id}">
+                            <i class="fas fa-glasses text-dark-pastel-green"></i> Attendant
+                        </a>
                         <a class="dropdown-item" href="/all-class-student.html?classId=${clasz.id}">
-                            <i class="fas fa-glasses text-dark-pastel-green"></i> View Students
+                            <i class="fas fa-glasses text-dark-pastel-green"></i> Mark Report
                         </a>
                     `;
                         dropdown.appendChild(dropdownMenu);
@@ -559,9 +559,6 @@
 
                         tableBody.appendChild(row);
                     });
-                }catch (error) {
-                    console.error('Failed to parse JSON:', error);
-                }
                 })
                 .catch(error => console.error('Error fetching class data:', error));
         } else {
@@ -578,8 +575,6 @@
     if (userDetails) {
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
-        const teacherId = userDetails.id;
-
 
         // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
         if (userDetails.roleName === "ADMIN") {
@@ -591,9 +586,6 @@
                 element.textContent = userDetails.roleName;
             });
 
-            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
         } else if (userDetails.roleName === "TEACHER") {
             // Hiển thị đầy đủ tên và vai trò cho giáo viên
             userFullNameElements.forEach(element => {
@@ -603,9 +595,7 @@
                 element.textContent = userDetails.roleName;
             });
 
-            // Chỉ hiển thị mục của giáo viên
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
+
         } else if (userDetails.roleName === "STUDENT") {
             // Hiển thị đầy đủ tên và vai trò cho học sinh
             userFullNameElements.forEach(element => {
@@ -615,10 +605,6 @@
                 element.textContent = userDetails.roleName;
             });
 
-            // Chỉ hiển thị mục của học sinh
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
         } else {
             console.warn("Role not recognized: ", userDetails.roleName);
         }

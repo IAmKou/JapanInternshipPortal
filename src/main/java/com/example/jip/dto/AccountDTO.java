@@ -17,6 +17,7 @@ public class AccountDTO {
     private Date dob;
     private String jname;
     private String gender;
+    private int teacherId;
 
     public AccountDTO(Account account) {
         this.id = account.getId();
@@ -34,6 +35,7 @@ public class AccountDTO {
 
         } else if (account.getTeacher() != null) {
             Teacher teacher = account.getTeacher();
+            this.teacherId = teacher.getId();
             this.fullName = teacher.getFullname();
             this.email = teacher.getEmail();
             this.phoneNumber = teacher.getPhoneNumber();
@@ -126,5 +128,13 @@ public class AccountDTO {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public int getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(int teacherId) {
+        this.teacherId = teacherId;
     }
 }
