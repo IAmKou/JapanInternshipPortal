@@ -16,8 +16,6 @@ public interface ListRepository extends JpaRepository<Listt, ListId> {
     @Query("SELECT l.student FROM Listt l WHERE l.clas.id = :classId")
     List<Student> findStudentsByClassId(int classId);
 
-    List<Listt> findByClas_Id(int classId);
-    List<Listt> findByStudent_Id(int studentId);
 
     @Modifying
     @Transactional
