@@ -1,8 +1,10 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.ClassDTO;
+import com.example.jip.repository.AssignmentRepository;
 import com.example.jip.repository.ClassRepository;
 import com.example.jip.repository.ListRepository;
+import com.example.jip.services.AssignmentServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,7 @@ public class ClassController {
 
     @Autowired
     private ListRepository listRepository;
+
 
     @PostMapping(value = "/create", consumes = "application/json", produces = "text/plain")
     public String createClass(@RequestBody ClassDTO classDTO) {

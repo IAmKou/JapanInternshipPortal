@@ -44,7 +44,7 @@ public class AssignmentController {
 
 
     @GetMapping("/list")
-    public List<Assignment> getAllAssignments() {
+    public List<AssignmentResponse> getAllAssignments() {
         return assignmentServices.getAllAssignments();
     }
 
@@ -57,8 +57,8 @@ public class AssignmentController {
             for (int i = 0; i < request.getImgFile().length; i++) {
                 log.info("Received file: " + request.getImgFile()[i].getOriginalFilename());
             }
-
             log.info("Received classIds: " + request.getClassIds());
+
             Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
             TeacherDTO teacherDTO = new TeacherDTO();
             teacherDTO.setId(teacherOpt.get().getId());

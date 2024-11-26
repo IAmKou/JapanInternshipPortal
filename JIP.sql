@@ -1,4 +1,4 @@
-DateCREATE DATABASE jip;
+CREATE DATABASE jip;
 USE jip;
 
 CREATE TABLE Role (

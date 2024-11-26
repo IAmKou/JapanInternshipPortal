@@ -4,6 +4,7 @@ import com.example.jip.entity.Student;
 import com.example.jip.dto.StudentDTO;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 
 import javax.swing.text.html.Option;
@@ -16,6 +17,8 @@ public interface StudentRepository extends CrudRepository<Student, Integer> {
     Optional<Student> findByPhoneNumber(String phoneNumber);
     Optional<Student> findByAccount_id(Integer account_id);
 
+    @Query("SELECT s.id FROM Student s WHERE s.account.id = :accountId")
+    Optional<Integer> findStudentIdByAccountId(@Param("accountId") int accountId);
 
     @Query("SELECT new com.example.jip.dto.StudentDTO(s) " +
             "FROM Student s WHERE s.id NOT IN (SELECT l.id.student_id FROM Listt l) " +

@@ -39,6 +39,11 @@ import java.util.Optional;
             // Save the student to the database
             return studentRepository.save(student);
         }
+
+        public int getStudentIdByAccountId(int accountId) {
+            return studentRepository.findStudentIdByAccountId(accountId)
+                    .orElseThrow(() -> new RuntimeException("No student found for the given account ID"));
+        }
     }
 
 
