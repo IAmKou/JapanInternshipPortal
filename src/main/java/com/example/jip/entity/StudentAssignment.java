@@ -1,41 +1,43 @@
 package com.example.jip.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 @Entity
+@Table(name = "student_assignment")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentAssignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name = "student_id")
-    private int student_id;
-    @Column(name = "assignment_id")
-    private int assignment_id;
+    int id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id", nullable = false)
+    Student student;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assignment_id", nullable = false)
+    Assignment assignment;
+
     @Column(name = "mark")
-    private BigDecimal mark;
+    BigDecimal mark;
+
     @Column(name = "description")
-    private String description;
+    String description;
+
     @Column(name = "content")
-    private String content;
+    String content;
+
     @Column(name = "date", nullable = false)
-    private Date date;
+    Date date;
 
-    public StudentAssignment() {}
-
-    public StudentAssignment(int id, int student_id, int assignment_id, BigDecimal mark, String description, String content, Date date) {
-        this.id = id;
-        this.student_id = student_id;
-        this.assignment_id = assignment_id;
-        this.mark = mark;
-        this.description = description;
-        this.content = content;
-        this.date = date;
-    }
 
 }

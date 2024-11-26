@@ -161,23 +161,6 @@ public class AssignmentServices {
         return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim().replace(" ", "_");
     }
 
-    private String extractFolderPath(String imageUrl) {
-        if (imageUrl == null || imageUrl.isEmpty()) {
-            throw new IllegalArgumentException("Image URL cannot be null or empty");
-        }
-
-        // Extract the part after "/upload/" and remove any trailing file names
-        String[] parts = imageUrl.split("/upload/");
-        if (parts.length < 2) {
-            throw new IllegalArgumentException("Invalid Cloudinary image URL: " + imageUrl);
-        }
-        String folderAndFile = parts[1];
-        int lastSlashIndex = folderAndFile.lastIndexOf('/');
-        String folderPath = lastSlashIndex > 0 ? folderAndFile.substring(0, lastSlashIndex) : folderAndFile;
-
-        // Decode URL-encoded characters
-        return URLDecoder.decode(folderPath, StandardCharsets.UTF_8);
-    }
 
 
     @PreAuthorize("hasAuthority('TEACHER')")
