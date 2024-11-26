@@ -320,7 +320,9 @@
                             <li class="nav-item">
                                 <a href="list-student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
                             </li>
-
+                            <li class="nav-item">
+                                <a href="list-submitted-assignments.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Submitted Assignment</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
@@ -481,27 +483,27 @@
                             <thead>
                             <tr>
                                 <th>Description</th>
-                                <th>Creating Date</th>
-                                <th>End Date</th>
+                                <th>Mark</th>
+                                <th>Created Date</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
-                            <tbody id="assignment_list">
-<!--                            <tr>-->
-<!--                                <td>abc</td>-->
-<!--                                <td>10</td>-->
-<!--                                <td>12.02.2019</td>-->
-<!--                                <td>-->
-<!--                                    <div class="dropdown">-->
-<!--                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">-->
-<!--                                            <span class="flaticon-more-button-of-three-dots"></span>-->
-<!--                                        </a>-->
-<!--                                        <div class="dropdown-menu dropdown-menu-right">-->
-<!--                                            <a class="dropdown-item" href="#"><i class="fas fa-info-circle text-orange-peel"></i>Detail</a>-->
-<!--                                        </div>-->
+                            <tbody id="submittedAssignment_list">
+                            <!--                            <tr>-->
+                            <!--                                <td>abc</td>-->
+                            <!--                                <td>12.02.2019</td>-->
+                            <!--                                <td>-->
+                            <!--                                    <div class="dropdown">-->
+                            <!--                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">-->
+                            <!--                                            <span class="flaticon-more-button-of-three-dots"></span>-->
+                            <!--                                        </a>-->
+                            <!--                                        <div class="dropdown-menu dropdown-menu-right">-->
+                            <!--                                            <a class="dropdown-item" href="#"><i class="fas fa-info-circle text-orange-peel"></i>Detail</a>-->
+                            <!--                                        </div>-->
 
-<!--                                    </div>-->
-<!--                                </td>-->
-<!--                            </tr>-->
+                            <!--                                    </div>-->
+                            <!--                                </td>-->
+                            <!--                            </tr>-->
 
                             </tbody>
                         </table>
@@ -535,7 +537,7 @@
 <script src="js/main.js"></script>
 
 <script>
-    async function fetchAndDisplayAssignments() {
+    async function fetchAndDisplaySubmittedAssignments() {
         try {
             const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
@@ -555,53 +557,69 @@
             const studentId = await studentIdResponse.json();
             console.log("Mapped Student ID:", studentId);
 
-            // Fetch assignments using the student ID
-            const assignmentResponse = await fetch(`/student-assignment/list-unsubmitted-assignments?studentId=${studentId}`);
-            if (!assignmentResponse.ok) {
-                throw new Error(`Error fetching assignments: ${assignmentResponse.statusText}`);
+            // Fetch submitted assignments using the student ID
+            const submittedAssignmentResponse = await fetch(`/student-assignment/list-submitted-assignments?studentId=${studentId}`);
+            if (!submittedAssignmentResponse.ok) {
+                throw new Error(`Error fetching submitted assignments: ${submittedAssignmentResponse.statusText}`);
             }
 
-            const assignments = await assignmentResponse.json();
-            console.log("Fetched Assignments:", assignments);
+            const submittedAssignments = await submittedAssignmentResponse.json();
+            console.log("Fetched Submitted Assignments:", submittedAssignments);
 
             // Clear and populate the table
-            const tableBody = document.getElementById('assignment_list');
+            const tableBody = document.getElementById('submittedAssignment_list');
             tableBody.innerHTML = '';
-            if (assignments.length === 0) {
+
+            if (submittedAssignments.length === 0) {
                 const noDataRow = document.createElement('tr');
                 noDataRow.innerHTML = `
-                <td colspan="3" class="text-center">No assignments available for submission.</td>
+                <td colspan="4" class="text-center">No submitted assignments available.</td>
             `;
                 tableBody.appendChild(noDataRow);
                 return;
             }
 
-            assignments.forEach(assignment => {
+            submittedAssignments.forEach(submittedAssignment => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                 <td>
-                    <a href="/submit-assignment.html?id=${assignment.id}" target="_blank">
-                        ${assignment.description}
+                    <a href="/submited-assignment-detail.html?id=${submittedAssignment.id}" target="_blank">
+                        ${submittedAssignment.description}
                     </a>
                 </td>
-                <td>${new Date(assignment.created_date).toLocaleDateString()}</td>
-                <td>${new Date(assignment.end_date).toLocaleDateString()}</td>
+                <td>${submittedAssignment.mark || "N/A"}</td>
+                <td>${new Date(submittedAssignment.date).toLocaleDateString()}</td>
+                <td>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="flaticon-more-button-of-three-dots"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" onclick="openDeleteConfirmModal(${submittedAssignment.id})">
+                                <i class="fas fa-times text-orange-red"></i>Delete
+                            </a>
+                            <a class="dropdown-item" onclick="openUpdatePopup(${submittedAssignment.id})">
+                                <i class="fas fa-cogs text-dark-pastel-green"></i>Update
+                            </a>
+                        </div>
+                    </div>
+                </td>
             `;
                 tableBody.appendChild(row);
             });
         } catch (error) {
             console.error("Error:", error);
 
-            const tableBody = document.getElementById('assignment_list');
+            const tableBody = document.getElementById('submittedAssignment_list');
             tableBody.innerHTML = `
             <tr>
-                <td colspan="3" class="text-center text-danger">Failed to load assignments. Please try again later.</td>
+                <td colspan="4" class="text-center text-danger">Failed to load assignments. Please try again later.</td>
             </tr>
         `;
         }
     }
 
-    document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
+    document.addEventListener('DOMContentLoaded', fetchAndDisplaySubmittedAssignments);
 
 
 
