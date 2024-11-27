@@ -30,10 +30,10 @@ public class StudentAssignment {
     @Column(name = "mark")
     BigDecimal mark;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     String description;
 
-    @Column(name = "content")
+    @Column(name = "content", nullable = false)
     String content;
 
     @Column(name = "date", nullable = false)

@@ -2,6 +2,7 @@ package com.example.jip.services;
 
 
 
+import com.example.jip.dto.request.studentAssignment.StudentAssignmentSubmitRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.entity.Assignment;
 import com.example.jip.entity.Class;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,8 +40,6 @@ public class StudentAssignmentServices {
     public List<StudentAssignment> getAllStudentAssignments(){
         return studentAssignmentRepository.findAll();
     }
-
-
 
 
     @PreAuthorize("hasAuthority('STUDENT')")
@@ -65,5 +65,29 @@ public class StudentAssignmentServices {
                 })
                 .collect(Collectors.toList());
     }
+
+    @PreAuthorize("hasAuthority('STUDENT')")
+    public StudentAssignment submitAssignment(StudentAssignmentSubmitRequest request){
+        Student student = studentRepository.findById(request.getStudent().getId())
+               .orElseThrow(() -> new RuntimeException("Student ID not found: " + request.getStudent().getId()));
+
+        Assignment assignment = assignmentRepository.findById(request.getAssignment().getId())
+               .orElseThrow(() -> new RuntimeException("Assignment ID not found: " + request.getAssignment().getId()));
+
+        Date today = new Date();
+        if (today.after(assignment.getEnd_date())) {
+            throw new RuntimeException("Submission is not allowed after the assignment's end date.");
+        }
+
+        StudentAssignment studentAssignment = new StudentAssignment();
+        studentAssignment.setDate(today);
+        studentAssignment.setDescription(request.getDescription());
+        studentAssignment.setContent(request.getContent());
+        studentAssignment.setStudent(student);
+        studentAssignment.setAssignment(assignment);
+
+        return studentAssignmentRepository.save(studentAssignment);
+    }
+
 
 }
