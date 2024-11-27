@@ -20,6 +20,22 @@ public class NotificationController {
         this.notificationServices = notificationServices;
     }
 
+    @PostMapping("/create")
+    public ResponseEntity<String> createNotification(@RequestBody NotificationDTO notificationDTO) {
+        try {
+            notificationServices.createNotification(
+                    notificationDTO.getTitle(),
+                    notificationDTO.getContent(),
+                    notificationDTO.getOwnerId()
+            );
+            return ResponseEntity.status(HttpStatus.CREATED).body("Notification created");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create notification");
+        }
+    }
+
     @GetMapping("/list")
     public ResponseEntity<List<NotificationDTO>> getAllNotifications() {
         List<NotificationDTO> notificationDTOList = notificationServices.getAllNotifications()
