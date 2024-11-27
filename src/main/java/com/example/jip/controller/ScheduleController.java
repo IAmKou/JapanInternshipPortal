@@ -17,34 +17,34 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/schedule")
 public class ScheduleController {
-
-    @Autowired
-    ScheduleServices scheduleServices;
-
-    @Autowired
-    ScheduleRepository scheduleRepository;
-
-    @PostMapping("/import")
-    public ResponseEntity<?> importSchedules(@RequestParam("file") MultipartFile file) {
-        if (!file.getOriginalFilename().endsWith(".xlsx")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(List.of("Invalid file format. Please upload an Excel file."));
-        }
-        try (InputStream inputStream = file.getInputStream()) {
-            List<String> errors = scheduleServices.importSchedules(inputStream);
-            if (errors.isEmpty()) {
-                return ResponseEntity.ok("Schedules imported successfully.");
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error importing schedules: " + e.getMessage());
-        }
-    }
-
-    @GetMapping("/get")
-    public List<ScheduleDTO> getSchedules() {
-        return scheduleRepository.findAll().stream()
-                .map(ScheduleDTO::new)
-                .collect(Collectors.toList());
-    }
+//
+//    @Autowired
+//    ScheduleServices scheduleServices;
+//
+//    @Autowired
+//    ScheduleRepository scheduleRepository;
+//
+//    @PostMapping("/import")
+//    public ResponseEntity<?> importSchedules(@RequestParam("file") MultipartFile file) {
+//        if (!file.getOriginalFilename().endsWith(".xlsx")) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(List.of("Invalid file format. Please upload an Excel file."));
+//        }
+//        try (InputStream inputStream = file.getInputStream()) {
+//            List<String> errors = scheduleServices.importSchedules(inputStream);
+//            if (errors.isEmpty()) {
+//                return ResponseEntity.ok("Schedules imported successfully.");
+//            } else {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+//            }
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error importing schedules: " + e.getMessage());
+//        }
+//    }
+//
+//    @GetMapping("/get")
+//    public List<ScheduleDTO> getSchedules() {
+//        return scheduleRepository.findAll().stream()
+//                .map(ScheduleDTO::new)
+//                .collect(Collectors.toList());
+//    }
 }

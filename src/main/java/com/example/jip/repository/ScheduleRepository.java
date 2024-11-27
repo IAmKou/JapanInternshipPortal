@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 
-    Optional<Schedule> findByClassIdAndDate(int classId, Date date);
-
+//    Optional<Schedule> findByClassIdAndDate(int classId, Date date);
+//
 
 }

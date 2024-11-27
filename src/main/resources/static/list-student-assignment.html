@@ -320,6 +320,9 @@
                             <li class="nav-item">
                                 <a href="list-student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="list-submitted-assignments.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Submitted Assignment</a>
+                            </li>
 
                         </ul>
                     </li>
@@ -556,7 +559,7 @@
             console.log("Mapped Student ID:", studentId);
 
             // Fetch assignments using the student ID
-            const assignmentResponse = await fetch(`/student-assignment/list-unsubmitted-assignments?studentId=${studentId}`);
+            const assignmentResponse = await fetch(`/student-assignment/list-assignment?studentId=${studentId}`);
             if (!assignmentResponse.ok) {
                 throw new Error(`Error fetching assignments: ${assignmentResponse.statusText}`);
             }

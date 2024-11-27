@@ -78,27 +78,18 @@ public class AssignmentController {
 
 
     @GetMapping("/detail/{assignment_id}")
-    public ResponseEntity<AssignmentResponse> getAssignmentById(@PathVariable("assignment_id") int assignmentId) {
-        log.info("Received assignmentId: " + assignmentId);
-        AssignmentResponse response = assignmentServices.getAssignmentById(assignmentId);
-        log.info("Files: " + response.getFiles());
-        if (response != null)  {
-             return ResponseEntity.ok(response);
-        } else {
-             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-         }
-}
-//    @GetMapping("/files/{assignmentId}")
-//    public ResponseEntity<List<String>> getAssignmentFiles(@PathVariable int assignmentId) {
-//        Assignment assignment = assignmentRepository.findById(assignmentId)
-//                .orElseThrow(() -> new RuntimeException("Assignment not found"));
-//
-//        String folderName = assignment.getDescription(); // Assuming folder name is stored in the description
-//        List<String> fileUrls = cloudinaryService.listFilesInFolder(folderName);
-//        return ResponseEntity.ok(fileUrls);
-//    }
+        public ResponseEntity<AssignmentResponse> getAssignmentById(@PathVariable("assignment_id") int assignmentId) {
+           log.info("Received assignmentId: " + assignmentId);
+            AssignmentResponse response = assignmentServices.getAssignmentById(assignmentId);
+           log.info("Files: " + response.getFiles());
+               if (response != null)  {
+                    return ResponseEntity.ok(response);
+                 } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                 }
+    }
 
-        @PutMapping("/update/{assignment_id}")
+    @PutMapping("/update/{assignment_id}")
         public ResponseEntity<?> updateAssignment(@PathVariable("assignment_id") int assignment_id,
                                                   @ModelAttribute AssignmentUpdateRequest request) {
             try {

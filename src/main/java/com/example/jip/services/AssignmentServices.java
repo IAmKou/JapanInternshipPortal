@@ -197,7 +197,6 @@ public class AssignmentServices {
             throw new RuntimeException("Folder name is not set for assignment ID: " + assignmentId);
         }
 
-
         // Append new files if provided
         if (newFiles != null && newFiles.length > 0) {
             for (MultipartFile file : newFiles) {

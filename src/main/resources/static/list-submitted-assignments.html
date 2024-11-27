@@ -28,7 +28,89 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <style>
 
+        /* Form styling */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            margin-top: 10px;
+        }
+
+        form input, form textarea, form select {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        /* Modal Background (Overlay) */
+        .modal-background {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Black with transparency */
+            justify-content: center;
+            align-items: center;
+            z-index: 2000; /* High z-index to stay above other content */
+        }
+
+        /* Modal Content Box */
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 350px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        /* Buttons inside the modal */
+        .modal-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        /* Confirm Button Style */
+        .confirm-btn {
+            background-color: #dc3545; /* Red background for delete */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Confirm Button Hover Effect */
+        .confirm-btn:hover {
+            background-color: #c82333; /* Darker red on hover */
+        }
+
+        /* Cancel Button Style */
+        .cancel-btn {
+            background-color: #6c757d; /* Gray background for cancel */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Cancel Button Hover Effect */
+        .cancel-btn:hover {
+            background-color: #5a6268; /* Darker gray on hover */
+        }
+    </style>
 </head>
 
 <body>
@@ -485,6 +567,7 @@
                                 <th>Description</th>
                                 <th>Mark</th>
                                 <th>Created Date</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -514,6 +597,19 @@
             </div>
 
 
+        </div>
+        <!-- Confirmation Modal -->
+        <div id="deleteConfirmModal" class="modal-background">
+            <div class="modal-content">
+                <h3>Delete Assignment</h3>
+                <p>Are you sure you want to delete this assignment?</p>
+
+                <!-- Modal Buttons -->
+                <div class="modal-buttons">
+                    <button class="confirm-btn" onclick="confirmDelete()">Confirm</button>
+                    <button class="cancel-btn" onclick="closeDeleteConfirmModal()">Cancel</button>
+                </div>
+            </div>
         </div>
 
 
@@ -589,6 +685,7 @@
                 </td>
                 <td>${submittedAssignment.mark || "N/A"}</td>
                 <td>${new Date(submittedAssignment.date).toLocaleDateString()}</td>
+                <td>${submittedAssignment.status || "N/A"}</td>
                 <td>
                     <div class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -597,9 +694,6 @@
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" onclick="openDeleteConfirmModal(${submittedAssignment.id})">
                                 <i class="fas fa-times text-orange-red"></i>Delete
-                            </a>
-                            <a class="dropdown-item" onclick="openUpdatePopup(${submittedAssignment.id})">
-                                <i class="fas fa-cogs text-dark-pastel-green"></i>Update
                             </a>
                         </div>
                     </div>
@@ -621,6 +715,41 @@
 
     document.addEventListener('DOMContentLoaded', fetchAndDisplaySubmittedAssignments);
 
+
+    // Function to open the delete confirmation modal
+    function openDeleteConfirmModal(submittedAssignmentId) {
+        document.getElementById('deleteConfirmModal').dataset.submittedAssignmentId = submittedAssignmentId;
+        document.getElementById('deleteConfirmModal').style.display = 'flex';
+    }
+
+    // Function to close the delete confirmation modal
+    function closeDeleteConfirmModal() {
+        document.getElementById('deleteConfirmModal').style.display = 'none';
+    }
+
+    // Function to confirm delete
+    async function confirmDelete() {
+        const submittedAssignmentId = document.getElementById('deleteConfirmModal').dataset.submittedAssignmentId;
+
+        try {
+            const response = await fetch(`student-assignment/delete/${submittedAssignmentId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                alert('Assignment deleted successfully!');
+                fetchAndDisplaySubmittedAssignments()
+                closeDeleteConfirmModal();
+            } else if (response.status === 404) {
+                alert('Assignment not found!');
+                closeDeleteConfirmModal();
+            } else {
+                console.error('Error deleting assignment:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
 
 
 </script>

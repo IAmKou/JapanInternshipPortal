@@ -25,43 +25,43 @@ import java.util.stream.Collectors;
 @RequestMapping("/attendant")
 public class AttendantController {
 
-    @Autowired
-    AttendantServices attendantServices;
-
-    @Autowired
-    ListRepository listRepository;
-
-    @Autowired
-    AttendantRepository attendantRepository;
-
-    @Autowired
-    ScheduleRepository scheduleRepository;
-
-    @PostMapping("/save")
-    public ResponseEntity<String> save(@RequestParam int student_id,
-                                          @RequestParam int schedule_id,
-                                          @RequestParam String status,
-                                          @RequestParam Date date,
-                                          @RequestParam String note,
-                                          @RequestParam int class_id) {
-        Optional<Schedule> schedule = scheduleRepository.findByClassIdAndDate(class_id, date);
-        Time startTime = schedule.get().getStart_time();
-        Time endTime = schedule.get().getEnd_time();
-
-        LocalTime currentLocalTime = LocalTime.now();
-        Time currentTime = Time.valueOf(currentLocalTime);
-
-        if(currentTime.after(startTime) && currentTime.before(endTime)) {
-            attendantServices.createAttendant(student_id, schedule_id, status, date, note, class_id);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Attendance saved successfully.");
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Attendance cannot be saved as the time is outside the allowed range.");
-        }
-    }
-
-    @GetMapping("/attendance")
-    public List<Attendant> getAttendance(@PathVariable int scheduleId, @RequestParam Date date) {
-        LocalTime currentTime = LocalTime.now();
-        return attendantRepository.findByScheduleIdAndTimeSlot(scheduleId, date, Time.valueOf(currentTime));
-    }
+//    @Autowired
+//    AttendantServices attendantServices;
+//
+//    @Autowired
+//    ListRepository listRepository;
+//
+//    @Autowired
+//    AttendantRepository attendantRepository;
+//
+//    @Autowired
+//    ScheduleRepository scheduleRepository;
+//
+//    @PostMapping("/save")
+//    public ResponseEntity<String> save(@RequestParam int student_id,
+//                                          @RequestParam int schedule_id,
+//                                          @RequestParam String status,
+//                                          @RequestParam Date date,
+//                                          @RequestParam String note,
+//                                          @RequestParam int class_id) {
+//        Optional<Schedule> schedule = scheduleRepository.findByClassIdAndDate(class_id, date);
+//        Time startTime = schedule.get().getStart_time();
+//        Time endTime = schedule.get().getEnd_time();
+//
+//        LocalTime currentLocalTime = LocalTime.now();
+//        Time currentTime = Time.valueOf(currentLocalTime);
+//
+//        if(currentTime.after(startTime) && currentTime.before(endTime)) {
+//            attendantServices.createAttendant(student_id, schedule_id, status, date, note, class_id);
+//            return ResponseEntity.status(HttpStatus.CREATED).body("Attendance saved successfully.");
+//        }else{
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Attendance cannot be saved as the time is outside the allowed range.");
+//        }
+//    }
+//
+//    @GetMapping("/attendance")
+//    public List<Attendant> getAttendance(@PathVariable int scheduleId, @RequestParam Date date) {
+//        LocalTime currentTime = LocalTime.now();
+//        return attendantRepository.findByScheduleIdAndTimeSlot(scheduleId, date, Time.valueOf(currentTime));
+//    }
 }

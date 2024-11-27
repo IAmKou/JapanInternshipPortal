@@ -39,5 +39,13 @@ public class StudentAssignment {
     @Column(name = "date", nullable = false)
     Date date;
 
+    @Enumerated(EnumType.STRING) // Use String for readability
+    @Column(name = "status", nullable = false)
+    Status status; // NEW: Status field
+
+    public enum Status {
+        SUBMITTED, // Editable/Deletable
+        MARKED     // Not editable/deletable
+    }
 
 }
