@@ -1,20 +1,13 @@
 package com.example.jip.services;
 
-import com.example.jip.dto.request.AssignmentCreationRequest;
-import com.example.jip.dto.request.AssignmentUpdateRequest;
+import com.example.jip.dto.request.assignment.AssignmentCreationRequest;
+import com.example.jip.dto.request.assignment.AssignmentUpdateRequest;
 import com.example.jip.dto.request.FileDeleteRequest;
-import com.example.jip.dto.response.CloudinaryResponse;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
-import com.example.jip.entity.Assignment;
-import com.example.jip.entity.Class;
+import com.example.jip.entity.*;
 
-import com.example.jip.entity.Teacher;
-import com.example.jip.exception.CloudinaryFolderAccessException;
-import com.example.jip.exception.FuncErrorException;
-import com.example.jip.exception.InvalidImageUrlException;
-import com.example.jip.repository.AssignmentRepository;
-import com.example.jip.repository.ClassRepository;
-import com.example.jip.repository.TeacherRepository;
+import com.example.jip.entity.Class;
+import com.example.jip.repository.*;
 import com.example.jip.util.FileUploadUtil;
 import jakarta.transaction.Transactional;
 import lombok.*;
@@ -25,9 +18,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,10 +35,30 @@ public class AssignmentServices {
 
     ClassRepository classRepository;
 
+    AssignmentClassRepository assignmentClassRepository;
+
+    AssignmentStudentRepository assignmentStudentRepository;
+
 
     @PreAuthorize("hasAuthority('TEACHER')")
-    public List<Assignment> getAllAssignments() {
-        return assignmentRepository.findAll();
+    public List<AssignmentResponse> getAllAssignments() {
+        return assignmentRepository.findAll().stream()
+                .map(assignment -> {
+                    AssignmentResponse response = new AssignmentResponse();
+                    response.setId(assignment.getId());
+                    response.setCreated_date(assignment.getCreated_date());
+                    response.setEnd_date(assignment.getEnd_date());
+                    response.setDescription(assignment.getDescription());
+                    response.setContent(assignment.getContent());
+                    response.setFolder(assignment.getImgUrl());
+                    response.setClasses(
+                            assignment.getClasses().stream()
+                                    .map(Class::getName)
+                                    .collect(Collectors.toList())
+                    );
+                    return response;
+                })
+                .collect(Collectors.toList());
     }
 
 
@@ -75,13 +85,25 @@ public class AssignmentServices {
             uploadFilesToFolder(imgFiles, folderName);
         }
 
-        // Handle class associations
+        // Save assignment
+        Assignment savedAssignment = assignmentRepository.save(assignment);
+
+        // Assign the assignment to classes and students
         if (request.getClassIds() != null && !request.getClassIds().isEmpty()) {
-            Set<Class> classes = request.getClassIds().stream()
-                    .map(classId -> classRepository.findById(classId)
-                            .orElseThrow(() -> new RuntimeException("Class not found: " + classId)))
-                    .collect(Collectors.toSet());
-            assignment.setClasses(classes);
+            for (Integer classId : request.getClassIds()) {
+                // Find the class
+                Class clas = classRepository.findById(classId)
+                        .orElseThrow(() -> new RuntimeException("Class not found: " + classId));
+
+                // Link assignment to class
+                assignmentClassRepository.save(new AssignmentClass(savedAssignment, clas));
+
+                // Link assignment to all students in the class
+                for (Listt listEntry : clas.getClassLists()) {
+                    Student student = listEntry.getStudent();
+                    assignmentStudentRepository.save(new AssignmentStudent(savedAssignment, student));
+                }
+            }
         }
 
         assignment.setTeacher(teacher);
@@ -93,7 +115,6 @@ public class AssignmentServices {
 
 
 
-    @PreAuthorize("hasAuthority('TEACHER')")
     public AssignmentResponse getAssignmentById(int assignmentId) {
         Assignment assignment = assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new RuntimeException("Assignment not found with ID: " + assignmentId));
@@ -161,23 +182,6 @@ public class AssignmentServices {
         return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim().replace(" ", "_");
     }
 
-    private String extractFolderPath(String imageUrl) {
-        if (imageUrl == null || imageUrl.isEmpty()) {
-            throw new IllegalArgumentException("Image URL cannot be null or empty");
-        }
-
-        // Extract the part after "/upload/" and remove any trailing file names
-        String[] parts = imageUrl.split("/upload/");
-        if (parts.length < 2) {
-            throw new IllegalArgumentException("Invalid Cloudinary image URL: " + imageUrl);
-        }
-        String folderAndFile = parts[1];
-        int lastSlashIndex = folderAndFile.lastIndexOf('/');
-        String folderPath = lastSlashIndex > 0 ? folderAndFile.substring(0, lastSlashIndex) : folderAndFile;
-
-        // Decode URL-encoded characters
-        return URLDecoder.decode(folderPath, StandardCharsets.UTF_8);
-    }
 
 
     @PreAuthorize("hasAuthority('TEACHER')")
@@ -204,17 +208,22 @@ public class AssignmentServices {
             }
         }
 
-        // Update classes if provided
-        if (request.getClassIds() != null) {
-            Set<Class> classes = new HashSet<>();
+        if (request.getClassIds() != null && !request.getClassIds().isEmpty()) {
             for (Integer classId : request.getClassIds()) {
-                Class classEntity = classRepository.findById(classId)
-                        .orElseThrow(() -> new NoSuchElementException("Class not found: " + classId));
-                classes.add(classEntity);
-            }
-            assignment.setClasses(classes); // Assuming Assignment entity has `classes` field
-        }
+                // Find the class
+                Class clas = classRepository.findById(classId)
+                        .orElseThrow(() -> new RuntimeException("Class not found: " + classId));
 
+                // Link assignment to class
+                assignmentClassRepository.save(new AssignmentClass(assignment, clas));
+
+                // Link assignment to all students in the class
+                for (Listt listEntry : clas.getClassLists()) {
+                    Student student = listEntry.getStudent();
+                    assignmentStudentRepository.save(new AssignmentStudent(assignment, student));
+                }
+            }
+        }
         // Update other fields
         if (request.getEnd_date() != null) {
             assignment.setEnd_date(request.getEnd_date());

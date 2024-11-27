@@ -318,9 +318,11 @@
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
+                                <a href="list-student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
                             </li>
-
+                            <li class="nav-item">
+                                <a href="list-submitted-assignments.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Submitted Assignment</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
@@ -456,10 +458,10 @@
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3>Student Assignment</h3>
+                <h3>Assignment for Student</h3>
                 <ul>
                     <li>
-                        <a href="index.html">Home</a>
+                        <a href="student.html">Home</a>
                     </li>
                     <li>All Student Assignment</li>
                 </ul>
@@ -471,7 +473,7 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h3>All Student Assignment</h3>
+                            <h3>All Assignment for Student</h3>
                         </div>
 
                     </div>
@@ -482,27 +484,26 @@
                             <tr>
                                 <th>Description</th>
                                 <th>Mark</th>
-                                <th>Date</th>
-                                <th>Action</th>
+                                <th>Created Date</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>abc</td>
-                                <td>10</td>
-                                <td>12.02.2019</td>
-                                <td>
-                                    <div class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                            <span class="flaticon-more-button-of-three-dots"></span>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#"><i class="fas fa-info-circle text-orange-peel"></i>Detail</a>
-                                        </div>
+                            <tbody id="submittedAssignment_list">
+                            <!--                            <tr>-->
+                            <!--                                <td>abc</td>-->
+                            <!--                                <td>12.02.2019</td>-->
+                            <!--                                <td>-->
+                            <!--                                    <div class="dropdown">-->
+                            <!--                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">-->
+                            <!--                                            <span class="flaticon-more-button-of-three-dots"></span>-->
+                            <!--                                        </a>-->
+                            <!--                                        <div class="dropdown-menu dropdown-menu-right">-->
+                            <!--                                            <a class="dropdown-item" href="#"><i class="fas fa-info-circle text-orange-peel"></i>Detail</a>-->
+                            <!--                                        </div>-->
 
-                                    </div>
-                                </td>
-                            </tr>
+                            <!--                                    </div>-->
+                            <!--                                </td>-->
+                            <!--                            </tr>-->
 
                             </tbody>
                         </table>
@@ -534,63 +535,99 @@
 <script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
-<!-- fetch user -->
-<!-- fetch user -->
+
 <script>
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    if (userDetails) {
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
+    async function fetchAndDisplaySubmittedAssignments() {
+        try {
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
-        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-        if (userDetails.roleName === "ADMIN") {
-            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.username;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
+            if (!userDetails || !userDetails.id) {
+                throw new Error("Account ID is missing in session storage.");
+            }
 
-            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "TEACHER") {
-            // Hiển thị đầy đủ tên và vai trò cho giáo viên
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
+            const accountId = userDetails.id;
+            console.log("Fetched Account ID from sessionStorage:", accountId);
 
-            // Chỉ hiển thị mục của giáo viên
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
-            document.getElementById("student-view1").style.display = "none";
-        } else if (userDetails.roleName === "STUDENT") {
-            // Hiển thị đầy đủ tên và vai trò cho học sinh
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
+            // Fetch the student ID using the account ID
+            const studentIdResponse = await fetch(`/student-assignment/get-student-id?accountId=${accountId}`);
+            if (!studentIdResponse.ok) {
+                throw new Error("Failed to fetch student ID.");
+            }
 
-            // Chỉ hiển thị mục của học sinh
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
-        } else {
-            console.warn("Role not recognized: ", userDetails.roleName);
+            const studentId = await studentIdResponse.json();
+            console.log("Mapped Student ID:", studentId);
+
+            // Fetch submitted assignments using the student ID
+            const submittedAssignmentResponse = await fetch(`/student-assignment/list-submitted-assignments?studentId=${studentId}`);
+            if (!submittedAssignmentResponse.ok) {
+                throw new Error(`Error fetching submitted assignments: ${submittedAssignmentResponse.statusText}`);
+            }
+
+            const submittedAssignments = await submittedAssignmentResponse.json();
+            console.log("Fetched Submitted Assignments:", submittedAssignments);
+
+            // Clear and populate the table
+            const tableBody = document.getElementById('submittedAssignment_list');
+            tableBody.innerHTML = '';
+
+            if (submittedAssignments.length === 0) {
+                const noDataRow = document.createElement('tr');
+                noDataRow.innerHTML = `
+                <td colspan="4" class="text-center">No submitted assignments available.</td>
+            `;
+                tableBody.appendChild(noDataRow);
+                return;
+            }
+
+            submittedAssignments.forEach(submittedAssignment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>
+                    <a href="/submited-assignment-detail.html?id=${submittedAssignment.id}" target="_blank">
+                        ${submittedAssignment.description}
+                    </a>
+                </td>
+                <td>${submittedAssignment.mark || "N/A"}</td>
+                <td>${new Date(submittedAssignment.date).toLocaleDateString()}</td>
+                <td>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="flaticon-more-button-of-three-dots"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" onclick="openDeleteConfirmModal(${submittedAssignment.id})">
+                                <i class="fas fa-times text-orange-red"></i>Delete
+                            </a>
+                            <a class="dropdown-item" onclick="openUpdatePopup(${submittedAssignment.id})">
+                                <i class="fas fa-cogs text-dark-pastel-green"></i>Update
+                            </a>
+                        </div>
+                    </div>
+                </td>
+            `;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Error:", error);
+
+            const tableBody = document.getElementById('submittedAssignment_list');
+            tableBody.innerHTML = `
+            <tr>
+                <td colspan="4" class="text-center text-danger">Failed to load assignments. Please try again later.</td>
+            </tr>
+        `;
         }
-    } else {
-        console.error("User details not found in sessionStorage");
     }
+
+    document.addEventListener('DOMContentLoaded', fetchAndDisplaySubmittedAssignments);
+
+
+
 </script>
+
 
 </body>
 
 
-<!-- Mirrored from student-assignment.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
+<!-- Mirrored from list-student-assignment.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>

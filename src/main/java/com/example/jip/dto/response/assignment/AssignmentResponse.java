@@ -1,5 +1,7 @@
 package com.example.jip.dto.response.assignment;
 
+import com.example.jip.entity.Student;
+import com.example.jip.entity.Teacher;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +24,9 @@ public class AssignmentResponse {
     Date created_date;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date end_date;
+    String folder;
+    Teacher teacher; // Teacher who created this assignment
+    Student student;
     List<String> classes; // List of class names
     List<String> files;
 }

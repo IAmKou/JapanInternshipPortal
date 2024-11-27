@@ -1,7 +1,5 @@
 package com.example.jip.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -30,7 +28,7 @@ public class Assignment {
     @Column(name = "content")
     String content;
 
-    @JsonBackReference
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id")
     Teacher teacher;
@@ -41,9 +39,7 @@ public class Assignment {
             joinColumns = @JoinColumn(name = "assignment_id"),
             inverseJoinColumns = @JoinColumn(name = "class_id")
     )
-    @JsonManagedReference
     Set<Class> classes = new HashSet<>();
-
 
     @Column(name = "img")
     String imgUrl;

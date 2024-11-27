@@ -1,18 +1,18 @@
 package com.example.jip.services;
 
+import com.example.jip.entity.Account;
 import com.example.jip.entity.Thread;
 import com.example.jip.repository.AccountRepository;
 import com.example.jip.repository.ThreadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-import java.sql.Date;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ThreadServices {
@@ -26,7 +26,7 @@ public class ThreadServices {
         thread.setTopicName(topicName);
         thread.setDescription(description);
         thread.setCreatorId(creatorId);
-        thread.setDateCreated(new Date(System.currentTimeMillis()));
+        thread.setDateCreated(new java.util.Date());
 
         // Chuyển file ảnh thành mảng byte và lưu vào database
         if (imageFile != null && !imageFile.isEmpty()) {
@@ -48,12 +48,28 @@ public class ThreadServices {
         return threadRepository.findById(id).orElseThrow();
     }
 
-    public void deleteThread(int id) {
-        if (threadRepository.existsById(id)) {
-            threadRepository.deleteById(id); // Xóa thread theo ID
-        } else {
-            throw new IllegalArgumentException("Thread not found with id: " + id);
-        }
+
+    // Get the current user's id (using Spring Security)
+    private int getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // Assuming the user ID is stored as the username in your authentication token (you can adjust this based on your user model)
+        return Integer.parseInt(authentication.getName());  // If user ID is the username
     }
 
+    public boolean isCreator(String username, int creatorId) {
+        // Fetch the account by username
+        Account account = accountRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Compare the account ID with the creatorId of the thread
+        return account.getId() == creatorId;
+    }
+
+    public void deleteThread(int threadId) {
+        threadRepository.deleteById(threadId);
+    }
+
+    public void updateThread(Thread thread) {
+        threadRepository.save(thread); // Save the updated thread to the database
+    }
 }

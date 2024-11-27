@@ -3,7 +3,16 @@ package com.example.jip.dto;
 import com.example.jip.entity.Account;
 import com.example.jip.entity.Manager;
 import com.example.jip.entity.Teacher;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TeacherDTO {
     private int id;
     private Account account;
@@ -14,7 +23,7 @@ public class TeacherDTO {
     private Teacher.gender gender;
     private String img;
 
-    public TeacherDTO() {}
+
 
     public TeacherDTO(Teacher teacher) {
         this.id = teacher.getId();

@@ -1,8 +1,19 @@
 package com.example.jip.dto;
 
+import com.example.jip.entity.Assignment;
 import com.example.jip.entity.Class;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
+
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 
 public class ClassDTO {
     private String name;
@@ -11,8 +22,9 @@ public class ClassDTO {
     private TeacherDTO teacher;
     private List<Integer> studentIds;
     private String teacherName;
+    private List<Integer> assignmentIds;
 
-    public ClassDTO() {}
+
 
     public ClassDTO(String name, int numberOfStudents, TeacherDTO teacher, List<Integer> studentIds) {
         this.name = name;

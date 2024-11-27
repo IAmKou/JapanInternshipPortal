@@ -1,18 +1,13 @@
 package com.example.jip.controller;
 
-import com.example.jip.configuration.CustomAuthenticationSuccessHandler;
 import com.example.jip.dto.TeacherDTO;
-import com.example.jip.dto.request.AssignmentCreationRequest;
-import com.example.jip.dto.request.AssignmentUpdateRequest;
+import com.example.jip.dto.request.assignment.AssignmentCreationRequest;
+import com.example.jip.dto.request.assignment.AssignmentUpdateRequest;
 import com.example.jip.dto.request.FileDeleteRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
-import com.example.jip.entity.Assignment;
 import com.example.jip.entity.Teacher;
-import com.example.jip.repository.AccountRepository;
-import com.example.jip.repository.AssignmentRepository;
 import com.example.jip.repository.TeacherRepository;
 import com.example.jip.services.AssignmentServices;
-import com.example.jip.services.CloudinaryService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,11 +17,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -44,7 +37,7 @@ public class AssignmentController {
 
 
     @GetMapping("/list")
-    public List<Assignment> getAllAssignments() {
+    public List<AssignmentResponse> getAllAssignments() {
         return assignmentServices.getAllAssignments();
     }
 
@@ -57,8 +50,8 @@ public class AssignmentController {
             for (int i = 0; i < request.getImgFile().length; i++) {
                 log.info("Received file: " + request.getImgFile()[i].getOriginalFilename());
             }
-
             log.info("Received classIds: " + request.getClassIds());
+
             Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
             TeacherDTO teacherDTO = new TeacherDTO();
             teacherDTO.setId(teacherOpt.get().getId());
@@ -89,11 +82,11 @@ public class AssignmentController {
         log.info("Received assignmentId: " + assignmentId);
         AssignmentResponse response = assignmentServices.getAssignmentById(assignmentId);
         log.info("Files: " + response.getFiles());
-    if(response != null)  {
-        return ResponseEntity.ok(response);
-    } else {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
+        if (response != null)  {
+             return ResponseEntity.ok(response);
+        } else {
+             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+         }
 }
 //    @GetMapping("/files/{assignmentId}")
 //    public ResponseEntity<List<String>> getAssignmentFiles(@PathVariable int assignmentId) {

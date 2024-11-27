@@ -1,0 +1,140 @@
+package com.example.jip.services;
+
+import com.example.jip.entity.Class;
+import com.example.jip.entity.Schedule;
+import com.example.jip.repository.ClassRepository;
+import com.example.jip.repository.ScheduleRepository;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.InputStream;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.time.format.DateTimeFormatter;
+
+@Service
+public class ScheduleServices {
+
+    @Autowired
+    private ScheduleRepository scheduleRepository;
+
+    @Autowired
+    private ClassRepository classRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(ScheduleServices.class);
+
+    public List<String> importSchedules(MultipartFile file) throws Exception {
+        List<String> errors = new ArrayList<>();
+
+        try (InputStream inputStream = file.getInputStream();
+             XSSFWorkbook workbook = new XSSFWorkbook(inputStream)) {
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            if (rowIterator.hasNext()) rowIterator.next(); // Skip header row
+
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                try {
+                    processRow(row, errors);
+                } catch (Exception e) {
+                    logger.error("Error processing row " + (row.getRowNum() + 1), e);
+                    errors.add("Error in row " + (row.getRowNum() + 1) + ": " + e.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Error reading the file", e);
+            errors.add("File processing error: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return errors;
+    }
+
+    private void processRow(Row row, List<String> errors) {
+        if (isRowEmpty(row)) {
+            return;
+        }
+
+        try {
+            // Define a custom date format
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            // Check if the first cell contains a numeric date or string date
+            LocalDate date;
+            if (row.getCell(0).getCellType() == CellType.NUMERIC) {
+                date = row.getCell(0).getLocalDateTimeCellValue().toLocalDate();  // Handle numeric dates
+            } else if (row.getCell(0).getCellType() == CellType.STRING) {
+                // Parse date using the custom format for string cells
+                String dateString = row.getCell(0).getStringCellValue();
+                date = LocalDate.parse(dateString, formatter);
+            } else {
+                throw new IllegalArgumentException("Invalid date format in row " + (row.getRowNum() + 1));
+            }
+
+            Schedule.dayOfWeek dow = Schedule.dayOfWeek.valueOf(row.getCell(1).getStringCellValue());
+            String className = row.getCell(2).getStringCellValue();
+            String location = row.getCell(3).getStringCellValue();
+            String rawStartTime = row.getCell(4).getStringCellValue();
+            String rawEndTime = row.getCell(5).getStringCellValue();
+            String description = row.getCell(6).getStringCellValue();
+            String event = row.getCell(7).getStringCellValue();
+
+            // Parse date to SQL Date
+            Date sqlDate = Date.valueOf(date);
+
+
+
+            // Create schedule
+            Schedule schedule = new Schedule();
+            schedule.setDate(sqlDate);
+            schedule.setLocation(location);
+            schedule.setDay_of_week(dow);
+            schedule.setDescription(description);
+            schedule.setEvent(event);
+            if (location != null && !location.isBlank()) schedule.setLocation(location);
+            if (rawStartTime != null && !rawStartTime.isBlank())
+                schedule.setStart_time(Time.valueOf(rawStartTime + ":00"));
+            if (rawEndTime != null && !rawEndTime.isBlank())
+                schedule.setEnd_time(Time.valueOf(rawEndTime + ":00"));
+
+            // Process regular class schedule if available
+            if (className != null && !className.isBlank()) {
+                try {
+                    Class clasz = classRepository.findByName(className)
+                            .orElseThrow(() -> new IllegalArgumentException("Class not found: " + className));
+                    schedule.setClasz(clasz);
+                } catch (Exception e) {
+                    errors.add("Row " + (row.getRowNum() + 1) + ": Class not found: " + className);
+                    return;
+                }
+            }
+
+            // Save to database
+            scheduleRepository.save(schedule);
+        } catch (Exception e) {
+            errors.add("Failed to process row: " + (row.getRowNum() + 1) + " due to: " + e.getMessage());
+        }
+    }
+
+
+    private boolean isRowEmpty(Row row) {
+        for (int i = 0; i < row.getLastCellNum(); i++) {
+            Cell cell = row.getCell(i);
+            if (cell != null && cell.getCellType() != CellType.BLANK) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+

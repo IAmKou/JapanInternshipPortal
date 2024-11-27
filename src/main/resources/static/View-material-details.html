@@ -357,7 +357,7 @@
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                             <ul class="nav sub-group-menu">
-                                <li class="nav-item" id="teacher_view1">
+                                <li class="nav-item">
                                     <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create material</a>
                                 </li>
                                 <li class="nav-item" id="teacher-view">
@@ -467,7 +467,7 @@
                         <div class="single-info-details">
                             <div class="item-img">
                                 <!-- Hình ảnh sẽ được cập nhật qua JavaScript -->
-                                <img id="materialImg" src="" alt="Material Image">
+                                <img id="imgFile" src="">
                             </div>
                             <div class="item-content">
                                 <div class="header-inline item-header">
@@ -490,8 +490,8 @@
                                             <td><span id="teacher"></span></td>
                                         </tr>
                                         <tr>
-                                            <td>Create Date: </td>
-                                            <td><span id="created_date"></span></td>
+                                            <td>Created Date: </td>
+                                            <td><span id="createDate"></span></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -499,60 +499,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card height-auto">
-                    <div class="card-body">
-                        <div class="heading-layout1">
-                            <div class="item-title">
-                                <h3>Material Content</h3>
-                            </div>
-                        </div>
 
-                        <div class="single-info-details">
-                            <div class="info-table table-responsive">
-                                <table class="table text-nowrap">
-                                    <tbody>
-                                    <tr>
-                                        <td>1️⃣</td>
-                                        <td class="text-red font-large">一</td>
-                                        <td>ひとつ</td>
-                                        <td>
-                                            <img src="img/figure/student1.jpg" alt="student">
-                                        </td>
-                                        <td>Một được biểu diễn bởi <b>một</b> ngón tay</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2️⃣</td>
-                                        <td class="text-red font-large">二</td>
-                                        <td>ふた</td>
-                                        <td>
-                                            <img src="img/figure/student1.jpg" alt="student">
-                                        </td>
-                                        <td>Hai được biểu diễn bởi <b>hai</b> ngón tay</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3️⃣</td>
-                                        <td class="text-red font-large">み, みつ</td>
-                                        <td>サン</td>
-                                        <td>
-                                            <img src="img/figure/student1.jpg" alt="student">
-                                        </td>
-                                        <td>Ba được biểu diễn bởi <b>ba</b> ngón tay</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4️⃣</td>
-                                        <td class="text-red font-large">よ, よつ</td>
-                                        <td>シ</td>
-                                        <td>
-                                            <img src="img/figure/student1.jpg" alt="student">
-                                        </td>
-                                        <td>Một hình chữ nhật thì có <b>bốn</b> góc</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
 
                 <!-- Modal Edit -->
@@ -577,7 +524,9 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="materialFile">File</label>
-                                        <input type="file" class="form-control" id="materialFile">
+                                        <div id="materialFile"></div>
+                                        <input type="file" id="materialFileInput" name="file">
+
                                     </div>
                                 </form>
                             </div>
@@ -604,7 +553,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-danger">Delete</button>
+                                <button type="button" class="btn btn-danger">Delete</button> <!-- Thêm sự kiện ở đây -->
                             </div>
                         </div>
                     </div>
@@ -631,154 +580,232 @@
     <!-- Custom Js -->
     <script src="js/main.js"></script>
 
-</body>
-<script>
-    // Lấy materialId từ tham số URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const materialId = urlParams.get('id'); // Lấy tham số 'id' từ URL
+    <script>
+        // Lấy materialId từ tham số URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const materialId = urlParams.get('id'); // Lấy tham số 'id' từ URL
 
-    if (materialId) {
-        fetch(`http://localhost:8080/materials/details/${materialId}`)
-            .then(response => response.json())
-            .then(data => {
-                // Cập nhật các phần tử HTML với dữ liệu từ API
-                document.getElementById('title').textContent = data.title;
-                document.getElementById('content').textContent = data.content;
-                document.getElementById('teacher').textContent = data.teacher ? data.teacher.fullname : 'Không có giáo viên'; // Kiểm tra teacher
-                document.getElementById('created_date').textContent = data.created_date ? new Date(data.created_date).toLocaleDateString() : 'Không có ngày tạo'; // Kiểm tra created_date
 
-                // Nếu có hình ảnh, cập nhật thẻ img
-                if (data.img) {
-                    document.getElementById('materialImg').src = data.img;
-                }
-            })
-            .catch(error => {
-                console.error('Lỗi khi lấy dữ liệu:', error);
-            });
-    } else {
-        console.error('Không tìm thấy Material ID trong URL.');
-    }
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelector('.editButton').addEventListener('click', function (event) {
-            const urlParams = new URLSearchParams(window.location.search);
-            const materialId = urlParams.get('id');
-            console.log(materialId);  // Kiểm tra giá trị materialId
+        if (materialId) {
+            fetch(`http://localhost:8080/materials/details/${materialId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Cập nhật các phần tử HTML với dữ liệu từ API
+                    document.getElementById('title').textContent = data.title;
+                    document.getElementById('teacher').textContent = data.teacher ? data.teacher.fullname : 'Không có giáo viên'; // Kiểm tra teacher
+                    const createdDate = new Date(data.created_date);
+                    document.getElementById("createDate").textContent = createdDate
+                        ? `${String(createdDate.getDate()).padStart(2, '0')}/${String(createdDate.getMonth() + 1).padStart(2, '0')}/${createdDate.getFullYear()}`
+                        : "N/A";
+                    // Nếu có hình ảnh, cập nhật thẻ img
+                    const imgElement = document.getElementById('imgFile');
+                    if (data.img) {
+                        const imgUrl = data.img.startsWith('http') ? data.img : `http://localhost:8080/${data.img}`;
+                        imgElement.src = imgUrl; // Gán URL hình ảnh vào thuộc tính src
+                        imgElement.alt = data.title; // Gán tiêu đề làm thuộc tính alt
+                        imgElement.style.display = "block"; // Hiển thị ảnh nếu trước đó bị ẩn
 
-            if (materialId) {
-                fetch(`http://localhost:8080/materials/details/${materialId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);  // Kiểm tra dữ liệu trả về từ API
-                        document.getElementById('materialTitle').value = data.title;
-                        document.getElementById('materialContent').value = data.content;
-                        document.getElementById('materialFile').value = data.file;
-                    })
-                    .catch(error => {
-                        console.error('Lỗi khi lấy dữ liệu:', error);
-                    });
-            } else {
-                console.error('Không tìm thấy Material ID trong URL.');
-            }
-        });
-        document.getElementById('saveChanges').addEventListener('click', function () {
-            // Lấy thông tin từ các input trong modal
-            const title = document.getElementById('materialTitle').value;
-            const content = document.getElementById('materialContent').value;
-            const file = document.getElementById('materialFile').files[0]; // Nếu có file
+                        // Thêm mã để thay đổi kích thước ảnh
+                        imgElement.style.width = '200px'; // Đặt chiều rộng ảnh là 200px (hoặc bạn có thể thay đổi giá trị này)
+                        imgElement.style.height = 'auto'; // Giữ tỷ lệ khung hình của ảnh
+                    } else {
+                        imgElement.src = ""; // Xóa URL nếu không có ảnh
+                        imgElement.alt = "No Image"; // Thêm alt mặc định
+                        imgElement.style.display = "none"; // Ẩn thẻ img
+                    }
+                    const contentElement = document.getElementById('content');
+                    if (data.content) {
+                        // Biểu thức chính quy để tìm các URL trong nội dung
+                        const urlPattern = /(https?|ftp):\/\/[^\s/$.?#].[^\s]*/g;
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const materialId = urlParams.get('id'); // materialId từ URL
+                        // Thay thế các URL trong content thành thẻ <a> để tạo liên kết
+                        const contentHTML = data.content.replace(urlPattern, (url) => {
+                            return `<a href="${url}" target="_blank" style="color: blue; text-decoration: underline;">${url}</a>`;
+                        });
 
-            // Kiểm tra các giá trị
-            if (materialId && title && content) {
-                const formData = new FormData();
-                formData.append('title', title);
-                formData.append('content', content);
-                if (file) {
-                    formData.append('file', file); // Nếu có file thì gửi file lên
-                }
-
-                // Gửi dữ liệu cập nhật đến API
-                fetch(`http://localhost:8080/materials/update/${materialId}`, {
-                    method: 'PUT',  // Sử dụng PUT để cập nhật
-                    body: formData,
+                        contentElement.innerHTML = contentHTML; // Cập nhật nội dung với các link được thay thế
+                    }
                 })
-                    .then(response => response.text())  // Đảm bảo phản hồi từ API là chuỗi
-                    .then(data => {
-                        if (data === "Cập nhật tài liệu thành công!") {
-                            alert('Cập nhật thành công!');
-                            // Đóng modal
-                            $('#editModal').modal('hide');
-                            // Tải lại trang để cập nhật thông tin mới
-                            window.location.reload(); // Tải lại trang để cập nhật thông tin mới
-                        } else {
-                            alert('Có lỗi xảy ra. Vui lòng thử lại!');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Lỗi khi gửi yêu cầu cập nhật:', error);
-                    });
-            } else {
-                alert('Vui lòng điền đầy đủ thông tin!');
-            }
-        });
-    });
-
-</script>
-
-<!-- fetch user -->
-<script>
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    if (userDetails) {
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
-
-        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-        if (userDetails.roleName === "ADMIN") {
-            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.username;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "TEACHER") {
-            // Hiển thị đầy đủ tên và vai trò cho giáo viên
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Chỉ hiển thị mục của giáo viên
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
-            document.getElementById("student-view1").style.display = "none";
-        } else if (userDetails.roleName === "STUDENT") {
-            // Hiển thị đầy đủ tên và vai trò cho học sinh
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Chỉ hiển thị mục của học sinh
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
+                .catch(error => {
+                    console.error('Lỗi khi lấy dữ liệu:', error);
+                });
         } else {
-            console.warn("Role not recognized: ", userDetails.roleName);
+            console.error('Không tìm thấy Material ID trong URL.');
         }
-    } else {
-        console.error("User details not found in sessionStorage");
-    }
-</script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('.editButton').addEventListener('click', function (event) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const materialId = urlParams.get('id');
+                console.log(materialId);  // Kiểm tra giá trị materialId
+
+                if (materialId) {
+                    fetch(`http://localhost:8080/materials/details/${materialId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);  // Kiểm tra dữ liệu trả về từ API
+                            document.getElementById('materialTitle').value = data.title;
+                            document.getElementById('materialContent').value = data.content;
+                            const filesContainer = document.getElementById('materialFile');
+                            filesContainer.innerHTML = "";  // Clear any existing content
+
+// Kiểm tra xem img có tồn tại trong dữ liệu không
+                            if (data.img) {
+                                // Lấy tên tệp từ URL
+                                const fileName = data.img.split('/').pop();  // Tách tên tệp từ URL
+
+                                // Tạo một thẻ <a> để liên kết đến hình ảnh
+                                const link = document.createElement('a');
+                                link.href = data.img;  // URL của hình ảnh
+                                link.textContent = fileName;  // Hiển thị tên tệp (mặc định là tên file)
+                                link.target = '_blank';  // Mở hình ảnh trong tab mới
+
+                                // Thêm thẻ <a> vào container
+                                filesContainer.appendChild(link);
+                            } else {
+                                filesContainer.innerHTML = "";
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Lỗi khi lấy dữ liệu:', error);
+                        });
+                } else {
+                    console.error('Không tìm thấy Material ID trong URL.');
+                }
+            });
+            document.getElementById('saveChanges').addEventListener('click', function () {
+                // Lấy thông tin từ các input trong modal
+                const title = document.getElementById('materialTitle').value;
+                const content = document.getElementById('materialContent').value;
+                const fileInput = document.getElementById('materialFileInput');  // Lấy input file
+                const file = fileInput.files[0];  // Lấy file nếu có thay đổi
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const materialId = urlParams.get('id'); // materialId từ URL
+
+                // Kiểm tra các giá trị
+                if (materialId && title && content) {
+                    const formData = new FormData();
+                    formData.append('title', title);
+                    formData.append('content', content);
+                    if (file) {
+                        formData.append('file', file); // Nếu có file thì gửi file lên
+                    }
+
+                    // Gửi dữ liệu cập nhật đến API
+                    fetch(`http://localhost:8080/materials/update/${materialId}`, {
+                        method: 'PUT',  // Sử dụng PUT để cập nhật
+                        body: formData,
+                    })
+                        .then(response => response.text())  // Đảm bảo phản hồi từ API là chuỗi
+                        .then(data => {
+                            if (data === "Cập nhật tài liệu thành công!") {
+                                alert('Cập nhật thành công!');
+                                // Đóng modal
+                                $('#editModal').modal('hide');
+                                // Tải lại trang để cập nhật thông tin mới
+                                window.location.reload(); // Tải lại trang để cập nhật thông tin mới
+                            } else {
+                                alert('Có lỗi xảy ra. Vui lòng thử lại!');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Lỗi khi gửi yêu cầu cập nhật:', error);
+                        });
+                } else {
+                    alert('Vui lòng điền đầy đủ thông tin!');
+                }
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            // Cập nhật sự kiện khi người dùng nhấn nút "Delete" trong Modal xác nhận xóa
+            document.querySelector('.btn-danger').addEventListener('click', function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const materialId = urlParams.get('id'); // Lấy materialId từ URL
+
+                // Kiểm tra nếu có materialId
+                if (materialId) {
+                    // Gửi yêu cầu DELETE đến API để xóa material
+                    fetch(`http://localhost:8080/materials/delete/${materialId}`, {
+                        method: 'DELETE',  // Phương thức HTTP là DELETE
+                    })
+                        .then(response => response.text())
+                        .then(data => {
+                            if (data === "Xóa tài liệu thành công!") {
+                                alert('Xóa tài liệu thành công!');
+                                // Đóng modal xác nhận xóa
+                                $('#confirmationModal').modal('hide');
+                                // Chuyển hướng về trang danh sách hoặc trang khác
+                                window.location.href = 'View-list-materials.html';  // Thay đổi đường dẫn theo nhu cầu
+                            } else {
+                                alert('Có lỗi xảy ra khi xóa tài liệu!');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Lỗi khi xóa tài liệu:', error);
+                            alert('Có lỗi xảy ra. Vui lòng thử lại!');
+                        });
+                } else {
+                    console.error('Không tìm thấy Material ID trong URL.');
+                }
+            });
+        });
+    </script>
+
+
+    <!-- fetch user -->
+    <script>
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails) {
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            const userRoleElements = document.querySelectorAll('.userRole');
+
+            // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
+            if (userDetails.roleName === "ADMIN") {
+                // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.username;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+
+                // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
+                document.getElementById("teacher-view").style.display = "none";
+                document.getElementById("student-view").style.display = "none";
+            } else if (userDetails.roleName === "TEACHER") {
+                // Hiển thị đầy đủ tên và vai trò cho giáo viên
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+
+                // Chỉ hiển thị mục của giáo viên
+                document.getElementById("teacher-view").style.display = "block";
+                document.getElementById("student-view").style.display = "none";
+                document.getElementById("student-view1").style.display = "none";
+            } else if (userDetails.roleName === "STUDENT") {
+                // Hiển thị đầy đủ tên và vai trò cho học sinh
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+
+                // Chỉ hiển thị mục của học sinh
+                document.getElementById("teacher-view").style.display = "none";
+                document.getElementById("student-view").style.display = "block";
+                document.getElementById("student-view1").style.display = "block";
+            } else {
+                console.warn("Role not recognized: ", userDetails.roleName);
+            }
+        } else {
+            console.error("User details not found in sessionStorage");
+        }
+    </script>
+
 </body>
 
 </html>
