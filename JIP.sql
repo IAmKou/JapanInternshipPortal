@@ -76,8 +76,8 @@ CREATE TABLE Schedule (
     class_id INT,
     start_time TIME NOT NULL,
     end_time TIME NOT NULL,
-    description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    event VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+    event VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
     FOREIGN KEY (class_id) REFERENCES Class(Id)
 );
 
