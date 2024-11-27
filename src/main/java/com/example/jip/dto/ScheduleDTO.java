@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class ScheduleDTO {
+    private int id;
     private Date date;
     private Schedule.dayOfWeek dayOfWeek;
     private String className;
@@ -14,12 +15,14 @@ public class ScheduleDTO {
     private Time endTime;
     private String description;
     private Class clasz;
+    private String event;
     private String teacherName;
 
     public ScheduleDTO() {
     }
 
     public ScheduleDTO(Schedule schedule) {
+        this.id = schedule.getId();
         this.date = schedule.getDate();
         this.dayOfWeek = schedule.getDay_of_week();
         this.className = schedule.getClasz() != null ? schedule.getClasz().getName() : null;
@@ -30,8 +33,29 @@ public class ScheduleDTO {
                 : null;
         this.endTime = schedule.getEnd_time();
         this.description = schedule.getDescription();
+        this.event = schedule.getEvent();
     }
 
+    public ScheduleDTO(int id,Date date, Schedule.dayOfWeek dayOfWeek, String className, String location, Time startTime, Time endTime, String description, String event, String teacherName) {
+        this.id = id;
+        this.date = date;
+        this.dayOfWeek = dayOfWeek;
+        this.className = className;
+        this.location = location;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.description = description;
+        this.event = event;
+        this.teacherName = teacherName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTeacherName() {
         return teacherName;
@@ -39,6 +63,14 @@ public class ScheduleDTO {
 
     public void setTeacherName(String teacherName) {
         teacherName = teacherName;
+    }
+
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
     }
 
     public Date getDate() {
