@@ -52,4 +52,13 @@ public class ScheduleController {
                 .map(ScheduleDTO::new)
                 .collect(Collectors.toList());
     }
+
+    @DeleteMapping("/delete/{id}")
+    public boolean deleteSchedule(@PathVariable int id) {
+        if (scheduleRepository.existsById(id)) {
+            scheduleRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }

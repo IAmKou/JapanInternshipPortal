@@ -507,40 +507,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td class="text-center"><img src="img/figure/student2.png" alt="student"></td>
-                                        <td>Mark Willy</td>
-                                        <td>Male</td>
-                                        <td><div class="form-check">
-                                            <input type="checkbox" value="Present" class="form-check-input checkAll">
-                                            <label class="form-check-label">Present</label>
-                                        </div></td>
-                                        <td><div class="form-check">
-                                            <input type="checkbox" value="Late" class="form-check-input checkAll">
-                                            <label class="form-check-label">Late</label>
-                                        </div></td>
-                                        <td><div class="form-check">
-                                            <input type="checkbox" value="Absent" class="form-check-input checkAll">
-                                            <label class="form-check-label">Absent</label>
-                                        </div></td>
-                                        <td><div class="form-check">
-                                            <input type="checkbox" value="Permitted Absence" class="form-check-input checkAll">
-                                            <label class="form-check-label">Permitted Absence</label>
-                                        </div></td>
-                                         <td>
-                                            <div class="dropdown">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                    <span class="flaticon-more-button-of-three-dots"></span>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                                    <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                                    <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -644,12 +610,12 @@
                         students.forEach(student => {
                             const row = document.createElement('tr');
 
-                            // id cell
+                            // ID cell
                             const idCell = document.createElement('td');
                             idCell.textContent = student.id;
                             row.appendChild(idCell);
 
-                            // image cell
+                            // Image cell
                             const imgCell = document.createElement('td');
                             const imgElement = document.createElement('img');
                             imgElement.src = student.img;
@@ -665,10 +631,43 @@
                             nameCell.textContent = student.fullname;
                             row.appendChild(nameCell);
 
-                            // gender cell
-                            const nos = document.createElement('td');
-                            nos.textContent = student.gender;
-                            row.appendChild(nos);
+                            // Gender cell
+                            const genderCell = document.createElement('td');
+                            genderCell.textContent = student.gender;
+                            row.appendChild(genderCell);
+
+                            // Attendance checkboxes
+                            const presentCell = document.createElement('td');
+                            presentCell.innerHTML = `
+                            <div class="form-check">
+                                <input type="checkbox" value="Present" class="form-check-input checkAll">
+                                <label class="form-check-label">Present</label>
+                            </div>`;
+                            row.appendChild(presentCell);
+
+                            const lateCell = document.createElement('td');
+                            lateCell.innerHTML = `
+                            <div class="form-check">
+                                <input type="checkbox" value="Late" class="form-check-input checkAll">
+                                <label class="form-check-label">Late</label>
+                            </div>`;
+                            row.appendChild(lateCell);
+
+                            const absentCell = document.createElement('td');
+                            absentCell.innerHTML = `
+                            <div class="form-check">
+                                <input type="checkbox" value="Absent" class="form-check-input checkAll">
+                                <label class="form-check-label">Absent</label>
+                            </div>`;
+                            row.appendChild(absentCell);
+
+                            const permittedAbsenceCell = document.createElement('td');
+                            permittedAbsenceCell.innerHTML = `
+                            <div class="form-check">
+                                <input type="checkbox" value="Permitted Absence" class="form-check-input checkAll">
+                                <label class="form-check-label">Permitted Absence</label>
+                            </div>`;
+                            row.appendChild(permittedAbsenceCell);
 
                             // Actions cell
                             const actionsCell = document.createElement('td');
@@ -684,8 +683,8 @@
                             const dropdownMenu = document.createElement('div');
                             dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
                             dropdownMenu.innerHTML = `
-                        <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                    `;
+                            <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                        `;
                             dropdown.appendChild(dropdownMenu);
                             actionsCell.appendChild(dropdown);
                             row.appendChild(actionsCell);
@@ -699,8 +698,66 @@
                 console.error("classId is missing from the URL.");
             }
         });
-
     </script>
+<!-- submit attendant -->
+    <script>
+        document.getElementById('submitAttendance').addEventListener('click', function () {
+            const tableBody = document.querySelector('.table tbody');
+            const attendanceData = [];
+
+            // Iterate through each row in the table
+            tableBody.querySelectorAll('tr').forEach(row => {
+                const studentId = row.querySelector('td:first-child').textContent.trim(); // Get student ID
+                let status = null;
+
+                // Check the selected attendance status
+                row.querySelectorAll('.form-check-input').forEach(checkbox => {
+                    if (checkbox.checked) {
+                        status = checkbox.value; // Get the selected value (Present, Late, Absent, etc.)
+                    }
+                });
+
+                if (status) {
+                    attendanceData.push({
+                        studentId: parseInt(studentId, 10),
+                        status: status,
+                        date: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
+                        note: '', // Add a note if applicable
+                    });
+                }
+            });
+
+            if (attendanceData.length > 0) {
+                // Send attendance data to the backend
+                fetch('/attendant/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(attendanceData),
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Failed to save attendance: ' + response.statusText);
+                        }
+                    })
+                    .then(data => {
+                        console.log('Attendance saved successfully:', data);
+                        alert('Attendance saved successfully.');
+                    })
+                    .catch(error => {
+                        console.error('Error saving attendance:', error);
+                        alert('Failed to save attendance.');
+                    });
+            } else {
+                alert('No attendance data selected.');
+            }
+        });
+    </script>
+
+
 
 </body>
 

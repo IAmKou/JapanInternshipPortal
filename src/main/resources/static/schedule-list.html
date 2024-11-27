@@ -348,6 +348,7 @@
                                         <th>Date</th>
                                         <th>Note</th>
                                         <th>Event</th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -414,6 +415,33 @@
                 </div>
                 <div class="modal-body">
 
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- confirm modal -->
+    <div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog success-modal-content" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="success-message">
+                        <div class="item-icon">
+                            <i class="fas fa-exclamation"></i>
+                        </div>
+                        <h3 class="item-title">You want to delete this schedule?</h3>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <input type="hidden" name="id" id="Cid">
+                    <button type="button" id="confirm-delete" class="footer-btn bg-linkedin">Ok</button>
+                    <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
@@ -493,6 +521,8 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const tableBody = document.querySelector('.table tbody');
+        const confirmationModal = document.querySelector('#confirmation-modal');
+        const confirmButton = confirmationModal.querySelector('.footer-btn.bg-linkedin');
         fetch(`/schedule/get`) // Use backticks here for the URL if needed
             .then(response => {
                 if (!response.ok) {
@@ -562,11 +592,61 @@
                     eventCell.textContent = schedule.event || '';  // Default to 'N/A' if event is null
                     row.appendChild(eventCell);
 
+                    //Action cell
+                    const actionsCell = document.createElement('td');
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'dropdown';
+                    const dropdownToggle = document.createElement('a');
+                    dropdownToggle.href = '#';
+                    dropdownToggle.className = 'dropdown-toggle';
+                    dropdownToggle.setAttribute('data-toggle', 'dropdown');
+                    dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
+                    dropdown.appendChild(dropdownToggle);
+
+                    const dropdownMenu = document.createElement('div');
+                    dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
+                    dropdownMenu.innerHTML = `
+                            <a class="dropdown-item update-schedule" data-toggle="modal" data-id="${schedule.id}><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                            <a class="dropdown-item delete-schedule" data-toggle="modal" data-id="${schedule.id}"><i class="fas fa-minus text-red"></i>Delete</a>
+                        `;
+                    dropdown.appendChild(dropdownMenu);
+                    actionsCell.appendChild(dropdown);
+                    row.appendChild(actionsCell);
+
                     // Append the row to the table body
                     tableBody.appendChild(row);
                 });
+                // Attach event listeners for delete buttons
+                document.querySelectorAll('.delete-schedule').forEach(button => {
+                    button.addEventListener('click', function () {
+                        currentScheduleId = this.getAttribute('data-id');
+                        $('#confirmation-modal').modal('show'); // Show modal
+                    });
+                });
+                // Confirm delete action
+                confirmButton.addEventListener('click', function () {
+                    if (currentScheduleId) {
+                        fetch(`/schedule/delete/${currentScheduleId}`, {
+                            method: 'DELETE',
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    alert('Schedule deleted successfully!');
+                                    location.reload(); // Refresh the page
+                                } else {
+                                    throw new Error('Failed to delete schedule');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error deleting Schedule:', error);
+                                alert('Failed to delete the schedule. Please try again.');
+                            });
+                    }
+                });
             })
             .catch(error => console.error('Error fetching schedule:', error));
+
+
     });
 </script>
 
