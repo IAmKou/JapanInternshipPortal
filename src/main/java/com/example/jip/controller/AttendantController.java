@@ -39,25 +39,39 @@ public class AttendantController {
 
     @PostMapping("/save")
     public ResponseEntity<String> save(@RequestParam int student_id,
-                                          @RequestParam int schedule_id,
-                                          @RequestParam String status,
-                                          @RequestParam Date date,
-                                          @RequestParam String note,
-                                          @RequestParam int class_id) {
-        Optional<Schedule> schedule = scheduleRepository.findByClassIdAndDate(class_id, date);
-        Time startTime = schedule.get().getStart_time();
-        Time endTime = schedule.get().getEnd_time();
+                                       @RequestParam String status,
+                                       @RequestParam Date date,
+                                       @RequestParam String note,
+                                       @RequestParam int class_id) {
+
+        List<Schedule> schedules = scheduleRepository.findByClassIdAndDate(class_id, date);
+
+        if (schedules.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No schedule found for the given class and date.");
+        }
+
 
         LocalTime currentLocalTime = LocalTime.now();
         Time currentTime = Time.valueOf(currentLocalTime);
 
-        if(currentTime.after(startTime) && currentTime.before(endTime)) {
-            attendantServices.createAttendant(student_id, schedule_id, status, date, note, class_id);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Attendance saved successfully.");
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Attendance cannot be saved as the time is outside the allowed range.");
+
+        Schedule matchingSchedule = schedules.stream()
+                .filter(schedule -> !currentTime.before(schedule.getStart_time()) && !currentTime.after(schedule.getEnd_time()))
+                .findFirst()
+                .orElse(null);
+
+        if (matchingSchedule == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Attendance cannot be saved as the time does not match any schedule slot.");
         }
+
+
+        int sid = matchingSchedule.getId();
+
+
+        attendantServices.createAttendant(student_id, sid, status, date, note, class_id);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Attendance saved successfully for the matching schedule slot.");
     }
+
 
     @GetMapping("/attendance")
     public List<Attendant> getAttendance(@PathVariable int scheduleId, @RequestParam Date date) {

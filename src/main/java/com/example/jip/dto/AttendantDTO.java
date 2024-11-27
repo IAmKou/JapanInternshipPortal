@@ -11,6 +11,8 @@ public class AttendantDTO {
     private Attendant.Status status;
     public Date date;
     public String note;
+    private int studentId;
+    private int scheduleId;
     public Student student;
     public Schedule schedule;
 
@@ -18,9 +20,35 @@ public class AttendantDTO {
 
     public AttendantDTO(Attendant attendant) {
         this.attendantId = attendant.getId();
+        this.studentId = attendant.getStudent().getId();
+        this.scheduleId = attendant.getSchedule().getId();
         this.status = attendant.getStatus();
         this.date = attendant.getDate();
         this.note = attendant.getNote();
+    }
+
+    public AttendantDTO (int studentId, int scheduleId,Attendant.Status status, Date date) {
+        this.studentId = studentId;
+        this.scheduleId = scheduleId;
+        this.status = status;
+        this.date = date;
+    }
+
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
+
+    public int getScheduleId() {
+        return scheduleId;
+    }
+
+    public void setScheduleId(int scheduleId) {
+        this.scheduleId = scheduleId;
     }
 
     public int getAttendantId() {

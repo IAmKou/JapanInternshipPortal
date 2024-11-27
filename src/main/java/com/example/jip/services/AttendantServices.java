@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 
 
 import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -30,25 +32,39 @@ public class AttendantServices {
     @Autowired
     StudentRepository studentRepository;
 
-    public Attendant createAttendant(int student_id, int schedule_id, String status, Date date, String note, int class_id ) {
-        Optional<Schedule> scheduleOpt = scheduleRepository.findByClassIdAndDate(class_id, date);
-        if (!scheduleOpt.isPresent()) {
-            throw new IllegalArgumentException("No account found with id: " + schedule_id);
-        }
-        Optional<Student> studentOpt = studentRepository.findById(student_id);
-        if (!studentOpt.isPresent()) {
-            throw new IllegalArgumentException("No account found with id: " + student_id);
+    public Attendant createAttendant(int student_id, int schedule_id, String status, Date date, String note, int class_id) {
+        List<Schedule> schedules = scheduleRepository.findByClassIdAndDate(class_id, date);
+        if (schedules.isEmpty()) {
+            throw new IllegalArgumentException("No schedule found for class_id: " + class_id + " and date: " + date);
         }
 
+        // Find the schedule that matches the time range
+        LocalTime currentLocalTime = LocalTime.now();
+        Time currentTime = Time.valueOf(currentLocalTime);
+
+        Schedule matchingSchedule = schedules.stream()
+                .filter(schedule -> !currentTime.before(schedule.getStart_time()) && !currentTime.after(schedule.getEnd_time()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No matching schedule slot found for the current time"));
+
+        // Fetch the student
+        Optional<Student> studentOpt = studentRepository.findById(student_id);
+        if (!studentOpt.isPresent()) {
+            throw new IllegalArgumentException("No student found with id: " + student_id);
+        }
+
+
+        // Create and save the attendance record
         Attendant attendant = new Attendant();
         attendant.setStudent(studentOpt.get());
-        attendant.setSchedule(scheduleOpt.get());
+        attendant.setSchedule(matchingSchedule);
         attendant.setStatus(Attendant.Status.valueOf(status));
         attendant.setDate(date);
         attendant.setNote(note);
 
         return attendantRepository.save(attendant);
     }
+
 
     public void updateAttendance(int attendantId, Attendant.Status status, String note) {
 

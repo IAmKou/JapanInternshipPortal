@@ -70,8 +70,8 @@ public class ClassController {
     }
 
     @GetMapping("/getByTid/{teacherId}")
-    public List<ClassDTO> getClassByTid(@PathVariable int teacherId) {
-        return classRepository.findByTeacherId(teacherId).stream()
+    public List<ClassDTO> getClassByTid(@PathVariable Integer teacherId) {
+        return classRepository.findByTeacher_Id(teacherId).stream()
                 .map(ClassDTO::new)
                 .collect(Collectors.toList());
     }
