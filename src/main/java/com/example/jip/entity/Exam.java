@@ -1,30 +1,38 @@
 package com.example.jip.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+@Entity
+@Table(name = "exam")
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Exam {
-    private int id;
-    private int student_id;
-    private int block;
-    private String exam_name;
-    private BigDecimal mark;
-    private Date exam_date;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int id;
 
-    public Exam(){}
+    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<ExamResult> examResults = new HashSet<>();
 
-    public Exam(int id, int student_id, int block, String exam_name, BigDecimal mark, Date exam_date) {
-        this.id = id;
-        this.student_id = student_id;
-        this.block = block;
-        this.exam_name = exam_name;
-        this.mark = mark;
-        this.exam_date = exam_date;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "teacher_id", nullable = false)
+    Teacher teacher;
+
+    @Column(name = "block")
+    int block;
+    @Column(name = "exam_name")
+    String exam_name;
+    @Column(name = "exam_date")
+    Date exam_date;
 
 }

@@ -17,4 +17,6 @@ public interface StudentAssignmentRepository extends JpaRepository<StudentAssign
 
     List<StudentAssignment> findByStudentId(int studentId);
 
+    List<StudentAssignment> findByAssignmentId(int assignmentId);
+
 }
