@@ -24,6 +24,7 @@ CREATE TABLE Student (
     phone_number VARCHAR(20),
     img VARCHAR(255),
     email VARCHAR(100) NOT NULL,
+    mark boolean,
     account_id INT,
     FOREIGN KEY (account_id) REFERENCES Account(Id)
 );
