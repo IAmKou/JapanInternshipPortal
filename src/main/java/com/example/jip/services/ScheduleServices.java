@@ -1,5 +1,6 @@
 package com.example.jip.services;
 
+import com.example.jip.dto.ScheduleDTO;
 import com.example.jip.entity.Class;
 import com.example.jip.entity.Schedule;
 import com.example.jip.repository.ClassRepository;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.time.format.DateTimeFormatter;
+import java.util.NoSuchElementException;
 
 @Service
 public class ScheduleServices {
@@ -134,6 +136,52 @@ public class ScheduleServices {
             }
         }
         return true;
+    }
+
+    public ScheduleDTO updateSchedule(int id, String className, ScheduleDTO scheduleDTO) {
+        // Fetch the schedule by ID or throw an exception if not found
+        Schedule schedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Schedule not found with id " + id));
+
+        // Update the class if className is provided
+        if (className != null && !className.isBlank()) {
+            Class clasz = classRepository.findByName(className)
+                    .orElseThrow(() -> new IllegalArgumentException("Class not found: " + className));
+            schedule.setClasz(clasz);
+        }else{
+            throw new IllegalArgumentException("Class cannot be null or empty.");
+        }
+
+        schedule.setStart_time(scheduleDTO.getStartTime());
+        schedule.setEnd_time(scheduleDTO.getEndTime());
+
+        schedule.setEvent(scheduleDTO.getEvent());
+        schedule.setDescription(scheduleDTO.getDescription());
+
+        schedule.setLocation(scheduleDTO.getLocation());
+
+        validateSchedule(schedule);
+
+        scheduleRepository.save(schedule);
+
+        return new ScheduleDTO(schedule);
+    }
+
+
+    private void validateSchedule(Schedule schedule) {
+        // If start_time or end_time are null, check if event or description is provided
+        if ((schedule.getStart_time() == null || schedule.getEnd_time() == null) &&
+                (schedule.getEvent() == null || schedule.getDescription() == null ||
+                        (schedule.getEvent().isBlank() && schedule.getDescription().isBlank()))) {
+            throw new IllegalArgumentException("Start time and end time can be null only if event or description is provided.");
+        }
+
+        // If event or description is provided, check if location is null
+        if ((schedule.getEvent() != null || schedule.getDescription() != null) &&
+                (schedule.getEvent().isBlank() && schedule.getDescription().isBlank()) &&
+                schedule.getLocation() == null) {
+            throw new IllegalArgumentException("Location can be null only if event or description is provided.");
+        }
     }
 }
 
