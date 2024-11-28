@@ -43,6 +43,9 @@ public class Student {
     @Column(name = "img")
     private String img;
 
+    @Column(name="mark")
+    private boolean mark;
+
     @Column(name = "email", nullable = false)
     private String email;
 
@@ -56,19 +59,6 @@ public class Student {
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private Account account;
 
-
-    public Student(int id, String fullname, String japanname, Date dob, String passport, Gender gender, String phoneNumber, String img, String email, Account account) {
-        this.id = id;
-        this.fullname = fullname;
-        this.japanname = japanname;
-        this.dob = dob;
-        this.passport = passport;
-        this.gender = gender;
-        this.phoneNumber = phoneNumber;
-        this.img = img;
-        this.email = email;
-        this.account = account;
-    }
 
     public enum Gender {
         Male, Female

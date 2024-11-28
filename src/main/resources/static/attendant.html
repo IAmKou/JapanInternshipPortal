@@ -599,7 +599,7 @@
 
             // Ensure classId is valid before proceeding
             if (classId) {
-                fetch(`/student/${classId}/getAll`) // Use backticks here
+                fetch(`/student/${classId}/getAll`) // Fetch all students for the class
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok ' + response.statusText);
@@ -639,35 +639,42 @@
                             // Attendance checkboxes
                             const presentCell = document.createElement('td');
                             presentCell.innerHTML = `
-                            <div class="form-check">
-                                <input type="checkbox" value="Present" class="form-check-input checkAll">
-                                <label class="form-check-label">Present</label>
-                            </div>`;
+                    <div class="form-check">
+                        <input type="checkbox" value="Present" class="form-check-input checkAll">
+                        <label class="form-check-label">Present</label>
+                    </div>`;
                             row.appendChild(presentCell);
 
                             const lateCell = document.createElement('td');
                             lateCell.innerHTML = `
-                            <div class="form-check">
-                                <input type="checkbox" value="Late" class="form-check-input checkAll">
-                                <label class="form-check-label">Late</label>
-                            </div>`;
+                    <div class="form-check">
+                        <input type="checkbox" value="Late" class="form-check-input checkAll">
+                        <label class="form-check-label">Late</label>
+                    </div>`;
                             row.appendChild(lateCell);
 
                             const absentCell = document.createElement('td');
                             absentCell.innerHTML = `
-                            <div class="form-check">
-                                <input type="checkbox" value="Absent" class="form-check-input checkAll">
-                                <label class="form-check-label">Absent</label>
-                            </div>`;
+                    <div class="form-check">
+                        <input type="checkbox" value="Absent" class="form-check-input checkAll">
+                        <label class="form-check-label">Absent</label>
+                    </div>`;
                             row.appendChild(absentCell);
 
                             const permittedAbsenceCell = document.createElement('td');
                             permittedAbsenceCell.innerHTML = `
-                            <div class="form-check">
-                                <input type="checkbox" value="Permitted Absence" class="form-check-input checkAll">
-                                <label class="form-check-label">Permitted Absence</label>
-                            </div>`;
+                    <div class="form-check">
+                        <input type="checkbox" value="Permitted Absence" class="form-check-input checkAll">
+                        <label class="form-check-label">Permitted Absence</label>
+                    </div>`;
                             row.appendChild(permittedAbsenceCell);
+
+                            // If student has mark = TRUE, check the "Permitted Absence" checkbox
+                            if (student.mark === true) {
+                                const permittedAbsenceCheckbox = permittedAbsenceCell.querySelector('input');
+                                permittedAbsenceCheckbox.checked = true;
+                                permittedAbsenceCheckbox.disabled = true;  // Optional: Disable to prevent manual unchecking
+                            }
 
                             // Actions cell
                             const actionsCell = document.createElement('td');
@@ -683,8 +690,8 @@
                             const dropdownMenu = document.createElement('div');
                             dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
                             dropdownMenu.innerHTML = `
-                            <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                        `;
+                    <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                    `;
                             dropdown.appendChild(dropdownMenu);
                             actionsCell.appendChild(dropdown);
                             row.appendChild(actionsCell);
@@ -698,6 +705,7 @@
                 console.error("classId is missing from the URL.");
             }
         });
+
     </script>
 <!-- submit attendant -->
     <script>
