@@ -1,17 +1,24 @@
 package com.example.jip.dto;
 
+import com.example.jip.configuration.TimeDeserializer;
 import com.example.jip.entity.Schedule;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 
 import java.sql.Date;
 import java.sql.Time;
 
 public class ScheduleDTO {
     private int id;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
     private Schedule.dayOfWeek dayOfWeek;
     private String className;
     private String location;
+    @JsonDeserialize(using = TimeDeserializer.class)
     private Time startTime;
+    @JsonDeserialize(using = TimeDeserializer.class)
     private Time endTime;
     private String description;
     private Class clasz;
