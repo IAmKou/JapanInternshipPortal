@@ -87,4 +87,18 @@ public class ScheduleController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/getS/{id}")
+    public List<ScheduleDTO> getScheduleForStudent(@PathVariable int id) {
+        return scheduleRepository.findStudentSchedule(id).stream()
+                .map(ScheduleDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/getT/{id}")
+    public List<ScheduleDTO> getScheduleForTeacher(@PathVariable int id) {
+        return scheduleRepository.findTeacherSchedule(id).stream()
+                .map(ScheduleDTO::new)
+                .collect(Collectors.toList());
+    }
 }
