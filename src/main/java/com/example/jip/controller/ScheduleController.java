@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.sql.Time;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RestController
@@ -60,5 +62,32 @@ public class ScheduleController {
             return true;
         }
         return false;
+    }
+
+    @PostMapping("/update/{id}")
+    public ResponseEntity<ScheduleDTO> updateSchedule(@PathVariable int id, @RequestBody ScheduleDTO dto) {
+
+        // Check and adjust startTime and endTime if needed
+        if (dto.getStartTime() != null && dto.getStartTime().toString().length() == 5) {
+            // Adjust the time to include seconds if only "HH:mm" is provided
+            String adjustedStartTime = dto.getStartTime().toString() + ":00";
+            dto.setStartTime(Time.valueOf(adjustedStartTime));  // Set the time back after adjustment
+        }
+
+        if (dto.getEndTime() != null && dto.getEndTime().toString().length() == 5) {
+            // Adjust the time to include seconds if only "HH:mm" is provided
+            String adjustedEndTime = dto.getEndTime().toString() + ":00";
+            dto.setEndTime(Time.valueOf(adjustedEndTime));  // Set the time back after adjustment
+        }
+
+        try {
+            // Call the service to update the schedule
+            ScheduleDTO updatedSchedule = scheduleServices.updateSchedule(id, dto.getClassName(), dto);
+            return ResponseEntity.ok(updatedSchedule);  // Return updated schedule
+        } catch (NoSuchElementException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Return 404 if the schedule not found
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Return 500 for other errors
+        }
     }
 }
