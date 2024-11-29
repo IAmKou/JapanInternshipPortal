@@ -257,7 +257,7 @@
                         <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="../student-details.html" class="nav-link"><i
+                                <a href="../users-details.html" class="nav-link"><i
                                         class="fas fa-angle-right"></i>Profile</a>
                             </li>
                             <li class="nav-item">
@@ -268,7 +268,7 @@
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
                                 <a href="list-student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
                             </li>
@@ -287,9 +287,13 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item sidebar-nav-item">
                         <a href="../student.html" class="nav-link"><i
                                 class="flaticon-checklist"></i><span>Attendence</span></a>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
+                            <i class="flaticon-shopping-list"></i><span>Schedule</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
@@ -319,6 +323,16 @@
                             </li>
                             <li class="nav-item" id="student-view1">
                                 <a href="../View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list materials</a>
+                            </li>
+                        </ul>
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create Thread</a>
                             </li>
                         </ul>
                     </li>
@@ -1065,6 +1079,18 @@
     // Lấy dữ liệu userDetails từ sessionStorage và gọi hàm getUserDetails
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
     getUserDetails(userDetails);
+
+    function submitForm() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.studentId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `schedule-list-student.html?studentId=${userDetails.studentId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
 </script>
 
 

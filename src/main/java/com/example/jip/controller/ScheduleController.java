@@ -25,7 +25,7 @@ public class ScheduleController {
     private ScheduleServices scheduleServices;
 
     @Autowired
-    ScheduleRepository scheduleRepository;
+    private ScheduleRepository scheduleRepository;
 
     @PostMapping("/import")
     public ResponseEntity<?> importSchedules(@RequestParam("file") MultipartFile file) {
@@ -88,17 +88,15 @@ public class ScheduleController {
         }
     }
 
-    @GetMapping("/getS/{id}")
-    public List<ScheduleDTO> getScheduleForStudent(@PathVariable int id) {
-        return scheduleRepository.findStudentSchedule(id).stream()
-                .map(ScheduleDTO::new)
-                .collect(Collectors.toList());
+    @GetMapping("/getS/{studentId}")
+    public List<ScheduleDTO> getScheduleForStudent(@PathVariable int studentId) {
+        List<ScheduleDTO> result = scheduleRepository.findStudentSchedule(studentId);
+        return result;
     }
 
-    @GetMapping("/getT/{id}")
-    public List<ScheduleDTO> getScheduleForTeacher(@PathVariable int id) {
-        return scheduleRepository.findTeacherSchedule(id).stream()
-                .map(ScheduleDTO::new)
-                .collect(Collectors.toList());
+    @GetMapping("/getT/{teacherId}")
+    public List<ScheduleDTO> getScheduleForTeacher(@PathVariable int teacherId) {
+        List<ScheduleDTO> result = scheduleRepository.findTeacherSchedule(teacherId);
+        return result;
     }
 }

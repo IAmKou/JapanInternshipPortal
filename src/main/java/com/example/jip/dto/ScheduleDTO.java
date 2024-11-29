@@ -11,19 +11,17 @@ import java.sql.Time;
 
 public class ScheduleDTO {
     private int id;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date date;
-    private Schedule.dayOfWeek dayOfWeek;
-    private String className;
-    private String location;
-    @JsonDeserialize(using = TimeDeserializer.class)
-    private Time startTime;
-    @JsonDeserialize(using = TimeDeserializer.class)
-    private Time endTime;
-    private String description;
-    private Class clasz;
-    private String event;
-    private String teacherName;
+        private Schedule.dayOfWeek dayOfWeek;
+        private int classId;
+        private Time startTime;
+        private Time endTime;
+        private String description;
+        private String event;
+        private Date date;
+        private String location;
+        private String className;
+        private int teacherId;
+        private String teacherFullName;
 
     public ScheduleDTO() {
     }
@@ -35,25 +33,49 @@ public class ScheduleDTO {
         this.className = schedule.getClasz() != null ? schedule.getClasz().getName() : null;
         this.location = schedule.getLocation();
         this.startTime = schedule.getStart_time();
-        this.teacherName = schedule.getClasz() != null && schedule.getClasz().getTeacher() != null
+        this.teacherFullName = schedule.getClasz() != null && schedule.getClasz().getTeacher() != null
                 ? schedule.getClasz().getTeacher().getFullname()
                 : null;
         this.endTime = schedule.getEnd_time();
         this.description = schedule.getDescription();
         this.event = schedule.getEvent();
+        this.classId = schedule.getClasz() != null ? schedule.getClasz().getId() : null;
+        this.teacherId = schedule.getClasz() != null && schedule.getClasz().getTeacher() != null
+                ? schedule.getClasz().getTeacher().getId()
+                : null;
     }
 
-    public ScheduleDTO(int id,Date date, Schedule.dayOfWeek dayOfWeek, String className, String location, Time startTime, Time endTime, String description, String event, String teacherName) {
-        this.id = id;
-        this.date = date;
+    public ScheduleDTO(Schedule.dayOfWeek dayOfWeek, int classId, Time startTime, Time endTime,
+                       String description, String event, Date date, String location,
+                       String className, int teacherId, String teacherFullName) {
         this.dayOfWeek = dayOfWeek;
-        this.className = className;
-        this.location = location;
+        this.classId = classId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.description = description;
         this.event = event;
-        this.teacherName = teacherName;
+        this.date = date;
+        this.location = location;
+        this.className = className;
+        this.teacherId = teacherId;
+        this.teacherFullName = teacherFullName;
+    }
+
+
+    public int getClassId() {
+        return classId;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
+    }
+
+    public int getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(int teacherId) {
+        this.teacherId = teacherId;
     }
 
     public int getId() {
@@ -64,12 +86,12 @@ public class ScheduleDTO {
         this.id = id;
     }
 
-    public String getTeacherName() {
-        return teacherName;
+    public String getTeacherFullName() {
+        return teacherFullName;
     }
 
-    public void setTeacherName(String teacherName) {
-        teacherName = teacherName;
+    public void setTeacherFullName(String teacherFullName) {
+        this.teacherFullName = teacherFullName;
     }
 
     public String getEvent() {
@@ -136,11 +158,4 @@ public class ScheduleDTO {
         this.className = className;
     }
 
-    public Class getClasz() {
-        return clasz;
-    }
-
-    public void setClasz(Class clasz) {
-        this.clasz = clasz;
-    }
 }

@@ -17,7 +17,9 @@ public class AccountDTO {
     private Date dob;
     private String jname;
     private String gender;
+    private int studentId;
     private int teacherId;
+    private boolean mark;
 
     public AccountDTO(Account account) {
         this.id = account.getId();
@@ -26,12 +28,14 @@ public class AccountDTO {
 
         if (account.getStudent() != null) {
             Student student = account.getStudent();
+            this.studentId = student.getId();
             this.fullName = student.getFullname();
             this.email = student.getEmail();
             this.phoneNumber = student.getPhoneNumber();
             this.dob = student.getDob();
             this.jname = student.getJapanname();
             this.gender = student.getGender().toString();
+            this.mark = student.isMark();
 
         } else if (account.getTeacher() != null) {
             Teacher teacher = account.getTeacher();
@@ -56,6 +60,22 @@ public class AccountDTO {
     }
 
     public AccountDTO() {
+    }
+
+    public boolean isMark() {
+        return mark;
+    }
+
+    public void setMark(boolean mark) {
+        this.mark = mark;
+    }
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
     }
 
     public Integer getId() {

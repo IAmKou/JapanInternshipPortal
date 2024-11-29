@@ -29,22 +29,19 @@ public class Attendant {
     @Column(name="Date")
     private Date date;
 
-    @Column(name = "note")
-    private String note;
 
     public Attendant(){}
 
-    public Attendant(int id, Student student, Schedule schedule, Status status, Date date, String note) {
+    public Attendant(int id, Student student, Schedule schedule, Status status, Date date) {
         this.id = id;
         this.student = student;
         this.schedule = schedule;
         this.status = status;
         this.date = date;
-        this.note = note;
     }
 
     public enum Status {
-        Present, Late, Absent, Permitted_Absence;
+        Present, Late, Absent, Permitted;
 
         @Override
         public String toString() {

@@ -511,7 +511,7 @@
                             </table>
                         </div>
                         <div class="d-flex justify-content-end">
-                        <button id="submitAttendance" class="login-btn">Submit Attendance</button>
+                        <button id="submitButton" class="login-btn">Submit Attendance</button>
                         </div>
                     </div>
                 </div>
@@ -597,9 +597,8 @@
             const urlParams = new URLSearchParams(window.location.search);
             const classId = urlParams.get('classId');
 
-            // Ensure classId is valid before proceeding
             if (classId) {
-                fetch(`/student/${classId}/getAll`) // Fetch all students for the class
+                fetch(`/student/${classId}/getAll`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok ' + response.statusText);
@@ -639,42 +638,36 @@
                             // Attendance checkboxes
                             const presentCell = document.createElement('td');
                             presentCell.innerHTML = `
-                    <div class="form-check">
-                        <input type="checkbox" value="Present" class="form-check-input checkAll">
-                        <label class="form-check-label">Present</label>
-                    </div>`;
+                            <div class="form-check">
+                                <input type="checkbox" value="Present" class="form-check-input checkAll">
+                                <label class="form-check-label">Present</label>
+                            </div>`;
                             row.appendChild(presentCell);
 
                             const lateCell = document.createElement('td');
                             lateCell.innerHTML = `
-                    <div class="form-check">
-                        <input type="checkbox" value="Late" class="form-check-input checkAll">
-                        <label class="form-check-label">Late</label>
-                    </div>`;
+                            <div class="form-check">
+                                <input type="checkbox" value="Late" class="form-check-input checkAll">
+                                <label class="form-check-label">Late</label>
+                            </div>`;
                             row.appendChild(lateCell);
 
                             const absentCell = document.createElement('td');
                             absentCell.innerHTML = `
-                    <div class="form-check">
-                        <input type="checkbox" value="Absent" class="form-check-input checkAll">
-                        <label class="form-check-label">Absent</label>
-                    </div>`;
+                            <div class="form-check">
+                                <input type="checkbox" value="Absent" class="form-check-input checkAll">
+                                <label class="form-check-label">Absent</label>
+                            </div>`;
                             row.appendChild(absentCell);
 
+                            // Permitted Absence (always disabled)
                             const permittedAbsenceCell = document.createElement('td');
                             permittedAbsenceCell.innerHTML = `
-                    <div class="form-check">
-                        <input type="checkbox" value="Permitted Absence" class="form-check-input checkAll">
-                        <label class="form-check-label">Permitted Absence</label>
-                    </div>`;
+                            <div class="form-check">
+                                <input type="checkbox" value="Permitted" class="form-check-input checkAll" disabled>
+                                <label class="form-check-label">Permitted Absence</label>
+                            </div>`;
                             row.appendChild(permittedAbsenceCell);
-
-                            // If student has mark = TRUE, check the "Permitted Absence" checkbox
-                            if (student.mark === true) {
-                                const permittedAbsenceCheckbox = permittedAbsenceCell.querySelector('input');
-                                permittedAbsenceCheckbox.checked = true;
-                                permittedAbsenceCheckbox.disabled = true;  // Optional: Disable to prevent manual unchecking
-                            }
 
                             // Actions cell
                             const actionsCell = document.createElement('td');
@@ -690,54 +683,96 @@
                             const dropdownMenu = document.createElement('div');
                             dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
                             dropdownMenu.innerHTML = `
-                    <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                    `;
+                            <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>`;
                             dropdown.appendChild(dropdownMenu);
                             actionsCell.appendChild(dropdown);
                             row.appendChild(actionsCell);
 
                             // Append the row to the table body
                             tableBody.appendChild(row);
+
+                            // Add the event listener to ensure only one checkbox is checked in the row
+                            const checkboxes = row.querySelectorAll('.form-check-input');
+                            checkboxes.forEach(checkbox => {
+                                checkbox.addEventListener('change', function () {
+                                    checkboxes.forEach(otherCheckbox => {
+                                        if (otherCheckbox !== checkbox) {
+                                            otherCheckbox.checked = false;
+                                        }
+                                    });
+                                });
+                            });
+
+                            // If student has mark = true, disable all checkboxes and check "Permitted Absence"
+                            if (student.mark === true) {
+                                checkboxes.forEach(checkbox => {
+                                    checkbox.disabled = true;  // Disable all checkboxes for this row
+                                });
+
+                                // Check the "Permitted Absence" checkbox
+                                const permittedAbsenceCheckbox = permittedAbsenceCell.querySelector('input');
+                                permittedAbsenceCheckbox.checked = true;
+                            }
                         });
                     })
                     .catch(error => console.error('Error fetching students:', error));
             } else {
                 console.error("classId is missing from the URL.");
             }
-        });
 
-    </script>
-<!-- submit attendant -->
-    <script>
-        document.getElementById('submitAttendance').addEventListener('click', function () {
-            const tableBody = document.querySelector('.table tbody');
-            const attendanceData = [];
+            // Validation for checking if at least one checkbox is selected in each row
+            document.querySelector('#submitButton').addEventListener('click', function (event) {
+                let isValid = true;
 
-            // Iterate through each row in the table
-            tableBody.querySelectorAll('tr').forEach(row => {
-                const studentId = row.querySelector('td:first-child').textContent.trim(); // Get student ID
-                let status = null;
+                const rows = tableBody.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const checkboxes = row.querySelectorAll('.form-check-input');
+                    const isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
 
-                // Check the selected attendance status
-                row.querySelectorAll('.form-check-input').forEach(checkbox => {
-                    if (checkbox.checked) {
-                        status = checkbox.value; // Get the selected value (Present, Late, Absent, etc.)
+                    if (!isChecked) {
+                        row.classList.add('highlight'); // Add a class to highlight the row if no checkbox is checked
+                        isValid = false;
+                    } else {
+                        row.classList.remove('highlight');
                     }
                 });
 
-                if (status) {
-                    attendanceData.push({
-                        studentId: parseInt(studentId, 10),
-                        status: status,
-                        date: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
-                        note: '', // Add a note if applicable
-                    });
+                if (!isValid) {
+                    event.preventDefault(); // Prevent form submission if validation fails
+                    alert("Please check at least one checkbox for each student.");
+                } else {
+                    submitAttendance();
                 }
             });
 
-            if (attendanceData.length > 0) {
-                // Send attendance data to the backend
-                fetch('/attendant/save', {
+            // Submit the attendance data
+            function submitAttendance() {
+                const tableBody = document.querySelector('.table tbody');
+                const attendanceData = [];
+
+
+                // Iterate through each row in the table
+                tableBody.querySelectorAll('tr').forEach(row => {
+                    const studentId = row.querySelector('td:first-child').textContent.trim(); // Get student ID
+                    let status = null;
+
+                    // Check the selected attendance status
+                    row.querySelectorAll('.form-check-input').forEach(checkbox => {
+                        if (checkbox.checked) {
+                            status = checkbox.value; // Get the selected value (Present, Late, Absent, etc.)
+                        }
+                    });
+
+                    if (status) {
+                        attendanceData.push({
+                            studentId: parseInt(studentId, 10),
+                            status: status,
+                            date: new Date().toLocaleDateString('en-CA'), // Current date in YYYY-MM-DD format
+                        });
+                    }
+                });
+
+                fetch(`/attendant/save/${classId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -746,24 +781,23 @@
                 })
                     .then(response => {
                         if (response.ok) {
-                            return response.json();
+                            return response.text(); // Use .text() if the response is plain text
                         } else {
                             throw new Error('Failed to save attendance: ' + response.statusText);
                         }
                     })
                     .then(data => {
                         console.log('Attendance saved successfully:', data);
-                        alert('Attendance saved successfully.');
+                        alert(data); // Display the plain text response
                     })
                     .catch(error => {
                         console.error('Error saving attendance:', error);
                         alert('Failed to save attendance.');
                     });
-            } else {
-                alert('No attendance data selected.');
             }
         });
     </script>
+
 
 
 

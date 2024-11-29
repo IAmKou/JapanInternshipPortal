@@ -21,6 +21,7 @@ public class StudentDTO {
         this.jname = student.getJapanname();
         this.gender = student.getGender();
         this.img = student.getImg();
+        this.mark = student.isMark();
     }
 
 
