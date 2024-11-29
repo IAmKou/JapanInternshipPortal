@@ -35,6 +35,7 @@ import java.util.Optional;
             student.setEmail(email);
             student.setImg(img);
             student.setAccount(accountOpt.get());
+            student.setMark(false);
 
             // Save the student to the database
             return studentRepository.save(student);

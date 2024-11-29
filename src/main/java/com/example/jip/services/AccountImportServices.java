@@ -9,6 +9,7 @@ import com.example.jip.entity.Student.Gender;
 import com.example.jip.repository.AccountRepository;
 import com.example.jip.repository.RoleRepository;
 import com.example.jip.repository.StudentRepository;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -85,17 +86,27 @@ public class AccountImportServices {
                     ? row.getCell(5).getLocalDateTimeCellValue().toLocalDate()
                     : LocalDate.parse(row.getCell(5).getStringCellValue());
 
-            String passportUrl = row.getCell(6).getStringCellValue();
+
             Gender gender = Gender.valueOf(row.getCell(7).getStringCellValue());
 
             String phoneNumber = row.getCell(8).getCellType() == CellType.NUMERIC
                     ? String.valueOf((long) row.getCell(8).getNumericCellValue())
                     : row.getCell(8).getStringCellValue();
 
-            String email = row.getCell(9).getStringCellValue();
+            Cell emailCell = row.getCell(10);
+            String email = (emailCell == null || emailCell.getCellType() == CellType.BLANK)
+                    ? null
+                    : emailCell.getStringCellValue().trim();
+            if (email == null || email.isEmpty()) {
+                errors.add("Missing email in row " + (row.getRowNum() + 1));
+                return;
+            }
+
             if (isDuplicate(username, email, phoneNumber, errors)) return;
             // Extract image path or URL from Excel
-            String imgPath = row.getCell(10).getStringCellValue(); // Assuming the image is in column 9
+            String passportUrl = row.getCell(6).getStringCellValue();
+            String passport = uploadImageToCloudinary(passportUrl, workbook);
+            String imgPath = row.getCell(9).getStringCellValue(); // Assuming the image is in column 9
             String imgUrl = uploadImageToCloudinary(imgPath, workbook); // Pass workbook to extract embedded images
 
 
@@ -116,12 +127,13 @@ public class AccountImportServices {
             student.setFullname(fullName);
             student.setJapanname(japanname);
             student.setDob(java.sql.Date.valueOf(dob));
-            student.setPassport(passportUrl);
+            student.setPassport(passport);
             student.setGender(gender);
             student.setPhoneNumber(phoneNumber);
             student.setImg(imgUrl);  // Save Cloudinary URL for the image
             student.setEmail(email);
             student.setAccount(account);
+            student.setMark(false);
             studentRepository.save(student);
 
         } catch (Exception e) {
