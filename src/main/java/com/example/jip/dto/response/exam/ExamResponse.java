@@ -1,4 +1,4 @@
-package com.example.jip.dto.response.assignment;
+package com.example.jip.dto.response.exam;
 
 import com.example.jip.entity.Teacher;
 import lombok.AccessLevel;
@@ -9,22 +9,17 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AssignmentResponse {
+public class ExamResponse {
     int id;
-    String description;
+    String exam_name;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    Date exam_date;
     String content;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    Date created_date;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    Date end_date;
-    String folder;
-    Teacher teacher; // Teacher who created this assignment
-    List<String> classes; // List of class names
-    List<String> files;
+    int teacherId;
+    int block;
 }

@@ -94,11 +94,8 @@ public class AssignmentServices {
 
         // Assign the assignment to classes and students
         if (request.getClassIds() != null && !request.getClassIds().isEmpty()) {
-            for (Integer classId : request.getClassIds()) {
-                // Find the class
-                Class clas = classRepository.findById(classId)
-                        .orElseThrow(() -> new RuntimeException("Class not found: " + classId));
-
+            List<Class> classes = classRepository.findByTeacher_Id(request.getTeacher().getId());
+            for (Class clas : classes) {
                 // Link assignment to class
                 assignmentClassRepository.save(new AssignmentClass(savedAssignment, clas));
 

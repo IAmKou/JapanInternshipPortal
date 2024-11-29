@@ -27,12 +27,12 @@ public class AttendantServices {
     private AttendantRepository attendantRepository;
 
     @Autowired
-    ScheduleRepository scheduleRepository;
+    private ScheduleRepository scheduleRepository;
 
     @Autowired
-    StudentRepository studentRepository;
+    private StudentRepository studentRepository;
 
-    public Attendant createAttendant(int student_id, int schedule_id, String status, Date date, String note, int class_id) {
+    public Attendant createAttendant(int student_id, int schedule_id, String status, Date date, int class_id) {
         List<Schedule> schedules = scheduleRepository.findByClassIdAndDate(class_id, date);
         if (schedules.isEmpty()) {
             throw new IllegalArgumentException("No schedule found for class_id: " + class_id + " and date: " + date);
@@ -60,13 +60,12 @@ public class AttendantServices {
         attendant.setSchedule(matchingSchedule);
         attendant.setStatus(Attendant.Status.valueOf(status));
         attendant.setDate(date);
-        attendant.setNote(note);
 
         return attendantRepository.save(attendant);
     }
 
 
-    public void updateAttendance(int attendantId, Attendant.Status status, String note) {
+    public void updateAttendance(int attendantId, Attendant.Status status) {
 
         Attendant attendant = attendantRepository.findById(attendantId)
                 .orElseThrow(() -> new RuntimeException("Attendance record not found"));
@@ -84,7 +83,6 @@ public class AttendantServices {
         }
 
         attendant.setStatus(status);
-        attendant.setNote(note);
 
         attendantRepository.save(attendant);
     }

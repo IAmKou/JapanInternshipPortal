@@ -17,22 +17,25 @@ public class AccountDTO {
     private Date dob;
     private String jname;
     private String gender;
+    private int studentId;
     private int teacherId;
+    private boolean mark;
 
     public AccountDTO(Account account) {
         this.id = account.getId();
         this.username = account.getUsername();
-        this.roleName = account.getRole().getName();
+        this.roleName = (account.getRole() != null) ? account.getRole().getName() : "UNKNOWN";
 
         if (account.getStudent() != null) {
             Student student = account.getStudent();
+            this.studentId = student.getId();
             this.fullName = student.getFullname();
             this.email = student.getEmail();
             this.phoneNumber = student.getPhoneNumber();
             this.dob = student.getDob();
             this.jname = student.getJapanname();
-            this.gender = student.getGender().toString();
-
+            this.gender = (student.getGender() != null) ? student.getGender().toString() : "UNKNOWN";
+            this.mark = student.isMark();
         } else if (account.getTeacher() != null) {
             Teacher teacher = account.getTeacher();
             this.teacherId = teacher.getId();
@@ -40,22 +43,35 @@ public class AccountDTO {
             this.email = teacher.getEmail();
             this.phoneNumber = teacher.getPhoneNumber();
             this.jname = teacher.getJname();
-            this.gender = teacher.getGender().toString();
-
+            this.gender = (teacher.getGender() != null) ? teacher.getGender().toString() : "UNKNOWN";
         } else if (account.getManager() != null) {
             Manager manager = account.getManager();
             this.fullName = manager.getFullname();
             this.email = manager.getEmail();
             this.phoneNumber = manager.getPhoneNumber();
             this.jname = manager.getJname();
-            this.gender = manager.getGender().toString();
-
+            this.gender = (manager.getGender() != null) ? manager.getGender().toString() : "UNKNOWN";
         } else {
             System.out.println("No profile found for account ID: " + account.getId());
         }
     }
 
-    public AccountDTO() {
+    public AccountDTO() {}
+
+    public boolean isMark() {
+        return mark;
+    }
+
+    public void setMark(boolean mark) {
+        this.mark = mark;
+    }
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
     }
 
     public Integer getId() {

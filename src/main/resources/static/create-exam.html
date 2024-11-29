@@ -319,7 +319,7 @@
                 <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All Assignment</a>
               </li>
               <li class="nav-item">
-                <a href="add-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Add New Assignment</a>
+                <a href="create-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Add New Assignment</a>
               </li>
             </ul>
           </li>
@@ -496,7 +496,7 @@
                 <input type="number" class="form-control-file" name="block" id="block">
               </div>
               <div class="col-12 form-group mg-t-8">
-                <button type="submit" onclick="addExam(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Add</button>
+                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Add</button>
                 <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
               </div>
             </div>
@@ -545,10 +545,19 @@
 
       if (response.ok) {
         alert('Exam added successfully!');
-        window.location.href = '/list-assignment.html';
+        window.location.href = '/list-exam.html';
       } else {
-        const errorData = await response.json();
-        alert(`Failed to create exam: ${errorData.message || 'Please try again.'}`);
+        const contentType = response.headers.get('Content-Type');
+        let errorMessage;
+
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json();
+          errorMessage = errorData.message || 'An error occurred. Please try again.';
+        } else {
+          errorMessage = await response.text(); // Handle plain text error response
+        }
+
+        alert(`Failed to create exam: ${errorMessage}`);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -631,5 +640,5 @@
 </body>
 
 
-<!-- Mirrored from add-assignment.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
+<!-- Mirrored from create-assignment.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>

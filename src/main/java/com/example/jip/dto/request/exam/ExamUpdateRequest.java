@@ -14,11 +14,10 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ExamCreationRequest {
+public class ExamUpdateRequest {
     String exam_name;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date exam_date;
     String content;
-    TeacherDTO teacher;
     int block;
 }

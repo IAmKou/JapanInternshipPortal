@@ -8,7 +8,6 @@ import com.example.jip.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -75,5 +74,17 @@ public class AccountServices {
         accountRepository.save(account);
 
         return new AccountDTO(account);
+    }
+
+    // Test Authentication
+    public AccountDTO authenticateAccount(String username, String rawPassword) {
+        Account account = accountRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Invalid username or password"));
+
+        if (passwordEncoder.matches(rawPassword, account.getPassword())) {
+            return new AccountDTO(account);
+        } else {
+            throw new RuntimeException("Invalid username or password");
+        }
     }
 }

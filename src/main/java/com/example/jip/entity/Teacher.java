@@ -1,12 +1,10 @@
 package com.example.jip.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name="Teacher")
@@ -19,20 +17,20 @@ public class Teacher {
     private int id;
 
     @Column(name="Fullname", nullable = false)
-    private String Fullname;
+    private String fullname;
 
     @Column(name="Jname", nullable = false)
-    private String Jname;
+    private String jname;
 
     @Column(name="email", nullable = false)
     private String email;
 
     @Column(name="phone_number", nullable = false)
-    private String PhoneNumber;
+    private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
     @Column(name="Gender", nullable = false)
-    private gender Gender;
+    private gender gender;
 
     @Column(name="img")
     private String img;
@@ -47,15 +45,16 @@ public class Teacher {
 
     public Teacher(){}
 
-    public Teacher(int id, String fullname, String jname, String email, String phoneNumber, gender gender, String img, Account account) {
+    public Teacher(int id, String fullname, String jname, String email, String phoneNumber, Teacher.gender gender, String img, Account account, List<Class> classes) {
         this.id = id;
-        Fullname = fullname;
-        Jname = jname;
+        this.fullname = fullname;
+        this.jname = jname;
         this.email = email;
-        PhoneNumber = phoneNumber;
-        Gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
         this.img = img;
         this.account = account;
+        this.classes = classes;
     }
 
     public enum gender{

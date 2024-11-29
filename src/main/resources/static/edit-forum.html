@@ -335,7 +335,7 @@
                   Book</a>
               </li>
               <li class="nav-item">
-                <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
                   Book</a>
               </li>
             </ul>
@@ -508,6 +508,9 @@
 
               <div class="col-12 form-group">
                 <label class="text-dark-medium">Current Image:</label>
+                <div class="thread-thumbnail">
+                  <img src="data:image/png;base64,${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">
+                </div>
                 <div id="currentImageContainer">
                   <!-- Placeholder for the current image -->
                 </div>

@@ -28,6 +28,8 @@ public class Exam {
     @JoinColumn(name = "teacher_id", nullable = false)
     Teacher teacher;
 
+    @Column(name = "content")
+    String content;
     @Column(name = "block")
     int block;
     @Column(name = "exam_name")
