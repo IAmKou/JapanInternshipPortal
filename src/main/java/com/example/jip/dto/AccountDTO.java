@@ -19,6 +19,8 @@ public class AccountDTO {
     private String gender;
     private int studentId;
     private int teacherId;
+    private String img;
+    private String passport;
     private boolean mark;
 
     public AccountDTO(Account account) {
@@ -36,6 +38,8 @@ public class AccountDTO {
             this.jname = student.getJapanname();
             this.gender = (student.getGender() != null) ? student.getGender().toString() : "UNKNOWN";
             this.mark = student.isMark();
+            this.img = student.getImg();
+            this.passport = student.getPassport();
         } else if (account.getTeacher() != null) {
             Teacher teacher = account.getTeacher();
             this.teacherId = teacher.getId();
@@ -44,6 +48,7 @@ public class AccountDTO {
             this.phoneNumber = teacher.getPhoneNumber();
             this.jname = teacher.getJname();
             this.gender = (teacher.getGender() != null) ? teacher.getGender().toString() : "UNKNOWN";
+            this.img = teacher.getImg();
         } else if (account.getManager() != null) {
             Manager manager = account.getManager();
             this.fullName = manager.getFullname();
@@ -51,12 +56,30 @@ public class AccountDTO {
             this.phoneNumber = manager.getPhoneNumber();
             this.jname = manager.getJname();
             this.gender = (manager.getGender() != null) ? manager.getGender().toString() : "UNKNOWN";
+            this.img = manager.getImg();
         } else {
             System.out.println("No profile found for account ID: " + account.getId());
         }
     }
 
     public AccountDTO() {}
+
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getPassport() {
+        return passport;
+    }
+
+    public void setPassport(String passport) {
+        this.passport = passport;
+    }
 
     public boolean isMark() {
         return mark;
