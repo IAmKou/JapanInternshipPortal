@@ -57,9 +57,9 @@
         }
 
         .thread-thumbnail img {
-            width: 100%; /* Đặt chiều rộng tối đa của ảnh bằng khung */
-            height: 100%; /* Đặt chiều cao tối đa của ảnh bằng khung */
-            object-fit: cover; /* Co giãn và cắt ảnh để lấp đầy khung */
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .thread-content {
@@ -109,13 +109,8 @@
         }
 
         .modal-trigger {
-            display: inline-block; /* Makes the link behave like a block for easier centering */
-            text-align: center; /* Centers the text horizontally */
-        }
-
-        .dropdown-x {
-            margin-right: 14px;
-            width: 22px;
+            display: inline-block;
+            text-align: center;
         }
 
     </style>
@@ -665,7 +660,7 @@
             threadBox.setAttribute("data-thread-id", thread.id); // Add data-thread-id for easier access
 
             // Format the dateCreated field
-            const formattedDate = new Date(thread.dateCreated).toLocaleString();
+            const formattedDate = new Date(thread.dateCreated).toLocaleDateString();
 
             threadBox.innerHTML = `
         <div class="thread-thumbnail">
