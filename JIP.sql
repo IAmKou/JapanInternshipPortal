@@ -24,6 +24,7 @@ CREATE TABLE Student (
     phone_number VARCHAR(20),
     img VARCHAR(255),
     email VARCHAR(100) NOT NULL,
+    mark boolean,
     account_id INT,
     FOREIGN KEY (account_id) REFERENCES Account(Id)
 );
@@ -76,8 +77,8 @@ CREATE TABLE Schedule (
     class_id INT,
     start_time TIME NOT NULL,
     end_time TIME NOT NULL,
-    description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    event VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+    event VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
     FOREIGN KEY (class_id) REFERENCES Class(Id)
 );
 
@@ -86,9 +87,8 @@ CREATE TABLE Attendant (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT,
     schedule_id INT,
-    status ENUM('Present', 'Absent', 'Late', 'Permitted Absence') NOT NULL,
+    status ENUM('Present', 'Absent', 'Late', 'Permitted') NOT NULL,
     date DATE NOT NULL,
-    note VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     FOREIGN KEY (student_id) REFERENCES Student(Id),
     FOREIGN KEY (schedule_id) REFERENCES Schedule(Id)
 );

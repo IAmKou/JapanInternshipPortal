@@ -1,16 +1,14 @@
 package com.example.jip.services;
 
-import com.example.jip.dto.request.AssignmentCreationRequest;
-import com.example.jip.dto.request.AssignmentUpdateRequest;
+import com.example.jip.dto.request.assignment.AssignmentCreationRequest;
+import com.example.jip.dto.request.assignment.AssignmentUpdateRequest;
 import com.example.jip.dto.request.FileDeleteRequest;
-import com.example.jip.dto.response.CloudinaryResponse;
+import com.example.jip.dto.request.studentAssignment.StudentAssignmentGradeRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
+import com.example.jip.dto.response.studentAssignment.StudentAssignmentResponse;
 import com.example.jip.entity.*;
 
 import com.example.jip.entity.Class;
-import com.example.jip.exception.CloudinaryFolderAccessException;
-import com.example.jip.exception.FuncErrorException;
-import com.example.jip.exception.InvalidImageUrlException;
 import com.example.jip.repository.*;
 import com.example.jip.util.FileUploadUtil;
 import jakarta.transaction.Transactional;
@@ -22,9 +20,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,6 +40,8 @@ public class AssignmentServices {
     AssignmentClassRepository assignmentClassRepository;
 
     AssignmentStudentRepository assignmentStudentRepository;
+
+   StudentAssignmentRepository studentAssignmentRepository;
 
 
     @PreAuthorize("hasAuthority('TEACHER')")
@@ -122,7 +119,6 @@ public class AssignmentServices {
 
 
 
-    @PreAuthorize("hasAuthority('TEACHER')")
     public AssignmentResponse getAssignmentById(int assignmentId) {
         Assignment assignment = assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new RuntimeException("Assignment not found with ID: " + assignmentId));
@@ -205,7 +201,6 @@ public class AssignmentServices {
             throw new RuntimeException("Folder name is not set for assignment ID: " + assignmentId);
         }
 
-
         // Append new files if provided
         if (newFiles != null && newFiles.length > 0) {
             for (MultipartFile file : newFiles) {
@@ -244,8 +239,45 @@ public class AssignmentServices {
         }
         return assignmentRepository.save(assignment);
     }
+    @PreAuthorize("hasAuthority('TEACHER')")
+    public List<StudentAssignmentResponse> getSubmittedAssignmentsByAssignmentId(int assignmentId){
+        List<StudentAssignment> studentAssignments = studentAssignmentRepository.findByAssignmentId(assignmentId);
+        List<StudentAssignmentResponse> responses = studentAssignments.stream()
+                // Map to DTOs
+                .map(sa -> {
+                    StudentAssignmentResponse response = new StudentAssignmentResponse();
+                    response.setId(sa.getId());
+                    response.setMark(sa.getMark());
+                    response.setDescription(sa.getDescription());
+                    response.setContent(sa.getContent());
+                    response.setDate(sa.getDate());
+                    response.setStatus(sa.getStatus().toString());
+                    response.setAssignmentId(sa.getAssignment().getId());
+                    response.setStudentId(sa.getStudent().getId());
+                    return response;
+                })
+                .collect(Collectors.toList());
+        return responses;
+    }
+
 
     @PreAuthorize("hasAuthority('TEACHER')")
+    public StudentAssignment gradeSubmittedAssignment(int studentAssignmentId, StudentAssignmentGradeRequest request) {
+        StudentAssignment studentAssignment = studentAssignmentRepository.findById(studentAssignmentId)
+                .orElseThrow(() -> new NoSuchElementException("studentAssignmentId not found!"));
+
+        if(request.getMark() != null){
+            studentAssignment.setMark(request.getMark());
+        }
+
+        if (request.getStatus() != null) {
+            studentAssignment.setStatus(request.getStatus());
+        }
+        log.info("Grading assignment with Mark: " + request.getMark() + ", Status: " + request.getStatus());
+        return studentAssignmentRepository.save(studentAssignment);
+    }
+
+
     public void deleteFile(FileDeleteRequest request){
     // Sanitize folder name and delete the file
         String folderName = sanitizeFolderName("assignments/" + assignmentRepository.findById(request.getAssignmentId())
@@ -254,6 +286,7 @@ public class AssignmentServices {
 
         cloudinaryService.deleteFile(request.getFileUrl(), folderName);
     }
+
 
 }
 

@@ -1,18 +1,16 @@
 package com.example.jip.controller;
 
-import com.example.jip.configuration.CustomAuthenticationSuccessHandler;
 import com.example.jip.dto.TeacherDTO;
-import com.example.jip.dto.request.AssignmentCreationRequest;
-import com.example.jip.dto.request.AssignmentUpdateRequest;
+import com.example.jip.dto.request.assignment.AssignmentCreationRequest;
+import com.example.jip.dto.request.assignment.AssignmentUpdateRequest;
 import com.example.jip.dto.request.FileDeleteRequest;
+import com.example.jip.dto.request.studentAssignment.StudentAssignmentGradeRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
-import com.example.jip.entity.Assignment;
+import com.example.jip.dto.response.studentAssignment.StudentAssignmentResponse;
 import com.example.jip.entity.Teacher;
-import com.example.jip.repository.AccountRepository;
-import com.example.jip.repository.AssignmentRepository;
+import com.example.jip.exception.NotFoundException;
 import com.example.jip.repository.TeacherRepository;
 import com.example.jip.services.AssignmentServices;
-import com.example.jip.services.CloudinaryService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,11 +20,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -85,27 +81,18 @@ public class AssignmentController {
 
 
     @GetMapping("/detail/{assignment_id}")
-    public ResponseEntity<AssignmentResponse> getAssignmentById(@PathVariable("assignment_id") int assignmentId) {
-        log.info("Received assignmentId: " + assignmentId);
-        AssignmentResponse response = assignmentServices.getAssignmentById(assignmentId);
-        log.info("Files: " + response.getFiles());
-    if(response != null)  {
-        return ResponseEntity.ok(response);
-    } else {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        public ResponseEntity<AssignmentResponse> getAssignmentById(@PathVariable("assignment_id") int assignmentId) {
+           log.info("Received assignmentId: " + assignmentId);
+            AssignmentResponse response = assignmentServices.getAssignmentById(assignmentId);
+           log.info("Files: " + response.getFiles());
+               if (response != null)  {
+                    return ResponseEntity.ok(response);
+                 } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                 }
     }
-}
-//    @GetMapping("/files/{assignmentId}")
-//    public ResponseEntity<List<String>> getAssignmentFiles(@PathVariable int assignmentId) {
-//        Assignment assignment = assignmentRepository.findById(assignmentId)
-//                .orElseThrow(() -> new RuntimeException("Assignment not found"));
-//
-//        String folderName = assignment.getDescription(); // Assuming folder name is stored in the description
-//        List<String> fileUrls = cloudinaryService.listFilesInFolder(folderName);
-//        return ResponseEntity.ok(fileUrls);
-//    }
 
-        @PutMapping("/update/{assignment_id}")
+    @PutMapping("/update/{assignment_id}")
         public ResponseEntity<?> updateAssignment(@PathVariable("assignment_id") int assignment_id,
                                                   @ModelAttribute AssignmentUpdateRequest request) {
             try {
@@ -139,6 +126,35 @@ public class AssignmentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting file.");
         }
     }
+
+    @GetMapping("/list-submitted-assignments")
+    public ResponseEntity<List<StudentAssignmentResponse>> getSubmittedAssignmentsByAssignmentId(
+            @RequestParam("assignmentId") int assignmentId) {
+        try {
+            List<StudentAssignmentResponse> submittedAssignments = assignmentServices.getSubmittedAssignmentsByAssignmentId(assignmentId);
+            return ResponseEntity.ok(submittedAssignments);
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Return a 404 if assignment not found
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+        @PutMapping("/grade-submitted-assignment")
+        public ResponseEntity<?> gradeSubmittedAssignment(
+                @RequestBody StudentAssignmentGradeRequest request,
+                @RequestParam("studentAssignmentId") int studentAssignmentId
+                ) {
+            try {
+                assignmentServices.gradeSubmittedAssignment(studentAssignmentId, request);
+                log.info("Grade requested: " + request);
+                return ResponseEntity.ok("Grade submitted successfully.");
+            } catch (NotFoundException e) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while grading.");
+            }
+        }
 }
 
 

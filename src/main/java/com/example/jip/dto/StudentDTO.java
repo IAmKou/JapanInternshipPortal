@@ -11,7 +11,7 @@ public class StudentDTO {
     private String jname;
     private Student.Gender gender;
     private String img;
-
+    private boolean mark;
 
 
 
@@ -21,16 +21,26 @@ public class StudentDTO {
         this.jname = student.getJapanname();
         this.gender = student.getGender();
         this.img = student.getImg();
+        this.mark = student.isMark();
     }
 
 
     public StudentDTO() {}
 
-    public StudentDTO(int id, String fullname,Student.Gender gender, String img) {
+    public StudentDTO(int id, String fullname,Student.Gender gender, String img, boolean mark) {
         this.id = id;
         this.fullname = fullname;
         this.gender = gender;
         this.img = img;
+        this.mark = mark;
+    }
+
+    public boolean isMark() {
+        return mark;
+    }
+
+    public void setMark(boolean mark) {
+        this.mark = mark;
     }
 
     public int getId() {

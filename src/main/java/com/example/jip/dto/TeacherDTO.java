@@ -1,7 +1,6 @@
 package com.example.jip.dto;
 
 import com.example.jip.entity.Account;
-import com.example.jip.entity.Manager;
 import com.example.jip.entity.Teacher;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
