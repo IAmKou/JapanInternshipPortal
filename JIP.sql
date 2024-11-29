@@ -87,9 +87,8 @@ CREATE TABLE Attendant (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT,
     schedule_id INT,
-    status ENUM('Present', 'Absent', 'Late', 'Permitted Absence') NOT NULL,
+    status ENUM('Present', 'Absent', 'Late', 'Permitted') NOT NULL,
     date DATE NOT NULL,
-    note VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     FOREIGN KEY (student_id) REFERENCES Student(Id),
     FOREIGN KEY (schedule_id) REFERENCES Schedule(Id)
 );
