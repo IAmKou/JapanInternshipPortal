@@ -122,6 +122,7 @@ public class AccountImportServices {
             student.setImg(imgUrl);  // Save Cloudinary URL for the image
             student.setEmail(email);
             student.setAccount(account);
+            student.setMark(false);
             studentRepository.save(student);
 
         } catch (Exception e) {
