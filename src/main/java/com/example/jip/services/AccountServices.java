@@ -75,4 +75,16 @@ public class AccountServices {
 
         return new AccountDTO(account);
     }
+
+    // Test Authentication
+    public AccountDTO authenticateAccount(String username, String rawPassword) {
+        Account account = accountRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Invalid username or password"));
+
+        if (passwordEncoder.matches(rawPassword, account.getPassword())) {
+            return new AccountDTO(account);
+        } else {
+            throw new RuntimeException("Invalid username or password");
+        }
+    }
 }
