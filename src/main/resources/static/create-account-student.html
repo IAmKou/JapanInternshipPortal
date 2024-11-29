@@ -260,10 +260,10 @@
         // Validate passport image
         const passportImageValid = validateImageFile('passport', allowedImageTypes, 2); // Allow JPEG and PNG up to 2 MB
         if (!passportImageValid) return;
-
+        this.submit();
         // If all validations pass, disable the button and proceed with form submission
         disableButton();
-        this.submit(); // Submit the form
+         // Submit the form
     });
 </script>
 
