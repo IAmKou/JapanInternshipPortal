@@ -3,7 +3,9 @@ package com.example.jip.services;
 import com.example.jip.dto.request.assignment.AssignmentCreationRequest;
 import com.example.jip.dto.request.assignment.AssignmentUpdateRequest;
 import com.example.jip.dto.request.FileDeleteRequest;
+import com.example.jip.dto.request.studentAssignment.StudentAssignmentGradeRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
+import com.example.jip.dto.response.studentAssignment.StudentAssignmentResponse;
 import com.example.jip.entity.*;
 
 import com.example.jip.entity.Class;
@@ -38,6 +40,8 @@ public class AssignmentServices {
     AssignmentClassRepository assignmentClassRepository;
 
     AssignmentStudentRepository assignmentStudentRepository;
+
+   StudentAssignmentRepository studentAssignmentRepository;
 
 
     @PreAuthorize("hasAuthority('TEACHER')")
@@ -235,8 +239,45 @@ public class AssignmentServices {
         }
         return assignmentRepository.save(assignment);
     }
+    @PreAuthorize("hasAuthority('TEACHER')")
+    public List<StudentAssignmentResponse> getSubmittedAssignmentsByAssignmentId(int assignmentId){
+        List<StudentAssignment> studentAssignments = studentAssignmentRepository.findByAssignmentId(assignmentId);
+        List<StudentAssignmentResponse> responses = studentAssignments.stream()
+                // Map to DTOs
+                .map(sa -> {
+                    StudentAssignmentResponse response = new StudentAssignmentResponse();
+                    response.setId(sa.getId());
+                    response.setMark(sa.getMark());
+                    response.setDescription(sa.getDescription());
+                    response.setContent(sa.getContent());
+                    response.setDate(sa.getDate());
+                    response.setStatus(sa.getStatus().toString());
+                    response.setAssignmentId(sa.getAssignment().getId());
+                    response.setStudentId(sa.getStudent().getId());
+                    return response;
+                })
+                .collect(Collectors.toList());
+        return responses;
+    }
+
 
     @PreAuthorize("hasAuthority('TEACHER')")
+    public StudentAssignment gradeSubmittedAssignment(int studentAssignmentId, StudentAssignmentGradeRequest request) {
+        StudentAssignment studentAssignment = studentAssignmentRepository.findById(studentAssignmentId)
+                .orElseThrow(() -> new NoSuchElementException("studentAssignmentId not found!"));
+
+        if(request.getMark() != null){
+            studentAssignment.setMark(request.getMark());
+        }
+
+        if (request.getStatus() != null) {
+            studentAssignment.setStatus(request.getStatus());
+        }
+        log.info("Grading assignment with Mark: " + request.getMark() + ", Status: " + request.getStatus());
+        return studentAssignmentRepository.save(studentAssignment);
+    }
+
+
     public void deleteFile(FileDeleteRequest request){
     // Sanitize folder name and delete the file
         String folderName = sanitizeFolderName("assignments/" + assignmentRepository.findById(request.getAssignmentId())
@@ -245,6 +286,7 @@ public class AssignmentServices {
 
         cloudinaryService.deleteFile(request.getFileUrl(), folderName);
     }
+
 
 }
 

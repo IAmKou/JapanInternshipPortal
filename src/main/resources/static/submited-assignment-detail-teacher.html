@@ -444,9 +444,9 @@
                 <h2>Assignment Detail</h2>
                 <ul>
                     <li>
-                        <a href="list-student-assignment.html">All Assignment</a>
+                        <a href="list-submitted-assignments.html">All Submitted Assignments</a>
                     </li>
-                    <li>Assignment Detail</li>
+                    <li>Submitted Assignment Detail</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
@@ -494,38 +494,56 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h2 class="text-dark-medium font-medium">Submittion</h2>
-
+                            <h2 class="text-dark-medium font-medium">Student Submittion</h2>
+                            <h3 class="text-dark-medium font-medium">Description</h3>
+                            <p id="submitted-assignment-description"></p>
                         </div>
                     </div>
 
                     <div class="single-info-details">
-                        <form class="new-added-form" action="/student-assignment/submit" method="post"  onsubmit="submitAssignment(event)">
-                            <div class="row">
-                                <input type="hidden" name="student_id" id="userId"/>
-                                <input type="hidden" name="assignment_id" id="assignmentid"/>
+                        <div class="item-content">
+                            <h6>Created Date:</h6>
+                            <p id="submitted-created-date"></p>
 
-                                <div class="col-xl-8 col-lg-6 col-12 form-group">
-                                    <label for="description">Desciption *</label>
-                                    <input type="text" placeholder="Write description..." class="form-control" name="description" id="description" required>
-                                </div>
-                                <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                    <label for="created_date">Create Date </label>
-                                    <input type="date" class="form-control" name="created_date" id="created_date" readonly>
-                                </div>
-
-                                <div class="col-xl-12 col-lg-12 col-12 form-group">
-                                    <label for="content">Content *</label>
-                                    <textarea id="content" placeholder="Write content..."  class="form-control" name="content" rows="4" required></textarea>
-                                </div>
-
-                                <div class="col-12 form-group mg-t-8">
-                                    <button type="submit" onclick="submitAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Add</button>
-                                    <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
-                                </div>
-                            </div>
-                        </form>
+                            <h3 class="text-dark-medium font-medium">Content</h3>
+                            <p id="submitted-assignment-content"></p>
+                        </div>
                     </div>
+
+                    <!-- Grade Button -->
+                    <div class="text-right">
+                        <button type="button" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" data-toggle="modal" data-target="#gradeModal">
+                            Grade Assignment
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal for Grading -->
+    <div class="modal fade" id="gradeModal" tabindex="-1" role="dialog" aria-labelledby="gradeModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="gradeModalLabel">Grade Submitted Assignment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="gradeForm">
+                        <div class="form-group">
+                            <label for="markInput">Enter Mark (0-100):</label>
+                            <input type="number" id="markInput" class="form-control" min="0" max="100" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-fill-lg bg-blue-dark btn-hover-yellow" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" onclick="submitGrade()">Submit Grade</button>
                 </div>
             </div>
         </div>
@@ -547,23 +565,19 @@
 <!-- fetch user -->
 <script>
 
-    document.addEventListener("DOMContentLoaded", function() {
-        const currentDate = new Date().toISOString().split("T")[0];
-        document.getElementById("created_date").value = currentDate;
-    });
-
     async function fetchAssignmentDetails() {
         const urlParams = new URLSearchParams(window.location.search);
-        const assignmentId = urlParams.get('id');
+        const studentAssignmentId = urlParams.get('id'); // Get the StudentAssignment ID from the URL
 
-        if (assignmentId) {
-            document.getElementById('assignmentid').value = assignmentId;
-        } else {
-            console.error("Assignment ID is missing in the URL.");
+        if (!studentAssignmentId) {
+            console.error("StudentAssignment ID is missing in the URL.");
+            alert("Invalid access: No StudentAssignment ID provided.");
+            return;
         }
 
         try {
-            const response = await fetch(`/assignment/detail/${assignmentId}`);
+            // Fetch the assignment details using the studentAssignmentId
+            const response = await fetch(`/student-assignment/assignment/${studentAssignmentId}`);
 
             if (!response.ok) {
                 throw new Error('Error fetching assignment details');
@@ -572,20 +586,18 @@
             const assignment = await response.json();
             console.log('Assignment details:', assignment);
 
-            // Populate description and content
-            document.getElementById('assignment-description').textContent = assignment.description || "No description provided";
-            document.getElementById('assignment-content').textContent = assignment.content || "No content provided";
-            document.getElementById('created-date').textContent = assignment.created_date || "N/A";
-            document.getElementById('end-date').textContent = assignment.end_date || "N/A";
-            document.getElementById('assignmentid').value = assignment.id;
+            // Populate the form fields with the fetched assignment details
+            document.getElementById('assignment-description').textContent = assignment.description || ""; // Populate description field
+            document.getElementById('assignment-content').textContent = assignment.content || ""; // Populate content field
+            document.getElementById('created-date').textContent = assignment.created_date || "N/A"; // Populate created date
+            document.getElementById('end-date').textContent = assignment.end_date || "N/A"; // Display end date
 
-            // Display class names
+            // Optionally display classes and files (if needed for reference)
             const classes = assignment.classes || [];
-            document.getElementById('assignment-classes').textContent = classes.length > 0 ? classes.join(", ") : "No classes assigned";
+            document.getElementById('assignment-classes').textContent =
+                classes.length > 0 ? classes.join(", ") : "No classes assigned";
 
-            // Display file download links
             const files = assignment.files || [];
-            console.log('Files:', files);
             const filesContainer = document.getElementById('assignment-files');
             filesContainer.innerHTML = ""; // Clear any existing content
             if (files.length > 0) {
@@ -600,47 +612,94 @@
             } else {
                 filesContainer.textContent = "No files uploaded";
             }
-
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while fetching the assignment details.');
+            alert('An error occurred while fetching the assignment details. Please try again.');
         }
     }
 
     // Call the function on page load
     fetchAssignmentDetails();
 
-    async function submitAssignment(event) {
-        event.preventDefault();
+    async function fetchStudentAssignmentDetails() {
+        // Get the studentAssignmentId from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const studentAssignmentId = urlParams.get('id');
 
-        const form = event.target.closest('form');
-        const formData = new FormData(form);
-
-        // Log all form data for debugging
-        for (const [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
+        if (!studentAssignmentId) {
+            alert("Missing StudentAssignment ID in the URL.");
+            return;
         }
 
-
         try {
-            const response = await fetch('/student-assignment/submit', {
-                method: 'POST',
-                body: formData,
-            });
-
-            if (response.ok) {
-                alert('Assignment submitted successfully!');
-                window.location.href = '/list-student-assignment.html';
-            } else {
-                const errorData = await response.json();
-                alert(`Failed to submit assignment: ${errorData.message || 'Please try again.'}`);
+            // Fetch the StudentAssignment details
+            const response = await fetch(`student-assignment/detail?studentAssignmentId=${studentAssignmentId}`);
+            if (!response.ok) {
+                throw new Error('Error fetching StudentAssignment:' + response.statusText);
             }
+
+            const studentAssignment = await response.json();
+            console.log("Fetched Assignment:", studentAssignment); // Debugging log
+
+            // Populate form fields with the fetched data
+            document.getElementById('submitted-assignment-description').textContent = studentAssignment.description;
+            document.getElementById('submitted-assignment-content').textContent = studentAssignment.content;
+
+            const formattedDate = new Date(studentAssignment.date).toISOString().split("T")[0];
+            document.getElementById('submitted-created-date').textContent = formattedDate;
+
         } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
+            console.error("Error loading StudentAssignment details:", error);
+            alert("Failed to load StudentAssignment details. Please try again.");
         }
     }
 
+    fetchStudentAssignmentDetails()
+
+    async function submitGrade() {
+        const mark = document.getElementById('markInput').value;
+        const status = "MARKED";
+
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const submittedAssignmentId = urlParams.get('id'); // Get the Submitted Assignment ID from the URL
+
+        if (!submittedAssignmentId) {
+            alert('Submitted Assignment ID is missing in the URL.');
+            return;
+        }
+
+        // Validate the input
+        if (mark === "" || isNaN(mark) || mark < 0 || mark > 100) {
+            alert("Please enter a valid mark between 0 and 100.");
+            return;
+        }
+
+        try {
+            // Call the backend API to update the submitted assignment
+            const response = await fetch(`/assignment/grade-submitted-assignment?studentAssignmentId=${submittedAssignmentId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    mark: parseInt(mark),
+                    status: status
+                })
+            });
+
+            if (response.ok) {
+                alert('Grade submitted successfully!');
+                window.reload();
+            } else {
+                const errorData = await response.json();
+                alert(`Failed to submit grade: ${errorData.message || response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Error grading assignment:', error);
+            alert('An error occurred while submitting the grade. Please try again.');
+        }
+    }
 
 </script>
 <script>
