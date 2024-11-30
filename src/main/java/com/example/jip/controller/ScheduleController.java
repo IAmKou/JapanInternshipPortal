@@ -20,6 +20,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -97,8 +98,33 @@ public class ScheduleController {
     }
 
     @GetMapping("/getS/{studentId}")
-    public List<Object[]> getStudentSchedule(@PathVariable int studentId) {
-        return scheduleRepository.findStudentSchedule(studentId);
+    public List<StudentScheduleDTO> getStudentSchedule(@PathVariable int studentId) {
+
+        List<Object[]> result = scheduleRepository.findStudentSchedule(studentId);
+        List<StudentScheduleDTO> scheduleDTOs = new ArrayList<>();
+        for (Object[] row : result) {
+            int scheduleId = (int) row[0];  // schedule_id
+            String className = (String) row[1];  // class_name
+            String teacherName = (String) row[2];
+            String location = (String) row[3];// teacher_name
+            Schedule.dayOfWeek dayOfWeek = Schedule.dayOfWeek.valueOf((String) row[4]);
+            Time startTime = (Time) row[5];  // start_time
+            Time endTime = (Time) row[6];  // end_time
+            Attendant.Status attendanceStatus = Attendant.Status.valueOf((String) row[7]);  // attendance_status
+            Date date = (Date) row[8];  // date
+            String description = (String) row[9];  // description
+            String event = (String) row[10];  // event
+
+            // Create DTO and add to list
+            StudentScheduleDTO dto = new StudentScheduleDTO(
+                    scheduleId, className, teacherName,location, dayOfWeek, startTime, endTime,
+                    attendanceStatus, date, description, event
+            );
+
+            scheduleDTOs.add(dto);
+        }
+
+        return scheduleDTOs;
     }
 
     @GetMapping("/getT/{teacherId}")

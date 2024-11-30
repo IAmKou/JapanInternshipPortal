@@ -3,24 +3,27 @@ package com.example.jip.dto;
 import com.example.jip.entity.Attendant;
 import com.example.jip.entity.Schedule;
 
+import java.sql.Date;
 import java.sql.Time;
 
 public class StudentScheduleDTO {
     private int scheduleId;
     private String className;
     private String teacherName;
+    private String location;
     private Schedule.dayOfWeek dayOfWeek;
     private Time startTime;
     private Time endTime;
     private Attendant.Status attendanceStatus;
-    private String date;
+    private Date date;
     private String description;
     private String event;
 
-    public StudentScheduleDTO(int scheduleId, String className, String teacherName, Schedule.dayOfWeek dayOfWeek, Time startTime, Time endTime, Attendant.Status attendanceStatus, String date, String description, String event) {
+    public StudentScheduleDTO(int scheduleId, String className, String teacherName, String location, Schedule.dayOfWeek dayOfWeek, Time startTime, Time endTime, Attendant.Status attendanceStatus, Date date, String description, String event) {
         this.scheduleId = scheduleId;
         this.className = className;
         this.teacherName = teacherName;
+        this.location = location;
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -30,6 +33,13 @@ public class StudentScheduleDTO {
         this.event = event;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public int getScheduleId() {
         return scheduleId;
@@ -87,11 +97,11 @@ public class StudentScheduleDTO {
         this.attendanceStatus = attendanceStatus;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

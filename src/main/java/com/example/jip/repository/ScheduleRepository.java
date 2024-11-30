@@ -21,10 +21,11 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
             "s.id AS schedule_id, " +
             "c.name AS class_name, " +
             "t.fullname AS teacher_name, " +
+            "s.location, " +
             "s.day_of_week, " +
             "s.start_time, " +
             "s.end_time, " +
-            "COALESCE(a.status, 'No Record') AS attendance_status, " +
+            "COALESCE(a.status, 'NoRecord') AS attendance_status, " +
             "s.date, " +
             "s.description, " +
             "s.event " +
