@@ -1,9 +1,12 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.ScheduleDTO;
+import com.example.jip.dto.StudentScheduleDTO;
+import com.example.jip.entity.Attendant;
 import com.example.jip.entity.Schedule;
 import com.example.jip.repository.ScheduleRepository;
 import com.example.jip.services.ScheduleServices;
+import jakarta.persistence.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -94,9 +97,8 @@ public class ScheduleController {
     }
 
     @GetMapping("/getS/{studentId}")
-    public List<ScheduleDTO> getScheduleForStudent(@PathVariable int studentId) {
-        List<ScheduleDTO> result = scheduleRepository.findStudentSchedule(studentId);
-        return result;
+    public List<Object[]> getStudentSchedule(@PathVariable int studentId) {
+        return scheduleRepository.findStudentSchedule(studentId);
     }
 
     @GetMapping("/getT/{teacherId}")
