@@ -447,6 +447,7 @@
         if (userDetails) {
             const userFullNameElements = document.querySelectorAll('.userFullName');
             const userRoleElements = document.querySelectorAll('.userRole');
+            const userId = userDetails.id;
 
             if (userDetails.roleName === "Admin") {
                 // Display only username and role for Admin
