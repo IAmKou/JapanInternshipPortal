@@ -492,34 +492,34 @@
           </div>
           <form id="editThreadForm" method="POST" enctype="multipart/form-data" class="new-added-form">
             <div class="row">
-              <!-- Hidden input for user_id -->
+              <!-- Hidden input for thread ID -->
               <input type="hidden" name="creatorId" id="userId" value="">
-              <input type="hidden" id="threadId" value="">
+              <input type="hidden" id="editThreadId" name="threadId" value=""> <!-- Updated ID -->
 
               <div class="col-7 form-group">
                 <label>Topic Name</label>
-                <input type="text" name="topicName" id="topicName" placeholder="Enter title" class="form-control">
+                <input type="text" name="topicName" id="editTopicName" placeholder="Enter title" class="form-control">
               </div>
 
               <div class="col-7 form-group">
                 <label>Description</label>
-                <textarea class="textarea form-control" name="description" id="description" cols="10" rows="9"></textarea>
+                <textarea class="textarea form-control" name="description" id="editDescription" cols="10" rows="9"></textarea>
               </div>
 
               <div class="col-12 form-group">
                 <label class="text-dark-medium">Current Image:</label>
                 <div class="thread-thumbnail">
-                  <img src="data:image/png;base64,${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">
-                </div>
-                <div id="currentImageContainer">
-                  <!-- Placeholder for the current image -->
+                  <!-- Placeholder for the current image if it exists -->
+                  <div id="currentImageContainer">
+                    <!-- This will be dynamically populated by JS -->
+                  </div>
                 </div>
                 <label class="text-dark-medium mt-2">Update Image:</label>
-                <input type="file" name="imageFile" id="imageFile" class="form-control-file">
+                <input type="file" name="imageFile" id="editImageFile" class="form-control-file">
               </div>
 
               <div class="col-lg-6 col-12 form-group">
-                <button type="button" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" onclick="openConfirmationModal()">Save</button>
+                <button type="button" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" onclick="submitEditForm()">Save</button>
                 <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
               </div>
             </div>
@@ -587,41 +587,46 @@
 </body>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const threadId = new URLSearchParams(window.location.search).get("id");
+    // Correct query parameter for 'threadId'
+    const urlParams = new URLSearchParams(window.location.search);
+    const threadId = urlParams.get("threadId");  // Access 'threadId' from the URL
 
     if (threadId) {
-      document.getElementById("threadId").value = threadId;
-
-      // Fetch the thread data
+      // Fetch and populate data
       fetch(`/thread/${threadId}`)
-              .then((response) => response.json())
-              .then((data) => {
-                // Populate the form fields with the current data
-                document.getElementById("userId").value = data.creatorId;
-                document.getElementById("topicName").value = data.topicName;
-                document.getElementById("description").value = data.description;
+              .then(response => response.json())
+              .then(data => {
+                // Populate form with existing data
+                document.getElementById("editThreadId").value = threadId;  // Set threadId
+                document.getElementById("editTopicName").value = data.topicName;  // Set topic name
+                document.getElementById("editDescription").value = data.description;  // Set description
+                document.getElementById("userId").value = data.creatorId;  // Set creatorId
 
-                // Display the current image
+                // Handle current image
                 const currentImageContainer = document.getElementById("currentImageContainer");
                 if (data.image) {
-                  currentImageContainer.innerHTML = `<img src="data:image/png;base64,${data.image}" alt="Current Image" style="max-width: 200px;">`;
+                  const imgElement = document.createElement("img");
+                  imgElement.src = `data:image/png;base64,${data.image}`;
+                  imgElement.alt = "Current Image";
+                  imgElement.style.maxWidth = "200px";  // Style for the image
+
+                  currentImageContainer.innerHTML = '';  // Clear previous content
+                  currentImageContainer.appendChild(imgElement);
                 } else {
                   currentImageContainer.innerHTML = `<p>No image uploaded</p>`;
                 }
               })
-              .catch((error) => {
+              .catch(error => {
                 console.error("Error fetching thread data:", error);
                 alert("Error loading thread data.");
               });
+    } else {
+      console.error("No threadId found in URL");
     }
   });
 
-  // Open the confirmation modal
-  function openConfirmationModal() {
-    $("#confirmationModal").modal("show");
-  }
 
-  // Submit the form data
+  // Function to submit the edited form
   function submitEditForm() {
     const threadId = document.getElementById("editThreadId").value;
     const topicName = document.getElementById("editTopicName").value;
@@ -650,29 +655,9 @@
             .catch(error => console.error("Error updating thread:", error));
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const threadId = urlParams.get("threadId");
-
-    if (threadId) {
-      fetch(`/thread/${threadId}`)
-              .then(response => response.json())
-              .then(data => {
-                populateEditForm(data);
-              })
-              .catch(error => console.error("Error fetching thread data:", error));
-    } else {
-      console.error("No threadId found in URL");
-    }
-  });
-
-  function populateEditForm(thread) {
-    document.getElementById("topicName").value = thread.topicName;
-    document.getElementById("description").value = thread.description;
-    document.getElementById("userId").value = thread.creatorId;
-    // Handle displaying the image if necessary
-  }
 </script>
+
+
 
 <script>
   const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
