@@ -650,58 +650,60 @@
 <!-- Custom Js -->
 <script src="js/main.js"></script>
 
-<!--<script>-->
-<!--    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));-->
-<!--    if (userDetails) {-->
-<!--        const userFullNameElements = document.querySelectorAll('.userFullName');-->
-<!--        const userRoleElements = document.querySelectorAll('.userRole');-->
+<script>
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    if (userDetails) {
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        const userRoleElements = document.querySelectorAll('.userRole');
 
-<!--        // Display user information based on their role-->
-<!--        if (userDetails.roleName === "ADMIN") {-->
-<!--            userFullNameElements.forEach(element => {-->
-<!--                element.textContent = userDetails.username;-->
-<!--            });-->
-<!--            userRoleElements.forEach(element => {-->
-<!--                element.textContent = userDetails.roleName;-->
-<!--            });-->
-<!--            document.getElementById("teacher-view").style.display = "none";-->
-<!--            document.getElementById("student-view").style.display = "none";-->
-<!--        } else if (userDetails.roleName === "TEACHER") {-->
-<!--            userFullNameElements.forEach(element => {-->
-<!--                element.textContent = userDetails.fullName;-->
-<!--            });-->
-<!--            userRoleElements.forEach(element => {-->
-<!--                element.textContent = userDetails.roleName;-->
-<!--            });-->
-<!--            document.getElementById("teacher-view").style.display = "block";-->
-<!--            document.getElementById("student-view").style.display = "none";-->
-<!--        } else if (userDetails.roleName === "STUDENT") {-->
-<!--            userFullNameElements.forEach(element => {-->
-<!--                element.textContent = userDetails.fullName;-->
-<!--            });-->
-<!--            userRoleElements.forEach(element => {-->
-<!--                element.textContent = userDetails.roleName;-->
-<!--            });-->
-<!--            document.getElementById("teacher-view").style.display = "none";-->
-<!--            document.getElementById("student-view").style.display = "block";-->
-<!--            document.getElementById("student-view1").style.display = "block";-->
-<!--        } else {-->
-<!--            console.warn("Role not recognized: ", userDetails.roleName);-->
-<!--        }-->
-<!--    } else {-->
-<!--        console.error("User details not found in sessionStorage");-->
-<!--    }-->
-<!--</script>-->
+        // Display user information based on their role
+        if (userDetails.roleName === "ADMIN") {
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.username;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+            document.getElementById("teacher-view").style.display = "none";
+            document.getElementById("student-view").style.display = "none";
+        } else if (userDetails.roleName === "TEACHER") {
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+            document.getElementById("teacher-view").style.display = "block";
+            document.getElementById("student-view").style.display = "none";
+        } else if (userDetails.roleName === "STUDENT") {
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+            document.getElementById("teacher-view").style.display = "none";
+            document.getElementById("student-view").style.display = "block";
+            document.getElementById("student-view1").style.display = "block";
+        } else {
+            console.warn("Role not recognized: ", userDetails.roleName);
+        }
+    } else {
+        console.error("User details not found in sessionStorage");
+    }
+</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Initialize variables
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
         if (!userDetails) {
             console.error("User details not found in sessionStorage");
+            return; // Stop script execution if no user details found
         }
-        const currentUserName = userDetails ? userDetails.username : '';
 
+        const currentUserId = userDetails.id;
         const prevPageButton = document.getElementById("prevPage");
         const nextPageButton = document.getElementById("nextPage");
         const pageNumber = document.getElementById("pageNumber");
@@ -737,8 +739,7 @@
 
         // Function to render threads on the page
         function renderThreads(threads) {
-            threadList.innerHTML = ""; // Clear any existing threads
-            const currentUserId = userDetails ? userDetails.id : null; // Ensure currentUserId is defined from sessionStorage
+            threadList.innerHTML = ""; // Clear existing threads
 
             threads.forEach(thread => {
                 const threadBox = document.createElement("div");
@@ -746,40 +747,43 @@
                 threadBox.setAttribute("data-thread-id", thread.id);
                 const formattedDate = new Date(thread.dateCreated).toLocaleDateString();
 
-                // Add the thread content and the dropdown for actions (Edit/Delete)
+                // Add thread content and the dropdown for actions (Edit/Delete)
                 threadBox.innerHTML = `
-        <div class="thread-thumbnail">
-            <img src="data:image/png;base64,${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">
-        </div>
-        <div class="thread-content">
-            <div class="card height-auto">
-                <div class="heading-layout1">
-                    <div class="item-title d-flex justify-content-between align-items-center">
-                        <div class="thread-title">
-                            <a href="post.html?id=${thread.id}">${thread.topicName}</a>
-                        </div>
-                        <div class="spacer"></div>
-                        <div class="dropdown">
-                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <!-- Show Update and Delete options only for thread creator -->
-                                ${currentUserId && thread.creatorId === currentUserId ? `
-                                    <a class="dropdown-item edit-thread" href="/edit-forum.html?threadId=${thread.id}">
-                                        <i class="fas fa-cogs text-dark-pastel-green"></i> Edit
+            <div class="thread-thumbnail">
+                <img src="data:image/png;base64,${thread.image || 'default-thumbnail.jpg'}" alt="Thread Image">
+            </div>
+            <div class="thread-content">
+                <div class="card height-auto">
+                    <div class="heading-layout1">
+                        <div class="item-title d-flex justify-content-between align-items-center">
+                            <div class="thread-title">
+                                <a href="post.html?id=${thread.id}">${thread.topicName}</a>
+                            </div>
+                            <div class="spacer"></div>
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <!-- Show Update and Delete options only for the thread creator -->
+                                    ${thread.creatorId === currentUserId ? `
+                                        <a class="dropdown-item edit-thread" href="/edit-forum.html?threadId=${thread.id}">
+                                            <i class="fas fa-cogs text-dark-pastel-green"></i> Edit
+                                        </a>
+                                        <a class="dropdown-item delete-thread" href="#" data-thread-id="${thread.id}">
+                                            <i class="fas fa-times text-orange-red"></i> Delete
+                                        </a>
+                                    ` : ""}
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-redo-alt text-orange-peel"></i> Refresh
                                     </a>
-                                    <a class="dropdown-item delete-thread" href="#" data-thread-id="${thread.id}">
-                                        <i class="fas fa-times text-orange-red"></i> Delete
-                                    </a>
-                                ` : ""}
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="thread-description">${thread.description}</div>
+                    <div class="thread-date">Created on: ${formattedDate}</div>
+                    <div class="thread-author" style="flex-grow: 2; text-align: end;">Author: ${thread.creatorName || 'Unknown'}</div>
                 </div>
-                <div class="thread-description">${thread.description}</div>
-                <div class="thread-date">Created on: ${formattedDate}</div>
-                <div class="thread-author" style="flex-grow: 2; text-align: end;">Author: ${thread.creatorName || 'Unknown'}</div>
-            </div>
-        </div>`;
+            </div>`;
                 threadList.appendChild(threadBox);
             });
         }
@@ -856,9 +860,8 @@
             }
         });
 
-        // Initialize by fetching the first page
+        // Initial fetch of threads for the first page
         fetchThreads(currentPage);
-
     });
 
 </script>

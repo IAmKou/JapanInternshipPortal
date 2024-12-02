@@ -41,10 +41,10 @@ public class ThreadServices {
 
     // Get creator's username by their ID
     public String getCreatorName(int creatorId) {
-        // Using Optional to handle case where account might not exist more gracefully
+        // Using Optional to return a fallback value if account is not found
         return accountRepository.findById(creatorId)
                 .map(Account::getUsername)
-                .orElseThrow(() -> new RuntimeException("Creator not found"));
+                .orElse("Unknown");  // Return "Unknown" if creator is not found
     }
 
     // Get all threads with pagination
