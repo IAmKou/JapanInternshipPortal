@@ -39,4 +39,5 @@ public class NotificationDTO {
     public void setOwnerId(int ownerId) {
         this.ownerId = ownerId;
     }
+
 }

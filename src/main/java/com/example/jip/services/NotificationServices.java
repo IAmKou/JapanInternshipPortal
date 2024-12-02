@@ -8,6 +8,7 @@ import com.example.jip.repository.NotificationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,5 +47,16 @@ public class NotificationServices {
 
     public List<Notification> getAllNotifications() {
         return notificationRepository.findAll();
+    }
+
+    public List<Notification> getNotificationsOfAdmin() {
+        List<Notification> listAll = notificationRepository.findAll();
+        List<Notification> notifications = new ArrayList<>();
+        for (Notification notification : listAll) {
+            if (notification.getAccount().getRole().getName().equals("ADMIN")) {
+                notifications.add(notification);
+            }
+        }
+        return notifications;
     }
 }
