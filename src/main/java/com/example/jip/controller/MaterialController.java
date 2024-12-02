@@ -192,12 +192,28 @@ public class MaterialController {
     public ResponseEntity<List<MaterialDTO>> getAllMaterials() {
         List<Material> materials = materialRepository.findAll();
         List<MaterialDTO> materialDTOs = materials.stream().map(material -> {
-            MaterialDTO dto = new MaterialDTO();
-            dto.setId(material.getId());
-            dto.setTitle(material.getTitle());
-            dto.setImg(material.getImg());
+            // Khởi tạo TeacherDTO và lấy teacherId
+            TeacherDTO teacherDTO = new TeacherDTO();
+            if (material.getTeacher() != null) {
+                // Lấy teacherId từ đối tượng Teacher và gán vào TeacherDTO
+                teacherDTO.setId(material.getTeacher().getId());
+                // Nếu cần thêm thông tin khác về Teacher, bạn có thể gán thêm vào teacherDTO
+            }
+
+            // Tạo MaterialDTO với thông tin từ Material và TeacherDTO
+            MaterialDTO dto = new MaterialDTO(
+                    material.getId(),
+                    material.getTitle(),
+                    material.getContent(),
+                    material.getImg(),
+                    material.getCreated_date(),
+                    teacherDTO,  // Gán TeacherDTO vào MaterialDTO
+                    null  // imgFile không có trong trường hợp này
+            );
+
             return dto;
         }).collect(Collectors.toList());
+
         return ResponseEntity.ok(materialDTOs);
     }
     @DeleteMapping("/delete/{id}")
