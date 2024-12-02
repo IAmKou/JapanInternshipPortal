@@ -2,13 +2,16 @@ package com.example.jip.controller;
 
 import com.example.jip.dto.NotificationDTO;
 import com.example.jip.entity.Notification;
+import com.example.jip.repository.NotificationRepository;
 import com.example.jip.services.NotificationServices;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,11 +19,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/notification")
 public class NotificationController {
 
-    private final NotificationServices notificationServices;
+    @Autowired
+    private NotificationServices notificationServices;
 
-    public NotificationController(NotificationServices notificationServices) {
-        this.notificationServices = notificationServices;
-    }
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @PostMapping("/create")
     public RedirectView createNotification(@RequestParam("title") String title,
@@ -50,6 +53,9 @@ public class NotificationController {
         if (notificationDTOList.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
+
+        // Reverse the list to show the latest notifications first
+        Collections.reverse(notificationDTOList);
 
         return ResponseEntity.ok(notificationDTOList);
     }
