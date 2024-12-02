@@ -1,5 +1,6 @@
 package com.example.jip.services;
 
+import com.example.jip.dto.ThreadDTO;
 import com.example.jip.entity.Account;
 import com.example.jip.entity.Thread;
 import com.example.jip.repository.AccountRepository;
@@ -49,7 +50,7 @@ public class ThreadServices {
 
     // Get all threads with pagination
     public Page<Thread> getAllThread(Pageable pageable) {
-        return threadRepository.findAll(pageable);
+        return threadRepository.findAll(pageable); // Just return the threads without mapping to DTO
     }
 
     // Get a specific thread by ID
