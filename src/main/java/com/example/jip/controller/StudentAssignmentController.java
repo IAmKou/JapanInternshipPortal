@@ -1,16 +1,12 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.StudentDTO;
-import com.example.jip.dto.TeacherDTO;
-import com.example.jip.dto.request.assignment.AssignmentUpdateRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentSubmitRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentUpdateRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.dto.response.studentAssignment.StudentAssignmentResponse;
 import com.example.jip.entity.Assignment;
 import com.example.jip.entity.Student;
-import com.example.jip.entity.StudentAssignment;
-import com.example.jip.entity.Teacher;
 import com.example.jip.repository.AssignmentRepository;
 import com.example.jip.repository.StudentAssignmentRepository;
 import com.example.jip.repository.StudentRepository;
@@ -20,18 +16,14 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/student-assignment")
@@ -73,7 +65,20 @@ public class StudentAssignmentController {
     public ResponseEntity<List<StudentAssignmentResponse>> getSubmittedAssignments(@RequestParam("studentId") int studentId) {
         try {
 
-            List<StudentAssignmentResponse> responses = studentAssignmentServices.getSubmittedAssignments(studentId);
+            List<StudentAssignmentResponse> responses = studentAssignmentServices.getSubmittedAssignmentByStudentId(studentId);
+
+            return ResponseEntity.ok(responses);
+        } catch (Exception e) {
+            log.error("Error fetching submitted assignments: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+        }
+    }
+
+    @GetMapping("/list-submitted-assignments-student")
+    public ResponseEntity<List<StudentAssignmentResponse>> getSubmittedAssignmentsByStudentId(@RequestParam("studentId") int studentId) {
+        try {
+
+            List<StudentAssignmentResponse> responses = studentAssignmentServices.getSubmittedAssignmentByStudentId(studentId);
 
             return ResponseEntity.ok(responses);
         } catch (Exception e) {

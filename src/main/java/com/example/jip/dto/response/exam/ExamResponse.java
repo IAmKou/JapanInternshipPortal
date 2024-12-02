@@ -1,6 +1,5 @@
 package com.example.jip.dto.response.exam;
 
-import com.example.jip.entity.Teacher;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;

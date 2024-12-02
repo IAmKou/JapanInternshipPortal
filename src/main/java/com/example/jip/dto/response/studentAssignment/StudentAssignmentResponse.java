@@ -26,5 +26,6 @@ public class StudentAssignmentResponse {
     String status;
     int studentId;
     int assignmentId;
+    String assignmentName;
 
 }

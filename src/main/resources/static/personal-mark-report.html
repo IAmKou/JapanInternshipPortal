@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>JIP | Teacher Details</title>
+  <title>JIP | Personal Mark Report</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Favicon -->
@@ -441,12 +441,14 @@
     <div class="dashboard-content-one">
       <!-- Breadcubs Area Start Here -->
       <div class="breadcrumbs-area">
-        <h2>Assignment Detail</h2>
+        <h3>Student Mark Report</h3>
         <ul>
           <li>
-            <a href="list-submitted-assignments.html">All Submitted Assignments</a>
+            <a href="/teacher.html">Home</a>
           </li>
-          <li>Submitted Assignment Detail</li>
+          <li>Student Mark Report</li>
+        </ul>
+        <ul>
         </ul>
       </div>
       <!-- Breadcubs Area End Here -->
@@ -455,79 +457,68 @@
         <div class="card-body">
           <div class="heading-layout1">
             <div class="item-title">
-              <h2>Assignment Detail</h2>
-              <h3 class="text-dark-medium font-medium">Description</h3>
-              <p id="assignment-description"></p>
+              <h2>Student: </h2>
+              <h3 id="studentName"></h3>
             </div>
+
           </div>
 
-          <div class="single-info-details">
-            <div class="item-content">
-              <h3 class="text-dark-medium font-medium">Content</h3>
-              <p id="assignment-content"></p>
-              <table class="table text-nowrap">
-                <tbody>
+          <div class="heading-layout1">
+            <div class="item-title">
+              <h2>All Assigment Submittion Results</h2>
+            </div>
+
+          </div>
+
+          <div class="table-responsive">
+            <table class="table display data-table text-nowrap">
+              <thead>
+              <tr>
+
+                <th class="col-xl-4 col-lg-6 col-12">Name</th>
+                <th class="col-xl-2 col-lg-6 col-12">Mark</th>
+              </tr>
+              </thead>
+              <tbody id="assignmentSubmittion_list">
+
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card height-auto">
+          <div class="card-body">
+            <div class="heading-layout1">
+              <div class="item-title">
+                <h2>All Exam Results</h2>
+              </div>
+
+            </div>
+
+            <div class="table-responsive">
+              <table class="table display data-table text-nowrap">
+                <thead>
                 <tr>
-                  <td>Created Date:</td>
-                  <td id="created-date"></td>
+
+                  <th class="col-xl-4 col-lg-6 col-12">Name</th>
+                  <th class="col-xl-2 col-lg-6 col-12">Mark</th>
                 </tr>
-                <tr>
-                  <td>End Date:</td>
-                  <td id="end-date"></td>
-                </tr>
-                <tr>
-                  <td>For Class:</td>
-                  <td id="assignment-classes"></td>
-                </tr>
-                <tr>
-                  <td>File:</td>
-                  <td id="assignment-files"></td>
-                </tr>
+                </thead>
+                <tbody id="examResult_list">
+
+
                 </tbody>
               </table>
             </div>
+
           </div>
+
         </div>
-      </div>
 
-      <div class="card height-auto">
-        <div class="card-body">
-          <div class="heading-layout1">
-            <div class="item-title">
-              <h2 class="text-dark-medium font-medium">Your Submittion</h2>
-
-            </div>
-          </div>
-
-          <div class="single-info-details">
-            <form class="new-added-form" action="javascript:void(0);" onsubmit="updateAssignment(event)">
-              <div class="row">
-
-                <div class="col-xl-8 col-lg-6 col-12 form-group">
-                  <label for="description">Desciption *</label>
-                  <input type="text" class="form-control" name="description" id="description" required>
-                </div>
-                <div class="col-xl-4 col-lg-6 col-12 form-group">
-                  <label for="created_date">Create Date </label>
-                  <input type="date" class="form-control" name="created_date" id="created_date" readonly>
-                </div>
-
-                <div class="col-xl-12 col-lg-12 col-12 form-group">
-                  <label for="content">Content *</label>
-                  <textarea id="content" class="form-control" name="content" rows="4" required></textarea>
-                </div>
-
-                <div class="col-12 form-group mg-t-8">
-                  <button type="submit" onclick="updateAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Update</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
       </div>
     </div>
+    <!-- Page Area End Here -->
   </div>
-  <!-- Page Area End Here -->
 </div>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
@@ -543,243 +534,130 @@
 <script src="js/main.js"></script>
 <!-- fetch user -->
 <script>
+  document.addEventListener('DOMContentLoaded', async function () {
+    // Fetch and display student's name
+    async function fetchAndDisplayStudentName() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const studentId = urlParams.get('studentId');
 
-  async function fetchAssignmentDetails() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const studentAssignmentId = urlParams.get('id'); // Get the StudentAssignment ID from the URL
+      try {
+        const response = await fetch(`/student/getStudent?studentId=${studentId}`);
+        if (!response.ok) {
+          throw new Error(`Error fetching student: ${response.statusText}`);
+        }
 
-    if (!studentAssignmentId) {
-      console.error("StudentAssignment ID is missing in the URL.");
-      alert("Invalid access: No StudentAssignment ID provided.");
-      return;
+        const student = await response.json();
+        document.getElementById("studentName").textContent = student.fullname;
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while fetching the student name.');
+      }
     }
 
-    try {
-      // Fetch the assignment details using the studentAssignmentId
-      const response = await fetch(`/student-assignment/assignment/${studentAssignmentId}`);
+    // Fetch and display submitted assignments
+    async function fetchAndDisplayAssignmentSubmission() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const studentId = urlParams.get('studentId');
 
-      if (!response.ok) {
-        throw new Error('Error fetching assignment details');
-      }
+      try {
+        const response = await fetch(`/student-assignment/list-submitted-assignments-student?studentId=${studentId}`);
+        if (!response.ok) {
+          throw new Error(`Error fetching assignments: ${response.statusText}`);
+        }
 
-      const assignment = await response.json();
-      console.log('Assignment details:', assignment);
+        const assignments = await response.json();
+        const tableBody = document.getElementById("assignmentSubmittion_list");
+        tableBody.innerHTML = "";
 
-      // Populate the form fields with the fetched assignment details
-      document.getElementById('assignment-description').textContent = assignment.description || ""; // Populate description field
-      document.getElementById('assignment-content').textContent = assignment.content || ""; // Populate content field
-      document.getElementById('created-date').textContent = assignment.created_date || "N/A"; // Populate created date
-      document.getElementById('end-date').textContent = assignment.end_date || "N/A"; // Display end date
+        if (assignments.length === 0) {
+          const noDataRow = document.createElement("tr");
+          noDataRow.innerHTML = `<td colspan="2" class="text-center">No submissions available.</td>`;
+          tableBody.appendChild(noDataRow);
+          return;
+        }
 
-      // Optionally display classes and files (if needed for reference)
-      const classes = assignment.classes || [];
-      document.getElementById('assignment-classes').textContent =
-              classes.length > 0 ? classes.join(", ") : "No classes assigned";
-
-      const files = assignment.files || [];
-      const filesContainer = document.getElementById('assignment-files');
-      filesContainer.innerHTML = ""; // Clear any existing content
-      if (files.length > 0) {
-        files.forEach(fileUrl => {
-          const link = document.createElement('a');
-          link.href = fileUrl;
-          link.textContent = fileUrl.split('/').pop(); // Display the file name
-          link.target = '_blank';
-          link.style.display = 'block'; // Show each file on a new line
-          filesContainer.appendChild(link);
+        assignments.forEach(assignment => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${assignment.assignmentName}</td>
+                    <td>${assignment.mark !== null ? assignment.mark : "N/A"}</td>
+                `;
+          tableBody.appendChild(row);
         });
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Failed to load assignments. Please try again later.");
+      }
+    }
+
+    // Fetch and display exam results
+    async function fetchAndDisplayExamResults() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const studentId = urlParams.get('studentId');
+
+      try {
+        const response = await fetch(`/examResult/list-exam-results-student?studentId=${studentId}`);
+        if (!response.ok) {
+          throw new Error(`Error fetching exam results: ${response.statusText}`);
+        }
+
+        const examResults = await response.json();
+        const tableBody = document.getElementById("examResult_list");
+        tableBody.innerHTML = "";
+
+        if (examResults.length === 0) {
+          const noDataRow = document.createElement("tr");
+          noDataRow.innerHTML = `<td colspan="2" class="text-center">No exam results available.</td>`;
+          tableBody.appendChild(noDataRow);
+          return;
+        }
+
+        examResults.forEach(result => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${result.examName}</td>
+                    <td>${result.mark !== null ? result.mark : "N/A"}</td>
+                `;
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Failed to load exam results. Please try again later.");
+      }
+    }
+
+    // Fetch user details and ensure appropriate content is displayed
+    function displayUserDetails() {
+      const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+      if (userDetails && userDetails.roleName === "STUDENT") {
+        document.getElementById("student-view").style.display = "block";
       } else {
-        filesContainer.textContent = "No files uploaded";
+        document.getElementById("student-view").style.display = "none";
       }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred while fetching the assignment details. Please try again.');
-    }
-  }
-
-  // Call the function on page load
-  fetchAssignmentDetails();
-
-  async function fetchStudentAssignmentDetails() {
-    // Get the studentAssignmentId from the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const studentAssignmentId = urlParams.get('id');
-
-    if (!studentAssignmentId) {
-      alert("Missing StudentAssignment ID in the URL.");
-      return;
     }
 
-    try {
-      // Fetch the StudentAssignment details
-      const response = await fetch(`student-assignment/detail?studentAssignmentId=${studentAssignmentId}`);
-      if (!response.ok) {
-        throw new Error('Error fetching StudentAssignment for update: ' + response.statusText);
-      }
+    // Initialize
+    displayUserDetails();
+    await fetchAndDisplayStudentName();
+    await fetchAndDisplayAssignmentSubmission();
+    await fetchAndDisplayExamResults();
+  });
 
-      const studentAssignment = await response.json();
-      console.log("Fetched Assignment:", studentAssignment); // Debugging log
+  // Function to load the sidebar
+  // function loadSidebar() {
+  //     fetch('teacher-sidebar.html')
+  //         .then(response => response.text())
+  //         .then(data => {
+  //             document.getElementById('sidebar-container').innerHTML = data;
+  //         })
+  //         .catch(error => console.error('Error loading sidebar:', error));
+  // }
+  //
+  // // Call the function when the page loads
+  // document.addEventListener('DOMContentLoaded', loadSidebar);
 
-      // Populate form fields with the fetched data
-      document.getElementById('description').value = studentAssignment.description;
-      document.getElementById('content').value = studentAssignment.content;
-
-      // Format date to yyyy-MM-dd for input fields
-      const formattedDate = new Date(studentAssignment.date).toISOString().split("T")[0];
-      document.getElementById('created_date').value = formattedDate;
-
-    } catch (error) {
-      console.error("Error loading StudentAssignment details:", error);
-      alert("Failed to load StudentAssignment details. Please try again.");
-    }
-  }
-
-  fetchStudentAssignmentDetails()
-
-  async function updateAssignment(event) {
-    event.preventDefault(); // Prevent default form submission behavior
-
-    // Get the studentAssignmentId from the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const studentAssignmentId = urlParams.get('id');
-
-    // Prepare for update on form submission
-    try {
-      // Fetch values from the form
-      const description = document.getElementById('description').value.trim();
-      const content = document.getElementById('content').value.trim();
-      const currentDate = new Date().toISOString().split("T")[0];
-
-      // Validate inputs
-      if (!description || !content) {
-        alert("Please fill in all required fields.");
-        return;
-      }
-
-      // Prepare the data to send in the request
-      const formData = new FormData();
-      formData.append("description", description);
-      formData.append("content", content);
-      formData.append("date", currentDate);
-
-      // Make the PUT request to update the StudentAssignment
-      const response = await fetch(`student-assignment/update/${studentAssignmentId}`, {
-        method: "PUT",
-        body: formData,
-      });
-
-      if (response.ok) {
-        // Update successful
-        alert("StudentAssignment updated successfully.");
-        window.location.href = '/list-submitted-assignments.html';
-      } else if (response.status === 404) {
-        alert("StudentAssignment not found.");
-      } else if (response.status === 400) {
-        const errorMessage = await response.text();
-        alert(`Failed to update StudentAssignment: ${errorMessage}`);
-      } else {
-        alert("An unexpected error occurred. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error updating StudentAssignment:", error);
-      alert("An error occurred while updating the StudentAssignment. Please try again.");
-    }
-  }
-
-
-</script>
-<script>
-
-  (async function fetchUserData() {
-    try {
-      // Fetch user details from the server
-      const response = await fetch('/user-detail');
-      if (response.ok) {
-        const userData = await response.json();
-        // Store user data in sessionStorage for later use
-        sessionStorage.setItem('userDetails', JSON.stringify(userData));
-        console.log("User data stored in sessionStorage:", userData);
-
-        // Populate the form and user-specific UI elements
-        populateUserDetails(userData);
-      } else {
-        console.error("Failed to fetch user details:", response.statusText);
-        alert("Failed to fetch user details. Please log in again.");
-      }
-    } catch (error) {
-      console.error("Error fetching user details:", error);
-      alert("An error occurred while fetching user details. Please try again later.");
-    }
-  })();
-
-  function populateUserDetails(userDetails) {
-    if (!userDetails) {
-      console.error("User details not available.");
-      alert("User details not found. Please log in.");
-      return;
-    }
-
-    // Populate student ID in the hidden input field
-    const userIdField = document.getElementById('userId');
-    if (userIdField) {
-      userIdField.value = userDetails.id;
-    }
-
-    // Update UI elements based on user role
-    const userFullNameElements = document.querySelectorAll('.userFullName');
-    const userRoleElements = document.querySelectorAll('.userRole');
-
-    // Role-specific UI logic
-    if (userDetails.roleName === "ADMIN") {
-      // Show ADMIN-specific UI
-      userFullNameElements.forEach(element => {
-        element.textContent = userDetails.username;
-      });
-      userRoleElements.forEach(element => {
-        element.textContent = userDetails.roleName;
-      });
-
-      document.getElementById("teacher-view").style.display = "none";
-      document.getElementById("student-view").style.display = "none";
-    } else if (userDetails.roleName === "TEACHER") {
-      // Show TEACHER-specific UI
-      userFullNameElements.forEach(element => {
-        element.textContent = userDetails.fullName;
-      });
-      userRoleElements.forEach(element => {
-        element.textContent = userDetails.roleName;
-      });
-
-      document.getElementById("teacher-view").style.display = "block";
-      document.getElementById("student-view").style.display = "none";
-    } else if (userDetails.roleName === "STUDENT") {
-      // Show STUDENT-specific UI and ensure `student_id` is set
-      userFullNameElements.forEach(element => {
-        element.textContent = userDetails.fullName;
-      });
-      userRoleElements.forEach(element => {
-        element.textContent = userDetails.roleName;
-      });
-
-      document.getElementById("teacher-view").style.display = "none";
-      document.getElementById("student-view").style.display = "block";
-      document.getElementById("student-view1").style.display = "block";
-    } else {
-      console.warn("Unrecognized role:", userDetails.roleName);
-    }
-  }
-
-  // Retrieve user details from sessionStorage on page load
-  const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-  if (userDetails) {
-    populateUserDetails(userDetails);
-  } else {
-    console.error("User details not found in sessionStorage. Fetching from server...");
-    // User details are fetched from the server on page load
-  }
 </script>
 </body>
 
 
-<!-- Mirrored from teacher-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:49 GMT -->
 </html>

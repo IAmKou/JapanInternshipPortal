@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>AKKHOR | Teacher Details</title>
+    <title>JIP | Teacher Details</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -444,7 +444,7 @@
                 <h2>Assignment Detail</h2>
                 <ul>
                     <li>
-                        <a href="list-submitted-assignments.html">All Submitted Assignments</a>
+                        <a href="/list-submitted-assignments.html">All Submitted Assignments</a>
                     </li>
                     <li>Submitted Assignment Detail</li>
                 </ul>
@@ -690,7 +690,7 @@
 
             if (response.ok) {
                 alert('Grade submitted successfully!');
-                window.reload();
+                window.location.reload();
             } else {
                 const errorData = await response.json();
                 alert(`Failed to submit grade: ${errorData.message || response.statusText}`);
