@@ -529,21 +529,25 @@
                             const formattedReply = wrapText(reply, 30); // Hàm tự động xuống dòng cho reply
                             const row = document.createElement('tr');
                             row.innerHTML = `
-                    <td style="font-weight: bold;">${formattedCategory}</td>
-                    <td style="font-weight: bold;">${formattedContent}</td>
-                    <td style="font-weight: bold;">${application.created_date ? new Date(application.created_date).toLocaleDateString() : 'N/A'}</td>
-                    <td style="font-weight: bold;">${formattedReply || 'N/A'}</td>
-                      <td style="font-weight: bold;">
-                            ${application.img ? `<a href="${application.img}" target="_blank">File</a>` : 'N/A'}
-                        </td>
-                    <td style="font-weight: bold;">${application.status || 'N/A'}</td>
-                    <td style="font-weight: bold;">
-    ${application.replied_date ? new Date(application.replied_date).toLocaleDateString() + '<br>' + new Date(application.replied_date).toLocaleTimeString() : 'N/A'}
-</td>
-                    <td style="font-weight: bold;">
-                        <button onclick="window.location.href='Reply-application.html?id=${application.id}'" class="btn btn-primary">Reply</button>
-                    </td>
-                    `;
+    <td style="font-weight: bold;">${formattedCategory}</td>
+    <td style="font-weight: bold;">${formattedContent}</td>
+    <td style="font-weight: bold;">${application.created_date ? new Date(application.created_date).toLocaleDateString() : 'N/A'}</td>
+    <td style="font-weight: bold;">${formattedReply || 'N/A'}</td>
+    <td style="font-weight: bold;">
+        ${application.img ? `<a href="${application.img}" target="_blank">File</a>` : 'N/A'}
+    </td>
+    <td style="font-weight: bold;">${application.status || 'N/A'}</td>
+    <td style="font-weight: bold;">
+        ${application.replied_date ? new Date(application.replied_date).toLocaleDateString() + '<br>' + new Date(application.replied_date).toLocaleTimeString() : 'N/A'}
+    </td>
+    <td style="font-weight: bold;">
+        ${
+                                application.reply || application.replied_date
+                                    ? '<span class="text-success">Replied</span>'
+                                    : `<button onclick="window.location.href='Reply-application.html?id=${application.id}'" class="btn btn-primary">Reply</button>`
+                            }
+    </td>
+`;
                             tableBody.appendChild(row);
                         });
                     } else {
