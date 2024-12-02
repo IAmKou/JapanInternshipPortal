@@ -309,19 +309,20 @@
                                         </div>
                                     </div>
                                 </div>
-                                <form class="new-added-form">
+                                <form class="new-added-form" action="notification/create" method="post">
+                                    <input type="hidden" name="userId" id="hiddenUserId">
                                     <div class="row">
                                         <div class="col-12-xxxl col-lg-6 col-12 form-group">
                                             <label>Title</label>
-                                            <input type="text" placeholder="" class="form-control">
+                                            <input type="text" placeholder="" class="form-control" name="title" required>
                                         </div>
                                         <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                            <label>Details</label>
-                                            <input type="text" placeholder="" class="form-control">
+                                            <label>Content</label>
+                                            <input type="text" placeholder="" class="form-control" name="content" required>
                                         </div>
                                         <div class="col-12-xxxl col-lg-6 col-12 form-group">
                                             <label>Posted By </label>
-                                            <input type="text" placeholder="" class="form-control">
+                                            <input type="text" placeholder="" class="form-control" value="userFullNameElements" readonly>
                                             <i class="fas fa-user"></i>
                                         </div>
                                         <div class="col-12 form-group mg-t-8">
@@ -370,48 +371,8 @@
                                     <!-- Notifications will be populated here dynamically -->
                                 </div>
                                 <script>
-                                    // Fetch notifications from the backend
-                                    fetch('/notification/list')
-                                        .then(response => response.json()) // Parse the response as JSON
-                                        .then(data => {
-                                            const noticeBoardWrap = document.getElementById('notice-board-wrap');
 
-                                            // Check if the list is empty
-                                            if (data.length === 0) {
-                                                noticeBoardWrap.innerHTML = '<p>No notifications available.</p>';
-                                                return;
-                                            }
-
-                                            // Loop through each notification and add it to the page
-                                            data.forEach(notification => {
-                                                // Create the new notice div
-                                                const noticeDiv = document.createElement('div');
-                                                noticeDiv.classList.add('notice-list');
-
-                                                // Create the title
-                                                const noticeTitle = document.createElement('h6');
-                                                noticeTitle.classList.add('notice-title');
-
-                                                // Create the anchor tag
-                                                const noticeLink = document.createElement('a');
-                                                noticeLink.href = "#"; // Add appropriate link if needed
-                                                noticeLink.textContent = notification.title; // Use the title from the notification
-
-                                                // Append the link to the title and the title to the noticeDiv
-                                                noticeTitle.appendChild(noticeLink);
-                                                noticeDiv.appendChild(noticeTitle);
-
-                                                // Append the noticeDiv to the noticeBoardWrap
-                                                noticeBoardWrap.appendChild(noticeDiv);
-                                            });
-                                        })
-                                        .catch(error => {
-                                            console.error('Error fetching notifications:', error);
-                                            const noticeBoardWrap = document.getElementById('notice-board-wrap');
-                                            noticeBoardWrap.innerHTML = '<p>Failed to load notifications.</p>';
-                                        });
                                 </script>
-
                             </div>
                         </div>
                     </div>
@@ -443,32 +404,129 @@
     <script src="js/main.js"></script>
     <!-- fetch user -->
     <script>
+
+        // Fetch notifications from the backend
+        fetch('/notification/list')
+            .then(response => response.json()) // Parse the response as JSON
+            .then(data => {
+                const noticeBoardWrap = document.getElementById('notice-board-wrap');
+
+                // Check if the list is empty
+                if (data.length === 0) {
+                    noticeBoardWrap.innerHTML = '<p>No notifications available.</p>';
+                    return;
+                }
+
+                // Loop through each notification and add it to the page
+                data.forEach(notification => {
+                    // Create the new notice div
+                    const noticeDiv = document.createElement('div');
+                    noticeDiv.classList.add('notice-list');
+
+                    // Create the title
+                    const noticeTitle = document.createElement('h6');
+                    noticeTitle.classList.add('notice-title');
+
+                    // Create the anchor tag
+                    const noticeLink = document.createElement('a');
+                    noticeLink.href = "#"; // Add appropriate link if needed
+                    noticeLink.textContent = notification.title; // Use the title from the notification
+
+                    // Append the link to the title and the title to the noticeDiv
+                    noticeTitle.appendChild(noticeLink);
+                    noticeDiv.appendChild(noticeTitle);
+
+                    // Append the noticeDiv to the noticeBoardWrap
+                    noticeBoardWrap.appendChild(noticeDiv);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching notifications:', error);
+                const noticeBoardWrap = document.getElementById('notice-board-wrap');
+                noticeBoardWrap.innerHTML = '<p>Failed to load notifications.</p>';
+            });
+
+
+
+        // Call the function on page load
+        document.addEventListener('DOMContentLoaded', populateClasses);
+
+
+
+        (async function fetchUserData() {
+            try {
+                const response = await fetch('/user-detail');
+                if (response.ok) {
+                    const userData = await response.json();
+                    sessionStorage.setItem('userDetails', JSON.stringify(userData));
+                    console.log("User data stored in sessionStorage:", userData);
+
+                    getUserDetails(userData);
+                } else {
+                    console.error("Failed to fetch user details:", response.statusText);
+                }
+            } catch (error) {
+                console.error("Error fetching user details:", error);
+            }
+        })();
+
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
         if (userDetails) {
+            document.getElementById('userId').value = userDetails.id;
             const userFullNameElements = document.querySelectorAll('.userFullName');
             const userRoleElements = document.querySelectorAll('.userRole');
             const userId = userDetails.id;
+            document.getElementById("hiddenUserId").value = userId;
 
-            if (userDetails.roleName === "Admin") {
-                // Display only username and role for Admin
+            // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
+            if (userDetails.roleName === "ADMIN") {
+                // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
                 userFullNameElements.forEach(element => {
                     element.textContent = userDetails.username;
                 });
                 userRoleElements.forEach(element => {
                     element.textContent = userDetails.roleName;
                 });
-            } else {
-                // Display full profile for other roles
+
+                // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
+                document.getElementById("teacher-view").style.display = "none";
+                document.getElementById("student-view").style.display = "none";
+            } else if (userDetails.roleName === "TEACHER") {
+                // Hiển thị đầy đủ tên và vai trò cho giáo viên
                 userFullNameElements.forEach(element => {
                     element.textContent = userDetails.fullName;
                 });
                 userRoleElements.forEach(element => {
                     element.textContent = userDetails.roleName;
                 });
+
+                // Chỉ hiển thị mục của giáo viên
+                document.getElementById("teacher-view").style.display = "block";
+                document.getElementById("student-view").style.display = "none";
+            } else if (userDetails.roleName === "STUDENT") {
+                // Hiển thị đầy đủ tên và vai trò cho học sinh
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+
+                // Chỉ hiển thị mục của học sinh
+                document.getElementById("teacher-view").style.display = "none";
+                document.getElementById("student-view").style.display = "block";
+                document.getElementById("student-view1").style.display = "block";
+            } else {
+                console.warn("Role not recognized: ", userDetails.roleName);
             }
-        }else{
+        } else {
             console.error("User details not found in sessionStorage");
         }
+
+
+
+
+
     </script>
 </body>
 

@@ -7,6 +7,9 @@ public class NotificationDTO {
     private String content;
     private int ownerId;
 
+    public NotificationDTO() {
+    }
+
     public NotificationDTO(Notification notification) {
         this.title = notification.getTitle();
         this.content = notification.getContent();
