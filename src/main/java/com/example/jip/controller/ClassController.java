@@ -1,10 +1,13 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.ClassDTO;
+import com.example.jip.dto.NotificationDTO;
+import com.example.jip.entity.Notification;
 import com.example.jip.repository.AssignmentRepository;
 import com.example.jip.repository.ClassRepository;
 import com.example.jip.repository.ListRepository;
 import com.example.jip.services.AssignmentServices;
+import com.example.jip.services.NotificationServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +32,9 @@ public class ClassController {
     @Autowired
     private ListRepository listRepository;
 
+    @Autowired
+    private NotificationServices notificationServices;
+
 
     @PostMapping(value = "/create", consumes = "application/json", produces = "text/plain")
     public String createClass(@RequestBody ClassDTO classDTO) {
@@ -45,6 +51,14 @@ public class ClassController {
 
 
         Class savedClass = classServices.saveClassWithStudents(classDTO, classDTO.getStudentIds());
+
+        //Tao thong bao create class
+        NotificationDTO notificationDTO = new NotificationDTO();
+        notificationDTO.setTitle("Class [" + savedClass.getName() + "] created successfully");
+        notificationDTO.setContent("Class [" + savedClass.getName() + "] created successfully");
+        notificationDTO.setOwnerId(savedClass.getTeacher().getId());
+        Notification notification = notificationServices.createNotification(notificationDTO);
+
         return "Class " + savedClass.getName() + " created successfully";
     }
 
