@@ -691,7 +691,7 @@
 </script>
 <script>
     document.getElementById("saveChanges").addEventListener("click", function(event) {
-        event.preventDefault();  // Ngừng reload trang
+        event.preventDefault(); // Ngừng reload trang
 
         const applicationId = new URLSearchParams(window.location.search).get('id');
         const status = document.getElementById("status").value;
@@ -707,15 +707,25 @@
                 reply: reply
             })
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Cập nhật không thành công");
+                }
+            })
             .then(data => {
                 if (data.message) {
-                    alert(data.message);  // Hiển thị thông báo thành công hoặc lỗi
+                    alert(data.message); // Hiển thị thông báo thành công hoặc lỗi
+                    if (data.redirect) {
+                        // Chuyển hướng đến trang mới
+                        window.location.href = data.redirect;
+                    }
                 }
             })
             .catch(error => {
-                console.error('Lỗi khi cập nhật:', error);
-                alert('Có lỗi xảy ra khi cập nhật thông tin.');
+                console.error("Lỗi khi cập nhật:", error);
+                alert("Có lỗi xảy ra khi cập nhật thông tin.");
             });
     });
 </script>

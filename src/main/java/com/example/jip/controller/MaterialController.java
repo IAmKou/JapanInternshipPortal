@@ -189,32 +189,42 @@ public class MaterialController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<MaterialDTO>> getAllMaterials() {
-        List<Material> materials = materialRepository.findAll();
-        List<MaterialDTO> materialDTOs = materials.stream().map(material -> {
-            // Khởi tạo TeacherDTO và lấy teacherId
-            TeacherDTO teacherDTO = new TeacherDTO();
-            if (material.getTeacher() != null) {
-                // Lấy teacherId từ đối tượng Teacher và gán vào TeacherDTO
-                teacherDTO.setId(material.getTeacher().getId());
-                // Nếu cần thêm thông tin khác về Teacher, bạn có thể gán thêm vào teacherDTO
-            }
+    public ResponseEntity<Map<String, Object>> getMaterials(@RequestParam("accountId") Integer accountId) {
+        // Tìm Teacher từ accountId
+        Optional<Teacher> teacherOptional = teacherRepository.findByAccount_id(accountId);
+        Integer teacherId = null;
 
-            // Tạo MaterialDTO với thông tin từ Material và TeacherDTO
-            MaterialDTO dto = new MaterialDTO(
-                    material.getId(),
-                    material.getTitle(),
-                    material.getContent(),
-                    material.getImg(),
-                    material.getCreated_date(),
-                    teacherDTO,  // Gán TeacherDTO vào MaterialDTO
-                    null  // imgFile không có trong trường hợp này
-            );
+        // Nếu tìm thấy teacher, lấy teacher_id
+        if (teacherOptional.isPresent()) {
+            teacherId = teacherOptional.get().getId();
+        }
+
+        // Lấy tất cả các material
+        List<Material> materials = materialRepository.findAll();
+
+        // Chuyển đổi danh sách materials sang DTO
+        List<MaterialDTO> materialDTOs = materials.stream().map(material -> {
+            MaterialDTO dto = new MaterialDTO();
+            dto.setId(material.getId());
+            dto.setTitle(material.getTitle());
+            dto.setImg(material.getImg());
+            dto.setCreated_date(material.getCreated_date());
+
+            if (material.getTeacher() != null) {
+                TeacherDTO teacherDTO = new TeacherDTO();
+                teacherDTO.setId(material.getTeacher().getId());  // Lấy teacher_id
+                dto.setTeacher(teacherDTO);
+            }
 
             return dto;
         }).collect(Collectors.toList());
 
-        return ResponseEntity.ok(materialDTOs);
+        // Trả về teacherId cùng với danh sách materials trong một Map
+        Map<String, Object> response = new HashMap<>();
+        response.put("teacherId", teacherId);
+        response.put("materials", materialDTOs);
+
+        return ResponseEntity.ok(response);
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteMaterial(@PathVariable("id") int materialId) {
@@ -244,5 +254,6 @@ public class MaterialController {
     private String sanitizeFolderName(String folderName) {
         return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim().replace(" ", "_");
     }
+
 
 }

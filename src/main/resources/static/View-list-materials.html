@@ -387,6 +387,7 @@
                                 <thead>
                                 <tr>
                                     <!-- Các tiêu đề cột sẽ nằm ở đây -->
+
                                 </tr>
                                 </thead>
                                 <tbody id="material-list">
@@ -445,23 +446,28 @@
 
         // Hàm lấy danh sách materials từ API và hiển thị trên frontend
         function fetchMaterials() {
-            fetch('/materials/list')
+            // Lấy teacher_id từ sessionStorage
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+            const currentTeacherId = userDetails ? userDetails.id : null;
+            console.log("Current Teacher ID: ", currentTeacherId);
+
+            // Fetch dữ liệu từ backend và lấy teacherId cùng với materials
+            fetch('/materials/list?accountId=' + currentTeacherId)  // Truyền accountId vào request
                 .then(response => response.json())
                 .then(data => {
+                    const teacherIdFromBackend = data.teacherId;  // Lấy teacherId từ backend
+                    console.log("Teacher ID from backend: ", teacherIdFromBackend);
+
+                    // Duyệt qua tất cả materials để hiển thị
                     const materialList = document.getElementById('material-list');
                     materialList.innerHTML = '';  // Xóa nội dung hiện tại
 
-                    // Lấy teacher_id từ sessionStorage
-                    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-                    const currentTeacherId = userDetails ? userDetails.id : null;
-
-                    // Duyệt qua tất cả materials để hiển thị
-                    data.forEach(material => {
+                    data.materials.forEach(material => {
                         const row = document.createElement('tr');
                         let dropdownHtml = '';
 
                         // Kiểm tra nếu teacher_id của material trùng với teacher_id của người dùng
-                        if (material.teacher.id === currentTeacherId) {
+                        if (material.teacher.id === teacherIdFromBackend) {
                             dropdownHtml = `
                         <div class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -479,7 +485,7 @@
 
                         row.innerHTML = `
                     <td class="text-left">
-                        <a href="View-material-details.html?id=${material.id}" target="_blank">${material.title}</a>
+                        <a href="View-material-details.html?id=${material.id}">${material.title}</a>
                     </td>
                     <td>
                         ${dropdownHtml}

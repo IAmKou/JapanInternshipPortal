@@ -22,17 +22,33 @@ import java.io.IOException;
 @RequestMapping("/thread")
 public class ThreadController {
 
-
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private ThreadServices threadService;
 
     @GetMapping("/threads")
-    public Page<Thread> getAllThreads(@RequestParam("page") int page, @RequestParam("size") int size) {
+    public Page<ThreadDTO> getAllThreads(@RequestParam("page") int page, @RequestParam("size") int size) {
         System.out.println("Received page: " + page + ", size: " + size);
-        // Now, fetch the threads using page and size
-        return threadService.getAllThread(PageRequest.of(page, size));
+
+        // Fetch threads
+        Page<Thread> threads = threadService.getAllThread(PageRequest.of(page, size));
+
+        // Map Thread to ThreadDTO and include creator's name
+        Page<ThreadDTO> threadDTOs = threads.map(thread -> {
+            String creatorName = threadService.getCreatorName(thread.getCreatorId()); // Get creator name
+            return new ThreadDTO(
+                    thread.getId(),
+                    thread.getTopicName(),
+                    new java.sql.Date(thread.getDateCreated().getTime()), // Explicit conversion to SQL Date
+                    thread.getDescription(),
+                    thread.getCreatorId(),
+                    thread.getImage(),
+                    creatorName // Add creator name
+            );
+        });
+
+        return threadDTOs;
     }
 
 

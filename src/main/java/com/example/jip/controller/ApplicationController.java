@@ -304,7 +304,7 @@ public class ApplicationController {
     @PutMapping("/update/{id}")
     public ResponseEntity<Map<String, String>> updateApplication(
             @PathVariable("id") Integer applicationId,
-            @RequestBody Map<String, Object> payload) { // Nhận dữ liệu JSON
+            @RequestBody Map<String, Object> payload) {
 
         if (applicationId == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -337,7 +337,10 @@ public class ApplicationController {
         application.setReplied_date(new Date());
         applicationRepository.save(application);
 
-        return ResponseEntity.ok(Map.of("message", "Application reply success!"));
+        return ResponseEntity.ok(Map.of(
+                "message", "Application reply success!",
+                "redirect", "/View-list-application.html" // Đường dẫn cho giao diện
+        ));
     }
     private void uploadFilesToFolder(MultipartFile[] files, String folderName) {
         Set<String> uploadedFiles = new HashSet<>();
