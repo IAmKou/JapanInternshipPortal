@@ -357,9 +357,11 @@
                                         <th>Class</th>
                                         <th>Location</th>
                                         <th>Teacher</th>
+                                        <th>Day</th>
                                         <th>Start Time</th>
                                         <th>End Time</th>
                                         <th>Date</th>
+                                        <th>Status</th>
                                         <th>Note</th>
                                         <th>Event</th>
                                     </tr>
@@ -426,9 +428,14 @@
                     locationCell.textContent = schedule.location;
                     row.appendChild(locationCell);
 
+                    // Day Of Week cell
+                    const dayOfWeekCell = document.createElement('td');
+                    dayOfWeekCell.textContent = schedule.dayOfWeek;
+                    row.appendChild(dayOfWeekCell);
+
                     // Teacher name cell
                     const tnCell = document.createElement('td');
-                    tnCell.textContent = schedule.teacherFullName;
+                    tnCell.textContent = schedule.teacherName;
                     row.appendChild(tnCell);
 
                     // Start time cell
@@ -452,6 +459,11 @@
                         : '';
                     row.appendChild(dateCell);
 
+                    // Status cell
+                    const statusCell = document.createElement('td');
+                    statusCell.textContent = schedule.attendanceStatus;
+                    row.appendChild(statusCell);
+
                     // Note cell
                     const noteCell = document.createElement('td');
                     noteCell.textContent = schedule.description || '';
@@ -468,7 +480,6 @@
                     .catch(error => console.error('Error fetching schedule:', error));
             })
     });
-
 </script>
 
 

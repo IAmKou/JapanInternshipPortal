@@ -1,5 +1,6 @@
 package com.example.jip.controller;
 
+import com.example.jip.dto.ClassDTO;
 import com.example.jip.dto.TeacherDTO;
 import com.example.jip.dto.request.assignment.AssignmentCreationRequest;
 import com.example.jip.dto.request.assignment.AssignmentUpdateRequest;
@@ -9,6 +10,7 @@ import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.dto.response.studentAssignment.StudentAssignmentResponse;
 import com.example.jip.entity.Teacher;
 import com.example.jip.exception.NotFoundException;
+import com.example.jip.repository.ClassRepository;
 import com.example.jip.repository.TeacherRepository;
 import com.example.jip.services.AssignmentServices;
 import lombok.AccessLevel;
@@ -25,6 +27,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -37,7 +40,7 @@ public class AssignmentController {
 
     TeacherRepository teacherRepository;
 
-
+    ClassRepository classRepository;
 
     @GetMapping("/list")
     public List<AssignmentResponse> getAllAssignments() {
@@ -46,7 +49,7 @@ public class AssignmentController {
 
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createAssignment(@ModelAttribute AssignmentCreationRequest request,
-                                              @RequestParam("teacher_id") int teacherId) throws IOException {
+                                              @RequestParam("teacher_id") int teacherId) {
         try {
             log.info("Received request: " + request);
 
@@ -66,6 +69,16 @@ public class AssignmentController {
             log.error("Error creating assignment", e);
             throw new RuntimeException("Failed to create assignment", e);
         }
+    }
+
+    @GetMapping("/getByTid")
+    public List<ClassDTO> getClassByTid(@RequestParam("teacher_id") Integer teacherId) {
+
+        Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
+
+        return classRepository.findByTeacher_Id(teacherOpt.get().getId()).stream()
+                .map(ClassDTO::new)
+                .collect(Collectors.toList());
     }
 
 

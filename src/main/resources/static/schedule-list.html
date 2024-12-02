@@ -336,6 +336,27 @@
                                     </div>
                                 </div>
                             </div>
+                            <form class="mg-b-20" action="/schedule/search" method="get">
+                                <div class="row gutters-8">
+                                    <div class="col-lg-3 col-12 form-group">
+                                        <input type="text" name="className" placeholder="Search by Class ..."
+                                               class="form-control">
+                                    </div>
+                                    <div class="col-lg-3 col-12 form-group">
+                                        <input type="date" name="date" placeholder="Search by Date ..."
+                                               class="form-control">
+                                    </div>
+                                    <div class="col-lg-3 col-12 form-group">
+                                        <input type="text" name="teacherName" placeholder="Search by Teacher ..."
+                                               class="form-control">
+                                    </div>
+                                    <div class="col-lg-3 col-12 form-group">
+                                        <button type="submit"
+                                                class="fw-btn-fill btn-gradient-yellow">SEARCH
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                             <div class="table-responsive">
                                 <table class="table display text-nowrap">
                                     <thead>
@@ -561,7 +582,11 @@
                     // Date cell
                     const dateCell = document.createElement('td');
                     dateCell.textContent = schedule.date
-                        ? new Date(schedule.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+                        ? new Date(schedule.date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        })
                         : '';
                     row.appendChild(dateCell);
 
@@ -636,8 +661,8 @@
                             className: cnCell.querySelector('input').value,
                             location: locationCell.querySelector('input').value,
                             teacherName: tnCell.querySelector('input').value,
-                            startTime: stCell.querySelector('input').value,
-                            endTime: etCell.querySelector('input').value,
+                            startTime: stCell.querySelector('input').value + ':00',
+                            endTime: etCell.querySelector('input').value + ':00',
                             // Convert the date from string (e.g., "November 28, 2024") to "yyyy-MM-dd"
                             date: formatDate(dateCell.querySelector('input').value),
                             description: noteCell.querySelector('input').value,
@@ -699,7 +724,192 @@
             })
             .catch(error => console.error('Error fetching schedule:', error));
     });
+</script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tableBody = document.querySelector('.table tbody');
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const formData = new FormData(form);
+            const params = new URLSearchParams(formData).toString(); // Prepare query parameters
+
+            // Clear the table before inserting new data
+            tableBody.innerHTML = '';
+
+            // Make the fetch request to search schedules
+            fetch(`/schedule/search?${params}`, {
+                method: 'GET',  // Using GET here since we are querying data
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();  // Parse the JSON response
+                })
+                .then(schedule => {
+                    // Iterate through the returned schedule data and populate the table
+                    schedule.forEach(schedule => {
+                        const row = document.createElement('tr');
+
+                        // Class name cell
+                        const cnCell = document.createElement('td');
+                        cnCell.textContent = schedule.className;
+                        row.appendChild(cnCell);
+
+                        // Location cell
+                        const locationCell = document.createElement('td');
+                        locationCell.textContent = schedule.location;
+                        row.appendChild(locationCell);
+
+                        // Teacher name cell
+                        const tnCell = document.createElement('td');
+                        tnCell.textContent = schedule.teacherFullName;
+                        row.appendChild(tnCell);
+
+                        // Start time cell
+                        const stCell = document.createElement('td');
+                        stCell.textContent = schedule.startTime ? schedule.startTime.slice(0, 5) : '';
+                        row.appendChild(stCell);
+
+                        // End time cell
+                        const etCell = document.createElement('td');
+                        etCell.textContent = schedule.endTime ? schedule.endTime.slice(0, 5) : '';
+                        row.appendChild(etCell);
+
+                        // Date cell
+                        const dateCell = document.createElement('td');
+                        dateCell.textContent = schedule.date
+                            ? new Date(schedule.date).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            })
+                            : '';
+                        row.appendChild(dateCell);
+
+                        // Note cell
+                        const noteCell = document.createElement('td');
+                        noteCell.textContent = schedule.description || '';
+                        row.appendChild(noteCell);
+
+                        // Event cell
+                        const eventCell = document.createElement('td');
+                        eventCell.textContent = schedule.event || '';
+                        row.appendChild(eventCell);
+
+                        // Action cell
+                        const actionsCell = document.createElement('td');
+
+                        // Edit Button
+                        const editButton = document.createElement('button');
+                        editButton.textContent = 'Edit';
+                        editButton.className = 'footer-btn';
+
+                        // Save Button
+                        const saveButton = document.createElement('button');
+                        saveButton.textContent = 'Save';
+                        saveButton.className = 'btn btn-success btn-sm d-none'; // Initially hidden
+
+                        // Delete Button
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Delete';
+                        deleteButton.className = 'footer-btn bg-linkedin';
+
+                        actionsCell.appendChild(editButton);
+                        actionsCell.appendChild(saveButton);
+                        actionsCell.appendChild(deleteButton);
+                        row.appendChild(actionsCell);
+
+                        tableBody.appendChild(row);
+
+                        // Add event listeners for Edit, Save, Delete buttons
+                        handleEditButton(editButton, saveButton, row, schedule);
+                        handleDeleteButton(deleteButton, row, schedule);
+                    });
+                })
+                .catch(error => console.error('Error fetching schedule:', error));
+        });
+
+        function handleEditButton(editButton, saveButton, row, schedule) {
+            editButton.addEventListener('click', () => {
+                // Convert cells to editable fields
+                row.querySelectorAll('td').forEach((cell, index) => {
+                    if (index !== 8) {  // Skip Action column
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.value = cell.textContent;
+                        cell.textContent = '';
+                        cell.appendChild(input);
+                    }
+                });
+
+                // Show save button and hide edit button
+                editButton.classList.add('d-none');
+                saveButton.classList.remove('d-none');
+            });
+
+            saveButton.addEventListener('click', () => {
+                const updatedSchedule = {
+                    id: schedule.id, // Assuming you have `id` to identify the schedule
+                    className: row.querySelector('td').querySelector('input').value,
+                    location: row.querySelector('td:nth-child(2)').querySelector('input').value,
+                    teacherName: row.querySelector('td:nth-child(3)').querySelector('input').value,
+                    startTime: row.querySelector('td:nth-child(4)').querySelector('input').value,
+                    endTime: row.querySelector('td:nth-child(5)').querySelector('input').value,
+                    date: row.querySelector('td:nth-child(6)').querySelector('input').value,
+                    description: row.querySelector('td:nth-child(7)').querySelector('input').value,
+                    event: row.querySelector('td:nth-child(8)').querySelector('input').value,
+                };
+
+                fetch(`/schedule/update/${schedule.id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedSchedule),
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Schedule updated successfully!');
+                            location.reload(); // Reload the table to reflect changes
+                        } else {
+                            throw new Error('Failed to update schedule');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error updating schedule:', error);
+                        alert('Failed to update the schedule. Please try again.');
+                    });
+            });
+        }
+
+        function handleDeleteButton(deleteButton, row, schedule) {
+            deleteButton.addEventListener('click', () => {
+                const confirmDelete = confirm('Are you sure you want to delete this schedule?');
+                if (confirmDelete) {
+                    fetch(`/schedule/delete/${schedule.id}`, {
+                        method: 'DELETE',
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                alert('Schedule deleted successfully!');
+                                row.remove(); // Remove row from table
+                            } else {
+                                throw new Error('Failed to delete schedule');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error deleting schedule:', error);
+                            alert('Failed to delete the schedule. Please try again.');
+                        });
+                }
+            });
+        }
+    });
 </script>
 
 

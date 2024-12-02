@@ -1,7 +1,12 @@
 package com.example.jip.configuration;
 
+import com.example.jip.entity.Account;
+import com.example.jip.entity.Role;
+import com.example.jip.repository.AccountRepository;
+import com.example.jip.repository.RoleRepository;
 import com.example.jip.services.CustomUserDetailServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +22,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     private final CustomAuthenticationSuccessHandler successHandler;
     private final CustomUserDetailServices customUserDetailsService;
@@ -35,7 +45,7 @@ public class SecurityConfig {
                         .requestMatchers("/teacher.html", "add-assignment.html", "list-assignment.html").hasAuthority("TEACHER")
                         .requestMatchers("/manager.html").hasAuthority("MANAGER")
                         .requestMatchers("/css/**", "/js/**", "/images/**","/img/**",
-                                "/webfonts/**","/fonts/**","/hts-cache/**","/style.css","/create-account.html","/accounts/create")
+                                "/webfonts/**","/fonts/**","/hts-cache/**","/style.css")
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
@@ -48,7 +58,6 @@ public class SecurityConfig {
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login.html?logout=true")
                         .permitAll());
-        System.out.println("http = " + new BCryptPasswordEncoder().encode("123456789"));
         return http.build();
     }
 
@@ -63,5 +72,32 @@ public class SecurityConfig {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserDetailsService).passwordEncoder(appConfig.passwordEncoder());
+    }
+
+    @Bean
+    public CommandLineRunner createDefaultAccount() {
+        return args -> {
+            String defaultUsername = "admin";
+            String defaultPassword = "123456";
+            String defaultRole = "ADMIN";
+
+            Role adminRole = roleRepository.findByName(defaultRole)
+                    .orElseGet(() -> {
+                        Role role = new Role();
+                        role.setName(defaultRole);
+                        return roleRepository.save(role);
+                    });
+
+            if (!accountRepository.existsByUsername(defaultUsername)) {
+                Account adminAccount = new Account();
+                adminAccount.setUsername(defaultUsername);
+                adminAccount.setPassword(new BCryptPasswordEncoder().encode(defaultPassword));
+                adminAccount.setRole(adminRole);
+                accountRepository.save(adminAccount);
+                System.out.println("Default admin account created successfully.");
+            } else {
+                System.out.println("Admin account already exists.");
+            }
+        };
     }
 }

@@ -7,20 +7,22 @@ import com.example.jip.repository.ThreadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public class ThreadServices {
+
     @Autowired
     private ThreadRepository threadRepository;
+
     @Autowired
     private AccountRepository accountRepository;
 
+    // Add a new thread
     public Thread addThread(String topicName, String description, int creatorId, MultipartFile imageFile) throws IOException {
         Thread thread = new Thread();
         thread.setTopicName(topicName);
@@ -28,48 +30,58 @@ public class ThreadServices {
         thread.setCreatorId(creatorId);
         thread.setDateCreated(new java.util.Date());
 
-        // Chuyển file ảnh thành mảng byte và lưu vào database
+        // If an image file is provided, convert it to byte array and save it in the thread entity
         if (imageFile != null && !imageFile.isEmpty()) {
             thread.setImage(imageFile.getBytes());
         }
 
+        // Save the new thread to the database
         return threadRepository.save(thread);
     }
 
+    // Get creator's username by their ID
     public String getCreatorName(int creatorId) {
-        return this.accountRepository.findById(creatorId).orElseThrow().getUsername();
+        // Using Optional to return a fallback value if account is not found
+        return accountRepository.findById(creatorId)
+                .map(Account::getUsername)
+                .orElse("Unknown");  // Return "Unknown" if creator is not found
     }
 
+    // Get all threads with pagination
     public Page<Thread> getAllThread(Pageable pageable) {
-        return (Page<Thread>) this.threadRepository.findAll(pageable);
+        return threadRepository.findAll(pageable);
     }
 
+    // Get a specific thread by ID
     public Thread getThreadById(int id) {
-        return threadRepository.findById(id).orElseThrow();
+        return threadRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Thread not found"));
     }
 
-
-    // Get the current user's id (using Spring Security)
-    private int getCurrentUserId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        // Assuming the user ID is stored as the username in your authentication token (you can adjust this based on your user model)
-        return Integer.parseInt(authentication.getName());  // If user ID is the username
-    }
-
+    // Check if the logged-in user is the creator of the thread
     public boolean isCreator(String username, int creatorId) {
-        // Fetch the account by username
+        // Fetch account once to avoid redundant database calls
         Account account = accountRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Compare the account ID with the creatorId of the thread
+        // Compare the account ID with the creator ID of the thread
         return account.getId() == creatorId;
     }
 
+    // Delete a thread by ID
     public void deleteThread(int threadId) {
+        if (!threadRepository.existsById(threadId)) {
+            throw new RuntimeException("Thread not found");
+        }
         threadRepository.deleteById(threadId);
     }
 
+    // Update an existing thread
     public void updateThread(Thread thread) {
-        threadRepository.save(thread); // Save the updated thread to the database
+        // Ensure the thread exists before updating
+        if (!threadRepository.existsById(thread.getId())) {
+            throw new RuntimeException("Thread not found");
+        }
+        threadRepository.save(thread); // Save the updated thread in the database
     }
 }

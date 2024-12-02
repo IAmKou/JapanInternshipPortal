@@ -11,17 +11,17 @@ import java.sql.Time;
 
 public class ScheduleDTO {
     private int id;
-        private Schedule.dayOfWeek dayOfWeek;
-        private int classId;
-        private Time startTime;
-        private Time endTime;
-        private String description;
-        private String event;
-        private Date date;
-        private String location;
-        private String className;
-        private int teacherId;
-        private String teacherFullName;
+    private Schedule.dayOfWeek dayOfWeek;
+    private int classId;
+    private Time startTime;
+    private Time endTime;
+    private String description;
+    private String event;
+    private Date date;
+    private String location;
+    private String className;
+    private int teacherId;
+    private String teacherFullName;
 
     public ScheduleDTO() {
     }

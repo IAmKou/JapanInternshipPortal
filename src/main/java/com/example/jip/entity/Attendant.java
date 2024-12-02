@@ -41,7 +41,7 @@ public class Attendant {
     }
 
     public enum Status {
-        Present, Late, Absent, Permitted;
+        Present, Late, Absent, Permitted, NoRecord;
 
         @Override
         public String toString() {
