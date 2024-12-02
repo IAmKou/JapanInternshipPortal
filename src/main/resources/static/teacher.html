@@ -180,49 +180,25 @@
                         </div>
                     </div>
                 </li>
+
+                <!--Notification-->
                 <li class="navbar-item dropdown header-notification">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                         <i class="far fa-bell"></i>
                         <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
-                        <span>8</span>
+                        <span id="notification-count">0</span>
                     </a>
 
-                    <div class="dropdown-menu dropdown-menu-right">
+                    <div class="dropdown-menu dropdown-menu-right" id="notification-dropdown">
                         <div class="item-header">
-                            <h6 class="item-title">03 Notifiacations</h6>
+                            <h6 class="item-title" id="notification-title">Notifications</h6>
                         </div>
-                        <div class="item-content">
-                            <div class="media">
-                                <div class="item-icon bg-skyblue">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="post-title">Complete Today Task</div>
-                                    <span>1 Mins ago</span>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-icon bg-orange">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="post-title">Director Metting</div>
-                                    <span>20 Mins ago</span>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-icon bg-violet-blue">
-                                    <i class="fas fa-cogs"></i>
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="post-title">Update Password</div>
-                                    <span>45 Mins ago</span>
-                                </div>
-                            </div>
+                        <div class="item-content" id="notification-list">
+                            <!-- Notifications will be dynamically inserted here -->
                         </div>
                     </div>
                 </li>
+
                 <li class="navbar-item dropdown header-language">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
                        data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
@@ -1051,6 +1027,57 @@
             console.error("Teacher ID is missing or user details not found in sessionStorage");
         }
     }
+</script>
+<!-- fetch notification -->
+<script>
+    // Fetch notifications from the backend
+    fetch('/notification/list')
+        .then(response => response.json()) // Parse the response as JSON
+        .then(data => {
+            const notificationList = document.getElementById('notification-list'); // This is where we append the notifications
+            const notificationCount = document.getElementById('notification-count'); // This is where we update the count
+
+            // Update the notification count
+            notificationCount.textContent = data.length;
+
+            // Check if the list is empty
+            if (data.length === 0) {
+                notificationList.innerHTML = '<p>No notifications available.</p>';
+                return;
+            }
+
+            // Clear any previous notifications (if any)
+            notificationList.innerHTML = '';
+
+            // Loop through each notification and add it to the page
+            data.forEach(notification => {
+                // Create the new notice div
+                const noticeDiv = document.createElement('div');
+                noticeDiv.classList.add('notice-list');
+
+                // Create the title
+                const noticeTitle = document.createElement('h6');
+                noticeTitle.classList.add('notice-title');
+
+                // Create the anchor tag
+                const noticeLink = document.createElement('a');
+                noticeLink.href = "#"; // Add appropriate link if needed
+                noticeLink.textContent = notification.title; // Use the title from the notification
+
+                // Append the link to the title and the title to the noticeDiv
+                noticeTitle.appendChild(noticeLink);
+                noticeDiv.appendChild(noticeTitle);
+
+                // Append the noticeDiv to the notification list
+                notificationList.appendChild(noticeDiv);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching notifications:', error);
+            const notificationList = document.getElementById('notification-list');
+            notificationList.innerHTML = '<p>Failed to load notifications.</p>';
+        });
+
 </script>
 </body>
 
