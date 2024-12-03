@@ -22,6 +22,7 @@
         private Date created_date;
         private TeacherDTO teacher;
         MultipartFile[] imgFile;
+        private Integer teacherId; // Thêm trường này
 
         public void setImgFromList(List<String> fileUrls) {
             if (fileUrls != null && !fileUrls.isEmpty()) {

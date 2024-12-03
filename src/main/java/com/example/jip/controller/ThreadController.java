@@ -51,6 +51,7 @@ public class ThreadController {
                         x.getDescription(),
                         x.getCreatorId(),
                         x.getImage(),
+
                         threadService.getCreatorName(x.getCreatorId())
                 ));
 
