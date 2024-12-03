@@ -540,7 +540,7 @@
             const classId = urlParams.get('classId');
 
             if (classId) {
-                fetch(`/student/${classId}/getAll`)
+                fetch(`/attendant/${classId}/get`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok ' + response.statusText);
@@ -553,13 +553,13 @@
 
                             // ID cell
                             const idCell = document.createElement('td');
-                            idCell.textContent = student.id;
+                            idCell.textContent = student.studentId;
                             row.appendChild(idCell);
 
                             // Image cell
                             const imgCell = document.createElement('td');
                             const imgElement = document.createElement('img');
-                            imgElement.src = student.img;
+                            imgElement.src = student.img || 'default_image.jpg'; // Default image if img is null
                             imgElement.alt = "Student Image";
                             imgElement.style.width = "50px";
                             imgElement.style.height = "50px";
@@ -569,87 +569,45 @@
 
                             // Name cell
                             const nameCell = document.createElement('td');
-                            nameCell.textContent = student.fullname;
+                            nameCell.textContent = student.studentName;
                             row.appendChild(nameCell);
 
-                            // Attendance checkboxes
-                            const presentCell = document.createElement('td');
-                            presentCell.innerHTML = `
-                            <div class="form-check">
-                                <input type="checkbox" value="Present" class="form-check-input checkAll">
-                                <label class="form-check-label">Present</label>
-                            </div>`;
-                            row.appendChild(presentCell);
+                            // Attendance status cells
+                            const statuses = ['Present', 'Late', 'Absent', 'Permitted'];
+                            statuses.forEach(status => {
+                                const statusCell = document.createElement('td');
+                                const formCheck = document.createElement('div');
+                                formCheck.classList.add('form-check');
+                                const checkbox = document.createElement('input');
+                                checkbox.type = 'checkbox';
+                                checkbox.classList.add('form-check-input');
+                                checkbox.value = status;
+                                checkbox.checked = student.status === status; // Check if the current status matches
+                                if (status === 'Permitted' ) {
+                                    checkbox.disabled = true; // Only enable "Permitted" for marked students
+                                }
+                                const label = document.createElement('label');
+                                label.classList.add('form-check-label');
+                                label.textContent = status;
+                                formCheck.appendChild(checkbox);
+                                formCheck.appendChild(label);
+                                statusCell.appendChild(formCheck);
+                                row.appendChild(statusCell);
 
-                            const lateCell = document.createElement('td');
-                            lateCell.innerHTML = `
-                            <div class="form-check">
-                                <input type="checkbox" value="Late" class="form-check-input checkAll">
-                                <label class="form-check-label">Late</label>
-                            </div>`;
-                            row.appendChild(lateCell);
-
-                            const absentCell = document.createElement('td');
-                            absentCell.innerHTML = `
-                            <div class="form-check">
-                                <input type="checkbox" value="Absent" class="form-check-input checkAll">
-                                <label class="form-check-label">Absent</label>
-                            </div>`;
-                            row.appendChild(absentCell);
-
-                            // Permitted Absence (always disabled)
-                            const permittedAbsenceCell = document.createElement('td');
-                            permittedAbsenceCell.innerHTML = `
-                            <div class="form-check">
-                                <input type="checkbox" value="Permitted" class="form-check-input checkAll" disabled>
-                                <label class="form-check-label">Permitted Absence</label>
-                            </div>`;
-                            row.appendChild(permittedAbsenceCell);
-
-                            // Actions cell
-                            const actionsCell = document.createElement('td');
-                            const dropdown = document.createElement('div');
-                            dropdown.className = 'dropdown';
-                            const dropdownToggle = document.createElement('a');
-                            dropdownToggle.href = '#';
-                            dropdownToggle.className = 'dropdown-toggle';
-                            dropdownToggle.setAttribute('data-toggle', 'dropdown');
-                            dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
-                            dropdown.appendChild(dropdownToggle);
-
-                            const dropdownMenu = document.createElement('div');
-                            dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
-                            dropdownMenu.innerHTML = `
-                            <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>`;
-                            dropdown.appendChild(dropdownMenu);
-                            actionsCell.appendChild(dropdown);
-                            row.appendChild(actionsCell);
-
-                            // Append the row to the table body
-                            tableBody.appendChild(row);
-
-                            // Add the event listener to ensure only one checkbox is checked in the row
-                            const checkboxes = row.querySelectorAll('.form-check-input');
-                            checkboxes.forEach(checkbox => {
+                                // Ensure only one checkbox is checked at a time
                                 checkbox.addEventListener('change', function () {
-                                    checkboxes.forEach(otherCheckbox => {
-                                        if (otherCheckbox !== checkbox) {
-                                            otherCheckbox.checked = false;
-                                        }
-                                    });
+                                    if (checkbox.checked) {
+                                        row.querySelectorAll('.form-check-input').forEach(otherCheckbox => {
+                                            if (otherCheckbox !== checkbox) {
+                                                otherCheckbox.checked = false;
+                                            }
+                                        });
+                                    }
                                 });
                             });
 
-                            // If student has mark = true, disable all checkboxes and check "Permitted Absence"
-                            if (student.mark === true) {
-                                checkboxes.forEach(checkbox => {
-                                    checkbox.disabled = true;  // Disable all checkboxes for this row
-                                });
-
-                                // Check the "Permitted Absence" checkbox
-                                const permittedAbsenceCheckbox = permittedAbsenceCell.querySelector('input');
-                                permittedAbsenceCheckbox.checked = true;
-                            }
+                            // Append row to table body
+                            tableBody.appendChild(row);
                         });
                     })
                     .catch(error => console.error('Error fetching students:', error));
@@ -657,7 +615,7 @@
                 console.error("classId is missing from the URL.");
             }
 
-            // Validation for checking if at least one checkbox is selected in each row
+            // Validation for ensuring at least one checkbox is checked in each row
             document.querySelector('#submitButton').addEventListener('click', function (event) {
                 let isValid = true;
 
@@ -667,7 +625,7 @@
                     const isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
 
                     if (!isChecked) {
-                        row.classList.add('highlight'); // Add a class to highlight the row if no checkbox is checked
+                        row.classList.add('highlight'); // Highlight row if validation fails
                         isValid = false;
                     } else {
                         row.classList.remove('highlight');
@@ -675,41 +633,40 @@
                 });
 
                 if (!isValid) {
-                    event.preventDefault(); // Prevent form submission if validation fails
-                    alert("Please check at least one checkbox for each student.");
+                    event.preventDefault(); // Prevent submission
+                    alert("Please select an attendance status for each student.");
                 } else {
                     submitAttendance();
                 }
             });
 
-            // Submit the attendance data
             function submitAttendance() {
-                const tableBody = document.querySelector('.table tbody');
                 const attendanceData = [];
-
-
-                // Iterate through each row in the table
                 tableBody.querySelectorAll('tr').forEach(row => {
-                    const studentId = row.querySelector('td:first-child').textContent.trim(); // Get student ID
+                    const studentId = parseInt(row.querySelector('td:first-child').textContent.trim(), 10);
                     let status = null;
 
-                    // Check the selected attendance status
                     row.querySelectorAll('.form-check-input').forEach(checkbox => {
                         if (checkbox.checked) {
-                            status = checkbox.value; // Get the selected value (Present, Late, Absent, etc.)
+                            status = checkbox.value;
                         }
                     });
 
                     if (status) {
                         attendanceData.push({
-                            studentId: parseInt(studentId, 10),
+                            studentId: studentId,
                             status: status,
-                            date: new Date().toLocaleDateString('en-CA'), // Current date in YYYY-MM-DD format
+                            date: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
                         });
                     }
                 });
 
-                fetch(`/attendant/save/${classId}`, {
+                if (attendanceData.length === 0) {
+                    alert("No attendance changes detected!");
+                    return;
+                }
+
+                fetch(`/attendant/update/${classId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -718,22 +675,25 @@
                 })
                     .then(response => {
                         if (response.ok) {
-                            return response.text(); // Use .text() if the response is plain text
+                            return response.text();
                         } else {
                             throw new Error('Failed to save attendance: ' + response.statusText);
                         }
                     })
                     .then(data => {
                         console.log('Attendance saved successfully:', data);
-                        alert(data); // Display the plain text response
+                        alert("Attendance updated successfully!");
                     })
                     .catch(error => {
                         console.error('Error saving attendance:', error);
                         alert('Failed to save attendance.');
                     });
             }
+
         });
+
     </script>
+
 </body>
 
 
