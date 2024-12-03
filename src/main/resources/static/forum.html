@@ -127,7 +127,9 @@
         <div class="nav-bar-header-one">
             <div class="header-logo">
                 <a href="admin.html">
-                    <img alt="logo" src="img/logo.png">
+                    <div style="width: 180px; height: 70px; overflow: hidden;">
+                        <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
                 </a>
             </div>
             <div class="toggle-button sidebar-toggle">
@@ -154,14 +156,7 @@
             <ul class="navbar-nav">
                 <li class="navbar-item header-search-bar">
                     <div class="input-group stylish-input-group">
-                            <span class="input-group-addon">
-                                <button type="submit">
-                                    <span aria-hidden="true" class="flaticon-search"></span>
-                                </button>
-                            </span>
-                        <label>
-                            <input class="form-control" placeholder="Find Something . . ." type="text">
-                        </label>
+
                     </div>
                 </li>
             </ul>
@@ -341,9 +336,9 @@
             </div>
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
-                    <li class="nav-item sidebar-nav-item">
+                    <li class="nav-item ">
                         <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                        <ul class="nav sub-group-menu sub-group-active">
+                        <ul class="nav sub-group-menu">
                             <li class="nav-item">
                                 <a href="teacher.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Teachers</a>
                             </li>
@@ -397,13 +392,24 @@
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create material</a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item" id="teacher-view1">
+                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
+                                    material</a>
                             </li>
                             <li class="nav-item" id="teacher-view">
-                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
+                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    materials</a>
                             </li>
+                            <li class="nav-item" id="student-view1">
+                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    materials</a>
+                            </li>
+                            <li class="nav-item" id="student-view">
+                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list
+                                    materials</a>
+                            </li>
+
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
@@ -419,13 +425,14 @@
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
+                                <a class="nav-link menu-active" href="forum.html"><i class="fas fa-angle-right"></i>View list threads</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create Thread</a>
+                            <li class="nav-item sidebar-nav-item">
+                                <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create Thread</a>
                             </li>
+
                         </ul>
                     </li>
                 </ul>
@@ -454,17 +461,15 @@
         </div>
         <div class="dashboard-content-one container">
             <!-- Create Thread Button -->
-            <a href="create-forum.html">
-                <button class="modal-trigger" href="create-forum.html">
-                    Create Thread
-                </button>
+            <a href="create-forum.html" class="modal-trigger" style="display: inline-block; padding: 10px 20px; text-align: center; background-color: #007bff; color: white; border-radius: 5px; text-decoration: none;">
+                Create Thread
             </a>
             <!-- Thread List Start -->
             <div id="threadList"></div>
             <!-- Thread List End -->
 
             <!-- Pagination Controls -->
-            <div class="pagination-controls text-center" style="margin-top: 20px;">
+            <div class="pagination-controls text-center" style="margin-top: 20px; margin-bottom: 40px;">
                 <!-- Previous Page Button -->
                 <button class="page-btn" id="prevPage" disabled>&laquo;</button>
                 <!-- Page Number Display -->
@@ -514,46 +519,67 @@
 <script src="js/main.js"></script>
 
 <script>
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    if (userDetails) {
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
+    document.addEventListener('DOMContentLoaded', function () {
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails) {
+            console.log("User details:", userDetails);
 
-        // Display user information based on their role
-        if (userDetails.roleName === "ADMIN") {
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.username;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "TEACHER") {
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "STUDENT") {
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            const userRoleElements = document.querySelectorAll('.userRole');
+
+            // Kiểm tra và gán giá trị cho các phần tử
+            if (userFullNameElements.length && userRoleElements.length) {
+                if (userDetails.roleName === "ADMIN") {
+                    // Hiển thị thông tin cho ADMIN
+                    userFullNameElements.forEach(element => {
+                        element.textContent = userDetails.username || "Unknown Admin";
+                    });
+                    userRoleElements.forEach(element => {
+                        element.textContent = userDetails.roleName || "Unknown Role";
+                    });
+
+                    // Ẩn các mục không cần thiết
+                    document.getElementById("teacher-view").style.display = "none";
+                    document.getElementById("student-view").style.display = "none";
+                } else if (userDetails.roleName === "TEACHER") {
+                    // Hiển thị thông tin cho TEACHER
+                    userFullNameElements.forEach(element => {
+                        element.textContent = userDetails.fullName || "Unknown Teacher";
+                    });
+                    userRoleElements.forEach(element => {
+                        element.textContent = userDetails.roleName || "Unknown Role";
+                    });
+
+                    // Chỉ hiển thị mục của giáo viên
+                    document.getElementById("teacher-view").style.display = "block";
+                    document.getElementById("student-view").style.display = "none";
+                    document.getElementById("student-view1").style.display = "none";
+                    document.getElementById("teacher-view1").style.display = "block";
+                } else if (userDetails.roleName === "STUDENT") {
+                    // Hiển thị thông tin cho STUDENT
+                    userFullNameElements.forEach(element => {
+                        element.textContent = userDetails.fullName || "Unknown Student";
+                    });
+                    userRoleElements.forEach(element => {
+                        element.textContent = userDetails.roleName || "Unknown Role";
+                    });
+
+                    // Chỉ hiển thị mục của học sinh
+                    document.getElementById("teacher-view").style.display = "none";
+                    document.getElementById("student-view").style.display = "block";
+                    document.getElementById("student-view1").style.display = "block";
+                    document.getElementById("teacher-view1").style.display = "none";
+
+                } else {
+                    console.warn("Unrecognized role:", userDetails.roleName);
+                }
+            } else {
+                console.error("Required DOM elements are missing.");
+            }
         } else {
-            console.warn("Role not recognized: ", userDetails.roleName);
+            console.error("User details not found in sessionStorage.");
         }
-    } else {
-        console.error("User details not found in sessionStorage");
-    }
+    });
 </script>
 
 <script>
@@ -623,8 +649,9 @@
                             <a href="post.html?id=${thread.id}">${thread.topicName}</a>
                         </div>
                         <div class="spacer"></div>
-                        ${thread.creatorId === currentUserId ? `
+
                         <div class="dropdown">
+                        ${thread.creatorId === currentUserId ? `
                             <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <!-- Show Update and Delete options only for the thread creator -->

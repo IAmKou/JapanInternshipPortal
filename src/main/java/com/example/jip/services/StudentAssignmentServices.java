@@ -88,8 +88,7 @@ public class StudentAssignmentServices {
         return studentAssignmentRepository.save(studentAssignment);
     }
 
-    @PreAuthorize("hasAuthority('STUDENT')")
-    public List<StudentAssignmentResponse> getSubmittedAssignments(int studentId) {
+    public List<StudentAssignmentResponse> getSubmittedAssignmentByStudentId(int studentId) {
         List<StudentAssignment> studentAssignments = studentAssignmentRepository.findByStudentId(studentId);;
 
         // Map to DTOs
@@ -104,6 +103,7 @@ public class StudentAssignmentServices {
                     response.setStatus(sa.getStatus().toString());
                     response.setAssignmentId(sa.getAssignment().getId());
                     response.setStudentId(sa.getStudent().getId());
+                    response.setAssignmentName(sa.getAssignment().getDescription());
                     return response;
                 })
                 .collect(Collectors.toList());

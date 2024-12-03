@@ -3,14 +3,12 @@ package com.example.jip.services;
 
 import com.example.jip.dto.request.exam.ExamCreationRequest;
 import com.example.jip.dto.request.exam.ExamUpdateRequest;
-import com.example.jip.dto.request.examResult.ExamResultGradeRequest;
-import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.dto.response.exam.ExamResponse;
 import com.example.jip.entity.*;
 
-import com.example.jip.entity.Class;
 import com.example.jip.repository.ExamRepository;
 import com.example.jip.repository.ExamResultRepository;
+import com.example.jip.repository.StudentRepository;
 import com.example.jip.repository.TeacherRepository;
 
 import lombok.AccessLevel;
@@ -20,10 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -31,9 +29,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ExamSerivce {
+
     ExamRepository examRepository;
     ExamResultRepository examResultRepository;
     TeacherRepository teacherRepository;
+    StudentRepository studentRepository;
 
     // Get exams created by a teacher
     @PreAuthorize("hasAuthority('TEACHER')")
@@ -54,6 +54,7 @@ public class ExamSerivce {
 
     @PreAuthorize("hasAuthority('TEACHER')")
     public Exam createExam(ExamCreationRequest request) {
+        // Fetch the teacher
         Teacher teacher = teacherRepository.findById(request.getTeacher().getId())
                 .orElseThrow(() -> new RuntimeException("Teacher ID not found: " + request.getTeacher().getId()));
 
@@ -65,27 +66,31 @@ public class ExamSerivce {
         exam.setBlock(request.getBlock());
         exam.setTeacher(teacher);
 
-        // Save the exam
-        return examRepository.save(exam);
+        // Save the exam first to generate its ID
+        final Exam savedExam = examRepository.save(exam); // Use a final variable
+
+        // Fetch all students
+        List<Student> students = studentRepository.findAll();
+
+        // Create ExamResults for each student
+        List<ExamResult> examResults = students.stream()
+                .map(student -> {
+                    ExamResult result = new ExamResult();
+                    result.setExam(savedExam); // Use the final variable
+                    result.setStudent(student);
+                    result.setMark(BigDecimal.ZERO); // Default mark is 0
+                    return result;
+                })
+                .collect(Collectors.toList());
+
+        // Save all ExamResults
+        examResultRepository.saveAll(examResults);
+
+        return savedExam; // Return the saved Exam
     }
 
 
-    @PreAuthorize("hasAuthority('TEACHER')")
-    public void gradeExam(int examId, List<ExamResultGradeRequest> results) {
-        Exam exam = examRepository.findById(examId)
-                .orElseThrow(() -> new NoSuchElementException("Exam not found"));
 
-        // Process each result
-        for (ExamResultGradeRequest result : results) {
-            int studentId = result.getStudentId();
-            ExamResult examResult = examResultRepository.findByExamAndStudentId(exam, studentId)
-                    .orElseThrow(() -> new NoSuchElementException("ExamResult not found"));
-
-            // Update grade
-            examResult.setMark(result.getMark());
-            examResultRepository.save(examResult);
-        }
-    }
     @PreAuthorize("hasAuthority('TEACHER')")
     public void deleteExamById(int examId) {
         Exam exam = examRepository.findById(examId)

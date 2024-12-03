@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,6 +34,7 @@ public class Exam {
     @Column(name = "exam_name")
     String exam_name;
     @Column(name = "exam_date")
+    @Temporal(TemporalType.DATE)
     Date exam_date;
 
 }

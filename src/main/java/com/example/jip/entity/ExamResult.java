@@ -3,6 +3,7 @@ package com.example.jip.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.math.BigDecimal;
 
@@ -26,6 +27,6 @@ public class ExamResult {
     @JoinColumn(name = "student_id", nullable = false)
     Student student;
 
-    @Column(name = "mark", nullable = false)
+    @Column(name = "mark")
     BigDecimal mark;
 }

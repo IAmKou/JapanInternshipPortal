@@ -194,8 +194,10 @@
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
-                <a href="index.html">
-                    <img src="img/logo.png" alt="logo">
+                <a href="admin.html">
+                    <div style="width: 180px; height: 70px; overflow: hidden;">
+                        <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
                 </a>
             </div>
             <div class="toggle-button sidebar-toggle">
@@ -220,12 +222,7 @@
             <ul class="navbar-nav">
                 <li class="navbar-item header-search-bar">
                     <div class="input-group stylish-input-group">
-                            <span class="input-group-addon">
-                                <button type="submit">
-                                    <span class="flaticon-search" aria-hidden="true"></span>
-                                </button>
-                            </span>
-                        <input type="text" class="form-control" placeholder="Find Something . . .">
+
                     </div>
                 </li>
             </ul>
@@ -659,8 +656,8 @@
                         <label for="exam_name">Exam Name:</label>
                         <input type="text" id="exam_name" name="exam_name" />
 
-                        <label for="date">Date:</label>
-                        <input type="date" id="date" name="date" />
+                        <label for="exam_date">Date:</label>
+                        <input type="date" id="exam_date" name="exam_date" />
 
                         <label for="content">Content:</label>
                         <textarea id="content" name="content" rows="4"></textarea>
@@ -730,8 +727,8 @@
             exams.forEach(exam => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <a href="/view-exam-details.html?id=${exam.id}" target="_blank">${exam.exam_name}</a>
-                    <td>${new Date(exam.exam_date).toISOString().split("T")[0]}</td>
+                    <a href="/view-exam-detail.html?id=${exam.id}" target="_blank">${exam.exam_name}</a>
+                    <td>${exam.exam_date.toString().split("T")[0]}</td>
                     <td>${exam.block}</td>
                     <td>
                         <div class="dropdown">
@@ -769,7 +766,7 @@
 
             // Fill the form with the exam data
             document.getElementById('exam_name').value = exam.exam_name;
-            document.getElementById('date').value = exam.exam_date;
+            document.getElementById('exam_date').value = exam.exam_date;
             document.getElementById('content').value = exam.content;
             document.getElementById('block').value = exam.block;
 
@@ -790,14 +787,14 @@
 
 
         const exam_name = document.getElementById('exam_name').value;
-        const date = document.getElementById('date').value;
+        const date = document.getElementById('exam_date').value;
         const content = document.getElementById('content').value;
         const block = document.getElementById("block").value;
 
 
         const formData = new FormData();
         formData.append('exam_name', exam_name);
-        formData.append('date', date);
+        formData.append('exam_date', date);
         formData.append('content', content);
         formData.append('block', block);
 

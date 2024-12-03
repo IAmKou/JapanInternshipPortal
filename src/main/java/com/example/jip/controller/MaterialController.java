@@ -5,9 +5,11 @@ import com.example.jip.dto.TeacherDTO;
 import com.example.jip.dto.request.FileDeleteRequest;
 import com.example.jip.entity.Account;
 import com.example.jip.entity.Material;
+import com.example.jip.entity.Student;
 import com.example.jip.entity.Teacher;
 import com.example.jip.repository.AccountRepository;
 import com.example.jip.repository.MaterialRepository;
+import com.example.jip.repository.StudentRepository;
 import com.example.jip.repository.TeacherRepository;
 import com.example.jip.services.CloudinaryService;
 import com.example.jip.services.MaterialServices;
@@ -38,6 +40,9 @@ public class MaterialController {
 
     @Autowired
     private TeacherRepository teacherRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
 
     @Autowired
     private MaterialServices materialServices;
@@ -100,7 +105,7 @@ public class MaterialController {
     // API lấy chi tiết tài liệu theo ID
     @GetMapping("/details/{id}")
     // Update the method signature
-    public ResponseEntity<MaterialDTO> getMaterialDetails(@PathVariable("id") Integer materialId) {
+    public ResponseEntity<MaterialDTO> getMaterialDetails(@PathVariable("id") Integer materialId,@RequestParam("accountId") Integer accountId) {
         Optional<Material> materialOptional = materialRepository.findById(materialId);
         if (materialOptional.isPresent()) {
             Material material = materialOptional.get();
@@ -132,6 +137,13 @@ public class MaterialController {
                 e.printStackTrace();
                 materialDTO.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
             }
+            Optional<Teacher> teacherOptional = teacherRepository.findByAccount_id(accountId);
+            Integer teacherId = null;
+
+            // Nếu tìm thấy teacher, lấy teacher_id
+            if (teacherOptional.isPresent()) {
+                teacherId = teacherOptional.get().getId();
+            }
 
             // Gán thông tin teacher (nếu có)
             if (material.getTeacher() != null) {
@@ -142,12 +154,14 @@ public class MaterialController {
             } else {
                 materialDTO.setTeacher(null);
             }
+            materialDTO.setTeacherId(teacherId);
 
             return ResponseEntity.ok(materialDTO);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateMaterial(
             @PathVariable("id") int materialId,  // Lấy ID tài liệu từ URL
@@ -225,6 +239,31 @@ public class MaterialController {
         response.put("materials", materialDTOs);
 
         return ResponseEntity.ok(response);
+    }
+    @GetMapping("/list1")
+    public ResponseEntity<List<MaterialDTO>> getMaterials() {
+        // Lấy tất cả các material
+        List<Material> materials = materialRepository.findAll();
+
+        // Chuyển đổi danh sách materials sang DTO
+        List<MaterialDTO> materialDTOs = materials.stream().map(material -> {
+            MaterialDTO dto = new MaterialDTO();
+            dto.setId(material.getId());
+            dto.setTitle(material.getTitle());
+            dto.setImg(material.getImg());
+            dto.setCreated_date(material.getCreated_date());
+
+            if (material.getTeacher() != null) {
+                TeacherDTO teacherDTO = new TeacherDTO();
+                teacherDTO.setId(material.getTeacher().getId()); // Lấy teacher_id
+                dto.setTeacher(teacherDTO);
+            }
+
+            return dto;
+        }).collect(Collectors.toList());
+
+        // Trả về danh sách DTO
+        return ResponseEntity.ok(materialDTOs);
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteMaterial(@PathVariable("id") int materialId) {
