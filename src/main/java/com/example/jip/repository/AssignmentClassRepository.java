@@ -1,7 +1,7 @@
 package com.example.jip.repository;
 
 import com.example.jip.entity.AssignmentClass;
-import com.example.jip.entity.AssignmentClassId;
+import com.example.jip.entity.Class;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,7 +1,6 @@
 package com.example.jip.repository;
 
 import com.example.jip.entity.AssignmentStudent;
-import com.example.jip.entity.AssignmentStudentId;
 import com.example.jip.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,6 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface AssignmentStudentRepository extends JpaRepository<AssignmentStudent, Student> {
     @Modifying
     @Transactional
-    @Query("DELETE FROM AssignmentStudent as WHERE as.assignment.id = :assignmentId")
+    @Query("DELETE FROM AssignmentStudent ast WHERE ast.assignment.id = :assignmentId")
     void deleteByAssignmentId(@Param("assignmentId") int assignmentId);
 }
