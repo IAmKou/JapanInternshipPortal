@@ -100,7 +100,7 @@ public class MaterialController {
     // API lấy chi tiết tài liệu theo ID
     @GetMapping("/details/{id}")
     // Update the method signature
-    public ResponseEntity<MaterialDTO> getMaterialDetails(@PathVariable("id") Integer materialId) {
+    public ResponseEntity<MaterialDTO> getMaterialDetails(@PathVariable("id") Integer materialId,@RequestParam("accountId") Integer accountId) {
         Optional<Material> materialOptional = materialRepository.findById(materialId);
         if (materialOptional.isPresent()) {
             Material material = materialOptional.get();
@@ -132,7 +132,13 @@ public class MaterialController {
                 e.printStackTrace();
                 materialDTO.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
             }
+            Optional<Teacher> teacherOptional = teacherRepository.findByAccount_id(accountId);
+            Integer teacherId = null;
 
+            // Nếu tìm thấy teacher, lấy teacher_id
+            if (teacherOptional.isPresent()) {
+                teacherId = teacherOptional.get().getId();
+            }
             // Gán thông tin teacher (nếu có)
             if (material.getTeacher() != null) {
                 TeacherDTO teacherDTO = new TeacherDTO();
@@ -142,7 +148,7 @@ public class MaterialController {
             } else {
                 materialDTO.setTeacher(null);
             }
-
+            materialDTO.setTeacherId(teacherId);
             return ResponseEntity.ok(materialDTO);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

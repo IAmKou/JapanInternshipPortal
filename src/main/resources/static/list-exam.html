@@ -633,7 +633,6 @@
                             <tr>
                                 <th>Exam Name</th>
                                 <th>Date </th>
-                                <th>Block</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -664,9 +663,6 @@
 
                         <label for="content">Content:</label>
                         <textarea id="content" name="content" rows="4"></textarea>
-
-                        <label for="block">Block:</label>
-                        <input type="number" id="block" name="block" />
 
                         <button type="submit" class="btn">Update</button>
                     </form>
@@ -732,7 +728,7 @@
                 row.innerHTML = `
                     <a href="/view-exam-detail.html?id=${exam.id}" target="_blank">${exam.exam_name}</a>
                     <td>${exam.exam_date.toString().split("T")[0]}</td>
-                    <td>${exam.block}</td>
+
                     <td>
                         <div class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -771,7 +767,6 @@
             document.getElementById('exam_name').value = exam.exam_name;
             document.getElementById('exam_date').value = exam.exam_date;
             document.getElementById('content').value = exam.content;
-            document.getElementById('block').value = exam.block;
 
 
 
@@ -792,14 +787,14 @@
         const exam_name = document.getElementById('exam_name').value;
         const date = document.getElementById('exam_date').value;
         const content = document.getElementById('content').value;
-        const block = document.getElementById("block").value;
+
 
 
         const formData = new FormData();
         formData.append('exam_name', exam_name);
         formData.append('exam_date', date);
         formData.append('content', content);
-        formData.append('block', block);
+
 
         try {
             const response = await fetch(`${API_BASE_URL}/update/${currentExamId}`, {

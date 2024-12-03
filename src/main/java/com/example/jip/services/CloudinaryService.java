@@ -1,6 +1,5 @@
 package com.example.jip.services;
 import com.cloudinary.Search;
-import com.cloudinary.api.exceptions.BadRequest;
 import com.example.jip.dto.response.CloudinaryResponse;
 
 import lombok.AccessLevel;
@@ -10,7 +9,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -20,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
 
 
 @Service

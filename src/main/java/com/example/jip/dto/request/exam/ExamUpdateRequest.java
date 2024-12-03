@@ -19,5 +19,4 @@ public class ExamUpdateRequest {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date exam_date;
     String content;
-    int block;
 }

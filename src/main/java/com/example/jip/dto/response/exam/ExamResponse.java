@@ -20,5 +20,4 @@ public class ExamResponse {
     Date exam_date;
     String content;
     int teacherId;
-    int block;
 }

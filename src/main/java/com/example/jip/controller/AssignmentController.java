@@ -43,9 +43,17 @@ public class AssignmentController {
     ClassRepository classRepository;
 
     @GetMapping("/list")
-    public List<AssignmentResponse> getAllAssignments() {
-        return assignmentServices.getAllAssignments();
+    public ResponseEntity<List<AssignmentResponse>> getAllAssignments(@RequestParam("teacherId") int teacherId) {
+        try {
+            List<AssignmentResponse> assignments = assignmentServices.getAllAssignmentByTeacherId(teacherId);
+            return ResponseEntity.ok(assignments);
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Return a 404 if assignment not found
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
+
 
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createAssignment(@ModelAttribute AssignmentCreationRequest request,
@@ -82,13 +90,16 @@ public class AssignmentController {
     }
 
 
-    @DeleteMapping("/delete/{assignment_id}")
-    public ResponseEntity<?> deleteAssignment(@PathVariable("assignment_id") int assignment_id) {
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteAssignment(@RequestParam("assignmentId") int assignmentId) {
         try {
-            assignmentServices.deleteAssignmentById(assignment_id);
-            return ResponseEntity.noContent().build(); // Return 204 No Content on successful deletion
+            log.info("Deleting assignment with ID: {}", assignmentId);
+            assignmentServices.deleteAssignmentById(assignmentId);
+            return ResponseEntity.noContent().build(); // Return 204 No Content on success
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 Not Found if assignment doesn't exist
+            log.error("Error deleting assignment: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Assignment not found with ID: " + assignmentId); // Return error message for debugging
         }
     }
 

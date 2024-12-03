@@ -341,9 +341,9 @@
             </div>
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
-                    <li class="nav-item sidebar-nav-item">
+                    <li class="nav-item ">
                         <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                        <ul class="nav sub-group-menu sub-group-active">
+                        <ul class="nav sub-group-menu">
                             <li class="nav-item">
                                 <a href="teacher.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Teachers</a>
                             </li>
@@ -419,13 +419,14 @@
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list threads</a>
+                                <a class="nav-link menu-active" href="forum.html"><i class="fas fa-angle-right"></i>View list threads</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item sidebar-nav-item">
                                 <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create Thread</a>
                             </li>
+
                         </ul>
                     </li>
                 </ul>
@@ -454,17 +455,15 @@
         </div>
         <div class="dashboard-content-one container">
             <!-- Create Thread Button -->
-            <a href="create-forum.html">
-                <button class="modal-trigger" href="create-forum.html">
-                    Create Thread
-                </button>
+            <a href="create-forum.html" class="modal-trigger" style="display: inline-block; padding: 10px 20px; text-align: center; background-color: #007bff; color: white; border-radius: 5px; text-decoration: none;">
+                Create Thread
             </a>
             <!-- Thread List Start -->
             <div id="threadList"></div>
             <!-- Thread List End -->
 
             <!-- Pagination Controls -->
-            <div class="pagination-controls text-center" style="margin-top: 20px;">
+            <div class="pagination-controls text-center" style="margin-top: 20px; margin-bottom: 40px;">
                 <!-- Previous Page Button -->
                 <button class="page-btn" id="prevPage" disabled>&laquo;</button>
                 <!-- Page Number Display -->

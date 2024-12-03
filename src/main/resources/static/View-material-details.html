@@ -357,7 +357,7 @@
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                             <ul class="nav sub-group-menu">
-                                <li class="nav-item">
+                                <li class="nav-item" id="teacher-view1">
                                     <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create material</a>
                                 </li>
                                 <li class="nav-item" id="teacher-view">
@@ -448,15 +448,13 @@
                             <div class="item-title">
                                 <h3>Material Details</h3>
                             </div>
-                            <div class="dropdown">
+                            <div class="dropdown" id="dropdownMenu" style="display:none;">
                                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
                                     <a class="dropdown-item editButton" href="#" data-toggle="modal" data-target="#editModal" class="editButton">
                                         <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                     </a>
-
-
                                     <button type="button" class="dropdown-item" data-toggle="modal" data-target="#confirmationModal">
                                         <i class="fas fa-trash text-orange-peel"></i>Delete
                                     </button>
@@ -578,13 +576,16 @@
         // Lấy materialId từ tham số URL
         const urlParams = new URLSearchParams(window.location.search);
         const materialId = urlParams.get('id'); // Lấy tham số 'id' từ URL
-
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        const currentTeacherId = userDetails ? userDetails.id : null;
+        console.log("Current Teacher ID: ", currentTeacherId);
 
         if (materialId) {
-            fetch(`http://localhost:8080/materials/details/${materialId}`)
+            fetch(`http://localhost:8080/materials/details/${materialId}?accountId=${currentTeacherId}`)
                 .then(response => response.json())
                 .then(data => {
                     // Cập nhật các phần tử HTML với dữ liệu từ API
+
                     document.getElementById('title').textContent = data.title;
                     document.getElementById('teacher').textContent = data.teacher ? data.teacher.fullname : 'Không có giáo viên'; // Kiểm tra teacher
                     const createdDate = new Date(data.created_date);
@@ -606,6 +607,12 @@
                         imgElement.src = ""; // Xóa URL nếu không có ảnh
                         imgElement.alt = "No Image"; // Thêm alt mặc định
                         imgElement.style.display = "none"; // Ẩn thẻ img
+                    }
+                    const dropdown = document.getElementById('dropdownMenu');
+                    if (data.teacherId === data.teacher?.id) {
+                        dropdown.style.display = 'block'; // Hiển thị dropdown nếu teacherId trùng khớp
+                    } else {
+                        dropdown.style.display = 'none'; // Ẩn dropdown nếu không trùng khớp
                     }
                     const contentElement = document.getElementById('content');
                     if (data.content) {
@@ -748,56 +755,66 @@
 
     <!-- fetch user -->
     <script>
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-        if (userDetails) {
-            const userFullNameElements = document.querySelectorAll('.userFullName');
-            const userRoleElements = document.querySelectorAll('.userRole');
+        document.addEventListener('DOMContentLoaded', function () {
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+            if (userDetails) {
+                console.log("User details:", userDetails);
 
-            // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-            if (userDetails.roleName === "ADMIN") {
-                // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.username;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
+                const userFullNameElements = document.querySelectorAll('.userFullName');
+                const userRoleElements = document.querySelectorAll('.userRole');
 
-                // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "none";
-            } else if (userDetails.roleName === "TEACHER") {
-                // Hiển thị đầy đủ tên và vai trò cho giáo viên
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.fullName;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
+                // Kiểm tra và gán giá trị cho các phần tử
+                if (userFullNameElements.length && userRoleElements.length) {
+                    if (userDetails.roleName === "ADMIN") {
+                        // Hiển thị thông tin cho ADMIN
+                        userFullNameElements.forEach(element => {
+                            element.textContent = userDetails.username || "Unknown Admin";
+                        });
+                        userRoleElements.forEach(element => {
+                            element.textContent = userDetails.roleName || "Unknown Role";
+                        });
 
-                // Chỉ hiển thị mục của giáo viên
-                document.getElementById("teacher-view").style.display = "block";
-                document.getElementById("student-view").style.display = "none";
-                document.getElementById("student-view1").style.display = "none";
-            } else if (userDetails.roleName === "STUDENT") {
-                // Hiển thị đầy đủ tên và vai trò cho học sinh
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.fullName;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
+                        // Ẩn các mục không cần thiết
+                        document.getElementById("teacher-view").style.display = "none";
+                        document.getElementById("student-view").style.display = "none";
+                    } else if (userDetails.roleName === "TEACHER") {
+                        // Hiển thị thông tin cho TEACHER
+                        userFullNameElements.forEach(element => {
+                            element.textContent = userDetails.fullName || "Unknown Teacher";
+                        });
+                        userRoleElements.forEach(element => {
+                            element.textContent = userDetails.roleName || "Unknown Role";
+                        });
 
-                // Chỉ hiển thị mục của học sinh
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "block";
-                document.getElementById("student-view1").style.display = "block";
+                        // Chỉ hiển thị mục của giáo viên
+                        document.getElementById("teacher-view").style.display = "block";
+                        document.getElementById("student-view").style.display = "none";
+                        document.getElementById("student-view1").style.display = "none";
+                        document.getElementById("teacher-view1").style.display = "block";
+                    } else if (userDetails.roleName === "STUDENT") {
+                        // Hiển thị thông tin cho STUDENT
+                        userFullNameElements.forEach(element => {
+                            element.textContent = userDetails.fullName || "Unknown Student";
+                        });
+                        userRoleElements.forEach(element => {
+                            element.textContent = userDetails.roleName || "Unknown Role";
+                        });
+
+                        // Chỉ hiển thị mục của học sinh
+                        document.getElementById("teacher-view").style.display = "none";
+                        document.getElementById("student-view").style.display = "block";
+                        document.getElementById("student-view1").style.display = "block";
+                        document.getElementById("teacher-view1").style.display = "none";
+                    } else {
+                        console.warn("Unrecognized role:", userDetails.roleName);
+                    }
+                } else {
+                    console.error("Required DOM elements are missing.");
+                }
             } else {
-                console.warn("Role not recognized: ", userDetails.roleName);
+                console.error("User details not found in sessionStorage.");
             }
-        } else {
-            console.error("User details not found in sessionStorage");
-        }
+        });
     </script>
 
 </body>
