@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -27,9 +29,6 @@ public class AttendantController {
 
     @Autowired
     private AttendantServices attendantServices;
-
-    @Autowired
-    private ListRepository listRepository;
 
     @Autowired
     private AttendantRepository attendantRepository;
@@ -78,9 +77,38 @@ public class AttendantController {
 
 
 
-    @GetMapping("/attendance")
-    public List<Attendant> getAttendance(@PathVariable int scheduleId, @RequestParam Date date) {
-        LocalTime currentTime = LocalTime.now();
-        return attendantRepository.findByScheduleIdAndTimeSlot(scheduleId, date, Time.valueOf(currentTime));
+    @GetMapping("/{classId}/get")
+    public List<AttendantDTO> getAttendance(@PathVariable int classId) {
+        LocalDate today = LocalDate.now();
+        Date date = Date.valueOf(today);
+        return attendantRepository.findByDateAndClassId(date,classId);
     }
+
+    @PostMapping("/update/{classId}")
+    public ResponseEntity<String> updateAttendance(
+            @PathVariable("classId") int classId,
+            @RequestBody List<AttendantDTO> attendanceData
+    ) {
+        try {
+            // Validate and update attendance records
+            attendantServices.updateAttendance(classId, attendanceData);
+            return ResponseEntity.ok("Attendance updated successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Failed to update attendance: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/{classId}/attendanceStatus")
+    public boolean hasAttendanceBeenTaken(@PathVariable Integer classId) {
+        if (classId == null) {
+            throw new IllegalArgumentException("classId must not be null");
+        }
+        // Assuming you have a repository to check attendance
+        LocalDate today = LocalDate.now();
+        Date date = Date.valueOf(today);
+        return attendantRepository.existsByClassIdAndDate(classId, date);
+    }
+
+
 }

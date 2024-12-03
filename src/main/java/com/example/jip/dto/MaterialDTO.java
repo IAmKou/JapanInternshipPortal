@@ -24,6 +24,7 @@
         MultipartFile[] imgFile;
         private Integer teacherId; // Thêm trường này
 
+
         public void setImgFromList(List<String> fileUrls) {
             if (fileUrls != null && !fileUrls.isEmpty()) {
                 // Chuyển đổi List<String> thành một chuỗi nối các URL (có thể sử dụng dấu phân cách như ", " hoặc "\n")

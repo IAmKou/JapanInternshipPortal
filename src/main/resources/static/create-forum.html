@@ -43,7 +43,9 @@
         <div class="nav-bar-header-one">
             <div class="header-logo">
                 <a href="admin.html">
-                    <img src="img/logo.png" alt="logo">
+                    <div style="width: 180px; height: 70px; overflow: hidden;">
+                        <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
                 </a>
             </div>
             <div class="toggle-button sidebar-toggle">
@@ -68,12 +70,7 @@
             <ul class="navbar-nav">
                 <li class="navbar-item header-search-bar">
                     <div class="input-group stylish-input-group">
-                            <span class="input-group-addon">
-                                <button type="submit">
-                                    <span class="flaticon-search" aria-hidden="true"></span>
-                                </button>
-                            </span>
-                        <input type="text" class="form-control" placeholder="Find Something . . .">
+
                     </div>
                 </li>
             </ul>
@@ -304,13 +301,24 @@
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create material</a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item" id="teacher-view1">
+                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
+                                    material</a>
                             </li>
                             <li class="nav-item" id="teacher-view">
-                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
+                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    materials</a>
                             </li>
+                            <li class="nav-item" id="student-view1">
+                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    materials</a>
+                            </li>
+                            <li class="nav-item" id="student-view">
+                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list
+                                    materials</a>
+                            </li>
+
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
@@ -463,57 +471,67 @@
 </script>
 
 <script>
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    if (userDetails) {
-        document.getElementById('userId').value = userDetails.id;
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
+    document.addEventListener('DOMContentLoaded', function () {
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails) {
+            console.log("User details:", userDetails);
 
-        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-        if (userDetails.roleName === "ADMIN") {
-            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.username;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            const userRoleElements = document.querySelectorAll('.userRole');
 
-            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "TEACHER") {
-            // Hiển thị đầy đủ tên và vai trò cho giáo viên
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
+            // Kiểm tra và gán giá trị cho các phần tử
+            if (userFullNameElements.length && userRoleElements.length) {
+                if (userDetails.roleName === "ADMIN") {
+                    // Hiển thị thông tin cho ADMIN
+                    userFullNameElements.forEach(element => {
+                        element.textContent = userDetails.username || "Unknown Admin";
+                    });
+                    userRoleElements.forEach(element => {
+                        element.textContent = userDetails.roleName || "Unknown Role";
+                    });
 
-            // Chỉ hiển thị mục của giáo viên
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
-            document.getElementById("student-view1").style.display = "none";
-        } else if (userDetails.roleName === "STUDENT") {
-            // Hiển thị đầy đủ tên và vai trò cho học sinh
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
+                    // Ẩn các mục không cần thiết
+                    document.getElementById("teacher-view").style.display = "none";
+                    document.getElementById("student-view").style.display = "none";
+                } else if (userDetails.roleName === "TEACHER") {
+                    // Hiển thị thông tin cho TEACHER
+                    userFullNameElements.forEach(element => {
+                        element.textContent = userDetails.fullName || "Unknown Teacher";
+                    });
+                    userRoleElements.forEach(element => {
+                        element.textContent = userDetails.roleName || "Unknown Role";
+                    });
 
-            // Chỉ hiển thị mục của học sinh
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
+                    // Chỉ hiển thị mục của giáo viên
+                    document.getElementById("teacher-view").style.display = "block";
+                    document.getElementById("student-view").style.display = "none";
+                    document.getElementById("student-view1").style.display = "none";
+                    document.getElementById("teacher-view1").style.display = "block";
+                } else if (userDetails.roleName === "STUDENT") {
+                    // Hiển thị thông tin cho STUDENT
+                    userFullNameElements.forEach(element => {
+                        element.textContent = userDetails.fullName || "Unknown Student";
+                    });
+                    userRoleElements.forEach(element => {
+                        element.textContent = userDetails.roleName || "Unknown Role";
+                    });
+
+                    // Chỉ hiển thị mục của học sinh
+                    document.getElementById("teacher-view").style.display = "none";
+                    document.getElementById("student-view").style.display = "block";
+                    document.getElementById("student-view1").style.display = "block";
+                    document.getElementById("teacher-view1").style.display = "none";
+
+                } else {
+                    console.warn("Unrecognized role:", userDetails.roleName);
+                }
+            } else {
+                console.error("Required DOM elements are missing.");
+            }
         } else {
-            console.warn("Role not recognized: ", userDetails.roleName);
+            console.error("User details not found in sessionStorage.");
         }
-    } else {
-        console.error("User details not found in sessionStorage");
-    }
+    });
 </script>
 
 <!-- Mirrored from admit-form.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:46 GMT -->
