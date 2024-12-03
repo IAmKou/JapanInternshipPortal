@@ -269,6 +269,10 @@
                                 <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
                                     Assignment</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();">
+                                    <i class="fas fa-angle-right"></i>Personal Mark Report</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
@@ -351,8 +355,7 @@
                                     threads</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
-                                    Thread</a>
+                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create Thread</a>
                             </li>
                         </ul>
                     </li>
@@ -864,7 +867,7 @@
             </div>
             <!-- Footer Area Start Here -->
             <footer class="footer-wrap-layout1">
-                <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a
+                <div class="copyright">© Copyrights <a href="#">JIP</a> 2019. All rights reserved. Designed by <a
                         href="#">PsdBosS</a></div>
             </footer>
             <!-- Footer Area End Here -->
@@ -971,6 +974,20 @@
             console.error("Teacher ID is missing or user details not found in sessionStorage");
         }
     }
+
+    function toMarkReport() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.studentId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `personal-mark-report.html?studentId=${userDetails.studentId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+
+
 </script>
 
 

@@ -1,7 +1,9 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.StudentDTO;
+import com.example.jip.dto.TeacherDTO;
 import com.example.jip.entity.Student;
+import com.example.jip.entity.Teacher;
 import com.example.jip.repository.ListRepository;
 import com.example.jip.repository.StudentRepository;
 import com.example.jip.services.StudentServices;
@@ -15,6 +17,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -76,4 +79,15 @@ public class StudentController {
                 .map(StudentDTO::new)
                 .collect(Collectors.toList());
     }
+
+    @GetMapping("/getStudent")
+    public StudentDTO getStudentById(@RequestParam("studentId") Integer studentId) {
+        if (studentId == null) {
+            throw new IllegalArgumentException("studentId must not be null");
+        }
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new IllegalArgumentException("Student not found"));
+        return new StudentDTO(student);
+    }
+
+
 }

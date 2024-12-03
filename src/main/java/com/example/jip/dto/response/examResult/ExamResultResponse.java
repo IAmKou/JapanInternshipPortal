@@ -1,4 +1,4 @@
-package com.example.jip.dto.request.examResult;
+package com.example.jip.dto.response.examResult;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,11 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ExamResultGradeRequest {
-    int studentId; // Or just the student ID if fetching the full Student is not needed
-    BigDecimal mark;
+public class ExamResultResponse {
+     int id;
+     String studentName;
+     int studentId;
+     int examId;
+     String examName;
+     BigDecimal mark;
 }

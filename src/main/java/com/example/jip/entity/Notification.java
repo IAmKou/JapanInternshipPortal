@@ -31,4 +31,11 @@ public class Notification {
         this.title = title;
         this.content = content;
     }
+
+    public Notification(int id, String title, String content, Account account) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.account = account;
+    }
 }

@@ -3,11 +3,11 @@ package com.example.jip.controller;
 import com.example.jip.dto.TeacherDTO;
 import com.example.jip.dto.request.exam.ExamCreationRequest;
 import com.example.jip.dto.request.exam.ExamUpdateRequest;
-import com.example.jip.dto.request.examResult.ExamResultGradeRequest;
 import com.example.jip.dto.response.exam.ExamResponse;
 
 import com.example.jip.entity.Teacher;
 import com.example.jip.repository.TeacherRepository;
+import com.example.jip.services.ExamResultService;
 import com.example.jip.services.ExamSerivce;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +31,8 @@ public class ExamController {
      ExamSerivce examService;
 
      TeacherRepository teacherRepository;
+
+     ExamResultService examResultService;
 
     @PostMapping(value = "/create")
     public ResponseEntity<?> createExam(@ModelAttribute ExamCreationRequest request,
@@ -104,14 +106,5 @@ public class ExamController {
     }
 
 
-    @PutMapping("/grade/{examId}")
-    public ResponseEntity<?> gradeExam(@PathVariable int examId,
-                                       @RequestBody List<ExamResultGradeRequest> results) {
-        try {
-            examService.gradeExam(examId, results);
-            return ResponseEntity.ok("Grades submitted successfully.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while submitting grades.");
-        }
-    }
+
 }
