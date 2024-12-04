@@ -21,10 +21,10 @@ import java.util.UUID;
 
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@Slf4j
 public class CloudinaryService {
 
     Cloudinary cloudinary;
@@ -52,19 +52,25 @@ public class CloudinaryService {
 
     public List<Map<String, Object>> getFilesFromFolder(String folderName) {
         try {
-            folderName = sanitizeFolderName(folderName); // Sanitize the folder name
-            Search search = cloudinary.search()
-                    .expression("folder:" + folderName) // Properly handle folder names with spaces
-                    .maxResults(50); // Limit results for testing
+            if(folderName != null) {
+                folderName = sanitizeFolderName(folderName); // Sanitize the folder name
+                Search search = cloudinary.search()
+                        .expression("folder:" + folderName) // Properly handle folder names with spaces
+                        .maxResults(50); // Limit results for testing
 
-            Map<String, Object> results = search.execute();
-            if (results.containsKey("resources")) {
-                List<Map<String, Object>> resources = (List<Map<String, Object>>) results.get("resources");
-                log.info("Files retrieved from Cloudinary: {}", resources);
-                return resources;
+                Map<String, Object> results = search.execute();
+                if (results.containsKey("resources")) {
+                    List<Map<String, Object>> resources = (List<Map<String, Object>>) results.get("resources");
+                    log.info("Files retrieved from Cloudinary: {}", resources);
+                    return resources;
+                }
             }
-            log.warn("No resources found in folder: {}", folderName);
-            return Collections.emptyList();
+                log.warn("No resources found in folder: {}", folderName);
+                return Collections.emptyList();
+
+        } catch (NullPointerException ne) {
+                log.error("Null pointer exception when retrieving files from folder: {}", folderName, ne);
+                throw new RuntimeException("Failed to retrieve files from folder: " + folderName, ne);
 
         } catch (Exception e) {
             log.error("Failed to retrieve files from folder: {}", folderName, e);
@@ -94,7 +100,11 @@ public class CloudinaryService {
     }
 
     private String sanitizeFolderName(String folderName) {
+        if(folderName != null) {
         return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim();
+        } else {
+            return "Folder name is null";
+        }
     }
 
     public String uploadImage(MultipartFile file) throws Exception {

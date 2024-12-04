@@ -50,7 +50,7 @@ public class ExamResultController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> gradeExam(@RequestParam("examResultId") int examResultId,
+    public ResponseEntity<?> updateExamResult(@RequestParam("examResultId") int examResultId,
                                        @RequestBody ExamResultUpdateRequest request) {
         try {
             examResultService.updateExamResult(examResultId, request);

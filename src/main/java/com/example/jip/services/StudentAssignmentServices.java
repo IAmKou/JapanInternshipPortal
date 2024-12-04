@@ -2,6 +2,7 @@ package com.example.jip.services;
 
 
 
+import com.example.jip.dto.request.studentAssignment.StudentAssignmentGradeRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentSubmitRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentUpdateRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
@@ -88,26 +89,45 @@ public class StudentAssignmentServices {
         return studentAssignmentRepository.save(studentAssignment);
     }
 
-    public List<StudentAssignmentResponse> getSubmittedAssignmentByStudentId(int studentId) {
-        List<StudentAssignment> studentAssignments = studentAssignmentRepository.findByStudentId(studentId);;
+    @PreAuthorize("hasAuthority('TEACHER')")
+    public StudentAssignment gradeSubmittedAssignment(int studentAssignmentId, StudentAssignmentGradeRequest request) {
+        StudentAssignment studentAssignment = studentAssignmentRepository.findById(studentAssignmentId)
+                .orElseThrow(() -> new NoSuchElementException("studentAssignmentId not found!"));
 
-        // Map to DTOs
-         List<StudentAssignmentResponse> responses = studentAssignments.stream()
-                .map(sa -> {
-                    StudentAssignmentResponse response = new StudentAssignmentResponse();
-                    response.setId(sa.getId());
-                    response.setMark(sa.getMark());
-                    response.setDescription(sa.getDescription());
-                    response.setContent(sa.getContent());
-                    response.setDate(sa.getDate());
-                    response.setStatus(sa.getStatus().toString());
-                    response.setAssignmentId(sa.getAssignment().getId());
-                    response.setStudentId(sa.getStudent().getId());
-                    response.setAssignmentName(sa.getAssignment().getDescription());
-                    return response;
-                })
-                .collect(Collectors.toList());
-         return responses;
+        if(request.getMark() != null){
+            studentAssignment.setMark(request.getMark());
+        }
+
+        if (request.getStatus() != null) {
+            studentAssignment.setStatus(request.getStatus());
+        }
+        log.info("Grading assignment with Mark: " + request.getMark() + ", Status: " + request.getStatus());
+        return studentAssignmentRepository.save(studentAssignment);
+    }
+
+    public List<StudentAssignmentResponse> getSubmittedAssignmentsByStudentId(int studentId) {
+        List<StudentAssignment> studentAssignments = studentAssignmentRepository.findByStudentId(studentId);
+        if(studentAssignments == null){
+             throw new NoSuchElementException("Submitted assignment not found");
+        } else {
+            // Map to DTOs
+            List<StudentAssignmentResponse> responses = studentAssignments.stream()
+                    .map(sa -> {
+                        StudentAssignmentResponse response = new StudentAssignmentResponse();
+                        response.setId(sa.getId());
+                        response.setMark(sa.getMark());
+                        response.setDescription(sa.getDescription());
+                        response.setContent(sa.getContent());
+                        response.setDate(sa.getDate());
+                        response.setStatus(sa.getStatus().toString());
+                        response.setAssignmentId(sa.getAssignment().getId());
+                        response.setStudentId(sa.getStudent().getId());
+                        response.setAssignmentName(sa.getAssignment().getDescription());
+                        return response;
+                    })
+                    .collect(Collectors.toList());
+            return responses;
+        }
     }
 
     public StudentAssignmentResponse getStudentAssignmentDetail(int studentAssignmentId) {
@@ -168,6 +188,28 @@ public class StudentAssignmentServices {
         }
         return response;
     }
+
+    @PreAuthorize("hasAuthority('TEACHER')")
+    public List<StudentAssignmentResponse> getSubmittedAssignmentsByAssignmentId(int assignmentId){
+        List<StudentAssignment> studentAssignments = studentAssignmentRepository.findByAssignmentId(assignmentId);
+        List<StudentAssignmentResponse> responses = studentAssignments.stream()
+                // Map to DTOs
+                .map(sa -> {
+                    StudentAssignmentResponse response = new StudentAssignmentResponse();
+                    response.setId(sa.getId());
+                    response.setMark(sa.getMark());
+                    response.setDescription(sa.getDescription());
+                    response.setContent(sa.getContent());
+                    response.setDate(sa.getDate());
+                    response.setStatus(sa.getStatus().toString());
+                    response.setAssignmentId(sa.getAssignment().getId());
+                    response.setStudentId(sa.getStudent().getId());
+                    return response;
+                })
+                .collect(Collectors.toList());
+        return responses;
+    }
+
     @PreAuthorize("hasAuthority('STUDENT')")
     public StudentAssignment updateStudentAssignment(int submittedAssignmentId, StudentAssignmentUpdateRequest request) {
         StudentAssignment existingAssignment = studentAssignmentRepository.findById(submittedAssignmentId)

@@ -651,7 +651,7 @@
             console.log("Mapped Student ID:", studentId);
 
             // Fetch submitted assignments using the student ID
-            const submittedAssignmentResponse = await fetch(`/student-assignment/list-submitted-assignments?studentId=${studentId}`);
+            const submittedAssignmentResponse = await fetch(`/student-assignment/list-submitted-assignments-student?studentId=${studentId}`);
             if (!submittedAssignmentResponse.ok) {
                 throw new Error(`Error fetching submitted assignments: ${submittedAssignmentResponse.statusText}`);
             }

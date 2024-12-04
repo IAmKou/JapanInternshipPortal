@@ -674,7 +674,7 @@
 
         try {
             // Call the backend API to update the submitted assignment
-            const response = await fetch(`/assignment/grade-submitted-assignment?studentAssignmentId=${submittedAssignmentId}`, {
+            const response = await fetch(`/student-assignment/grade-submitted-assignment?studentAssignmentId=${submittedAssignmentId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

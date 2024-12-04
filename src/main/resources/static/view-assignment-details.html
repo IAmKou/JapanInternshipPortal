@@ -602,7 +602,7 @@
           const assignmentId = urlParams.get('id');
 
           try {
-              const response = await fetch(`/assignment/list-submitted-assignments?assignmentId=${assignmentId}`);
+              const response = await fetch(`/student-assignment/list-submitted-assignments?assignmentId=${assignmentId}`);
               if (!response.ok) {
                   throw new Error(`Error fetching submitted assignments: ${response.statusText}`);
               }
