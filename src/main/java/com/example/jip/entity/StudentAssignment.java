@@ -33,7 +33,7 @@ public class StudentAssignment {
     @Column(name = "description", nullable = false)
     String description;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = false, columnDefinition = "LONGTEXT")
     String content;
 
     @Column(name = "date", nullable = false)

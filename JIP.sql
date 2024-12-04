@@ -98,7 +98,7 @@ CREATE TABLE Assignment (
     date_created DATE NOT NULL,
     end_date DATE NOT NULL,
     description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    content VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    content LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     teacher_id INT,
     img VARCHAR(255),
     class_id INT,
@@ -112,7 +112,7 @@ CREATE TABLE Student_assignment (
     assignment_id INT,
     mark DECIMAL(5,2),
     description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    content VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    content LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     date DATE NOT NULL,
     FOREIGN KEY (student_id) REFERENCES Student(Id),
     FOREIGN KEY (assignment_id) REFERENCES Assignment(Id)
@@ -123,6 +123,7 @@ CREATE TABLE Exam (
     student_id INT,
     block INT NOT NULL,
     exam_name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    content LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     mark DECIMAL(5,2) NOT NULL,
     date DATE NOT NULL,
     FOREIGN KEY (student_id) REFERENCES Student(Id)
@@ -196,10 +197,14 @@ CREATE TABLE Application (
 
 CREATE TABLE Notification (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    Title VARCHAR(100),
-    content VARCHAR(250),
-    account_id INT,
-    FOREIGN KEY (account_id) REFERENCES Account(Id)
+    Title VARCHAR(100) NOT NULL,
+    Content VARCHAR(250) NOT NULL,
+    Created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    account_id INT, 
+    role ENUM('Admin', 'Teacher', 'Student', 'Manager') NOT NULL, 
+    recipient_id INT DEFAULT NULL, 
+    FOREIGN KEY (account_id) REFERENCES Account(Id),
+    FOREIGN KEY (recipient_id) REFERENCES Account(Id)
 );
 
 Create table Report(

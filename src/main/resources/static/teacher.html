@@ -236,7 +236,7 @@
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
                                     Assignment</a>
                             </li>
                             <li class="nav-item">
@@ -1016,6 +1016,18 @@
         }
     }
 
+    function toListAssigment() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+
     function redirectSchedule() {
         // Retrieve userDetails from sessionStorage
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -1027,6 +1039,8 @@
             console.error("Teacher ID is missing or user details not found in sessionStorage");
         }
     }
+
+
 </script>
 <!-- fetch notification -->
 <script>

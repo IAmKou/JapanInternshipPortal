@@ -20,20 +20,20 @@ public class Assignment {
     @Column(name =  "date_created")
     @Temporal(TemporalType.DATE)
     Date created_date;
-    @Column(name =  "end_date")
+    @Column(name =  "end_date", nullable = false)
     @Temporal(TemporalType.DATE)
     Date end_date;
     @Column(name = "description")
     String description;
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "LONGTEXT")
     String content;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "teacher_id")
     Teacher teacher;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "assignment_class",
             joinColumns = @JoinColumn(name = "assignment_id"),

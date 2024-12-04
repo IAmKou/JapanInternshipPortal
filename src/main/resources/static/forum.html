@@ -519,70 +519,6 @@
 <script src="js/main.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-        if (userDetails) {
-            console.log("User details:", userDetails);
-
-            const userFullNameElements = document.querySelectorAll('.userFullName');
-            const userRoleElements = document.querySelectorAll('.userRole');
-
-            // Kiểm tra và gán giá trị cho các phần tử
-            if (userFullNameElements.length && userRoleElements.length) {
-                if (userDetails.roleName === "ADMIN") {
-                    // Hiển thị thông tin cho ADMIN
-                    userFullNameElements.forEach(element => {
-                        element.textContent = userDetails.username || "Unknown Admin";
-                    });
-                    userRoleElements.forEach(element => {
-                        element.textContent = userDetails.roleName || "Unknown Role";
-                    });
-
-                    // Ẩn các mục không cần thiết
-                    document.getElementById("teacher-view").style.display = "none";
-                    document.getElementById("student-view").style.display = "none";
-                } else if (userDetails.roleName === "TEACHER") {
-                    // Hiển thị thông tin cho TEACHER
-                    userFullNameElements.forEach(element => {
-                        element.textContent = userDetails.fullName || "Unknown Teacher";
-                    });
-                    userRoleElements.forEach(element => {
-                        element.textContent = userDetails.roleName || "Unknown Role";
-                    });
-
-                    // Chỉ hiển thị mục của giáo viên
-                    document.getElementById("teacher-view").style.display = "block";
-                    document.getElementById("student-view").style.display = "none";
-                    document.getElementById("student-view1").style.display = "none";
-                    document.getElementById("teacher-view1").style.display = "block";
-                } else if (userDetails.roleName === "STUDENT") {
-                    // Hiển thị thông tin cho STUDENT
-                    userFullNameElements.forEach(element => {
-                        element.textContent = userDetails.fullName || "Unknown Student";
-                    });
-                    userRoleElements.forEach(element => {
-                        element.textContent = userDetails.roleName || "Unknown Role";
-                    });
-
-                    // Chỉ hiển thị mục của học sinh
-                    document.getElementById("teacher-view").style.display = "none";
-                    document.getElementById("student-view").style.display = "block";
-                    document.getElementById("student-view1").style.display = "block";
-                    document.getElementById("teacher-view1").style.display = "none";
-
-                } else {
-                    console.warn("Unrecognized role:", userDetails.roleName);
-                }
-            } else {
-                console.error("Required DOM elements are missing.");
-            }
-        } else {
-            console.error("User details not found in sessionStorage.");
-        }
-    });
-</script>
-
-<script>
     document.addEventListener("DOMContentLoaded", function () {
         // Initialize variables
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -600,22 +536,20 @@
         const threadsPerPage = 5;
 
         let currentPage = 1; // Start on the first page
-        let totalPages = 1; // Set a default number of pages (this will be updated by the server response)
+        let totalPages = 1; // Set a default number of pages (this will be updated after fetching all threads)
+        let allThreads = []; // This will hold all threads
         let threadToDeleteId = null;
 
-        // Function to fetch threads based on the current page
-        function fetchThreads(page) {
-            const pageIndex = Math.max(page - 1, 0); // Convert to 0-based index for pagination
-            console.log(`Fetching threads for page: ${page}, adjusted to 0-based index: ${pageIndex}`);
-
-            fetch(`/thread/threads?page=${pageIndex}&size=${threadsPerPage}`)
+        // Function to fetch all threads (without pagination)
+        function fetchAllThreads() {
+            fetch(`/thread/threads?page=0&size=10000`)  // Large enough size to fetch all threads
                 .then(response => response.json())
                 .then(data => {
                     if (data.content && Array.isArray(data.content) && data.content.length > 0) {
-                        renderThreads(data.content); // Render the threads on the page
-                        totalPages = data.totalPages || 1; // Update total pages if necessary
-                        pageNumber.textContent = currentPage; // Update the page number display
-                        updatePagination(); // Update pagination buttons' state
+                        // Sort all threads by dateCreated in descending order (newest first)
+                        allThreads = data.content.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated));
+                        totalPages = Math.ceil(allThreads.length / threadsPerPage); // Calculate total pages
+                        fetchThreads(currentPage); // Fetch the first page of sorted threads
                     } else {
                         threadList.innerHTML = "<p>No threads available.</p>";
                     }
@@ -624,6 +558,18 @@
                     console.error("Error fetching threads:", error);
                     alert("Error fetching threads");
                 });
+        }
+
+        // Function to fetch and render threads for the current page
+        function fetchThreads(page) {
+            const startIndex = (page - 1) * threadsPerPage;
+            const pageThreads = allThreads.slice(startIndex, startIndex + threadsPerPage); // Get threads for the current page
+
+            if (pageThreads.length > 0) {
+                renderThreads(pageThreads); // Render the threads on the page
+                pageNumber.textContent = currentPage; // Update the page number display
+                updatePagination(); // Update pagination buttons' state
+            }
         }
 
         // Function to render threads on the page
@@ -721,7 +667,7 @@
                 .then(response => {
                     if (response.ok) {
                         alert('Thread deleted successfully');
-                        fetchThreads(currentPage); // Refresh thread list after deletion
+                        fetchAllThreads(); // Refresh the thread list after deletion
                     } else {
                         alert('Failed to delete thread');
                     }
@@ -750,11 +696,31 @@
             }
         });
 
-        // Initial fetch of threads for the first page
-        fetchThreads(currentPage);
-    });
+        // Function to refresh the threads after editing
+        function refreshAfterEdit() {
+            fetchAllThreads(); // Refresh the thread list after editing
+        }
 
+        // Check if the current page is the thread edit page and add a listener for refresh after edit
+        if (window.location.pathname.includes("edit-forum.html")) {
+            // Add listener to refresh after thread edit
+            window.addEventListener("load", function() {
+                const submitButton = document.getElementById("submitEdit");
+                if (submitButton) {
+                    submitButton.addEventListener("click", function() {
+                        refreshAfterEdit(); // Refresh after editing
+                    });
+                }
+            });
+        }
+
+        // Initial fetch of all threads and render them sorted
+        fetchAllThreads();
+    });
 </script>
+
+
+
 
 </body>
 </html>

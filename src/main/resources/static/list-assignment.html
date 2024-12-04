@@ -606,8 +606,10 @@
 
     async function fetchAndDisplayAssignments() {
         try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const teacherId = urlParams.get('teacherId');
             console.log('Fetching assignments...');
-            const response = await fetch(`${API_BASE_URL}/list`);
+            const response = await fetch(`${API_BASE_URL}/list?teacherId=${teacherId}`);
             console.log('Response received:', response);
             if (!response.ok) {
                 throw new Error('Error fetching assignments: ' + response.statusText);
@@ -804,41 +806,51 @@
             }
 
 
-
-        // Function to open the delete confirmation modal
-        function openDeleteConfirmModal(assignmentId) {
-            document.getElementById('deleteConfirmModal').dataset.assignmentId = assignmentId;
-            document.getElementById('deleteConfirmModal').style.display = 'flex';
+    // Function to open the delete confirmation modal
+    function openDeleteConfirmModal(assignmentId) {
+        if (!assignmentId) {
+            console.error("Invalid assignment ID!");
+            return;
         }
 
-        // Function to close the delete confirmation modal
-        function closeDeleteConfirmModal() {
-            document.getElementById('deleteConfirmModal').style.display = 'none';
+        const modal = document.getElementById('deleteConfirmModal');
+        modal.dataset.assignmentId = assignmentId;
+        modal.style.display = 'flex';
+    }
+
+    // Function to close the delete confirmation modal
+    function closeDeleteConfirmModal() {
+        document.getElementById('deleteConfirmModal').style.display = 'none';
+    }
+
+    // Function to confirm delete
+    async function confirmDelete() {
+        const assignmentId = document.getElementById('deleteConfirmModal').dataset.assignmentId;
+
+        if (!assignmentId) {
+            alert('Assignment ID not found!');
+            return;
         }
 
-        // Function to confirm delete
-        async function confirmDelete() {
-            const assignmentId = document.getElementById('deleteConfirmModal').dataset.assignmentId;
+        try {
+            const response = await fetch(`${API_BASE_URL}/delete?assignmentId=${assignmentId}`, {
+                method: 'DELETE',
+            });
 
-            try {
-                const response = await fetch(`${API_BASE_URL}/delete/${assignmentId}`, {
-                    method: 'DELETE'
-                });
-
-                if (response.ok) {
-                    alert('Assignment deleted successfully!');
-                    fetchAndDisplayAssignments();
-                    closeDeleteConfirmModal();
-                } else if (response.status === 404) {
-                    alert('Assignment not found!');
-                    closeDeleteConfirmModal();
-                } else {
-                    console.error('Error deleting assignment:', response.statusText);
-                }
-            } catch (error) {
-                console.error('Error:', error);
+            if (response.ok) {
+                alert('Assignment deleted successfully!');
+                fetchAndDisplayAssignments(); // Reload assignments
+                closeDeleteConfirmModal();
+            } else if (response.status === 404) {
+                const errorData = await response.text();
+                alert(`Error: ${errorData}`);
+            } else {
+                alert('Failed to delete assignment. Please try again.');
             }
+        } catch (error) {
+            alert('An unexpected error occurred. Please try again.');
         }
+    }
 
     // Initialize the table with assignments on page load
     document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);

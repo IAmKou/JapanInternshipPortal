@@ -46,7 +46,6 @@ public class ExamSerivce {
                     response.setExam_name(exam.getExam_name());
                     response.setContent(exam.getContent());
                     response.setTeacherId(exam.getTeacher().getId());
-                    response.setBlock(exam.getBlock());
                     return response;
                 })
                 .collect(Collectors.toList());
@@ -63,7 +62,6 @@ public class ExamSerivce {
         exam.setExam_name(request.getExam_name());
         exam.setExam_date(request.getExam_date());
         exam.setContent(request.getContent());
-        exam.setBlock(request.getBlock());
         exam.setTeacher(teacher);
 
         // Save the exam first to generate its ID
@@ -107,8 +105,6 @@ public class ExamSerivce {
         response.setExam_name(exam.getExam_name());
         response.setContent(exam.getContent());
         response.setExam_date(exam.getExam_date());
-        response.setBlock(exam.getBlock());
-
         return response;
     }
     @PreAuthorize("hasAuthority('TEACHER')")
@@ -125,9 +121,7 @@ public class ExamSerivce {
         if(request.getContent()!= null){
             exam.setContent(request.getContent());
         }
-        if(request.getBlock() != 0){
-            exam.setBlock(request.getBlock());
-        }
+
         examRepository.save(exam);
     }
 }

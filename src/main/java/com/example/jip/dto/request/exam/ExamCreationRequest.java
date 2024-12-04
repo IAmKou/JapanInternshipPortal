@@ -20,5 +20,4 @@ public class ExamCreationRequest {
     Date exam_date;
     String content;
     TeacherDTO teacher;
-    int block;
 }
