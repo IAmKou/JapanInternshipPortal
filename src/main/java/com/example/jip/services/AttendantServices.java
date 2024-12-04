@@ -1,11 +1,10 @@
 package com.example.jip.services;
 
 import com.example.jip.entity.Attendant;
-import com.example.jip.entity.Class;
+import com.example.jip.dto.AttendantDTO;
 import com.example.jip.entity.Schedule;
 import com.example.jip.entity.Student;
 import com.example.jip.repository.AttendantRepository;
-import com.example.jip.repository.ClassRepository;
 import com.example.jip.repository.ScheduleRepository;
 import com.example.jip.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,28 +63,41 @@ public class AttendantServices {
         return attendantRepository.save(attendant);
     }
 
-
-    public void updateAttendance(int attendantId, Attendant.Status status) {
-
-        Attendant attendant = attendantRepository.findById(attendantId)
-                .orElseThrow(() -> new RuntimeException("Attendance record not found"));
-
-
+    public void updateAttendance(int classId, List<AttendantDTO> attendanceData) {
         LocalDate today = LocalDate.now();
-        LocalTime now = LocalTime.now();
+        Date date = Date.valueOf(today);
 
-
-        LocalDate attendanceDate = attendant.getDate().toLocalDate();
-
-
-        if (!attendanceDate.isEqual(today) || now.isAfter(LocalTime.MIDNIGHT)) {
-            throw new RuntimeException("Attendance can no longer be updated after midnight.");
+        // Fetch schedules for the class and date
+        List<Schedule> schedules = scheduleRepository.findByClassIdAndDate(classId, date);
+        if (schedules.isEmpty()) {
+            throw new IllegalArgumentException("No schedule found for class ID " + classId + " and date " + date);
         }
+        if (schedules.size() > 1) {
+            throw new IllegalStateException("Multiple schedules found for class ID " + classId + " and date " + date);
+        }
+        Schedule schedule = schedules.get(0);
 
-        attendant.setStatus(status);
+        for (AttendantDTO dto : attendanceData) {
+            // Fetch existing attendance record or create a new one
+            Attendant attendant = attendantRepository
+                    .findByStudentIdAndScheduleIdAndDate(dto.getStudentId(), schedule.getId(), dto.getDate())
+                    .orElseGet(Attendant::new);
 
-        attendantRepository.save(attendant);
+            // Fetch the student
+            Student student = studentRepository.findById(dto.getStudentId())
+                    .orElseThrow(() -> new IllegalArgumentException("Student not found: " + dto.getStudentId()));
+
+            // Update the attendance record
+            attendant.setStudent(student);
+            attendant.setSchedule(schedule);
+            attendant.setStatus(dto.getStatus());
+            attendant.setDate(dto.getDate());
+
+            // Save the updated attendance
+            attendantRepository.save(attendant);
+        }
     }
+
 }
 
 

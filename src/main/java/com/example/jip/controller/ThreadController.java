@@ -102,18 +102,31 @@ public class ThreadController {
 
     // Endpoint to add a new thread
     @PostMapping("/add-thread")
-    public RedirectView addThread(@RequestParam("topicName") String topicName,
-                                  @RequestParam("description") String description,
-                                  @RequestParam("creatorId") int creatorId,
-                                  @RequestParam("imageFile") MultipartFile imageFile) {
-
+    public ResponseEntity<ThreadDTO> addThread(@RequestParam("topicName") String topicName,
+                                               @RequestParam("description") String description,
+                                               @RequestParam("creatorId") int creatorId,
+                                               @RequestParam("imageFile") MultipartFile imageFile) {
         try {
-            threadService.addThread(topicName, description, creatorId, imageFile); // Call service to add thread
-        } catch (IOException e) {
-            return new RedirectView("/error"); // Redirect on failure to a generic error page
-        }
+            // Call service to add thread and return the created thread
+            Thread newThread = threadService.addThread(topicName, description, creatorId, imageFile);
 
-        return new RedirectView("/forum.html"); // Redirect to forum page after successful thread creation
+            // Convert the thread to ThreadDTO for a structured JSON response
+            ThreadDTO threadDTO = new ThreadDTO(
+                    newThread.getId(),
+                    newThread.getTopicName(),
+                    new java.sql.Date(newThread.getDateCreated().getTime()),
+                    newThread.getDescription(),
+                    newThread.getCreatorId(),
+                    newThread.getImage(),
+                    threadService.getCreatorName(newThread.getCreatorId())
+            );
+
+            // Return the created thread as a JSON response
+            return ResponseEntity.status(HttpStatus.CREATED).body(threadDTO);
+        } catch (IOException e) {
+            // Log the error and return a proper error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     // Endpoint to delete a thread

@@ -41,12 +41,12 @@ public class AssignmentServices {
 
     AssignmentStudentRepository assignmentStudentRepository;
 
-   StudentAssignmentRepository studentAssignmentRepository;
+    StudentAssignmentRepository studentAssignmentRepository;
 
 
     @PreAuthorize("hasAuthority('TEACHER')")
-    public List<AssignmentResponse> getAllAssignments() {
-        return assignmentRepository.findAll().stream()
+    public List<AssignmentResponse> getAllAssignmentByTeacherId(int teacherId) {
+        return assignmentRepository.findAssignmentsByTeacherId(teacherId).stream()
                 .map(assignment -> {
                     AssignmentResponse response = new AssignmentResponse();
                     response.setId(assignment.getId());
@@ -79,16 +79,20 @@ public class AssignmentServices {
         assignment.setDescription(request.getDescription());
         assignment.setContent(request.getContent());
 
-        // Sanitize and create folder name
-        String folderName = sanitizeFolderName("assignments/" + request.getDescription());
-        assignment.setImgUrl(folderName); // Set folder URL
 
         // Handle file uploads
         MultipartFile[] imgFiles = request.getImgFile();
-        if (imgFiles != null && imgFiles.length > 0) {
-            uploadFilesToFolder(imgFiles, folderName);
+        for (int i = 0; i < request.getImgFile().length; i++) {
+            log.info("Uploading file: " + request.getImgFile()[i].getOriginalFilename());
         }
-
+        if (imgFiles.length > 1) {
+            // Sanitize and create folder name
+            String folderName = sanitizeFolderName("assignments/" + request.getDescription());
+            assignment.setImgUrl(folderName); // Set folder URL
+            uploadFilesToFolder(imgFiles, folderName);
+        } else {
+            assignment.setImgUrl(null); // Ensure `imgUrl` is null if no files are provided
+        }
         // Save assignment
         Assignment savedAssignment = assignmentRepository.save(assignment);
 
@@ -156,13 +160,24 @@ public class AssignmentServices {
     @PreAuthorize("hasAuthority('TEACHER')")
     @Transactional
     public void deleteAssignmentById(int assignmentId) {
+        // Find assignment or throw exception if not found
         Assignment assignment = assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new RuntimeException("Assignment not found with ID: " + assignmentId));
 
-        String folderPath = sanitizeFolderName(assignment.getImgUrl());
-        cloudinaryService.deleteFolder(folderPath);
+        // Delete related rows in dependent tables
+        assignmentStudentRepository.deleteByAssignmentId(assignmentId);
+        assignmentClassRepository.deleteByAssignmentId(assignmentId);
+        studentAssignmentRepository.deleteByAssignmentId(assignmentId);
 
-        assignmentRepository.deleteById(assignmentId);
+        // Delete associated cloud resources if applicable
+
+        if(assignment.getImgUrl() != null) {
+            String folderPath = sanitizeFolderName(assignment.getImgUrl());
+            cloudinaryService.deleteFolder(folderPath);
+        }
+
+        // Finally, delete the assignment
+        assignmentRepository.delete(assignment);
     }
 
     private void uploadFilesToFolder(MultipartFile[] files, String folderName) {
@@ -194,12 +209,12 @@ public class AssignmentServices {
         MultipartFile[] newFiles = request.getImgFile();
         String folderName = sanitizeFolderName("assignments/" + assignment.getDescription()); //Folder name = assignment's description
 
-        if (folderName == null || folderName.isEmpty()) {
+        if (folderName.isEmpty()) {
             throw new RuntimeException("Folder name is not set for assignment ID: " + assignmentId);
         }
 
         // Append new files if provided
-        if (newFiles != null && newFiles.length > 0) {
+        if (newFiles != null) {
             for (MultipartFile file : newFiles) {
                 if (!file.isEmpty()) {
                     FileUploadUtil.assertAllowed(file, FileUploadUtil.IMAGE_PATTERN);

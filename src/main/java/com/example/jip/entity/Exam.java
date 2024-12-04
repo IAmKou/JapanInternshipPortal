@@ -27,10 +27,8 @@ public class Exam {
     @JoinColumn(name = "teacher_id", nullable = false)
     Teacher teacher;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "LONGTEXT")
     String content;
-    @Column(name = "block")
-    int block;
     @Column(name = "exam_name")
     String exam_name;
     @Column(name = "exam_date")

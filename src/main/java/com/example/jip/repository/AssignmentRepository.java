@@ -14,4 +14,6 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Integer>
             "JOIN c.classLists l " +
             "WHERE l.student.id = :studentId")
     List<Assignment> findAssignmentsByStudentId(@Param("studentId") int studentId);
+
+    List<Assignment> findAssignmentsByTeacherId(int teacherId);
 }
