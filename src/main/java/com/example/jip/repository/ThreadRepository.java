@@ -15,5 +15,6 @@ public interface ThreadRepository extends JpaRepository<Thread, Integer> {
     // Custom query to fetch threads with pagination
     @Query("SELECT t FROM Thread t ORDER BY t.dateCreated DESC") // Example custom query
     Page<Thread> getThreads(Pageable pageable);
+
 }
 

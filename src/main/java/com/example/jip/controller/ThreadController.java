@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
@@ -67,7 +68,6 @@ public class ThreadController {
                         x.getDescription(),
                         x.getCreatorId(),
                         x.getImage(),
-
                         threadService.getCreatorName(x.getCreatorId())
                 ));
 
@@ -102,31 +102,35 @@ public class ThreadController {
 
     // Endpoint to add a new thread
     @PostMapping("/add-thread")
-    public ResponseEntity<ThreadDTO> addThread(@RequestParam("topicName") String topicName,
-                                               @RequestParam("description") String description,
-                                               @RequestParam("creatorId") int creatorId,
-                                               @RequestParam("imageFile") MultipartFile imageFile) {
+    public RedirectView addThread(
+            @RequestParam("topicName") String topicName,
+            @RequestParam("description") String description,
+            @RequestParam(value = "creatorId", required = false) String creatorIdString,
+            @RequestParam("imageFile") MultipartFile imageFile,
+            Model model) {
+
+        // Validate creatorId
+        int creatorId = 0;
         try {
-            // Call service to add thread and return the created thread
-            Thread newThread = threadService.addThread(topicName, description, creatorId, imageFile);
+            if (creatorIdString != null && !creatorIdString.isEmpty()) {
+                creatorId = Integer.parseInt(creatorIdString); // Convert creatorId string to int
+            } else {
+                throw new IllegalArgumentException("Creator ID is missing or invalid.");
+            }
 
-            // Convert the thread to ThreadDTO for a structured JSON response
-            ThreadDTO threadDTO = new ThreadDTO(
-                    newThread.getId(),
-                    newThread.getTopicName(),
-                    new java.sql.Date(newThread.getDateCreated().getTime()),
-                    newThread.getDescription(),
-                    newThread.getCreatorId(),
-                    newThread.getImage(),
-                    threadService.getCreatorName(newThread.getCreatorId())
-            );
+            // Call the service to add a thread
+            threadService.addThread(topicName, description, creatorId, imageFile);
+            model.addAttribute("message", "Thread added successfully!");
 
-            // Return the created thread as a JSON response
-            return ResponseEntity.status(HttpStatus.CREATED).body(threadDTO);
         } catch (IOException e) {
-            // Log the error and return a proper error response
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            model.addAttribute("message", "Error saving thread: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            model.addAttribute("message", "Invalid Creator ID.");
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("message", e.getMessage());
         }
+
+        return new RedirectView("/forum.html");
     }
 
     // Endpoint to delete a thread
