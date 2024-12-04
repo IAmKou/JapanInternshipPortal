@@ -29,13 +29,26 @@
                             Assignment</a>
                     </li>
                     <li class="nav-item">
-                        <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                        <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
                             Assignment</a>
                     </li>
                 </ul>
             </li>
             <li class="nav-item sidebar-nav-item">
-                <a class="nav-link" href="schedule-list-teacher.html"><i class="flaticon-shopping-list"></i><span>Schedule</span></a>
+                <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
+                <ul class="nav sub-group-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create
+                            Thread</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item sidebar-nav-item">
+                <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
+                        class="flaticon-shopping-list"></i><span>Schedule</span></a>
             </li>
             <li class="nav-item sidebar-nav-item">
                 <a href="#" class="nav-link"><i
@@ -63,40 +76,62 @@
                                 class="fas fa-angle-right"></i>Exam Grades</a>
                     </li>
                     <li class="nav-item">
-                        <a href="create-exam.html" class="nav-link"><i class="fas fa-angle-right"></i>Create Exam</a>
+                        <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
+                            Exam</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
+                            Exam</a>
                     </li>
                 </ul>
             </li>
             <li class="nav-item sidebar-nav-item">
                 <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                <ul class="nav sub-group-menu">
-                    <li class="nav-item">
-                        <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create material</a>
+                <ul class="nav sub-group-menu sub-group-active">
+                    <li class="nav-item" id="teacher-view1">
+                        <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
+                            material</a>
                     </li>
                     <li class="nav-item" id="teacher-view">
-                        <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List materials</a>
+                        <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                            materials</a>
                     </li>
+                    <li class="nav-item" id="student-view1">
+                        <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                            materials</a>
+                    </li>
+                    <li class="nav-item" id="student-view">
+                        <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list
+                            materials</a>
+                    </li>
+
                 </ul>
             </li>
             <li class="nav-item sidebar-nav-item">
                 <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                 <ul class="nav sub-group-menu">
                     <li class="nav-item">
-                        <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send application</a>
+                        <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                            application</a>
                     </li>
+
                     <li class="nav-item">
-                        <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My application</a>
+                        <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                            application</a>
                     </li>
                 </ul>
             </li>
+
             <li class="nav-item sidebar-nav-item">
                 <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
                 <ul class="nav sub-group-menu">
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
+                        <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
+                            threads</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create Thread</a>
+                        <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
+                            Thread</a>
                     </li>
                 </ul>
             </li>
