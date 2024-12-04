@@ -478,6 +478,9 @@
 
             const userFullNameElements = document.querySelectorAll('.userFullName');
             const userRoleElements = document.querySelectorAll('.userRole');
+            const userId = userDetails.id;
+            document.getElementById("userId").value = userId;
+
 
             // Kiểm tra và gán giá trị cho các phần tử
             if (userFullNameElements.length && userRoleElements.length) {
