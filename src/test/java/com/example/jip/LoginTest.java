@@ -1,4 +1,4 @@
-package com.example;
+package com.example.jip;
 
 import com.example.jip.dto.AccountDTO;
 import com.example.jip.entity.Account;
