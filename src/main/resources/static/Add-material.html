@@ -512,15 +512,22 @@
                                     const materialList = document.getElementById('material-list');
                                     const row = document.createElement('tr');
                                     row.innerHTML = `
-                                <td class="text-left">
-<a href="View-material-details.html?id=${material.id}">${material.title}</a>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow"
-                                            style="padding: 8px 16px; font-size: 14px;"
-                                            onclick="addMaterial({ id: '${material.id}', title: '${material.title}' })">Add material</button>
-                                </td>
-                            `;
+    <td class="text-left">
+        <span style="display: flex; align-items: center; gap: 8px;">
+            <i class="flaticon-script" style="font-size: 20px;"></i>
+            <a href="View-material-details.html?id=${material.id}" style="text-decoration: underline; color: blue;">
+                ${material.title}
+            </a>
+        </span>
+    </td>
+    <td>
+        <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow"
+                style="padding: 8px 16px; font-size: 14px;"
+                onclick="addMaterial({ id: '${material.id}', title: '${material.title}' })">
+            Add material
+        </button>
+    </td>
+`;
                                     materialList.appendChild(row);
                                 } else {
                                     throw new Error('Có lỗi xảy ra khi thêm material');
@@ -567,8 +574,13 @@
                                 // Nếu chưa tồn tại, hiển thị nút "Add material"
                                 row.innerHTML = `
                         <td class="text-left">
-<a href="View-material-details.html?id=${material.id}">${material.title}</a>
-                        </td>
+        <span style="display: flex; align-items: center; gap: 8px;">
+            <i class="flaticon-script" style="font-size: 20px;"></i>
+            <a href="View-material-details.html?id=${material.id}" style=" color:  #007bff;">
+                ${material.title}
+            </a>
+        </span>
+    </td>
                         <td>
                             <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow"
                                     style="padding: 8px 16px; font-size: 14px;"
