@@ -667,7 +667,7 @@
                 .then(response => {
                     if (response.ok) {
                         alert('Thread deleted successfully');
-                        fetchThreads(currentPage); // Refresh thread list after deletion
+                        fetchAllThreads(); // Refresh the thread list after deletion
                     } else {
                         alert('Failed to delete thread');
                     }
@@ -696,10 +696,29 @@
             }
         });
 
+        // Function to refresh the threads after editing
+        function refreshAfterEdit() {
+            fetchAllThreads(); // Refresh the thread list after editing
+        }
+
+        // Check if the current page is the thread edit page and add a listener for refresh after edit
+        if (window.location.pathname.includes("edit-forum.html")) {
+            // Add listener to refresh after thread edit
+            window.addEventListener("load", function() {
+                const submitButton = document.getElementById("submitEdit");
+                if (submitButton) {
+                    submitButton.addEventListener("click", function() {
+                        refreshAfterEdit(); // Refresh after editing
+                    });
+                }
+            });
+        }
+
         // Initial fetch of all threads and render them sorted
         fetchAllThreads();
     });
 </script>
+
 
 
 
