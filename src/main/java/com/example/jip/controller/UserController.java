@@ -1,4 +1,3 @@
-// UserController.java
 package com.example.jip.controller;
 
 import com.example.jip.dto.AccountDTO;

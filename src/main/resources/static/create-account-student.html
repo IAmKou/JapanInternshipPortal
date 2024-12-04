@@ -156,7 +156,7 @@
     // Function to validate phone number
     function isValidPhoneNumber(phone) {
         const phoneRegex = /^0\d{4,12}$/; // Must start with '0' and have 5-13 digits
-        return phoneRegex.test(phone);
+        return phoneRegex.test(phone) && /^\d+$/.test(phone); // Ensure only numeric characters
     }
 
     // Function to check if a valid gender is selected
