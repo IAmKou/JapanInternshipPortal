@@ -80,8 +80,8 @@
                                 <h5 class="item-title userFullName"></h5>
                                 <span class="userRole"></span>
                             </div>
-                            <div class="admin-img">
-                                <img src="img/figure/admin.jpg" alt="Admin">
+                            <div class="admin-img img">
+                                <img src="" alt="Admin">
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -90,7 +90,7 @@
                             </div>
                             <div class="item-content">
                                 <ul class="settings-list">
-                                    <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
+                                    <li><a href="users-profile.html"><i class="flaticon-user"></i>My Profile</a></li>
                                     <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
                                     <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a></li>
                                     <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
@@ -551,6 +551,8 @@
         if (userDetails) {
             const userFullNameElements = document.querySelectorAll('.userFullName');
             const userRoleElements = document.querySelectorAll('.userRole');
+            const Img = document.getElementById('img');
+            Img.src = userDetails.img || 'img/figure/admin.jpg';
 
             // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
             if (userDetails.roleName === "ADMIN") {
