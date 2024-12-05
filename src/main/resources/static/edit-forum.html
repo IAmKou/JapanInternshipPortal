@@ -393,7 +393,8 @@
                 </div>
                 <label class="text-dark-medium mt-2">Update Image:</label>
                 <input type="file" name="imageFile" id="editImageFile" class="form-control-file" accept="image/*" onchange="validateImageFile()">
-                <div id="fileWarning" style="color: red; display: none;">Please select an image file.</div>
+                <div id="fileWarning" style="display: none;">Please choose an image!</div>
+                <div id="imageTypeWarning" style="display: none;">Please select an image file.</div>
               </div>
 
               <div class="col-lg-6 col-12 form-group">
@@ -505,19 +506,25 @@
 
   function validateImageFile() {
     var fileInput = document.getElementById('editImageFile');
-    var warningMessage = document.getElementById('fileWarning');
     var file = fileInput.files[0];
 
+    var fileWarningMessage = document.getElementById('fileWarning');
+    var imageTypeWarningMessage = document.getElementById('imageTypeWarning');
+
+    // Hide both warnings initially
+    fileWarningMessage.style.display = 'none';
+    imageTypeWarningMessage.style.display = 'none';
+
     // Check if a file is selected
-    if (file) {
+    if (!file) {
+      // Display the warning if no file is selected
+      fileWarningMessage.style.display = 'block';
+    } else {
       // Check if the file type is an image
       if (!file.type.startsWith('image/')) {
         // Display the warning if the file is not an image
-        warningMessage.style.display = 'block';
+        imageTypeWarningMessage.style.display = 'block';
         fileInput.value = ''; // Clear the input field
-      } else {
-        // Hide the warning if the file is an image
-        warningMessage.style.display = 'none';
       }
     }
   }
