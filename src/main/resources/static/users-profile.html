@@ -80,8 +80,8 @@
                             <h5 class="item-title">Stevne Zone</h5>
                             <span>Admin</span>
                         </div>
-                        <div class="admin-img">
-                            <img src="img/figure/admin.jpg" alt="Admin">
+                        <div class="admin-img img">
+                            <img src="" alt="Admin" style="width: 50px; height: 50px">
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -284,8 +284,8 @@
             <div class="card height-auto">
                 <div class="card-body">
                     <div class="single-info-details">
-                        <div class="item-img">
-                            <img src="" alt="student" id="img">
+                        <div class="item-img img">
+                            <img src="" alt="student" id="img" style="width: 100px; height: 100px">
                         </div>
                         <div class="item-content">
                             <div class="header-inline item-header">
@@ -295,7 +295,7 @@
                                         <a class="dropdown-toggle" href="#" role="button"
                                            data-toggle="dropdown" aria-expanded="false">...</a>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" id="editButton"><i
+                                            <a class="dropdown-item" data-toggle="modal" data-target="#sign-up"><i
                                                     class="fas fa-cogs text-dark-pastel-green"></i>Report</a>
                                         </div>
                                     </div>
@@ -339,10 +339,65 @@
                     </div>
                 </div>
                 <!-- Student Details Area End Here -->
-                <footer class="footer-wrap-layout1">
-                    <div class="copyright">© Copyrights <a href="#">JIP</a> 2024. All rights reserved. Designed by <a
-                            href="#">PsdBosS</a></div>
-                </footer>
+                <div class="ui-modal-box">
+                    <div class="modal-box">
+                        <div class="modal sign-up-modal fade" id="sign-up" tabindex="-1" role="dialog"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <div class="close-btn">
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="item-logo">
+                                            <img src="img/JIP%20LOGO%20n.png" alt="logo">
+                                        </div>
+                                        <form class="login-form" id="reportForm">
+                                            <div class="row gutters-15">
+                                                <div class="form-group col-12">
+                                                    <input type="text" value="Wrong information" readonly name="title" class="form-control">
+                                                </div>
+                                                <div class="form-group col-12">
+                                                    <input type="text" placeholder="Enter the wrong information here" required name="content" class="form-control">
+                                                </div>
+                                                <input type="hidden" value="" name="uid" id="userId">
+                                                <div class="form-group col-12">
+                                                    <button type="submit" class="login-btn">Send Report</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Success Modal -->
+                <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <h5>Report Submitted Successfully!</h5>
+                                <button type="button" class="btn btn-primary" id="goToProfile">Go to Profile</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Modal -->
+                <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <h5 id="errorMessage">Error: Something went wrong.</h5>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -367,6 +422,8 @@
     if (userDetails) {
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
+        const userId = userDetails.id;
+        document.getElementById("userId").value = userId;
 
 
         // Populate Name
@@ -400,12 +457,49 @@
                 valueCell.textContent = tableMapping[fieldLabel];
             }
 
-            const Img = document.getElementById('img');
-            Img.src = userDetails.img || 'default-passport.jpg';
+            const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img'); // Select the <img> inside the div
+                if (imgElement) {
+                    imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
+                }
+            });
         });
     } else {
         console.error("User details not found in sessionStorage");
     }
+</script>
+<script>
+    document.getElementById('reportForm').addEventListener('submit', async function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const formData = new FormData(this);
+
+        try {
+            const response = await fetch('report/create', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                // Show success modal
+                $('#successModal').modal('show');
+                document.getElementById('goToProfile').addEventListener('click', () => {
+                    window.location.href = 'users-profile.html'; // Redirect to profile page
+                });
+            } else {
+                // Show error modal with error message
+                const errorData = await response.text(); // Get error message from server
+                document.getElementById('errorMessage').textContent = `Error: ${errorData}`;
+                $('#errorModal').modal('show');
+            }
+        } catch (error) {
+            // Handle network or unexpected errors
+            document.getElementById('errorMessage').textContent = `Error: ${error.message}`;
+            $('#errorModal').modal('show');
+        }
+    });
 </script>
 
 </body>

@@ -325,7 +325,7 @@
                                 </div>
                             </form>
                             <div class="table-responsive">
-                                <table class="table display data-table text-nowrap">
+                                <table class="table display text-nowrap">
                                     <thead>
                                     <tr>
                                         <th>Title</th>
@@ -350,30 +350,6 @@
         </div>
     </div>
     <!-- Page Area End Here -->
-    <div class="modal fade" id="standard-modal" tabindex="-1" role="dialog"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add schedule</h5>
-                    <button type="button" class="close" data-dismiss="modal"
-                            aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="/add-schedule" method="post" enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <label for="file" style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
-                        <input type="file" id="file" name="file" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Close</button>
-                        <button type="submit" class="footer-btn bg-linkedin">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 </div>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
@@ -431,9 +407,7 @@
                     const dropdownMenu = document.createElement('div');
                     dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
                     dropdownMenu.innerHTML = `
-          <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-          <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-          <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+          <a class="dropdown-item" href="users-details.html?userId=${report.reporter_id}"><i class="fas fa-times text-orange-red"></i>To User Detail</a>
         `;
                     dropdown.appendChild(dropdownMenu);
                     actionsCell.appendChild(dropdown);
