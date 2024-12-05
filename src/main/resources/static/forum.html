@@ -111,6 +111,7 @@
         .modal-trigger {
             display: inline-block;
             text-align: center;
+            padding-bottom: 30px;
         }
 
     </style>
@@ -465,7 +466,7 @@
                 Create Thread
             </a>
             <!-- Thread List Start -->
-            <div id="threadList"></div>
+            <div id="threadList" style="padding-top:20px "></div>
             <!-- Thread List End -->
 
             <!-- Pagination Controls -->
@@ -533,7 +534,7 @@
         const nextPageButton = document.getElementById("nextPage");
         const pageNumber = document.getElementById("pageNumber");
         const threadList = document.getElementById("threadList");
-        const threadsPerPage = 5;
+        const threadsPerPage = 8;
 
         let currentPage = 1; // Start on the first page
         let totalPages = 1; // Set a default number of pages (this will be updated after fetching all threads)

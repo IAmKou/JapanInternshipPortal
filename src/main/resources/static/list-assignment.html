@@ -651,32 +651,47 @@
     // Function to open the update popup async
     async function openUpdatePopup(assignmentId) {
         try {
+            // Fetch assignment details
             const response = await fetch(`${API_BASE_URL}/detail/${assignmentId}`);
             if (!response.ok) {
                 throw new Error('Error fetching assignment for update: ' + response.statusText);
             }
-
             const assignment = await response.json();
 
-            // Fetch all classes
-            const classResponse = await fetch(`/class/get`);
+            const urlParams = new URLSearchParams(window.location.search);
+            const teacherId = urlParams.get('teacherId');
+
+            // Fetch all classes taught by the teacher
+            const classResponse = await fetch(`${API_BASE_URL}/getCByTid2?teacherId=${teacherId}`);
             if (!classResponse.ok) {
                 throw new Error('Error fetching classes: ' + classResponse.statusText);
             }
             const classes = await classResponse.json();
 
+            // Fetch all classes already assigned to this assignment
+            const classAssignmentResponse = await fetch(`${API_BASE_URL}/getCByAid?assignmentId=${assignmentId}`);
+            if (!classAssignmentResponse.ok) {
+                throw new Error('Error fetching assigned classes: ' + classAssignmentResponse.statusText);
+            }
+            const assignmentClasses = await classAssignmentResponse.json();
+
+            // Extract assigned class IDs for easier lookup
+            const assignedClassIds = assignmentClasses.map((aCs) => aCs.classId);
+
             // Populate the class select list
             const classSelect = document.getElementById('class_id');
             classSelect.innerHTML = ''; // Clear any existing options
+
             classes.forEach((cls) => {
                 const option = document.createElement('option');
-                option.value = cls.id;
-                option.textContent = cls.name;
+                option.value = cls.id; // Set the class ID
+                option.textContent = cls.name; // Set the class name
 
-                // Preselect classes already assigned to the assignment
-                if (assignment.classList && assignment.classList.some((aClass) => aClass.id === cls.id)) {
+                // Check if this class is already assigned and preselect it
+                if (assignedClassIds.includes(cls.id)) {
                     option.selected = true;
                 }
+
                 classSelect.appendChild(option);
             });
 
@@ -684,14 +699,13 @@
             document.getElementById('description').value = assignment.description;
             document.getElementById('end_date').value = assignment.end_date;
             document.getElementById('content').value = assignment.content;
-            document.getElementById('class_id').value = assignment.class_id;
 
             // Display file download links
             const files = assignment.files || [];
             const filesContainer = document.getElementById('assignment-files');
-            filesContainer.innerHTML = ""; // Clear any existing content
+            filesContainer.innerHTML = ''; // Clear any existing content
             if (files.length > 0) {
-                files.forEach(fileUrl => {
+                files.forEach((fileUrl) => {
                     const fileRow = document.createElement('div');
                     fileRow.style.display = 'flex';
                     fileRow.style.alignItems = 'center';
@@ -721,7 +735,6 @@
             } else {
                 filesContainer.textContent = "No files uploaded";
             }
-
 
             // Show the update popup
             currentAssignmentId = assignment.id;

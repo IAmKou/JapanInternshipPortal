@@ -479,11 +479,13 @@
         }
     }
 
+
+
     async function populateClasses() {
         try {
             const teacher_id = document.getElementById('userId').value;
             // Fetch classes from the backend
-            const response = await fetch(`/assignment/getByTid?teacher_id=${teacher_id}`);
+            const response = await fetch(`/assignment/getCByTid?teacherId=${teacher_id}`);
             if (!response.ok) {
                 throw new Error(`Failed to fetch classes: ${response.statusText}`);
             }

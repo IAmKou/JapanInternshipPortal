@@ -1,12 +1,14 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.StudentDTO;
+import com.example.jip.dto.request.studentAssignment.StudentAssignmentGradeRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentSubmitRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentUpdateRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.dto.response.studentAssignment.StudentAssignmentResponse;
 import com.example.jip.entity.Assignment;
 import com.example.jip.entity.Student;
+import com.example.jip.exception.NotFoundException;
 import com.example.jip.repository.AssignmentRepository;
 import com.example.jip.repository.StudentAssignmentRepository;
 import com.example.jip.repository.StudentRepository;
@@ -61,25 +63,24 @@ public class StudentAssignmentController {
         return ResponseEntity.ok(studentId);
     }
 
+
     @GetMapping("/list-submitted-assignments")
-    public ResponseEntity<List<StudentAssignmentResponse>> getSubmittedAssignments(@RequestParam("studentId") int studentId) {
+    public ResponseEntity<List<StudentAssignmentResponse>> getSubmittedAssignmentsByAssignmentId(
+            @RequestParam("assignmentId") int assignmentId) {
         try {
-
-            List<StudentAssignmentResponse> responses = studentAssignmentServices.getSubmittedAssignmentByStudentId(studentId);
-
-            return ResponseEntity.ok(responses);
+            List<StudentAssignmentResponse> submittedAssignments = studentAssignmentServices.getSubmittedAssignmentsByAssignmentId(assignmentId);
+            return ResponseEntity.ok(submittedAssignments);
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Return a 404 if assignment not found
         } catch (Exception e) {
-            log.error("Error fetching submitted assignments: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @GetMapping("/list-submitted-assignments-student")
     public ResponseEntity<List<StudentAssignmentResponse>> getSubmittedAssignmentsByStudentId(@RequestParam("studentId") int studentId) {
         try {
-
-            List<StudentAssignmentResponse> responses = studentAssignmentServices.getSubmittedAssignmentByStudentId(studentId);
-
+            List<StudentAssignmentResponse> responses = studentAssignmentServices.getSubmittedAssignmentsByStudentId(studentId);
             return ResponseEntity.ok(responses);
         } catch (Exception e) {
             log.error("Error fetching submitted assignments: {}", e.getMessage());
@@ -114,6 +115,22 @@ public class StudentAssignmentController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(null); // Return 500 for unexpected errors
+        }
+    }
+
+    @PutMapping("/grade-submitted-assignment")
+    public ResponseEntity<?> gradeSubmittedAssignment(
+            @RequestBody StudentAssignmentGradeRequest request,
+            @RequestParam("studentAssignmentId") int studentAssignmentId
+    ) {
+        try {
+            studentAssignmentServices.gradeSubmittedAssignment(studentAssignmentId, request);
+            log.info("Grade requested: " + request);
+            return ResponseEntity.ok("Grade submitted successfully.");
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while grading.");
         }
     }
 
@@ -177,7 +194,7 @@ public class StudentAssignmentController {
     }
 
     @DeleteMapping("/delete/{submittedAssignmentId}")
-    public ResponseEntity<?> deleteAssignment(@PathVariable("submittedAssignmentId") int submittedAssignmentId) {
+    public ResponseEntity<?> deleteSubmittedAssignment(@PathVariable("submittedAssignmentId") int submittedAssignmentId) {
         try {
             log.info("Received delete request for SubmittedAssignmentId: {}", submittedAssignmentId);
             studentAssignmentServices.deleteStudentAssignment(submittedAssignmentId);

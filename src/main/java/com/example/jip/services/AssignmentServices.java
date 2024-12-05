@@ -156,7 +156,6 @@ public class AssignmentServices {
     }
 
 
-
     @PreAuthorize("hasAuthority('TEACHER')")
     @Transactional
     public void deleteAssignmentById(int assignmentId) {
@@ -223,6 +222,10 @@ public class AssignmentServices {
             }
         }
 
+        // **Clear existing class associations**
+        assignmentClassRepository.deleteByAssignmentId(assignment.getId());
+
+        // Add new class associations
         if (request.getClassIds() != null && !request.getClassIds().isEmpty()) {
             for (Integer classId : request.getClassIds()) {
                 // Find the class
@@ -251,43 +254,8 @@ public class AssignmentServices {
         }
         return assignmentRepository.save(assignment);
     }
-    @PreAuthorize("hasAuthority('TEACHER')")
-    public List<StudentAssignmentResponse> getSubmittedAssignmentsByAssignmentId(int assignmentId){
-        List<StudentAssignment> studentAssignments = studentAssignmentRepository.findByAssignmentId(assignmentId);
-        List<StudentAssignmentResponse> responses = studentAssignments.stream()
-                // Map to DTOs
-                .map(sa -> {
-                    StudentAssignmentResponse response = new StudentAssignmentResponse();
-                    response.setId(sa.getId());
-                    response.setMark(sa.getMark());
-                    response.setDescription(sa.getDescription());
-                    response.setContent(sa.getContent());
-                    response.setDate(sa.getDate());
-                    response.setStatus(sa.getStatus().toString());
-                    response.setAssignmentId(sa.getAssignment().getId());
-                    response.setStudentId(sa.getStudent().getId());
-                    return response;
-                })
-                .collect(Collectors.toList());
-        return responses;
-    }
 
 
-    @PreAuthorize("hasAuthority('TEACHER')")
-    public StudentAssignment gradeSubmittedAssignment(int studentAssignmentId, StudentAssignmentGradeRequest request) {
-        StudentAssignment studentAssignment = studentAssignmentRepository.findById(studentAssignmentId)
-                .orElseThrow(() -> new NoSuchElementException("studentAssignmentId not found!"));
-
-        if(request.getMark() != null){
-            studentAssignment.setMark(request.getMark());
-        }
-
-        if (request.getStatus() != null) {
-            studentAssignment.setStatus(request.getStatus());
-        }
-        log.info("Grading assignment with Mark: " + request.getMark() + ", Status: " + request.getStatus());
-        return studentAssignmentRepository.save(studentAssignment);
-    }
 
 
     public void deleteFile(FileDeleteRequest request){

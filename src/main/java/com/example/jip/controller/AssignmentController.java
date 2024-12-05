@@ -7,9 +7,12 @@ import com.example.jip.dto.request.assignment.AssignmentUpdateRequest;
 import com.example.jip.dto.request.FileDeleteRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentGradeRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
+import com.example.jip.dto.response.assignmentClass.AssignmentClassResponse;
 import com.example.jip.dto.response.studentAssignment.StudentAssignmentResponse;
+import com.example.jip.entity.AssignmentClass;
 import com.example.jip.entity.Teacher;
 import com.example.jip.exception.NotFoundException;
+import com.example.jip.repository.AssignmentClassRepository;
 import com.example.jip.repository.ClassRepository;
 import com.example.jip.repository.TeacherRepository;
 import com.example.jip.services.AssignmentServices;
@@ -41,6 +44,8 @@ public class AssignmentController {
     TeacherRepository teacherRepository;
 
     ClassRepository classRepository;
+
+    AssignmentClassRepository assignmentClassRepository;
 
     @GetMapping("/list")
     public ResponseEntity<List<AssignmentResponse>> getAllAssignments(@RequestParam("teacherId") int teacherId) {
@@ -79,8 +84,8 @@ public class AssignmentController {
         }
     }
 
-    @GetMapping("/getByTid")
-    public List<ClassDTO> getClassByTid(@RequestParam("teacher_id") Integer teacherId) {
+    @GetMapping("/getCByTid")
+    public List<ClassDTO> getClassByTid(@RequestParam("teacherId") Integer teacherId) {
 
         Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
 
@@ -88,6 +93,31 @@ public class AssignmentController {
                 .map(ClassDTO::new)
                 .collect(Collectors.toList());
     }
+
+    @GetMapping("/getCByTid2")
+    public List<ClassDTO> getClassByTid2(@RequestParam("teacherId") Integer teacherId) {
+
+        return classRepository.findByTeacher_Id(teacherId).stream()
+                .map(ClassDTO::new)
+                .collect(Collectors.toList());
+    }
+
+
+    @GetMapping("/getCByAid")
+    public List<AssignmentClassResponse> getClassByAssignmentId(@RequestParam("assignmentId") Integer assignmentId) {
+
+        return assignmentClassRepository.findAllByAssignmentId(assignmentId).stream()
+                .map(assignmentClass -> {
+                    AssignmentClassResponse response = new AssignmentClassResponse();
+                    response.setAssignmentId(assignmentClass.getAssignment().getId());
+                    response.setClassName(assignmentClass.getClas().getName());
+                    response.setClassId(assignmentClass.getClas().getId());
+                    log.info("Received response: " + response);
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
 
 
     @DeleteMapping("/delete")
@@ -151,34 +181,8 @@ public class AssignmentController {
         }
     }
 
-    @GetMapping("/list-submitted-assignments")
-    public ResponseEntity<List<StudentAssignmentResponse>> getSubmittedAssignmentsByAssignmentId(
-            @RequestParam("assignmentId") int assignmentId) {
-        try {
-            List<StudentAssignmentResponse> submittedAssignments = assignmentServices.getSubmittedAssignmentsByAssignmentId(assignmentId);
-            return ResponseEntity.ok(submittedAssignments);
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Return a 404 if assignment not found
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
 
-        @PutMapping("/grade-submitted-assignment")
-        public ResponseEntity<?> gradeSubmittedAssignment(
-                @RequestBody StudentAssignmentGradeRequest request,
-                @RequestParam("studentAssignmentId") int studentAssignmentId
-                ) {
-            try {
-                assignmentServices.gradeSubmittedAssignment(studentAssignmentId, request);
-                log.info("Grade requested: " + request);
-                return ResponseEntity.ok("Grade submitted successfully.");
-            } catch (NotFoundException e) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while grading.");
-            }
-        }
+
 }
 
 
