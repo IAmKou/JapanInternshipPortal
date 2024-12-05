@@ -432,7 +432,7 @@
         fetch(`/${userId}/userDetail`)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Failed to fetch student details');
+                    throw new Error('Failed to fetch user details');
                 }
                 return response.json();
             })
