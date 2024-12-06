@@ -2,7 +2,6 @@ package com.example.jip.services;
 
 import com.example.jip.entity.Account;
 import com.example.jip.entity.Manager;
-import com.example.jip.entity.Teacher;
 import com.example.jip.repository.AccountRepository;
 import com.example.jip.repository.ManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
