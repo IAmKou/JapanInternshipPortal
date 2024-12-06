@@ -14,15 +14,16 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 
-import java.math.BigDecimal;
+
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ExamResultService {
+public class ExamResultService extends ExamResultUpdateRequest {
 
     ExamResultRepository examResultRepository;
 
@@ -71,13 +72,16 @@ public class ExamResultService {
 
     @PreAuthorize("hasAuthority('TEACHER')")
     public void updateExamResult(int examResultId, ExamResultUpdateRequest request) {
-        ExamResult examResult = examResultRepository.findById(examResultId)
-                .orElseThrow(() -> new NoSuchElementException("Exam Result not found"));
-
-            // Update grade
-            if(request != null){
-               examResult.setMark(request.getMark());
-            }
+        Optional<ExamResult> examResultOpt = examResultRepository.findById(examResultId);
+        if(examResultOpt.isPresent()) {
+        ExamResult examResult = examResultOpt.get();
+        if(request != null) {
+            examResult.setMark(request.getMark());
+        }
+        // Update grade
             examResultRepository.save(examResult);
+        } else {
+            throw new NoSuchElementException("Exam Result not found");
+        }
     }
 }
