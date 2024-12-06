@@ -1,9 +1,6 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.ClassDTO;
-import com.example.jip.dto.TeacherDTO;
-import com.example.jip.entity.Class;
-import com.example.jip.entity.Teacher;
 import com.example.jip.repository.ClassRepository;
 import com.example.jip.repository.ListRepository;
 import com.example.jip.services.ClassServices;
@@ -14,8 +11,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
