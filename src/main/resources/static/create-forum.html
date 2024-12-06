@@ -374,17 +374,17 @@
 
                             <div class="col-7 form-group">
                                 <label>Topic Name</label>
-                                <input type="text" name="topicName" placeholder="Enter title" class="form-control">
+                                <input type="text" name="topicName" placeholder="Enter title" class="form-control" required>
                             </div>
 
                             <div class="col-7 form-group">
                                 <label>Description</label>
-                                <textarea class="textarea form-control" name="description" cols="10" rows="9"></textarea>
+                                <textarea class="textarea form-control" name="description" cols="10" rows="9" required></textarea>
                             </div>
 
                             <div class="col-12 form-group">
                                 <label class="text-dark-medium">File Attach:</label>
-                                <input type="file" name="imageFile" id="editImageFile" class="form-control-file" accept="image/*" onchange="validateImageFile()">
+                                <input type="file" name="imageFile" id="editImageFile" class="form-control-file" accept="image/*" onchange="validateImageFile()" required>
                                 <div id="fileWarning" style="display: none;">Please choose an image!</div>
                                 <div id="imageTypeWarning" style="display: none;">Please select an image file.</div>
                             </div>
