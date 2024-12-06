@@ -9,6 +9,7 @@ import com.example.jip.repository.StudentRepository;
 import com.example.jip.services.StudentServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -17,7 +18,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -42,8 +42,8 @@ public class StudentController {
             , @RequestParam String gender
             , @RequestParam String email
             , @RequestParam String phoneNumber
-            , @RequestParam(required = false) String img
-            , @RequestParam(required = false) String passport_img
+            , @RequestParam(required = false) MultipartFile img
+            , @RequestParam(required = false) MultipartFile passport_img
             , @RequestParam int account_id
             , RedirectAttributes redirectAttributes) {
 

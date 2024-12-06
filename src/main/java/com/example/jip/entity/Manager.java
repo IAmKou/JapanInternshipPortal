@@ -24,7 +24,7 @@ public class Manager {
     private String email;
 
     @Column(name="phone_number", nullable = false)
-    private String PhoneNumber;
+    private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
     @Column(name="Gender", nullable = false)
@@ -44,7 +44,7 @@ public class Manager {
         Fullname = fullname;
         Jname = jname;
         this.email = email;
-        PhoneNumber = phonenumber;
+        phoneNumber = phonenumber;
         Gender = gender;
         this.img = img;
         this.account = account;

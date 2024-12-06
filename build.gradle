@@ -31,6 +31,7 @@ dependencies {
     implementation 'org.springframework.security:spring-security-crypto'
     implementation 'org.apache.poi:poi:5.3.0'
     implementation 'org.apache.poi:poi-ooxml:5.3.0'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework:spring-test'
@@ -39,6 +40,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     implementation 'com.cloudinary:cloudinary-http44:1.32.2'
     implementation 'commons-io:commons-io:2.17.0'
+    testImplementation "org.mockito:mockito-inline:4.11.0"
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework:spring-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

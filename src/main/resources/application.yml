@@ -2,24 +2,31 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/jip
     username: root
-    password: root
-
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
     show-sql: true
-
   servlet:
     multipart:
       enabled: true
-      max-file-size: 500MB  # Set this to your desired size (e.g., 10MB, 20MB, etc.)
-      max-request-size: 500MB  # Set this to your desired size (e.g., 10MB, 20MB, etc.)
+      max-file-size: 500MB
+      max-request-size: 500MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: csgit47@gmail.com
+    password: svvuwvdjrbiucehn
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 cloudinary:
   cloud-name: dmlethtuv
   api-key: 151443119214651
   api-secret: LRXCKQiCmQNqx-GP4RFnOdf_xwY
-
-

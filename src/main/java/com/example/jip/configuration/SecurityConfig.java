@@ -45,7 +45,8 @@ public class SecurityConfig {
                         .requestMatchers("/teacher.html", "add-assignment.html", "list-assignment.html").hasAuthority("TEACHER")
                         .requestMatchers("/manager.html").hasAuthority("MANAGER")
                         .requestMatchers("/css/**", "/js/**", "/images/**","/img/**",
-                                "/webfonts/**","/fonts/**","/hts-cache/**","/style.css")
+                                "/webfonts/**","/fonts/**","/hts-cache/**","/style.css","/forgot-password.html",
+                                "/verify-code.html","/change-password.html","/users/check","/users/verify","/users/reset-password")
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin

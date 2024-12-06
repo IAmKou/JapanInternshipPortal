@@ -1,51 +1,78 @@
 package com.example.jip.services;
 
+import com.example.jip.dto.response.CloudinaryResponse;
 import com.example.jip.entity.Account;
 import com.example.jip.entity.Student;
 import com.example.jip.repository.AccountRepository;
 import com.example.jip.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
-    @Service
-    public class StudentServices {
-        @Autowired
-        private StudentRepository studentRepository;
+@Service
+public class StudentServices {
+    @Autowired
+    private StudentRepository studentRepository;
 
-        @Autowired
-        private AccountRepository accountRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
-        public Student createStudent(String fullname, String japanname, Date dob, String gender, String phoneNumber, String email, String img, String passport, int accountId) {
-            // Check if the account exists
-            Optional<Account> accountOpt = accountRepository.findById(accountId);
-            if (!accountOpt.isPresent()) {
-                throw new IllegalArgumentException("No account found with id: " + accountId);
-            }
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
-            // Create a new Student object and set its properties
-            Student student = new Student();
-            student.setFullname(fullname);
-            student.setJapanname(japanname);
-            student.setDob(dob);
-            student.setGender(Student.Gender.valueOf(gender));
-            student.setPhoneNumber(phoneNumber);
-            student.setEmail(email);
-            student.setImg(img);
-            student.setAccount(accountOpt.get());
-            student.setMark(false);
-
-            // Save the student to the database
-            return studentRepository.save(student);
+    public Student createStudent(String fullname, String japanname, Date dob, String gender, String phoneNumber, String email, MultipartFile img, MultipartFile passport, int accountId) {
+        Optional<Account> accountOpt = accountRepository.findById(accountId);
+        if (!accountOpt.isPresent()) {
+            throw new IllegalArgumentException("No account found with id: " + accountId);
+        }
+        // Check for duplicate email or phone number
+        if (isDuplicate(email, phoneNumber)) {
+            throw new IllegalArgumentException("Duplicate email or phone number found");
         }
 
-        public int getStudentIdByAccountId(int accountId) {
-            return studentRepository.findStudentIdByAccountId(accountId)
-                    .orElseThrow(() -> new RuntimeException("No student found for the given account ID"));
+        // Upload image and passport
+        String imgUrl = cloudinaryService.uploadFileToFolder(img, "Account/").getUrl();
+        String passUrl = cloudinaryService.uploadFileToFolder(passport, "Account/").getUrl();
+
+        // Create a new Student object
+        Student student = new Student();
+        student.setFullname(fullname);
+        student.setJapanname(japanname);
+        student.setDob(dob);
+
+        try {
+            student.setGender(Student.Gender.valueOf(gender.toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid gender value: " + gender);
         }
+
+        student.setPhoneNumber(phoneNumber);
+        student.setEmail(email);
+        student.setImg(imgUrl);
+        student.setPassport(passUrl);
+        student.setAccount(accountOpt.get());
+        student.setMark(false);
+
+        // Save the student to the database
+        return studentRepository.save(student);
     }
+
+    public int getStudentIdByAccountId(int accountId) {
+        return studentRepository.findStudentIdByAccountId(accountId)
+                .orElseThrow(() -> new RuntimeException("No student found for the given account ID"));
+    }
+
+    private boolean isDuplicate(String email, String phoneNumber) {
+        return studentRepository.findByEmail(email).isPresent() || studentRepository.findByPhoneNumber(phoneNumber).isPresent();
+    }
+}
+
+
 
 
 

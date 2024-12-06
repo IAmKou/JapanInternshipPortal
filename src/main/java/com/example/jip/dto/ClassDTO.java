@@ -86,4 +86,12 @@ public class ClassDTO {
     public void setTeacherName(String teacherName) {
         this.teacherName = teacherName;
     }
+
+    public List<Integer> getAssignmentIds() {
+        return assignmentIds;
+    }
+
+    public void setAssignmentIds(List<Integer> assignmentIds) {
+        this.assignmentIds = assignmentIds;
+    }
 }

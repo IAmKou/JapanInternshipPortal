@@ -40,7 +40,8 @@
             <div class="header-logo">
                 <a href="admin.html">
                     <div style="width: 180px; height: 70px; overflow: hidden;">
-                        <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+                        <img src="img/JIP%20LOGO%20n.png" alt="logo"
+                             style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                 </a>
             </div>
@@ -77,24 +78,24 @@
                        aria-expanded="false">
                         <div class="admin-title">
                             <h5 class="item-title userFullName"></h5>
-                            <span class="userRoleName"></span>
+                            <span class="userRoleName" ></span>
                         </div>
-                        <div class="admin-img">
-                            <img src="img/figure/admin.jpg" alt="Admin">
+                        <div class="admin-img img">
+                            <img src="" alt="Admin" style="width: 50px; height: 50px">
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="item-header">
-                            <h6 class="item-title">Steven Zone</h6>
+                            <h6 class="item-title userFullName"></h6>
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
-                                <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
+                                <li><a href="users-profile-student.html"><i class="flaticon-user"></i>My Profile</a></li>
                                 <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
                                 <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
                                 </li>
                                 <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                <li><a href="login.html"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
                     </div>
@@ -245,23 +246,117 @@
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
+                                <a href="student.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Students</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a href="report-list.html" class="nav-link"><i
-                                class="flaticon-script"></i><span>Report</span></a>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    Assignment</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                    Assignment</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();">
+                                    <i class="fas fa-angle-right"></i>Personal Mark Report</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create
+                                    Thread</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="javascript:void(0);" class="nav-link" onclick="submitForm();"><i
+                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="notice-board.html" class="nav-link"><i
-                                class="flaticon-script"></i><span>Notification</span></a>
+                        <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
                     </li>
-                    <li class="nav-item">
-                        <a href="account-settings.html" class="nav-link"><i
-                                class="flaticon-settings"></i><span>Account List</span></a>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
+                                    Schedule</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="Update-student-mark-report.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Exam Grades</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item" id="teacher-view1">
+                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
+                                    material</a>
+                            </li>
+                            <li class="nav-item" id="teacher-view">
+                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    materials</a>
+                            </li>
+                            <li class="nav-item" id="student-view1">
+                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    materials</a>
+                            </li>
+                            <li class="nav-item" id="student-view">
+                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list
+                                    materials</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                    application</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                    application</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
+                                    threads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create Thread</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -283,8 +378,8 @@
             <div class="card height-auto">
                 <div class="card-body">
                     <div class="single-info-details">
-                        <div class="item-img">
-                            <img src="" alt="student" id="img" style="width: 100px ; height: 100px">
+                        <div class="item-img img">
+                            <img src="" alt="student" id="img" style="width: 100px; height: 100px">
                         </div>
                         <div class="item-content">
                             <div class="header-inline item-header">
@@ -294,8 +389,8 @@
                                         <a class="dropdown-toggle" href="#" role="button"
                                            data-toggle="dropdown" aria-expanded="false">...</a>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" id="editButton"><i
-                                                    class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                            <a class="dropdown-item" data-toggle="modal" data-target="#sign-up"><i
+                                                    class="fas fa-cogs text-dark-pastel-green"></i>Report</a>
                                         </div>
                                     </div>
                                 </div>
@@ -309,7 +404,7 @@
                                     </tr>
                                     <tr>
                                         <td>Name:</td>
-                                        <td class="font-medium text-dark-medium"></td>
+                                        <td class="font-medium text-dark-medium userFullName"></td>
                                     </tr>
                                     <tr>
                                         <td>Japan Name:</td>
@@ -336,19 +431,67 @@
                             </div>
                         </div>
                     </div>
-                    <label for="card">Passport: </label><br/>
-                    <div class="single-info-details">
-                        <div class="item-img" style="width: 300px; height: 300px">
-                            <img src="img/figure/card.jpg" alt="card" id="card">
-                        </div>
-                    </div>
-                    <button class="save-button" style="display: none;">Save</button>
                 </div>
                 <!-- Student Details Area End Here -->
-                <footer class="footer-wrap-layout1">
-                    <div class="copyright">© Copyrights <a href="#">JIP</a> 2024. All rights reserved. Designed by <a
-                            href="#">PsdBosS</a></div>
-                </footer>
+                <div class="ui-modal-box">
+                    <div class="modal-box">
+                        <div class="modal sign-up-modal fade" id="sign-up" tabindex="-1" role="dialog"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <div class="close-btn">
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="item-logo">
+                                            <img src="img/JIP%20LOGO%20n.png" alt="logo">
+                                        </div>
+                                        <form class="login-form" id="reportForm">
+                                            <div class="row gutters-15">
+                                                <div class="form-group col-12">
+                                                    <input type="text" value="Wrong information" readonly name="title" class="form-control">
+                                                </div>
+                                                <div class="form-group col-12">
+                                                    <input type="text" placeholder="Enter the wrong information here" required name="content" class="form-control">
+                                                </div>
+                                                <input type="hidden" value="" name="uid" id="userId">
+                                                <div class="form-group col-12">
+                                                    <button type="submit" class="login-btn">Send Report</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Success Modal -->
+                <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <h5>Report Submitted Successfully!</h5>
+                                <button type="button" class="btn btn-primary" id="goToProfile">Go to Profile</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Modal -->
+                <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <h5 id="errorMessage">Error: Something went wrong.</h5>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -369,173 +512,90 @@
 <!-- fetch user -->
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
     if (userDetails) {
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
+        const userId = userDetails.id;
+        document.getElementById("userId").value = userId;
 
-        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-        if (userDetails.roleName === "ADMIN") {
-            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.username;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
 
-            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "TEACHER") {
-            // Hiển thị đầy đủ tên và vai trò cho giáo viên
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
+        // Populate Name
+        userFullNameElements.forEach(element => {
+            element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
+        });
 
-            // Chỉ hiển thị mục của giáo viên
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
-            document.getElementById("student-view1").style.display = "none";
-        } else if (userDetails.roleName === "STUDENT") {
-            // Hiển thị đầy đủ tên và vai trò cho học sinh
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
+        // Populate Role
+        userRoleElements.forEach(element => {
+            element.textContent = userDetails.roleName;
+        });
 
-            // Chỉ hiển thị mục của học sinh
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
-        } else {
-            console.warn("Role not recognized: ", userDetails.roleName);
-        }
+        // Map table cells to corresponding data fields
+        const tableMapping = {
+            "Id:": userDetails.id || 'N/A',
+            "Japan Name:": userDetails.jname || 'N/A',
+            "Gender:": userDetails.gender || 'N/A',
+            "Date Of Birth:": userDetails.dob || 'N/A',
+            "E-mail:": userDetails.email || 'N/A',
+            "Phone:": userDetails.phoneNumber || 'N/A'
+        };
+
+        // Populate table cells based on tableMapping
+        const tableRows = document.querySelectorAll('#userInfoTable tbody tr');
+        tableRows.forEach(row => {
+            const labelCell = row.querySelector('td:first-child');
+            const valueCell = row.querySelector('td:nth-child(2)');
+            const fieldLabel = labelCell.textContent.trim();
+
+            if (tableMapping.hasOwnProperty(fieldLabel)) {
+                valueCell.textContent = tableMapping[fieldLabel];
+            }
+
+            const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img'); // Select the <img> inside the div
+                if (imgElement) {
+                    imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
+                }
+            });
+        });
     } else {
         console.error("User details not found in sessionStorage");
     }
 </script>
-
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const userId = new URLSearchParams(window.location.search).get('userId');
-        let currentUser = null;
+    document.getElementById('reportForm').addEventListener('submit', async function (event) {
+        event.preventDefault(); // Prevent the default form submission
 
-        // Initially hide the save button
-        document.querySelector('.save-button').style.display = 'none';
+        const formData = new FormData(this);
 
-        // Fetch user details
-        fetch(`/${userId}/userDetail`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch user details');
-                }
-                return response.json();
-            })
-            .then(user => {
-                currentUser = user;
-
-                // Populate user details table
-                document.querySelector('.info-table tbody').innerHTML = `
-                <tr><td>Id:</td><td>${user.id}</td></tr>
-                <tr><td>Name:</td><td>${user.fullName}</td></tr>
-                <tr><td>Japan Name:</td><td>${user.jname}</td></tr>
-                <tr><td>Gender:</td><td>${user.gender}</td></tr>
-                <tr><td>Date Of Birth:</td><td>${user.dob}</td></tr>
-                <tr><td>Email:</td><td>${user.email}</td></tr>
-                <tr><td>Phone:</td><td>${user.phoneNumber}</td></tr>
-            `;
-
-                // Set images
-                document.getElementById('card').src = user.passport_img;
-                document.getElementById('img').src = user.img;
-                document.getElementById('name').textContent = user.fullName;
-
-                // Enable editing when the edit button is clicked
-                document.querySelector('#editButton').addEventListener('click', () => {
-                    document.querySelector('#userInfoTable').innerHTML = `
-                    <tr><td class="font-medium text-dark-medium">Name:</td>
-                        <td><input type="text" value="${user.fullName}" required id="name-input"></td></tr>
-                    <tr><td class="font-medium text-dark-medium">Japan Name:</td>
-                        <td><input type="text" value="${user.jname}" required id="jname-input"></td></tr>
-                        <tr><td class="font-medium text-dark-medium">Role Name:</td>
-                        <td><input type="text" value="${user.roleName}" required id="rname-input"></td></tr>
-                    <tr><td class="font-medium text-dark-medium">Gender:</td>
-                        <td>
-                            <div class="form-check-inline">
-                                <input type="radio" name="gender" value="Male" id="male" class="form-check-input" ${user.gender === 'Male' ? 'checked' : ''}>
-                                <label for="male" class="form-check-label">Male</label>
-                            </div>
-                            <div class="form-check-inline">
-                                <input type="radio" name="gender" value="Female" id="female" class="form-check-input" ${user.gender === 'Female' ? 'checked' : ''}>
-                                <label for="female" class="form-check-label">Female</label>
-                            </div>
-                        </td></tr>
-                    ${user.dob ? `<tr><td class="font-medium text-dark-medium">Date of Birth:</td>
-                        <td><input type="date" value="${user.dob.split('T')[0]}" id="dob-input"></td></tr>` : ''}
-                    <tr><td class="font-medium text-dark-medium">Email:</td>
-                        <td><input type="email" required value="${user.email}" id="email-input"></td></tr>
-                    <tr><td class="font-medium text-dark-medium">Phone Number:</td>
-                        <td><input type="text" required value="${user.phoneNumber}" id="phone-input"></td></tr>
-                `;
-                    // Show the save button after editing
-                    document.querySelector('.save-button').style.display = 'inline-block';
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching student details:', error);
-                alert('Failed to load student details.');
-            });
-
-        // Save changes when the save button is clicked
-        document.querySelector('.save-button').addEventListener('click', () => {
-            if (!currentUser) {
-                console.error('No current user found');
-                return;
-            }
-
-            // Get updated values from inputs
-            const updatedUser = {
-                ...currentUser,
-                fullName: document.getElementById('name-input').value,
-                jname: document.getElementById('jname-input').value || currentUser.jname,
-                rname: document.getElementById('rname-input').value || currentUser.jname,
-                gender: document.querySelector('input[name="gender"]:checked')?.value || currentUser.gender,
-                dob: document.getElementById('dob-input')?.value || currentUser.dob,
-                email: document.getElementById('email-input').value || currentUser.email,
-                phoneNumber: document.getElementById('phone-input').value || currentUser.phoneNumber
-            };
-
-            // Prepare form data for user details
-            const formData = new FormData();
-            formData.append('fullName', updatedUser.fullName);
-            formData.append('jname', updatedUser.jname);
-            formData.append('rname', updatedUser.rname);
-            formData.append('gender', updatedUser.gender);
-            formData.append('dob', updatedUser.dob);
-            formData.append('email', updatedUser.email);
-            formData.append('phoneNumber', updatedUser.phoneNumber);
-
-            // Send the update request
-            fetch(`/users/${userId}`, {
+        try {
+            const response = await fetch('report/create', {
                 method: 'POST',
                 body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("User updated successfully", data);
-                    window.location.reload(); // Reload page to reflect updated data
-                })
-                .catch(error => {
-                    console.error('Error updating user:', error);
+            });
+
+            if (response.ok) {
+                // Show success modal
+                $('#successModal').modal('show');
+                document.getElementById('goToProfile').addEventListener('click', () => {
+                    window.location.href = 'users-profile.html'; // Redirect to profile page
                 });
-        });
+            } else {
+                // Show error modal with error message
+                const errorData = await response.text(); // Get error message from server
+                document.getElementById('errorMessage').textContent = `Error: ${errorData}`;
+                $('#errorModal').modal('show');
+            }
+        } catch (error) {
+            // Handle network or unexpected errors
+            document.getElementById('errorMessage').textContent = `Error: ${error.message}`;
+            $('#errorModal').modal('show');
+        }
     });
 </script>
+
 </body>
 
 
