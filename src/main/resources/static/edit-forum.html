@@ -371,11 +371,11 @@
             <div class="row">
               <!-- Hidden input for thread ID -->
               <input type="hidden" name="creatorId" id="userId" value="">
-              <input type="hidden" id="editThreadId" name="threadId" value=""> <!-- Updated ID -->
+              <input type="hidden" id="editThreadId" name="threadId" value="" required> <!-- Updated ID -->
 
               <div class="col-7 form-group">
                 <label>Topic Name</label>
-                <input type="text" name="topicName" id="editTopicName" placeholder="Enter title" class="form-control">
+                <input type="text" name="topicName" id="editTopicName" placeholder="Enter title" class="form-control" required>
               </div>
 
               <div class="col-7 form-group">
@@ -392,7 +392,7 @@
                   </div>
                 </div>
                 <label class="text-dark-medium mt-2">Update Image:</label>
-                <input type="file" name="imageFile" id="editImageFile" class="form-control-file" accept="image/*" onchange="validateImageFile()">
+                <input type="file" name="imageFile" id="editImageFile" class="form-control-file" accept="image/*" onchange="validateImageFile()" required>
                 <div id="fileWarning" style="display: none;">Please choose an image!</div>
                 <div id="imageTypeWarning" style="display: none;">Please select an image file.</div>
               </div>
