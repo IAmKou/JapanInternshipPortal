@@ -1,15 +1,11 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.AttendantDTO;
-import com.example.jip.dto.StudentDTO;
 import com.example.jip.entity.Attendant;
 import com.example.jip.entity.Schedule;
-import com.example.jip.entity.Student;
 import com.example.jip.repository.AttendantRepository;
-import com.example.jip.repository.ListRepository;
 import com.example.jip.repository.ScheduleRepository;
 import com.example.jip.services.AttendantServices;
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +16,6 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RestController

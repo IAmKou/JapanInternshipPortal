@@ -43,6 +43,10 @@ public class TeacherDTO {
     }
 
 
+    public TeacherDTO(int i, String teacherName) {
+    }
+
+
     public int getId() {
         return id;
     }

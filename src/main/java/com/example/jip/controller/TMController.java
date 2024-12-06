@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -27,7 +28,7 @@ public class TMController {
             , @RequestParam String gender
             , @RequestParam String email
             , @RequestParam String phoneNumber
-            , @RequestParam(required = false) String img
+            , @RequestParam(required = false) MultipartFile img
             , @RequestParam int account_id
             , @RequestParam int role
             , RedirectAttributes redirectAttributes) {

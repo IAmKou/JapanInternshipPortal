@@ -31,10 +31,10 @@ import java.util.stream.Collectors;
 public class ScheduleController {
 
     @Autowired
-    private ScheduleServices scheduleServices;
+    ScheduleServices scheduleServices;
 
     @Autowired
-    private ScheduleRepository scheduleRepository;
+    ScheduleRepository scheduleRepository;
 
     @PostMapping("/import")
     public ResponseEntity<?> importSchedules(@RequestParam("file") MultipartFile file) {

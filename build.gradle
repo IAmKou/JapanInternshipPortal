@@ -40,6 +40,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     implementation 'com.cloudinary:cloudinary-http44:1.32.2'
     implementation 'commons-io:commons-io:2.17.0'
+    testImplementation "org.mockito:mockito-inline:4.11.0"
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework:spring-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
