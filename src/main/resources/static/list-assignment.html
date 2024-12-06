@@ -569,22 +569,22 @@
                     <h2>Update Assignment</h2>
                     <form class="new-added-form" action="javascript:void(0);" onsubmit="updateAssignment(event)">
                         <label for="description">Description:</label>
-                        <input type="text" id="description" name="description" />
+                        <input type="text" id="description" name="description" required/>
 
                         <label for="end_date">End Date:</label>
-                        <input type="date" id="end_date" name="end_date" />
+                        <input type="date" id="end_date" name="end_date" required/>
 
                         <label for="content">Content:</label>
-                        <textarea id="content" name="content" rows="4"></textarea>
+                        <textarea id="content" name="content" rows="4" required></textarea>
 
                         <label for="class_id">For Class *</label>
                         <select name="class_id" id="class_id" multiple></select>
 
                         <label for="assignment-files">Files:</label>
-                        <div id="assignment-files"></div>
+                        <div id="assignment-files" ></div>
 
                         <label for="img">Upload Files:</label>
-                        <input type="file" id="img" name="imgFile" multiple />
+                        <input type="file" id="img" name="imgFile" multiple required/>
 
                         <button type="submit" class="btn">Update</button>
                     </form>
