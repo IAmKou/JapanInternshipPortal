@@ -29,4 +29,5 @@ public class ExamResult {
 
     @Column(name = "mark")
     BigDecimal mark;
+
 }
