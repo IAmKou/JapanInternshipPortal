@@ -319,6 +319,7 @@ public class ApplicationController {
 
         Application application = applicationOptional.get();
 
+
         // Lấy giá trị từ payload
         if (payload.containsKey("status")) {
             try {
@@ -334,7 +335,11 @@ public class ApplicationController {
             application.setReply((String) payload.get("reply"));
         }
 
+        Student student = studentRepository.findById(application.getStudent().getId()).orElse(null);
+        student.setMark(true);
+
         application.setReplied_date(new Date());
+        studentRepository.save(student);
         applicationRepository.save(application);
 
         return ResponseEntity.ok(Map.of(
