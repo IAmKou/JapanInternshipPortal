@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AssignmentServices {
+public class AssignmentServices extends AssignmentCreationRequest {
 
     AssignmentRepository assignmentRepository;
 
