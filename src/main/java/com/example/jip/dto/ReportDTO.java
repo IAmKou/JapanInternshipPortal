@@ -16,6 +16,8 @@ public class ReportDTO {
         this.reporter_id = report.getAccount().getId();
     }
 
+    public ReportDTO() {}
+
     public String getTitle() {
         return title;
     }
