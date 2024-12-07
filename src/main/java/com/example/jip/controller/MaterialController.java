@@ -77,14 +77,9 @@ public class MaterialController {
             materialDTO.setTitle(title);
             materialDTO.setContent(content);
 
-            String folderName = sanitizeFolderName("material/" + materialDTO.getTitle());
-            materialDTO.setImg(folderName); // Gán folderName vào img dưới dạng List<String>
+            String img = cloudinaryService.uploadFileToFolder(imgFile, "Materials/").getUrl();
+            materialDTO.setImg(img);
 
-            // Xử lý upload file
-            if (imgFile != null && !imgFile.isEmpty()) {
-                MultipartFile[] imgFiles = {imgFile}; // Chuyển file đơn thành mảng
-                uploadFilesToFolder(imgFiles, folderName); // Gọi hàm xử lý upload
-            }
 
             TeacherDTO teacherDTO = new TeacherDTO();
             teacherDTO.setId(teacher.getId());
@@ -116,27 +111,7 @@ public class MaterialController {
             materialDTO.setTitle(material.getTitle());
             materialDTO.setContent(material.getContent());
             materialDTO.setCreated_date(material.getCreated_date()); // Gán created_date
-            // Lấy ảnh từ Cloudinary
-            String folderName = material.getImg();
-            System.out.println("Folder Name: " + folderName); // Lấy tên thư mục từ database (imgUrl)
-            try {
-                List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
-                List<String> fileUrls = resources.stream()
-                        .map(resource -> (String) resource.get("url"))
-                        .collect(Collectors.toList());
-                System.out.println("File URLs: " + fileUrls);
-
-                if (fileUrls.isEmpty()) {
-                    System.out.println("No files found for material with ID: " + material.getId());
-                }
-                System.out.println("File URLs before mapping: " + fileUrls);
-                materialDTO.setImgFromList(fileUrls);
-                System.out.println("MaterialDTO Img after mapping: " + materialDTO.getImg());
-            } catch (Exception e) {
-                System.err.println("Error retrieving files for material with ID: " + material.getId());
-                e.printStackTrace();
-                materialDTO.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
-            }
+            materialDTO.setImg(material.getImg());
             Optional<Teacher> teacherOptional = teacherRepository.findByAccount_id(accountId);
             Integer teacherId = null;
 
