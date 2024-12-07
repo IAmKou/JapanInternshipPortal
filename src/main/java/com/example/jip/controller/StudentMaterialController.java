@@ -127,6 +127,7 @@ public class StudentMaterialController {
                         // Nếu material có đối tượng MaterialDTO, gán title từ MaterialDTO vào
                         if (material.getMaterial() != null) {
                             MaterialDTO materialDTO = new MaterialDTO();
+                            materialDTO.setId(material.getMaterial().getId());
                             materialDTO.setTitle(material.getMaterial().getTitle()); // Giả sử getMaterial() trả về đối tượng Material
                             dto.setMaterial(materialDTO); // Gán MaterialDTO vào PersonalMaterialDTO
                         }else {

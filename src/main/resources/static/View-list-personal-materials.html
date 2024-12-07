@@ -497,32 +497,38 @@
 
                     // Duyệt qua tất cả materials để hiển thị
                     data.forEach(material => {
-                        console.log("Material Title: ", material.material.title);  // Truy cập title từ material.material
+                        // Kiểm tra nếu id không tồn tại
+                        const materialId = material.material.id || "unknown";
                         const safeTitle = material.material && material.material.title ? material.material.title : "No material available";
+
+                        console.log("Material ID:", materialId);
+                        console.log("Material Title:", safeTitle);
+
+                        // Tạo một dòng mới trong bảng
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                    <td class="text-left">
-        <span style="display: flex; align-items: center; gap: 8px;">
-            <i class="flaticon-script" style="font-size: 20px;"></i>
-            <a href="View-material-details.html?id=${material.id}" style=" color:  #007bff;">
-                ${material.title}
-            </a>
-        </span>
-    </td>
-                    <td>
-                        <div class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="flaticon-more-button-of-three-dots"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                <button type="button" class="dropdown-item" onclick="openDeleteModal('${material.id}')">
-                                    <i class="fas fa-trash text-orange-peel"></i>Remove
-                                </button>
-                            </div>
-                        </div>
-                    </td>
-                `;
+        <td class="text-left">
+            <span style="display: flex; align-items: center; gap: 8px;">
+                <i class="flaticon-script" style="font-size: 20px;"></i>
+                <a href="View-material-details.html?id=${materialId}" style="color: #007bff;">
+                    ${safeTitle}
+                </a>
+            </span>
+        </td>
+        <td>
+            <div class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <span class="flaticon-more-button-of-three-dots"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
+                    <button type="button" class="dropdown-item" onclick="openDeleteModal('${materialId}')">
+                        <i class="fas fa-trash text-orange-peel"></i>Remove
+                    </button>
+                </div>
+            </div>
+        </td>
+    `;
                         materialList.appendChild(row);
                     });
 
