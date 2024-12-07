@@ -3,14 +3,8 @@ package com.example.jip.controller;
 import com.example.jip.dto.MaterialDTO;
 import com.example.jip.dto.TeacherDTO;
 import com.example.jip.dto.request.FileDeleteRequest;
-import com.example.jip.entity.Account;
-import com.example.jip.entity.Material;
-import com.example.jip.entity.Student;
-import com.example.jip.entity.Teacher;
-import com.example.jip.repository.AccountRepository;
-import com.example.jip.repository.MaterialRepository;
-import com.example.jip.repository.StudentRepository;
-import com.example.jip.repository.TeacherRepository;
+import com.example.jip.entity.*;
+import com.example.jip.repository.*;
 import com.example.jip.services.CloudinaryService;
 import com.example.jip.services.MaterialServices;
 import com.example.jip.util.FileUploadUtil;
@@ -53,6 +47,9 @@ public class MaterialController {
     @Autowired
     private CloudinaryService cloudinaryService;
 
+    @Autowired
+    private PersonalMaterialRepository personalMaterialRepository;
+
 
     @PostMapping("/create")
     public RedirectView createMaterial(
@@ -63,6 +60,13 @@ public class MaterialController {
             RedirectAttributes redirectAttributes
     ) {
         try {
+            // Kiểm tra nếu title đã tồn tại trong cơ sở dữ liệu
+            Optional<Material> existingMaterial = materialRepository.findByTitle(title);
+            if (existingMaterial.isPresent()) {
+                redirectAttributes.addFlashAttribute("error", "Material with title '" + title + "' already exists.");
+                return new RedirectView("/materials/create");  // Chuyển hướng lại nếu title đã tồn tại
+            }
+
             Optional<Teacher> teacherOptional = teacherRepository.findByAccount_id(teacherId);
             if (!teacherOptional.isPresent()) {
                 redirectAttributes.addFlashAttribute("error", "Teacher with ID " + teacherId + " not found.");
@@ -77,23 +81,28 @@ public class MaterialController {
             materialDTO.setTitle(title);
             materialDTO.setContent(content);
 
-            String img = cloudinaryService.uploadFileToFolder(imgFile, "Materials/").getUrl();
-            materialDTO.setImg(img);
+            // Upload image and set it to materialDTO
+            if (imgFile != null) {
+                String img = cloudinaryService.uploadFileToFolder(imgFile, "Materials/").getUrl();
+                materialDTO.setImg(img);
+            }
 
-
+            // Set teacher to materialDTO
             TeacherDTO teacherDTO = new TeacherDTO();
             teacherDTO.setId(teacher.getId());
             materialDTO.setTeacher(teacherDTO);
 
+            // Save material
             Material savedMaterial = materialServices.createMaterial(materialDTO);
 
+            // Redirect with success message
             redirectAttributes.addFlashAttribute("success", "Material '" + savedMaterial.getTitle() + "' created successfully!");
 
             // Redirect to View-material-details.html with the new material ID
             return new RedirectView("/View-material-details.html?id=" + savedMaterial.getId());
-        }  catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", "Failed to create material: " + e.getMessage());
-            return new RedirectView("/materials/create");
+            return new RedirectView("/materials/create");  // Chuyển hướng nếu có lỗi
         }
     }
 
@@ -248,8 +257,20 @@ public class MaterialController {
             return ResponseEntity.notFound().build();  // Trả về lỗi nếu không tìm thấy tài liệu
         }
 
-        materialRepository.deleteById(materialId);  // Xóa tài liệu khỏi database
-        return ResponseEntity.ok("Xóa tài liệu thành công!");  // Trả về phản hồi thành công
+        // Lấy tài liệu từ cơ sở dữ liệu
+        Material material = materialOptional.get();
+
+        // Xóa tất cả các bản ghi PersonalMaterial liên quan
+        List<PersonalMaterial> personalMaterials = personalMaterialRepository.findByMaterial(material);
+
+        for (PersonalMaterial personalMaterial : personalMaterials) {
+            personalMaterialRepository.delete(personalMaterial);  // Xóa từng bản ghi PersonalMaterial
+        }
+
+        // Xóa tài liệu
+        materialRepository.deleteById(materialId);
+
+        return ResponseEntity.ok("Xóa tài liệu và các bản ghi cá nhân liên quan thành công!");
     }
     private void uploadFilesToFolder(MultipartFile[] files, String folderName) {
         Set<String> uploadedFiles = new HashSet<>();

@@ -161,16 +161,24 @@ public class StudentMaterialController {
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deletePersonalMaterial(@PathVariable("id") int materialId) {
-        Optional<PersonalMaterial> personalMaterialOptional = personalMaterialRepository.findById(materialId);
+        try {
+            // Tìm PersonalMaterial theo materialId
+            Optional<PersonalMaterial> materialOptional = personalMaterialRepository.findById(materialId);
 
-        if (!personalMaterialOptional.isPresent()) {
-            return ResponseEntity.status(404).body("PersonalMaterial with id " + materialId + " not found.");
+            if (!materialOptional.isPresent()) {
+                return ResponseEntity.status(404).body("Material with id " + materialId + " not found.");
+            }
+
+            // Xóa tài liệu cá nhân
+            personalMaterialRepository.deleteById(materialId);
+
+            return ResponseEntity.ok("Material removed successfully.");
+        } catch (Exception e) {
+            e.printStackTrace();  // Log lỗi chi tiết
+            return ResponseEntity.status(500).body("Error deleting material: " + e.getMessage());
         }
-
-        // Xóa tài liệu
-        personalMaterialRepository.deleteById(materialId);
-        return ResponseEntity.ok("Xóa tài liệu thành công!");  // Trả về phản hồi thành công
     }
+
 
     @GetMapping("/studentMaterials/checkExistence")
     public ResponseEntity<Map<String, Boolean>> checkMaterialExistence(@RequestParam Integer studentId, @RequestParam String materialLink) {

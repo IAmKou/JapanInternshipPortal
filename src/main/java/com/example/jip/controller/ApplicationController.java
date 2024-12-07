@@ -60,8 +60,11 @@ public class ApplicationController {
             applicationDTO.setCategory(category);
             applicationDTO.setContent(content);
 
-            String img = cloudinaryService.uploadFileToFolder(imgFile, "Materials/").getUrl();
-            applicationDTO.setImg(img);
+            // Upload image and set it to applicationDTO
+            if (imgFile != null) {
+                String img = cloudinaryService.uploadFileToFolder(imgFile, "Materials/").getUrl();
+                applicationDTO.setImg(img);
+            }
 
             // Kiểm tra và lấy teacher_id nếu có, nếu không thì lấy student_id
             if (teacherId != null) {
@@ -73,9 +76,9 @@ public class ApplicationController {
                     applicationDTO.setTeacher(teacherDTO);
                 } else {
                     redirectAttributes.addFlashAttribute("error", "Teacher with ID " + teacherId + " not found.");
-                    return new RedirectView("/create");
+                    return new RedirectView("/create");  // Chuyển hướng lại nếu lỗi
                 }
-            } else if (studentId != null) {  // Nếu không có teacher_id thì lấy student_id
+            } else if (studentId != null) {
                 Optional<Student> studentOptional = studentRepository.findByAccount_id(studentId);
                 if (studentOptional.isPresent()) {
                     Student student = studentOptional.get();
@@ -84,18 +87,16 @@ public class ApplicationController {
                     applicationDTO.setStudent(studentDTO);
                 } else {
                     redirectAttributes.addFlashAttribute("error", "Student with ID " + studentId + " not found.");
-                    return new RedirectView("/create");
+                    return new RedirectView("/create");  // Chuyển hướng lại nếu lỗi
                 }
             }
 
-            // Nếu cả hai ID đều không có, báo lỗi
             if (teacherId == null && studentId == null) {
                 redirectAttributes.addFlashAttribute("error", "Both Teacher ID and Student ID must be provided.");
-                return new RedirectView("/create");
+                return new RedirectView("/create");  // Chuyển hướng lại nếu thiếu ID
             }
 
-            // Sử dụng setter để gán trạng thái
-            applicationDTO.setStatus(ApplicationDTO.Status.Pending); // Sử dụng setter thay vì trực tiếp truy cập
+            applicationDTO.setStatus(ApplicationDTO.Status.Pending); // Sử dụng setter
             applicationDTO.setReply("");
             applicationDTO.setReplied_date(null);
 
@@ -104,14 +105,15 @@ public class ApplicationController {
 
             // Trả về redirect với thông báo thành công
             redirectAttributes.addFlashAttribute("message", "Application '" + applicationDTO.getCategory() + "' created successfully with ID: " + savedApplication.getId());
+            return new RedirectView("/View-my-application.html");  // Chuyển hướng thành công
 
-            // Redirect đến trang 'View-my-application.html'
-            return new RedirectView("/View-my-application.html"); // Chuyển hướng đến trang xem ứng dụng đã tạo
-        }  catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", "Failed to create application: " + e.getMessage());
-            return new RedirectView("/create");
+            return new RedirectView("/create");  // Chuyển hướng nếu có lỗi
         }
     }
+
+
 
     @GetMapping("/list")
     public ResponseEntity<List<ApplicationDTO>> getAllApplications(
@@ -276,7 +278,7 @@ public class ApplicationController {
         applicationRepository.save(application);
 
         return ResponseEntity.ok(Map.of(
-                "message", "Application reply success!",
+                "message", "Application reply success",
                 "redirect", "/View-list-application.html" // Đường dẫn cho giao diện
         ));
     }
