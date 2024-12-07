@@ -518,21 +518,19 @@
                 const filesContainer = document.getElementById('imgFile');
                 filesContainer.innerHTML = "";  // Clear any existing content
 
-                // Kiểm tra xem img có tồn tại trong dữ liệu không
+// Kiểm tra xem img có tồn tại trong dữ liệu không
                 if (data.img) {
-                    // Lấy tên tệp từ URL
-                    const fileName = data.img.split('/').pop();  // Tách tên tệp từ URL
+                    // Tạo một thẻ <img> để hiển thị hình ảnh trực tiếp
+                    const imgElement = document.createElement('img');
+                    imgElement.src = data.img;  // URL của hình ảnh
+                    imgElement.alt = "Material Image";  // Văn bản thay thế khi ảnh không tải được
+                    imgElement.width = 200;  // Đặt chiều rộng của ảnh (có thể thay đổi)
+                    imgElement.height = 200;  // Đặt chiều cao của ảnh (có thể thay đổi)
 
-                    // Tạo một thẻ <a> để liên kết đến hình ảnh
-                    const link = document.createElement('a');
-                    link.href = data.img;  // URL của hình ảnh
-                    link.textContent = fileName;  // Hiển thị tên tệp (mặc định là tên file)
-                    link.target = '_blank';  // Mở hình ảnh trong tab mới
-
-                    // Thêm thẻ <a> vào container
-                    filesContainer.appendChild(link);
+                    // Thêm thẻ <img> vào container
+                    filesContainer.appendChild(imgElement);
                 } else {
-                    filesContainer.innerHTML = "";
+                    filesContainer.innerHTML = "No image available";  // Hiển thị thông báo nếu không có ảnh
                 }
             }
         })
