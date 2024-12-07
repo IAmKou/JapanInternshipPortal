@@ -77,22 +77,9 @@ public class MaterialController {
             materialDTO.setTitle(title);
             materialDTO.setContent(content);
 
-            String folderName = sanitizeFolderName("material/" + materialDTO.getTitle());
-            materialDTO.setImg(folderName); // Gán folderName vào img dưới dạng List<String>
+            String img = cloudinaryService.uploadFileToFolder(imgFile, "Materials/").getUrl();
+            materialDTO.setImg(img);
 
-            // Xử lý upload file
-            if (imgFile != null && !imgFile.isEmpty()) {
-                try {
-                    // Kiểm tra xem file có hợp lệ không
-                    FileUploadUtil.assertAllowed(imgFile, FileUploadUtil.IMAGE_PATTERN);  // Kiểm tra ảnh hợp lệ
-                } catch (IllegalArgumentException e) {
-                    redirectAttributes.addFlashAttribute("error", "File ảnh không hợp lệ. Vui lòng chỉ chọn các tệp ảnh.");
-                    return new RedirectView("/materials/create");
-                }
-
-                MultipartFile[] imgFiles = {imgFile}; // Chuyển file đơn thành mảng
-                uploadFilesToFolder(imgFiles, folderName); // Gọi hàm xử lý upload
-            }
 
             TeacherDTO teacherDTO = new TeacherDTO();
             teacherDTO.setId(teacher.getId());
@@ -124,27 +111,7 @@ public class MaterialController {
             materialDTO.setTitle(material.getTitle());
             materialDTO.setContent(material.getContent());
             materialDTO.setCreated_date(material.getCreated_date()); // Gán created_date
-            // Lấy ảnh từ Cloudinary
-            String folderName = material.getImg();
-            System.out.println("Folder Name: " + folderName); // Lấy tên thư mục từ database (imgUrl)
-            try {
-                List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
-                List<String> fileUrls = resources.stream()
-                        .map(resource -> (String) resource.get("url"))
-                        .collect(Collectors.toList());
-                System.out.println("File URLs: " + fileUrls);
-
-                if (fileUrls.isEmpty()) {
-                    System.out.println("No files found for material with ID: " + material.getId());
-                }
-                System.out.println("File URLs before mapping: " + fileUrls);
-                materialDTO.setImgFromList(fileUrls);
-                System.out.println("MaterialDTO Img after mapping: " + materialDTO.getImg());
-            } catch (Exception e) {
-                System.err.println("Error retrieving files for material with ID: " + material.getId());
-                e.printStackTrace();
-                materialDTO.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
-            }
+            materialDTO.setImg(material.getImg());
             Optional<Teacher> teacherOptional = teacherRepository.findByAccount_id(accountId);
             Integer teacherId = null;
 
@@ -190,24 +157,18 @@ public class MaterialController {
         material.setContent(content);
 
         // Nếu có ảnh mới, xử lý và lưu ảnh
-        try {
-            if (file != null && !file.isEmpty()) {
-                // Tạo folder cho ảnh mới
-                String folderName = sanitizeFolderName("material/" + title);
-
-                // Kiểm tra và upload file mới lên Cloudinary
+        if (file != null && !file.isEmpty()) {
+            try {
+                String folderName = sanitizeFolderName("material/" + title); // Tạo folder cho ảnh
                 FileUploadUtil.assertAllowed(file, FileUploadUtil.IMAGE_PATTERN);  // Kiểm tra ảnh hợp lệ
-
-                // Upload ảnh lên Cloudinary
-                cloudinaryService.uploadFileToFolder(file, folderName);
+                cloudinaryService.uploadFileToFolder(file, folderName);  // Upload ảnh lên Cloudinary
 
                 // Cập nhật lại thông tin ảnh trong material
-                material.setImg(folderName);  // Lưu lại URL ảnh mới
+                material.setImg(folderName);  // Lưu lại URL ảnh hoặc folder path mới
+
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image.");
             }
-        } catch (Exception e) {
-            // Log chi tiết lỗi khi upload ảnh
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image: " + e.getMessage());
         }
 
         // Lưu lại tài liệu đã cập nhật vào cơ sở dữ liệu

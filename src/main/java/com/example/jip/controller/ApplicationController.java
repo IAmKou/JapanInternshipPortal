@@ -60,15 +60,8 @@ public class ApplicationController {
             applicationDTO.setCategory(category);
             applicationDTO.setContent(content);
 
-            // Sanitize and create folder name
-            String folderName = sanitizeFolderName("application/" + applicationDTO.getName());
-            applicationDTO.setImg(folderName); // Gán folderName vào img dưới dạng List<String>
-
-            // Xử lý upload file
-            if (imgFile != null && !imgFile.isEmpty()) {
-                MultipartFile[] imgFiles = {imgFile}; // Chuyển file đơn thành mảng
-                uploadFilesToFolder(imgFiles, folderName); // Gọi hàm xử lý upload
-            }
+            String img = cloudinaryService.uploadFileToFolder(imgFile, "Materials/").getUrl();
+            applicationDTO.setImg(img);
 
             // Kiểm tra và lấy teacher_id nếu có, nếu không thì lấy student_id
             if (teacherId != null) {
@@ -145,26 +138,7 @@ public class ApplicationController {
                             dto.setContent(application.getContent());
                             dto.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
                             dto.setReplied_date(application.getReplied_date());
-
-                            // Lấy ảnh từ Cloudinary
-                            String folderName = application.getImg(); // Lấy tên thư mục từ database (imgUrl)
-                            try {
-                                List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
-                                List<String> fileUrls = resources.stream()
-                                        .map(resource -> (String) resource.get("url"))
-                                        .collect(Collectors.toList());
-
-                                if (fileUrls.isEmpty()) {
-                                    System.out.println("No files found for application with ID: " + application.getId());
-                                }
-                                dto.setImgFromList(fileUrls); // Thiết lập danh sách URL tệp vào DTO
-
-                            } catch (Exception e) {
-                                System.err.println("Error retrieving files for application with ID: " + application.getId());
-                                e.printStackTrace();
-                                dto.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
-                            }
-
+                            dto.setImg(application.getImg());
                             return dto;
                         }).collect(Collectors.toList());
             }
@@ -177,37 +151,18 @@ public class ApplicationController {
                 List<Application> applications = applicationRepository.findByStudent_Id(student.getId());
                 applicationDTOs = applications.stream()
                         .map(application -> {
-                            ApplicationDTO dto = new ApplicationDTO();
-                            dto.setId(application.getId());
-                            dto.setName(application.getName());
-                            dto.setCategory(application.getCategory());
-                            dto.setCreated_date(application.getCreated_date());
-                            dto.setReply(application.getReply());
-                            dto.setContent(application.getContent());
-                            dto.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
-                            dto.setReplied_date(application.getReplied_date());
-
-                            // Lấy ảnh từ Cloudinary
-                            String folderName = application.getImg(); // Lấy tên thư mục từ database (imgUrl)
-                            try {
-                                List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
-                                List<String> fileUrls = resources.stream()
-                                        .map(resource -> (String) resource.get("url"))
-                                        .collect(Collectors.toList());
-
-                                if (fileUrls.isEmpty()) {
-                                    System.out.println("No files found for application with ID: " + application.getId());
-                                }
-                                dto.setImgFromList(fileUrls); // Thiết lập danh sách URL tệp vào DTO
-
-                            } catch (Exception e) {
-                                System.err.println("Error retrieving files for application with ID: " + application.getId());
-                                e.printStackTrace();
-                                dto.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
-                            }
-
-                            return dto;
-                        }).collect(Collectors.toList());
+                                    ApplicationDTO dto = new ApplicationDTO();
+                                    dto.setId(application.getId());
+                                    dto.setName(application.getName());
+                                    dto.setCategory(application.getCategory());
+                                    dto.setCreated_date(application.getCreated_date());
+                                    dto.setReply(application.getReply());
+                                    dto.setContent(application.getContent());
+                                    dto.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
+                                    dto.setReplied_date(application.getReplied_date());
+                                    dto.setImg(application.getImg());
+                                    return dto;
+                                }).collect(Collectors.toList());
             }
             // Nếu không có teacherId hoặc studentId, lấy tất cả các yêu cầu
             else {
@@ -272,29 +227,7 @@ public class ApplicationController {
             applicationDTO.setContent(application.getContent());
             applicationDTO.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
             applicationDTO.setReplied_date(application.getReplied_date());
-
-
-            // Lấy ảnh từ Cloudinary
-            String folderName = application.getImg();
-            System.out.println("Folder Name: " + folderName); // Lấy tên thư mục từ database (imgUrl)
-            try {
-                List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
-                List<String> fileUrls = resources.stream()
-                        .map(resource -> (String) resource.get("url"))
-                        .collect(Collectors.toList());
-                System.out.println("File URLs: " + fileUrls);
-
-                if (fileUrls.isEmpty()) {
-                    System.out.println("No files found for application with ID: " + application.getId());
-                }
-                applicationDTO.setImgFromList(fileUrls);  // Gọi phương thức để chuyển đổi List<String> thành String
-                System.out.println("Img from list (after set): " + applicationDTO.getImg());
-            } catch (Exception e) {
-                System.err.println("Error retrieving files for application with ID: " + application.getId());
-                e.printStackTrace();
-                applicationDTO.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
-            }
-
+            applicationDTO.setImg(application.getImg());
             return ResponseEntity.ok(applicationDTO);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
