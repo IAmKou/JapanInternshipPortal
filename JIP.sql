@@ -57,7 +57,6 @@ CREATE TABLE Manager (
 CREATE TABLE Class (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-    location varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     number_of_student INT,
     teacher_id INT,
     FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
@@ -80,6 +79,7 @@ CREATE TABLE Schedule (
     end_time TIME NOT NULL,
     description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
     event VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+    location varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     FOREIGN KEY (class_id) REFERENCES Class(Id)
 );
 
