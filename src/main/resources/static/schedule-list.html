@@ -627,18 +627,17 @@
                         // Convert cells to editable fields
                         [cnCell, locationCell, tnCell, stCell, etCell, dateCell, noteCell, eventCell].forEach((cell, index) => {
                             const originalValue = cell.textContent;
-                            const input = document.createElement('input');
 
-                            // If it's the date field, display it as a string, but keep the value
-                            if (index === 5) {
-                                input.type = 'text';  // Use text input instead of date picker
-                                input.value = originalValue;  // Keep the value as it is, showing it as string
-                            } else {
-                                input.type = 'text';  // For other fields, keep as text input
-                                input.value = originalValue;
+                            // Skip editing for dateCell (index 5) and tnCell (index 2)
+                            if (index === 2 || index === 5) {
+                                return; // Skip making these cells editable
                             }
 
+                            const input = document.createElement('input');
+                            input.type = 'text';  // Use text input for editable fields
+                            input.value = originalValue;
                             input.className = 'form-control';
+
                             cell.textContent = '';  // Clear the current content of the cell
                             cell.appendChild(input);
                         });
