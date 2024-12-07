@@ -82,6 +82,14 @@ public class MaterialController {
 
             // Xử lý upload file
             if (imgFile != null && !imgFile.isEmpty()) {
+                try {
+                    // Kiểm tra xem file có hợp lệ không
+                    FileUploadUtil.assertAllowed(imgFile, FileUploadUtil.IMAGE_PATTERN);  // Kiểm tra ảnh hợp lệ
+                } catch (IllegalArgumentException e) {
+                    redirectAttributes.addFlashAttribute("error", "File ảnh không hợp lệ. Vui lòng chỉ chọn các tệp ảnh.");
+                    return new RedirectView("/materials/create");
+                }
+
                 MultipartFile[] imgFiles = {imgFile}; // Chuyển file đơn thành mảng
                 uploadFilesToFolder(imgFiles, folderName); // Gọi hàm xử lý upload
             }
