@@ -182,18 +182,24 @@ public class MaterialController {
         material.setContent(content);
 
         // Nếu có ảnh mới, xử lý và lưu ảnh
-        if (file != null && !file.isEmpty()) {
-            try {
-                String folderName = sanitizeFolderName("material/" + title); // Tạo folder cho ảnh
+        try {
+            if (file != null && !file.isEmpty()) {
+                // Tạo folder cho ảnh mới
+                String folderName = sanitizeFolderName("material/" + title);
+
+                // Kiểm tra và upload file mới lên Cloudinary
                 FileUploadUtil.assertAllowed(file, FileUploadUtil.IMAGE_PATTERN);  // Kiểm tra ảnh hợp lệ
-                cloudinaryService.uploadFileToFolder(file, folderName);  // Upload ảnh lên Cloudinary
+
+                // Upload ảnh lên Cloudinary
+                cloudinaryService.uploadFileToFolder(file, folderName);
 
                 // Cập nhật lại thông tin ảnh trong material
-                material.setImg(folderName);  // Lưu lại URL ảnh hoặc folder path mới
-
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image.");
+                material.setImg(folderName);  // Lưu lại URL ảnh mới
             }
+        } catch (Exception e) {
+            // Log chi tiết lỗi khi upload ảnh
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image: " + e.getMessage());
         }
 
         // Lưu lại tài liệu đã cập nhật vào cơ sở dữ liệu
