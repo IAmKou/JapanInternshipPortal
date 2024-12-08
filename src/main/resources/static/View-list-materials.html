@@ -314,11 +314,11 @@
                             <ul class="nav sub-group-menu sub-group-active">
                                 <li class="nav-item" id="teacher-view1">
                                     <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
-                                        material</a>
+                                        Material</a>
                                 </li>
                                 <li class="nav-item" id="teacher-view">
                                     <a href="View-list-materials.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>List
-                                        materials</a>
+                                        Materials</a>
                                 </li>
 
 
@@ -359,7 +359,7 @@
             <div class="dashboard-content-one">
                 <!-- Breadcubs Area Start Here -->
                 <div class="breadcrumbs-area">
-                    <h3>Home</h3>
+                    <h3>List Materials</h3>
                     <ul>
                         <li>
                             <a href="admin.html">Home</a>
@@ -535,15 +535,13 @@
 
         // Hàm xóa tài liệu
         function deleteMaterial(materialId) {
-
-            // Gửi yêu cầu DELETE đến API
             fetch(`/materials/delete/${materialId}`, {
                 method: 'DELETE'
             })
                 .then(response => {
                     if (response.ok) {
                         alert("Xóa tài liệu thành công!");
-                        fetchMaterials();  // Tải lại danh sách sau khi xóa thành công
+                        fetchMaterials(); // Tải lại danh sách sau khi xóa
                     } else {
                         alert("Lỗi khi xóa tài liệu. Vui lòng thử lại.");
                     }
@@ -553,7 +551,7 @@
                     alert("Có lỗi xảy ra. Vui lòng thử lại.");
                 })
                 .finally(() => {
-                    $('#confirmationModal').modal('hide');  // Ẩn modal sau khi hoàn tất
+                    $('#confirmationModal').modal('hide'); // Ẩn modal sau khi hoàn tất
                 });
         }
 

@@ -11,6 +11,7 @@ import com.example.jip.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -249,28 +250,20 @@ public class MaterialController {
         // Trả về danh sách DTO
         return ResponseEntity.ok(materialDTOs);
     }
+    @Transactional
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteMaterial(@PathVariable("id") int materialId) {
-        Optional<Material> materialOptional = materialRepository.findById(materialId);
+        // Kiểm tra xem Material có tồn tại không
+        Material material = materialRepository.findById(materialId)
+                .orElseThrow(() -> new RuntimeException("Material không tồn tại"));
 
-        if (!materialOptional.isPresent()) {
-            return ResponseEntity.notFound().build();  // Trả về lỗi nếu không tìm thấy tài liệu
-        }
+        // Xóa các bản ghi liên quan trong PersonalMaterial
+        personalMaterialRepository.deleteByMaterial(material);
 
-        // Lấy tài liệu từ cơ sở dữ liệu
-        Material material = materialOptional.get();
+        // Xóa Material
+        materialRepository.delete(material);
 
-        // Xóa tất cả các bản ghi PersonalMaterial liên quan
-        List<PersonalMaterial> personalMaterials = personalMaterialRepository.findByMaterial(material);
-
-        for (PersonalMaterial personalMaterial : personalMaterials) {
-            personalMaterialRepository.delete(personalMaterial);  // Xóa từng bản ghi PersonalMaterial
-        }
-
-        // Xóa tài liệu
-        materialRepository.deleteById(materialId);
-
-        return ResponseEntity.ok("Xóa tài liệu và các bản ghi cá nhân liên quan thành công!");
+        return ResponseEntity.ok("Xóa tài liệu và các bản ghi liên quan thành công!");
     }
     private void uploadFilesToFolder(MultipartFile[] files, String folderName) {
         Set<String> uploadedFiles = new HashSet<>();
