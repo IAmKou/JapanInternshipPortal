@@ -21,9 +21,9 @@ public class PersonalMaterial {
     @Column(name = "material_link")
     private String material_link;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)  // Thêm cascade = CascadeType.REMOVE
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)  // Đảm bảo CascadeType.ALL hoặc CascadeType.REMOVE
     @JoinColumn(name = "material_id", nullable = false)
-    private Material material;  // Trường liên kết với Material
+    private Material material;
 
     public PersonalMaterial() {}
 

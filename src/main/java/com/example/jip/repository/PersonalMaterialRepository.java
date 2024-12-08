@@ -4,10 +4,13 @@ import com.example.jip.entity.Material;
 import com.example.jip.entity.PersonalMaterial;
 import com.example.jip.entity.Student;
 import com.example.jip.entity.Teacher;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +20,10 @@ public interface PersonalMaterialRepository extends JpaRepository<PersonalMateri
     public List<PersonalMaterial> findByStudent_Id(Integer studentId);
     Optional<PersonalMaterial> findById(Integer materialId);
 
-    List<PersonalMaterial> findByMaterial(Material material);  // Lấy danh sách PersonalMaterial liên quan đến một Material
+    @Transactional
+    @Modifying
+    void deleteByMaterial(Material material); // Xóa tất cả bản ghi liên quan đến Material
+
 
 
 

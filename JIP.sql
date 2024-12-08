@@ -152,7 +152,8 @@ CREATE TABLE Personal_material (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT,
     material_link VARCHAR(255),
-    FOREIGN KEY (student_id) REFERENCES Student(Id)
+    FOREIGN KEY (student_id) REFERENCES Student(Id),
+    FOREIGN KEY (material_id) REFERENCES Material(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Thread (
