@@ -30,15 +30,18 @@ public class ClassServices {
     private TeacherRepository teacherRepository;
 
     public Class saveClassWithStudents(ClassDTO classDTO, List<Integer> studentIds) {
+        // Check if the studentIds list is empty
+        if (studentIds == null || studentIds.isEmpty()) {
+            throw new IllegalArgumentException("Student list cannot be empty.");
+        }
+
         Teacher teacher = teacherRepository.findById(classDTO.getTeacher().getId())
                 .orElseThrow(() -> new RuntimeException("Teacher not found with ID: " + classDTO.getTeacher().getId()));
-
 
         Class newClass = new Class();
         newClass.setName(classDTO.getName());
         newClass.setTeacher(teacher);
         newClass.setNumber_of_student(studentIds.size());
-
 
         Class savedClass = classRepository.save(newClass);
 
@@ -57,6 +60,7 @@ public class ClassServices {
 
         return savedClass;
     }
+
 
     public ClassDTO updateClass (int id, ClassDTO classDTO) {
         Class newClass = classRepository.findById(id)

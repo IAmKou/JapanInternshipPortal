@@ -44,22 +44,26 @@ public class ClassController {
         if (classDTO.getTeacher() == null || classDTO.getTeacher().getId() == 0) {
             throw new IllegalArgumentException("Teacher ID is required");
         }
+
         int classCount = classRepository.countByTeacherId(classDTO.getTeacher().getId());
         if (classCount >= 3) {
             return "This teacher already has the maximum number of classes (3).";
         }
 
+        try {
+            Class savedClass = classServices.saveClassWithStudents(classDTO, classDTO.getStudentIds());
 
-        Class savedClass = classServices.saveClassWithStudents(classDTO, classDTO.getStudentIds());
+            // Create notification for class creation
+            NotificationDTO notificationDTO = new NotificationDTO();
+            notificationDTO.setTitle("Class [" + savedClass.getName() + "] created successfully");
+            notificationDTO.setContent("Class [" + savedClass.getName() + "] created successfully");
+            notificationDTO.setOwnerId(savedClass.getTeacher().getId());
+            Notification notification = notificationServices.createNotification(notificationDTO);
 
-        //Tao thong bao create class
-        NotificationDTO notificationDTO = new NotificationDTO();
-        notificationDTO.setTitle("Class [" + savedClass.getName() + "] created successfully");
-        notificationDTO.setContent("Class [" + savedClass.getName() + "] created successfully");
-        notificationDTO.setOwnerId(savedClass.getTeacher().getId());
-        Notification notification = notificationServices.createNotification(notificationDTO);
-
-        return "Class " + savedClass.getName() + " created successfully";
+            return "Class " + savedClass.getName() + " created successfully";
+        } catch (IllegalArgumentException e) {
+            return e.getMessage(); // Return failure message if student list is empty
+        }
     }
 
    @PostMapping("/update")
