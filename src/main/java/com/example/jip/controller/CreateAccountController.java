@@ -1,7 +1,12 @@
 package com.example.jip.controller;
 
+import com.example.jip.entity.Role;
+import com.example.jip.repository.AccountRepository;
+import com.example.jip.repository.RoleRepository;
 import com.example.jip.services.AccountServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -12,19 +17,33 @@ public class CreateAccountController {
     @Autowired
     private AccountServices accountServices;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
     @PostMapping("/create")
-    public RedirectView createAccount(@RequestParam String username
-            , @RequestParam String password
-            , @RequestParam int role) {
-        int account_id = accountServices.createAccount(username, password, role);
-        RedirectView redirectView = new RedirectView();
-        if (role == 2) {
-            redirectView.setUrl("/create-account-student.html?account_id=" + account_id);
-        } else if (role == 3 || role == 4) {
-            redirectView.setUrl("/create-account-tm1.html?account_id=" + account_id + "&role=" + role);
-        } else {
-            redirectView.setUrl("/login.html");
+    public ResponseEntity<?> createAccount(@RequestParam String username,
+                                           @RequestParam String password,
+                                           @RequestParam int role) {
+
+        Role roleEntity = roleRepository.findById(role)
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+
+        // Check if there are already 3 admins
+        if (roleEntity.getName().equals("ADMIN") && accountRepository.countByRole(roleEntity) >= 3) {
+            return ResponseEntity.badRequest().body("Cannot create more than 3 admin accounts");
         }
-        return redirectView;
+        if (accountRepository.existsByUsername(username)) {
+            return ResponseEntity.badRequest().body("Username already exists");
+        }
+
+        try {
+            int accountId = accountServices.createAccount(username, password, role);
+            return ResponseEntity.ok(accountId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating account");
+        }
     }
 }
