@@ -22,6 +22,9 @@ public class TeacherServices {
     @Autowired
     private CloudinaryService cloudinaryService;
 
+    @Autowired
+    private EmailServices emailServices;
+
 
     public Teacher createTeacher(String fullname, String jname, String email, String phoneNumber, String gender, MultipartFile img, int account_id) {
         Optional<Account> accountOpt = accountRepository.findById(account_id);
@@ -43,7 +46,19 @@ public class TeacherServices {
         teacher.setGender(Teacher.gender.valueOf(gender));
         teacher.setImg(imgUrl);
         teacher.setAccount(accountOpt.get());
-        return teacherRepository.save(teacher);
+        Teacher savedTeacher = teacherRepository.save(teacher);
+
+        String account = accountOpt.get().getUsername();
+        String password = accountOpt.get().getPassword();
+
+        String emailStatus = emailServices.sendEmail(email, password, account);
+        if (emailStatus == null) {
+            System.out.println("Failed to send email to: " + email);
+        } else {
+            System.out.println("Email sent successfully to: " + email);
+        }
+
+        return savedTeacher;
 
     }
     private boolean isDuplicate(String email, String phoneNumber) {

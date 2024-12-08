@@ -100,11 +100,11 @@
             .then(accountId => {
               const role = formData.get('role');
               if (role === '1') {
-                window.location.href = '/account.html';
+                window.location.href = '/account-settings.html';
               } else if (role === '2') {
-                window.location.href = `/create-account-student.html?id=${accountId}`;
+                window.location.href = `/create-account-student.html?account_id=${accountId}`;
               } else {
-                window.location.href = `/create-account-tm1.html?id=${accountId}`;
+                window.location.href = `/create-account-tm1.html?account_id=${accountId}&role=${role}`;
               }
             })
             .catch(error => {

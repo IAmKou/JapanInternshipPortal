@@ -21,6 +21,9 @@ public class ManagerServices {
     @Autowired
     private CloudinaryService cloudinaryService;
 
+    @Autowired
+    private EmailServices emailServices;
+
 
     public Manager createManager(String fullname, String jname, String email, String phoneNumber, String gender, MultipartFile img, int account_id) {
         Optional<Account> accountOpt = accountRepository.findById(account_id);
@@ -42,7 +45,19 @@ public class ManagerServices {
         manager.setGender(Manager.Gender.valueOf(gender));
         manager.setImg(imgUrl);
         manager.setAccount(accountOpt.get());
-        return managerRepository.save(manager);
+        Manager savedManager = managerRepository.save(manager);
+
+        String account = accountOpt.get().getUsername();
+        String password = accountOpt.get().getPassword();
+
+        String emailStatus = emailServices.sendEmail(email, password, account);
+        if (emailStatus == null) {
+            System.out.println("Failed to send email to: " + email);
+        } else {
+            System.out.println("Email sent successfully to: " + email);
+        }
+
+        return savedManager;
 
     }
 

@@ -25,6 +25,9 @@ public class StudentServices {
     @Autowired
     private CloudinaryService cloudinaryService;
 
+    @Autowired
+    private EmailServices emailServices;
+
     public Student createStudent(String fullname, String japanname, Date dob, String gender, String phoneNumber, String email, MultipartFile img, MultipartFile passport, int accountId) {
         Optional<Account> accountOpt = accountRepository.findById(accountId);
         if (!accountOpt.isPresent()) {
@@ -46,7 +49,7 @@ public class StudentServices {
         student.setDob(dob);
 
         try {
-            student.setGender(Student.Gender.valueOf(gender.toUpperCase()));
+            student.setGender(Student.Gender.valueOf(gender));
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid gender value: " + gender);
         }
@@ -59,7 +62,19 @@ public class StudentServices {
         student.setMark(false);
 
         // Save the student to the database
-        return studentRepository.save(student);
+        Student savedStudent = studentRepository.save(student);
+
+        String account = accountOpt.get().getUsername();
+        String password = accountOpt.get().getPassword();
+
+        String emailStatus = emailServices.sendEmail(email, password, account);
+        if (emailStatus == null) {
+            System.out.println("Failed to send email to: " + email);
+        } else {
+            System.out.println("Email sent successfully to: " + email);
+        }
+
+        return savedStudent;
     }
 
     public int getStudentIdByAccountId(int accountId) {
