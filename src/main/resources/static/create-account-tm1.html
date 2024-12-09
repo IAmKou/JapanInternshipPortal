@@ -149,27 +149,6 @@
     }
 
     // Function to check if the date is valid and the user is at least 18 years old
-    function isValidDateOfBirth(date) {
-        const today = new Date();
-        const dob = new Date(date);
-
-        // Check if the selected date is not in the future
-        if (dob > today) {
-            return false;
-        }
-
-        // Calculate age by subtracting the birth year from the current year
-        let age = today.getFullYear() - dob.getFullYear();
-        const monthDifference = today.getMonth() - dob.getMonth();
-
-        // Adjust for whether the birthdate has passed this year
-        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < dob.getDate())) {
-            age--;
-        }
-
-        // Ensure the user is at least 18 years old
-        return age >= 18;
-    }
 
     // Function to validate file input for images (excluding GIFs and videos)
     function validateImageFile(inputId, allowedTypes, maxSizeMB) {
@@ -204,7 +183,6 @@
 
         const email = document.getElementById('email').value.trim();
         const phone = document.getElementById('phone').value.trim();
-        const dob = document.getElementById('DoB').value.trim();
 
         // Validate email
         if (!isValidEmail(email)) {
@@ -224,16 +202,6 @@
             return;
         }
 
-        // Validate date of birth - must not be empty and must be at least 18 years old
-        if (!dob) {
-            alert('Please enter your date of birth.');
-            return;
-        }
-        if (!isValidDateOfBirth(dob)) {
-            alert('You must be at least 18 years old to register.');
-            return;
-        }
-
         // Allowed image types (excluding GIFs)
         const allowedImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
@@ -243,6 +211,7 @@
 
         // If all validations pass, disable the button and proceed with form submission
         this.submit();
+
         disableButton();
     });
 </script>
