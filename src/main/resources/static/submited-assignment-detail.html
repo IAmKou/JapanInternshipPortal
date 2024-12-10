@@ -558,7 +558,7 @@
 
     try {
       // Fetch the assignment details using the studentAssignmentId
-      const response = await fetch(`/student-assignment/assignment/${studentAssignmentId}`);
+      const response = await fetch(`/assignment/detailByAS/${studentAssignmentId}`);
 
       if (!response.ok) {
         throw new Error('Error fetching assignment details');

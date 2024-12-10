@@ -29,6 +29,7 @@ public class CloudinaryService {
 
     Cloudinary cloudinary;
 
+
     public CloudinaryResponse uploadFileToFolder(MultipartFile file, String folderName) {
         log.info("Uploading to folder: {}", folderName);
         try {
@@ -105,11 +106,6 @@ public class CloudinaryService {
         } else {
             return "Folder name is null";
         }
-    }
-
-    public String uploadImage(MultipartFile file) throws Exception {
-        var uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-        return (String) uploadResult.get("secure_url");
     }
 
 }

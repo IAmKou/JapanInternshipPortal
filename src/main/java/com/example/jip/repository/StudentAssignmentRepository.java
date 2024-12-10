@@ -18,7 +18,7 @@ public interface StudentAssignmentRepository extends JpaRepository<StudentAssign
     @Query("SELECT sa.assignment.id FROM StudentAssignment sa WHERE sa.student.id = :studentId")
     List<Integer> findSubmittedAssignmentIdsByStudentId(@Param("studentId") int studentId);
 
-    List<StudentAssignment> findByStudentId(int studentId);
+    List<StudentAssignment> findAllByStudentId(int studentId);
 
     List<StudentAssignment> findByAssignmentId(int assignmentId);
     @Modifying

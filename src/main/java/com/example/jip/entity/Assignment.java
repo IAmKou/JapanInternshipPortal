@@ -17,7 +17,7 @@ public class Assignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    @Column(name =  "date_created")
+    @Column(name =  "date_created", nullable = false)
     @Temporal(TemporalType.DATE)
     Date created_date;
     @Column(name =  "end_date", nullable = false)

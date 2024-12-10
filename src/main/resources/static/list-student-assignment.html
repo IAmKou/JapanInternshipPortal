@@ -486,22 +486,7 @@
                             </tr>
                             </thead>
                             <tbody id="assignment_list">
-<!--                            <tr>-->
-<!--                                <td>abc</td>-->
-<!--                                <td>10</td>-->
-<!--                                <td>12.02.2019</td>-->
-<!--                                <td>-->
-<!--                                    <div class="dropdown">-->
-<!--                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">-->
-<!--                                            <span class="flaticon-more-button-of-three-dots"></span>-->
-<!--                                        </a>-->
-<!--                                        <div class="dropdown-menu dropdown-menu-right">-->
-<!--                                            <a class="dropdown-item" href="#"><i class="fas fa-info-circle text-orange-peel"></i>Detail</a>-->
-<!--                                        </div>-->
 
-<!--                                    </div>-->
-<!--                                </td>-->
-<!--                            </tr>-->
 
                             </tbody>
                         </table>
@@ -556,7 +541,7 @@
             console.log("Mapped Student ID:", studentId);
 
             // Fetch assignments using the student ID
-            const assignmentResponse = await fetch(`/student-assignment/list-assignment?studentId=${studentId}`);
+            const assignmentResponse = await fetch(`/assignment/list-assignment?studentId=${studentId}`);
             if (!assignmentResponse.ok) {
                 throw new Error(`Error fetching assignments: ${assignmentResponse.statusText}`);
             }

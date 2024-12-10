@@ -15,8 +15,10 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AssignmentCreationRequest {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NonNull
     Date created_date;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NonNull
     Date end_date;
     String description;
     String content;

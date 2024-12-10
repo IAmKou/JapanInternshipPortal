@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -49,13 +50,23 @@ public class AssignmentController {
 
     @GetMapping("/list")
     public ResponseEntity<List<AssignmentResponse>> getAllAssignments(@RequestParam("teacherId") int teacherId) {
+        List<AssignmentResponse> assignments = assignmentServices.getAllAssignmentByTeacherId(teacherId);
+
+        if (assignments.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
+
+        return ResponseEntity.ok(assignments);
+    }
+
+    @GetMapping("/list-assignment")
+    public ResponseEntity<List<AssignmentResponse>> getAssignmentsForStudent(@RequestParam("studentId") int studentId) {
         try {
-            List<AssignmentResponse> assignments = assignmentServices.getAllAssignmentByTeacherId(teacherId);
-            return ResponseEntity.ok(assignments);
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Return a 404 if assignment not found
+            List<AssignmentResponse> response = assignmentServices.getAssignmentsForStudent(studentId);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            log.error("Error fetching unsubmitted assignments: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
         }
     }
 
@@ -64,20 +75,11 @@ public class AssignmentController {
     public ResponseEntity<?> createAssignment(@ModelAttribute AssignmentCreationRequest request,
                                               @RequestParam("teacher_id") int teacherId) {
         try {
-            log.info("Received request: " + request);
+            assignmentServices.createAssignment(request, teacherId);
 
-            for (int i = 0; i < request.getImgFile().length; i++) {
-                log.info("Received file: " + request.getImgFile()[i].getOriginalFilename());
-            }
             log.info("Received classIds: " + request.getClassIds());
-
-            Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
-            TeacherDTO teacherDTO = new TeacherDTO();
-            teacherDTO.setId(teacherOpt.get().getId());
-            request.setTeacher(teacherDTO);
-
-            assignmentServices.createAssignment(request);
             return ResponseEntity.status(HttpStatus.CREATED).build();
+
         } catch (Exception e) {
             log.error("Error creating assignment", e);
             throw new RuntimeException("Failed to create assignment", e);
@@ -117,7 +119,20 @@ public class AssignmentController {
                 })
                 .collect(Collectors.toList());
     }
-
+    @GetMapping("/detailByAS/{studentAssignmentId}")
+    public ResponseEntity<AssignmentResponse> getAssignmentByStudentAssignmentId(
+            @PathVariable int studentAssignmentId) {
+        try {
+            AssignmentResponse response = assignmentServices.getAssignmentByStudentAssignmentId(studentAssignmentId);
+            return ResponseEntity.ok(response);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null); // Return 404 if StudentAssignment or Assignment is not found
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null); // Return 500 for unexpected errors
+        }
+    }
 
 
     @DeleteMapping("/delete")

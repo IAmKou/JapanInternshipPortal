@@ -1,9 +1,8 @@
 package com.example.jip.dto;
 
-import com.example.jip.configuration.TimeDeserializer;
+
 import com.example.jip.entity.Schedule;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 
 
 import java.sql.Date;
