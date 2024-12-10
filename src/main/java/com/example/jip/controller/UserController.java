@@ -49,7 +49,7 @@ public class UserController {
         Optional<Account> accountOpt = accountRepository.findByUsername(username);
 
         if (accountOpt.isEmpty()) {
-            return new ModelAndView("redirect:/forgot-password.html").addObject("message", "account not found.");
+            return new ModelAndView("redirect:/forgot-password.html?message=Account not found.");
         }
 
         // Retrieve account and send verification email
@@ -57,21 +57,23 @@ public class UserController {
         AccountDTO accountDTO = new AccountDTO(account);
         String email = accountDTO.getEmail();
 
-        System.out.println("email: " + email);
-        System.out.println("username: " + username);
+        if (email == null || email.trim().isEmpty()) {
+            return new ModelAndView("redirect:/forgot-password.html?message=Email address is empty for this account.");
+        }
 
         String verifyCode = emailServices.sendVerificationCode(email);
         System.out.println("verifyCode: " + verifyCode);
-
-        if (verifyCode == null) {
-            return new ModelAndView("redirect:/forgot-password.html").addObject("message", "Failed to send verification code.");
+        if ("ERROR_EMPTY_EMAIL".equals(verifyCode)) {
+            return new ModelAndView("redirect:/forgot-password.html?message=Email address is empty.");
+        } else if ("ERROR_SENDING_EMAIL".equals(verifyCode)) {
+            return new ModelAndView("redirect:/forgot-password.html?message=Failed to send verification email. Please try again.");
         }
 
         // Save the verification code and username
         verificationCodeService.setCurrentUsername(username);
         verificationCodeService.saveVerificationCode(username, verifyCode);
 
-        return new ModelAndView("redirect:/verify-code.html").addObject("message", "success");
+        return new ModelAndView("redirect:/verify-code.html?message=Verification code sent successfully.");
     }
 
     @PostMapping("/verify")
@@ -79,12 +81,12 @@ public class UserController {
         String currentUsername = verificationCodeService.getCurrentUsername();
 
         if (currentUsername == null) {
-            return new ModelAndView("error").addObject("message", "Session expired. Please try again.");
+            return new ModelAndView("redirect:/verify-code.html?message=Session expired. Please try again.");
         }
 
         boolean isValid = verificationCodeService.validateCode(currentUsername, code);
         if (!isValid) {
-            return new ModelAndView("verify-code").addObject("error", "Invalid verification code. Please try again.");
+            return new ModelAndView("redirect:/verify-code.html?message=Invalid verification code. Please try again.");
         }
 
         // Clear the code after successful validation
@@ -98,13 +100,13 @@ public class UserController {
         String currentUsername = verificationCodeService.getCurrentUsername();
 
         if (currentUsername == null) {
-            return new ModelAndView("error").addObject("message", "Session expired. Please try again.");
+            return new ModelAndView("redirect:/reset-password.html?message=Session expired. Please try again.");
         }
 
         Optional<Account> accountOpt = accountRepository.findByUsername(currentUsername);
         if (accountOpt.isPresent()) {
             if (!newPassword.equals(confirmPassword)) {
-                return new ModelAndView("redirect:/reset-password.html").addObject("message", "Confirm password does not match.");
+                return new ModelAndView("redirect:/reset-password.html?message=Confirm password does not match.");
             }
 
             Account account = accountOpt.get();
@@ -117,7 +119,7 @@ public class UserController {
             accountRepository.save(account);
         }
 
-        return new ModelAndView("redirect:/login.html").addObject("message", "Password changed successfully.");
+        return new ModelAndView("redirect:/login.html?message=Password reset successfully.");
     }
 
     @PostMapping("/change-password")

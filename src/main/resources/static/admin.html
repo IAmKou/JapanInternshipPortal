@@ -710,6 +710,8 @@
                 const userData = await response.json();
                 sessionStorage.setItem('userDetails', JSON.stringify(userData));
                 console.log("User data stored in sessionStorage:", userData);
+
+                getUserDetails(userData);
             } else {
                 console.error("Failed to fetch user details:", response.statusText);
             }
@@ -717,51 +719,29 @@
             console.error("Error fetching user details:", error);
         }
     })();
-</script>
-<script>
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    if (userDetails) {
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
-
-        if (userDetails.roleName === "ADMIN") {
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.username;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "TEACHER") {
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "STUDENT") {
-            // Hiển thị đầy đủ tên và vai trò cho học sinh
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Chỉ hiển thị mục của học sinh
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
+    function getUserDetails(userDetails) {
+        if (userDetails) {
+            // Hiển thị thông tin cá nhân
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            const userRoleElements = document.querySelectorAll('.userRole');
+            if (userDetails.roleName === "ADMIN") {
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.username;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+            } else {
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+            }
         } else {
-            console.warn("Role not recognized: ", userDetails.roleName);
+            console.error("User details not found in sessionStorage");
         }
-    } else {
-        console.error("User details not found in sessionStorage");
     }
 </script>
 <!-- fetch notification -->
