@@ -3,9 +3,7 @@ package com.example.jip.services;
 import com.example.jip.dto.request.assignment.AssignmentCreationRequest;
 import com.example.jip.dto.request.assignment.AssignmentUpdateRequest;
 import com.example.jip.dto.request.FileDeleteRequest;
-import com.example.jip.dto.request.studentAssignment.StudentAssignmentGradeRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
-import com.example.jip.dto.response.studentAssignment.StudentAssignmentResponse;
 import com.example.jip.entity.*;
 
 import com.example.jip.entity.Class;
@@ -65,12 +63,37 @@ public class AssignmentServices extends AssignmentCreationRequest {
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasAuthority('STUDENT')")
+    public List<AssignmentResponse> getAssignmentsForStudent(int studentId) {
+        log.info("Fetching assignments for student ID: {}", studentId);
+        List<Assignment> allAssignments = assignmentRepository.findAssignmentsByStudentId(studentId);
+        List<Integer> submittedAssignmentIds = studentAssignmentRepository.findSubmittedAssignmentIdsByStudentId(studentId);
+
+        return allAssignments.stream()
+                .filter(assignment -> !submittedAssignmentIds.contains(assignment.getId()))
+                .map(assignment -> {
+                    AssignmentResponse response = new AssignmentResponse();
+                    response.setId(assignment.getId());
+                    response.setDescription(assignment.getDescription());
+                    response.setCreated_date(assignment.getCreated_date());
+                    response.setEnd_date(assignment.getEnd_date());
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
 
     @PreAuthorize("hasAuthority('TEACHER')")
     @Transactional
-    public Assignment createAssignment(AssignmentCreationRequest request) {
-        Teacher teacher = teacherRepository.findById(request.getTeacher().getId())
-                .orElseThrow(() -> new RuntimeException("Teacher ID not found: " + request.getTeacher().getId()));
+    public Assignment createAssignment(AssignmentCreationRequest request, int teacherId) {
+
+        Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
+        Teacher teacher = teacherRepository.findById(teacherOpt.get().getId())
+                .orElseThrow();
+
+        if (request.getCreated_date().after(request.getEnd_date())) {
+            throw new IllegalArgumentException("Created date cannot be after end date.");
+        }
 
         // Create Assignment entity
         Assignment assignment = new Assignment();
@@ -78,21 +101,29 @@ public class AssignmentServices extends AssignmentCreationRequest {
         assignment.setEnd_date(request.getEnd_date());
         assignment.setDescription(request.getDescription());
         assignment.setContent(request.getContent());
+        assignment.setTeacher(teacher);
 
-
-        // Handle file uploads
-        MultipartFile[] imgFiles = request.getImgFile();
-        for (int i = 0; i < request.getImgFile().length; i++) {
-            log.info("Uploading file: " + request.getImgFile()[i].getOriginalFilename());
-        }
-        if (imgFiles.length > 1) {
-            // Sanitize and create folder name
-            String folderName = sanitizeFolderName("assignments/" + request.getDescription());
-            assignment.setImgUrl(folderName); // Set folder URL
-            uploadFilesToFolder(imgFiles, folderName);
+        if (request.getImgFile() != null) {
+            for (MultipartFile file : request.getImgFile()) {
+                log.info("Received file: " + file.getOriginalFilename());
+            }
+            MultipartFile[] imgFiles = request.getImgFile();
+            for (int i = 0; i < request.getImgFile().length; i++) {
+                log.info("Uploading file: " + request.getImgFile()[i].getOriginalFilename());
+            }
+            if (imgFiles.length > 1) {
+                // Sanitize and create folder name
+                String folderName = sanitizeFolderName("assignments/" + request.getDescription());
+                assignment.setImgUrl(folderName); // Set folder URL
+                uploadFilesToFolder(imgFiles, folderName);
+            } else {
+                assignment.setImgUrl(null); // Ensure `imgUrl` is null if no files are provided
+            }
         } else {
-            assignment.setImgUrl(null); // Ensure `imgUrl` is null if no files are provided
+            log.warn("No files provided in the request.");
         }
+        // Handle file uploads
+
         // Save assignment
         Assignment savedAssignment = assignmentRepository.save(assignment);
 
@@ -111,7 +142,7 @@ public class AssignmentServices extends AssignmentCreationRequest {
             }
         }
 
-        assignment.setTeacher(teacher);
+
 
         // Save the assignment
         return assignmentRepository.save(assignment);
@@ -152,6 +183,47 @@ public class AssignmentServices extends AssignmentCreationRequest {
             response.setFiles(Collections.emptyList());
         }
 
+        return response;
+    }
+
+    public AssignmentResponse getAssignmentByStudentAssignmentId(int studentAssignmentId) {
+        // Find the StudentAssignment by ID
+        StudentAssignment studentAssignment = studentAssignmentRepository.findById(studentAssignmentId)
+                .orElseThrow(() -> new NoSuchElementException("StudentAssignment not found"));
+
+        // Get the related Assignment
+        Assignment assignment = studentAssignment.getAssignment();
+
+        if (assignment == null) {
+            throw new NoSuchElementException("Assignment not found for this StudentAssignment");
+        }
+
+        // Map Assignment to AssignmentResponse
+        AssignmentResponse response = new AssignmentResponse();
+        response.setId(assignment.getId());
+        response.setDescription(assignment.getDescription());
+        response.setContent(assignment.getContent());
+        response.setCreated_date(assignment.getCreated_date());
+        response.setEnd_date(assignment.getEnd_date());
+        response.setClasses(assignment.getClasses().stream()
+                .map(Class::getName)
+                .collect(Collectors.toList()));
+        String folderName = assignment.getImgUrl();
+        try {
+            List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
+            List<String> fileUrls = resources.stream()
+                    .map(resource -> (String) resource.get("url"))
+                    .collect(Collectors.toList());
+
+            if (fileUrls.isEmpty()) {
+                log.warn("No files found for assignment with ID: {}", response.getId());
+            }
+            response.setFiles(fileUrls);  // Assuming these are the file URLs
+
+        } catch (Exception e) {
+            log.error("Error retrieving files for assignment with ID: {}", response.getId(), e);
+            response.setFiles(Collections.emptyList());
+        }
         return response;
     }
 
@@ -254,7 +326,6 @@ public class AssignmentServices extends AssignmentCreationRequest {
         }
         return assignmentRepository.save(assignment);
     }
-
 
 
 

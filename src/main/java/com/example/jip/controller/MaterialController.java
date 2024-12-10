@@ -2,10 +2,7 @@ package com.example.jip.controller;
 
 import com.example.jip.dto.MaterialDTO;
 import com.example.jip.dto.TeacherDTO;
-import com.example.jip.dto.request.FileDeleteRequest;
-import com.example.jip.entity.Account;
 import com.example.jip.entity.Material;
-import com.example.jip.entity.Student;
 import com.example.jip.entity.Teacher;
 import com.example.jip.repository.AccountRepository;
 import com.example.jip.repository.MaterialRepository;
@@ -22,11 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.io.IOException;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 

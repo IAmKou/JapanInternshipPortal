@@ -7,7 +7,6 @@ import com.example.jip.dto.response.exam.ExamResponse;
 
 import com.example.jip.entity.Teacher;
 import com.example.jip.repository.TeacherRepository;
-import com.example.jip.services.ExamResultService;
 import com.example.jip.services.ExamSerivce;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -32,15 +31,14 @@ public class ExamController {
 
      TeacherRepository teacherRepository;
 
-     ExamResultService examResultService;
 
     @PostMapping(value = "/create")
     public ResponseEntity<?> createExam(@ModelAttribute ExamCreationRequest request,
                                         @RequestParam("teacher_id") int teacherId) {
-        log.info("UserId: " + teacherId);
+        log.info("UserId: {}", teacherId);
+        log.info("Request: {}", request);
         try {
             Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
-            log.info("Request: " + request);
             if (teacherOpt.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("Teacher not found for account ID: " + teacherId);
@@ -52,10 +50,6 @@ public class ExamController {
 
             examService.createExam(request);
             return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (NullPointerException e) {
-            log.error("Repository not injected properly: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Server error: Required dependencies are not configured properly.");
         } catch (Exception e) {
             log.error("Error creating exam: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -81,7 +75,7 @@ public class ExamController {
 
 
     @GetMapping("/detail/{exam_id}")
-    public ResponseEntity<ExamResponse> getAssignmentById(@PathVariable("exam_id") int examId) {
+    public ResponseEntity<ExamResponse> getExamById(@PathVariable("exam_id") int examId) {
         log.info("Received examId: " + examId);
         ExamResponse response = examService.getExamById(examId);
         if (response != null)  {

@@ -107,10 +107,5 @@ public class CloudinaryService {
         }
     }
 
-    public String uploadImage(MultipartFile file) throws Exception {
-        var uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-        return (String) uploadResult.get("secure_url");
-    }
-
 }
 
