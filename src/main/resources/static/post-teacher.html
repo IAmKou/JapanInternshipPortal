@@ -3,115 +3,73 @@
 
 <head>
     <meta charset="utf-8">
-    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Forum Page</title>
-    <meta content="" name="description">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
-    <link href="img/favicon.png" rel="shortcut icon" type="image/x-icon">
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
     <!-- Normalize CSS -->
-    <link href="css/normalize.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/normalize.css">
     <!-- Main CSS -->
-    <link href="css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
     <!-- Bootstrap CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- Fontawesome CSS -->
-    <link href="css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/all.min.css">
     <!-- Flaticon CSS -->
-    <link href="fonts/flaticon.css" rel="stylesheet">
+    <link rel="stylesheet" href="fonts/flaticon.css">
     <!-- Full Calender CSS -->
-    <link href="css/fullcalendar.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/fullcalendar.min.css">
     <!-- Animate CSS -->
-    <link href="css/animate.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/animate.min.css">
     <!-- Custom CSS -->
-    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
 
     <style>
-        .item-title {
-            display: flex;
-            align-items: center;
-        }
-        .spacer {
-            flex: 1;
+
+        .post-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
         }
 
-        .thread-title a {
-            font-size: large;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .dropdown {
-            margin-left: auto;
-        }
-
-        .thread-thumbnail {
-            width: 100px;
-            height: 100px;
-            background-color: #ccc;
-            display: inline-block;
-            object-fit: cover;
-        }
-
-        .thread-thumbnail img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .thread-content {
-            display: inline-block;
-            margin-left: 20px;
-            vertical-align: top;
-            width: calc(100% - 140px);
-            box-sizing: border-box;
-        }
-
-        .thread-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-            word-wrap: break-word;
-            text-wrap: wrap;
-        }
-
-        .thread-description {
-            color: #555;
+        .post-header h2 {
+            font-size: 24px;
+            color: #333;
             margin-bottom: 10px;
-            white-space: nowrap;
-            text-overflow: ellipsis;
+        }
+
+        .post-image {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .post-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .post-description {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+            text-wrap: wrap;
             display: block;
             overflow: hidden;
-        }
-
-        .page-btn {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            font-size: 16px;
-            border-radius: 5px;
-            margin: 0 10px;
-            cursor: pointer;
-        }
-
-        .page-btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
+            word-break: break-word;
         }
 
         #pageNumber {
             font-size: 18px;
             font-weight: bold;
-        }
-
-        .modal-trigger {
-            display: inline-block;
-            text-align: center;
-            padding-bottom: 30px;
         }
 
     </style>
@@ -122,19 +80,17 @@
 <!-- Preloader Start Here -->
 <div id="preloader"></div>
 <!-- Preloader End Here -->
-<div class="wrapper bg-ash" id="wrapper">
+<div id="wrapper" class="wrapper bg-ash">
     <!-- Header Menu Area Start Here -->
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
                 <a href="admin.html">
-                    <div style="width: 180px; height: 70px; overflow: hidden;">
-                        <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
-                    </div>
+                    <img src="img/logo.png" alt="logo">
                 </a>
             </div>
             <div class="toggle-button sidebar-toggle">
-                <button class="item-link" type="button">
+                <button type="button" class="item-link">
                         <span class="btn-icon-wrap">
                             <span></span>
                             <span></span>
@@ -144,23 +100,16 @@
             </div>
         </div>
         <div class="d-md-none mobile-nav-bar">
-            <button aria-expanded="false" class="navbar-toggler pulse-animation" data-target="#mobile-navbar"
-                    data-toggle="collapse" type="button">
+            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse"
+                    data-target="#mobile-navbar" aria-expanded="false">
                 <i class="far fa-arrow-alt-circle-down"></i>
             </button>
-            <button class="navbar-toggler sidebar-toggle-mobile" type="button">
+            <button type="button" class="navbar-toggler sidebar-toggle-mobile">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
         <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
             <!-- Search Bar Start Here -->
-            <ul class="navbar-nav">
-                <li class="navbar-item header-search-bar">
-                    <div class="input-group stylish-input-group">
-
-                    </div>
-                </li>
-            </ul>
             <ul class="navbar-nav">
                 <li class="navbar-item dropdown header-admin">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
@@ -191,8 +140,8 @@
                 </li>
                 <!-- Messages Dropdown -->
                 <li class="navbar-item dropdown header-message">
-                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                       role="button">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
                         <i class="far fa-envelope"></i>
                         <div class="item-title d-md-none text-16 mg-l-10">Message</div>
                         <span>5</span>
@@ -205,7 +154,7 @@
                         <div class="item-content">
                             <div class="media">
                                 <div class="item-img bg-skyblue author-online">
-                                    <img alt="img" src="img/figure/student11.png">
+                                    <img src="img/figure/student11.png" alt="img">
                                 </div>
                                 <div class="media-body space-sm">
                                     <div class="item-title">
@@ -219,7 +168,7 @@
                             </div>
                             <div class="media">
                                 <div class="item-img bg-yellow author-online">
-                                    <img alt="img" src="img/figure/student12.png">
+                                    <img src="img/figure/student12.png" alt="img">
                                 </div>
                                 <div class="media-body space-sm">
                                     <div class="item-title">
@@ -234,7 +183,7 @@
                             </div>
                             <div class="media">
                                 <div class="item-img bg-pink">
-                                    <img alt="img" src="img/figure/student13.png">
+                                    <img src="img/figure/student13.png" alt="img">
                                 </div>
                                 <div class="media-body space-sm">
                                     <div class="item-title">
@@ -249,7 +198,7 @@
                             </div>
                             <div class="media">
                                 <div class="item-img bg-violet-blue">
-                                    <img alt="img" src="img/figure/student11.png">
+                                    <img src="img/figure/student11.png" alt="img">
                                 </div>
                                 <div class="media-body space-sm">
                                     <div class="item-title">
@@ -267,8 +216,8 @@
                 </li>
                 <!-- Notifications Dropdown -->
                 <li class="navbar-item dropdown header-notification">
-                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                       role="button">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
                         <i class="far fa-bell"></i>
                         <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
                         <span>8</span>
@@ -312,8 +261,8 @@
 
                 <!-- Language Dropdown -->
                 <li class="navbar-item dropdown header-language">
-                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown"
-                       href="#" role="button"><i class="fas fa-globe-americas"></i>EN</a>
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
+                       data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#">English</a>
                         <a class="dropdown-item" href="#">Spanish</a>
@@ -392,24 +341,19 @@
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                        <ul class="nav sub-group-menu sub-group-active">
-                            <li class="nav-item" id="teacher-view1">
-                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
-                                    material</a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create Material</a>
                             </li>
                             <li class="nav-item" id="teacher-view">
-                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                                    materials</a>
-                            </li>
-                            <li class="nav-item" id="student-view1">
-                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                                    materials</a>
+                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List Materials</a>
                             </li>
                             <li class="nav-item" id="student-view">
-                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list
-                                    materials</a>
+                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List Materials</a>
                             </li>
-
+                            <li class="nav-item" id="student-view1">
+                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My List Materials</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
@@ -425,9 +369,9 @@
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                        <ul class="nav sub-group-menu sub-group-active">
+                        <ul class="nav sub-group-menu ">
                             <li class="nav-item">
-                                <a class="nav-link menu-active" href="forum.html"><i class="fas fa-angle-right"></i>View list threads</a>
+                                <a class="nav-link " href="forum.html"><i class="fas fa-angle-right"></i>View list threads</a>
                             </li>
                             <li class="nav-item sidebar-nav-item">
                                 <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create Thread</a>
@@ -439,47 +383,66 @@
             </div>
         </div>
         <!-- Sidebar Area End Here -->
+        <!-- Main Body Content Start Here -->
 
-        <div id="deleteModal" class="modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Delete Thread</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Are you sure you want to delete this thread?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="button" id="confirmDelete" class="btn btn-danger">Delete</button>
+        <div class="post-container">
+            <div style="display: flex">
+                <!-- Post Header -->
+                <div class="post-header" style="flex-grow: 8" id="threadTitle">
+                </div>
+                <div class="post-header" style="flex-grow: 2" id="threadMaker">
+                </div>
+            </div>
+            <!-- Image Section -->
+            <div class="post-image" id="threadImage">
+            </div>
+            <!-- Description Section -->
+            <div class="post-description" id="threadDescription">
+            </div>
+        </div>
+        <!-- Main Body Content End Here -->
+    </div>
+
+    <div class="ui-modal-box">
+        <div class="modal-box">
+            <div class="modal sign-up-modal fade" id="sign-up" tabindex="-1" role="dialog"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="close-btn">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="item-logo">
+                                <img src="img/logo2.png" alt="logo">
+                            </div>
+                            <form class="login-form">
+                                <form action="/upload" method="post" enctype="multipart/form-data">
+                                    <input type="file" id="imageUpload" name="image" accept="image/*" required>
+                                    <button type="submit">Upload</button>
+                                </form>
+                                <div class="row gutters-15">
+                                    <div class="form-group col-12">
+                                        <input type="text" placeholder="Thread Name" class="form-control">
+                                    </div>
+                                    <div class="form-group col-12">
+                                        <textarea placeholder="Description" class="form-control" rows="8"></textarea>
+                                    </div>
+                                    <div class="form-group col-12">
+                                        <button type="submit" class="login-btn">Create
+                                            Thread
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="dashboard-content-one container">
-            <!-- Create Thread Button -->
-            <a href="create-forum.html" class="modal-trigger" style="display: inline-block; padding: 10px 20px; text-align: center; background-color: #007bff; color: white; border-radius: 5px; text-decoration: none;">
-                Create Thread
-            </a>
-            <!-- Thread List Start -->
-            <div id="threadList" style="padding-top:20px "></div>
-            <!-- Thread List End -->
-
-            <!-- Pagination Controls -->
-            <div class="pagination-controls text-center" style="margin-top: 20px; margin-bottom: 40px;">
-                <!-- Previous Page Button -->
-                <button class="page-btn" id="prevPage" disabled>&laquo;</button>
-                <!-- Page Number Display -->
-                <span id="pageNumber">1</span>
-                <!-- Next Page Button -->
-                <button class="page-btn" id="nextPage">&raquo;</button>
-            </div>
-
-        </div>
-        <!-- Main Body Content End Here -->
     </div>
 
     <!-- Footer Start Here -->
@@ -518,209 +481,61 @@
 <!-- Custom Js -->
 <script src="js/main.js"></script>
 
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Initialize variables
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    let currentPage = 1;
+    const threadsPerPage = 5;
+    const threads = Array.from(document.querySelectorAll('.thread-box'));
+    let totalPages = Math.ceil(threads.length / threadsPerPage);
 
-        if (!userDetails) {
-            console.error("User details not found in sessionStorage");
-            return; // Stop script execution if no user details found
-        }
+    function showPage(page) {
+        // Hide all threads
+        threads.forEach(thread => thread.style.display = 'none');
 
-        const currentUserId = userDetails.id;
-        const prevPageButton = document.getElementById("prevPage");
-        const nextPageButton = document.getElementById("nextPage");
-        const pageNumber = document.getElementById("pageNumber");
-        const threadList = document.getElementById("threadList");
-        const threadsPerPage = 8;
+        // Show only the threads for the current page
+        const start = (page - 1) * threadsPerPage;
+        const end = start + threadsPerPage;
+        threads.slice(start, end).forEach(thread => thread.style.display = 'block');
 
-        let currentPage = 1; // Start on the first page
-        let totalPages = 1; // Set a default number of pages (this will be updated after fetching all threads)
-        let allThreads = []; // This will hold all threads
-        let threadToDeleteId = null;
+        // Update page number and button states
+        document.getElementById('pageNumber').textContent = page;
+        document.getElementById('prevPage').disabled = page === 1;
+        document.getElementById('nextPage').disabled = page === totalPages;
+    }
 
-        // Function to fetch all threads (without pagination)
-        function fetchAllThreads() {
-            fetch(`/thread/threads?page=0&size=10000`)  // Large enough size to fetch all threads
-                .then(response => response.json())
-                .then(data => {
-                    if (data.content && Array.isArray(data.content) && data.content.length > 0) {
-                        // Sort all threads by dateCreated in descending order (newest first)
-                        allThreads = data.content.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated));
-                        totalPages = Math.ceil(allThreads.length / threadsPerPage); // Calculate total pages
-                        fetchThreads(currentPage); // Fetch the first page of sorted threads
-                    } else {
-                        threadList.innerHTML = "<p>No threads available.</p>";
-                    }
-                })
-                .catch(error => {
-                    console.error("Error fetching threads:", error);
-                    alert("Error fetching threads");
-                });
-        }
+    // Change page based on button click
+    function changePage(direction) {
+        currentPage += direction;
+        showPage(currentPage);
+    }
 
-        // Function to fetch and render threads for the current page
-        function fetchThreads(page) {
-            const startIndex = (page - 1) * threadsPerPage;
-            const pageThreads = allThreads.slice(startIndex, startIndex + threadsPerPage); // Get threads for the current page
-
-            if (pageThreads.length > 0) {
-                renderThreads(pageThreads); // Render the threads on the page
-                pageNumber.textContent = currentPage; // Update the page number display
-                updatePagination(); // Update pagination buttons' state
-            }
-        }
-
-        // Function to render threads on the page
-        function renderThreads(threads) {
-            threadList.innerHTML = ""; // Clear existing threads
-
-            threads.forEach(thread => {
-                const threadBox = document.createElement("div");
-                threadBox.className = "thread-box";
-                threadBox.setAttribute("data-thread-id", thread.id);
-                const formattedDate = new Date(thread.dateCreated).toLocaleDateString();
-
-                // Add thread content and the dropdown for actions (Edit/Delete)
-                threadBox.innerHTML = `
-        <div class="thread-thumbnail">
-            <img src="data:image/png;base64,${thread.image || 'N/A'}" alt="Thread Image">
-        </div>
-        <div class="thread-content">
-            <div class="card height-auto">
-                <div class="heading-layout1">
-                    <div class="item-title d-flex justify-content-between align-items-center">
-                        <div class="thread-title">
-                            <a href="post.html?id=${thread.id}">${thread.topicName}</a>
-                        </div>
-                        <div class="spacer"></div>
-
-                        <div class="dropdown">
-                        ${thread.creatorId === currentUserId ? `
-                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <!-- Show Update and Delete options only for the thread creator -->
-
-                                    <a class="dropdown-item edit-thread" href="/edit-forum.html?threadId=${thread.id}">
-                                        <i class="fas fa-cogs text-dark-pastel-green"></i> Edit
-                                    </a>
-                                    <a class="dropdown-item delete-thread" href="#" data-thread-id="${thread.id}">
-                                        <i class="fas fa-times text-orange-red"></i> Delete
-                                    </a>
-
-                                ` : ""}
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="thread-description">${thread.description}</div>
-                <div class="thread-date">Created on: ${formattedDate}</div>
-                <div class="thread-author" style="flex-grow: 2; text-align: end;">Author: ${thread.creatorName || 'Unknown'}</div>
-            </div>
-        </div>`;
-                threadList.appendChild(threadBox);
-            });
-        }
-
-        // Function to update pagination button states
-        function updatePagination() {
-            if (currentPage === 1) {
-                prevPageButton.disabled = true; // Disable previous button on the first page
-            } else {
-                prevPageButton.disabled = false;
-            }
-
-            if (currentPage === totalPages) {
-                nextPageButton.disabled = true; // Disable next button on the last page
-            } else {
-                nextPageButton.disabled = false;
-            }
-        }
-
-        // Set up event listeners for pagination buttons
-        if (prevPageButton && nextPageButton) {
-            prevPageButton.addEventListener('click', function () {
-                if (currentPage > 1) {
-                    currentPage--; // Decrement the current page
-                    fetchThreads(currentPage); // Fetch the new page
-                }
-            });
-
-            nextPageButton.addEventListener('click', function () {
-                if (currentPage < totalPages) {
-                    currentPage++; // Increment the current page
-                    fetchThreads(currentPage); // Fetch the new page
-                }
-            });
-        }
-
-        // Function to delete the thread
-        function deleteThread(threadId) {
-            fetch(`http://localhost:8080/thread/delete/${threadId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken') // Include JWT if needed
-                }
-            })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Thread deleted successfully');
-                        fetchAllThreads(); // Refresh the thread list after deletion
-                    } else {
-                        alert('Failed to delete thread');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error deleting thread');
-                });
-        }
-
-        // Open the custom delete modal when clicking on "Delete"
-        document.addEventListener("click", function (event) {
-            if (event.target && event.target.matches("a.delete-thread")) {
-                threadToDeleteId = event.target.getAttribute("data-thread-id");
-                // Show the custom delete confirmation modal
-                $('#deleteModal').modal('show');
-            }
-        });
-
-        // Confirm delete modal
-        document.getElementById('confirmDelete').addEventListener('click', function () {
-            if (threadToDeleteId !== null) {
-                deleteThread(threadToDeleteId);
-                // Close the modal after the delete action
-                $('#deleteModal').modal('hide');
-            }
-        });
-
-        // Function to refresh the threads after editing
-        function refreshAfterEdit() {
-            fetchAllThreads(); // Refresh the thread list after editing
-        }
-
-        // Check if the current page is the thread edit page and add a listener for refresh after edit
-        if (window.location.pathname.includes("edit-forum.html")) {
-            // Add listener to refresh after thread edit
-            window.addEventListener("load", function() {
-                const submitButton = document.getElementById("submitEdit");
-                if (submitButton) {
-                    submitButton.addEventListener("click", function() {
-                        refreshAfterEdit(); // Refresh after editing
-                    });
-                }
-            });
-        }
-
-        // Initial fetch of all threads and render them sorted
-        fetchAllThreads();
-    });
+    // Initialize pagination on page load
+    document.addEventListener('DOMContentLoaded', () => showPage(currentPage));
 </script>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const threadId = urlParams.get('id');
 
+    if (threadId) {
+        // Use the threadId to fetch the thread's details
+        fetch(`/thread/${threadId}`)
+            .then(response => response.json())
+            .then(thread => renderThreadDetails(thread))
+            .catch(error => console.error("Error fetching thread details:", error));
+    } else {
+        console.error("No thread ID found in URL.");
+    }
 
-
-
+    function renderThreadDetails(thread) {
+        const threadTitle = document.getElementById('threadTitle');
+        const threadDescription = document.getElementById('threadDescription');
+        const threadImage = document.getElementById('threadImage');
+        const threadMaker = document.getElementById('threadMaker');
+        threadTitle.innerHTML = `<h2>${thread.topicName}</h2>`;
+        threadDescription.innerHTML = `<p>${thread.description}</p> `;
+        threadMaker.innerHTML = `<p style="float: right">${thread.creatorName}</p>`;
+        threadImage.innerHTML = `<img src="data:image/png;base64,${thread.image}"/>`
+    }
+</script>
 </body>
 </html>

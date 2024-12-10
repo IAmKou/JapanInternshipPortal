@@ -1,3 +1,4 @@
+
 CREATE DATABASE jip;
 USE jip;
 
@@ -56,7 +57,6 @@ CREATE TABLE Manager (
 CREATE TABLE Class (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-    location varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     number_of_student INT,
     teacher_id INT,
     FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
@@ -79,6 +79,7 @@ CREATE TABLE Schedule (
     end_time TIME NOT NULL,
     description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
     event VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
+    location varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     FOREIGN KEY (class_id) REFERENCES Class(Id)
 );
 
@@ -98,7 +99,7 @@ CREATE TABLE Assignment (
     date_created DATE NOT NULL,
     end_date DATE NOT NULL,
     description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    content LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    content VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     teacher_id INT,
     img VARCHAR(255),
     class_id INT,
@@ -112,7 +113,7 @@ CREATE TABLE Student_assignment (
     assignment_id INT,
     mark DECIMAL(5,2),
     description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    content LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    content VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     date DATE NOT NULL,
     FOREIGN KEY (student_id) REFERENCES Student(Id),
     FOREIGN KEY (assignment_id) REFERENCES Assignment(Id)
@@ -123,7 +124,6 @@ CREATE TABLE Exam (
     student_id INT,
     block INT NOT NULL,
     exam_name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-    content LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     mark DECIMAL(5,2) NOT NULL,
     date DATE NOT NULL,
     FOREIGN KEY (student_id) REFERENCES Student(Id)
@@ -143,7 +143,8 @@ CREATE TABLE Material (
     content VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     img VARCHAR(255),
     teacher_id INT,
-    date DATE NOT NULL,
+    date_created DATE NOT NULL,
+    title varchar(255),
     FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
 );
 
@@ -151,7 +152,8 @@ CREATE TABLE Personal_material (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT,
     material_link VARCHAR(255),
-    FOREIGN KEY (student_id) REFERENCES Student(Id)
+    FOREIGN KEY (student_id) REFERENCES Student(Id),
+    FOREIGN KEY (material_id) REFERENCES Material(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Thread (
@@ -185,14 +187,16 @@ CREATE TABLE Application (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     img VARCHAR(255),
     category VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    description TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    name VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     content TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    date DATE NOT NULL,
+    date_created DATE NOT NULL,
     student_id INT,
+    teacher_id INT,
     status ENUM('Pending', 'Approved', 'Rejected') NOT NULL,
     reply TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    reply_date DATE,
-    FOREIGN KEY (student_id) REFERENCES Student(Id)
+    date_replied DATE,
+    FOREIGN KEY (student_id) REFERENCES Student(Id),
+    FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
 );
 
 CREATE TABLE Notification (

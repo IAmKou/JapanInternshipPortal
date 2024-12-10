@@ -59,14 +59,10 @@ public class ApplicationController {
             applicationDTO.setCategory(category);
             applicationDTO.setContent(content);
 
-            // Sanitize and create folder name
-            String folderName = sanitizeFolderName("application/" + applicationDTO.getName());
-            applicationDTO.setImg(folderName); // Gán folderName vào img dưới dạng List<String>
-
-            // Xử lý upload file
-            if (imgFile != null && !imgFile.isEmpty()) {
-                MultipartFile[] imgFiles = {imgFile}; // Chuyển file đơn thành mảng
-                uploadFilesToFolder(imgFiles, folderName); // Gọi hàm xử lý upload
+            // Upload image and set it to applicationDTO
+            if (imgFile != null) {
+                String img = cloudinaryService.uploadFileToFolder(imgFile, "Materials/").getUrl();
+                applicationDTO.setImg(img);
             }
 
             // Kiểm tra và lấy teacher_id nếu có, nếu không thì lấy student_id
@@ -79,9 +75,9 @@ public class ApplicationController {
                     applicationDTO.setTeacher(teacherDTO);
                 } else {
                     redirectAttributes.addFlashAttribute("error", "Teacher with ID " + teacherId + " not found.");
-                    return new RedirectView("/create");
+                    return new RedirectView("/create");  // Chuyển hướng lại nếu lỗi
                 }
-            } else if (studentId != null) {  // Nếu không có teacher_id thì lấy student_id
+            } else if (studentId != null) {
                 Optional<Student> studentOptional = studentRepository.findByAccount_id(studentId);
                 if (studentOptional.isPresent()) {
                     Student student = studentOptional.get();
@@ -90,18 +86,16 @@ public class ApplicationController {
                     applicationDTO.setStudent(studentDTO);
                 } else {
                     redirectAttributes.addFlashAttribute("error", "Student with ID " + studentId + " not found.");
-                    return new RedirectView("/create");
+                    return new RedirectView("/create");  // Chuyển hướng lại nếu lỗi
                 }
             }
 
-            // Nếu cả hai ID đều không có, báo lỗi
             if (teacherId == null && studentId == null) {
                 redirectAttributes.addFlashAttribute("error", "Both Teacher ID and Student ID must be provided.");
-                return new RedirectView("/create");
+                return new RedirectView("/create");  // Chuyển hướng lại nếu thiếu ID
             }
 
-            // Sử dụng setter để gán trạng thái
-            applicationDTO.setStatus(ApplicationDTO.Status.Pending); // Sử dụng setter thay vì trực tiếp truy cập
+            applicationDTO.setStatus(ApplicationDTO.Status.Pending); // Sử dụng setter
             applicationDTO.setReply("");
             applicationDTO.setReplied_date(null);
 
@@ -110,14 +104,15 @@ public class ApplicationController {
 
             // Trả về redirect với thông báo thành công
             redirectAttributes.addFlashAttribute("message", "Application '" + applicationDTO.getCategory() + "' created successfully with ID: " + savedApplication.getId());
+            return new RedirectView("/View-my-application.html");  // Chuyển hướng thành công
 
-            // Redirect đến trang 'View-my-application.html'
-            return new RedirectView("/View-my-application.html"); // Chuyển hướng đến trang xem ứng dụng đã tạo
-        }  catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", "Failed to create application: " + e.getMessage());
-            return new RedirectView("/create");
+            return new RedirectView("/create");  // Chuyển hướng nếu có lỗi
         }
     }
+
+
 
     @GetMapping("/list")
     public ResponseEntity<List<ApplicationDTO>> getAllApplications(
@@ -144,26 +139,7 @@ public class ApplicationController {
                             dto.setContent(application.getContent());
                             dto.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
                             dto.setReplied_date(application.getReplied_date());
-
-                            // Lấy ảnh từ Cloudinary
-                            String folderName = application.getImg(); // Lấy tên thư mục từ database (imgUrl)
-                            try {
-                                List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
-                                List<String> fileUrls = resources.stream()
-                                        .map(resource -> (String) resource.get("url"))
-                                        .collect(Collectors.toList());
-
-                                if (fileUrls.isEmpty()) {
-                                    System.out.println("No files found for application with ID: " + application.getId());
-                                }
-                                dto.setImgFromList(fileUrls); // Thiết lập danh sách URL tệp vào DTO
-
-                            } catch (Exception e) {
-                                System.err.println("Error retrieving files for application with ID: " + application.getId());
-                                e.printStackTrace();
-                                dto.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
-                            }
-
+                            dto.setImg(application.getImg());
                             return dto;
                         }).collect(Collectors.toList());
             }
@@ -176,37 +152,18 @@ public class ApplicationController {
                 List<Application> applications = applicationRepository.findByStudent_Id(student.getId());
                 applicationDTOs = applications.stream()
                         .map(application -> {
-                            ApplicationDTO dto = new ApplicationDTO();
-                            dto.setId(application.getId());
-                            dto.setName(application.getName());
-                            dto.setCategory(application.getCategory());
-                            dto.setCreated_date(application.getCreated_date());
-                            dto.setReply(application.getReply());
-                            dto.setContent(application.getContent());
-                            dto.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
-                            dto.setReplied_date(application.getReplied_date());
-
-                            // Lấy ảnh từ Cloudinary
-                            String folderName = application.getImg(); // Lấy tên thư mục từ database (imgUrl)
-                            try {
-                                List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
-                                List<String> fileUrls = resources.stream()
-                                        .map(resource -> (String) resource.get("url"))
-                                        .collect(Collectors.toList());
-
-                                if (fileUrls.isEmpty()) {
-                                    System.out.println("No files found for application with ID: " + application.getId());
-                                }
-                                dto.setImgFromList(fileUrls); // Thiết lập danh sách URL tệp vào DTO
-
-                            } catch (Exception e) {
-                                System.err.println("Error retrieving files for application with ID: " + application.getId());
-                                e.printStackTrace();
-                                dto.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
-                            }
-
-                            return dto;
-                        }).collect(Collectors.toList());
+                                    ApplicationDTO dto = new ApplicationDTO();
+                                    dto.setId(application.getId());
+                                    dto.setName(application.getName());
+                                    dto.setCategory(application.getCategory());
+                                    dto.setCreated_date(application.getCreated_date());
+                                    dto.setReply(application.getReply());
+                                    dto.setContent(application.getContent());
+                                    dto.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
+                                    dto.setReplied_date(application.getReplied_date());
+                                    dto.setImg(application.getImg());
+                                    return dto;
+                                }).collect(Collectors.toList());
             }
             // Nếu không có teacherId hoặc studentId, lấy tất cả các yêu cầu
             else {
@@ -271,29 +228,7 @@ public class ApplicationController {
             applicationDTO.setContent(application.getContent());
             applicationDTO.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
             applicationDTO.setReplied_date(application.getReplied_date());
-
-
-            // Lấy ảnh từ Cloudinary
-            String folderName = application.getImg();
-            System.out.println("Folder Name: " + folderName); // Lấy tên thư mục từ database (imgUrl)
-            try {
-                List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
-                List<String> fileUrls = resources.stream()
-                        .map(resource -> (String) resource.get("url"))
-                        .collect(Collectors.toList());
-                System.out.println("File URLs: " + fileUrls);
-
-                if (fileUrls.isEmpty()) {
-                    System.out.println("No files found for application with ID: " + application.getId());
-                }
-                applicationDTO.setImgFromList(fileUrls);  // Gọi phương thức để chuyển đổi List<String> thành String
-                System.out.println("Img from list (after set): " + applicationDTO.getImg());
-            } catch (Exception e) {
-                System.err.println("Error retrieving files for application with ID: " + application.getId());
-                e.printStackTrace();
-                applicationDTO.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
-            }
-
+            applicationDTO.setImg(application.getImg());
             return ResponseEntity.ok(applicationDTO);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -342,7 +277,7 @@ public class ApplicationController {
         applicationRepository.save(application);
 
         return ResponseEntity.ok(Map.of(
-                "message", "Application reply success!",
+                "message", "Application reply success",
                 "redirect", "/View-list-application.html" // Đường dẫn cho giao diện
         ));
     }

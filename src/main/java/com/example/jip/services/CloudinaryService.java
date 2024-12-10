@@ -29,6 +29,7 @@ public class CloudinaryService {
 
     Cloudinary cloudinary;
 
+
     public CloudinaryResponse uploadFileToFolder(MultipartFile file, String folderName) {
         log.info("Uploading to folder: {}", folderName);
         try {

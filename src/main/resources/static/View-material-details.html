@@ -315,22 +315,22 @@
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                            <ul class="nav sub-group-menu sub-group-active">
+                            <ul class="nav sub-group-menu">
                                 <li class="nav-item" id="teacher-view1">
                                     <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
-                                        material</a>
+                                        Material</a>
                                 </li>
                                 <li class="nav-item" id="teacher-view">
                                     <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                                        materials</a>
+                                        Materials</a>
                                 </li>
                                 <li class="nav-item" id="student-view1">
                                     <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                                        materials</a>
+                                        Materials</a>
                                 </li>
                                 <li class="nav-item" id="student-view">
-                                    <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list
-                                        materials</a>
+                                    <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My List
+                                        Materials</a>
                                 </li>
 
                             </ul>
@@ -386,7 +386,7 @@
                             <div class="item-title">
                                 <h3>Material Details</h3>
                             </div>
-                            <div class="dropdown" id="dropdownMenu" style="display:none;">
+                            <div class="dropdown" id="dropdownMenu" >
                                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
@@ -401,8 +401,7 @@
                         </div>
 
                         <div class="single-info-details">
-                            <div class="item-img">
-                                <!-- Hình ảnh sẽ được cập nhật qua JavaScript -->
+                            <div class="item-img" style="margin-bottom: 40px !important;">
                                 <img id="imgFile" src="">
                             </div>
                             <div class="item-content">
@@ -445,12 +444,12 @@
                             <div class="modal-body">
                                 <form id="editForm">
                                     <div class="form-group">
-                                        <label for="materialTitle">Title:</label>
-                                        <input type="text" class="form-control" id="materialTitle">
+                                        <label for="materialTitle">Title *</label>
+                                        <input type="text" class="form-control" id="materialTitle" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="materialContent">Content:</label>
-                                        <textarea class="form-control" id="materialContent" style="width: 100%; height: 300px;"></textarea>
+                                        <label for="materialContent">Content *</label>
+                                        <textarea class="form-control" id="materialContent" style="width: 100%; height: 300px;" required></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label for="materialFile">File:</label>
@@ -570,7 +569,7 @@
 
                     // Kiểm tra và hiển thị dropdown dựa trên vai trò người dùng
                     const dropdown = document.getElementById('dropdownMenu');
-                    if (userRole === 'teacher' && data.teacherId === data.teacher.id) {
+                    if (userRole === 'TEACHER' && data.teacherId === data.teacher.id) {
                         dropdown.style.display = 'block';
                     } else {
                         dropdown.style.display = 'none';
@@ -598,16 +597,35 @@
                 console.log(materialId);  // Kiểm tra giá trị materialId
 
                 if (materialId) {
-                    fetch(`http://localhost:8080/materials/details/${materialId}`)
+                    let url = `http://localhost:8080/materials/details/${materialId}`;
+
+                    // Thêm thông tin accountId vào URL tùy thuộc vào vai trò của người dùng
+                    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+                    const userRole = userDetails.roleName;
+                    let currentTeacherId = null;
+                    let currentStudentId = null;
+
+                    if (userRole === 'TEACHER') {
+                        currentTeacherId = userDetails.id; // Gán currentTeacherId nếu là giáo viên
+                        url += `?accountId=${currentTeacherId}`;
+                    } else if (userRole === 'STUDENT') {
+                        currentStudentId = userDetails.id; // Gán currentStudentId nếu là học sinh
+                        url += `?accountId=${currentStudentId}`;
+                    }
+
+                    // Fetch tài liệu từ API
+                    fetch(url)
                         .then(response => response.json())
                         .then(data => {
                             console.log(data);  // Kiểm tra dữ liệu trả về từ API
+
+                            // Cập nhật thông tin vào các input trong modal
                             document.getElementById('materialTitle').value = data.title;
                             document.getElementById('materialContent').value = data.content;
                             const filesContainer = document.getElementById('materialFile');
                             filesContainer.innerHTML = "";  // Clear any existing content
 
-// Kiểm tra xem img có tồn tại trong dữ liệu không
+                            // Kiểm tra xem img có tồn tại trong dữ liệu không
                             if (data.img) {
                                 // Lấy tên tệp từ URL
                                 const fileName = data.img.split('/').pop();  // Tách tên tệp từ URL
@@ -621,7 +639,7 @@
                                 // Thêm thẻ <a> vào container
                                 filesContainer.appendChild(link);
                             } else {
-                                filesContainer.innerHTML = "";
+                                filesContainer.innerHTML = "";  // Nếu không có hình ảnh
                             }
                         })
                         .catch(error => {
@@ -636,7 +654,16 @@
                 const title = document.getElementById('materialTitle').value;
                 const content = document.getElementById('materialContent').value;
                 const fileInput = document.getElementById('materialFileInput');  // Lấy input file
-                const file = fileInput.files[0];  // Lấy file nếu có thay đổi
+
+                // Lấy file từ input (nếu có thay đổi)
+                const file = fileInput.files.length > 0 ? fileInput.files[0] : null;  // Kiểm tra xem có file được chọn không
+
+                // Kiểm tra file mới
+                if (file) {
+                    console.log("File mới được chọn:", file.name);
+                } else {
+                    console.log("Không có file mới được chọn.");
+                }
 
                 const urlParams = new URLSearchParams(window.location.search);
                 const materialId = urlParams.get('id'); // materialId từ URL
@@ -646,8 +673,10 @@
                     const formData = new FormData();
                     formData.append('title', title);
                     formData.append('content', content);
+
+                    // Nếu có file mới thì gửi file mới, nếu không có file mới thì không gửi file
                     if (file) {
-                        formData.append('file', file); // Nếu có file thì gửi file lên
+                        formData.append('file', file); // Gửi file mới nếu có
                     }
 
                     // Gửi dữ liệu cập nhật đến API
@@ -664,11 +693,12 @@
                                 // Tải lại trang để cập nhật thông tin mới
                                 window.location.reload(); // Tải lại trang để cập nhật thông tin mới
                             } else {
-                                alert('Có lỗi xảy ra. Vui lòng thử lại!');
+                                alert('Có lỗi xảy ra: ' + data);
                             }
                         })
                         .catch(error => {
                             console.error('Lỗi khi gửi yêu cầu cập nhật:', error);
+                            alert('Có lỗi xảy ra. Vui lòng thử lại!');
                         });
                 } else {
                     alert('Vui lòng điền đầy đủ thông tin!');
@@ -680,6 +710,7 @@
             document.querySelector('.btn-danger').addEventListener('click', function () {
                 const urlParams = new URLSearchParams(window.location.search);
                 const materialId = urlParams.get('id'); // Lấy materialId từ URL
+                console.log("Material ID:", materialId);
 
                 // Kiểm tra nếu có materialId
                 if (materialId) {

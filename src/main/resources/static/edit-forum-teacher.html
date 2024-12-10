@@ -2,10 +2,11 @@
 <html class="no-js" lang="">
 
 
+<!-- Mirrored from admit-form.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:43 GMT -->
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>JIP | Create Exam</title>
+  <title>Create A Thread</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Favicon -->
@@ -79,10 +80,10 @@
              aria-expanded="false">
             <div class="admin-title">
               <h5 class="item-title userFullName"></h5>
-              <span class="userRole"></span>
+              <span class="userRoleName"></span>
             </div>
-            <div class="admin-img">
-              <img src="img/figure/admin.jpg" alt="Admin">
+            <div class="admin-img img">
+              <img src="" alt="Admin" style="width: 50px; height: 50px">
             </div>
           </a>
           <div class="dropdown-menu dropdown-menu-right">
@@ -91,9 +92,10 @@
             </div>
             <div class="item-content">
               <ul class="settings-list">
-                <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
+                <li><a href="/users-profile-teacher.html"><i class="flaticon-user"></i>My Profile</a></li>
                 <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
-                <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a></li>
+                <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
+                </li>
                 <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
                 <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
               </ul>
@@ -246,7 +248,7 @@
         <ul class="nav nav-sidebar-menu sidebar-toggle-view">
           <li class="nav-item sidebar-nav-item">
             <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-            <ul class="nav sub-group-menu sub-group-active">
+            <ul class="nav sub-group-menu ">
               <li class="nav-item">
                 <a href="teacher.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Teachers</a>
               </li>
@@ -256,30 +258,17 @@
             <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
             <ul class="nav sub-group-menu">
               <li class="nav-item">
-                <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
+                <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
                   Assignment</a>
               </li>
               <li class="nav-item">
-                <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
                   Assignment</a>
               </li>
             </ul>
           </li>
           <li class="nav-item sidebar-nav-item">
-            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-            <ul class="nav sub-group-menu">
-              <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create
-                  Thread</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item sidebar-nav-item">
-            <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
-                    class="flaticon-shopping-list"></i><span>Schedule</span></a>
+            <a class="nav-link" href="schedule-list-teacher.html"><i class="flaticon-shopping-list"></i><span>Schedule</span></a>
           </li>
           <li class="nav-item sidebar-nav-item">
             <a href="#" class="nav-link"><i
@@ -298,14 +287,16 @@
           <li class="nav-item sidebar-nav-item">
             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
             <ul class="nav sub-group-menu">
-
               <li class="nav-item">
-                <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
-                  Exam</a>
+                <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
+                  Schedule</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
-                  Exam</a>
+                <a href="Update-student-mark-report.html" class="nav-link"><i
+                        class="fas fa-angle-right"></i>Exam Grades</a>
+              </li>
+              <li class="nav-item">
+                <a href="create-exam.html" class="nav-link"><i class="fas fa-angle-right"></i>Create Exam</a>
               </li>
             </ul>
           </li>
@@ -313,41 +304,38 @@
             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
             <ul class="nav sub-group-menu">
               <li class="nav-item">
-                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
-                  Material</a>
+                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create Material</a>
               </li>
               <li class="nav-item" id="teacher-view">
-                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                  Materials</a>
+                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List Materials</a>
               </li>
-
+              <li class="nav-item" id="student-view">
+                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List Materials</a>
+              </li>
+              <li class="nav-item" id="student-view1">
+                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My List Materials</a>
+              </li>
             </ul>
           </li>
           <li class="nav-item sidebar-nav-item">
             <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
             <ul class="nav sub-group-menu">
               <li class="nav-item">
-                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
-                  application</a>
+                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send application</a>
               </li>
-
               <li class="nav-item">
-                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
-                  application</a>
+                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My application</a>
               </li>
             </ul>
           </li>
-
           <li class="nav-item sidebar-nav-item">
             <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-            <ul class="nav sub-group-menu">
+            <ul class="nav sub-group-menu ">
               <li class="nav-item">
-                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
-                  threads</a>
+                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list threads</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
-                  Thread</a>
+                <a class="nav-link " href="create-forum.html"><i class="fas fa-angle-right"></i>Create Thread</a>
               </li>
             </ul>
           </li>
@@ -358,56 +346,102 @@
     <div class="dashboard-content-one">
       <!-- Breadcubs Area Start Here -->
       <div class="breadcrumbs-area">
-        <h3>Exam</h3>
+        <h3>Edit Forum</h3>
         <ul>
           <li>
-            <a href="teacher.html">Home</a>
+            <a href="admin.html">Home</a>
           </li>
-          <li>Add New Exam</li>
+          <li>Edit Forum</li>
         </ul>
       </div>
       <!-- Breadcubs Area End Here -->
-      <!-- Add New Assignment Area Start Here -->
+      <!-- Admit Form Area Start Here -->
       <div class="card height-auto">
         <div class="card-body">
           <div class="heading-layout1">
             <div class="item-title">
-              <h2>Add New Exam</h2>
+              <h3>Edit Forum</h3>
             </div>
-
           </div>
-          <form class="new-added-form" action="/exam/create" method="post"  onsubmit="createExam(event)">
+          <form id="editThreadForm" method="POST" enctype="multipart/form-data" class="new-added-form">
             <div class="row">
-              <input type="hidden" name="teacher_id" id="userId" value="">
-              <div class="col-xl-4 col-lg-6 col-12 form-group">
-                <label for="exam_name">Exam name *</label>
-                <input type="text" placeholder="Write description..." class="form-control" name="exam_name" id="exam_name" required>
-              </div>
-              <div class="col-xl-4 col-lg-6 col-12 form-group">
-                <label for="exam_date">Create Date *</label>
-                <input type="date" class="form-control" name="exam_date" id="exam_date" required>
-              </div>
-              <div class="col-xl-8 col-lg-12 col-12 form-group">
-                <label for="content">Content </label>
-                <textarea id="content" placeholder="Write content..."  class="form-control" name="content" rows="4" required></textarea>
+              <!-- Hidden input for thread ID -->
+              <input type="hidden" name="creatorId" id="userId" value="">
+              <input type="hidden" id="editThreadId" name="threadId" value="" required> <!-- Updated ID -->
+
+              <div class="col-7 form-group">
+                <label>Topic Name</label>
+                <input type="text" name="topicName" id="editTopicName" placeholder="Enter title" class="form-control" required>
               </div>
 
-              <div class="col-12 form-group mg-t-8">
-                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Add</button>
+              <div class="col-7 form-group">
+                <label>Description</label>
+                <textarea class="textarea form-control" name="description" id="editDescription" cols="10" rows="9"></textarea>
+              </div>
+
+              <div class="col-12 form-group">
+                <label class="text-dark-medium">Current Image:</label>
+                <div class="thread-thumbnail">
+                  <!-- Placeholder for the current image if it exists -->
+                  <div id="currentImageContainer">
+                    <!-- This will be dynamically populated by JS -->
+                  </div>
+                </div>
+                <label class="text-dark-medium mt-2">Update Image:</label>
+                <input type="file" name="imageFile" id="editImageFile" class="form-control-file" accept="image/*" onchange="validateImageFile()" required>
+                <div id="fileWarning" style="display: none;">Please choose an image!</div>
+                <div id="imageTypeWarning" style="display: none;">Please select an image file.</div>
+              </div>
+
+              <div class="col-lg-6 col-12 form-group">
+                <button type="button" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" onclick="submitEditForm()">Save</button>
                 <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
               </div>
             </div>
           </form>
         </div>
       </div>
-      <!-- Add New Book Area End Here -->
-      <footer class="footer-wrap-layout1">
 
-      </footer>
+      <!-- Modal -->
+      <!-- Confirmation Modal -->
+      <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Confirm Edit</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Do you want to save these changes?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-primary" onclick="submitEditForm()">Confirm</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <!-- Page Area End Here -->
 </div>
+
+<!-- Footer Start Here -->
+<footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+  <div style="background-color: #ec9006; padding: 15px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+            rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- Footer End Here -->
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -420,183 +454,172 @@
 <script src="js/select2.min.js"></script>
 <!-- Date Picker Js -->
 <script src="js/datepicker.min.js"></script>
-<!-- Smoothscroll Js -->
-<script src="js/jquery.smoothscroll.min.html"></script>
 <!-- Scroll Up Js -->
 <script src="js/jquery.scrollUp.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
 
+</body>
 <script>
-  async function createExam(event) {
-    event.preventDefault();
+  document.addEventListener("DOMContentLoaded", function () {
+    // Correct query parameter for 'threadId'
+    const urlParams = new URLSearchParams(window.location.search);
+    const threadId = urlParams.get("threadId");  // Access 'threadId' from the URL
 
-    const form = event.target.closest('form');
-    const formData = new FormData(form);
+    if (threadId) {
+      // Fetch and populate data
+      fetch(`/thread/${threadId}`)
+              .then(response => response.json())
+              .then(data => {
+                // Populate form with existing data
+                document.getElementById("editThreadId").value = threadId;  // Set threadId
+                document.getElementById("editTopicName").value = data.topicName;  // Set topic name
+                document.getElementById("editDescription").value = data.description;  // Set description
+                document.getElementById("userId").value = data.creatorId;  // Set creatorId
 
-    // Get the user details from session storage
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    if (!userDetails || !userDetails.id) {
-      alert("User details not found. Please log in again.");
-      return;
+                // Handle current image
+                const currentImageContainer = document.getElementById("currentImageContainer");
+                if (data.image) {
+                  const imgElement = document.createElement("img");
+                  imgElement.src = `data:image/png;base64,${data.image}`;
+                  imgElement.alt = "Current Image";
+                  imgElement.style.maxWidth = "200px";  // Style for the image
+
+                  currentImageContainer.innerHTML = '';  // Clear previous content
+                  currentImageContainer.appendChild(imgElement);
+                } else {
+                  currentImageContainer.innerHTML = `<p>No image uploaded</p>`;
+                }
+              })
+              .catch(error => {
+                console.error("Error fetching thread data:", error);
+                alert("Error loading thread data.");
+              });
+    } else {
+      console.error("No threadId found in URL");
     }
+  });
 
-    // Set the teacher ID dynamically
-    formData.set("teacher_id", userDetails.id);
+  function validateImageFile() {
+    var fileInput = document.getElementById('editImageFile');
+    var file = fileInput.files[0];
 
-    try {
-      const response = await fetch('/exam/create', {
-        method: 'POST',
-        body: formData,
-      });
+    var fileWarningMessage = document.getElementById('fileWarning');
+    var imageTypeWarningMessage = document.getElementById('imageTypeWarning');
 
-      if (response.ok) {
-        alert('Exam added successfully!');
-        window.location.href = '/list-exam.html';
-      } else {
-        const contentType = response.headers.get('Content-Type');
-        let errorMessage;
+    // Hide both warnings initially
+    fileWarningMessage.style.display = 'none';
+    imageTypeWarningMessage.style.display = 'none';
 
-        if (contentType && contentType.includes('application/json')) {
-          const errorData = await response.json();
-          errorMessage = errorData.message || 'An error occurred. Please try again.';
-        } else {
-          errorMessage = await response.text(); // Handle plain text error response
-        }
-
-        alert(`Failed to create exam: ${errorMessage}`);
+    // Check if a file is selected
+    if (!file) {
+      // Display the warning if no file is selected
+      fileWarningMessage.style.display = 'block';
+    } else {
+      // Check if the file type is an image
+      if (!file.type.startsWith('image/')) {
+        // Display the warning if the file is not an image
+        imageTypeWarningMessage.style.display = 'block';
+        fileInput.value = ''; // Clear the input field
       }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred. Please try again.');
     }
   }
 
+  // Function to submit the edited form
+  function submitEditForm() {
+    const threadId = document.getElementById("editThreadId").value;
+    const topicName = document.getElementById("editTopicName").value;
+    const description = document.getElementById("editDescription").value;
+    const imageFile = document.getElementById("editImageFile").files[0];
 
-  const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-  if (userDetails) {
-    const userFullNameElements = document.querySelectorAll('.userFullName');
-    const userRoleElements = document.querySelectorAll('.userRole');
-
-    // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-    if (userDetails.roleName === "ADMIN") {
-      // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-      userFullNameElements.forEach(element => {
-        element.textContent = userDetails.username;
-      });
-      userRoleElements.forEach(element => {
-        element.textContent = userDetails.roleName;
-      });
-
-      // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-      document.getElementById("teacher-view").style.display = "none";
-      document.getElementById("student-view").style.display = "none";
-    } else if (userDetails.roleName === "TEACHER") {
-      // Hiển thị đầy đủ tên và vai trò cho giáo viên
-      userFullNameElements.forEach(element => {
-        element.textContent = userDetails.fullName;
-      });
-      userRoleElements.forEach(element => {
-        element.textContent = userDetails.roleName;
-      });
-
-      // Chỉ hiển thị mục của giáo viên
-      document.getElementById("teacher-view").style.display = "block";
-      document.getElementById("student-view").style.display = "none";
-      document.getElementById("student-view1").style.display = "none";
-    } else if (userDetails.roleName === "STUDENT") {
-      // Hiển thị đầy đủ tên và vai trò cho học sinh
-      userFullNameElements.forEach(element => {
-        element.textContent = userDetails.fullName;
-      });
-      userRoleElements.forEach(element => {
-        element.textContent = userDetails.roleName;
-      });
-
-      // Chỉ hiển thị mục của học sinh
-      document.getElementById("teacher-view").style.display = "none";
-      document.getElementById("student-view").style.display = "block";
-      document.getElementById("student-view1").style.display = "block";
-    } else {
-      console.warn("Role not recognized: ", userDetails.roleName);
+    const formData = new FormData();
+    formData.append("topicName", topicName);
+    formData.append("description", description);
+    if (imageFile) {
+      formData.append("imageFile", imageFile);
     }
-  } else {
-    console.error("User details not found in sessionStorage");
-  }
-  (async function fetchUserData() {
-    try {
-      const response = await fetch('/user-detail');
-      if (response.ok) {
-        const userData = await response.json();
-        sessionStorage.setItem('userDetails', JSON.stringify(userData));
-        console.log("User data stored in sessionStorage:", userData);
 
-        getUserDetails(userData);
-        setRedirectLink(userData.id); // Set the redirect link after fetching data
-      } else {
-        console.error("Failed to fetch user details:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error fetching user details:", error);
-    }
-  })();
-
-  function getUserDetails(userDetails) {
-    if (userDetails) {
-      // Display user details
-      document.querySelectorAll('.userFullName').forEach(element => {
-        element.textContent = userDetails.fullName;
-      });
-      document.querySelectorAll('.userRole').forEach(element => {
-        element.textContent = userDetails.roleName;
-      });
-      document.getElementById('userId').value = userDetails.id;
-    } else {
-      console.error("User details not found in sessionStorage");
-    }
-  }
-
-  function submitForm() {
-    // Retrieve userDetails from sessionStorage
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-
-    if (userDetails && userDetails.teacherId) {
-      // Redirect to the appropriate URL with the teacherId
-      window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
-    } else {
-      console.error("Teacher ID is missing or user details not found in sessionStorage");
-    }
-  }
-
-  function toListAssigment() {
-    // Retrieve userDetails from sessionStorage
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-
-    if (userDetails && userDetails.teacherId) {
-      // Redirect to the appropriate URL with the teacherId
-      window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
-    } else {
-      console.error("Teacher ID is missing or user details not found in sessionStorage");
-    }
-  }
-
-  function redirectSchedule() {
-    // Retrieve userDetails from sessionStorage
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-
-    if (userDetails && userDetails.teacherId) {
-      // Redirect to the appropriate URL with the teacherId
-      window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
-    } else {
-      console.error("Teacher ID is missing or user details not found in sessionStorage");
-    }
+    fetch(`/thread/edit/${threadId}`, {
+      method: "PUT",
+      body: formData,
+    })
+            .then(response => {
+              if (response.ok) {
+                alert("Thread updated successfully!");
+                window.location.href = "forum.html"; // Redirect back to the forum page
+              } else {
+                response.text().then(text => alert(`Error: ${text}`));
+              }
+            })
+            .catch(error => console.error("Error updating thread:", error));
   }
 
 </script>
 
 
-</body>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    if (userDetails) {
+      console.log("User details:", userDetails);
 
-<!-- Mirrored from create-assignment.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
+      const userFullNameElements = document.querySelectorAll('.userFullName');
+      const userRoleElements = document.querySelectorAll('.userRole');
+
+      // Kiểm tra và gán giá trị cho các phần tử
+      if (userFullNameElements.length && userRoleElements.length) {
+        if (userDetails.roleName === "ADMIN") {
+          // Hiển thị thông tin cho ADMIN
+          userFullNameElements.forEach(element => {
+            element.textContent = userDetails.username || "Unknown Admin";
+          });
+          userRoleElements.forEach(element => {
+            element.textContent = userDetails.roleName || "Unknown Role";
+          });
+
+          // Ẩn các mục không cần thiết
+          document.getElementById("teacher-view").style.display = "none";
+          document.getElementById("student-view").style.display = "none";
+        } else if (userDetails.roleName === "TEACHER") {
+          // Hiển thị thông tin cho TEACHER
+          userFullNameElements.forEach(element => {
+            element.textContent = userDetails.fullName || "Unknown Teacher";
+          });
+          userRoleElements.forEach(element => {
+            element.textContent = userDetails.roleName || "Unknown Role";
+          });
+
+          // Chỉ hiển thị mục của giáo viên
+          document.getElementById("teacher-view").style.display = "block";
+          document.getElementById("student-view").style.display = "none";
+          document.getElementById("student-view1").style.display = "none";
+          document.getElementById("teacher-view1").style.display = "block";
+        } else if (userDetails.roleName === "STUDENT") {
+          // Hiển thị thông tin cho STUDENT
+          userFullNameElements.forEach(element => {
+            element.textContent = userDetails.fullName || "Unknown Student";
+          });
+          userRoleElements.forEach(element => {
+            element.textContent = userDetails.roleName || "Unknown Role";
+          });
+
+          // Chỉ hiển thị mục của học sinh
+          document.getElementById("teacher-view").style.display = "none";
+          document.getElementById("student-view").style.display = "block";
+          document.getElementById("student-view1").style.display = "block";
+          document.getElementById("teacher-view1").style.display = "none";
+
+        } else {
+          console.warn("Unrecognized role:", userDetails.roleName);
+        }
+      } else {
+        console.error("Required DOM elements are missing.");
+      }
+    } else {
+      console.error("User details not found in sessionStorage.");
+    }
+  });
+</script>
+<!-- Mirrored from admit-form.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:46 GMT -->
 </html>
