@@ -135,17 +135,25 @@ public class AssignmentServices extends AssignmentCreationRequest {
 
         // Assign the assignment to classes and students
         if (request.getClassIds() != null && !request.getClassIds().isEmpty()) {
-            List<Class> classes = classRepository.findByTeacher_Id(request.getTeacher().getId());
-            for (Class clas : classes) {
-                // Link assignment to class
-                assignmentClassRepository.save(new AssignmentClass(savedAssignment, clas));
+            for (Integer classId : request.getClassIds()) {
+                Optional<Class> clasOpt = classRepository.findById(classId);
+                if (clasOpt.isPresent()) {
+                    Class clas = clasOpt.get();
 
-                // Link assignment to all students in the class
-                for (Listt listEntry : clas.getClassLists()) {
-                    Student student = listEntry.getStudent();
-                    assignmentStudentRepository.save(new AssignmentStudent(savedAssignment, student));
+                    // Link assignment to class
+                    assignmentClassRepository.save(new AssignmentClass(savedAssignment, clas));
+
+                    // Link assignment to all students in the class
+                    for (Listt listEntry : clas.getClassLists()) {
+                        Student student = listEntry.getStudent();
+                        assignmentStudentRepository.save(new AssignmentStudent(savedAssignment, student));
+                    }
+                } else {
+                    log.warn("Class with ID {} not found", classId);
                 }
             }
+        } else {
+            log.warn("No class IDs provided.");
         }
 
         // Save the assignment

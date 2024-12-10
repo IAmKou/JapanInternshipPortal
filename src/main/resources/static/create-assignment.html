@@ -398,10 +398,7 @@
                     </form>
                 </div>
             </div>
-            <!-- Add New Book Area End Here -->
-            <footer class="footer-wrap-layout1">
 
-            </footer>
         </div>
     </div>
     <!-- Page Area End Here -->
@@ -436,6 +433,34 @@
 
         const form = event.target.closest('form');
         const formData = new FormData(form);
+
+        // Get field values
+        const description = document.getElementById('description').value.trim();
+        const content = document.getElementById('content').value.trim();
+        const endDate = document.getElementById('end_date').value;
+        const createdDate = document.getElementById('created_date').value;
+
+        // Check if required fields are empty
+        if (!description) {
+            alert('Description is required.');
+            return;
+        }
+
+        if (!content) {
+            alert('Content is required.');
+            return;
+        }
+
+        if (!endDate) {
+            alert('End date is required.');
+            return;
+        }
+
+        // Check if the created date is after the end date
+        if (new Date(createdDate) > new Date(endDate)) {
+            alert('Create date cannot be after the end date.');
+            return;
+        }
 
         // Get selected class IDs from the <select> element
         const classSelect = document.getElementById('class_id');
