@@ -42,7 +42,7 @@
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
-                <a href="admin.html">
+                <a href="student.html">
                     <div style="width: 180px; height: 70px; overflow: hidden;">
                         <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
@@ -83,8 +83,8 @@
                             <h5 class="item-title userFullName"></h5>
                             <span class="userRole"></span>
                         </div>
-                        <div class="admin-img">
-                            <img src="img/figure/admin.jpg" alt="Admin">
+                        <div class="admin-img img">
+                            <img src="" alt="Admin" style="width: 50px; height: 50px">
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -242,18 +242,13 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="student.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                        <ul class="nav sub-group-menu sub-group-active">
-                            <li class="nav-item">
-                                <a href="student.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Students</a>
-                            </li>
-                        </ul>
+                        <a href="student.html" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
@@ -886,90 +881,58 @@
 <script src="js/main.js"></script>
 <!-- fetch profile -->
 <script>
-    (async function fetchUserData() {
-        try {
-            const response = await fetch('/user-detail');
-            if (response.ok) {
-                const userData = await response.json();
-                sessionStorage.setItem('userDetails', JSON.stringify(userData));
-                console.log("User data stored in sessionStorage:", userData);
-
-                getUserDetails(userData);
-            } else {
-                console.error("Failed to fetch user details:", response.statusText);
-            }
-        } catch (error) {
-            console.error("Error fetching user details:", error);
-        }
-    })();
-
-
-    function getUserDetails(userDetails) {
-        if (userDetails) {
-            // Hiển thị thông tin cá nhân
-            document.querySelectorAll('.userFullName').forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            document.querySelectorAll('.userRole').forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-            document.getElementById('userJapanname').textContent = userDetails.jname;
-            document.getElementById('userGender').textContent = userDetails.gender;
-            document.getElementById('userEmail').textContent = userDetails.email;
-            document.getElementById('userDob').textContent = userDetails.dob;
-            document.getElementById('userPhone').textContent = userDetails.phoneNumber;
-            document.getElementById('userId').value = userDetails.id;
-
-            // Kiểm tra vai trò người dùng và hiển thị các mục điều hướng tương ứng
-            if (userDetails.roleName === "ADMIN") {
-                // Ẩn các mục của giáo viên và học sinh cho ADMIN
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "none";
-                document.getElementById("student-view1").style.display = "none";
-            } else if (userDetails.roleName === "TEACHER") {
-                // Chỉ hiển thị mục điều hướng của giáo viên
-                document.getElementById("teacher-view").style.display = "block";
-                document.getElementById("student-view").style.display = "none";
-                document.getElementById("student-view1").style.display = "none";
-            } else if (userDetails.roleName === "STUDENT") {
-                // Chỉ hiển thị mục điều hướng của học sinh
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "block";
-                document.getElementById("student-view1").style.display = "block";
-            } else {
-                console.warn("Role not recognized:", userDetails.roleName);
-            }
-        } else {
-            console.error("User details not found in sessionStorage");
-        }
-    }
-
-    // Lấy dữ liệu userDetails từ sessionStorage và gọi hàm getUserDetails
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    getUserDetails(userDetails);
 
-    function submitForm() {
-        // Retrieve userDetails from sessionStorage
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    if (userDetails) {
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        const userRoleElements = document.querySelectorAll('.userRole');
+        const userId = userDetails.id;
+        document.getElementById("userId").value = userId;
 
-        if (userDetails && userDetails.studentId) {
-            // Redirect to the appropriate URL with the teacherId
-            window.location.href = `schedule-list-student.html?studentId=${userDetails.studentId}`;
-        } else {
-            console.error("Teacher ID is missing or user details not found in sessionStorage");
-        }
+
+        // Populate Name
+        userFullNameElements.forEach(element => {
+            element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
+        });
+
+        // Populate Role
+        userRoleElements.forEach(element => {
+            element.textContent = userDetails.roleName;
+        });
+        const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+
+        imgContainers.forEach(container => {
+            const imgElement = container.querySelector('img'); // Select the <img> inside the div
+            if (imgElement) {
+                imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
+            }
+        });
     }
 
-    function toMarkReport() {
-        // Retrieve userDetails from sessionStorage
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        getUserDetails(userDetails);
 
-        if (userDetails && userDetails.studentId) {
-            // Redirect to the appropriate URL with the teacherId
-            window.location.href = `personal-mark-report.html?studentId=${userDetails.studentId}`;
-        } else {
-            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        function submitForm() {
+            // Retrieve userDetails from sessionStorage
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+            if (userDetails && userDetails.studentId) {
+                // Redirect to the appropriate URL with the teacherId
+                window.location.href = `schedule-list-student.html?studentId=${userDetails.studentId}`;
+            } else {
+                console.error("Teacher ID is missing or user details not found in sessionStorage");
+            }
         }
+
+        function toMarkReport() {
+            // Retrieve userDetails from sessionStorage
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+            if (userDetails && userDetails.studentId) {
+                // Redirect to the appropriate URL with the teacherId
+                window.location.href = `personal-mark-report.html?studentId=${userDetails.studentId}`;
+            } else {
+                console.error("Teacher ID is missing or user details not found in sessionStorage");
+            }
     }
 
 
