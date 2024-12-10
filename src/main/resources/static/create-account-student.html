@@ -155,7 +155,7 @@
 
     // Function to validate phone number
     function isValidPhoneNumber(phone) {
-        const phoneRegex = /^0\d{4,12}$/; // Must start with '0' and have 5-13 digits
+        const phoneRegex = /^0\d{10}$/; // Must start with '0' and have 5-13 digits
         return phoneRegex.test(phone) && /^\d+$/.test(phone); // Ensure only numeric characters
     }
 
@@ -230,7 +230,7 @@
 
         // Validate phone number
         if (!isValidPhoneNumber(phone)) {
-            alert('Please enter a valid phone number starting with 0, containing 5 to 13 digits.');
+            alert('Please enter a valid phone number starting with 0, containing 10 digits.');
             return;
         }
 
@@ -246,7 +246,7 @@
             return;
         }
         if (!isValidDateOfBirth(dob)) {
-            alert('You must be at least 18 years old to register.');
+            alert('Please enter a date that age >=18');
             return;
         }
 
