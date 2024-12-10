@@ -365,7 +365,7 @@
           <form id="editThreadForm" method="POST" enctype="multipart/form-data" class="new-added-form">
             <div class="row">
               <!-- Hidden input for thread ID -->
-              <input type="hidden" name="creatorId" id="userId" value="">
+              <input type="hidden" name="creatorId" id="userId" value="" required>
               <input type="hidden" id="editThreadId" name="threadId" value="" required> <!-- Updated ID -->
 
               <div class="col-7 form-group">
@@ -375,7 +375,7 @@
 
               <div class="col-7 form-group">
                 <label>Description</label>
-                <textarea class="textarea form-control" name="description" id="editDescription" cols="10" rows="9"></textarea>
+                <textarea class="textarea form-control" name="description" id="editDescription" cols="10" rows="9" required></textarea>
               </div>
 
               <div class="col-12 form-group">
@@ -499,6 +499,7 @@
     }
   });
 
+  // Function to validate the image file input
   function validateImageFile() {
     var fileInput = document.getElementById('editImageFile');
     var file = fileInput.files[0];
@@ -519,13 +520,39 @@
       if (!file.type.startsWith('image/')) {
         // Display the warning if the file is not an image
         imageTypeWarningMessage.style.display = 'block';
-        fileInput.value = ''; // Clear the input field
+        // Do not reset the input field, just prevent the invalid file from being used
       }
     }
   }
 
+  // Function to validate the entire form before submission
+  function validateForm() {
+    const topicName = document.getElementById("editTopicName").value;
+    const description = document.getElementById("editDescription").value;
+    const imageFile = document.getElementById("editImageFile").files[0];
+
+    // Check if the topic name and description are not empty
+    if (!topicName || !description) {
+      alert("Topic name and description are required!");
+      return false;  // Prevent form submission
+    }
+
+    // If an image is provided, ensure it's valid
+    if (imageFile && !imageFile.type.startsWith('image/')) {
+      alert("Please select a valid image file.");
+      return false;  // Prevent form submission
+    }
+
+    return true;  // Allow form submission if all checks pass
+  }
+
   // Function to submit the edited form
   function submitEditForm() {
+    // Validate the form before submitting
+    if (!validateForm()) {
+      return;  // Prevent form submission if validation fails
+    }
+
     const threadId = document.getElementById("editThreadId").value;
     const topicName = document.getElementById("editTopicName").value;
     const description = document.getElementById("editDescription").value;
