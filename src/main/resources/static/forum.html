@@ -167,7 +167,7 @@
                        aria-expanded="false">
                         <div class="admin-title">
                             <h5 class="item-title userFullName"></h5>
-                            <span class="userRoleName" ></span>
+                            <span class="userRole" ></span>
                         </div>
                         <div class="admin-img img">
                             <img src="" alt="Admin" style="width: 50px; height: 50px">
@@ -712,9 +712,33 @@
         // Initial fetch of all threads and render them sorted
         fetchAllThreads();
     });
+
+
+
 </script>
 
+<script>
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
+    if (userDetails) {
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        const userRoleElements = document.querySelectorAll('.userRole');
+        const userId = userDetails.id;
+        document.getElementById("userId").value = userId;
+
+
+        // Populate Name
+        userFullNameElements.forEach(element => {
+            element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
+        });
+
+        // Populate Role
+        userRoleElements.forEach(element => {
+            element.textContent = userDetails.roleName;
+        });
+    }
+
+</script>
 
 
 </body>
