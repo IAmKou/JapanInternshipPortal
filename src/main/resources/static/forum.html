@@ -167,7 +167,7 @@
                        aria-expanded="false">
                         <div class="admin-title">
                             <h5 class="item-title userFullName"></h5>
-                            <span class="userRoleName" ></span>
+                            <span class="userRole" ></span>
                         </div>
                         <div class="admin-img img">
                             <img src="" alt="Admin" style="width: 50px; height: 50px">
@@ -331,18 +331,15 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="student.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
-                    <li class="nav-item ">
-                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="teacher.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Teachers</a>
-                            </li>
-                        </ul>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="student.html" class="nav-link" id="dashboardLink">
+                            <i class="flaticon-dashboard"></i><span>Dashboard</span>
+                        </a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
@@ -518,10 +515,36 @@
         // Initialize variables
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
-        if (!userDetails) {
-            console.error("User details not found in sessionStorage");
-            return; // Stop script execution if no user details found
+        if (userDetails) {
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            const userRoleElements = document.querySelectorAll('.userRole');
+
+            // Populate Name
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
+            });
+
+            // Populate Role
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+
+            const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img'); // Select the <img> inside the div
+                if (imgElement) {
+                    imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
+                }
+            });
+
+            // Update Dashboard link based on role
+            const dashboardLink = document.getElementById('dashboardLink');
+            if (userDetails.roleName === 'TEACHER') {
+                dashboardLink.href = 'teacher.html';  // Change the link to 'teacher.html' for teachers
+            }
         }
+
 
         const currentUserId = userDetails.id;
         const prevPageButton = document.getElementById("prevPage");
@@ -713,9 +736,6 @@
         fetchAllThreads();
     });
 </script>
-
-
-
 
 </body>
 </html>
