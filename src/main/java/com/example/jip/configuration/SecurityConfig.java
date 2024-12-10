@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/manager.html").hasAuthority("MANAGER")
                         .requestMatchers("/css/**", "/js/**", "/images/**","/img/**",
                                 "/webfonts/**","/fonts/**","/hts-cache/**","/style.css","/forgot-password.html",
-                                "/verify-code.html","/change-password.html","/users/check","/users/verify","/users/reset-password")
+                                "/verify-code.html","/reset-password.html","/users/check","/users/verify","/users/reset-password")
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin

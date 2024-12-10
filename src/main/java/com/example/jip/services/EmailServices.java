@@ -18,6 +18,10 @@ public class EmailServices {
     private String senderPassword = "svvuwvdjrbiucehn";
 
     public String sendVerificationCode(String recipientEmail) {
+        if (recipientEmail == null || recipientEmail.trim().isEmpty()) {
+            return "ERROR_EMPTY_EMAIL";
+        }
+
         String verifyCode = generateVerifyCode();
 
         // Set up mail properties
@@ -47,7 +51,7 @@ public class EmailServices {
             Transport.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();
-            return null;
+            return "ERROR_SENDING_EMAIL";
         }
 
         return verifyCode;
