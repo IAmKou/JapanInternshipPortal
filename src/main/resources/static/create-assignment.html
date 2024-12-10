@@ -255,13 +255,13 @@
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
-                        <ul class="nav sub-group-menu sub-group-active">
+                        <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="list-assignment.html" class="nav-link "><i class="fas fa-angle-right"></i>All
+                                <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
                                     Assignment</a>
                             </li>
                             <li class="nav-item">
-                                <a href="create-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Add New
+                                <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
                                     Assignment</a>
                             </li>
                         </ul>
@@ -377,7 +377,7 @@
                                 <textarea id="content" placeholder="Write content..."  class="form-control" name="content" rows="4" required></textarea>
                             </div>
                             <div class="col-xl-12 col-lg-24 col-12 form-group">
-                                <label for="class_id">For Class *</label>
+                                <label for="class_id">For Class</label>
 
                                 <select  name="class_id" id="class_id" multiple>
 <!--                                    <option value="">Please Select Class *</option>-->
@@ -387,8 +387,8 @@
                                 </select>
                             </div>
                             <div class="col-12 form-group mg-t-8">
-                                <label class="text-dark-medium" for="imgFile">File attach *</label>
-                                <input type="file" class="form-control-file" name="imgFile" id="imgFile" required multiple>
+                                <label class="text-dark-medium" for="imgFile">File attach </label>
+                                <input type="file" class="form-control-file" name="imgFile" id="imgFile"  multiple>
                             </div>
                             <div class="col-12 form-group mg-t-8">
                                 <button type="submit" onclick="addAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Add</button>
@@ -466,7 +466,7 @@
 
             if (response.ok) {
                 alert('Assignment added successfully!');
-                window.location.href = '/list-assignment.html';
+                toListAssigment();
             } else {
                 const errorData = await response.json();
                 alert(`Failed to create assignment: ${errorData.message || 'Please try again.'}`);
@@ -521,8 +521,6 @@
                 const userData = await response.json();
                 sessionStorage.setItem('userDetails', JSON.stringify(userData));
                 console.log("User data stored in sessionStorage:", userData);
-
-                getUserDetails(userData);
             } else {
                 console.error("Failed to fetch user details:", response.statusText);
             }
@@ -532,55 +530,46 @@
     })();
 
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    if (userDetails) {
-        document.getElementById('userId').value = userDetails.id;
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
+    document.getElementById('userId').value = userDetails.id;
 
-        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-        if (userDetails.roleName === "ADMIN") {
-            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.username;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
 
-            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "TEACHER") {
-            // Hiển thị đầy đủ tên và vai trò cho giáo viên
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
 
-            // Chỉ hiển thị mục của giáo viên
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "STUDENT") {
-            // Hiển thị đầy đủ tên và vai trò cho học sinh
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
+    function submitForm() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
-            // Chỉ hiển thị mục của học sinh
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
         } else {
-            console.warn("Role not recognized: ", userDetails.roleName);
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
         }
-    } else {
-        console.error("User details not found in sessionStorage");
     }
+
+    function toListAssigment() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+
+    function redirectSchedule() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+
 
 </script>
 

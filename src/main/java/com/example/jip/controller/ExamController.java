@@ -52,7 +52,7 @@ public class ExamController {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             log.error("Error creating exam: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Failed to create exam: " + e.getMessage());
         }
     }
@@ -91,9 +91,10 @@ public class ExamController {
         try {
             log.info("Received request: " + request);  // Log the incoming request for debugging
 
+
             examService.updateAssignment(exam_id, request);
             return ResponseEntity.noContent().build(); // Return 204 No Content on successful update
-        } catch (NoSuchElementException e) {
+        } catch (Exception e) {
             log.error("Assignment not found", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 Not Found if exam doesn't exist
         }

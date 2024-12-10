@@ -85,20 +85,26 @@ public class AssignmentServices extends AssignmentCreationRequest {
 
     @PreAuthorize("hasAuthority('TEACHER')")
     @Transactional
-    public Assignment createAssignment(AssignmentCreationRequest request, int teacherId) {
-
-        Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
-        Teacher teacher = teacherRepository.findById(teacherOpt.get().getId())
-                .orElseThrow();
-
+    public Assignment createAssignment(AssignmentCreationRequest request) {
+        Teacher teacher = teacherRepository.findById(request.getTeacher().getId())
+                .orElseThrow(() -> new RuntimeException("Teacher ID not found: " + request.getTeacher().getId()));
         if (request.getCreated_date().after(request.getEnd_date())) {
             throw new IllegalArgumentException("Created date cannot be after end date.");
+        }
+
+        if (request.getDescription().isEmpty()) {
+            throw new IllegalArgumentException("Description cannot be empty.");
+        }
+
+        if (request.getContent().isEmpty()) {
+            throw new IllegalArgumentException("Content cannot be empty.");
         }
 
         // Create Assignment entity
         Assignment assignment = new Assignment();
         assignment.setCreated_date(request.getCreated_date());
         assignment.setEnd_date(request.getEnd_date());
+
         assignment.setDescription(request.getDescription());
         assignment.setContent(request.getContent());
         assignment.setTeacher(teacher);
@@ -141,8 +147,6 @@ public class AssignmentServices extends AssignmentCreationRequest {
                 }
             }
         }
-
-
 
         // Save the assignment
         return assignmentRepository.save(assignment);
@@ -243,8 +247,8 @@ public class AssignmentServices extends AssignmentCreationRequest {
         // Delete associated cloud resources if applicable
 
         if(assignment.getImgUrl() != null) {
-            String folderPath = sanitizeFolderName(assignment.getImgUrl());
-            cloudinaryService.deleteFolder(folderPath);
+//            String folderPath = sanitizeFolderName(assignment.getImgUrl());
+            cloudinaryService.deleteFolder(assignment.getImgUrl());
         }
 
         // Finally, delete the assignment

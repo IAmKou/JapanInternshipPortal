@@ -65,7 +65,7 @@ class ExamControllerTest {
     void testCreateExam_TeacherNotFound() {
         int teacherId = 1;
         ExamCreationRequest request = new ExamCreationRequest();
-        request.setExam_name("Exam name");
+        request.setExam_name(null);
 
         when(teacherRepository.findByAccount_id(teacherId)).thenReturn(Optional.empty());
 

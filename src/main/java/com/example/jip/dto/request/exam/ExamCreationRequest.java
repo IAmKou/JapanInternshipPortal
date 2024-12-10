@@ -1,10 +1,7 @@
 package com.example.jip.dto.request.exam;
 
 import com.example.jip.dto.TeacherDTO;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,9 +12,11 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ExamCreationRequest {
+    @NonNull
     String exam_name;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date exam_date;
+    @NonNull
     String content;
     TeacherDTO teacher;
 }

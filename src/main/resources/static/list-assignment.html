@@ -878,8 +878,8 @@
 
             if (response.ok) {
                 alert('Assignment deleted successfully!');
-                fetchAndDisplayAssignments(); // Reload assignments
                 closeDeleteConfirmModal();
+                toListAssigment();
             } else if (response.status === 404) {
                 const errorData = await response.text();
                 alert(`Error: ${errorData}`);

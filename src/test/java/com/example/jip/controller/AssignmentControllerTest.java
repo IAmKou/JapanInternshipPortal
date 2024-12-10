@@ -49,11 +49,11 @@ class AssignmentControllerTest {
         AssignmentCreationRequest request = new AssignmentCreationRequest();
 
         // Mocking the request
-        request.setDescription("homework");
+        request.setDescription(null);
         request.setClassIds(null); // Class IDs are null
         request.setCreated_date(new Date());
-        request.setEnd_date(new SimpleDateFormat("yyyy-MM-dd").parse("2024-11-14")); // End date is 2024-12-14
-        request.setContent("content"); // Assignment content
+        request.setEnd_date(new SimpleDateFormat("yyyy-MM-dd").parse("2024-12-14")); // End date is 2024-12-14
+        request.setContent(""); // Assignment content
         request.setImgFile(null); // No files attached
 
 
@@ -68,7 +68,7 @@ class AssignmentControllerTest {
 
         // Assert
         assertEquals(HttpStatus.CREATED, response.getStatusCode()); // Expecting 201 CREATED
-        verify(assignmentServices, times(1)).createAssignment(request, teacherId); // Verify the service method is called once
+        verify(assignmentServices, times(1)).createAssignment(request); // Verify the service method is called once
     }
 
     @Test
@@ -84,7 +84,7 @@ class AssignmentControllerTest {
                 () -> assignmentController.createAssignment(request, teacherId));
 
         assertEquals("Failed to create assignment", exception.getMessage());
-        verify(assignmentServices, never()).createAssignment(any(), teacherId);
+        verify(assignmentServices, never()).createAssignment(any());
     }
 
     @Test
@@ -106,14 +106,14 @@ class AssignmentControllerTest {
         Optional<Teacher> teacherOpt = Optional.of(teacher);
         when(teacherRepository.findByAccount_id(teacherId)).thenReturn(teacherOpt);
 
-        doThrow(new RuntimeException("Service error")).when(assignmentServices).createAssignment(request, teacherId);
+        doThrow(new RuntimeException("Service error")).when(assignmentServices).createAssignment(request);
 
         // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class,
                 () -> assignmentController.createAssignment(request, teacherId));
 
         assertEquals("Failed to create assignment", exception.getMessage());
-        verify(assignmentServices, times(1)).createAssignment(request, teacherId);
+        verify(assignmentServices, times(1)).createAssignment(request);
     }
 
     @Test

@@ -75,14 +75,20 @@ public class AssignmentController {
     public ResponseEntity<?> createAssignment(@ModelAttribute AssignmentCreationRequest request,
                                               @RequestParam("teacher_id") int teacherId) {
         try {
-            assignmentServices.createAssignment(request, teacherId);
-
+            log.info("Received request: " + request);
             log.info("Received classIds: " + request.getClassIds());
-            return ResponseEntity.status(HttpStatus.CREATED).build();
 
-        } catch (Exception e) {
+            Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
+            TeacherDTO teacherDTO = new TeacherDTO();
+            teacherDTO.setId(teacherOpt.get().getId());
+            request.setTeacher(teacherDTO);
+
+            assignmentServices.createAssignment(request);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+         catch (Exception e) {
             log.error("Error creating assignment", e);
-            throw new RuntimeException("Failed to create assignment", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
@@ -141,7 +147,7 @@ public class AssignmentController {
             log.info("Deleting assignment with ID: {}", assignmentId);
             assignmentServices.deleteAssignmentById(assignmentId);
             return ResponseEntity.noContent().build(); // Return 204 No Content on success
-        } catch (RuntimeException e) {
+        } catch (NullPointerException e) {
             log.error("Error deleting assignment: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Assignment not found with ID: " + assignmentId); // Return error message for debugging
