@@ -337,7 +337,9 @@
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
-                        <a href="student.html" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <a href="student.html" class="nav-link" id="dashboardLink">
+                            <i class="flaticon-dashboard"></i><span>Dashboard</span>
+                        </a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
@@ -535,7 +537,14 @@
                     imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
                 }
             });
+
+            // Update Dashboard link based on role
+            const dashboardLink = document.getElementById('dashboardLink');
+            if (userDetails.roleName === 'TEACHER') {
+                dashboardLink.href = 'teacher.html';  // Change the link to 'teacher.html' for teachers
+            }
         }
+
 
         const currentUserId = userDetails.id;
         const prevPageButton = document.getElementById("prevPage");
@@ -726,12 +735,7 @@
         // Initial fetch of all threads and render them sorted
         fetchAllThreads();
     });
-
-
-
 </script>
-
-
 
 </body>
 </html>
