@@ -18,6 +18,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,6 +38,7 @@ class AttendantControllerTest {
 
     @Mock
     private ScheduleRepository scheduleRepository;
+
 
     public AttendantControllerTest() {
         MockitoAnnotations.openMocks(this);
@@ -93,19 +95,54 @@ class AttendantControllerTest {
 
     @Test
     void testUpdateAttendance_Success() {
-        // Arrange
+        // Prepare test data
         int classId = 1;
-        AttendantDTO mockAttendance = new AttendantDTO();
-        mockAttendance.setStudentId(1);
-        mockAttendance.setStatus(Attendant.Status.Present);
+        List<AttendantDTO> attendanceData = new ArrayList<>();
+        AttendantDTO dto = new AttendantDTO();
+        dto.setStudentId(101);
+        dto.setStatus(Attendant.Status.Present);
+        dto.setDate(Date.valueOf("2024-12-10"));
+        attendanceData.add(dto);
 
-        // Act
-        ResponseEntity<String> response = attendantController.updateAttendance(classId, List.of(mockAttendance));
+        // No exception thrown during service call
+        doNothing().when(attendantServices).updateAttendance(classId, attendanceData);
 
-        // Assert
-        assertEquals(200, response.getStatusCodeValue());
+        // Perform the test
+        ResponseEntity<String> response = attendantController.updateAttendance(classId, attendanceData);
+
+        // Verify interactions
+        verify(attendantServices, times(1)).updateAttendance(classId, attendanceData);
+
+        // Assert the response
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Attendance updated successfully!", response.getBody());
-        verify(attendantServices, times(1)).updateAttendance(eq(classId), anyList());
+    }
+
+    @Test
+    void testUpdateAttendance_Failure() {
+        // Prepare test data
+        int classId = 1;
+        List<AttendantDTO> attendanceData = new ArrayList<>();
+        AttendantDTO dto = new AttendantDTO();
+        dto.setStudentId(101);
+        dto.setStatus(Attendant.Status.Present);
+        dto.setDate(Date.valueOf("2024-12-10"));
+        attendanceData.add(dto);
+
+        // Simulate an exception during service call
+        doThrow(new RuntimeException("Service error")).when(attendantServices).updateAttendance(classId, attendanceData);
+
+        // Perform the test
+        ResponseEntity<String> response = attendantController.updateAttendance(classId, attendanceData);
+
+        // Verify interactions
+        verify(attendantServices, times(1)).updateAttendance(classId, attendanceData);
+
+        // Assert the response
+        assertNotNull(response);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("Failed to update attendance: Service error", response.getBody());
     }
 
     @Test
@@ -140,5 +177,119 @@ class AttendantControllerTest {
         // Assert
         assertFalse(response);
         verify(attendantRepository, times(1)).existsByClassIdAndDate(classId, date);
+    }
+
+    @Test
+    void testSaveAttendance_Success() {
+        // Prepare test data
+        int classId = 1;
+        Date attendanceDate = Date.valueOf("2024-12-10");
+        LocalTime currentLocalTime = LocalTime.of(9, 30);
+        Time startTime = Time.valueOf("09:00:00");
+        Time endTime = Time.valueOf("10:00:00");
+
+        // Mock the schedules
+        Schedule mockSchedule = new Schedule();
+        mockSchedule.setId(1);
+        mockSchedule.setStart_time(startTime);
+        mockSchedule.setEnd_time(endTime);
+        when(scheduleRepository.findByClassIdAndDate(classId, attendanceDate)).thenReturn(Collections.singletonList(mockSchedule));
+
+        // Mock current time
+        try (MockedStatic<LocalTime> localTimeMock = mockStatic(LocalTime.class)) {
+            localTimeMock.when(LocalTime::now).thenReturn(currentLocalTime);
+
+            // Prepare DTO
+            AttendantDTO request = new AttendantDTO();
+            request.setStudentId(101);
+            request.setStatus(Attendant.Status.Present);
+            request.setDate(attendanceDate);
+
+            List<AttendantDTO> attendanceRequests = Collections.singletonList(request);
+
+            // Perform the test
+            ResponseEntity<String> response = attendantController.save(attendanceRequests, classId);
+
+            // Verify calls
+            verify(scheduleRepository, times(1)).findByClassIdAndDate(classId, attendanceDate);
+            verify(attendantServices, times(1)).createAttendant(
+                    request.getStudentId(),
+                    mockSchedule.getId(),
+                    request.getStatus().toString(),
+                    attendanceDate,
+                    classId
+            );
+
+            // Assert the response
+            assertNotNull(response);
+            assertEquals(HttpStatus.CREATED, response.getStatusCode());
+            assertEquals("Attendance saved successfully.", response.getBody());
+        }
+    }
+    @Test
+    void testSaveAttendance_DateMissing() {
+        // Prepare test data
+        int classId = 1;
+
+        // Prepare DTO with missing date
+        AttendantDTO request = new AttendantDTO();
+        request.setStudentId(101);
+        request.setStatus(Attendant.Status.Present);
+
+        List<AttendantDTO> attendanceRequests = Collections.singletonList(request);
+
+        // Perform the test
+        ResponseEntity<String> response = attendantController.save(attendanceRequests, classId);
+
+        // Verify no interactions with repositories
+        verifyNoInteractions(scheduleRepository);
+        verifyNoInteractions(attendantServices);
+
+        // Assert the response
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Date is missing in the request.", response.getBody());
+    }
+
+    @Test
+    void testSaveAttendance_TimeMismatch() {
+        // Prepare test data
+        int classId = 1;
+        Date attendanceDate = Date.valueOf("2024-12-10");
+        LocalTime currentLocalTime = LocalTime.of(9, 30); // Time not within the schedule
+        Time startTime = Time.valueOf("09:00:00");
+        Time endTime = Time.valueOf("10:00:00");
+
+        // Mock the schedules
+        Schedule mockSchedule = new Schedule();
+        mockSchedule.setId(1);
+        mockSchedule.setStart_time(startTime);
+        mockSchedule.setEnd_time(endTime);
+        when(scheduleRepository.findByClassIdAndDate(classId, attendanceDate)).thenReturn(Collections.singletonList(mockSchedule));
+
+        // Mock current time
+        try (MockedStatic<LocalTime> localTimeMock = mockStatic(LocalTime.class)) {
+            localTimeMock.when(LocalTime::now).thenReturn(currentLocalTime);
+
+            // Prepare DTO
+            AttendantDTO request = new AttendantDTO();
+            request.setStudentId(101);
+            request.setStatus(Attendant.Status.Present);
+            request.setDate(attendanceDate);
+
+            List<AttendantDTO> attendanceRequests = Collections.singletonList(request);
+
+            // Perform the test
+            ResponseEntity<String> response = attendantController.save(attendanceRequests, classId);
+
+            // Verify calls
+            verify(scheduleRepository, times(1)).findByClassIdAndDate(classId, attendanceDate);
+            verifyNoInteractions(attendantServices);
+
+            // Assert the response
+            assertNotNull(response);
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+            assertEquals("Attendance cannot be saved as the time does not match any schedule slot.", response.getBody());
+        }
     }
 }

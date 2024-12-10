@@ -138,13 +138,13 @@ public class UserController {
 
         // Validate confirm password
         if (!newPassword.equals(confirmPassword)) {
-            redirectAttributes.addFlashAttribute("message", "Confirm Password does not match.");
+            redirectAttributes.addFlashAttribute("message", "Re-enter Password does not match new password.");
             return new ModelAndView("redirect:/change-password.html");
         }
 
         // Validate old password
         if (!passwordEncoder.matches(oldPassword, account.getPassword())) {
-            redirectAttributes.addFlashAttribute("message", "Old Password does not match.");
+            redirectAttributes.addFlashAttribute("message", "Old Password does not match current password.");
             return new ModelAndView("redirect:/change-password.html");
         }
 
