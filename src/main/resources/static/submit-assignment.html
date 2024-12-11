@@ -520,6 +520,15 @@
         const form = event.target.closest('form');
         const formData = new FormData(form);
 
+        // Get studentId and assignmentId
+        const studentId = formData.get('student_id');
+        const assignmentId = formData.get('assignment_id');
+
+        // Validate if studentId and assignmentId are valid integers
+        if (!studentId || !assignmentId || isNaN(studentId) || isNaN(assignmentId)) {
+            alert('Invalid student or assignment ID.');
+            return;
+        }
         // Log all form data for debugging
         for (const [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
@@ -570,32 +579,45 @@
     function getUserDetails(userDetails) {
         if (userDetails) {
             // Hiển thị thông tin cá nhân
-            document.querySelectorAll('.userFullName').forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            document.querySelectorAll('.userRole').forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-            document.getElementById('userJapanname').textContent = userDetails.jname;
-            document.getElementById('userGender').textContent = userDetails.gender;
-            document.getElementById('userEmail').textContent = userDetails.email;
-            document.getElementById('userDob').textContent = userDetails.dob;
-            document.getElementById('userPhone').textContent = userDetails.phoneNumber;
-            document.getElementById('userId').value = userDetails.id;
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            const userRoleElements = document.querySelectorAll('.userRole');
+            const userJapannameElement = document.getElementById('userJapanname');
+            const userGenderElement = document.getElementById('userGender');
+            const userEmailElement = document.getElementById('userEmail');
+            const userDobElement = document.getElementById('userDob');
+            const userPhoneElement = document.getElementById('userPhone');
+            const userIdElement = document.getElementById('userId');
+
+            // Check if the elements exist
+            if (userFullNameElements.length > 0) {
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.fullName;
+                });
+            }
+
+            if (userRoleElements.length > 0) {
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName;
+                });
+            }
+
+            if (userJapannameElement) userJapannameElement.textContent = userDetails.jname;
+            if (userGenderElement) userGenderElement.textContent = userDetails.gender;
+            if (userEmailElement) userEmailElement.textContent = userDetails.email;
+            if (userDobElement) userDobElement.textContent = userDetails.dob;
+            if (userPhoneElement) userPhoneElement.textContent = userDetails.phoneNumber;
+            if (userIdElement) userIdElement.value = userDetails.id;
 
             // Kiểm tra vai trò người dùng và hiển thị các mục điều hướng tương ứng
             if (userDetails.roleName === "ADMIN") {
-                // Ẩn các mục của giáo viên và học sinh cho ADMIN
                 document.getElementById("teacher-view").style.display = "none";
                 document.getElementById("student-view").style.display = "none";
                 document.getElementById("student-view1").style.display = "none";
             } else if (userDetails.roleName === "TEACHER") {
-                // Chỉ hiển thị mục điều hướng của giáo viên
                 document.getElementById("teacher-view").style.display = "block";
                 document.getElementById("student-view").style.display = "none";
                 document.getElementById("student-view1").style.display = "none";
             } else if (userDetails.roleName === "STUDENT") {
-                // Chỉ hiển thị mục điều hướng của học sinh
                 document.getElementById("teacher-view").style.display = "none";
                 document.getElementById("student-view").style.display = "block";
                 document.getElementById("student-view1").style.display = "block";
@@ -608,8 +630,13 @@
     }
 
     // Lấy dữ liệu userDetails từ sessionStorage và gọi hàm getUserDetails
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    getUserDetails(userDetails);
+    userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    if (userDetails) {
+        getUserDetails(userDetails);
+    } else {
+        fetchUserData();  // Fetch user data if not found in sessionStorage
+    }
+
 
     function submitForm() {
         // Retrieve userDetails from sessionStorage
