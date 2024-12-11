@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/manager.html").hasAuthority("MANAGER")
                         .requestMatchers("/css/**", "/js/**", "/images/**","/img/**",
                                 "/webfonts/**","/fonts/**","/hts-cache/**","/style.css","/forgot-password.html",
-                                "/verify-code.html","/change-password.html","/users/check","/users/verify","/users/reset-password")
+                                "/verify-code.html","/reset-password.html","/users/check","/users/verify","/users/reset-password")
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
@@ -58,8 +58,8 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login.html?logout=true")
-                        .invalidateHttpSession(true) // Invalidate the current HTTP session
-                        .deleteCookies("JSESSIONID") // Delete session cookie
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
                         .permitAll());
         return http.build();
     }

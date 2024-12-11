@@ -1,6 +1,7 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.ApplicationDTO;
+import com.example.jip.dto.response.CloudinaryResponse;
 import com.example.jip.entity.Application;
 import com.example.jip.entity.Student;
 import com.example.jip.entity.Teacher;
@@ -22,6 +23,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +33,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -89,6 +93,46 @@ public class ApplicationControllerTest {
                 .andExpect(flash().attribute("message", "Application 'Category' created successfully with ID: 1"));  // Kiểm tra thông báo thành công
     }
 
+    @Test
+    void createApplication_Fail_TeacherNotFound() {
+        // Mock input data
+        String name = "Test Application";
+        String category = "Category A";
+        String content = "Test Content";
+        Integer teacherId = 1;
+
+        // Mock dependencies
+        when(teacherRepository.findByAccount_id(teacherId)).thenReturn(Optional.empty());
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+
+        // Call method
+        RedirectView redirectView = applicationController.createApplication(
+                name, category, content, null, teacherId, null, redirectAttributes
+        );
+
+        // Assertions
+        assertEquals("/create", redirectView.getUrl());
+        verify(teacherRepository, times(1)).findByAccount_id(teacherId);
+        verifyNoInteractions(applicationServices);
+    }
+    @Test
+    void createApplication_Fail_BothIdsMissing() {
+        // Mock input data
+        String name = "Test Application";
+        String category = "Category A";
+        String content = "Test Content";
+
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+
+        // Call method
+        RedirectView redirectView = applicationController.createApplication(
+                name, category, content, null, null, null, redirectAttributes
+        );
+
+        // Assertions
+        assertEquals("/create", redirectView.getUrl());
+        verifyNoInteractions(teacherRepository, studentRepository, applicationServices);
+    }
 
 
     @Test
@@ -202,5 +246,104 @@ public class ApplicationControllerTest {
                 .andExpect(jsonPath("$.message").value("Application reply success"));
     }
 
+    @Test
+    void createApplication_Success_WithImageUpload() throws Exception {
+        // Mock input data
+        String name = "Test Application";
+        String category = "Category A";
+        String content = "Test Content";
+        Integer teacherId = 1;
+        MultipartFile imgFile = mock(MultipartFile.class);
 
+        // Mock dependencies
+        Teacher teacher = new Teacher();
+        teacher.setId(1);
+        when(teacherRepository.findByAccount_id(teacherId)).thenReturn(Optional.of(teacher));
+
+        // Mock CloudinaryResponse
+        CloudinaryResponse uploadedFile = CloudinaryResponse.builder()
+                .url("https://cloudinary.com/sample.jpg")
+                .publicId("sample_public_id")
+                .folder("Materials/")
+                .build();
+        when(cloudinaryService.uploadFileToFolder(imgFile, "Materials/")).thenReturn(uploadedFile);
+
+        // Mock ApplicationDTO and saved Application
+        Application savedApplication = new Application();
+        savedApplication.setId(103);
+        when(applicationServices.createApplication(any(ApplicationDTO.class))).thenReturn(savedApplication);
+
+        RedirectAttributes redirectAttributes = mock(RedirectAttributes.class);
+
+        // Call method
+        RedirectView redirectView = applicationController.createApplication(
+                name, category, content, imgFile, teacherId, null, redirectAttributes
+        );
+
+        // Assertions
+        assertEquals("/View-my-application.html", redirectView.getUrl());
+        verify(cloudinaryService, times(1)).uploadFileToFolder(imgFile, "Materials/");
+        verify(applicationServices, times(1)).createApplication(any(ApplicationDTO.class));
+        verify(teacherRepository, times(1)).findByAccount_id(teacherId);
+    }
+
+    @Test
+    void updateApplication_InvalidApplicationId() {
+        // Call the method with a null ID
+        ResponseEntity<Map<String, String>> response = applicationController.updateApplication(null, Map.of());
+
+        // Assertions
+        assertEquals(400, response.getStatusCodeValue());
+        assertEquals("ID ứng dụng không hợp lệ!", response.getBody().get("message"));
+    }
+
+    @Test
+    void updateApplication_InvalidStatus() {
+        // Mock input data
+        Integer applicationId = 1;
+        Map<String, Object> payload = Map.of("status", "INVALID_STATUS");
+
+        // Mock application data
+        Application application = new Application();
+        application.setId(applicationId);
+        application.setStatus(Application.Status.Pending);
+        Student student = new Student();
+        student.setId(1);
+        application.setStudent(student);
+
+        // Mock repository behavior
+        when(applicationRepository.findById(applicationId)).thenReturn(Optional.of(application));
+
+        // Call the method
+        ResponseEntity<Map<String, String>> response = applicationController.updateApplication(applicationId, payload);
+
+        // Assertions
+        assertEquals(400, response.getStatusCodeValue());
+        assertEquals("Trạng thái không hợp lệ!", response.getBody().get("message"));
+
+        // Verify no updates
+        verify(applicationRepository, never()).save(any());
+        verify(studentRepository, never()).save(any());
+    }
+
+    @Test
+    void updateApplication_ApplicationNotFound() {
+        // Mock input data
+        Integer applicationId = 1;
+        Map<String, Object> payload = Map.of("status", "Approved");
+
+        // Mock repository behavior
+        when(applicationRepository.findById(applicationId)).thenReturn(Optional.empty());
+
+        // Call the method
+        ResponseEntity<Map<String, String>> response = applicationController.updateApplication(applicationId, payload);
+
+        // Assertions
+        assertEquals(404, response.getStatusCodeValue());
+        assertEquals("Ứng dụng không tồn tại!", response.getBody().get("message"));
+
+        // Verify no updates
+        verify(applicationRepository, never()).save(any());
+        verify(studentRepository, never()).save(any());
+    }
 }

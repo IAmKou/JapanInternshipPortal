@@ -46,17 +46,6 @@ public class StudentAssignmentController {
 
 
 
-    @GetMapping("/list-assignment")
-    public ResponseEntity<List<AssignmentResponse>> getAssignmentsForStudent(@RequestParam("studentId") int studentId) {
-        try {
-            List<AssignmentResponse> response = studentAssignmentServices.getAssignmentsForStudent(studentId);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            log.error("Error fetching unsubmitted assignments: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
-        }
-    }
-
     @GetMapping("/get-student-id")
     public ResponseEntity<Integer> getStudentId(@RequestParam int accountId) {
         int studentId = studentServices.getStudentIdByAccountId(accountId);
@@ -103,20 +92,7 @@ public class StudentAssignmentController {
         }
     }
 
-    @GetMapping("/assignment/{studentAssignmentId}")
-    public ResponseEntity<AssignmentResponse> getAssignmentByStudentAssignmentId(
-            @PathVariable int studentAssignmentId) {
-        try {
-            AssignmentResponse response = studentAssignmentServices.getAssignmentByStudentAssignmentId(studentAssignmentId);
-            return ResponseEntity.ok(response);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(null); // Return 404 if StudentAssignment or Assignment is not found
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null); // Return 500 for unexpected errors
-        }
-    }
+
 
     @PutMapping("/grade-submitted-assignment")
     public ResponseEntity<?> gradeSubmittedAssignment(
@@ -127,8 +103,6 @@ public class StudentAssignmentController {
             studentAssignmentServices.gradeSubmittedAssignment(studentAssignmentId, request);
             log.info("Grade requested: " + request);
             return ResponseEntity.ok("Grade submitted successfully.");
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while grading.");
         }
@@ -166,7 +140,6 @@ public class StudentAssignmentController {
             if (alreadySubmitted) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("You have already submitted for this assignment.");
             }
-
             // Call service to submit assignment
             studentAssignmentServices.submitAssignment(request);
             return ResponseEntity.status(HttpStatus.CREATED).body("Submission successful!");

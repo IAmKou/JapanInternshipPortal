@@ -5,10 +5,8 @@ package com.example.jip.services;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentGradeRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentSubmitRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentUpdateRequest;
-import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.dto.response.studentAssignment.StudentAssignmentResponse;
 import com.example.jip.entity.Assignment;
-import com.example.jip.entity.Class;
 import com.example.jip.entity.Student;
 import com.example.jip.entity.StudentAssignment;
 import com.example.jip.repository.AssignmentRepository;
@@ -40,30 +38,7 @@ public class StudentAssignmentServices {
 
     CloudinaryService cloudinaryService;
 
-    @PreAuthorize("hasAuthority('STUDENT')")
-    public List<StudentAssignment> getAllStudentAssignments(){
-        return studentAssignmentRepository.findAll();
-    }
 
-
-    @PreAuthorize("hasAuthority('STUDENT')")
-    public List<AssignmentResponse> getAssignmentsForStudent(int studentId) {
-        log.info("Fetching assignments for student ID: {}", studentId);
-        List<Assignment> allAssignments = assignmentRepository.findAssignmentsByStudentId(studentId);
-        List<Integer> submittedAssignmentIds = studentAssignmentRepository.findSubmittedAssignmentIdsByStudentId(studentId);
-
-        return allAssignments.stream()
-                .filter(assignment -> !submittedAssignmentIds.contains(assignment.getId()))
-                .map(assignment -> {
-                    AssignmentResponse response = new AssignmentResponse();
-                    response.setId(assignment.getId());
-                    response.setDescription(assignment.getDescription());
-                    response.setCreated_date(assignment.getCreated_date());
-                    response.setEnd_date(assignment.getEnd_date());
-                    return response;
-                })
-                .collect(Collectors.toList());
-    }
 
     @PreAuthorize("hasAuthority('STUDENT')")
     public StudentAssignment submitAssignment(StudentAssignmentSubmitRequest request){
@@ -106,7 +81,7 @@ public class StudentAssignmentServices {
     }
 
     public List<StudentAssignmentResponse> getSubmittedAssignmentsByStudentId(int studentId) {
-        List<StudentAssignment> studentAssignments = studentAssignmentRepository.findByStudentId(studentId);
+        List<StudentAssignment> studentAssignments = studentAssignmentRepository.findAllByStudentId(studentId);
         if(studentAssignments == null){
              throw new NoSuchElementException("Submitted assignment not found");
         } else {
@@ -148,46 +123,7 @@ public class StudentAssignmentServices {
         return response;
     }
 
-    public AssignmentResponse getAssignmentByStudentAssignmentId(int studentAssignmentId) {
-        // Find the StudentAssignment by ID
-        StudentAssignment studentAssignment = studentAssignmentRepository.findById(studentAssignmentId)
-                .orElseThrow(() -> new NoSuchElementException("StudentAssignment not found"));
 
-        // Get the related Assignment
-        Assignment assignment = studentAssignment.getAssignment();
-
-        if (assignment == null) {
-            throw new NoSuchElementException("Assignment not found for this StudentAssignment");
-        }
-
-        // Map Assignment to AssignmentResponse
-        AssignmentResponse response = new AssignmentResponse();
-        response.setId(assignment.getId());
-        response.setDescription(assignment.getDescription());
-        response.setContent(assignment.getContent());
-        response.setCreated_date(assignment.getCreated_date());
-        response.setEnd_date(assignment.getEnd_date());
-        response.setClasses(assignment.getClasses().stream()
-                .map(Class::getName)
-                .collect(Collectors.toList()));
-        String folderName = assignment.getImgUrl();
-        try {
-            List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
-            List<String> fileUrls = resources.stream()
-                    .map(resource -> (String) resource.get("url"))
-                    .collect(Collectors.toList());
-
-            if (fileUrls.isEmpty()) {
-                log.warn("No files found for assignment with ID: {}", response.getId());
-            }
-            response.setFiles(fileUrls);  // Assuming these are the file URLs
-
-        } catch (Exception e) {
-            log.error("Error retrieving files for assignment with ID: {}", response.getId(), e);
-            response.setFiles(Collections.emptyList());
-        }
-        return response;
-    }
 
     @PreAuthorize("hasAuthority('TEACHER')")
     public List<StudentAssignmentResponse> getSubmittedAssignmentsByAssignmentId(int assignmentId){

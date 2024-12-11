@@ -45,4 +45,6 @@ import java.util.Set;
             this.teacher = teacher;
         }
 
+        public Class(int i, String mathematics, Teacher teacher) {
+        }
     }
