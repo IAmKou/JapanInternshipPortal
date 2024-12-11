@@ -421,6 +421,7 @@
     <script>
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
         if (userDetails) {
+            document.getElementById('userId').value = userDetails.id;
             const userFullNameElements = document.querySelectorAll('.userFullName');
             const userRoleElements = document.querySelectorAll('.userRole');
 
@@ -475,6 +476,9 @@
             // Lấy studentId từ phần tử ẩn có id là 'userId'
             const studentId = document.getElementById('userId').value;
             const materialLink = `View-material-details.html?id=${material.id}`;  // Sử dụng material.id chính xác
+
+            console.log("Student ID:", studentId);
+            console.log("Material ID:", material.id);
 
             // Kiểm tra nếu studentId hoặc material.id bị thiếu
             if (!studentId || !material.id) {
