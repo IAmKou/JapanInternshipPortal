@@ -520,9 +520,16 @@
         const form = event.target.closest('form');
         const formData = new FormData(form);
 
-        // Get studentId and assignmentId
+
         const studentId = formData.get('student_id');
         const assignmentId = formData.get('assignment_id');
+        const description = formData.get('description');
+        const content = formData.get('content');
+
+        if(!description.trim() || !content.trim()){
+            alert('Please fill in all the required fields!');
+            return; // Exit the function if validation fails
+        }
 
         // Validate if studentId and assignmentId are valid integers
         if (!studentId || !assignmentId || isNaN(studentId) || isNaN(assignmentId)) {
@@ -533,7 +540,6 @@
         for (const [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
         }
-
 
         try {
             const response = await fetch('/student-assignment/submit', {

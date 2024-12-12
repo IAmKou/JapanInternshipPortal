@@ -632,7 +632,7 @@
         const className = document.getElementById("className").value;
         const teacherId = parseInt(document.getElementById("teacher").value);
 
-        if (!className || !teacherId) {
+        if (!className.trim() || !teacherId) {
             alert("Please provide both class name and teacher.");
             return;
         }
@@ -662,9 +662,7 @@
             .then(data => {
                 alert(data);
 
-
                 document.getElementById("createClassForm").reset();
-
 
                 const studentListDiv = document.getElementById('studentList');
                 studentListDiv.innerHTML = "";
