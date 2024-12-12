@@ -42,7 +42,7 @@
         <div class="navbar navbar-expand-md header-menu-one bg-light">
             <div class="nav-bar-header-one">
                 <div class="header-logo">
-                    <a href="teacher.html">
+                    <a href="student.html">
                         <div style="width: 180px; height: 70px; overflow: hidden;">
                             <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
                         </div>
@@ -93,7 +93,7 @@
                             </div>
                             <div class="item-content">
                                 <ul class="settings-list">
-                                    <li><a href="users-profile-teacher.html"><i class="flaticon-user"></i>My Profile</a></li>
+                                    <li><a href="users-profile-student.html.html"><i class="flaticon-user"></i>My Profile</a></li>
                                     <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
                                     <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
                                     </li>
@@ -242,16 +242,16 @@
             <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
                 <div class="mobile-sidebar-header d-md-none">
                     <div class="header-logo">
-                        <a href="teacher.html"><img src="img/logo1.png" alt="logo"></a>
+                        <a href="student.html"><img src="img/logo1.png" alt="logo"></a>
                     </div>
                 </div>
                 <div class="sidebar-menu-content">
                     <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                            <ul class="nav sub-group-menu ">
+                            <ul class="nav sub-group-menu sub-group-active">
                                 <li class="nav-item">
-                                    <a href="teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>Teachers</a>
+                                    <a href="student.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Students</a>
                                 </li>
                             </ul>
                         </li>
@@ -259,69 +259,30 @@
                             <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                        Assignment</a>
+                                    <a href="list-student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
-                                        Assignment</a>
+                                    <a href="list-submitted-assignments.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Submitted Assignment</a>
                                 </li>
                             </ul>
                         </li>
+
                         <li class="nav-item sidebar-nav-item">
-                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create
-                                        Thread</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
+                            <a href="javascript:void(0);" class="nav-link" onclick="submitForm();"><i
                                     class="flaticon-shopping-list"></i><span>Schedule</span></a>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i
-                                    class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
-                                        <i class="flaticon-menu"></i><span>Class List</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
-                                        Schedule</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="Update-student-mark-report.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Exam Grades</a>
+                                    <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();">
+                                        <i class="fas fa-angle-right"></i>Personal Mark Report</a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item" id="teacher-view1">
-                                    <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
-                                        Material</a>
-                                </li>
-                                <li class="nav-item" id="teacher-view">
-                                    <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                                        Materials</a>
-                                </li>
+                            <ul class="nav sub-group-menu ">
                                 <li class="nav-item" id="student-view1">
                                     <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
                                         Materials</a>
@@ -330,19 +291,18 @@
                                     <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My List
                                         Materials</a>
                                 </li>
-
                             </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
-                            <ul class="nav sub-group-menu sub-group-active">
+                            <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="Send-application.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Send
+                                    <a href="Send-application-student.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
                                         application</a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                    <a href="View-my-application-student.html" class="nav-link"><i class="fas fa-angle-right"></i>My
                                         application</a>
                                 </li>
                             </ul>
@@ -352,12 +312,19 @@
                             <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
+                                    <a class="nav-link" href="forum-student.html"><i class="fas fa-angle-right"></i>View list
                                         threads</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
-                                        Thread</a>
+                                    <a class="nav-link" href="create-forum-student.html"><i class="fas fa-angle-right"></i>Create Thread</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
                                 </li>
                             </ul>
                         </li>
@@ -371,7 +338,7 @@
                     <h3>Send Application</h3>
                     <ul>
                         <li>
-                            <a href="home.html">Home</a>
+                            <a href="student.html">Home</a>
 
                         </li>
                         <li>Send Application</li>
@@ -487,127 +454,56 @@
     <script src="js/main.js"></script>
 
     <script>
-        <div className="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
-            <div className="mobile-sidebar-header d-md-none">
-                <div className="header-logo">
-                    <a href="teacher.html"><img src="img/logo1.png" alt="logo"/></a>
-                </div>
-            </div>
-            <div className="sidebar-menu-content">
-                <ul className="nav nav-sidebar-menu sidebar-toggle-view">
-                    <li className="nav-item sidebar-nav-item">
-                        <a href="#" className="nav-link"><i
-                            className="flaticon-dashboard"></i><span>Dashboard</span></a>
-                        <ul className="nav sub-group-menu sub-group-active">
-                            <li className="nav-item">
-                                <a href="teacher.html" className="nav-link menu-active"><i
-                                    className="fas fa-angle-right"></i>Teachers</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li className="nav-item sidebar-nav-item">
-                        <a href="#" className="nav-link"><i className="flaticon-books"></i><span>Assignment</span></a>
-                        <ul className="nav sub-group-menu">
-                            <li className="nav-item">
-                                <a href="javascript:void(0);" className="nav-link" onClick="toListAssigment();"><i
-                                    className="fas fa-angle-right"></i>All
-                                    Assignment</a>
-                            </li>
-                            <li className="nav-item">
-                                <a href="create-assignment.html" className="nav-link"><i
-                                    className="fas fa-angle-right"></i>Add New
-                                    Assignment</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li className="nav-item sidebar-nav-item">
-                        <a href="javascript:void(0);" className="nav-link" onClick="redirectSchedule();"><i
-                            className="flaticon-shopping-list"></i><span>Schedule</span></a>
-                    </li>
-                    <li className="nav-item sidebar-nav-item">
-                        <a href="#" className="nav-link"><i
-                            className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                        <ul className="nav sub-group-menu">
-                            <li className="nav-item">
-                                <a href="javascript:void(0);" className="nav-link" onClick="submitForm();">
-                                    <i className="flaticon-menu"></i><span>Class List</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li className="nav-item sidebar-nav-item">
-                        <a href="#" className="nav-link"><i className="flaticon-shopping-list"></i><span>Exam</span></a>
-                        <ul className="nav sub-group-menu">
-                            <li className="nav-item">
-                                <a className="nav-link" href="list-exam.html"><i className="fas fa-angle-right"></i>List
-                                    Exam</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="create-exam.html"><i className="fas fa-angle-right"></i>Create
-                                    Exam</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li className="nav-item sidebar-nav-item">
-                        <a href="#" className="nav-link"><i className="flaticon-shopping-list"></i><span>Material</span></a>
-                        <ul className="nav sub-group-menu">
-                            <li className="nav-item">
-                                <a href="Create-material.html" className="nav-link"><i
-                                    className="fas fa-angle-right"></i>Create
-                                    Material</a>
-                            </li>
-                            <li className="nav-item" id="teacher-view">
-                                <a href="View-list-materials.html" className="nav-link"><i
-                                    className="fas fa-angle-right"></i>List
-                                    Materials</a>
-                            </li>
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails) {
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            const userRoleElements = document.querySelectorAll('.userRole');
 
-                        </ul>
-                    </li>
-                    <li className="nav-item sidebar-nav-item">
-                        <a href="#" className="nav-link"><i className="flaticon-chat"></i><span>Application</span></a>
-                        <ul className="nav sub-group-menu">
-                            <li className="nav-item">
-                                <a href="Send-application.html" className="nav-link"><i
-                                    className="fas fa-angle-right"></i>Send
-                                    application</a>
-                            </li>
+            // Populate Name
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
+            });
 
-                            <li className="nav-item">
-                                <a href="View-my-application.html" className="nav-link"><i
-                                    className="fas fa-angle-right"></i>My
-                                    application</a>
-                            </li>
-                        </ul>
-                    </li>
+            // Populate Role
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
 
-                    <li className="nav-item sidebar-nav-item">
-                        <a className="nav-link" href="#"><i
-                            className="flaticon-shopping-list"></i><span>Thread</span></a>
-                        <ul className="nav sub-group-menu">
-                            <li className="nav-item">
-                                <a className="nav-link" href="forum.html"><i className="fas fa-angle-right"></i>View
-                                    list
-                                    threads</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="create-forum.html"><i className="fas fa-angle-right"></i>Create
-                                    Thread</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li className="nav-item sidebar-nav-item">
-                        <a href="#" className="nav-link"><i className="flaticon-chat"></i><span>Security</span></a>
-                        <ul className="nav sub-group-menu">
-                            <li className="nav-item">
-                                <a href="change-password.html" className="nav-link"><i
-                                    className="fas fa-angle-right"></i>Change Password</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
+            const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img'); // Select the <img> inside the div
+                if (imgElement) {
+                    imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
+                }
+            });
+        } else {
+            console.error("User details not found in sessionStorage");
+        }
+
+        function submitForm() {
+            // Retrieve userDetails from sessionStorage
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+            if (userDetails && userDetails.studentId) {
+                // Redirect to the appropriate URL with the teacherId
+                window.location.href = `schedule-list-student.html?studentId=${userDetails.studentId}`;
+            } else {
+                console.error("Teacher ID is missing or user details not found in sessionStorage");
+            }
+        }
+
+        function toMarkReport() {
+            // Retrieve userDetails from sessionStorage
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+            if (userDetails && userDetails.studentId) {
+                // Redirect to the appropriate URL with the teacherId
+                window.location.href = `personal-mark-report.html?studentId=${userDetails.studentId}`;
+            } else {
+                console.error("Teacher ID is missing or user details not found in sessionStorage");
+            }
+        }
     </script>
     <script>
         // Thêm sự kiện click vào nút Save

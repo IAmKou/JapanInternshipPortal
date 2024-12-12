@@ -323,7 +323,7 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="student.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
@@ -347,24 +347,10 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create
-                                    Thread</a>
-                            </li>
-                        </ul>
-                    </li>
+
                     <li class="nav-item sidebar-nav-item">
                         <a href="javascript:void(0);" class="nav-link" onclick="submitForm();"><i
                                 class="flaticon-shopping-list"></i><span>Schedule</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
@@ -378,7 +364,6 @@
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                         <ul class="nav sub-group-menu ">
-
                             <li class="nav-item" id="student-view1">
                                 <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
                                     Materials</a>
@@ -387,19 +372,18 @@
                                 <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My List
                                     Materials</a>
                             </li>
-
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                <a href="Send-application-student.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
                                     application</a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                <a href="View-my-application-student.html" class="nav-link"><i class="fas fa-angle-right"></i>My
                                     application</a>
                             </li>
                         </ul>
@@ -409,11 +393,11 @@
                         <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
+                                <a class="nav-link" href="forum-student.html"><i class="fas fa-angle-right"></i>View list
                                     threads</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create Thread</a>
+                                <a class="nav-link" href="create-forum-student.html"><i class="fas fa-angle-right"></i>Create Thread</a>
                             </li>
                         </ul>
                     </li>
@@ -647,68 +631,33 @@
 
 </script>
 <script>
-    (async function fetchUserData() {
-        try {
-            const response = await fetch('/user-detail');
-            if (response.ok) {
-                const userData = await response.json();
-                sessionStorage.setItem('userDetails', JSON.stringify(userData));
-                console.log("User data stored in sessionStorage:", userData);
-
-                getUserDetails(userData);
-            } else {
-                console.error("Failed to fetch user details:", response.statusText);
-            }
-        } catch (error) {
-            console.error("Error fetching user details:", error);
-        }
-    })();
-
-
-    function getUserDetails(userDetails) {
-        if (userDetails) {
-            // Hiển thị thông tin cá nhân
-            document.querySelectorAll('.userFullName').forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            document.querySelectorAll('.userRole').forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-            document.getElementById('userJapanname').textContent = userDetails.jname;
-            document.getElementById('userGender').textContent = userDetails.gender;
-            document.getElementById('userEmail').textContent = userDetails.email;
-            document.getElementById('userDob').textContent = userDetails.dob;
-            document.getElementById('userPhone').textContent = userDetails.phoneNumber;
-            document.getElementById('userId').value = userDetails.id;
-
-            // Kiểm tra vai trò người dùng và hiển thị các mục điều hướng tương ứng
-            if (userDetails.roleName === "ADMIN") {
-                // Ẩn các mục của giáo viên và học sinh cho ADMIN
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "none";
-                document.getElementById("student-view1").style.display = "none";
-            } else if (userDetails.roleName === "TEACHER") {
-                // Chỉ hiển thị mục điều hướng của giáo viên
-                document.getElementById("teacher-view").style.display = "block";
-                document.getElementById("student-view").style.display = "none";
-                document.getElementById("student-view1").style.display = "none";
-            } else if (userDetails.roleName === "STUDENT") {
-                // Chỉ hiển thị mục điều hướng của học sinh
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "block";
-                document.getElementById("student-view1").style.display = "block";
-            } else {
-                console.warn("Role not recognized:", userDetails.roleName);
-            }
-        } else {
-            console.error("User details not found in sessionStorage");
-        }
-    }
-
     // Lấy dữ liệu userDetails từ sessionStorage và gọi hàm getUserDetails
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    getUserDetails(userDetails);
+    if (userDetails) {
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        const userRoleElements = document.querySelectorAll('.userRole');
 
+        // Populate Name
+        userFullNameElements.forEach(element => {
+            element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
+        });
+
+        // Populate Role
+        userRoleElements.forEach(element => {
+            element.textContent = userDetails.roleName;
+        });
+
+        const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+
+        imgContainers.forEach(container => {
+            const imgElement = container.querySelector('img'); // Select the <img> inside the div
+            if (imgElement) {
+                imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
+            }
+        });
+    } else {
+        console.error("User details not found in sessionStorage");
+    }
     function submitForm() {
         // Retrieve userDetails from sessionStorage
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
