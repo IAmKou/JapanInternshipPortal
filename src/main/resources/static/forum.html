@@ -29,6 +29,10 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
 
     <style>
+        .thread-box{
+
+        }
+
         .item-title {
             display: flex;
             align-items: center;
@@ -635,7 +639,6 @@
                 </div>
                 <div class="thread-description">${thread.description}</div>
                 <div class="thread-date">Created on: ${formattedDate}</div>
-                <div class="thread-author" style="flex-grow: 2; text-align: end;">Author: ${thread.creatorName || 'Unknown'}</div>
             </div>
         </div>`;
                 threadList.appendChild(threadBox);
