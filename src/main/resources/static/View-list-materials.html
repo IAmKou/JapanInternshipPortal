@@ -40,7 +40,7 @@
         <div class="navbar navbar-expand-md header-menu-one bg-light">
             <div class="nav-bar-header-one">
                 <div class="header-logo">
-                    <a href="admin.html">
+                    <a href="teacher.html">
                         <div style="width: 180px; height: 70px; overflow: hidden;">
                             <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
                         </div>
@@ -81,8 +81,8 @@
                                 <h5 class="item-title userFullName"></h5>
                                 <span class="userRole"></span>
                             </div>
-                            <div class="admin-img">
-                                <img src="img/figure/admin.jpg" alt="Admin">
+                            <div class="admin-img img">
+                                <img src="" style="width: 50px; height: 50px" alt="Admin">
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -91,12 +91,12 @@
                             </div>
                             <div class="item-content">
                                 <ul class="settings-list">
-                                    <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
+                                    <li><a href="users-profile-teacher.html"><i class="flaticon-user"></i>My Profile</a></li>
                                     <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
                                     <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
                                     </li>
                                     <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                    <li><a href="login.html"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                                    <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -240,16 +240,16 @@
             <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
                 <div class="mobile-sidebar-header d-md-none">
                     <div class="header-logo">
-                        <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                        <a href="teacher.html"><img src="img/logo1.png" alt="logo"></a>
                     </div>
                 </div>
                 <div class="sidebar-menu-content">
                     <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                            <ul class="nav sub-group-menu ">
+                            <ul class="nav sub-group-menu sub-group-active">
                                 <li class="nav-item">
-                                    <a href="teacher.html" class="nav-link "><i class="fas fa-angle-right"></i>Teachers</a>
+                                    <a href="teacher.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Teachers</a>
                                 </li>
                             </ul>
                         </li>
@@ -257,24 +257,12 @@
                             <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
                                         Assignment</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
                                         Assignment</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create
-                                        Thread</a>
                                 </li>
                             </ul>
                         </li>
@@ -293,34 +281,30 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
-                        </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
-                                        Schedule</a>
+                                    <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
+                                        Exam</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="Update-student-mark-report.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Exam Grades</a>
+                                    <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
+                                        Exam</a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                            <ul class="nav sub-group-menu sub-group-active">
-                                <li class="nav-item" id="teacher-view1">
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
                                     <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
                                         Material</a>
                                 </li>
                                 <li class="nav-item" id="teacher-view">
-                                    <a href="View-list-materials.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>List
+                                    <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
                                         Materials</a>
                                 </li>
-
 
                             </ul>
                         </li>
@@ -349,6 +333,14 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
                                         Thread</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
                                 </li>
                             </ul>
                         </li>
@@ -569,55 +561,67 @@
     </script>
     <!-- fetch user -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-            if (userDetails) {
-                console.log("User details:", userDetails);
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails) {
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            const userRoleElements = document.querySelectorAll('.userRole');
 
-                const userFullNameElements = document.querySelectorAll('.userFullName');
-                const userRoleElements = document.querySelectorAll('.userRole');
+            // Populate Name
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
+            });
 
-                // Gán giá trị cho các phần tử
-                if (userFullNameElements.length && userRoleElements.length) {
-                    if (userDetails.roleName === "ADMIN") {
-                        userFullNameElements.forEach(element => {
-                            element.textContent = userDetails.username || "Unknown Admin";
-                        });
-                        userRoleElements.forEach(element => {
-                            element.textContent = userDetails.roleName || "Unknown Role";
-                        });
-                        document.getElementById("teacher-view").style.display = "none";
-                        document.getElementById("student-view").style.display = "none";
-                    } else if (userDetails.roleName === "TEACHER") {
-                        userFullNameElements.forEach(element => {
-                            element.textContent = userDetails.fullName || "Unknown Teacher";
-                        });
-                        userRoleElements.forEach(element => {
-                            element.textContent = userDetails.roleName || "Unknown Role";
-                        });
-                        document.getElementById("teacher-view").style.display = "block";
-                        document.getElementById("student-view").style.display = "none";
-                        document.getElementById("student-view1").style.display = "none";
-                    } else if (userDetails.roleName === "STUDENT") {
-                        userFullNameElements.forEach(element => {
-                            element.textContent = userDetails.fullName || "Unknown Student";
-                        });
-                        userRoleElements.forEach(element => {
-                            element.textContent = userDetails.roleName || "Unknown Role";
-                        });
-                        document.getElementById("teacher-view").style.display = "none";
-                        document.getElementById("student-view").style.display = "block";
-                        document.getElementById("student-view1").style.display = "block";
-                    } else {
-                        console.warn("Unrecognized role:", userDetails.roleName);
-                    }
-                } else {
-                    console.error("Required DOM elements are missing.");
+            // Populate Role
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+
+            const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img'); // Select the <img> inside the div
+                if (imgElement) {
+                    imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
                 }
+            });
+        } else {
+            console.error("User details not found in sessionStorage");
+        }
+        function submitForm() {
+            // Retrieve userDetails from sessionStorage
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+            if (userDetails && userDetails.teacherId) {
+                // Redirect to the appropriate URL with the teacherId
+                window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
             } else {
-                console.error("User details not found in sessionStorage.");
+                console.error("Teacher ID is missing or user details not found in sessionStorage");
             }
-        });
+        }
+
+        function toListAssigment() {
+            // Retrieve userDetails from sessionStorage
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+            if (userDetails && userDetails.teacherId) {
+                // Redirect to the appropriate URL with the teacherId
+                window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
+            } else {
+                console.error("Teacher ID is missing or user details not found in sessionStorage");
+            }
+        }
+
+        function redirectSchedule() {
+            // Retrieve userDetails from sessionStorage
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+            if (userDetails && userDetails.teacherId) {
+                // Redirect to the appropriate URL with the teacherId
+                window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
+            } else {
+                console.error("Teacher ID is missing or user details not found in sessionStorage");
+            }
+        }
     </script>
 </body>
 
