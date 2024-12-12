@@ -36,7 +36,6 @@ public class ThreadServices {
 
         // Explicitly flush to commit
         threadRepository.flush();
-
         return savedThread; // Return the saved thread
     }
 

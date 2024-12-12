@@ -78,7 +78,7 @@
                        aria-expanded="false">
                         <div class="admin-title">
                             <h5 class="item-title userFullName"></h5>
-                            <span class="userRoleName"></span>
+                            <span class="userRole"></span>
                         </div>
                         <div class="admin-img img">
                             <img src="" alt="Admin" style="width: 50px; height: 50px">
@@ -239,7 +239,7 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="teacher.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
@@ -256,24 +256,12 @@
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
                                     Assignment</a>
                             </li>
                             <li class="nav-item">
                                 <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
                                     Assignment</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create
-                                    Thread</a>
                             </li>
                         </ul>
                     </li>
@@ -292,20 +280,9 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
-                    </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                         <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
-                                    Schedule</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="Update-student-mark-report.html" class="nav-link"><i
-                                        class="fas fa-angle-right"></i>Exam Grades</a>
-                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
                                     Exam</a>
@@ -319,20 +296,12 @@
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                         <ul class="nav sub-group-menu">
-                            <li class="nav-item" id="teacher-view1">
+                            <li class="nav-item">
                                 <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
                                     Material</a>
                             </li>
                             <li class="nav-item" id="teacher-view">
                                 <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                                    Materials</a>
-                            </li>
-                            <li class="nav-item" id="student-view1">
-                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                                    Materials</a>
-                            </li>
-                            <li class="nav-item" id="student-view">
-                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My List
                                     Materials</a>
                             </li>
 
@@ -577,6 +546,41 @@
         });
     } else {
         console.error("User details not found in sessionStorage");
+    }
+    function submitForm() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+
+    function toListAssigment() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+
+    function redirectSchedule() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
     }
 </script>
 <script>

@@ -436,7 +436,7 @@
                             </div>
                         </td></tr>
                     ${user.dob ? `<tr><td class="font-medium text-dark-medium">Date of Birth:</td>
-                        <td><input type="date" value="${user.dob.split('T')[0]}" id="dob-input"></td></tr>` : ''}
+                        <td><input type="date" required value="${user.dob.split('T')[0]}" id="dob-input"></td></tr>` : ''}
                     <tr><td class="font-medium text-dark-medium">Email:</td>
                         <td><input type="email" required value="${user.email}" id="email-input"></td></tr>
                     <tr><td class="font-medium text-dark-medium">Phone Number:</td>
@@ -458,16 +458,54 @@
                 return;
             }
 
-            // Get updated values from inputs
+
+                const fullName = document.getElementById('name-input').value.trim();
+                const jname = document.getElementById('jname-input').value.trim();
+                const rname = document.getElementById('rname-input').value.trim();
+                const gender = document.querySelector('input[name="gender"]:checked')?.value;
+                const dob = document.getElementById('dob-input')?.value.trim();
+                const email = document.getElementById('email-input').value.trim();
+                const phoneNumber = document.getElementById('phone-input').value.trim();
+
+
+            if (!fullName) {
+                alert('Name cannot be empty.');
+                return;
+            }
+            if (!jname) {
+                alert('Japan Name cannot be empty.');
+                return;
+            }
+            if (!rname) {
+                alert('Role Name cannot be empty.');
+                return;
+            }
+            if (!gender) {
+                alert('Please select a gender.');
+                return;
+            }
+            if (dob && isNaN(new Date(dob).getTime())) {
+                alert('Invalid Date of Birth.');
+                return;
+            }
+            if (!email) {
+                alert('Email cannot be empty.');
+                return;
+            }
+            if (!phoneNumber) {
+                alert('Phone Number cannot be empty.');
+                return;
+            }
+
             const updatedUser = {
                 ...currentUser,
-                fullName: document.getElementById('name-input').value,
-                jname: document.getElementById('jname-input').value || currentUser.jname,
-                rname: document.getElementById('rname-input').value || currentUser.jname,
-                gender: document.querySelector('input[name="gender"]:checked')?.value || currentUser.gender,
-                dob: document.getElementById('dob-input')?.value || currentUser.dob,
-                email: document.getElementById('email-input').value || currentUser.email,
-                phoneNumber: document.getElementById('phone-input').value || currentUser.phoneNumber
+                fullName,
+                jname,
+                rname,
+                gender,
+                dob,
+                email,
+                phoneNumber
             };
 
             // Prepare form data for user details

@@ -42,7 +42,7 @@
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
-                <a href="admin.html">
+                <a href="manager.html">
                     <div style="width: 180px; height: 70px; overflow: hidden;">
                         <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
@@ -230,35 +230,16 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="manager.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="manager.html" class="nav-link"><i class="fas fa-angle-right"></i>Manager</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="all-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                    Students</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i
-                                class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="all-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                    Teachers</a>
+                                <a href="manager.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Manager</a>
                             </li>
                         </ul>
                     </li>
@@ -279,16 +260,6 @@
                             </li>
                         </ul>
                     </li>
-
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="exam-schedule.html"><i class="fas fa-angle-right"></i>Exam
-                                    Schedule</a>
-                            </li>
-                        </ul>
-                    </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                         <ul class="nav sub-group-menu">
@@ -305,12 +276,12 @@
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3>Class Routine</h3>
+                <h3>Schedule List</h3>
                 <ul>
                     <li>
-                        <a href="index.html">Home</a>
+                        <a href="manager.html">Home</a>
                     </li>
-                    <li>Routine</li>
+                    <li>Schedule</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
@@ -486,13 +457,9 @@
 
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-
     if (userDetails) {
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
-        const userId = userDetails.id;
-        document.getElementById("userId").value = userId;
-
 
         // Populate Name
         userFullNameElements.forEach(element => {
@@ -504,35 +471,13 @@
             element.textContent = userDetails.roleName;
         });
 
-        // Map table cells to corresponding data fields
-        const tableMapping = {
-            "Id:": userDetails.id || 'N/A',
-            "Japan Name:": userDetails.jname || 'N/A',
-            "Gender:": userDetails.gender || 'N/A',
-            "Date Of Birth:": userDetails.dob || 'N/A',
-            "E-mail:": userDetails.email || 'N/A',
-            "Phone:": userDetails.phoneNumber || 'N/A'
-        };
+        const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
 
-        // Populate table cells based on tableMapping
-        const tableRows = document.querySelectorAll('#userInfoTable tbody tr');
-        tableRows.forEach(row => {
-            const labelCell = row.querySelector('td:first-child');
-            const valueCell = row.querySelector('td:nth-child(2)');
-            const fieldLabel = labelCell.textContent.trim();
-
-            if (tableMapping.hasOwnProperty(fieldLabel)) {
-                valueCell.textContent = tableMapping[fieldLabel];
+        imgContainers.forEach(container => {
+            const imgElement = container.querySelector('img'); // Select the <img> inside the div
+            if (imgElement) {
+                imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
             }
-
-            const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
-
-            imgContainers.forEach(container => {
-                const imgElement = container.querySelector('img'); // Select the <img> inside the div
-                if (imgElement) {
-                    imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
-                }
-            });
         });
     } else {
         console.error("User details not found in sessionStorage");
