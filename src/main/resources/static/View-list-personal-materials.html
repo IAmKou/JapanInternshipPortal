@@ -300,12 +300,8 @@
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
-                                        Schedule</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="Update-student-mark-report.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Exam Grades</a>
+                                    <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();">
+                                        <i class="fas fa-angle-right"></i>Personal Mark Report</a>
                                 </li>
                             </ul>
                         </li>
@@ -497,12 +493,12 @@
 
                     // Duyệt qua tất cả materials để hiển thị
                     data.forEach(material => {
-                        // Kiểm tra nếu id không tồn tại
-                        const materialId = material.material.id || "unknown";
-                        const safeTitle = material.material && material.material.title ? material.material.title : "No material available";
-                        const materialId1 = material.id || "unknown";
+                        const materialId = material.material?.id || "unknown";
+                        const safeTitle = material.material?.title || "No material available";
+                        const personalMaterialId = material.id || "unknown";
+
                         console.log("Material ID:", materialId);
-                        console.log("Personal Material ID:", materialId1);
+                        console.log("Personal Material ID:", personalMaterialId);
                         console.log("Material Title:", safeTitle);
 
                         // Tạo một dòng mới trong bảng
@@ -523,7 +519,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                    <button type="button" class="dropdown-item" onclick="openDeleteModal('${materialId1}')">
+                    <button type="button" class="dropdown-item" onclick="openDeleteModal('${personalMaterialId}')">
                         <i class="fas fa-trash text-orange-peel"></i>Remove
                     </button>
                 </div>
@@ -563,8 +559,8 @@
         }
 
         // Hàm mở modal và lưu materialId của tài liệu cần xóa
-        function openDeleteModal(materialId1) {
-            selectedMaterialId = materialId1;  // Lưu lại ID của tài liệu cần xóa
+        function openDeleteModal(personalMaterialId) {
+            selectedMaterialId = personalMaterialId;  // Lưu lại ID của tài liệu cần xóa
             $('#confirmationModal').modal('show');  // Hiển thị modal
         }
 
@@ -574,13 +570,13 @@
         });
 
         // Hàm xóa tài liệu
-        function deleteMaterial(materialId1) {
-            fetch(`/studentMaterials/delete/${materialId1}`, {
+        function deleteMaterial(personalMaterialId) {
+            fetch(`/studentMaterials/delete/${personalMaterialId}`, {
                 method: 'DELETE',
             })
                 .then(response => {
                     if (response.ok) {
-                        alert("Xóa tài liệu thành công!");
+                        alert("Delete Material Successfully!");
                         fetchMaterials();  // Tải lại danh sách sau khi xóa thành công
                     } else {
                         response.text().then(text => alert(text));  // Hiển thị thông báo lỗi chi tiết từ backend

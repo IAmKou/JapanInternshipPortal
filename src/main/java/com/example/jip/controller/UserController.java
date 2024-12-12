@@ -106,7 +106,7 @@ public class UserController {
         Optional<Account> accountOpt = accountRepository.findByUsername(currentUsername);
         if (accountOpt.isPresent()) {
             if (!newPassword.equals(confirmPassword)) {
-                return new ModelAndView("redirect:/reset-password.html?message=Confirm password does not match.");
+                return new ModelAndView("redirect:/reset-password.html?message=Confirm password does not match new password.");
             }
 
             Account account = accountOpt.get();

@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,7 +35,8 @@ public class Material {
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
 
-
+    @OneToMany(mappedBy = "material", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<PersonalMaterial> personalMaterials = new ArrayList<>();
     public Material() {}
 
     public Material(int id, String title, String content, String img, Date created_date, Teacher teacher) {
