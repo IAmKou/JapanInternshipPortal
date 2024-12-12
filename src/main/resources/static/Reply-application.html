@@ -543,8 +543,8 @@
         event.preventDefault(); // Ngừng reload trang
 
         const applicationId = new URLSearchParams(window.location.search).get('id');
-        const status = document.getElementById("status").value;
-        const reply = document.getElementById("reply").value;
+        const status = document.getElementById("status").value.trim();
+        const reply = document.getElementById("reply").value.trim();
 
         fetch(`/application/update/${applicationId}`, {
             method: 'PUT',

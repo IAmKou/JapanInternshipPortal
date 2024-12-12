@@ -462,19 +462,20 @@
 
     </body>
     <script>
-
-
-        document.getElementById("materialForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Ngăn chặn gửi form ngay lập tức
-            $('#confirmationModal').modal('show'); // Hiển thị modal xác nhận
+        document.querySelectorAll('#materialForm input, #materialForm textarea').forEach(function(element) {
+            element.addEventListener('blur', function() {
+                this.value = this.value.trim(); // Loại bỏ khoảng trắng đầu và cuối
+            });
         });
 
-        // Hàm để gửi biểu mẫu khi người dùng nhấn "Xác nhận" trong modal
         function submitForm() {
-            $('#confirmationModal').modal('hide'); // Đóng modal
+            // Loại bỏ khoảng trắng trong tất cả các input và textarea trước khi gửi
+            document.querySelectorAll('#materialForm input, #materialForm textarea').forEach(function(element) {
+                element.value = element.value.trim(); // Loại bỏ khoảng trắng đầu và cuối
+            });
 
-            // Gửi form
-            document.getElementById("materialForm").submit();
+            $('#confirmationModal').modal('hide'); // Đóng modal
+            document.getElementById("materialForm").submit(); // Gửi form
         }
     </script>
 
