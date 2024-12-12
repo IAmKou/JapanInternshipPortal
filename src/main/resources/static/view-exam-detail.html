@@ -668,7 +668,7 @@
         // Populate modal fields
         document.getElementById("examResultId").value = examResultId;
         document.getElementById("studentName").value = studentName;
-        document.getElementById("mark").value = currentMark || 0;
+        document.getElementById("mark").value = currentMark || "N/A";
 
         // Show the modal and overlay
         document.getElementById("overlay").style.display = "block";
@@ -688,6 +688,11 @@
 
         const examResultId = document.getElementById("examResultId").value;
         const mark = document.getElementById("mark").value;
+
+        if(!mark || mark < 0 || mark > 100){
+            alert("Invalid mark. Mark should be a number between 0 and 100.");
+            return;
+        }
 
         try {
             const response = await fetch(`/examResult/update?examResultId=${examResultId}`, {

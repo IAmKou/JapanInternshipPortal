@@ -29,10 +29,19 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
 
     <style>
+        .thread-box {
+            margin-bottom: 20px; /* Thêm khoảng cách giữa các thread */
+            padding: 10px; /* Nếu muốn thêm khoảng cách nội bộ */
+            border: 1px solid #ddd; /* Thêm viền để dễ nhìn */
+            border-radius: 8px; /* Làm tròn các góc */
+            background-color: #f9f9f9; /* Màu nền sáng cho các thread */
+        }
+
         .item-title {
             display: flex;
             align-items: center;
         }
+
         .spacer {
             flex: 1;
         }
@@ -54,6 +63,7 @@
             background-color: #ccc;
             display: inline-block;
             object-fit: cover;
+            margin-right: 15px; /* Thêm khoảng cách giữa ảnh và nội dung */
         }
 
         .thread-thumbnail img {
@@ -68,6 +78,10 @@
             vertical-align: top;
             width: calc(100% - 140px);
             box-sizing: border-box;
+            padding: 10px; /* Thêm padding bên trong phần nội dung */
+            background-color: #fff; /* Màu nền cho phần nội dung */
+            border-radius: 5px; /* Làm tròn các góc của phần nội dung */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng cho phần nội dung */
         }
 
         .thread-title {
@@ -113,7 +127,6 @@
             text-align: center;
             padding-bottom: 30px;
         }
-
     </style>
 
 </head>
