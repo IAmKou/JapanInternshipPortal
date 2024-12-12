@@ -453,14 +453,6 @@
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
-                                    Schedule</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="Update-student-mark-report.html" class="nav-link"><i
-                                        class="fas fa-angle-right"></i>Exam Grades</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
                                     Exam</a>
                             </li>
@@ -571,6 +563,9 @@
                         <label for="description">Description:</label>
                         <input type="text" id="description" name="description" required/>
 
+                        <label for="create_date">Create Date:</label>
+                        <input type="date" id="create_date" name="create_date" readonly/>
+
                         <label for="end_date">End Date:</label>
                         <input type="date" id="end_date" name="end_date" required/>
 
@@ -584,7 +579,7 @@
                         <div id="assignment-files" ></div>
 
                         <label for="img">Upload Files:</label>
-                        <input type="file" id="img" name="imgFile" multiple required/>
+                        <input type="file" id="img" name="imgFile" multiple/>
 
                         <button type="submit" class="btn">Update</button>
                     </form>
@@ -726,6 +721,14 @@
             document.getElementById('end_date').value = assignment.end_date;
             document.getElementById('content').value = assignment.content;
 
+
+            // Append 'T00:00:00Z' to the date to ensure it is correctly parsed
+            const createDateString = `${assignment.created_date}T00:00:00Z`;
+            const createDate = new Date(createDateString);
+
+            document.getElementById('create_date').value = createDate.toISOString().split("T")[0];
+
+
             // Display file download links
             const files = assignment.files || [];
             const filesContainer = document.getElementById('assignment-files');
@@ -797,7 +800,20 @@
 
         const description = document.getElementById('description').value;
         const endDate = document.getElementById('end_date').value;
+        const createDate = document.getElementById('create_date').value;
         const content = document.getElementById('content').value;
+
+        if (!description || !endDate || !content) {
+            alert('Please fill in all the required fields!');
+            return; // Exit the function if validation fails
+        }
+
+        // Validation check: Ensure create_date is before end_date
+        if (new Date(createDate) > new Date(endDate)) {
+            alert('The create date cannot be later than the end date!');
+            return; // Exit the function if validation fails
+        }
+
 
         // Get selected class IDs
         const classSelect = document.getElementById('class_id');
@@ -808,6 +824,7 @@
         const formData = new FormData();
         formData.append('description', description);
         formData.append('end_date', endDate);
+        formData.append('create_date', createDate);
         formData.append('content', content);
         selectedClasses.forEach((classId) => {
             formData.append('classIds', classId);
