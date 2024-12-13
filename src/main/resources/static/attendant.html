@@ -238,7 +238,7 @@
             <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
                 <div class="mobile-sidebar-header d-md-none">
                     <div class="header-logo">
-                        <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                        <a href="teacher.html"><img src="img/logo1.png" alt="logo"></a>
                     </div>
                 </div>
                 <div class="sidebar-menu-content">
@@ -255,24 +255,12 @@
                             <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
                                         Assignment</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
                                         Assignment</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create
-                                        Thread</a>
                                 </li>
                             </ul>
                         </li>
@@ -291,20 +279,9 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
-                        </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                             <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
-                                        Schedule</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="Update-student-mark-report.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Exam Grades</a>
-                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
                                         Exam</a>
@@ -357,6 +334,14 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -367,7 +352,7 @@
                     <h3>Classes</h3>
                     <ul>
                         <li>
-                            <a href="admin.html">Home</a>
+                            <a href="teacher.html">Home</a>
                         </li>
                         <li>All Classes</li>
                     </ul>
@@ -458,51 +443,25 @@
         if (userDetails) {
             const userFullNameElements = document.querySelectorAll('.userFullName');
             const userRoleElements = document.querySelectorAll('.userRole');
-            const Img = document.getElementById('img');
-            Img.src = userDetails.img || 'img/figure/admin.jpg';
 
-            // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-            if (userDetails.roleName === "ADMIN") {
-                // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.username;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
+            // Populate Name
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
+            });
 
-                // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "none";
-            } else if (userDetails.roleName === "TEACHER") {
-                // Hiển thị đầy đủ tên và vai trò cho giáo viên
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.fullName;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
+            // Populate Role
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
 
-                // Chỉ hiển thị mục của giáo viên
-                document.getElementById("teacher-view").style.display = "block";
-                document.getElementById("student-view").style.display = "none";
-                document.getElementById("student-view1").style.display = "none";
-            } else if (userDetails.roleName === "STUDENT") {
-                // Hiển thị đầy đủ tên và vai trò cho học sinh
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.fullName;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
+            const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
 
-                // Chỉ hiển thị mục của học sinh
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "block";
-                document.getElementById("student-view1").style.display = "block";
-            } else {
-                console.warn("Role not recognized: ", userDetails.roleName);
-            }
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img'); // Select the <img> inside the div
+                if (imgElement) {
+                    imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
+                }
+            });
         } else {
             console.error("User details not found in sessionStorage");
         }
@@ -526,6 +485,17 @@
             if (userDetails && userDetails.teacherId) {
                 // Redirect to the appropriate URL with the teacherId
                 window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
+            } else {
+                console.error("Teacher ID is missing or user details not found in sessionStorage");
+            }
+        }
+        function toListAssigment() {
+            // Retrieve userDetails from sessionStorage
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+            if (userDetails && userDetails.teacherId) {
+                // Redirect to the appropriate URL with the teacherId
+                window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
             } else {
                 console.error("Teacher ID is missing or user details not found in sessionStorage");
             }
