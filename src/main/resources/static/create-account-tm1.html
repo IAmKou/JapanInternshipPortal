@@ -86,6 +86,7 @@
                         </div>
                     </div>
                 </div>
+                <div id="message" style="display: none;" class="alert alert-danger"></div>
             </form>
         </div>
     </div>
@@ -139,7 +140,7 @@
 
     // Function to validate phone number
     function isValidPhoneNumber(phone) {
-        const phoneRegex = /^0\d{10}$/; // Must start with '0' and have 5-13 digits
+        const phoneRegex = /^0\d{9}$/; // Must start with '0' and have 5-13 digits
         return phoneRegex.test(phone);
     }
 
@@ -214,6 +215,23 @@
 
         disableButton();
     });
+</script>
+<script>
+    // Function to get query parameter values
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    // Get the error message from the URL
+    const errorMessage = getQueryParam('errorMessage');
+    const messageDiv = document.getElementById('message');
+
+    // Display the error message if it exists
+    if (errorMessage) {
+        messageDiv.style.display = 'block';
+        messageDiv.innerText = errorMessage;
+    }
 </script>
 </body>
 </html>

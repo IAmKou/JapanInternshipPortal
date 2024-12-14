@@ -33,6 +33,8 @@ public class TMController {
             , @RequestParam int role
             , RedirectAttributes redirectAttributes) {
 
+
+        try {
             if (role == 3) {
                 teacherServices.createTeacher(fullname, jname, email, phoneNumber, gender, img, account_id);
                 redirectAttributes.addFlashAttribute("successMessage", "Student saved successfully!");
@@ -42,5 +44,9 @@ public class TMController {
                 redirectAttributes.addFlashAttribute("successMessage", "Student saved successfully!");
                 return new RedirectView("/account-settings.html");
             }
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addAttribute("errorMessage", e.getMessage());
+            return new RedirectView("/create-account-tm1.html");
         }
     }
+}

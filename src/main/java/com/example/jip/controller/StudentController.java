@@ -36,34 +36,47 @@ public class StudentController {
 
     @PostMapping("/save")
     public RedirectView saveStudent(
-            @RequestParam String fullname
-            , @RequestParam String japanname
-            , @RequestParam String dob
-            , @RequestParam String gender
-            , @RequestParam String email
-            , @RequestParam String phoneNumber
-            , @RequestParam(required = false) MultipartFile img
-            , @RequestParam(required = false) MultipartFile passport_img
-            , @RequestParam int account_id
-            , RedirectAttributes redirectAttributes) {
+            @RequestParam String fullname,
+            @RequestParam String japanname,
+            @RequestParam String dob,
+            @RequestParam String gender,
+            @RequestParam String email,
+            @RequestParam String phoneNumber,
+            @RequestParam(required = false) MultipartFile img,
+            @RequestParam(required = false) MultipartFile passport_img,
+            @RequestParam int account_id,
+            RedirectAttributes redirectAttributes) {
 
-        LocalDate localDate;
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            localDate = LocalDate.parse(dob, formatter);
-        } catch (DateTimeParseException e) {
-            RedirectView redirectView = new RedirectView("/error");
-            redirectView.addStaticAttribute("message", "Invalid date format. Use yyyy-MM-dd.");
-            return redirectView;
+            // Parse the date
+            LocalDate localDate;
+            Date date;
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                localDate = LocalDate.parse(dob, formatter);
+                date = Date.valueOf(localDate);
+            } catch (DateTimeParseException e) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Invalid date format. Use yyyy-MM-dd.");
+                return new RedirectView("/account-settings.html");
+            }
+
+            // Call the service to create the student
+            studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, passport_img, account_id);
+            redirectAttributes.addFlashAttribute("successMessage", "Student saved successfully!");
+
+        } catch (IllegalArgumentException e) {
+            // Handle custom errors from the service
+            redirectAttributes.addAttribute("errorMessage", e.getMessage());
+            return new RedirectView("/create-account-student.html");
+        } catch (Exception e) {
+            // Handle any unexpected errors
+            redirectAttributes.addAttribute("errorMessage", "An unexpected error occurred. Please try again.");
+            return new RedirectView("/create-account-student.html");
         }
 
-
-        Date date = Date.valueOf(localDate);
-        studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, passport_img, account_id);
-        redirectAttributes.addFlashAttribute("successMessage", "Student saved successfully!");
+        // Redirect back to the account settings page
         return new RedirectView("/account-settings.html");
     }
-
     @GetMapping("/get")
     public List<StudentDTO> getTopStudents() {
         return studentRepository.findTop30UnassignedStudents();
