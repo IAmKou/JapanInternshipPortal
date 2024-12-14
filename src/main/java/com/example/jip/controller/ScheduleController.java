@@ -75,8 +75,7 @@ public class ScheduleController {
 
     @PostMapping("/update/{id}")
     public ResponseEntity<ScheduleDTO> updateSchedule(@PathVariable int id, @RequestBody ScheduleDTO dto) {
-
-
+        // Adjust time to add seconds if missing
         if (dto.getStartTime() != null && dto.getStartTime().toString().length() == 5) {
             String adjustedStartTime = dto.getStartTime().toString() + ":00";
             dto.setStartTime(Time.valueOf(adjustedStartTime));

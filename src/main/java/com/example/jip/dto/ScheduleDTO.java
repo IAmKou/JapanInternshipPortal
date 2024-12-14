@@ -2,7 +2,7 @@ package com.example.jip.dto;
 
 
 import com.example.jip.entity.Schedule;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 import java.sql.Date;
@@ -12,7 +12,9 @@ public class ScheduleDTO {
     private int id;
     private Schedule.dayOfWeek dayOfWeek;
     private int classId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private Time startTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private Time endTime;
     private String description;
     private String event;
