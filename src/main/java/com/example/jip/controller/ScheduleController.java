@@ -75,15 +75,33 @@ public class ScheduleController {
 
     @PostMapping("/update/{id}")
     public ResponseEntity<ScheduleDTO> updateSchedule(@PathVariable int id, @RequestBody ScheduleDTO dto) {
-        // Adjust time to add seconds if missing
-        if (dto.getStartTime() != null && dto.getStartTime().toString().length() == 5) {
-            String adjustedStartTime = dto.getStartTime().toString() + ":00";
-            dto.setStartTime(Time.valueOf(adjustedStartTime));
+
+        // Adjust startTime if it's non-null and not empty
+        if (dto.getStartTime() != null && !dto.getStartTime().toString().trim().isEmpty()) {
+            if (dto.getStartTime().toString().length() == 5) {
+                String adjustedStartTime = dto.getStartTime().toString() + ":00";
+                try {
+                    dto.setStartTime(Time.valueOf(adjustedStartTime));
+                } catch (IllegalArgumentException e) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+                }
+            }
+        } else {
+            dto.setStartTime(null); // Set to null if empty
         }
 
-        if (dto.getEndTime() != null && dto.getEndTime().toString().length() == 5) {
-            String adjustedEndTime = dto.getEndTime().toString() + ":00";
-            dto.setEndTime(Time.valueOf(adjustedEndTime));
+        // Adjust endTime if it's non-null and not empty
+        if (dto.getEndTime() != null && !dto.getEndTime().toString().trim().isEmpty()) {
+            if (dto.getEndTime().toString().length() == 5) {
+                String adjustedEndTime = dto.getEndTime().toString() + ":00";
+                try {
+                    dto.setEndTime(Time.valueOf(adjustedEndTime));
+                } catch (IllegalArgumentException e) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+                }
+            }
+        } else {
+            dto.setEndTime(null); // Set to null if empty
         }
 
         try {
@@ -95,6 +113,7 @@ public class ScheduleController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
 
     @GetMapping("/getS/{studentId}")
     public List<StudentScheduleDTO> getStudentSchedule(@PathVariable int studentId) {

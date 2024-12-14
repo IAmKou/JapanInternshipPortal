@@ -607,16 +607,31 @@
 
                     // Save button functionality
                     saveButton.addEventListener('click', () => {
+                        // Get the updated schedule data from the input fields
                         const updatedSchedule = {
                             id: item.id,
                             className: cnCell.querySelector('input').value,
                             location: locationCell.querySelector('input').value,
-                            startTime: stCell.querySelector('input').value + ':00',
-                            endTime: etCell.querySelector('input').value + ':00',
+                            startTime: stCell.querySelector('input').value,
+                            endTime: etCell.querySelector('input').value,
                             description: noteCell.querySelector('input').value,
                             event: eventCell.querySelector('input').value,
                         };
 
+                 
+                        if (updatedSchedule.startTime.trim() === "") {
+                            updatedSchedule.startTime = null;
+                        } else {
+                            updatedSchedule.startTime = updatedSchedule.startTime + ':00'; // Add ":00" for time format
+                        }
+
+                        if (updatedSchedule.endTime.trim() === "") {
+                            updatedSchedule.endTime = null;
+                        } else {
+                            updatedSchedule.endTime = updatedSchedule.endTime + ':00'; // Add ":00" for time format
+                        }
+
+                        // Send the updated schedule to the backend
                         fetch(`/schedule/update/${item.id}`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
