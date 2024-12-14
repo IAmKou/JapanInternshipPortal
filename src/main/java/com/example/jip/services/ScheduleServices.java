@@ -93,7 +93,20 @@ public class ScheduleServices {
             // Parse date to SQL Date
             Date sqlDate = Date.valueOf(date);
 
+            // Validation: Event null → start_time & end_time cannot be null
+            if ((event == null || event.isBlank()) && (rawStartTime == null || rawStartTime.isBlank() || rawEndTime == null || rawEndTime.isBlank())) {
+                errors.add("Row " + (row.getRowNum() + 1) + ": Start time and End time are required when event is not specified.");
+                return;
+            }
 
+
+            if (event != null && !event.isBlank()) {
+                if ((rawStartTime != null && !rawStartTime.isBlank() && (rawEndTime == null || rawEndTime.isBlank()))
+                        || (rawEndTime != null && !rawEndTime.isBlank() && (rawStartTime == null || rawStartTime.isBlank()))) {
+                    errors.add("Row " + (row.getRowNum() + 1) + ": Both start time and end time must be filled together when event is specified.");
+                    return;
+                }
+            }
 
             // Create schedule
             Schedule schedule = new Schedule();
@@ -102,6 +115,7 @@ public class ScheduleServices {
             schedule.setDay_of_week(dow);
             schedule.setDescription(description);
             schedule.setEvent(event);
+
             if (location != null && !location.isBlank()) schedule.setLocation(location);
             if (rawStartTime != null && !rawStartTime.isBlank())
                 schedule.setStart_time(Time.valueOf(rawStartTime + ":00"));
@@ -148,7 +162,7 @@ public class ScheduleServices {
             Class clasz = classRepository.findByName(className)
                     .orElseThrow(() -> new IllegalArgumentException("Class not found: " + className));
             schedule.setClasz(clasz);
-        }else{
+        } else {
             throw new IllegalArgumentException("Class cannot be null or empty.");
         }
 
@@ -169,16 +183,15 @@ public class ScheduleServices {
 
 
     private void validateSchedule(Schedule schedule) {
-        // If start_time or end_time are null, check if event or description is provided
         if ((schedule.getStart_time() == null || schedule.getEnd_time() == null) &&
-                (schedule.getEvent() == null || schedule.getDescription() == null ||
-                        (schedule.getEvent().isBlank() && schedule.getDescription().isBlank()))) {
+                (schedule.getEvent() == null ||
+                        (schedule.getEvent().isBlank()))) {
             throw new IllegalArgumentException("Start time and end time can be null only if event or description is provided.");
         }
 
         // If event or description is provided, check if location is null
-        if ((schedule.getEvent() != null || schedule.getDescription() != null) &&
-                (schedule.getEvent().isBlank() && schedule.getDescription().isBlank()) &&
+        if ((schedule.getEvent() != null) &&
+                (schedule.getEvent().isBlank()) &&
                 schedule.getLocation() == null) {
             throw new IllegalArgumentException("Location can be null only if event or description is provided.");
         }
