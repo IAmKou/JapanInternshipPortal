@@ -8,12 +8,9 @@ import com.example.jip.entity.Student.Gender;
 import com.example.jip.repository.AccountRepository;
 import com.example.jip.repository.RoleRepository;
 import com.example.jip.repository.StudentRepository;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFPictureData;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ooxml.POIXMLDocumentPart;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -69,65 +68,129 @@ public class AccountImportServices {
         }
 
         try {
-            String username = row.getCell(0).getStringCellValue();
-            String password = row.getCell(1).getStringCellValue();
+            DataFormatter dataFormatter = new DataFormatter(); // Ensure consistent parsing of cell data
 
-            int roleId = row.getCell(2).getCellType() == CellType.NUMERIC
-                    ? (int) row.getCell(2).getNumericCellValue()
-                    : Integer.parseInt(row.getCell(2).getStringCellValue());
-
-            String fullName = row.getCell(3).getStringCellValue();
-            String japanname = row.getCell(4).getStringCellValue();
-
-            LocalDate dob = row.getCell(5).getCellType() == CellType.NUMERIC
-                    ? row.getCell(5).getLocalDateTimeCellValue().toLocalDate()
-                    : LocalDate.parse(row.getCell(5).getStringCellValue());
-
-
-            Gender gender = Gender.valueOf(row.getCell(7).getStringCellValue());
-
-            String phoneNumber = row.getCell(8).getCellType() == CellType.NUMERIC
-                    ? String.valueOf((long) row.getCell(8).getNumericCellValue())
-                    : row.getCell(8).getStringCellValue();
-
-            Cell emailCell = row.getCell(10);
-            String email = (emailCell == null || emailCell.getCellType() == CellType.BLANK)
-                    ? null
-                    : emailCell.getStringCellValue().trim();
-            if (email == null || email.isEmpty()) {
-                errors.add("Missing email in row " + (row.getRowNum() + 1));
+            // Username
+            String username = dataFormatter.formatCellValue(row.getCell(0)).trim();
+            if (username.isEmpty()) {
+                errors.add("Missing username at row " + (row.getRowNum() + 1));
                 return;
             }
 
-            if (isDuplicate(username, email, phoneNumber, errors)) return;
-            // Extract image path or URL from Excel
-            String passportUrl = row.getCell(6).getStringCellValue();
-            String passport = uploadImageToCloudinary(passportUrl, workbook);
+            // Password
+            String password = dataFormatter.formatCellValue(row.getCell(1)).trim();
+            if (password.isEmpty()) {
+                errors.add("Missing password at row " + (row.getRowNum() + 1));
+                return;
+            }
+
+            // Role ID
+            int roleId;
+            try {
+                roleId = Integer.parseInt(dataFormatter.formatCellValue(row.getCell(2)).trim());
+            } catch (NumberFormatException e) {
+                errors.add("Invalid role ID at row " + (row.getRowNum() + 1));
+                return;
+            }
+
+            // Full Name
+            String fullName = dataFormatter.formatCellValue(row.getCell(3)).trim();
+            if (fullName.isEmpty()) {
+                errors.add("Missing full name at row " + (row.getRowNum() + 1));
+                return;
+            }
+
+            // Japan Name
+            String japanname = dataFormatter.formatCellValue(row.getCell(4)).trim();
+            if (japanname.isEmpty()) {
+                errors.add("Missing Japan name at row " + (row.getRowNum() + 1));
+                return;
+            }
+
+            // Date of Birth
+            LocalDate dob;
+            Cell dobCell = row.getCell(5);
+            if (dobCell == null) {
+                errors.add("Missing date of birth at row " + (row.getRowNum() + 1));
+                return;
+            }
+            if (dobCell.getCellType() == CellType.NUMERIC) {
+                dob = dobCell.getLocalDateTimeCellValue().toLocalDate();
+            } else if (dobCell.getCellType() == CellType.STRING) {
+                try {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    dob = LocalDate.parse(dobCell.getStringCellValue().trim(), formatter);
+                } catch (Exception e) {
+                    errors.add("Invalid date format at row " + (row.getRowNum() + 1));
+                    return;
+                }
+            } else {
+                errors.add("Invalid date of birth format at row " + (row.getRowNum() + 1));
+                return;
+            }
+
+
+            // Gender
+            Gender gender;
+            try {
+                gender = Gender.valueOf(dataFormatter.formatCellValue(row.getCell(7)).trim());
+            } catch (IllegalArgumentException e) {
+                errors.add("Invalid gender at row " + (row.getRowNum() + 1));
+                return;
+            }
+
+            // Phone Number
+            String phoneNumber = dataFormatter.formatCellValue(row.getCell(8)).trim();
+            if (phoneNumber.isEmpty()) {
+                errors.add("Missing phone number at row " + (row.getRowNum() + 1));
+                return;
+            }
+
+
+            // Email
+            String email = dataFormatter.formatCellValue(row.getCell(10)).trim();
+            if (email.isEmpty()) {
+                errors.add("Missing email at row " + (row.getRowNum() + 1));
+                return;
+            }
             String imgPath = row.getCell(9).getStringCellValue(); // Assuming the image is in column 9
-            String imgUrl = uploadImageToCloudinary(imgPath, workbook); // Pass workbook to extract embedded images
+            String passportUrl = row.getCell(6).getStringCellValue();
 
+            // Validate fields
+            if (validateColumn(username, password, email, phoneNumber, String.valueOf(gender), fullName, japanname, errors, row.getRowNum())) {
+                return;
+            }
+            if (isDuplicate(username, email, phoneNumber, errors)) {
+                return;
+            }
 
+            // Upload images to Cloudinary
+            String imgUrl = uploadImageToCloudinary(imgPath, workbook);
+            String passport = uploadImageToCloudinary(passportUrl, workbook);
 
+            // Find role
             Optional<Role> roleOpt = roleRepository.findById(roleId);
             if (roleOpt.isEmpty()) {
                 errors.add("Role ID " + roleId + " does not exist for user " + username);
                 return;
             }
 
+            // Save account
             Account account = new Account();
             account.setUsername(username);
             account.setPassword(passwordEncoder.encode(password));
             account.setRole(roleOpt.get());
             accountRepository.save(account);
 
+            // Save student
             Student student = new Student();
             student.setFullname(fullName);
             student.setJapanname(japanname);
-            student.setDob(java.sql.Date.valueOf(dob));
+            student.setDob(Date.valueOf(dob));
             student.setPassport(passport);
             student.setGender(gender);
             student.setPhoneNumber(phoneNumber);
-            student.setImg(imgUrl);  // Save Cloudinary URL for the image
+            student.setImg(imgUrl);
             student.setEmail(email);
             student.setAccount(account);
             student.setMark(false);
@@ -137,6 +200,7 @@ public class AccountImportServices {
             errors.add("Failed to process row: " + (row.getRowNum() + 1) + " due to: " + e.getMessage());
         }
     }
+
 
     private String uploadImageToCloudinary(String imgPath, XSSFWorkbook workbook) {
         try {
@@ -150,7 +214,7 @@ public class AccountImportServices {
             //Em luong co the check lai ham vs sua lai file excel nhe, e vinh test add dc vao file r
             if (imageBytes != null) {
                 MultipartFile imageFile = new MockMultipartFile("file", "image.jpg", "image/jpeg", imageBytes);
-                CloudinaryResponse response = cloudinaryService.uploadFileToFolder(imageFile, "Account/" ); // Upload to Cloudinary and return URL
+                CloudinaryResponse response = cloudinaryService.uploadFileToFolder(imageFile, "Account/"); // Upload to Cloudinary and return URL
                 return response.getUrl();
             }
 
@@ -163,6 +227,7 @@ public class AccountImportServices {
     private String sanitizeFolderName(String folderName) {
         return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim().replace(" ", "_");
     }
+
     private byte[] getImageBytesFromExcel(XSSFWorkbook workbook) {
         for (XSSFPictureData pictureData : workbook.getAllPictures()) {
             try {
@@ -173,6 +238,7 @@ public class AccountImportServices {
         }
         return null;  // If no image is found
     }
+
 
     private boolean isRowEmpty(Row row) {
         for (int i = 0; i <= 10; i++) {
@@ -199,4 +265,56 @@ public class AccountImportServices {
         }
         return hasError;
     }
+
+    private boolean validateColumn(String username, String password, String email, String phoneNumber,
+                                   String gender, String fullname, String japanname, List<String> errors, int rowNum) {
+        boolean isValid = true;
+
+        // Validate username
+        if (username == null || username.isEmpty()) {
+            errors.add("Row " + rowNum + ": Username cannot be null or empty.");
+            isValid = false;
+        }
+
+        // Validate password
+        if (password == null || password.length() < 6) {
+            errors.add("Row " + rowNum + ": Password must be at least 6 characters long.");
+            isValid = false;
+        }
+
+        // Validate email
+        if (email == null ) {
+            errors.add("Row " + rowNum + ": Email can't be nu;;");
+            isValid = false;
+        }
+
+        // Validate phone number
+        if (phoneNumber == null || !phoneNumber.matches("^0\\d{9,}$")) {
+            errors.add("Row " + rowNum + ": Phone number must start with '0' and have at least 10 digits.");
+            isValid = false;
+        }
+
+        // Validate gender
+        if (gender == null || gender.isEmpty()) {
+            errors.add("Row " + rowNum + ": Gender cannot be null or empty.");
+            isValid = false;
+        }
+
+        // Validate full name
+        if (fullname == null || fullname.isEmpty()) {
+            errors.add("Row " + rowNum + ": Full name cannot be null or empty.");
+            isValid = false;
+        }
+
+        // Validate Japanese name
+        if (japanname == null || japanname.isEmpty()) {
+            errors.add("Row " + rowNum + ": Japanese name cannot be null or empty.");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+
+
 }
