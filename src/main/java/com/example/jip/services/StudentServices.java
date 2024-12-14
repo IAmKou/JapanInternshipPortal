@@ -58,6 +58,7 @@ public class StudentServices {
         student.setPassport(passUrl);
         student.setAccount(accountOpt.get());
         student.setMark(false);
+        
 
         // Save the student to the database
         Student savedStudent = studentRepository.save(student);
