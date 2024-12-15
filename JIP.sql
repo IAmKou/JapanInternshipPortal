@@ -75,8 +75,8 @@ CREATE TABLE Schedule (
     Date date,
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') NOT NULL,
     class_id INT,
-    start_time TIME NOT NULL,
-    end_time TIME NOT NULL,
+    start_time TIME NULL,
+    end_time TIME NULL,
     description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
     event VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
     location varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
@@ -121,12 +121,11 @@ CREATE TABLE Student_assignment (
 
 CREATE TABLE Exam (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    student_id INT,
-    block INT NOT NULL,
-    exam_name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-    mark DECIMAL(5,2) NOT NULL,
-    date DATE NOT NULL,
-    FOREIGN KEY (student_id) REFERENCES Student(Id)
+    teacher_id INT,
+    exam_name VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    content longtext character set utf8mb4 COLLATE utf8mb4_unicode_ci not null ,
+    exam_date DATE NOT NULL,
+    FOREIGN KEY (teacher_id) REFERENCES teacher(Id)
 );
 
 CREATE TABLE Mark_report (

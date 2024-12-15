@@ -398,13 +398,14 @@
         <div class="card-body">
           <div class="heading-layout1">
             <div class="item-title">
-              <h2 class="text-dark-medium font-medium">Your Submittion</h2>
+              <h2 class="text-dark-medium font-medium">Your Submission</h2>
 
             </div>
           </div>
 
           <div class="single-info-details">
             <form class="new-added-form" action="javascript:void(0);" onsubmit="updateAssignment(event)">
+              <div id="statusMessage" class="alert alert-info" style="display: none;"></div>
               <div class="row">
 
                 <div class="col-xl-8 col-lg-6 col-12 form-group">
@@ -422,10 +423,11 @@
                 </div>
 
                 <div class="col-12 form-group mg-t-8">
-                  <button type="submit" onclick="updateAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Update</button>
+                  <button type="submit" onclick="updateAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" id="submitBtn">Update</button>
                 </div>
               </div>
             </form>
+
           </div>
         </div>
       </div>
@@ -527,10 +529,19 @@
       // Populate form fields with the fetched data
       document.getElementById('description').value = studentAssignment.description;
       document.getElementById('content').value = studentAssignment.content;
-
       // Format date to yyyy-MM-dd for input fields
       const formattedDate = new Date(studentAssignment.date).toISOString().split("T")[0];
       document.getElementById('created_date').value = formattedDate;
+
+      const status = studentAssignment.status;
+
+      if(status == 'MARKED'){
+        document.getElementById('statusMessage').textContent = 'This assignment has been marked and cannot be updated.';
+        document.getElementById('statusMessage').style.display = 'block';
+        document.getElementById('description').disabled = true;
+        document.getElementById('content').disabled = true;
+        document.getElementById('submitBtn').disabled = true;
+      }
 
     } catch (error) {
       console.error("Error loading StudentAssignment details:", error);

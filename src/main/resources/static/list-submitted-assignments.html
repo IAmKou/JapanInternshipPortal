@@ -378,7 +378,7 @@
                         <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="Send-application-student.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
                                     application</a>
                             </li>
 
@@ -449,22 +449,7 @@
                             </tr>
                             </thead>
                             <tbody id="submittedAssignment_list">
-                            <!--                            <tr>-->
-                            <!--                                <td>abc</td>-->
-                            <!--                                <td>12.02.2019</td>-->
-                            <!--                                <td>-->
-                            <!--                                    <div class="dropdown">-->
-                            <!--                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">-->
-                            <!--                                            <span class="flaticon-more-button-of-three-dots"></span>-->
-                            <!--                                        </a>-->
-                            <!--                                        <div class="dropdown-menu dropdown-menu-right">-->
-                            <!--                                            <a class="dropdown-item" href="#"><i class="fas fa-info-circle text-orange-peel"></i>Detail</a>-->
-                            <!--                                        </div>-->
-
-                            <!--                                    </div>-->
-                            <!--                                </td>-->
-                            <!--                            </tr>-->
-
+                            <!-- Assignment data will be inserted here -->
                             </tbody>
                         </table>
                     </div>
@@ -510,6 +495,8 @@
 <script src="js/main.js"></script>
 
 <script>
+
+    let status = null;
     async function fetchAndDisplaySubmittedAssignments() {
         try {
             const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -554,6 +541,7 @@
 
             submittedAssignments.forEach(submittedAssignment => {
                 const row = document.createElement('tr');
+                const isMarked = submittedAssignment.status === "MARKED";
                 row.innerHTML = `
                 <td>
                     <a href="/submited-assignment-detail.html?id=${submittedAssignment.id}" target="_blank">
@@ -568,10 +556,16 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                             <span class="flaticon-more-button-of-three-dots"></span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" onclick="openDeleteConfirmModal(${submittedAssignment.id})">
-                                <i class="fas fa-times text-orange-red"></i>Delete
-                            </a>
+                         <div class="dropdown-menu dropdown-menu-right">
+                            ${isMarked ? `
+                                <span class="dropdown-item text-muted">
+                                    <i class="fas fa-ban text-gray"></i> Delete (Not Allowed)
+                                </span>
+                            ` : `
+                                <a class="dropdown-item" onclick="openDeleteConfirmModal(${submittedAssignment.id})">
+                                    <i class="fas fa-times text-orange-red"></i> Delete
+                                </a>
+                            `}
                         </div>
                     </div>
                 </td>
