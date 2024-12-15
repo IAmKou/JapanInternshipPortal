@@ -6,9 +6,12 @@ import com.example.jip.services.ReportServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -19,6 +22,9 @@ public class ReportController {
 
     @Autowired
     private ReportServices reportServices;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
 
     @PostMapping("/create")
@@ -37,5 +43,13 @@ public class ReportController {
         return reportRepository.findAll().stream()
                 .map(ReportDTO::new)
                 .collect(Collectors.toList());
+    }
+    @GetMapping("/counts")
+    public Map<String, Long> getCounts() {
+        Map<String, Long> counts = new HashMap<>();
+        counts.put("students", jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Student", Long.class));
+        counts.put("teachers", jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Teacher", Long.class));
+        counts.put("managers", jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Manager", Long.class));
+        return counts;
     }
 }
