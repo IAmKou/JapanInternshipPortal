@@ -74,8 +74,8 @@ public class ApplicationController {
                     teacherDTO.setId(teacher.getId());
                     applicationDTO.setTeacher(teacherDTO);
                 } else {
-                    redirectAttributes.addFlashAttribute("error", "Teacher with ID " + teacherId + " not found.");
-                    return new RedirectView("/create");  // Chuyển hướng lại nếu lỗi
+                    redirectAttributes.addAttribute("error", "Teacher with ID " + teacherId + " not found.");
+                    return new RedirectView("/Send-application.html");  // Chuyển hướng lại nếu lỗi
                 }
             } else if (studentId != null) {
                 Optional<Student> studentOptional = studentRepository.findByAccount_id(studentId);
@@ -85,14 +85,14 @@ public class ApplicationController {
                     studentDTO.setId(student.getId());
                     applicationDTO.setStudent(studentDTO);
                 } else {
-                    redirectAttributes.addFlashAttribute("error", "Student with ID " + studentId + " not found.");
-                    return new RedirectView("/create");  // Chuyển hướng lại nếu lỗi
+                    redirectAttributes.addAttribute("error", "Student with ID " + studentId + " not found.");
+                    return new RedirectView("/Send-application.html");  // Chuyển hướng lại nếu lỗi
                 }
             }
 
             if (teacherId == null && studentId == null) {
-                redirectAttributes.addFlashAttribute("error", "Both Teacher ID and Student ID must be provided.");
-                return new RedirectView("/create");  // Chuyển hướng lại nếu thiếu ID
+                redirectAttributes.addAttribute("error", "Both Teacher ID and Student ID must be provided.");
+                return new RedirectView("/Send-application.html");  // Chuyển hướng lại nếu thiếu ID
             }
 
             applicationDTO.setStatus(ApplicationDTO.Status.Pending); // Sử dụng setter
@@ -103,12 +103,12 @@ public class ApplicationController {
             Application savedApplication = applicationServices.createApplication(applicationDTO);
 
             // Trả về redirect với thông báo thành công
-            redirectAttributes.addFlashAttribute("message", "Application '" + applicationDTO.getCategory() + "' created successfully with ID: " + savedApplication.getId());
+            redirectAttributes.addAttribute("message", "Application '" + applicationDTO.getCategory() + "' created successfully with ID: " + savedApplication.getId());
             return new RedirectView("/View-my-application.html");  // Chuyển hướng thành công
 
         } catch (RuntimeException e) {
-            redirectAttributes.addFlashAttribute("error", "Failed to create application: " + e.getMessage());
-            return new RedirectView("/create");  // Chuyển hướng nếu có lỗi
+            redirectAttributes.addAttribute("error", "Failed to create application: " + e.getMessage());
+            return new RedirectView("/Send-application.html");  // Chuyển hướng nếu có lỗi
         }
     }
 

@@ -420,7 +420,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                    <button type="button" class="btn btn-primary" onclick="submitForm()">Xác nhận</button>
+                                    <button type="button" class="btn btn-primary" onclick="createForm()">Xác nhận</button>
                                 </div>
                             </div>
                         </div>
@@ -454,24 +454,27 @@
         <script src="js/main.js"></script>
 
     </body>
-    <script>
-        document.getElementById("materialForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Ngăn chặn gửi form ngay lập tức
-            $('#confirmationModal').modal('show'); // Hiển thị modal xác nhận
-        });
+<script>
 
-        // Hàm để gửi biểu mẫu khi người dùng nhấn "Xác nhận" trong modal
-        function submitForm() {
-            $('#confirmationModal').modal('hide'); // Đóng modal
 
-            // Gửi form
-            document.getElementById("materialForm").submit();
-        }
-    </script>
+    document.getElementById("materialForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Ngăn chặn gửi form ngay lập tức
+        $('#confirmationModal').modal('show'); // Hiển thị modal xác nhận
+    });
+
+    // Hàm để gửi biểu mẫu khi người dùng nhấn "Xác nhận" trong modal
+    function createForm() {
+        $('#confirmationModal').modal('hide'); // Đóng modal
+
+        // Gửi form
+        document.getElementById("materialForm").submit();
+    }
+</script>
 
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
     if (userDetails) {
+        document.getElementById('userId').value = userDetails.id;
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
 

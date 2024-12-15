@@ -78,8 +78,8 @@
                                 <h5 class="item-title userFullName"></h5>
                                 <span class="userRole"></span>
                             </div>
-                            <div class="admin-img">
-                                <img alt="Admin" src="img/figure/admin.jpg">
+                            <div class="admin-img img">
+                                <img src="" style="width: 50px; height: 50px" alt="Admin">
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -252,33 +252,30 @@
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                             <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                <li class="nav-item" id="teacher-view12">
+                                    <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
                                         Assignment</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" id="teacher-view13">
                                     <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
                                         Assignment</a>
                                 </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
+                                <li class="nav-item" id="student-view11">
+                                    <a href="list-student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create
-                                        Thread</a>
+                                <li class="nav-item" id="student-view12">
+                                    <a href="list-submitted-assignments.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Submitted Assignment</a>
                                 </li>
                             </ul>
                         </li>
+
                         <li class="nav-item sidebar-nav-item">
-                            <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
+                            <a href="javascript:void(0);" class="nav-link" onclick="submitForm();" id="student-view15"><i
+                                    class="flaticon-shopping-list"></i><span>Schedule</span></a>
+                            <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();" id="teacher-view15"><i
                                     class="flaticon-shopping-list"></i><span>Schedule</span></a>
                         </li>
-                        <li class="nav-item sidebar-nav-item">
+                        <li class="nav-item sidebar-nav-item" id="teacher-view14">
                             <a href="#" class="nav-link"><i
                                     class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
                             <ul class="nav sub-group-menu">
@@ -289,27 +286,21 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
-                        </li>
+
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                            <ul class="nav sub-group-menu ">
-                                <li class="nav-item">
-                                    <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
-                                        Schedule</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="Update-student-mark-report.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Exam Grades</a>
-                                </li>
-                                <li class="nav-item">
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item" id="teacher-view10">
                                     <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
                                         Exam</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" id="teacher-view11">
                                     <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
                                         Exam</a>
+                                </li>
+                                <li class="nav-item" id="student-view10">
+                                    <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();">
+                                        <i class="fas fa-angle-right"></i>Personal Mark Report</a>
                                 </li>
                             </ul>
                         </li>
@@ -749,52 +740,71 @@
             if (userDetails) {
                 console.log("User details:", userDetails);
 
+                // Populate ID
+                const userIdElement = document.getElementById('userId');
+                if (userIdElement) {
+                    userIdElement.value = userDetails.id;
+                }
+
                 const userFullNameElements = document.querySelectorAll('.userFullName');
                 const userRoleElements = document.querySelectorAll('.userRole');
 
-                // Kiểm tra và gán giá trị cho các phần tử
+                // Populate Name
+                userFullNameElements.forEach(element => {
+                    element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName || "Unknown";
+                });
+
+                // Populate Role
+                userRoleElements.forEach(element => {
+                    element.textContent = userDetails.roleName || "Unknown Role";
+                });
+
+                // Populate Image
+                const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+                imgContainers.forEach(container => {
+                    const imgElement = container.querySelector('img'); // Select the <img> inside the div
+                    if (imgElement) {
+                        imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
+                    }
+                });
+
+                // Role-specific UI adjustments
                 if (userFullNameElements.length && userRoleElements.length) {
                     if (userDetails.roleName === "ADMIN") {
-                        // Hiển thị thông tin cho ADMIN
-                        userFullNameElements.forEach(element => {
-                            element.textContent = userDetails.username || "Unknown Admin";
-                        });
-                        userRoleElements.forEach(element => {
-                            element.textContent = userDetails.roleName || "Unknown Role";
-                        });
-
-                        // Ẩn các mục không cần thiết
+                        // Show for ADMIN
                         document.getElementById("teacher-view").style.display = "none";
                         document.getElementById("student-view").style.display = "none";
                     } else if (userDetails.roleName === "TEACHER") {
-                        // Hiển thị thông tin cho TEACHER
-                        userFullNameElements.forEach(element => {
-                            element.textContent = userDetails.fullName || "Unknown Teacher";
-                        });
-                        userRoleElements.forEach(element => {
-                            element.textContent = userDetails.roleName || "Unknown Role";
-                        });
-
-                        // Chỉ hiển thị mục của giáo viên
+                        // Show for TEACHER
                         document.getElementById("teacher-view").style.display = "block";
                         document.getElementById("student-view").style.display = "none";
                         document.getElementById("student-view1").style.display = "none";
                         document.getElementById("teacher-view1").style.display = "block";
-                    } else if (userDetails.roleName === "STUDENT") {
-                        // Hiển thị thông tin cho STUDENT
-                        userFullNameElements.forEach(element => {
-                            element.textContent = userDetails.fullName || "Unknown Student";
-                        });
-                        userRoleElements.forEach(element => {
-                            element.textContent = userDetails.roleName || "Unknown Role";
-                        });
+                        document.getElementById("teacher-view11").style.display = "block";
+                        document.getElementById("teacher-view10").style.display = "block";
+                        document.getElementById("student-view10").style.display = "none";
+                        document.getElementById("teacher-view12").style.display = "block";
+                        document.getElementById("teacher-view13").style.display = "block";
+                        document.getElementById("student-view11").style.display = "none";
+                        document.getElementById("student-view12").style.display = "none";
+                        document.getElementById("teacher-view15").style.display = "block";
+                        document.getElementById("student-view15").style.display = "none";
 
-                        // Chỉ hiển thị mục của học sinh
+                    } else if (userDetails.roleName === "STUDENT") {
+                        // Show for STUDENT
                         document.getElementById("teacher-view").style.display = "none";
                         document.getElementById("student-view").style.display = "block";
                         document.getElementById("student-view1").style.display = "block";
                         document.getElementById("teacher-view1").style.display = "none";
-
+                        document.getElementById("teacher-view11").style.display = "none";
+                        document.getElementById("teacher-view10").style.display = "none";
+                        document.getElementById("student-view10").style.display = "block";
+                        document.getElementById("teacher-view12").style.display = "none";
+                        document.getElementById("teacher-view13").style.display = "none";
+                        document.getElementById("student-view11").style.display = "block";
+                        document.getElementById("student-view12").style.display = "block";
+                        document.getElementById("teacher-view15").style.display = "none";
+                        document.getElementById("student-view15").style.display = "block";
                     } else {
                         console.warn("Unrecognized role:", userDetails.roleName);
                     }
@@ -802,11 +812,47 @@
                     console.error("Required DOM elements are missing.");
                 }
             } else {
-                console.error("User details not found in sessionStorage.");
+                console.error("User details not found in sessionStorage");
             }
         });
     </script>
+<script>
+    function submitForm() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+
+    function toListAssigment() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+
+    function redirectSchedule() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+</script>
 </body>
 
 </html>

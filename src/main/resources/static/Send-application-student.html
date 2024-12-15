@@ -302,7 +302,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="View-my-application-student.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                    <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
                                         application</a>
                                 </li>
                             </ul>
@@ -331,6 +331,8 @@
                     </ul>
                 </div>
             </div>
+
+
             <!-- Sidebar Area End Here -->
             <div class="dashboard-content-one">
                 <!-- Breadcubs Area Start Here -->
@@ -357,9 +359,6 @@
                             </div>
                             <form id="applicationForm" method="POST" action="application/create" enctype="multipart/form-data" class="new-added-form">
                                 <div class="row">
-                                    <input type="hidden" name="teacher_id" id="teacherId" value="">
-                                    <input type="hidden" name="student_id" id="studentId" value="">
-
                                     <!-- Tên người -->
                                     <div class="col-12 form-group">
                                         <label style="font-weight: bold;">Name *</label>
@@ -370,13 +369,12 @@
                                     <div class="col-12 form-group">
                                         <label style="font-weight: bold;">Application type *</label>
                                         <select class="select2" name="category" required>
-                                            <option value="0">Please Select</option>
+                                            <option value="">Please Select</option>
                                             <option value="Đơn xin nghỉ học">Đơn xin nghỉ học</option>
                                             <option value="Đơn xin đi thực tập tại FPT Japan">Đơn xin đi thực tập</option>
                                             <option value="Các loại đơn khác">Các loại đơn khác</option>
                                             <option value="Đơn xin đổi lịch giảng dạy">Đơn xin đổi lịch giảng dạy</option>
                                             <option value="Đơn xin đổi giáo viên">Đơn xin đổi giáo viên</option>
-                                            <option value="Các loại đơn khác">Các loại đơn khác</option>
                                         </select>
                                     </div>
 
