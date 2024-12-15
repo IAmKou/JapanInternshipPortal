@@ -295,7 +295,7 @@
                             <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="Send-application-student.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                    <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
                                         application</a>
                                 </li>
 
@@ -396,6 +396,7 @@
     <script>
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
         if (userDetails) {
+            document.getElementById('userId').value = userDetails.id;
             const userFullNameElements = document.querySelectorAll('.userFullName');
             const userRoleElements = document.querySelectorAll('.userRole');
 

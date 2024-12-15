@@ -265,9 +265,8 @@
                             </div>
                             <div class="col-6">
                                 <div class="item-content">
-                                    <div class="item-title">Students</div>
-                                    <div class="item-number"><span class="counter" data-num="150000">1,50,000</span>
-                                    </div>
+                                    <div class="item-title">Accounts</div>
+                                    <div class="item-number"><span class="counter" id="accountCount">0</span></div>
                                 </div>
                             </div>
                         </div>
@@ -801,6 +800,33 @@
         console.log("Session storage cleared after logout");
     }
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const accountCountElement = document.getElementById('accountCount'); // Element để hiển thị tổng số tài khoản
+
+        fetch('/users/count') // Gọi API lấy tổng số tài khoản
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json(); // Chuyển kết quả trả về thành JSON
+            })
+            .then(totalAccounts => {
+                if (!isNaN(totalAccounts)) { // Kiểm tra xem tổng số tài khoản có phải là một số hợp lệ không
+                    accountCountElement.textContent = totalAccounts.toLocaleString(); // Định dạng số để hiển thị
+                } else {
+                    console.error('Invalid response data:', totalAccounts);
+                    accountCountElement.textContent = "0"; // Nếu không hợp lệ, hiển thị 0
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching account count:', error);
+                accountCountElement.textContent = "Error"; // Nếu có lỗi, hiển thị "Error"
+            });
+    });
+
+</script>
+
 </body>
 
 

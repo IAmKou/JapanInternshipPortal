@@ -377,7 +377,7 @@
                                 <div class="row">
                                     <input type="hidden" name="teacher_id" id="teacherId" value="">
                                     <input type="hidden" name="student_id" id="studentId" value="">
-
+                                    <div id="message" style="display: none;" class="alert alert-danger"></div>
                                     <!-- Tên người -->
                                     <div class="col-12 form-group">
                                         <label style="font-weight: bold;">Name *</label>
@@ -415,6 +415,7 @@
                                         <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
                                         <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
                                     </div>
+
                                 </div>
                             </form>
 
@@ -486,7 +487,42 @@
             userRoleElements.forEach(element => {
                 element.textContent = userDetails.roleName;
             });
+            if (userDetails.roleName === "TEACHER") {
+                // Set teacher-related values
+                document.getElementById('teacherId').value = userDetails.id;
+                document.getElementById('studentId').value = '';
+            } else if (userDetails.roleName === "STUDENT") {
+                // Set student-related values
+                document.getElementById('studentId').value = userDetails.id;
+                document.getElementById('teacherId').value = '';
+            }
+            const applicationTypeSelect = document.querySelector('.select2');
+            applicationTypeSelect.innerHTML = '';
 
+            let options = [];
+            if (userDetails.roleName === "STUDENT") {
+                options = [
+                    { value: "Đơn xin nghỉ học", text: "Đơn xin nghỉ học" },
+                    { value: "Đơn xin đi thực tập tại FPT Japan", text: "Đơn xin đi thực tập tại FPT Japan" },
+                    { value: "Các loại đơn khác", text: "Các loại đơn khác" }
+                ];
+            } else if (userDetails.roleName === "TEACHER") {
+                options = [
+                    { value: "Đơn xin đổi lịch giảng dạy", text: "Đơn xin đổi lịch giảng dạy" },
+                    { value: "Đơn xin đổi giáo viên", text: "Đơn xin đổi giáo viên" },
+                    { value: "Các loại đơn khác", text: "Các loại đơn khác" }
+                ];
+            }
+
+            options.forEach(option => {
+                const newOption = document.createElement('option');
+                newOption.value = option.value;
+                newOption.textContent = option.text;
+                applicationTypeSelect.appendChild(newOption);
+            });
+
+            // Reinitialize select2
+            $(applicationTypeSelect).trigger('change')
             const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
 
             imgContainers.forEach(container => {
@@ -535,20 +571,52 @@
         }
     </script>
 <script>
-    // Thêm sự kiện click vào nút Save
     document.querySelector('button[type="submit"]').addEventListener('click', function(event) {
-        event.preventDefault();  // Ngừng hành động mặc định của form
+        event.preventDefault();  // Stop form submission by default
 
-        // Hiển thị modal xác nhận
+        // Get the input values
+        const nameInput = document.querySelector('input[name="name"]').value;
+        const applicationTypeSelect = document.querySelector('select[name="category"]').value;
+        const reasonInput = document.querySelector('textarea[name="content"]').value;
+
+        // Validate required fields
+        if (!nameInput || applicationTypeSelect === "0" || !reasonInput) {
+            // Display an error message if required fields are missing
+            const messageDiv = document.getElementById('message');
+            messageDiv.style.display = 'block';
+            messageDiv.innerText = 'Please fill out all required fields.';
+            return;  // Stop form submission
+        }
+
+        // If fields are valid, show confirmation modal
         $('#confirmationModal').modal('show');
     });
 
-    // Thêm sự kiện click vào nút Save trong Modal
+    // Confirmation click in Modal
     document.getElementById('confirmSave').addEventListener('click', function() {
-        // Submit form khi người dùng xác nhận
+        // Submit the form if user confirms in the modal
         document.getElementById('applicationForm').submit();
     });
+
 </script>
+    <script>
+        // Function to get query parameter values
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Get the error message from the URL
+        const errorMessage = getQueryParam('error');
+        const messageDiv = document.getElementById('message');
+
+        // Display the error message if it exists
+        if (errorMessage) {
+            messageDiv.style.display = 'block';
+            messageDiv.innerText = errorMessage;
+        }
+    </script>
+
 
 </body>
 <!-- fetch user -->

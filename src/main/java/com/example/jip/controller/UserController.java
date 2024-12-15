@@ -36,6 +36,10 @@ public class UserController {
     public List<AccountDTO> getAllUsers() {
         return accountServices.getAllAccountDTOs();
     }
+    @GetMapping("/count")
+    public long getTotalAccounts() {
+        return accountRepository.count(); // Sử dụng long thay vì int
+    }
 
     @PostMapping("/{id}")
     public AccountDTO updateUser(@PathVariable int id,

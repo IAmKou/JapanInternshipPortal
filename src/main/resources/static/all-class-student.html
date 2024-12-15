@@ -81,7 +81,7 @@
                                 <span class="userRole"></span>
                             </div>
                             <div class="admin-img img">
-                                <img src="" alt="Admin">
+                                <img src="" style="width: 50px; height: 50px" alt="Admin">
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -444,25 +444,7 @@
                             row.appendChild(nos);
 
                             // Actions cell
-                            const actionsCell = document.createElement('td');
-                            const dropdown = document.createElement('div');
-                            dropdown.className = 'dropdown';
-                            const dropdownToggle = document.createElement('a');
-                            dropdownToggle.href = '#';
-                            dropdownToggle.className = 'dropdown-toggle';
-                            dropdownToggle.setAttribute('data-toggle', 'dropdown');
-                            dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
-                            dropdown.appendChild(dropdownToggle);
 
-                            const dropdownMenu = document.createElement('div');
-                            dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
-                            dropdownMenu.innerHTML = `
-                        <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                        <a class="dropdown-item" href="#"><i class="fas fa-glasses text-dark-pastel-green"></i>Delete</a>
-                    `;
-                            dropdown.appendChild(dropdownMenu);
-                            actionsCell.appendChild(dropdown);
-                            row.appendChild(actionsCell);
 
                             // Append the row to the table body
                             tableBody.appendChild(row);
