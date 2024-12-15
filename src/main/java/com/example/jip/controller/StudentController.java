@@ -1,6 +1,7 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.StudentDTO;
+import com.example.jip.dto.StudentWithClassDTO;
 import com.example.jip.dto.TeacherDTO;
 import com.example.jip.entity.Student;
 import com.example.jip.entity.Teacher;
@@ -79,7 +80,19 @@ public class StudentController {
     }
     @GetMapping("/get")
     public List<StudentDTO> getTopStudents() {
-        return studentRepository.findTop30UnassignedStudents();
+        return studentRepository.findTopUnassignedStudents();
+    }
+
+    @GetMapping("/getAllStudent")
+    public List<StudentWithClassDTO> getAllStudents() {
+        List<StudentWithClassDTO> students = listRepository.findAllStudentsWithClassInfo();
+        System.out.println(students);
+        return students;
+    }
+
+    @GetMapping("/getAllWithoutClass")
+    public List<StudentWithClassDTO> getStudentsWithoutClass() {
+        return listRepository.getStudentsWithoutClass();
     }
 
     @GetMapping("/{classId}/getAll")

@@ -153,8 +153,9 @@ public class AccountImportServices {
                 errors.add("Missing email at row " + (row.getRowNum() + 1));
                 return;
             }
-            String imgPath = row.getCell(9).getStringCellValue(); // Assuming the image is in column 9
             String passportUrl = row.getCell(6).getStringCellValue();
+            String imgPath = row.getCell(9).getStringCellValue(); // Assuming the image is in column 9
+
 
             // Validate fields
             if (validateColumn(username, password, email, phoneNumber, String.valueOf(gender), fullName, japanname, errors, row.getRowNum())) {
