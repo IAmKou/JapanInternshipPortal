@@ -7,7 +7,7 @@ import com.example.jip.entity.Teacher;
 
 import java.sql.Date;
 
-public class AccountDTO {
+public class AccountDTO extends Account {
     private Integer id;
     private String username;
     private String roleName;
