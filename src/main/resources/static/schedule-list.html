@@ -592,7 +592,7 @@
 
                     // Edit button functionality
                     editButton.addEventListener('click', () => {
-                        [cnCell, locationCell, stCell, etCell, noteCell, eventCell].forEach(cell => {
+                        [locationCell, stCell, etCell, noteCell, eventCell].forEach(cell => {
                             const input = document.createElement('input');
                             input.type = 'text';
                             input.value = cell.textContent.trim();
@@ -610,7 +610,6 @@
                         // Get the updated schedule data from the input fields
                         const updatedSchedule = {
                             id: item.id,
-                            className: cnCell.querySelector('input').value,
                             location: locationCell.querySelector('input').value,
                             startTime: stCell.querySelector('input').value,
                             endTime: etCell.querySelector('input').value,
@@ -802,12 +801,9 @@
             saveButton.addEventListener('click', () => {
                 const updatedSchedule = {
                     id: schedule.id, // Assuming you have `id` to identify the schedule
-                    className: row.querySelector('td').querySelector('input').value,
                     location: row.querySelector('td:nth-child(2)').querySelector('input').value,
-                    teacherName: row.querySelector('td:nth-child(3)').querySelector('input').value,
                     startTime: row.querySelector('td:nth-child(4)').querySelector('input').value,
                     endTime: row.querySelector('td:nth-child(5)').querySelector('input').value,
-                    date: row.querySelector('td:nth-child(6)').querySelector('input').value,
                     description: row.querySelector('td:nth-child(7)').querySelector('input').value,
                     event: row.querySelector('td:nth-child(8)').querySelector('input').value,
                 };
