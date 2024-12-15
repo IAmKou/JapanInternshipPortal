@@ -49,9 +49,6 @@ public class StudentAssignmentServices {
                .orElseThrow(() -> new RuntimeException("Assignment ID not found: " + request.getAssignment().getId()));
 
         Date today = new Date();
-        if (today.after(assignment.getEnd_date())) {
-            throw new RuntimeException("Submission is not allowed after the assignment's end date.");
-        }
 
         StudentAssignment studentAssignment = new StudentAssignment();
         studentAssignment.setDate(today);

@@ -255,8 +255,8 @@ public class AssignmentServices extends AssignmentCreationRequest {
         // Delete associated cloud resources if applicable
 
         if(assignment.getImgUrl() != null) {
-//            String folderPath = sanitizeFolderName(assignment.getImgUrl());
-            cloudinaryService.deleteFolder(assignment.getImgUrl());
+            String folderPath = sanitizeFolderName(assignment.getImgUrl());
+            cloudinaryService.deleteFolder(folderPath);
         }
 
         // Finally, delete the assignment

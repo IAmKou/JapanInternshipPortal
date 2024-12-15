@@ -398,7 +398,7 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h2 class="text-dark-medium font-medium">Submittion</h2>
+                            <h2 class="text-dark-medium font-medium">Submission</h2>
 
                         </div>
                     </div>
@@ -456,6 +456,8 @@
         document.getElementById("created_date").value = currentDate;
     });
 
+    let endAssignmentDate = null;
+
     async function fetchAssignmentDetails() {
         const urlParams = new URLSearchParams(window.location.search);
         const assignmentId = urlParams.get('id');
@@ -483,6 +485,8 @@
             document.getElementById('end-date').textContent = assignment.end_date || "N/A";
             document.getElementById('assignmentid').value = assignment.id;
 
+            endAssignmentDate =  new Date(assignment.end_date);
+            console.log(endAssignmentDate);
             // Display class names
             const classes = assignment.classes || [];
             document.getElementById('assignment-classes').textContent = classes.length > 0 ? classes.join(", ") : "No classes assigned";
@@ -525,8 +529,15 @@
         const assignmentId = formData.get('assignment_id');
         const description = formData.get('description');
         const content = formData.get('content');
+        const created_date = new Date(formData.get('created_date'));
 
-        if(!description.trim() || !content.trim()){
+        // Check if the assignment is overdue
+        if (created_date > endAssignmentDate){
+            alert('Submission date exceeds the assignment end date.');
+            window.location.href = '/list-student-assignment.html';
+        }
+
+        if (!description.trim() || !content.trim()){
             alert('Please fill in all the required fields!');
             return; // Exit the function if validation fails
         }
@@ -541,6 +552,7 @@
             console.log(`${key}: ${value}`);
         }
 
+
         try {
             const response = await fetch('/student-assignment/submit', {
                 method: 'POST',
@@ -549,12 +561,13 @@
 
             if (response.ok) {
                 alert('Assignment submitted successfully!');
-                window.location.href = '/list-student-assignment.html';
+                window.location.href = '/list-submitted-assignments.html';
             } else {
                 const errorData = await response.json();
                 alert(`Failed to submit assignment: ${errorData.message || 'Please try again.'}`);
             }
         } catch (error) {
+
             console.error('Error:', error);
             alert('An error occurred. Please try again.');
         }

@@ -515,32 +515,7 @@
 <script src="js/main.js"></script>
 <!-- fetch class -->
 <script>
-    const API_BASE_URL = '/assignment';
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
-    // if (!userDetails || !userDetails.teacherId) {
-    //     console.error('Invalid or missing userDetails in sessionStorage.');
-    //     document.getElementById('tS').textContent = 'Error';
-    //     document.getElementById('tE').textContent = 'Error';
-    //
-    // }
-
-    async function fetchTotalStudents() {
-        try {
-            const response = await fetch(`${API_BASE_URL}/getCByTid2?teacherId=${userDetails.teacherId}`);
-            console.log('Response Classes received:', response);
-            if (!response.ok) {
-                throw new Error('Failed to fetch classes');
-            }
-            const classes = await response.json();
-            const totalStudents = classes.reduce((sum, cls) => sum + cls.numberOfStudents, 0);
-            document.getElementById('tS').textContent = totalStudents.toLocaleString();
-        } catch (error) {
-            console.error('Error fetching total students:', error);
-        }
-    }
-
-    fetchTotalStudents();
 
     // Function to fetch and display total number of exams
     async function fetchTotalExams() {
@@ -559,38 +534,6 @@
     }
 
     fetchTotalExams();
-
-
-    async function fetchClasses() {
-        try {
-            console.log('Fetching classes...');
-            const response = await fetch(`${API_BASE_URL}/getCByTid2?teacherId=${userDetails.teacherId}`);
-            console.log('Response received:', response);
-            if (!response.ok) {
-                throw new Error('Error fetching classes: ' + response.statusText);
-            }
-            const classes = await response.json();
-            console.log('classes data:', classes);
-
-            // Clear existing rows in the table
-            const tableBody = document.getElementById('class_list');
-            tableBody.innerHTML = '';
-
-            classes.forEach(clas => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${clas.name}</td>
-                    <td>${clas.numberOfStudents}</td>
-
-                `;
-                tableBody.appendChild(row);
-            });
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-
-    fetchClasses();
 </script>
 <!-- fetch profile -->
 <script>
@@ -601,8 +544,10 @@
                 const userData = await response.json();
                 sessionStorage.setItem('userDetails', JSON.stringify(userData));
                 console.log("User data stored in sessionStorage:", userData);
-
                 getUserDetails(userData);
+                // Ensure these functions are called after userDetails are set
+                fetchTotalStudents();
+                fetchClasses();
             } else {
                 console.error("Failed to fetch user details:", response.statusText);
             }
@@ -610,6 +555,7 @@
             console.error("Error fetching user details:", error);
         }
     })();
+
 
     function getUserDetails(userDetails) {
         if (userDetails) {
@@ -642,6 +588,56 @@
             console.error("User details not found in sessionStorage");
         }
     }
+
+    const API_BASE_URL = '/assignment';
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+    async function fetchTotalStudents() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/getCByTid2?teacherId=${userDetails.teacherId}`);
+            console.log('Response Classes received:', response);
+            if (!response.ok) {
+                throw new Error('Failed to fetch classes');
+            }
+            const classes = await response.json();
+            const totalStudents = classes.reduce((sum, cls) => sum + cls.numberOfStudents, 0);
+            document.getElementById('tS').textContent = totalStudents.toLocaleString();
+        } catch (error) {
+            console.error('Error fetching total students:', error);
+        }
+    }
+
+
+    async function fetchClasses() {
+        try {
+            console.log('Fetching classes...');
+            const response = await fetch(`${API_BASE_URL}/getCByTid2?teacherId=${userDetails.teacherId}`);
+            console.log('Response received:', response);
+            if (!response.ok) {
+                throw new Error('Error fetching classes: ' + response.statusText);
+            }
+            const classes = await response.json();
+            console.log('classes data:', classes);
+
+            // Clear existing rows in the table
+            const tableBody = document.getElementById('class_list');
+            tableBody.innerHTML = '';
+
+            classes.forEach(clas => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${clas.name}</td>
+                    <td>${clas.numberOfStudents}</td>
+
+                `;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+
 
     function submitForm() {
         // Retrieve userDetails from sessionStorage
@@ -683,53 +679,53 @@
 </script>
 <!-- fetch notification -->
 <script>
-    // Fetch notifications from the backend
-    fetch('/notification/list')
-        .then(response => response.json()) // Parse the response as JSON
-        .then(data => {
-            const notificationList = document.getElementById('notification-list'); // This is where we append the notifications
-            const notificationCount = document.getElementById('notification-count'); // This is where we update the count
-
-            // Update the notification count
-            notificationCount.textContent = data.length;
-
-            // Check if the list is empty
-            if (data.length === 0) {
-                notificationList.innerHTML = '<p>No notifications available.</p>';
-                return;
-            }
-
-            // Clear any previous notifications (if any)
-            notificationList.innerHTML = '';
-
-            // Loop through each notification and add it to the page
-            data.forEach(notification => {
-                // Create the new notice div
-                const noticeDiv = document.createElement('div');
-                noticeDiv.classList.add('notice-list');
-
-                // Create the title
-                const noticeTitle = document.createElement('h6');
-                noticeTitle.classList.add('notice-title');
-
-                // Create the anchor tag
-                const noticeLink = document.createElement('a');
-                noticeLink.href = "#"; // Add appropriate link if needed
-                noticeLink.textContent = notification.title; // Use the title from the notification
-
-                // Append the link to the title and the title to the noticeDiv
-                noticeTitle.appendChild(noticeLink);
-                noticeDiv.appendChild(noticeTitle);
-
-                // Append the noticeDiv to the notification list
-                notificationList.appendChild(noticeDiv);
-            });
-        })
-        .catch(error => {
-            console.error('Error fetching notifications:', error);
-            const notificationList = document.getElementById('notification-list');
-            notificationList.innerHTML = '<p>Failed to load notifications.</p>';
-        });
+    // // Fetch notifications from the backend
+    // fetch('/notification/list')
+    //     .then(response => response.json()) // Parse the response as JSON
+    //     .then(data => {
+    //         const notificationList = document.getElementById('notification-list'); // This is where we append the notifications
+    //         const notificationCount = document.getElementById('notification-count'); // This is where we update the count
+    //
+    //         // Update the notification count
+    //         notificationCount.textContent = data.length;
+    //
+    //         // Check if the list is empty
+    //         if (data.length === 0) {
+    //             notificationList.innerHTML = '<p>No notifications available.</p>';
+    //             return;
+    //         }
+    //
+    //         // Clear any previous notifications (if any)
+    //         notificationList.innerHTML = '';
+    //
+    //         // Loop through each notification and add it to the page
+    //         data.forEach(notification => {
+    //             // Create the new notice div
+    //             const noticeDiv = document.createElement('div');
+    //             noticeDiv.classList.add('notice-list');
+    //
+    //             // Create the title
+    //             const noticeTitle = document.createElement('h6');
+    //             noticeTitle.classList.add('notice-title');
+    //
+    //             // Create the anchor tag
+    //             const noticeLink = document.createElement('a');
+    //             noticeLink.href = "#"; // Add appropriate link if needed
+    //             noticeLink.textContent = notification.title; // Use the title from the notification
+    //
+    //             // Append the link to the title and the title to the noticeDiv
+    //             noticeTitle.appendChild(noticeLink);
+    //             noticeDiv.appendChild(noticeTitle);
+    //
+    //             // Append the noticeDiv to the notification list
+    //             notificationList.appendChild(noticeDiv);
+    //         });
+    //     })
+    //     .catch(error => {
+    //         console.error('Error fetching notifications:', error);
+    //         const notificationList = document.getElementById('notification-list');
+    //         notificationList.innerHTML = '<p>Failed to load notifications.</p>';
+    //     });
 
 </script>
 </body>
