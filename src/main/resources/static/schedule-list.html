@@ -244,6 +244,10 @@
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
+                        <a href="all-student.html" class="nav-link"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>All Student</span></a>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
@@ -269,10 +273,17 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
-        </div>
-        <!-- Sidebar Area End Here -->
+        </div>        <!-- Sidebar Area End Here -->
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
@@ -349,10 +360,6 @@
                 </div>
             </div>
             <!-- Class Routine Area End Here -->
-            <footer class="footer-wrap-layout1">
-                <div class="copyright">© Copyrights <a href="#">JIP</a> 2019. All rights reserved. Designed by
-                    <a href="#">PsdBosS</a></div>
-            </footer>
         </div>
     </div>
     <!-- Page Area End Here -->
@@ -610,13 +617,13 @@
                         // Get the updated schedule data from the input fields
                         const updatedSchedule = {
                             id: item.id,
+                            className: item.className,
                             location: locationCell.querySelector('input').value,
                             startTime: stCell.querySelector('input').value,
                             endTime: etCell.querySelector('input').value,
                             description: noteCell.querySelector('input').value,
                             event: eventCell.querySelector('input').value,
                         };
-
 
                         if (updatedSchedule.startTime.trim() === "") {
                             updatedSchedule.startTime = null;
@@ -637,17 +644,16 @@
                             body: JSON.stringify(updatedSchedule),
                         })
                             .then(response => {
-                                if (!response.ok) throw new Error('Failed to update schedule');
+                                if (!response.ok) {
+                                    return response.text().then(errorMessage => { throw new Error(errorMessage); });
+                                }
                                 return response.json();
                             })
                             .then(() => {
                                 alert('Schedule updated successfully!');
                                 location.reload(); // Reload table
                             })
-                            .catch(err => {
-                                console.error(err);
-                                alert('Failed to save changes');
-                            });
+                            .catch(error => alert(error.message));
                     });
 
                     // Delete button functionality
@@ -672,6 +678,7 @@
     });
 </script>
 
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const tableBody = document.querySelector('.table tbody');
@@ -688,17 +695,17 @@
 
             // Make the fetch request to search schedules
             fetch(`/schedule/search?${params}`, {
-                method: 'GET',  // Using GET here since we are querying data
+                method: 'GET', // Using GET here since we are querying data
             })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
                     }
-                    return response.json();  // Parse the JSON response
+                    return response.json(); // Parse the JSON response
                 })
-                .then(schedule => {
+                .then(schedules => {
                     // Iterate through the returned schedule data and populate the table
-                    schedule.forEach(schedule => {
+                    schedules.forEach(schedule => {
                         const row = document.createElement('tr');
 
                         // Class name cell
@@ -732,7 +739,7 @@
                             ? new Date(schedule.date).toLocaleDateString('en-US', {
                                 year: 'numeric',
                                 month: 'long',
-                                day: 'numeric'
+                                day: 'numeric',
                             })
                             : '';
                         row.appendChild(dateCell);
@@ -750,108 +757,104 @@
                         // Action cell
                         const actionsCell = document.createElement('td');
 
-                        // Edit Button
                         const editButton = document.createElement('button');
                         editButton.textContent = 'Edit';
                         editButton.className = 'footer-btn';
 
-                        // Save Button
                         const saveButton = document.createElement('button');
                         saveButton.textContent = 'Save';
-                        saveButton.className = 'footer-btn d-none'; // Initially hidden
+                        saveButton.className = 'footer-btn d-none';
 
-                        // Delete Button
                         const deleteButton = document.createElement('button');
                         deleteButton.textContent = 'Delete';
                         deleteButton.className = 'footer-btn bg-linkedin';
 
-                        actionsCell.appendChild(editButton);
-                        actionsCell.appendChild(saveButton);
-                        actionsCell.appendChild(deleteButton);
+                        actionsCell.append(editButton, saveButton, deleteButton);
                         row.appendChild(actionsCell);
-
                         tableBody.appendChild(row);
 
-                        // Add event listeners for Edit, Save, Delete buttons
-                        handleEditButton(editButton, saveButton, row, schedule);
-                        handleDeleteButton(deleteButton, row, schedule);
+                        // Edit button functionality
+                        editButton.addEventListener('click', () => {
+                            [locationCell, stCell, etCell, noteCell, eventCell].forEach(cell => {
+                                const input = document.createElement('input');
+                                input.type = 'text';
+                                input.value = cell.textContent.trim();
+                                input.className = 'form-control';
+                                cell.innerHTML = ''; // Clear cell
+                                cell.appendChild(input);
+                            });
+
+                            editButton.classList.add('d-none');
+                            saveButton.classList.remove('d-none');
+                        });
+
+                        // Save button functionality
+                        saveButton.addEventListener('click', () => {
+                            // Get the updated schedule data from the input fields
+                            console.log('Schedule ID:', schedule.id);
+                            row.dataset.id = schedule.id;
+                            const updatedSchedule = {
+                                id: row.dataset.id,  // Retrieve the ID stored in the row's dataset
+                                className: cnCell.textContent, // Class name is not editable in your script
+                                location: locationCell.querySelector('input').value,
+                                startTime: stCell.querySelector('input').value,
+                                endTime: etCell.querySelector('input').value,
+                                description: noteCell.querySelector('input').value,
+                                event: eventCell.querySelector('input').value,
+                            };
+
+                            if (updatedSchedule.startTime.trim() === "") {
+                                updatedSchedule.startTime = null;
+                            } else {
+                                updatedSchedule.startTime = updatedSchedule.startTime + ':00'; // Add ":00" for time format
+                            }
+
+                            if (updatedSchedule.endTime.trim() === "") {
+                                updatedSchedule.endTime = null;
+                            } else {
+                                updatedSchedule.endTime = updatedSchedule.endTime + ':00'; // Add ":00" for time format
+                            }
+
+                            // Send the updated schedule to the backend
+                            fetch(`/schedule/update/${updatedSchedule.id}`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(updatedSchedule),
+                            })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        return response.text().then(errorMessage => {
+                                            throw new Error(errorMessage);
+                                        });
+                                    }
+                                    return response.json();
+                                })
+                                .then(() => {
+                                    alert('Schedule updated successfully!');
+                                    location.reload(); // Reload table
+                                })
+                                .catch(error => alert(error.message));
+                        });
+                        // Delete button functionality
+                        deleteButton.addEventListener('click', () => {
+                            if (confirm('Are you sure you want to delete this schedule?')) {
+                                fetch(`/schedule/delete/${schedule.id}`, {
+                                    method: 'DELETE',
+                                })
+                                    .then(response => {
+                                        if (!response.ok) throw new Error('Failed to delete schedule');
+                                        row.remove();
+                                    })
+                                    .catch(err => {
+                                        console.error(err);
+                                        alert('Failed to delete schedule');
+                                    });
+                            }
+                        });
                     });
                 })
                 .catch(error => console.error('Error fetching schedule:', error));
         });
-
-        function handleEditButton(editButton, saveButton, row, schedule) {
-            editButton.addEventListener('click', () => {
-                // Convert cells to editable fields
-                row.querySelectorAll('td').forEach((cell, index) => {
-                    if (index !== 8) {  // Skip Action column
-                        const input = document.createElement('input');
-                        input.type = 'text';
-                        input.value = cell.textContent;
-                        cell.textContent = '';
-                        cell.appendChild(input);
-                    }
-                });
-
-                // Show save button and hide edit button
-                editButton.classList.add('d-none');
-                saveButton.classList.remove('d-none');
-            });
-
-            saveButton.addEventListener('click', () => {
-                const updatedSchedule = {
-                    id: schedule.id, // Assuming you have `id` to identify the schedule
-                    location: row.querySelector('td:nth-child(2)').querySelector('input').value,
-                    startTime: row.querySelector('td:nth-child(4)').querySelector('input').value,
-                    endTime: row.querySelector('td:nth-child(5)').querySelector('input').value,
-                    description: row.querySelector('td:nth-child(7)').querySelector('input').value,
-                    event: row.querySelector('td:nth-child(8)').querySelector('input').value,
-                };
-
-                fetch(`/schedule/update/${schedule.id}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(updatedSchedule),
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            alert('Schedule updated successfully!');
-                            location.reload(); // Reload the table to reflect changes
-                        } else {
-                            throw new Error('Failed to update schedule');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error updating schedule:', error);
-                        alert('Failed to update the schedule. Please try again.');
-                    });
-            });
-        }
-
-        function handleDeleteButton(deleteButton, row, schedule) {
-            deleteButton.addEventListener('click', () => {
-                const confirmDelete = confirm('Are you sure you want to delete this schedule?');
-                if (confirmDelete) {
-                    fetch(`/schedule/delete/${schedule.id}`, {
-                        method: 'DELETE',
-                    })
-                        .then(response => {
-                            if (response.ok) {
-                                alert('Schedule deleted successfully!');
-                                row.remove(); // Remove row from table
-                            } else {
-                                throw new Error('Failed to delete schedule');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error deleting schedule:', error);
-                            alert('Failed to delete the schedule. Please try again.');
-                        });
-                }
-            });
-        }
     });
 </script>
 
