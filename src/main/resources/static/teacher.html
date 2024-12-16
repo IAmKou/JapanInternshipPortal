@@ -515,6 +515,8 @@
 <script src="js/main.js"></script>
 <!-- fetch class -->
 <script>
+
+
     // Function to fetch and display total number of exams
     async function fetchTotalExams() {
         try {
@@ -543,8 +545,8 @@
         } catch (error) {
             console.error('Error fetching total students:', error);
         }
-
     }
+
 
     async function fetchClasses() {
         try {
@@ -575,15 +577,17 @@
         }
     }
 
-    fetchTotalStudents();
+
     fetchClasses();
+    fetchTotalStudents();
     fetchTotalExams();
-</script>
-<script>
+
+
 
 </script>
 <!-- fetch profile -->
 <script>
+    // Fetch user data and store it in sessionStorage
     (async function fetchUserData() {
         try {
             const response = await fetch('/user-detail');
@@ -592,9 +596,9 @@
                 sessionStorage.setItem('userDetails', JSON.stringify(userData));
                 console.log("User data stored in sessionStorage:", userData);
                 getUserDetails(userData);
-                // Ensure these functions are called after userDetails are set
-                await fetchTotalStudents();
-                await fetchClasses();
+                // Ensure that the fetch functions are called after userDetails are set
+                fetchTotalStudents(userData.teacherId);
+                fetchClasses(userData.teacherId);
             } else {
                 console.error("Failed to fetch user details:", response.statusText);
             }
@@ -603,9 +607,7 @@
         }
     })();
 
-
-
-
+    // Function to set user details in the UI
     function getUserDetails(userDetails) {
         if (userDetails) {
             console.log("Setting user details:", userDetails);
@@ -638,9 +640,54 @@
         }
     }
 
+    // Fetch total students count based on teacherId
+    async function fetchTotalStudents(teacherId) {
+        try {
+            const response = await fetch(`/assignment/getCByTid2?teacherId=${teacherId}`);
+            console.log('Response Classes received:', response);
+            if (!response.ok) {
+                throw new Error('Failed to fetch classes');
+            }
+            const classes = await response.json();
+            const totalStudents = classes.reduce((sum, cls) => sum + cls.numberOfStudents, 0);
+            document.getElementById('tS').textContent = totalStudents.toLocaleString();
+        } catch (error) {
+            console.error('Error fetching total students:', error);
+        }
+    }
+
+    // Fetch class list based on teacherId
+    async function fetchClasses(teacherId) {
+        try {
+            console.log('Fetching classes...');
+            const response = await fetch(`/assignment/getCByTid2?teacherId=${teacherId}`);
+            console.log('Response received:', response);
+            if (!response.ok) {
+                throw new Error('Error fetching classes: ' + response.statusText);
+            }
+            const classes = await response.json();
+            console.log('Classes data:', classes);
+
+            // Clear existing rows in the table
+            const tableBody = document.getElementById('class_list');
+            tableBody.innerHTML = ''; // Clear previous data
+
+            // Populate the table with class data
+            classes.forEach(clas => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>${clas.name}</td>
+                <td>${clas.numberOfStudents}</td>
+            `;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Error fetching classes:', error);
+        }
+    }
+
     const API_BASE_URL = '/assignment';
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-
 
     function submitForm() {
         // Retrieve userDetails from sessionStorage
@@ -731,6 +778,7 @@
         });
 
 </script>
+
 </body>
 
 

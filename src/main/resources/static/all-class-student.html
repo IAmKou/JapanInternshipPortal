@@ -331,7 +331,7 @@
                             <table class="table display text-nowrap">
                                 <thead>
                                     <tr>
-                                        <th>Id</th>
+                                        <th>Order</th>
                                         <th>Photo</th>
                                         <th>Name</th>
                                         <th>Gender</th>
@@ -397,8 +397,7 @@
             console.error("User details not found in sessionStorage");
         }
     </script>
-    <!-- fetch student -->
-    <script>
+    <!-- fetch student --><script>
         document.addEventListener('DOMContentLoaded', function () {
             const tableBody = document.querySelector('.table tbody');
             const urlParams = new URLSearchParams(window.location.search);
@@ -414,13 +413,15 @@
                         return response.json();
                     })
                     .then(students => {
+                        let studentNumber = 1; // Initialize student number counter
+
                         students.forEach(student => {
                             const row = document.createElement('tr');
 
-                            // id cell
-                            const idCell = document.createElement('td');
-                            idCell.textContent = student.id;
-                            row.appendChild(idCell);
+                            // Number cell (numerical order)
+                            const numberCell = document.createElement('td');
+                            numberCell.textContent = studentNumber++; // Increment student number
+                            row.appendChild(numberCell);
 
                             // image cell
                             const imgCell = document.createElement('td');
@@ -443,8 +444,7 @@
                             nos.textContent = student.gender;
                             row.appendChild(nos);
 
-                            // Actions cell
-
+                            // Actions cell (can be added later if needed)
 
                             // Append the row to the table body
                             tableBody.appendChild(row);
@@ -455,7 +455,6 @@
                 console.error("classId is missing from the URL.");
             }
         });
-
     </script>
 
 </body>
