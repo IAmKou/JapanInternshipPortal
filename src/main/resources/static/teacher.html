@@ -515,8 +515,6 @@
 <script src="js/main.js"></script>
 <!-- fetch class -->
 <script>
-
-
     // Function to fetch and display total number of exams
     async function fetchTotalExams() {
         try {
@@ -532,10 +530,57 @@
             console.error('Error fetching total exams:', error);
         }
     }
+    async function fetchTotalStudents() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/getCByTid2?teacherId=${userDetails.teacherId}`);
+            console.log('Response Classes received:', response);
+            if (!response.ok) {
+                throw new Error('Failed to fetch classes');
+            }
+            const classes = await response.json();
+            const totalStudents = classes.reduce((sum, cls) => sum + cls.numberOfStudents, 0);
+            document.getElementById('tS').textContent = totalStudents.toLocaleString();
+        } catch (error) {
+            console.error('Error fetching total students:', error);
+        }
 
+    }
+
+
+    async function fetchClasses() {
+        try {
+            console.log('Fetching classes...');
+            const response = await fetch(`${API_BASE_URL}/getCByTid2?teacherId=${userDetails.teacherId}`);
+            console.log('Response received:', response);
+            if (!response.ok) {
+                throw new Error('Error fetching classes: ' + response.statusText);
+            }
+            const classes = await response.json();
+            console.log('classes data:', classes);
+
+            // Clear existing rows in the table
+            const tableBody = document.getElementById('class_list');
+            tableBody.innerHTML = '';
+
+            classes.forEach(clas => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${clas.name}</td>
+                    <td>${clas.numberOfStudents}</td>
+
+                `;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    fetchTotalStudents();
+    fetchClasses();
     fetchTotalExams();
-
-
+</script>
+<script>
 
 </script>
 <!-- fetch profile -->
@@ -549,8 +594,8 @@
                 console.log("User data stored in sessionStorage:", userData);
                 getUserDetails(userData);
                 // Ensure these functions are called after userDetails are set
-                fetchTotalStudents();
-                fetchClasses();
+                await fetchTotalStudents();
+                await fetchClasses();
             } else {
                 console.error("Failed to fetch user details:", response.statusText);
             }
@@ -597,50 +642,6 @@
     const API_BASE_URL = '/assignment';
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
-    async function fetchTotalStudents() {
-        try {
-            const response = await fetch(`${API_BASE_URL}/getCByTid2?teacherId=${userDetails.teacherId}`);
-            console.log('Response Classes received:', response);
-            if (!response.ok) {
-                throw new Error('Failed to fetch classes');
-            }
-            const classes = await response.json();
-            const totalStudents = classes.reduce((sum, cls) => sum + cls.numberOfStudents, 0);
-            document.getElementById('tS').textContent = totalStudents.toLocaleString();
-        } catch (error) {
-            console.error('Error fetching total students:', error);
-        }
-    }
-
-
-    async function fetchClasses() {
-        try {
-            console.log('Fetching classes...');
-            const response = await fetch(`${API_BASE_URL}/getCByTid2?teacherId=${userDetails.teacherId}`);
-            console.log('Response received:', response);
-            if (!response.ok) {
-                throw new Error('Error fetching classes: ' + response.statusText);
-            }
-            const classes = await response.json();
-            console.log('classes data:', classes);
-
-            // Clear existing rows in the table
-            const tableBody = document.getElementById('class_list');
-            tableBody.innerHTML = '';
-
-            classes.forEach(clas => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${clas.name}</td>
-                    <td>${clas.numberOfStudents}</td>
-
-                `;
-                tableBody.appendChild(row);
-            });
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
 
 
 

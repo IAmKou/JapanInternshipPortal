@@ -46,9 +46,10 @@ public class ScheduleDTO {
                 : null;
     }
 
-    public ScheduleDTO(Schedule.dayOfWeek dayOfWeek, int classId, Time startTime, Time endTime,
+    public ScheduleDTO(int id,Schedule.dayOfWeek dayOfWeek, int classId, Time startTime, Time endTime,
                        String description, String event, Date date, String location,
                        String className, int teacherId, String teacherFullName) {
+        this.id = id;
         this.dayOfWeek = dayOfWeek;
         this.classId = classId;
         this.startTime = startTime;

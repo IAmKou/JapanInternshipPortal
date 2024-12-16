@@ -256,6 +256,10 @@
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
+                        <a href="all-student.html" class="nav-link"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>All Student</span></a>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
@@ -278,6 +282,14 @@
                             <li class="nav-item">
                                 <a href="View-list-application.html" class="nav-link"><i class="fas fa-angle-right"></i>List
                                     application</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
                             </li>
                         </ul>
                     </li>
@@ -374,7 +386,8 @@
 <script src="js/main.js"></script>
 <!-- fetch student list -->
 <script>
-    let allStudentIds = [];
+    let allStudentIds = []; // All student IDs fetched
+    let selectedStudentIds = []; // Selected student IDs for the class
 
     function fetchStudents() {
         fetch('/student/get')
@@ -400,12 +413,13 @@
                     return;
                 }
 
-                // Reset the array and add all student IDs
+                // Reset the arrays
                 allStudentIds = students.map(student => student.id);
+                selectedStudentIds = [];
 
                 // Create header row
                 const headerRow = document.createElement('tr');
-                ['Full Name', 'Japan Name', 'Gender'].forEach(text => {
+                ['Select', 'Full Name', 'Japan Name', 'Gender'].forEach(text => {
                     const headerCell = document.createElement('th');
                     headerCell.textContent = text;
                     headerRow.appendChild(headerCell);
@@ -416,14 +430,33 @@
                 students.forEach(student => {
                     const row = document.createElement('tr');
 
+                    // Checkbox column
+                    const checkboxCell = document.createElement('td');
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.value = student.id;
+                    checkbox.addEventListener('change', (e) => {
+                        const studentId = parseInt(e.target.value);
+                        if (e.target.checked) {
+                            selectedStudentIds.push(studentId); // Add ID to selected list
+                        } else {
+                            selectedStudentIds = selectedStudentIds.filter(id => id !== studentId); // Remove ID
+                        }
+                    });
+                    checkboxCell.appendChild(checkbox);
+                    row.appendChild(checkboxCell);
+
+                    // Full name column
                     const fullnameCell = document.createElement('td');
                     fullnameCell.textContent = student.fullname;
                     row.appendChild(fullnameCell);
 
+                    // Japan name column
                     const japannameCell = document.createElement('td');
                     japannameCell.textContent = student.jname;
                     row.appendChild(japannameCell);
 
+                    // Gender column
                     const genderCell = document.createElement('td');
                     genderCell.textContent = student.gender;
                     row.appendChild(genderCell);
@@ -451,13 +484,18 @@
             return;
         }
 
+        if (selectedStudentIds.length < 10 || selectedStudentIds.length > 30) {
+            alert("A class must have at least 10 students and at most 30 students. Please adjust your selection.");
+            return;
+        }
+
         const data = {
             name: className,
-            numberOfStudents: allStudentIds.length,  // Set the count to total students fetched
+            numberOfStudents: selectedStudentIds.length, // Set the count to selected students
             teacher: {
                 id: teacherId
             },
-            studentIds: allStudentIds // Include all fetched student IDs
+            studentIds: selectedStudentIds // Include only selected student IDs
         };
 
         fetch('/class/create', {
@@ -482,6 +520,9 @@
                 studentListDiv.innerHTML = "";
                 const studentCountDiv = document.getElementById('studentCount');
                 studentCountDiv.textContent = "";
+
+                // Clear selected students
+                selectedStudentIds = [];
             })
             .catch(error => alert("Error creating class: " + error));
     });

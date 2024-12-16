@@ -23,8 +23,8 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
 
     @Query("SELECT new com.example.jip.dto.StudentDTO(s) " +
             "FROM Student s WHERE s.id NOT IN (SELECT l.id.student_id FROM Listt l) " +
-            "ORDER BY s.fullname ASC limit 30")
-    List<StudentDTO> findTop30UnassignedStudents();
+            "ORDER BY s.fullname ASC ")
+    List<StudentDTO> findTopUnassignedStudents();
 
 
 

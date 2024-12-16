@@ -153,8 +153,11 @@ public class AccountImportServices {
                 errors.add("Missing email at row " + (row.getRowNum() + 1));
                 return;
             }
-            String imgPath = row.getCell(9).getStringCellValue(); // Assuming the image is in column 9
             String passportUrl = row.getCell(6).getStringCellValue();
+            String passport = uploadImageToCloudinary(passportUrl, workbook);
+            String imgPath = row.getCell(9).getStringCellValue();
+            String imgUrl = uploadImageToCloudinary(imgPath, workbook);
+
 
             // Validate fields
             if (validateColumn(username, password, email, phoneNumber, String.valueOf(gender), fullName, japanname, errors, row.getRowNum())) {
@@ -164,9 +167,8 @@ public class AccountImportServices {
                 return;
             }
 
-            // Upload images to Cloudinary
-            String imgUrl = uploadImageToCloudinary(imgPath, workbook);
-            String passport = uploadImageToCloudinary(passportUrl, workbook);
+
+
 
             // Find role
             Optional<Role> roleOpt = roleRepository.findById(roleId);
@@ -268,48 +270,48 @@ public class AccountImportServices {
 
     private boolean validateColumn(String username, String password, String email, String phoneNumber,
                                    String gender, String fullname, String japanname, List<String> errors, int rowNum) {
-        boolean isValid = true;
+        boolean isValid = false;
 
         // Validate username
         if (username == null || username.isEmpty()) {
             errors.add("Row " + rowNum + ": Username cannot be null or empty.");
-            isValid = false;
+            isValid = true;
         }
 
         // Validate password
         if (password == null || password.length() < 6) {
             errors.add("Row " + rowNum + ": Password must be at least 6 characters long.");
-            isValid = false;
+            isValid = true;
         }
 
         // Validate email
         if (email == null ) {
             errors.add("Row " + rowNum + ": Email can't be nu;;");
-            isValid = false;
+            isValid = true;
         }
 
         // Validate phone number
         if (phoneNumber == null || !phoneNumber.matches("^0\\d{9,}$")) {
             errors.add("Row " + rowNum + ": Phone number must start with '0' and have at least 10 digits.");
-            isValid = false;
+            isValid = true;
         }
 
         // Validate gender
         if (gender == null || gender.isEmpty()) {
             errors.add("Row " + rowNum + ": Gender cannot be null or empty.");
-            isValid = false;
+            isValid = true;
         }
 
         // Validate full name
         if (fullname == null || fullname.isEmpty()) {
             errors.add("Row " + rowNum + ": Full name cannot be null or empty.");
-            isValid = false;
+            isValid = true;
         }
 
         // Validate Japanese name
         if (japanname == null || japanname.isEmpty()) {
             errors.add("Row " + rowNum + ": Japanese name cannot be null or empty.");
-            isValid = false;
+            isValid = true;
         }
 
         return isValid;

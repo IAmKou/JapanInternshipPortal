@@ -7,7 +7,7 @@ import com.example.jip.entity.Teacher;
 
 import java.sql.Date;
 
-public class AccountDTO {
+public class AccountDTO extends Account {
     private Integer id;
     private String username;
     private String roleName;
@@ -39,7 +39,6 @@ public class AccountDTO {
             this.gender = (student.getGender() != null) ? student.getGender().toString() : "UNKNOWN";
             this.mark = student.isMark();
             this.img = student.getImg();
-            this.passport = student.getPassport();
         } else if (account.getTeacher() != null) {
             Teacher teacher = account.getTeacher();
             this.teacherId = teacher.getId();

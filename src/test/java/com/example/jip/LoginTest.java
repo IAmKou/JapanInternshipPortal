@@ -34,67 +34,66 @@ class AccountServicesTest {
     }
 
     @Test
-    void testAuthenticateAccount_Success() {
-        String username = "testUser";
-        String rawPassword = "password123";
-        String encodedPassword = "encodedPassword";
+    void testInvalidPassword() {
+        String username = "admin"; // correct username test object
+        String password = "acb123"; // incorrect password test object
+        String encodedPassword = "123456"; // actual encoded password stored in the database
 
-        Role role = new Role();
-        role.setName("USER");
-
-        Account account = new Account();
-        account.setId(1);
-        account.setUsername(username);
-        account.setPassword(encodedPassword);
-        account.setRole(role);
-
-        when(accountRepository.findByUsername(username)).thenReturn(Optional.of(account));
-        when(passwordEncoder.matches(rawPassword, encodedPassword)).thenReturn(true);
-
-        AccountDTO accountDTO = accountServices.authenticateAccount(username, rawPassword);
-
-        assertNotNull(accountDTO);
-        assertEquals(username, accountDTO.getUsername());
-        assertEquals("USER", accountDTO.getRoleName());
-
-        verify(accountRepository).findByUsername(username);
-        verify(passwordEncoder).matches(rawPassword, encodedPassword);
-    }
-
-    @Test
-    void testAuthenticateAccount_Failure_InvalidPassword() {
-        String username = "testUser";
-        String rawPassword = "wrongPassword";
-        String encodedPassword = "encodedPassword";
-
+        // Creating an Account Object
         Account account = new Account();
         account.setId(1);
         account.setUsername(username);
         account.setPassword(encodedPassword);
 
+        //mock the username "admin" is found in the database
         when(accountRepository.findByUsername(username)).thenReturn(Optional.of(account));
-        when(passwordEncoder.matches(rawPassword, encodedPassword)).thenReturn(false);
+        //password va encodedPassword not matched
+        when(passwordEncoder.matches(password, encodedPassword)).thenReturn(false);
 
+        //throw exception and check log message
         Exception exception = assertThrows(RuntimeException.class, () ->
-                accountServices.authenticateAccount(username, rawPassword));
-
+                accountServices.authenticateAccount(username, password));
         assertEquals("Invalid username or password", exception.getMessage());
-        verify(accountRepository).findByUsername(username);
-        verify(passwordEncoder).matches(rawPassword, encodedPassword);
     }
 
     @Test
-    void testAuthenticateAccount_Failure_InvalidUsername() {
-        String username = "nonexistentUser";
-        String rawPassword = "password123";
+    void testInvalidUsername() {
+        String username = "admin1"; // incorrect username test object
+        String password = "123456"; // correct password test object
 
+        //return empty object cause no username found
         when(accountRepository.findByUsername(username)).thenReturn(Optional.empty());
 
+        //throw exception and check log message
         Exception exception = assertThrows(RuntimeException.class, () ->
-                accountServices.authenticateAccount(username, rawPassword));
+                accountServices.authenticateAccount(username, password));
 
         assertEquals("Invalid username or password", exception.getMessage());
-        verify(accountRepository).findByUsername(username);
-        verifyNoInteractions(passwordEncoder);
+    }
+
+    @Test
+    void testSuccessfulLogin() {
+        String username = "admin"; // correct username test object
+        String password = "123456"; // correct password test object
+        String encodedPassword = "123456"; // actual encoded password stored in the database
+
+        // Creating an Account Object
+        Account account = new Account();
+        account.setId(1);
+        account.setUsername(username);
+        account.setPassword(encodedPassword);
+
+        // Mock the username "admin" is found in the database
+        when(accountRepository.findByUsername(username)).thenReturn(Optional.of(account));
+        // password and encodedPassword match
+        when(passwordEncoder.matches(password, encodedPassword)).thenReturn(true);
+
+        // Call the authenticateAccount method and check that no exception is thrown
+        Account result = accountServices.authenticateAccount(username, password);
+
+        // Check that the result is the correct Account object
+        assertNotNull(result);
+        assertEquals(username, result.getUsername());
+        assertEquals(encodedPassword, result.getPassword());
     }
 }

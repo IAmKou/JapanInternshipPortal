@@ -181,30 +181,30 @@ public class ScheduleServices {
         return new ScheduleDTO(schedule);
     }
 
-
+    public class ScheduleValidationException extends RuntimeException {
+        public ScheduleValidationException(String message) {
+            super(message);
+        }
+    }
     private void validateSchedule(Schedule schedule) {
-        // If the event is a holiday, start_time, end_time, and location can be null
-        if (schedule.getEvent() != null && schedule.getEvent().equalsIgnoreCase("holiday")) {
+        if (schedule.getEvent() != null) {
             // Allow null start_time, end_time, and location for holidays
             return;
         }
 
-        // Validate if start_time and end_time are null only if event or description is provided
         if ((schedule.getStart_time() == null || schedule.getEnd_time() == null) &&
                 (schedule.getEvent() == null || schedule.getEvent().isBlank())) {
-            throw new IllegalArgumentException("Start time and end time can be null only if event or description is provided.");
+            throw new ScheduleValidationException("Start time and end time can be null only if event or description is provided.");
         }
 
-        // If event or description is provided, check if location is null
         if ((schedule.getEvent() != null && !schedule.getEvent().isBlank()) &&
                 schedule.getLocation() == null) {
-            throw new IllegalArgumentException("Location can be null only if event or description is provided.");
+            throw new ScheduleValidationException("Location can be null only if event or description is provided.");
         }
 
-        // If start_time and end_time are provided, location should not be null unless event or description is given
         if ((schedule.getStart_time() != null && schedule.getEnd_time() != null) &&
                 schedule.getLocation() == null && (schedule.getEvent() == null || schedule.getEvent().isBlank())) {
-            throw new IllegalArgumentException("Location cannot be null unless event or description is provided.");
+            throw new ScheduleValidationException("Location cannot be null unless event or description is provided.");
         }
     }
 }

@@ -237,204 +237,138 @@
     <div class="dashboard-page-one">
         <!-- Sidebar Area Start Here -->
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
-            <div class="mobile-sidebar-header d-md-none">
-                <div class="header-logo">
-                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+            <!-- Sidebar Area End Here -->
+            <div class="dashboard-content-one">
+                <!-- Breadcubs Area Start Here -->
+                <div class="breadcrumbs-area">
+                    <h3>Users</h3>
+                    <ul>
+                        <li>
+                            <a href="admin.html">Home</a>
+                        </li>
+                        <li>Users Details</li>
+                    </ul>
                 </div>
-            </div>
-            <div class="sidebar-menu-content">
-                <ul class="nav nav-sidebar-menu sidebar-toggle-view">
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                        <ul class="nav sub-group-menu sub-group-active">
-                            <li class="nav-item">
-                                <a href="manager.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Manager</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="all-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                    Students</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i
-                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                        <ul class="nav sub-group-menu sub-group-active">
-                            <li class="nav-item">
-                                <a href="add-class.html" class="nav-link"><i
-                                        class="flaticon-multiple-users-silhouette"></i>Add New Class</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="class-list.html" class="nav-link"><i
-                                        class="flaticon-menu"></i><span>All Class</span></a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="schedule-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Schedule List</span></a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="exam-schedule.html"><i class="fas fa-angle-right"></i>Exam
-                                    Schedule</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="View-list-application.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                                    application</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <!-- Sidebar Area End Here -->
-        <div class="dashboard-content-one">
-            <!-- Breadcubs Area Start Here -->
-            <div class="breadcrumbs-area">
-                <h3>Users</h3>
-                <ul>
-                    <li>
-                        <a href="admin.html">Home</a>
-                    </li>
-                    <li>Users Details</li>
-                </ul>
-            </div>
-            <!-- Breadcubs Area End Here -->
-            <!-- Student Details Area Start Here -->
-            <div class="card height-auto">
-                <div class="card-body">
-                    <div class="single-info-details">
-                        <div class="item-img img">
-                            <img src="" alt="student" id="img" style="width: 100px; height: 100px">
-                        </div>
-                        <div class="item-content">
-                            <div class="header-inline item-header">
-                                <h3 class="text-dark-medium font-medium" id="name"></h3>
-                                <div class="heading-layout1">
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button"
-                                           data-toggle="dropdown" aria-expanded="false">...</a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" data-toggle="modal" data-target="#sign-up"><i
-                                                    class="fas fa-cogs text-dark-pastel-green"></i>Report</a>
-                                        </div>
-                                    </div>
-                                </div>
+                <!-- Breadcubs Area End Here -->
+                <!-- Student Details Area Start Here -->
+                <div class="card height-auto">
+                    <div class="card-body">
+                        <div class="single-info-details">
+                            <div class="item-img img">
+                                <img src="" alt="student" id="img" style="width: 100px; height: 100px">
                             </div>
-                            <div class="info-table table-responsive">
-                                <table class="table text-nowrap" id="userInfoTable">
-                                    <tbody>
-                                    <tr>
-                                        <td>Id:</td>
-                                        <td class="font-medium text-dark-medium"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Name:</td>
-                                        <td class="font-medium text-dark-medium userFullName"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Japan Name:</td>
-                                        <td class="font-medium text-dark-medium"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Gender:</td>
-                                        <td class="font-medium text-dark-medium"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Date Of Birth:</td>
-                                        <td class="font-medium text-dark-medium"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>E-mail:</td>
-                                        <td class="font-medium text-dark-medium"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Phone:</td>
-                                        <td class="font-medium text-dark-medium"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Student Details Area End Here -->
-                <div class="ui-modal-box">
-                    <div class="modal-box">
-                        <div class="modal sign-up-modal fade" id="sign-up" tabindex="-1" role="dialog"
-                             aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <div class="close-btn">
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="item-logo">
-                                            <img src="img/JIP%20LOGO%20n.png" alt="logo">
-                                        </div>
-                                        <form class="login-form" id="reportForm">
-                                            <div class="row gutters-15">
-                                                <div class="form-group col-12">
-                                                    <input type="text" value="Wrong information" readonly name="title" class="form-control">
-                                                </div>
-                                                <div class="form-group col-12">
-                                                    <input type="text" placeholder="Enter the wrong information here" required name="content" class="form-control">
-                                                </div>
-                                                <input type="hidden" value="" name="uid" id="userId">
-                                                <div class="form-group col-12">
-                                                    <button type="submit" class="login-btn">Send Report</button>
-                                                </div>
+                            <div class="item-content">
+                                <div class="header-inline item-header">
+                                    <h3 class="text-dark-medium font-medium" id="name"></h3>
+                                    <div class="heading-layout1">
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle" href="#" role="button"
+                                               data-toggle="dropdown" aria-expanded="false">...</a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" data-toggle="modal" data-target="#sign-up"><i
+                                                        class="fas fa-cogs text-dark-pastel-green"></i>Report</a>
                                             </div>
-                                        </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="info-table table-responsive">
+                                    <table class="table text-nowrap" id="userInfoTable">
+                                        <tbody>
+                                        <tr>
+                                            <td>Id:</td>
+                                            <td class="font-medium text-dark-medium"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Name:</td>
+                                            <td class="font-medium text-dark-medium userFullName"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Japan Name:</td>
+                                            <td class="font-medium text-dark-medium"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Gender:</td>
+                                            <td class="font-medium text-dark-medium"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Date Of Birth:</td>
+                                            <td class="font-medium text-dark-medium"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>E-mail:</td>
+                                            <td class="font-medium text-dark-medium"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phone:</td>
+                                            <td class="font-medium text-dark-medium"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Student Details Area End Here -->
+                    <div class="ui-modal-box">
+                        <div class="modal-box">
+                            <div class="modal sign-up-modal fade" id="sign-up" tabindex="-1" role="dialog"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="close-btn">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="item-logo">
+                                                <img src="img/JIP%20LOGO%20n.png" alt="logo">
+                                            </div>
+                                            <form class="login-form" id="reportForm">
+                                                <div class="row gutters-15">
+                                                    <div class="form-group col-12">
+                                                        <input type="text" value="Wrong information" readonly
+                                                               name="title" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-12">
+                                                        <input type="text"
+                                                               placeholder="Enter the wrong information here" required
+                                                               name="content" class="form-control">
+                                                    </div>
+                                                    <input type="hidden" value="" name="uid" id="userId">
+                                                    <div class="form-group col-12">
+                                                        <button type="submit" class="login-btn">Send Report</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- Success Modal -->
-                <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-body text-center">
-                                <h5>Report Submitted Successfully!</h5>
-                                <button type="button" class="btn btn-primary" id="goToProfile">Go to Profile</button>
+                    <!-- Success Modal -->
+                    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body text-center">
+                                    <h5>Report Submitted Successfully!</h5>
+                                    <button type="button" class="btn btn-primary" id="goToProfile">Go to Profile
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Error Modal -->
-                <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-body text-center">
-                                <h5 id="errorMessage">Error: Something went wrong.</h5>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- Error Modal -->
+                    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body text-center">
+                                    <h5 id="errorMessage">Error: Something went wrong.</h5>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -526,7 +460,7 @@
                 // Show success modal
                 $('#successModal').modal('show');
                 document.getElementById('goToProfile').addEventListener('click', () => {
-                    window.location.href = 'users-profile.html'; // Redirect to profile page
+                    window.location.href = 'users-profile-manager.html'; // Redirect to profile page
                 });
             } else {
                 // Show error modal with error message
