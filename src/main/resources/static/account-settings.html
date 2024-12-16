@@ -470,6 +470,9 @@
         event.preventDefault();  // Prevents page reload
 
         const formData = new FormData(this);
+        const importModal = new bootstrap.Modal(document.getElementById('standard-modal')); // Import modal
+        importModal.hide(); // Close the import modal immediately after form submission
+
         fetch('/account/import/excel', {
             method: 'POST',
             body: formData,
@@ -503,6 +506,7 @@
             .catch(error => console.error('Error:', error));
     });
 </script>
+
 <!-- fetch user -->
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
