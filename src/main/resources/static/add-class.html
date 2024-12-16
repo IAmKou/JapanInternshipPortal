@@ -544,7 +544,7 @@
                 paginationDiv.appendChild(button);
             }
         }
-    });
+
 
     document.getElementById('createClassForm').addEventListener('submit', function (event) {
         event.preventDefault();
@@ -599,9 +599,9 @@
             })
             .catch(error => alert("Error creating class: " + error));
     });
-
+    });
     // Initial fetch to populate students
-    fetchStudents();
+
 </script>
 <!-- fetch teacher -->
 <script>
