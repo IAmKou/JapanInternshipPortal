@@ -154,7 +154,9 @@ public class AccountImportServices {
                 return;
             }
             String passportUrl = row.getCell(6).getStringCellValue();
-            String imgPath = row.getCell(9).getStringCellValue(); // Assuming the image is in column 9
+            String passport = uploadImageToCloudinary(passportUrl, workbook);
+            String imgPath = row.getCell(9).getStringCellValue();
+            String imgUrl = uploadImageToCloudinary(imgPath, workbook);
 
 
             // Validate fields
@@ -165,9 +167,8 @@ public class AccountImportServices {
                 return;
             }
 
-            // Upload images to Cloudinary
-            String imgUrl = uploadImageToCloudinary(imgPath, workbook);
-            String passport = uploadImageToCloudinary(passportUrl, workbook);
+
+
 
             // Find role
             Optional<Role> roleOpt = roleRepository.findById(roleId);
