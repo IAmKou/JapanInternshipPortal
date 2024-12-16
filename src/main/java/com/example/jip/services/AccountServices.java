@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,14 +80,19 @@ public class AccountServices {
     }
 
     // Test Authentication
-    public AccountDTO authenticateAccount(String username, String rawPassword) {
-        Account account = accountRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Invalid username or password"));
-
-        if (passwordEncoder.matches(rawPassword, account.getPassword())) {
-            return new AccountDTO(account);
-        } else {
+    public Account authenticateAccount(String username, String rawPassword) {
+        // Tìm tài khoản theo tên người dùng
+        Optional<Account> accountOptional = accountRepository.findByUsername(username);
+        if (accountOptional.isEmpty()) {
             throw new RuntimeException("Invalid username or password");
         }
+
+        Account account = accountOptional.get();
+        // Kiểm tra mật khẩu
+        if (!passwordEncoder.matches(rawPassword, account.getPassword())) {
+            throw new RuntimeException("Invalid username or password");
+        }
+
+        return account; // Trả về tài khoản nếu mật khẩu đúng
     }
 }
