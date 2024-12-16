@@ -1,77 +1,35 @@
 @startuml
-autonumber 1.1.1
+actor Teacher
+activate Teacher
+Teacher -> StudentAssignmentController : PUT student-assignmemt/grade-submitted-assignment\n(studentAssignmentId, StudentAssignmentGradeRequest)
+activate StudentAssignmentController
 
-actor User
-participant "Account Repository" as AccountRepo
-participant "BCryptPasswordEncoder" as BCryptEncoder
-participant "Account" as Account
-participant "RedirectAttributes" as RedirectAttributes
+StudentAssignmentController -> Service : gradeSubmittedAssignment(studentAssignmentId, StudentAssignmentGradeRequest)
+activate Service
 
-
-User -> AccountRepo : findById(uid)
-activate AccountRepo
-AccountRepo -> AccountRepo : search for account by id
-AccountRepo -> AccountRepo : return Optional<Account>
+Service -> StudentAssignmentRepository : findById(studentAssignmentId)
+activate StudentAssignmentRepository
+StudentAssignmentRepository --> Service : StudentAssignment
 
 
-alt Account not found
+alt StudentAssignment found
 
-    AccountRepo -> RedirectAttributes : addFlashAttribute("message", "Account not found.")
-    activate RedirectAttributes
-    RedirectAttributes -> User : return ModelAndView("redirect:/change-password.html")
-    deactivate RedirectAttributes
-else Account found
-    AccountRepo -> Account : get account
-    deactivate AccountRepo
+    Service -> Service : setMark(request.mark)
 
-    activate Account
-    Account -> BCryptEncoder : matches(oldPassword, account.getPassword())
-    activate BCryptEncoder
-    BCryptEncoder -> BCryptEncoder : compare old password
-    BCryptEncoder --> Account : return true/false
-    deactivate BCryptEncoder
+    Service -> Service : setStatus(request.status)
+    Service -> StudentAssignmentRepository : save(StudentAssignment)
 
-    alt Old password does not match
-        Account -> RedirectAttributes : addFlashAttribute("message", "Old Password does not match.")
-        activate RedirectAttributes
-        RedirectAttributes -> User : return ModelAndView("redirect:/change-password.html")
-        deactivate RedirectAttributes
-    else Password is correct
-        Account -> Account : setPassword(hashedPassword)
-        Account -> BCryptEncoder : encode(newPassword)
-        activate BCryptEncoder
-        BCryptEncoder --> Account : return hashed password
-        deactivate BCryptEncoder
-        Account -> AccountRepo : save(account)
-        activate AccountRepo
-        AccountRepo -> AccountRepo : save updated account
-        AccountRepo --> Account : return saved account
-        deactivate AccountRepo
+    StudentAssignmentRepository --> Service : Updated StudentAssignment
 
-        Account -> Account : getRole()
-        activate Account
-        Account -> Account : getRole().getName()
-        Account --> Account : return role name
-        deactivate Account
-
-        alt Role is STUDENT
-            Account -> RedirectAttributes : addFlashAttribute("message", "Password changed successfully.")
-            activate RedirectAttributes
-            RedirectAttributes -> User : return ModelAndView("redirect:/users-profile-student.html")
-            deactivate RedirectAttributes
-        else Role is TEACHER
-            Account -> RedirectAttributes : addFlashAttribute("message", "Password changed successfully.")
-            activate RedirectAttributes
-            RedirectAttributes -> User : return ModelAndView("redirect:/users-profile-teacher.html")
-            deactivate RedirectAttributes
-        else Role is MANAGER
-            Account -> RedirectAttributes : addFlashAttribute("message", "Password changed successfully.")
-            activate RedirectAttributes
-            RedirectAttributes -> User : return ModelAndView("redirect:/users-profile-manager.html")
-            deactivate RedirectAttributes
-        end
-    end
+    deactivate StudentAssignmentRepository
+    Service --> StudentAssignmentController : return StudentAssignment
+    deactivate Service
+    StudentAssignmentController --> Teacher : 200 OK\n"Grade submitted successfully."
+else StudentAssignment not found
+    Service --> StudentAssignmentController : NoSuchElementException
+    deactivate Service
+    StudentAssignmentController --> Teacher : 404 Not Found\n"studentAssignmentId not found!"
 end
 
+deactivate StudentAssignmentController
 @enduml
-

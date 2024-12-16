@@ -84,6 +84,7 @@ public class AssignmentController {
             request.setTeacher(teacherDTO);
 
             assignmentServices.createAssignment(request);
+            log.info("Assignment create successfully.");
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
          catch (Exception e) {
