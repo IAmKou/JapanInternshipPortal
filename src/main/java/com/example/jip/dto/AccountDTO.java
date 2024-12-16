@@ -39,7 +39,6 @@ public class AccountDTO extends Account {
             this.gender = (student.getGender() != null) ? student.getGender().toString() : "UNKNOWN";
             this.mark = student.isMark();
             this.img = student.getImg();
-            this.passport = student.getPassport();
         } else if (account.getTeacher() != null) {
             Teacher teacher = account.getTeacher();
             this.teacherId = teacher.getId();
