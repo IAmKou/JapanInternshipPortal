@@ -117,6 +117,7 @@ public class StudentAssignmentServices {
         response.setStatus(studentAssignment.getStatus().toString());
         response.setAssignmentId(studentAssignment.getAssignment().getId()); // Includes assignment details
         response.setStudentId(studentAssignment.getStudent().getId()); // Includes student details
+        response.setStudentName(studentAssignment.getStudent().getFullname()); // Includes student
         return response;
     }
 

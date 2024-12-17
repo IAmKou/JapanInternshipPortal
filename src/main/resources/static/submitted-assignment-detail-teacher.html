@@ -407,7 +407,7 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h2 class="text-dark-medium font-medium">Student Submittion</h2>
+                            <h2 class="text-dark-medium font-medium">Student Submission</h2>
                             <h3 class="text-dark-medium font-medium">Description</h3>
                             <p id="submitted-assignment-description"></p>
                         </div>
@@ -415,6 +415,9 @@
 
                     <div class="single-info-details">
                         <div class="item-content">
+                            <h4>Student:</h4>
+                            <p id="submitted-assignment-student-name"></p>
+
                             <h6>Created Date:</h6>
                             <p id="submitted-created-date"></p>
 
@@ -559,6 +562,7 @@
             // Populate form fields with the fetched data
             document.getElementById('submitted-assignment-description').textContent = studentAssignment.description;
             document.getElementById('submitted-assignment-content').textContent = studentAssignment.content;
+            document.getElementById('submitted-assignment-student-name').textContent = studentAssignment.studentName;
 
             const formattedDate = new Date(studentAssignment.date).toISOString().split("T")[0];
             document.getElementById('submitted-created-date').textContent = formattedDate;
