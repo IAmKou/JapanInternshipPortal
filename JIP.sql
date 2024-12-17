@@ -113,7 +113,7 @@ CREATE TABLE Student_assignment (
     assignment_id INT,
     mark DECIMAL(5,2),
     description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    content VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    content longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     date DATE NOT NULL,
     FOREIGN KEY (student_id) REFERENCES Student(Id),
     FOREIGN KEY (assignment_id) REFERENCES Assignment(Id)

@@ -441,6 +441,12 @@
         document.getElementById("created_date").value = currentDate;
     });
 
+    function isValidImage(file) {
+        const allowedExtensions = ['jpg', 'jpeg', 'png'];
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        return allowedExtensions.includes(fileExtension);
+    }
+
     async function addAssignment(event) {
         event.preventDefault();
 
@@ -475,6 +481,13 @@
             return;
         }
 
+        // Check if the description already exists in the database
+        const descriptionExists = await checkDescriptionExists(description);
+        if (descriptionExists) {
+            alert('Description already exists. Please use a different description.');
+            return;
+        }
+
         // Get selected class IDs from the <select> element
         const classSelect = document.getElementById('class_id');
         const selectedClasses = Array.from(classSelect.selectedOptions).map(option => option.value);
@@ -491,8 +504,13 @@
         for (let i = 0; i < imgFiles.length; i++) {
             const file = imgFiles[i];
             if (!addedFileNames.has(file.name)) {
-                addedFileNames.add(file.name); // Track the file name
-                formData.append('imgFile', file);
+                if (isValidImage(file)) {
+                    addedFileNames.add(file.name); // Track the file name
+                    formData.append('imgFile', file);
+                } else {
+                    alert(`Invalid file type: ${file.name}. Only .jpg, .jpeg, and .png files are allowed.`);
+                    return;
+                }
             }
         }
 
@@ -512,6 +530,21 @@
         } catch (error) {
             console.error('Error:', error);
             alert('An error occurred. Please try again.');
+        }
+    }
+
+    async function checkDescriptionExists(description) {
+        try {
+            const response = await fetch(`/assignment/exists?description=${encodeURIComponent(description)}`);
+            if (response.ok) {
+                return await response.json(); // true if exists, false otherwise
+            } else {
+                console.error('Failed to check description existence.');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return false;
         }
     }
 

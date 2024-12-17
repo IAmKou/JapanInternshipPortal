@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class FileUploadUtil {
     public static final long MAX_FILE_SIZE = 500 * 1024 * 1024;
 
-    public static final String IMAGE_PATTERN = "([^\\s]+(\\.(?i)(jpg|png))$)";
+    public static final String IMAGE_PATTERN = "([^\\s]+(\\.(?i)(jpg|png|jpeg))$)";
 
 
     public static boolean isAllowedExtension(final String fileName, final String pattern) {
@@ -30,7 +30,7 @@ public class FileUploadUtil {
 
         final String fileName = file.getOriginalFilename();
         if (!isAllowedExtension(fileName, pattern)) {
-            throw new FuncErrorException("Only jpg, png files are allowed");
+            throw new FuncErrorException("Only jpg, png, jpeg files are allowed");
         }
     }
 

@@ -160,7 +160,9 @@ public class AssignmentServices extends AssignmentCreationRequest {
         return assignmentRepository.save(assignment);
     }
 
-
+    public boolean descriptionExists(String description) {
+        return assignmentRepository.existsByDescription(description);
+    }
 
 
     public AssignmentResponse getAssignmentById(int assignmentId) {
