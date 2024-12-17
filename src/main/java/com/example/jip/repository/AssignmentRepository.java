@@ -16,4 +16,6 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Integer>
     List<Assignment> findAssignmentsByStudentId(@Param("studentId") int studentId);
 
     List<Assignment> findAssignmentsByTeacherId(int teacherId);
+
+    boolean existsByDescription(String description);
 }

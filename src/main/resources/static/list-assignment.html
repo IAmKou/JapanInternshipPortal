@@ -565,7 +565,8 @@
                         <label for="content">Content:</label>
                         <textarea id="content" name="content" rows="4" required></textarea>
 
-                        <label for="class_id">For Class *</label>
+                        <label for="class_id">For Class: </label>
+                        <p id="classes"></p>
                         <select name="class_id" id="class_id" multiple></select>
 
                         <label for="assignment-files">Files:</label>
@@ -714,6 +715,12 @@
             document.getElementById('end_date').value = assignment.end_date;
             document.getElementById('content').value = assignment.content;
 
+            const assignmentResponse = await fetch(`${API_BASE_URL}/detail/${assignmentId}`);
+            if (!assignmentResponse.ok) {
+                throw new Error('Error fetching assignment details: ' + assignmentResponse.statusText);
+            }
+            const clas = assignment.classes || [];
+            document.getElementById('classes').textContent = clas.length > 0 ? clas.join(", ") : "No classes assigned";
 
             // Append 'T00:00:00Z' to the date to ensure it is correctly parsed
             const createDateString = `${assignment.created_date}T00:00:00Z`;
@@ -813,6 +820,13 @@
         const selectedClasses = Array.from(classSelect.selectedOptions).map((opt) => opt.value)
 
         const imgFiles = document.getElementById('img').files;
+        const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i; // Regex to allow jpg, jpeg, and png
+        for (let i = 0; i < imgFiles.length; i++) {
+            if (!allowedExtensions.test(imgFiles[i].name)) {
+                alert(`Invalid file type: ${imgFiles[i].name}. Only JPG, JPEG, and PNG files are allowed.`);
+                return; // Exit the function if a file is invalid
+            }
+        }
 
         const formData = new FormData();
         formData.append('description', description);

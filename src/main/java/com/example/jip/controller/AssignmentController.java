@@ -93,6 +93,12 @@ public class AssignmentController {
         }
     }
 
+    @GetMapping("/exists")
+    public ResponseEntity<Boolean> checkIfDescriptionExists(@RequestParam("description") String description) {
+        boolean exists = assignmentServices.descriptionExists(description);
+        return ResponseEntity.ok(exists);
+    }
+
     @GetMapping("/getCByTid")
     public List<ClassDTO> getClassByTid(@RequestParam("teacherId") Integer teacherId) {
 
