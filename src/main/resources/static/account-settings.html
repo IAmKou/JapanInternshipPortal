@@ -35,6 +35,31 @@
     <link href="style.css" rel="stylesheet">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <style>
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .page-btn {
+            padding: 5px 10px;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            background-color: #f8f8f8;
+            cursor: pointer;
+        }
+
+        .page-btn.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .page-btn:hover {
+            background-color: #ddd;
+        }
+    </style>
 </head>
 
 <body>
@@ -367,7 +392,7 @@
                                     <table class="table display text-nowrap">
                                         <thead>
                                         <tr>
-                                            <th>Id</th>
+                                            <th>Order</th>
                                             <th>Image</th>
                                             <th>Name</th>
                                             <th>Role</th>
@@ -377,6 +402,8 @@
                                         <tbody>
                                         </tbody>
                                     </table>
+                                    <div class="pagination-container"></div>
+
                                 </div>
                             </div>
                         </div>
@@ -564,75 +591,115 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const tableBody = document.querySelector('.table tbody');
+        const paginationContainer = document.querySelector('.pagination-container'); // Ensure you have a container for pagination
 
-        fetch(`/users`) // Use backticks here for the URL if needed
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(users => {
-                console.log(users); // Check what data you get from the backend
-                users.forEach(user => {  // Ensure 'users' is an array here
-                    const row = document.createElement('tr');
+        const usersPerPage = 30;
+        let currentPage = 1;
+        let totalUsers = 0;
+        let users = [];
 
-                    // id cell
-                    const idCell = document.createElement('td');
-                    idCell.textContent = user.id; // Correcting to 'user'
-                    row.appendChild(idCell);
-
-                    // image cell
-                    const imgCell = document.createElement('td');
-                    const imgElement = document.createElement('img');
-                    imgElement.src = user.img;  // Correcting to 'user'
-                    imgElement.alt = "User Image";  // Alt text should be relevant
-                    imgElement.style.width = "50px";
-                    imgElement.style.height = "50px";
-                    imgElement.style.objectFit = "cover";
-                    imgCell.appendChild(imgElement);
-                    row.appendChild(imgCell);
-
-                    // name cell
-                    const nameCell = document.createElement('td');
-                    if (user.roleName === "ADMIN") {
-                        nameCell.textContent = user.username;  // Correcting to 'user'
-                    } else {
-                        nameCell.textContent = user.fullName;  // Correcting to 'user'
+        function fetchUsers() {
+            fetch(`/users`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
                     }
-                    row.appendChild(nameCell);
+                    return response.json();
+                })
+                .then(data => {
+                    users = data; // Store all users
+                    totalUsers = users.length;
+                    renderTable();
+                    renderPagination();
+                })
+                .catch(error => console.error('Error fetching users:', error));
+        }
 
-                    // gender (or role) cell
-                    const roleCell = document.createElement('td');
-                    roleCell.textContent = user.roleName;  // Correcting to 'user'
-                    row.appendChild(roleCell);
+        function renderTable() {
+            tableBody.innerHTML = ''; // Clear the table body
 
-                    // Actions cell
-                    const actionsCell = document.createElement('td');
-                    const dropdown = document.createElement('div');
-                    dropdown.className = 'dropdown';
-                    const dropdownToggle = document.createElement('a');
-                    dropdownToggle.href = '#';
-                    dropdownToggle.className = 'dropdown-toggle';
-                    dropdownToggle.setAttribute('data-toggle', 'dropdown');
-                    dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
-                    dropdown.appendChild(dropdownToggle);
+            const startIndex = (currentPage - 1) * usersPerPage;
+            const endIndex = Math.min(startIndex + usersPerPage, totalUsers);
 
-                    const dropdownMenu = document.createElement('div');
-                    dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
-                    dropdownMenu.innerHTML = `
-                    <a class="dropdown-item" href="users-details.html?userId=${user.id}"><i class="fas fa-glasses text-dark-pastel-green"></i>User Details</a>
-                `;
-                    dropdown.appendChild(dropdownMenu);
-                    actionsCell.appendChild(dropdown);
-                    row.appendChild(actionsCell);
+            for (let i = startIndex; i < endIndex; i++) {
+                const user = users[i];
+                const row = document.createElement('tr');
 
-                    // Append the row to the table body
-                    tableBody.appendChild(row);
+                // Numerical order cell
+                const orderCell = document.createElement('td');
+                orderCell.textContent = i + 1; // Numerical order starts at 1
+                row.appendChild(orderCell);
+
+
+                // Image cell
+                const imgCell = document.createElement('td');
+                const imgElement = document.createElement('img');
+                imgElement.src = user.img;
+                imgElement.alt = "User Image";
+                imgElement.style.width = "50px";
+                imgElement.style.height = "50px";
+                imgElement.style.objectFit = "cover";
+                imgCell.appendChild(imgElement);
+                row.appendChild(imgCell);
+
+                // Name cell
+                const nameCell = document.createElement('td');
+                nameCell.textContent = user.roleName === "ADMIN" ? user.username : user.fullName;
+                row.appendChild(nameCell);
+
+                // Role cell
+                const roleCell = document.createElement('td');
+                roleCell.textContent = user.roleName;
+                row.appendChild(roleCell);
+
+                // Actions cell
+                const actionsCell = document.createElement('td');
+                const dropdown = document.createElement('div');
+                dropdown.className = 'dropdown';
+                const dropdownToggle = document.createElement('a');
+                dropdownToggle.href = '#';
+                dropdownToggle.className = 'dropdown-toggle';
+                dropdownToggle.setAttribute('data-toggle', 'dropdown');
+                dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
+                dropdown.appendChild(dropdownToggle);
+
+                const dropdownMenu = document.createElement('div');
+                dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
+                dropdownMenu.innerHTML = `
+                <a class="dropdown-item" href="users-details.html?userId=${user.id}"><i class="fas fa-glasses text-dark-pastel-green"></i>User Details</a>
+            `;
+                dropdown.appendChild(dropdownMenu);
+                actionsCell.appendChild(dropdown);
+                row.appendChild(actionsCell);
+
+                tableBody.appendChild(row);
+            }
+        }
+
+        function renderPagination() {
+            paginationContainer.innerHTML = ''; // Clear the pagination container
+
+            const totalPages = Math.ceil(totalUsers / usersPerPage);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.className = 'page-btn';
+                if (i === currentPage) {
+                    pageButton.classList.add('active');
+                }
+                pageButton.addEventListener('click', function () {
+                    currentPage = i;
+                    renderTable();
+                    renderPagination();
                 });
-            })
-            .catch(error => console.error('Error fetching users:', error));
+                paginationContainer.appendChild(pageButton);
+            }
+        }
+
+        fetchUsers();
     });
+
 </script>
 
 <script>

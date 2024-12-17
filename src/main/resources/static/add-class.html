@@ -31,6 +31,32 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <style>
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .page-btn {
+            padding: 5px 10px;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            background-color: #f8f8f8;
+            cursor: pointer;
+        }
+
+        .page-btn.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .page-btn:hover {
+            background-color: #ddd;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -340,14 +366,15 @@
                             </div>
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label>Add student</label>
-                                <button type="button" class="btn-fill-lg text-light bg-dodger-blue"
-                                        onclick="fetchStudents()">Get Students
+                                <button type="button" id="fetchStudentsButton" class="btn-fill-lg text-light bg-dodger-blue">
+                                    Get Students
                                 </button>
                             </div>
 
                             <div id="studentList" class="table-responsive">
                                 <table class="table display data-table text-nowrap">
                                 </table>
+                                <div id="pagination" class="pagination-container"></div>
                             </div>
                             <div id="studentCount"></div>
                             <div class="col-md-6 form-group"></div>
@@ -386,92 +413,138 @@
 <script src="js/main.js"></script>
 <!-- fetch student list -->
 <script>
-    let allStudentIds = []; // All student IDs fetched
-    let selectedStudentIds = []; // Selected student IDs for the class
+    document.addEventListener("DOMContentLoaded", () => {
+        let allStudentIds = []; // All student IDs fetched
+        let selectedStudentIds = []; // Selected student IDs for the class
+        let students = []; // Store all fetched students
+        let currentPage = 1; // Current page number
+        const studentsPerPage = 30; // Number of students per page
 
-    function fetchStudents() {
-        fetch('/student/get')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(students => {
-                const studentListDiv = document.getElementById('studentList');
-                let table = studentListDiv.querySelector('.data-table');
-                if (!table) {
-                    table = document.createElement('table');
-                    table.className = 'data-table';
-                    studentListDiv.appendChild(table);
-                }
+        document.getElementById('fetchStudentsButton').addEventListener('click', fetchStudents);
 
-                table.innerHTML = "";
-
-                if (students.length === 0) {
-                    studentListDiv.innerHTML = "<p>No unassigned students available.</p>";
-                    return;
-                }
-
-                // Reset the arrays
-                allStudentIds = students.map(student => student.id);
-                selectedStudentIds = [];
-
-                // Create header row
-                const headerRow = document.createElement('tr');
-                ['Select', 'Full Name', 'Japan Name', 'Gender'].forEach(text => {
-                    const headerCell = document.createElement('th');
-                    headerCell.textContent = text;
-                    headerRow.appendChild(headerCell);
+        function fetchStudents() {
+            console.log("Fetching students...");
+            fetch('/student/get')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Students fetched:", data);
+                    students = data; // Store all students
+                    allStudentIds = students.map(student => student.id); // Map all student IDs
+                    selectedStudentIds = []; // Reset selected IDs
+                    renderTable(); // Render the first page
+                    renderPagination(); // Render pagination buttons
+                })
+                .catch(error => {
+                    console.error("Error fetching students:", error);
+                    alert("There was an error fetching students");
                 });
-                table.appendChild(headerRow);
+        }
 
-                // Add rows for students
-                students.forEach(student => {
-                    const row = document.createElement('tr');
+        function renderTable() {
+            console.log("Rendering table for page:", currentPage);
+            const studentListDiv = document.getElementById('studentList');
+            let table = studentListDiv.querySelector('.data-table');
+            if (!table) {
+                table = document.createElement('table');
+                table.className = 'data-table';
+                studentListDiv.appendChild(table);
+            }
 
-                    // Checkbox column
-                    const checkboxCell = document.createElement('td');
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.value = student.id;
-                    checkbox.addEventListener('change', (e) => {
-                        const studentId = parseInt(e.target.value);
-                        if (e.target.checked) {
-                            selectedStudentIds.push(studentId); // Add ID to selected list
-                        } else {
-                            selectedStudentIds = selectedStudentIds.filter(id => id !== studentId); // Remove ID
-                        }
-                    });
-                    checkboxCell.appendChild(checkbox);
-                    row.appendChild(checkboxCell);
+            table.innerHTML = ""; // Clear table content
 
-                    // Full name column
-                    const fullnameCell = document.createElement('td');
-                    fullnameCell.textContent = student.fullname;
-                    row.appendChild(fullnameCell);
+            const startIndex = (currentPage - 1) * studentsPerPage;
+            const endIndex = Math.min(startIndex + studentsPerPage, students.length);
+            const pageStudents = students.slice(startIndex, endIndex);
 
-                    // Japan name column
-                    const japannameCell = document.createElement('td');
-                    japannameCell.textContent = student.jname;
-                    row.appendChild(japannameCell);
+            if (pageStudents.length === 0) {
+                studentListDiv.innerHTML = "<p>No unassigned students available.</p>";
+                return;
+            }
 
-                    // Gender column
-                    const genderCell = document.createElement('td');
-                    genderCell.textContent = student.gender;
-                    row.appendChild(genderCell);
-
-                    table.appendChild(row);
-                });
-
-                const studentCountDiv = document.getElementById('studentCount');
-                studentCountDiv.textContent = `Total Students: ${students.length}`;
-            })
-            .catch(error => {
-                console.error("Error fetching students:", error);
-                alert("There was an error fetching students");
+            // Create header row
+            const headerRow = document.createElement('tr');
+            ['Order', 'Select', 'Full Name', 'Japan Name', 'Gender'].forEach(text => {
+                const headerCell = document.createElement('th');
+                headerCell.textContent = text;
+                headerRow.appendChild(headerCell);
             });
-    }
+            table.appendChild(headerRow);
+
+            // Add rows for students
+            pageStudents.forEach((student, index) => {
+                const row = document.createElement('tr');
+
+                // Numerical order column
+                const orderCell = document.createElement('td');
+                orderCell.textContent = startIndex + index + 1; // Maintain overall order
+                row.appendChild(orderCell);
+
+                // Checkbox column
+                const checkboxCell = document.createElement('td');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = student.id;
+                checkbox.checked = selectedStudentIds.includes(student.id);
+                checkbox.addEventListener('change', (e) => {
+                    const studentId = parseInt(e.target.value);
+                    if (e.target.checked) {
+                        selectedStudentIds.push(studentId); // Add ID to selected list
+                    } else {
+                        selectedStudentIds = selectedStudentIds.filter(id => id !== studentId); // Remove ID
+                    }
+                });
+                checkboxCell.appendChild(checkbox);
+                row.appendChild(checkboxCell);
+
+                // Full name column
+                const fullnameCell = document.createElement('td');
+                fullnameCell.textContent = student.fullname;
+                row.appendChild(fullnameCell);
+
+                // Japan name column
+                const japannameCell = document.createElement('td');
+                japannameCell.textContent = student.jname;
+                row.appendChild(japannameCell);
+
+                // Gender column
+                const genderCell = document.createElement('td');
+                genderCell.textContent = student.gender;
+                row.appendChild(genderCell);
+
+                table.appendChild(row);
+            });
+
+            const studentCountDiv = document.getElementById('studentCount');
+            studentCountDiv.textContent = `Showing ${startIndex + 1} to ${endIndex} of ${students.length} students`;
+        }
+
+        function renderPagination() {
+            const paginationDiv = document.getElementById('pagination');
+            paginationDiv.innerHTML = ""; // Clear previous pagination buttons
+
+            const totalPages = Math.ceil(students.length / studentsPerPage);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement('button');
+                button.textContent = i;
+                button.className = 'page-btn';
+                if (i === currentPage) {
+                    button.classList.add('active');
+                }
+                button.addEventListener('click', () => {
+                    currentPage = i;
+                    renderTable();
+                    renderPagination();
+                });
+                paginationDiv.appendChild(button);
+            }
+        }
+
 
     document.getElementById('createClassForm').addEventListener('submit', function (event) {
         event.preventDefault();
@@ -491,11 +564,11 @@
 
         const data = {
             name: className,
-            numberOfStudents: selectedStudentIds.length, // Set the count to selected students
+            numberOfStudents: selectedStudentIds.length,
             teacher: {
                 id: teacherId
             },
-            studentIds: selectedStudentIds // Include only selected student IDs
+            studentIds: selectedStudentIds
         };
 
         fetch('/class/create', {
@@ -526,6 +599,9 @@
             })
             .catch(error => alert("Error creating class: " + error));
     });
+    });
+    // Initial fetch to populate students
+
 </script>
 <!-- fetch teacher -->
 <script>
