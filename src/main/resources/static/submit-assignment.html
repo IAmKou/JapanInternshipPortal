@@ -75,24 +75,24 @@
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
                         <div class="admin-title">
-                            <h5 class="item-title">Stevne Zone</h5>
-                            <span>Admin</span>
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
                         </div>
-                        <div class="admin-img">
-                            <img src="img/figure/admin.jpg" alt="Admin">
+                        <div class="admin-img img">
+                            <img src="" alt="Admin" style="width: 50px; height: 50px">
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="item-header">
-                            <h6 class="item-title">Steven Zone</h6>
+                            <h6 class="item-title userFullName"></h6>
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
-                                <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
+                                <li><a href="users-profile-student.html"><i class="flaticon-user"></i>My Profile</a></li>
                                 <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
                                 <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a></li>
                                 <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                <li><a href="login.html"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
                     </div>
@@ -260,18 +260,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create
-                                    Thread</a>
-                            </li>
-                        </ul>
-                    </li>
+
                     <li class="nav-item sidebar-nav-item">
                         <a href="javascript:void(0);" class="nav-link" onclick="submitForm();"><i
                                 class="flaticon-shopping-list"></i><span>Schedule</span></a>
@@ -584,8 +573,9 @@
                 const userData = await response.json();
                 sessionStorage.setItem('userDetails', JSON.stringify(userData));
                 console.log("User data stored in sessionStorage:", userData);
-
                 getUserDetails(userData);
+                // Ensure that the fetch functions are called after userDetails are set
+
             } else {
                 console.error("Failed to fetch user details:", response.statusText);
             }
@@ -594,55 +584,34 @@
         }
     })();
 
-
+    // Function to set user details in the UI
     function getUserDetails(userDetails) {
         if (userDetails) {
-            // Hiển thị thông tin cá nhân
-            const userFullNameElements = document.querySelectorAll('.userFullName');
-            const userRoleElements = document.querySelectorAll('.userRole');
-            const userJapannameElement = document.getElementById('userJapanname');
-            const userGenderElement = document.getElementById('userGender');
-            const userEmailElement = document.getElementById('userEmail');
-            const userDobElement = document.getElementById('userDob');
-            const userPhoneElement = document.getElementById('userPhone');
+            console.log("Setting user details:", userDetails);
+
+            document.querySelectorAll('.userFullName').forEach(element => {
+                element.textContent = userDetails.fullName || "Unknown Name";
+            });
+            document.querySelectorAll('.userRole').forEach(element => {
+                element.textContent = userDetails.roleName || "Unknown Role";
+            });
             const userIdElement = document.getElementById('userId');
-
-            // Check if the elements exist
-            if (userFullNameElements.length > 0) {
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.fullName;
-                });
+            if (userIdElement) {
+                userIdElement.value = userDetails.id || "";
             }
 
-            if (userRoleElements.length > 0) {
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
-            }
-
-            if (userJapannameElement) userJapannameElement.textContent = userDetails.jname;
-            if (userGenderElement) userGenderElement.textContent = userDetails.gender;
-            if (userEmailElement) userEmailElement.textContent = userDetails.email;
-            if (userDobElement) userDobElement.textContent = userDetails.dob;
-            if (userPhoneElement) userPhoneElement.textContent = userDetails.phoneNumber;
-            if (userIdElement) userIdElement.value = userDetails.id;
-
-            // Kiểm tra vai trò người dùng và hiển thị các mục điều hướng tương ứng
-            if (userDetails.roleName === "ADMIN") {
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "none";
-                document.getElementById("student-view1").style.display = "none";
-            } else if (userDetails.roleName === "TEACHER") {
-                document.getElementById("teacher-view").style.display = "block";
-                document.getElementById("student-view").style.display = "none";
-                document.getElementById("student-view1").style.display = "none";
-            } else if (userDetails.roleName === "STUDENT") {
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "block";
-                document.getElementById("student-view1").style.display = "block";
-            } else {
-                console.warn("Role not recognized:", userDetails.roleName);
-            }
+            const imgContainers = document.querySelectorAll('.img');
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img');
+                if (imgElement) {
+                    imgElement.src = userDetails.img
+                        ? `${userDetails.img}?v=${new Date().getTime()}`
+                        : '/path/to/default-passport.jpg';
+                    console.log("Image source set to:", imgElement.src);
+                } else {
+                    console.error("Image element not found in:", container);
+                }
+            });
         } else {
             console.error("User details not found in sessionStorage");
         }

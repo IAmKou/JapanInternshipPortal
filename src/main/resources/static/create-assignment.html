@@ -476,7 +476,7 @@
         }
 
         // Check if the created date is after the end date
-        if (new Date(createdDate) > new Date(endDate)) {
+        if (new Date(createdDate) >= new Date(endDate)) {
             alert('Create date cannot be after the end date.');
             return;
         }

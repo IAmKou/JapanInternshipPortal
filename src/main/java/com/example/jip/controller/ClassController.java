@@ -41,6 +41,10 @@ public class ClassController {
         if (classDTO.getName() == null || classDTO.getName().isEmpty()) {
             throw new IllegalArgumentException("Class name is required");
         }
+        boolean classExists = classRepository.existsByName(classDTO.getName());
+        if (classExists) {
+            return "A class with the name [" + classDTO.getName() + "] already exists.";
+        }
         if (classDTO.getTeacher() == null || classDTO.getTeacher().getId() == 0) {
             throw new IllegalArgumentException("Teacher ID is required");
         }
