@@ -314,6 +314,7 @@
                                 <table class="table display data-table text-nowrap">
                                     <thead>
                                     <tr>
+                                        <th>Name</th>
                                         <th>Type</th>
                                         <th>Purpose</th>
                                         <th>Create Date</th>
@@ -332,10 +333,6 @@
                     </div>
                 </div>
                 <!-- Student Table Area End Here -->
-                <footer class="footer-wrap-layout1">
-                    <div class="copyright">© Copyrights <a href="#">JIP</a> 2019. All rights reserved. Designed by <a
-                            href="#">PsdBosS</a></div>
-                </footer>
             </div>
         </div>
         <!-- Page Area End Here -->
@@ -405,7 +402,7 @@
 
                         data.forEach(application => {
                             const content = application.content || 'N/A';
-                            const formattedContent = wrapText(content, 50); // Hàm tự động xuống dòng
+                            const formattedContent = wrapText(content, 40); // Hàm tự động xuống dòng
 
                             const category = application.category || 'N/A';
                             const formattedCategory = wrapText(category, 8); // Xử lý category
