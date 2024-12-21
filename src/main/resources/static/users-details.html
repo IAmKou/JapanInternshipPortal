@@ -427,7 +427,7 @@
                     <tr><td class="font-medium text-dark-medium">Japan Name:</td>
                         <td><input type="text" value="${user.jname}" required id="jname-input"></td></tr>
                         <tr><td class="font-medium text-dark-medium">Role Name:</td>
-                        <td><input type="text" value="${user.roleName}" required id="rname-input"></td></tr>
+                        <td><input type="text" value="${user.roleName}" readonly required id="rname-input"></td></tr>
                     <tr><td class="font-medium text-dark-medium">Gender:</td>
                         <td>
                             <div class="form-check-inline">
@@ -488,9 +488,32 @@
                 alert('Please select a gender.');
                 return;
             }
-            if (dob && isNaN(new Date(dob).getTime())) {
-                alert('Invalid Date of Birth.');
-                return;
+            if (dob) {
+                const dobDate = new Date(dob);
+                if (isNaN(dobDate.getTime())) {
+                    alert('Invalid Date of Birth.');
+                    return;
+                }
+
+                const today = new Date();
+                let age = today.getFullYear() - dobDate.getFullYear();
+                const monthDiff = today.getMonth() - dobDate.getMonth();
+                const dayDiff = today.getDate() - dobDate.getDate();
+
+                // Adjust age if the current month/date is before the DoB month/date
+                if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                    age--;
+                }
+
+                // Check age limits (e.g., between 18 and 120 years old)
+                if (age < 18) {
+                    alert('Invalid Date of Birth.');
+                    return;
+                }
+                if (age > 100) {
+                    alert('Invalid Date of Birth.');
+                    return;
+                }
             }
             if (!email) {
                 alert('Email cannot be empty.');
