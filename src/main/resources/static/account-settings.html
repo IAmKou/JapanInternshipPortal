@@ -300,13 +300,16 @@
                 </li>
 
                 <li class="navbar-item dropdown header-language">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
-                       data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
+                    </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#">English</a>
-                        <a class="dropdown-item" href="#">Japanese</a>
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('en')">English</a>
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">Japanese</a>
                     </div>
                 </li>
+
+
             </ul>
         </div>
     </div>
@@ -373,11 +376,12 @@
                                 <!-- Di chuyển "User Actions" sang trái một chút -->
                                 <h4 style="margin-right: 500px;">User Actions</h4>
                                 <div class="dropdown">
-                                    <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" style="font-size: 16px; padding: 10px 20px;">Add or Import User</a>
+                                    <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" style="font-size: 16px; padding: 10px 20px;" data-i18n="add_import_users">Add or Import Users</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="create-account.html"><i class="fas fa-plus text-orange-red"></i> Add New User</a>
-                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#standard-modal"><i class="fas fa-file-import text-green"></i> Import Users</a>
+                                        <a class="dropdown-item" href="create-account.html" data-i18n="add_new_user"><i class="fas fa-plus text-orange-red"></i> Add New User</a>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#standard-modal" data-i18n="import_users"><i class="fas fa-file-import text-green"></i> Import Users</a>
                                     </div>
+
                                 </div>
                             </div>
                             <form>
@@ -707,7 +711,65 @@
         successMessageElement.style.display = "block";  // Make the message visible
     }
 </script>
+<script>
+    // Hàm thay đổi ngôn ngữ
+    function getTranslation(language) {
+        const translations = {
+            "en": {
+                "add_new_user": "Add New User",
+                "import_users": "Import Users",
+                "add_import_users": "Add or Import Users"
+            },
+            "ja": {
+                "add_new_user": "新しいユーザーを追加",
+                "import_users": "ユーザーをインポート",
+                "add_import_users": "ユーザーを追加またはインポート"
+            }
+        };
 
+        const elements = document.querySelectorAll('[data-i18n]');
+        elements.forEach(function (element) {
+            const translationKey = element.getAttribute('data-i18n');
+            if (translations[language] && translations[language][translationKey]) {
+                element.innerHTML = translations[language][translationKey];
+            }
+        });
+    }
+
+    // Hàm thay đổi ngôn ngữ và cập nhật ngôn ngữ hiển thị trong thanh điều hướng
+    function changeLanguage(language) {
+        // Lưu ngôn ngữ vào localStorage
+        localStorage.setItem('language', language);
+
+        // Cập nhật lại ngôn ngữ trong phần tử hiện tại (nút hiển thị ngôn ngữ)
+        const languageLabel = document.getElementById('languageLabel');
+        if (languageLabel) {
+            languageLabel.innerHTML = language === 'en' ? 'EN' : 'JA';
+        }
+
+        // Áp dụng ngôn ngữ cho toàn bộ trang
+        getTranslation(language);
+    }
+
+    // Kiểm tra ngôn ngữ khi trang được tải
+    window.addEventListener('load', function () {
+        const language = localStorage.getItem('language') || 'en'; // Nếu không có, mặc định là 'en'
+
+        // Cập nhật lại ngôn ngữ trong phần tử hiển thị khi trang được tải lại
+        const languageLabel = document.getElementById('languageLabel');
+        if (languageLabel) {
+            languageLabel.innerHTML = language === 'en' ? 'EN' : 'JA';
+        }
+
+        // Áp dụng ngôn ngữ đã lưu trong localStorage khi trang được tải
+        getTranslation(language);
+    });
+
+
+
+
+
+</script>
 
 </body>
 
