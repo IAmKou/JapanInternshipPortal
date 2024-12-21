@@ -36,6 +36,21 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .pagination .page-link {
+            padding: 0.75rem 1.25rem; /* Increase padding for bigger buttons */
+            font-size: 1.25rem; /* Increase font size for larger text */
+            border-radius: 0.375rem; /* Optional: Make buttons slightly rounded */
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #007bff; /* Active button color */
+            border-color: #007bff; /* Active button border color */
+        }
+
+        .pagination .page-item:hover .page-link {
+            background-color: #0056b3; /* Hover effect color */
+            border-color: #0056b3;
+        }
         .pagination-container {
             display: flex;
             justify-content: center;
@@ -259,87 +274,9 @@
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
-                                <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
-                                <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
-                                </li>
+                                <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
                                 <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
-                        </div>
-                    </div>
-                </li>
-                <li class="navbar-item dropdown header-message">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false">
-                        <i class="far fa-envelope"></i>
-                        <div class="item-title d-md-none text-16 mg-l-10">Message</div>
-                        <span>5</span>
-                    </a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <div class="item-header">
-                            <h6 class="item-title">05 Message</h6>
-                        </div>
-                        <div class="item-content">
-                            <div class="media">
-                                <div class="item-img bg-skyblue author-online">
-                                    <img src="img/figure/student11.png" alt="img">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Maria Zaman</span>
-                                            <span class="item-time">18:30</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-img bg-yellow author-online">
-                                    <img src="img/figure/student12.png" alt="img">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Benny Roy</span>
-                                            <span class="item-time">10:35</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-img bg-pink">
-                                    <img src="img/figure/student13.png" alt="img">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Steven</span>
-                                            <span class="item-time">02:35</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-img bg-violet-blue">
-                                    <img src="img/figure/student11.png" alt="img">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Joshep Joe</span>
-                                            <span class="item-time">12:35</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </li>
@@ -389,9 +326,9 @@
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
+                                <a href="admin.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Admin</a>
                             </li>
                         </ul>
                     </li>
@@ -404,7 +341,7 @@
                                 class="flaticon-script"></i><span>Notification</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="account-settings.html" class="nav-link"><i
+                        <a href="account-settings.html" class="nav-link menu-active"><i
                                 class="flaticon-settings"></i><span>Account List</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
@@ -438,7 +375,7 @@
                                 <!-- Di chuyển "User Actions" sang trái một chút -->
                                 <h4 style="margin-right: 500px;">User Actions</h4>
                                 <div class="dropdown">
-                                    <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" style="font-size: 16px; padding: 10px 20px;">Actions</a>
+                                    <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" style="font-size: 16px; padding: 10px 20px;">Add or Import User</a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="create-account.html"><i class="fas fa-plus text-orange-red"></i> Add New User</a>
                                         <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#standard-modal"><i class="fas fa-file-import text-green"></i> Import Users</a>
@@ -447,11 +384,8 @@
                             </div>
                             <form>
                                 <div class="row mb-3 align-items-center">
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-8">
                                         <input type="text" placeholder="Search by ID..." class="form-control search-input">
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <input type="text" placeholder="Search by Name..." class="form-control search-input">
                                     </div>
                                     <div class="col-lg-4">
                                         <button type="submit" class="btn btn-gradient-yellow btn-search">SEARCH</button>
@@ -492,7 +426,6 @@
                                         <li class="page-item"><a href="#" class="page-link">Next</a></li>
                                     </ul>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
