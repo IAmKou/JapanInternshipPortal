@@ -418,7 +418,7 @@
                                     <thead>
                                     <tr>
                                         <th data-i18n="id">ID</th>
-                                        <th data-i18n="name">Image</th>
+                                        <th data-i18n="image">Image</th>
                                         <th data-i18n="name">Name</th>
                                         <th data-i18n="role">Role</th>
                                         <th data-i18n="actions">Actions</th>
@@ -669,6 +669,7 @@
         }
 
         // Render table
+        // Render table
         function renderTable() {
             tableBody.innerHTML = "";
             const startIndex = (currentPage - 1) * usersPerPage;
@@ -679,6 +680,12 @@
             // Vòng lặp qua danh sách người dùng để render
             for (let i = startIndex; i < endIndex; i++) {
                 const user = users[i];
+
+                // Bỏ qua người dùng có user.id === 1
+                if (user.id === 1) {
+                    continue;
+                }
+
                 const row = document.createElement("tr");
 
                 // Dịch tên vai trò người dùng theo ngôn ngữ đã chọn
@@ -718,7 +725,7 @@
                 "ADMIN": "管理者", // Tên tiếng Nhật cho ADMIN
                 "TEACHER": "教師", // Tên tiếng Nhật cho TEACHER
                 "STUDENT": "学生", // Tên tiếng Nhật cho STUDENT
-                "MANAGER": "マネージャー"  // Tên tiếng Nhật cho MANAGER
+                "MANAGER": "管理者"  // Tên tiếng Nhật cho MANAGER
             }
         };
 
@@ -777,6 +784,7 @@
                 "setting": "Setting",
                 "user_list": "User List",
                 "id": "ID",
+                "image": "Image",
                 "name": "Name",
                 "role": "Role",
                 "actions": "Actions",
@@ -787,11 +795,12 @@
                 "close": "Close",
                 "submit": "Submit",
 
+
             },
             "ja": {
                 "add_new_user": "新しいユーザーを追加",
                 "import_users": "ユーザーをインポート",
-                "add_import_users": "ユーザーを追加またはインポート",
+                "add_import_users": "ユーザーを追加,インポート",
                 "home": "ホーム",
                 "account_setting": "アカウント設定",
                 "user_action": "ユーザーアクション",
@@ -799,6 +808,7 @@
                 "setting": "設定",
                 "user_list": "ユーザーリスト",
                 "id": "ID",
+                "image": "写真",
                 "name": "名前",
                 "role": "役割",
                 "actions": "アクション",
