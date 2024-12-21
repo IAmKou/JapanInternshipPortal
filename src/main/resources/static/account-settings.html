@@ -650,8 +650,13 @@
 
                 row.innerHTML = `
                 <td>${i + 1}</td>
-                <td><img src="${user.img}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;"></td>
-                <td>${user.roleName === "ADMIN" ? user.username : user.fullName}</td>
+<td>
+    <img
+        src="${user.img ? user.img : 'img/figure/admin.jpg'}"
+        alt="User Image"
+        class="rounded-circle"
+        style="width: 50px; height: 50px; object-fit: cover;">
+</td>                <td>${user.roleName === "ADMIN" ? user.username : user.fullName}</td>
                 <td>${user.roleName}</td>
                 <td>
     <a href="users-details.html?userId=${user.id}" class="text-decoration-none text-primary" title="View User Details">
