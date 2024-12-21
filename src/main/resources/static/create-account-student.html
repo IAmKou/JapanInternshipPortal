@@ -40,12 +40,12 @@
                     <input type="hidden" name="account_id" id="account_id" value="${account_id}">
                     <!-- Fullname and Japan Name -->
                     <div class="form-group col-md-6">
-                        <label for="fullname">Fullname</label>
+                        <label for="fullname">Fullname *</label>
                         <input type="text" placeholder="Enter your name" name="fullname" required class="form-control" id="fullname">
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="jname">Japan Name</label>
+                        <label for="jname">Japan Name *</label>
                         <input type="text" placeholder="Enter your Japan name" name="japanname" required class="form-control" id="jname">
                     </div>
                 </div>
@@ -53,12 +53,12 @@
                 <div class="form-row">
                     <!-- Date of Birth and Email -->
                     <div class="form-group col-md-6">
-                        <label for="DoB">DoB</label>
+                        <label for="DoB">Date of Birth *</label>
                         <input type="date" name="dob" required class="form-control" id="DoB">
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="email">Email</label>
+                        <label for="email">Email *</label>
                         <input type="email" name="email" required placeholder="ex:abc@gmail.com" id="email" class="form-control">
                     </div>
                 </div>
@@ -66,12 +66,12 @@
                 <div class="form-row">
                     <!-- Phone Number and Gender -->
                     <div class="form-group col-md-6">
-                        <label for="phone">Phone Number</label>
+                        <label for="phone">Phone Number *</label>
                         <input type="text" name="phoneNumber" required placeholder="ex:012345678" id="phone" class="form-control">
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label style="font-weight: bold; color: #464c4d; font-size:14px;">Gender</label></br>
+                        <label style="font-weight: bold; color: #464c4d; font-size:14px;">Gender *</label></br>
                         <div class="form-check-inline">
                             <input type="radio" name="gender" value="Male" id="male" class="form-check-input">
                             <label for="male" class="form-check-label">Male</label>
@@ -86,12 +86,12 @@
                 <div class="form-row">
                     <!-- Profile Image and Passport Image -->
                     <div class="form-group col-md-6">
-                        <label for="img">Profile Image</label>
+                        <label for="img">Profile Image *</label>
                         <input type="file" name="img" id="img" class="form-control" >
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="passport">Passport Image</label>
+                        <label for="passport">Passport Image *</label>
                         <input type="file" name="passport_img" id="passport" class="form-control" >
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-12 text-center">
                         <div class="col-md-4 mx-auto">
-                            <button type="submit" id="submit-btn" class="login-btn btn btn-primary btn-block">Create</button>
+                            <button type="submit" id="submit-btn" class="login-btn btn btn-primary btn-block" style="font-size: 20px;">Create</button>
                         </div>
                     </div>
                     <div id="message" style="display: none;" class="alert alert-danger"></div>
