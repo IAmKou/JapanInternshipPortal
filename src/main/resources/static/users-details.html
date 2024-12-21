@@ -40,7 +40,8 @@
             <div class="header-logo">
                 <a href="admin.html">
                     <div style="width: 180px; height: 70px; overflow: hidden;">
-                        <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+                        <img src="img/JIP%20LOGO%20n.png" alt="logo"
+                             style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                 </a>
             </div>
@@ -267,7 +268,8 @@
                         <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
+                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change
+                                    Password</a>
                             </li>
                         </ul>
                     </li>
@@ -422,30 +424,30 @@
                 // Enable editing when the edit button is clicked
                 document.querySelector('#editButton').addEventListener('click', () => {
                     document.querySelector('#userInfoTable').innerHTML = `
-                    <tr><td class="font-medium text-dark-medium">Name:</td>
-                        <td><input type="text" value="${user.fullName}" required id="name-input"></td></tr>
-                    <tr><td class="font-medium text-dark-medium">Japan Name:</td>
-                        <td><input type="text" value="${user.jname}" required id="jname-input"></td></tr>
-                        <tr><td class="font-medium text-dark-medium">Role Name:</td>
-                        <td><input type="text" value="${user.roleName}" readonly required id="rname-input"></td></tr>
-                    <tr><td class="font-medium text-dark-medium">Gender:</td>
-                        <td>
-                            <div class="form-check-inline">
-                                <input type="radio" name="gender" value="Male" id="male" class="form-check-input" ${user.gender === 'Male' ? 'checked' : ''}>
-                                <label for="male" class="form-check-label">Male</label>
-                            </div>
-                            <div class="form-check-inline">
-                                <input type="radio" name="gender" value="Female" id="female" class="form-check-input" ${user.gender === 'Female' ? 'checked' : ''}>
-                                <label for="female" class="form-check-label">Female</label>
-                            </div>
-                        </td></tr>
-                    ${user.dob ? `<tr><td class="font-medium text-dark-medium">Date of Birth:</td>
-                        <td><input type="date" required value="${user.dob.split('T')[0]}" id="dob-input"></td></tr>` : ''}
-                    <tr><td class="font-medium text-dark-medium">Email:</td>
-                        <td><input type="email" required value="${user.email}" id="email-input"></td></tr>
-                    <tr><td class="font-medium text-dark-medium">Phone Number:</td>
-                        <td><input type="text" required value="${user.phoneNumber}" id="phone-input"></td></tr>
-                `;
+    <tr><td class="font-medium text-dark-medium">Name:</td>
+        <td><input type="text" value="${user.fullName}" required id="name-input"></td></tr>
+    <tr><td class="font-medium text-dark-medium">Japan Name:</td>
+        <td><input type="text" value="${user.jname}" required id="jname-input"></td></tr>
+    <tr><td class="font-medium text-dark-medium">Role Name:</td>
+        <td><input type="text" value="${user.roleName}" id="rname-input" readonly class="form-control-plaintext"></td></tr>
+    <tr><td class="font-medium text-dark-medium">Gender:</td>
+        <td>
+            <div class="form-check-inline">
+                <input type="radio" name="gender" value="Male" id="male" class="form-check-input" ${user.gender === 'Male' ? 'checked' : ''}>
+                <label for="male" class="form-check-label">Male</label>
+            </div>
+            <div class="form-check-inline">
+                <input type="radio" name="gender" value="Female" id="female" class="form-check-input" ${user.gender === 'Female' ? 'checked' : ''}>
+                <label for="female" class="form-check-label">Female</label>
+            </div>
+        </td></tr>
+    ${user.dob ? `<tr><td class="font-medium text-dark-medium">Date of Birth:</td>
+        <td><input type="date" required value="${user.dob.split('T')[0]}" id="dob-input"></td></tr>` : ''}
+    <tr><td class="font-medium text-dark-medium">Email:</td>
+        <td><input type="email" required value="${user.email}" id="email-input"></td></tr>
+    <tr><td class="font-medium text-dark-medium">Phone Number:</td>
+        <td><input type="text" required value="${user.phoneNumber}" id="phone-input"></td></tr>
+    `;
                     // Show the save button after editing
                     document.querySelector('.save-button').style.display = 'inline-block';
                 });
@@ -463,14 +465,14 @@
             }
 
 
-                const fullName = document.getElementById('name-input').value.trim();
-                const jname = document.getElementById('jname-input').value.trim();
-                const rname = document.getElementById('rname-input').value.trim();
-                const gender = document.querySelector('input[name="gender"]:checked')?.value;
-                const dob = document.getElementById('dob-input')?.value.trim();
-                const email = document.getElementById('email-input').value.trim();
-                const phoneNumber = document.getElementById('phone-input').value.trim();
-
+            const fullName = document.getElementById('name-input').value.trim();
+            const jname = document.getElementById('jname-input').value.trim();
+            const rname = document.getElementById('rname-input').value.trim();
+            const gender = document.querySelector('input[name="gender"]:checked')?.value;
+            const dob = document.getElementById('dob-input')?.value.trim();
+            const email = document.getElementById('email-input').value.trim();
+            const phoneNumber = document.getElementById('phone-input').value.trim();
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|fpt\.edu\.vn)$/;
 
             if (!fullName) {
                 alert('Name cannot be empty.');
@@ -488,39 +490,54 @@
                 alert('Please select a gender.');
                 return;
             }
-            if (dob) {
-                const dobDate = new Date(dob);
-                if (isNaN(dobDate.getTime())) {
-                    alert('Invalid Date of Birth.');
+            if (currentUser.role === 'STUDENT') {
+                if (!dob) {
+                    alert('Date of Birth cannot be empty for this role.');
                     return;
                 }
+                if (dob) {
+                    const dobDate = new Date(dob);
+                    if (isNaN(dobDate.getTime())) {
+                        alert('Invalid Date of Birth.');
+                        return;
+                    }
 
-                const today = new Date();
-                let age = today.getFullYear() - dobDate.getFullYear();
-                const monthDiff = today.getMonth() - dobDate.getMonth();
-                const dayDiff = today.getDate() - dobDate.getDate();
+                    const today = new Date();
+                    let age = today.getFullYear() - dobDate.getFullYear();
+                    const monthDiff = today.getMonth() - dobDate.getMonth();
+                    const dayDiff = today.getDate() - dobDate.getDate();
 
-                // Adjust age if the current month/date is before the DoB month/date
-                if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-                    age--;
-                }
+                    // Adjust age if the current month/date is before the DoB month/date
+                    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                        age--;
+                    }
 
-                // Check age limits (e.g., between 18 and 120 years old)
-                if (age < 18) {
-                    alert('Invalid Date of Birth.');
-                    return;
-                }
-                if (age > 100) {
-                    alert('Invalid Date of Birth.');
-                    return;
+                    // Check age limits (e.g., between 18 and 120 years old)
+                    if (age < 18) {
+                        alert('Invalid Date of Birth.');
+                        return;
+                    }
+                    if (age > 100) {
+                        alert('Invalid Date of Birth.');
+                        return;
+                    }
                 }
             }
             if (!email) {
                 alert('Email cannot be empty.');
                 return;
             }
+            if (!emailRegex.test(email)) {
+                alert('Invalid email.');
+                return;
+            }
             if (!phoneNumber) {
                 alert('Phone Number cannot be empty.');
+                return;
+            }
+            const phoneRegex = /^0\d{9}$/;
+            if (!phoneRegex.test(phoneNumber)) {
+                alert('Phone Number must start with "0" and have exactly 10 digits.');
                 return;
             }
 
@@ -530,7 +547,7 @@
                 jname,
                 rname,
                 gender,
-                dob,
+                dob : currentUser.role === 'student' ? dob : null,
                 email,
                 phoneNumber
             };
@@ -541,7 +558,9 @@
             formData.append('jname', updatedUser.jname);
             formData.append('rname', updatedUser.rname);
             formData.append('gender', updatedUser.gender);
-            formData.append('dob', updatedUser.dob);
+                if (updatedUser.dob) {
+                    formData.append('dob', updatedUser.dob);
+                }
             formData.append('email', updatedUser.email);
             formData.append('phoneNumber', updatedUser.phoneNumber);
 
