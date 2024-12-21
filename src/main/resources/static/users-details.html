@@ -406,14 +406,16 @@
             })
             .then(user => {
                 currentUser = user;
+                const dobRow = user.dob
+                    ? `<tr><td>Date Of Birth:</td><td>${user.dob}</td></tr>`
+                    : ''; // Empty string if dob is null
 
                 // Populate user details table
                 document.querySelector('.info-table tbody').innerHTML = `
-                <tr><td>Id:</td><td>${user.id}</td></tr>
                 <tr><td>Name:</td><td>${user.fullName}</td></tr>
                 <tr><td>Japan Name:</td><td>${user.jname}</td></tr>
                 <tr><td>Gender:</td><td>${user.gender}</td></tr>
-                <tr><td>Date Of Birth:</td><td>${user.dob}</td></tr>
+                ${dobRow}
                 <tr><td>Email:</td><td>${user.email}</td></tr>
                 <tr><td>Phone:</td><td>${user.phoneNumber}</td></tr>
             `;
