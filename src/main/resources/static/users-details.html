@@ -547,7 +547,7 @@
                 jname,
                 rname,
                 gender,
-                dob : currentUser.role === 'student' ? dob : null,
+                dob : currentUser.role === 'STUDENT' ?  dob : currentUser.dob,
                 email,
                 phoneNumber
             };
