@@ -27,6 +27,196 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <style>
+        /* Custom Modal Styling for Error Modal */
+        #error-modal .modal-dialog {
+            position: fixed !important; /* Giữ modal ở vị trí cố định */
+            top: 0; /* Đặt modal ngay đầu trang */
+            left: 50%; /* Căn giữa modal theo chiều ngang */
+            transform: translateX(-50%); /* Căn giữa modal */
+            z-index: 1050; /* Đảm bảo modal luôn hiển thị trên các phần tử khác */
+            margin-top: 10px; /* Khoảng cách phía trên của modal */
+        }
+
+        #error-modal .modal-header {
+            background-color: #dc3545; /* Màu nền đỏ cho header */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #error-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa; /* Nền sáng cho phần thân */
+            color: #333;
+        }
+
+        #error-modal .modal-body .fas.fa-times-circle {
+            color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+            font-size: 2rem; /* Tăng kích thước biểu tượng */
+            margin-right: 10px;
+        }
+
+        #error-modal .modal-title {
+            display: flex;
+            align-items: center;
+        }
+
+        #error-modal .btn-danger {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #dc3545;
+            border-color: #dc3545;
+            border-radius: 5px;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #error-modal .btn-close {
+            color: white;
+        }
+
+        #error-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+
+        /* Tối ưu giao diện cho bảng thông tin */
+        .info-table td {
+            padding: 12px;
+            vertical-align: middle;
+        }
+
+        /* Cải tiến hình ảnh */
+        .item-img img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* Nút Save */
+        .save-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .save-button:hover {
+            background-color: #218838;
+        }
+
+        /* Nút chỉnh sửa (Edit) */
+        .dropdown-menu .dropdown-item {
+            font-size: 14px;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Định dạng thẻ tiêu đề */
+        .header-inline h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Cải thiện bảng */
+        .table-borderless td, .table-borderless th {
+            border: none;
+        }
+
+        /* Thiết kế đẹp hơn cho các mục trong dropdown */
+        .custom-dropdown-item {
+            padding: 12px 20px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .custom-dropdown-item:hover {
+            background-color: #e2e6ea;
+            color: #0056b3;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-dropdown-item i {
+            font-size: 18px; /* Cải thiện kích thước biểu tượng */
+        }
+
+        /* Tạo hiệu ứng cho menu dropdown */
+        .dropdown-menu {
+            padding: 0;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 8px;
+        }
+
+        .custom-dropdown-btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;  /* Kích thước biểu tượng */
+            width: 40px;
+            height: 40px;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+            border-radius: 50%;  /* Nút tròn */
+            cursor: pointer;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Hiệu ứng khi hover */
+        .custom-dropdown-btn:hover {
+            background-color: #007bff;  /* Màu nền khi hover */
+            box-shadow: 0 8px 16px rgba(0, 123, 255, 0.3);  /* Hiệu ứng đổ bóng */
+        }
+
+        .custom-dropdown-btn i {
+            color: #007bff;  /* Màu của biểu tượng */
+        }
+
+        .custom-dropdown-btn:hover i {
+            color: white;  /* Màu biểu tượng khi hover */
+        }
+
+        .font-medium {
+            font-weight: 500; /* Cho chữ dày hơn */
+        }
+
+        .text-dark-medium {
+            color: #333333; /* Màu sắc chữ tối hơn để tăng độ tương phản */
+        }
+
+        .table td {
+            padding: 10px; /* Tăng khoảng cách giữa các ô */
+            font-size: 16px; /* Thay đổi kích cỡ chữ */
+        }
+
+        .input-text {
+            font-size: 16px;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .form-check-label {
+            font-weight: 500;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -293,64 +483,91 @@
             <div class="card height-auto">
                 <div class="card-body">
                     <div class="single-info-details">
-                        <div class="item-img">
-                            <img src="" alt="student" id="img" style="width: 100px ; height: 100px">
+                        <div class="item-img mb-3">
+                            <img src="" alt="student" id="img" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
                         </div>
+
                         <div class="item-content">
-                            <div class="header-inline item-header">
-                                <h3 class="text-dark-medium font-medium" id="name"></h3>
+                            <div class="header-inline item-header d-flex justify-content-between align-items-center">
+                                <h3 class="text-dark font-weight-bold" id="name"></h3>
                                 <div class="heading-layout1">
                                     <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button"
-                                           data-toggle="dropdown" aria-expanded="false">...</a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" id="editButton"><i
-                                                    class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false">
+                                            <button class="btn btn-light rounded-circle p-2 border-0 custom-dropdown-btn">
+                                                <i class="fas fa-cogs text-primary"></i>
+                                            </button>
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="editButton">
+                                            <a class="dropdown-item custom-dropdown-item" id="editButton">
+                                                <i class="fas fa-cogs text-primary mr-2"></i> Edit
+                                            </a>
+
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
-                            <div class="info-table table-responsive">
-                                <table class="table text-nowrap" id="userInfoTable">
+                            <div class="info-table table-responsive mt-3">
+                                <table class="table table-borderless text-nowrap" id="userInfoTable">
                                     <tbody>
                                     <tr>
-                                        <td>Id:</td>
-                                        <td class="font-medium text-dark-medium"></td>
+                                        <td class="font-weight-bold">Id:</td>
+                                        <td class="font-medium text-dark-medium" id="user-id"></td>
                                     </tr>
                                     <tr>
-                                        <td>Name:</td>
-                                        <td class="font-medium text-dark-medium"></td>
+                                        <td class="font-weight-bold">Name:</td>
+                                        <td class="font-medium text-dark-medium" id="user-name"></td>
                                     </tr>
                                     <tr>
-                                        <td>Japan Name:</td>
-                                        <td class="font-medium text-dark-medium"></td>
+                                        <td class="font-weight-bold">Japan Name:</td>
+                                        <td class="font-medium text-dark-medium" id="user-jname"></td>
                                     </tr>
                                     <tr>
-                                        <td>Gender:</td>
-                                        <td class="font-medium text-dark-medium"></td>
+                                        <td class="font-weight-bold">Gender:</td>
+                                        <td class="font-medium text-dark-medium" id="user-gender"></td>
                                     </tr>
                                     <tr>
-                                        <td>Date Of Birth:</td>
-                                        <td class="font-medium text-dark-medium"></td>
+                                        <td class="font-weight-bold">Date Of Birth:</td>
+                                        <td class="font-medium text-dark-medium" id="user-dob"></td>
                                     </tr>
                                     <tr>
-                                        <td>E-mail:</td>
-                                        <td class="font-medium text-dark-medium"></td>
+                                        <td class="font-weight-bold">E-mail:</td>
+                                        <td class="font-medium text-dark-medium" id="user-email"></td>
                                     </tr>
                                     <tr>
-                                        <td>Phone:</td>
-                                        <td class="font-medium text-dark-medium"></td>
+                                        <td class="font-weight-bold">Phone:</td>
+                                        <td class="font-medium text-dark-medium" id="user-phone"></td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                    <button class="save-button" style="display: none;">Save</button>
+                    <button class="save-button btn btn-success mt-3" style="display: none;">Save</button>
                 </div>
                 <!-- Student Details Area End Here -->
             </div>
         </div>
+        <!-- Modal -->
+        <!-- Modal Lỗi -->
+        <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+            <div class="modal-dialog"> <!-- Không dùng lớp "modal-dialog-centered" nữa -->
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title text-danger" id="errorModalLabel">
+                            <i class="fas fa-times-circle"></i> Error
+                        </h5>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                    </div>
+                    <div class="modal-body" id="modalMessage">
+                        <!-- Message will go here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
     <!-- Page Area End Here -->
 </div>
@@ -412,13 +629,13 @@
 
                 // Populate user details table
                 document.querySelector('.info-table tbody').innerHTML = `
-                <tr><td>Name:</td><td>${user.fullName}</td></tr>
-                <tr><td>Japan Name:</td><td>${user.jname}</td></tr>
-                <tr><td>Gender:</td><td>${user.gender}</td></tr>
-                ${dobRow}
-                <tr><td>Email:</td><td>${user.email}</td></tr>
-                <tr><td>Phone:</td><td>${user.phoneNumber}</td></tr>
-            `;
+        <tr><td class="font-medium text-dark-medium">Name:</td><td style="width: 1000px;">${user.fullName}</td></tr>
+        <tr><td class="font-medium text-dark-medium">Japan Name:</td><td style="width: 1000px;">${user.jname}</td></tr>
+        <tr><td class="font-medium text-dark-medium">Gender:</td><td>${user.gender}</td></tr>
+        ${dobRow}
+        <tr><td class="font-medium text-dark-medium">Email:</td><td>${user.email}</td></tr>
+        <tr><td class="font-medium text-dark-medium">Phone:</td><td>${user.phoneNumber}</td></tr>
+    `;
 
                 document.getElementById('img').src = user.img;
                 document.getElementById('name').textContent = user.fullName;
@@ -426,30 +643,30 @@
                 // Enable editing when the edit button is clicked
                 document.querySelector('#editButton').addEventListener('click', () => {
                     document.querySelector('#userInfoTable').innerHTML = `
-    <tr><td class="font-medium text-dark-medium">Name:</td>
-        <td><input type="text" value="${user.fullName}" required id="name-input"></td></tr>
-    <tr><td class="font-medium text-dark-medium">Japan Name:</td>
-        <td><input type="text" value="${user.jname}" required id="jname-input"></td></tr>
-    <tr><td class="font-medium text-dark-medium">Role Name:</td>
-        <td><input type="text" value="${user.roleName}" id="rname-input" readonly class="form-control-plaintext"></td></tr>
-    <tr><td class="font-medium text-dark-medium">Gender:</td>
-        <td>
-            <div class="form-check-inline">
-                <input type="radio" name="gender" value="Male" id="male" class="form-check-input" ${user.gender === 'Male' ? 'checked' : ''}>
-                <label for="male" class="form-check-label">Male</label>
-            </div>
-            <div class="form-check-inline">
-                <input type="radio" name="gender" value="Female" id="female" class="form-check-input" ${user.gender === 'Female' ? 'checked' : ''}>
-                <label for="female" class="form-check-label">Female</label>
-            </div>
-        </td></tr>
-    ${user.dob ? `<tr><td class="font-medium text-dark-medium">Date of Birth:</td>
-        <td><input type="date" required value="${user.dob.split('T')[0]}" id="dob-input"></td></tr>` : ''}
-    <tr><td class="font-medium text-dark-medium">Email:</td>
-        <td><input type="email" required value="${user.email}" id="email-input"></td></tr>
-    <tr><td class="font-medium text-dark-medium">Phone Number:</td>
-        <td><input type="text" required value="${user.phoneNumber}" id="phone-input"></td></tr>
-    `;
+            <tr><td class="font-medium text-dark-medium">Name:</td>
+                <td><input type="text" value="${user.fullName}" required id="name-input" class="input-text"></td></tr>
+            <tr><td class="font-medium text-dark-medium">Japan Name:</td>
+                <td><input type="text" value="${user.jname}" required id="jname-input" class="input-text"></td></tr>
+            <tr><td class="font-medium text-dark-medium">Role Name:</td>
+                <td><input type="text" value="${user.roleName}" id="rname-input" readonly class="form-control-plaintext"></td></tr>
+            <tr><td class="font-medium text-dark-medium">Gender:</td>
+                <td>
+                    <div class="form-check-inline">
+                        <input type="radio" name="gender" value="Male" id="male" class="form-check-input" ${user.gender === 'Male' ? 'checked' : ''}>
+                        <label for="male" class="form-check-label">Male</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input type="radio" name="gender" value="Female" id="female" class="form-check-input" ${user.gender === 'Female' ? 'checked' : ''}>
+                        <label for="female" class="form-check-label">Female</label>
+                    </div>
+                </td></tr>
+            ${user.dob ? `<tr><td class="font-medium text-dark-medium">Date of Birth:</td>
+                <td><input type="date" required value="${user.dob.split('T')[0]}" id="dob-input" class="input-text"></td></tr>` : ''}
+            <tr><td class="font-medium text-dark-medium">Email:</td>
+                <td><input type="email" required value="${user.email}" id="email-input" class="input-text"></td></tr>
+            <tr><td class="font-medium text-dark-medium">Phone Number:</td>
+                <td><input type="text" required value="${user.phoneNumber}" id="phone-input" class="input-text"></td></tr>
+        `;
                     // Show the save button after editing
                     document.querySelector('.save-button').style.display = 'inline-block';
                 });
@@ -459,13 +676,18 @@
                 alert('Failed to load user details.');
             });
 
-        // Save changes when the save button is clicked
+        // Cập nhật hàm thông báo lỗi để sử dụng modal thay cho alert
+        function showErrorModal(message) {
+            document.getElementById('modalMessage').innerText = message;
+            const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+            errorModal.show();  // Mở modal
+        }
+
         document.querySelector('.save-button').addEventListener('click', () => {
             if (!currentUser) {
-                console.error('No current user found');
+                showErrorModal('No current user found');
                 return;
             }
-
 
             const fullName = document.getElementById('name-input').value.trim();
             const jname = document.getElementById('jname-input').value.trim();
@@ -477,30 +699,30 @@
             const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|fpt\.edu\.vn)$/;
 
             if (!fullName) {
-                alert('Name cannot be empty.');
+                showErrorModal('Name cannot be empty.');
                 return;
             }
             if (!jname) {
-                alert('Japan Name cannot be empty.');
+                showErrorModal('Japan Name cannot be empty.');
                 return;
             }
             if (!rname) {
-                alert('Role Name cannot be empty.');
+                showErrorModal('Role Name cannot be empty.');
                 return;
             }
             if (!gender) {
-                alert('Please select a gender.');
+                showErrorModal('Please select a gender.');
                 return;
             }
             if (currentUser.role === 'STUDENT') {
                 if (!dob) {
-                    alert('Date of Birth cannot be empty for this role.');
+                    showErrorModal('Date of Birth cannot be empty for this role.');
                     return;
                 }
                 if (dob) {
                     const dobDate = new Date(dob);
                     if (isNaN(dobDate.getTime())) {
-                        alert('Invalid Date of Birth.');
+                        showErrorModal('Invalid Date of Birth.');
                         return;
                     }
 
@@ -516,30 +738,30 @@
 
                     // Check age limits (e.g., between 18 and 120 years old)
                     if (age < 18) {
-                        alert('Invalid Date of Birth.');
+                        showErrorModal('Invalid Date of Birth.');
                         return;
                     }
                     if (age > 100) {
-                        alert('Invalid Date of Birth.');
+                        showErrorModal('Invalid Date of Birth.');
                         return;
                     }
                 }
             }
             if (!email) {
-                alert('Email cannot be empty.');
+                showErrorModal('Email cannot be empty.');
                 return;
             }
             if (!emailRegex.test(email)) {
-                alert('Invalid email.');
+                showErrorModal('Invalid email.');
                 return;
             }
             if (!phoneNumber) {
-                alert('Phone Number cannot be empty.');
+                showErrorModal('Phone Number cannot be empty.');
                 return;
             }
             const phoneRegex = /^0\d{9}$/;
             if (!phoneRegex.test(phoneNumber)) {
-                alert('Phone Number must start with "0" and have exactly 10 digits.');
+                showErrorModal('Phone Number must start with "0" and have exactly 10 digits.');
                 return;
             }
 
@@ -560,9 +782,9 @@
             formData.append('jname', updatedUser.jname);
             formData.append('rname', updatedUser.rname);
             formData.append('gender', updatedUser.gender);
-                if (updatedUser.dob) {
-                    formData.append('dob', updatedUser.dob);
-                }
+            if (updatedUser.dob) {
+                formData.append('dob', updatedUser.dob);
+            }
             formData.append('email', updatedUser.email);
             formData.append('phoneNumber', updatedUser.phoneNumber);
 
@@ -580,6 +802,7 @@
                     console.error('Error updating user:', error);
                 });
         });
+
     });
 </script>
 </body>
