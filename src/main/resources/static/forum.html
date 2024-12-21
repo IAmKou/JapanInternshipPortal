@@ -29,14 +29,6 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
 
     <style>
-        .thread-box {
-            margin-bottom: 20px; /* Thêm khoảng cách giữa các thread */
-            padding: 10px; /* Nếu muốn thêm khoảng cách nội bộ */
-            border: 1px solid #ddd; /* Thêm viền để dễ nhìn */
-            border-radius: 8px; /* Làm tròn các góc */
-            background-color: #f9f9f9; /* Màu nền sáng cho các thread */
-        }
-
         .item-title {
             display: flex;
             align-items: center;
@@ -202,82 +194,6 @@
                         </div>
                     </div>
                 </li>
-                <!-- Messages Dropdown -->
-                <li class="navbar-item dropdown header-message">
-                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                       role="button">
-                        <i class="far fa-envelope"></i>
-                        <div class="item-title d-md-none text-16 mg-l-10">Message</div>
-                        <span>5</span>
-                    </a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <div class="item-header">
-                            <h6 class="item-title">05 Messages</h6>
-                        </div>
-                        <div class="item-content">
-                            <div class="media">
-                                <div class="item-img bg-skyblue author-online">
-                                    <img alt="img" src="img/figure/student11.png">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Maria Zaman</span>
-                                            <span class="item-time">18:30</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason for buying this item?</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-img bg-yellow author-online">
-                                    <img alt="img" src="img/figure/student12.png">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Benny Roy</span>
-                                            <span class="item-time">10:35</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-img bg-pink">
-                                    <img alt="img" src="img/figure/student13.png">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Steven</span>
-                                            <span class="item-time">02:35</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-img bg-violet-blue">
-                                    <img alt="img" src="img/figure/student11.png">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Joshep Joe</span>
-                                            <span class="item-time">12:35</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
                 <!-- Notifications Dropdown -->
                 <li class="navbar-item dropdown header-notification">
                     <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
@@ -286,7 +202,6 @@
                         <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
                         <span>8</span>
                     </a>
-
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="item-header">
                             <h6 class="item-title">03 Notifications</h6>
@@ -329,9 +244,7 @@
                        href="#" role="button"><i class="fas fa-globe-americas"></i>EN</a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#">English</a>
-                        <a class="dropdown-item" href="#">Spanish</a>
-                        <a class="dropdown-item" href="#">French</a>
-                        <a class="dropdown-item" href="#">Chinese</a>
+                        <a class="dropdown-item" href="#">Japanese</a>
                     </div>
                 </li>
             </ul>
@@ -344,87 +257,96 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="student.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
-                        <a href="student.html" class="nav-link" id="dashboardLink">
-                            <i class="flaticon-dashboard"></i><span>Dashboard</span>
-                        </a>
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item">
+                                <a href="student.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Students</a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
+                                <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
                                     Assignment</a>
                             </li>
                             <li class="nav-item">
-                                <a href="add-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
                                     Assignment</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();">
+                                    <i class="fas fa-angle-right"></i>Personal Mark Report</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
+                        <a href="javascript:void(0);" class="nav-link" onclick="submitForm();"><i
                                 class="flaticon-shopping-list"></i><span>Schedule</span></a>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i
-                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
-                                    <i class="flaticon-menu"></i><span>Class List</span>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
-                                    Exam</a>
+                                <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
+                                    Schedule</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
-                                    Exam</a>
+                                <a href="Update-student-mark-report.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Exam Grades</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
                         <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create Material</a>
+                            <li class="nav-item" id="teacher-view1">
+                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
+                                    material</a>
                             </li>
                             <li class="nav-item" id="teacher-view">
-                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List Materials</a>
+                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    materials</a>
                             </li>
+                            <li class="nav-item" id="student-view1">
+                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    materials</a>
+                            </li>
+                            <li class="nav-item" id="student-view">
+                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list
+                                    materials</a>
+                            </li>
+
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send application</a>
+                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                    application</a>
                             </li>
+
                             <li class="nav-item">
-                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My application</a>
+                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                    application</a>
                             </li>
                         </ul>
                     </li>
+
                     <li class="nav-item sidebar-nav-item">
                         <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a class="nav-link " href="forum.html"><i class="fas fa-angle-right"></i>View list threads</a>
-                            </li>
-                            <li class="nav-item sidebar-nav-item">
-                                <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create Thread</a>
+                                <a class="nav-link menu-active" href="forum.html"><i class="fas fa-angle-right"></i>View list
+                                    threads</a>
                             </li>
                         </ul>
                     </li>
@@ -478,25 +400,9 @@
                 <!-- Next Page Button -->
                 <button class="page-btn" id="nextPage">&raquo;</button>
             </div>
-
         </div>
         <!-- Main Body Content End Here -->
     </div>
-
-    <!-- Footer Start Here -->
-    <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
-        <div style="background-color: #ec9006; padding: 15px;">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
-                            rights reserved. Designed by <a href="#" style="color: #ffcc00;">JIP</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer End Here -->
 </div>
 <!-- Page Area End Here -->
 
