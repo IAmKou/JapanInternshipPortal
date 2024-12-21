@@ -288,6 +288,9 @@ public class AccountImportServices {
         if (email == null ) {
             errors.add("Row " + rowNum + ": Email can't be null");
             isValid = true;
+        } else if (!email.matches("^[\\w.%+-]+@(gmail\\.com|fpt\\.edu\\.vn)$")) {
+        errors.add("Row " + rowNum + ": Email must end with @gmail.com or @fpt.edu.vn");
+        isValid = true;
         }
 
         // Validate phone number
