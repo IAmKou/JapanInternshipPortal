@@ -57,12 +57,7 @@ public class ClassController {
         try {
             Class savedClass = classServices.saveClassWithStudents(classDTO, classDTO.getStudentIds());
 
-            // Create notification for class creation
-            NotificationDTO notificationDTO = new NotificationDTO();
-            notificationDTO.setTitle("Class [" + savedClass.getName() + "] created successfully");
-            notificationDTO.setContent("Class [" + savedClass.getName() + "] created successfully");
-            notificationDTO.setOwnerId(savedClass.getTeacher().getId());
-            Notification notification = notificationServices.createNotification(notificationDTO);
+
 
             return "Class " + savedClass.getName() + " created successfully";
         } catch (IllegalArgumentException e) {

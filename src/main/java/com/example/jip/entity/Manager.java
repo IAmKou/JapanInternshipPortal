@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name="Manager")
 @Getter
@@ -37,14 +39,15 @@ public class Manager {
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private Account account;
 
+
     public Manager() {}
 
-    public Manager(int id, String fullname, String jname, String email, String phonenumber, Gender gender, String img, Account account) {
+    public Manager(int id, String fullname, String jname, String email, String phoneNumber, Manager.Gender gender, String img, Account account) {
         this.id = id;
         Fullname = fullname;
         Jname = jname;
         this.email = email;
-        phoneNumber = phonenumber;
+        this.phoneNumber = phoneNumber;
         Gender = gender;
         this.img = img;
         this.account = account;

@@ -5,15 +5,12 @@ import com.example.jip.entity.Notification;
 import com.example.jip.repository.NotificationRepository;
 import com.example.jip.services.NotificationServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/notification")
@@ -26,38 +23,36 @@ public class NotificationController {
     private NotificationRepository notificationRepository;
 
     @PostMapping("/create")
-    public RedirectView createNotification(@RequestParam("title") String title,
-                                           @RequestParam("content") String content,
-                                           @RequestParam("userId") Integer ownerId) {
+    public ResponseEntity<?> createNotification(@RequestParam("title") String title,
+                                           @RequestParam("userId") int senderId) {
         try {
-            NotificationDTO notificationDTO = new NotificationDTO();
-            notificationDTO.setTitle(title);
-            notificationDTO.setContent(content);
-            notificationDTO.setOwnerId(ownerId);
+            Integer recipientId = null;
+            notificationServices.createNotification(title, senderId);
 
-            Notification notification = notificationServices.createNotification(notificationDTO);
-
-            return new RedirectView("/notice-board.html");
+            return ResponseEntity.ok().body("Notification created successfully!");
         } catch (Exception e) {
-            return new RedirectView("/notice-board.html");
+            return ResponseEntity.status(500).body("Failed to create notification: " + e.getMessage());
         }
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<List<NotificationDTO>> getAllNotifications() {
-        List<NotificationDTO> notificationDTOList = notificationServices.getAllNotifications()
-                .stream()
+    @GetMapping("/get")
+    public List<NotificationDTO> getAllUserNotifications(int recipientId) {
+        List<Notification> notifications = notificationRepository.findNotificationsByRecipient(recipientId);
+
+        return notifications.stream()
                 .map(NotificationDTO::new)
                 .collect(Collectors.toList());
-
-        if (notificationDTOList.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
-        // Reverse the list to show the latest notifications first
-        Collections.reverse(notificationDTOList);
-
-        return ResponseEntity.ok(notificationDTOList);
     }
+
+    @GetMapping("/getAll")
+    public List<NotificationDTO> getAllNotifications() {
+        List<Notification> notifications = notificationRepository.findNotifications();
+
+        return notifications.stream()
+                .map(NotificationDTO::new)
+                .collect(Collectors.toList());
+    }
+
+
 
 }

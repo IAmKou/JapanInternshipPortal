@@ -357,7 +357,7 @@
 </script>
 <!-- fetch notification --><script>
     // Fetch notifications from the backend
-    fetch('/notification/list')
+    fetch('/notification/getAll')
         .then(response => response.json()) // Parse the response as JSON
         .then(data => {
             const notificationList = document.getElementById('notification-list'); // This is where we append the notifications
@@ -408,7 +408,7 @@
 <!-- fetch noti -->
 <script>
     // Fetch notifications from the backend
-    fetch('/notification/list')
+    fetch('/notification/getAll')
         .then(response => response.json()) // Parse the response as JSON
         .then(data => {
             const noticeBoardWrap = document.getElementById('notice-board-wrap');
