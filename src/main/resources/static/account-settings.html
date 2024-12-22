@@ -204,11 +204,6 @@
             font-size: 0.9rem;
             color: #6c757d; /* Màu nhạt hơn cho mô tả */
         }
-
-        /* Tăng kích thước nút */
-
-
-
     </style>
 </head>
 
@@ -367,28 +362,15 @@
                     <li>
                         <a href="admin.html" data-i18n="home">Home</a>
                     </li>
-                    <li data-i18n="setting">Setting</li>
+                    <li data-i18n="setting">Account List</li>
                 </ul>
             </div>
             <!-- Account Settings Area Start -->
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-
                         <div class="card-body">
-
-                            <h3 data-i18n="user_action">User Actions</h3>
-
-                            <div class="dropdown" style="margin-bottom: 20px; margin-left: 1100px">
-                                <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" style="font-size: 16px; padding: 10px 20px;" data-i18n="add_import_users">Add or Import Users</a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="create-account.html" data-i18n="add_new_user"><i class="fas fa-plus text-orange-red"></i> Add New User</a>
-                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#standard-modal" data-i18n="import_users"><i class="fas fa-file-import text-green"></i> Import Users</a>
-                                </div>
-                            </div>
-
-
-                            <form>
+                            <form style="padding-bottom: 20px; padding-top: 20px">
                                 <div class="row mb-3 align-items-center">
                                     <div class="col-lg-8">
                                         <input type="text" placeholder="Search by ID..." class="form-control search-input">
@@ -398,7 +380,13 @@
                                     </div>
                                 </div>
                             </form>
-
+                            <div class="dropdown" style="margin-bottom: 20px">
+                                <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" style="font-size: 16px; padding: 10px 20px;" data-i18n="add_import_users">Add or Import Users</a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="create-account.html" data-i18n="add_new_user"><i class="fas fa-plus text-orange-red"></i> Add New User</a>
+                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#standard-modal" data-i18n="import_users"><i class="fas fa-file-import text-green"></i> Import Users</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -408,7 +396,7 @@
                     <div class="card">
 
                         <div class="card-body">
-                            <h3 data-i18n="user_list">User List</h3>
+                            <h3 data-i18n="user_list">Account List</h3>
                             <div class="table-responsive">
                                 <table class="table table-hover text-nowrap">
                                     <thead>
@@ -781,8 +769,8 @@
                 "account_setting": "Account Setting",
                 "user_action": "User Actions",
                 "search": "Search",
-                "setting": "Setting",
-                "user_list": "User List",
+                "setting": "Account List",
+                "user_list": "Account List",
                 "id": "ID",
                 "image": "Image",
                 "name": "Name",
@@ -804,8 +792,8 @@
                 "home": "ホーム",
                 "account_setting": "アカウント設定",
                 "user_action": "ユーザーアクション",
-                "search": "検索",
-                "setting": "設定",
+                "search": "設置",
+                "setting": "アカウントリスト",
                 "user_list": "ユーザーリスト",
                 "id": "ID",
                 "image": "写真",
