@@ -29,329 +29,354 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
 </head>
 
+<style>
+    table td {
+        font-weight: bold;
+    }
+
+    /* Reduce the padding for table cells */
+    table td {
+        padding: 8px 12px;  /* You can adjust this value as needed */
+    }
+
+    /* Reduce the padding for the table overall */
+    table {
+        margin-bottom: 15px;  /* Keeps the space below the table */
+        width: 100%;
+    }
+
+    /* Optionally, reduce space between rows */
+    table tr {
+        margin-bottom: 5px;
+    }
+    /* Làm chữ title đậm và căn chúng cùng một hàng */
+    .item-title h3 {
+        font-weight: bold;
+        display: inline-block;
+        margin-right: 15px;  /* Đảm bảo khoảng cách giữa title và description */
+    }
+
+</style>
+
 <body>
-    <!-- Preloader Start Here -->
-    <div id="preloader"></div>
-    <!-- Preloader End Here -->
-    <div id="wrapper" class="wrapper bg-ash">
-         <!-- Header Menu Area Start Here -->
-        <div class="navbar navbar-expand-md header-menu-one bg-light">
-            <div class="nav-bar-header-one">
-                <div class="header-logo">
-                    <a href="admin.html">
-                        <div style="width: 180px; height: 70px; overflow: hidden;">
-                            <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
-                        </div>
-                    </a>
-                </div>
-                  <div class="toggle-button sidebar-toggle">
-                    <button type="button" class="item-link">
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<div id="wrapper" class="wrapper bg-ash">
+    <!-- Header Menu Area Start Here -->
+    <div class="navbar navbar-expand-md header-menu-one bg-light">
+        <div class="nav-bar-header-one">
+            <div class="header-logo">
+                <a href="admin.html">
+                    <div style="width: 180px; height: 70px; overflow: hidden;">
+                        <img src="img/JIP%20LOGO%20n.png" alt="logo"
+                             style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </a>
+            </div>
+            <div class="toggle-button sidebar-toggle">
+                <button type="button" class="item-link">
                         <span class="btn-icon-wrap">
                             <span></span>
                             <span></span>
                             <span></span>
                         </span>
-                    </button>
+                </button>
+            </div>
+        </div>
+        <div class="d-md-none mobile-nav-bar">
+            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse"
+                    data-target="#mobile-navbar" aria-expanded="false">
+                <i class="far fa-arrow-alt-circle-down"></i>
+            </button>
+            <button type="button" class="navbar-toggler sidebar-toggle-mobile">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+            <ul class="navbar-nav">
+                <li class="navbar-item header-search-bar">
+                    <div class="input-group stylish-input-group">
+
+
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="navbar-item dropdown header-admin">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <div class="admin-title">
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
+                        </div>
+                        <div class="admin-img img">
+                            <img src="" style="width: 50px; height: 50px" alt="Admin">
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title userFullName"></h6>
+                        </div>
+                        <div class="item-content">
+                            <ul class="settings-list">
+                                <li><a href="users-profile-student.html"><i class="flaticon-user"></i>My Profile</a>
+                                </li>
+                                <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="navbar-item dropdown header-notification">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <i class="far fa-bell"></i>
+                        <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
+                        <span>8</span>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title">03 Notifiacations</h6>
+                        </div>
+                        <div class="item-content">
+                            <div class="media">
+                                <div class="item-icon bg-skyblue">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Complete Today Task</div>
+                                    <span>1 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-orange">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Director Metting</div>
+                                    <span>20 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-violet-blue">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Update Password</div>
+                                    <span>45 Mins ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item dropdown header-language">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
+                       data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#">English</a>
+                        <a class="dropdown-item" href="#">Japanese</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Header Menu Area End Here -->
+    <!-- Page Area Start Here -->
+    <div class="dashboard-page-one">
+        <!-- Sidebar Area Start Here -->
+        <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+            <div class="mobile-sidebar-header d-md-none">
+                <div class="header-logo">
+                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
-            <div class="d-md-none mobile-nav-bar">
-               <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse" data-target="#mobile-navbar" aria-expanded="false">
-                    <i class="far fa-arrow-alt-circle-down"></i>
-                </button>
-                <button type="button" class="navbar-toggler sidebar-toggle-mobile">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-            <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
-                <ul class="navbar-nav">
-                    <li class="navbar-item header-search-bar">
-                        <div class="input-group stylish-input-group">
-
-
-                        </div>
+            <div class="sidebar-menu-content">
+                <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item">
+                                <a href="teacher.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Teachers</a>
+                            </li>
+                        </ul>
                     </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="navbar-item dropdown header-admin">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <div class="admin-title">
-                                <h5 class="item-title userFullName"></h5>
-                                <span class="userRole"></span>
-                            </div>
-                            <div class="admin-img img">
-                                <img src="" style="width: 50px; height: 50px" alt="Admin">
-                            </div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title userFullName"></h6>
-                            </div>
-                            <div class="item-content">
-                                <ul class="settings-list">
-                                    <li><a href="users-profile-student.html"><i class="flaticon-user"></i>My Profile</a></li>
-                                    <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                    <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
-                                </ul>
-                            </div>
-                        </div>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item">
+                                <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i
+                                        class="fas fa-angle-right"></i>All
+                                    Assignment</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                    New
+                                    Assignment</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
+                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
+                                    <i class="flaticon-menu"></i><span>Class List</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendance</span></a>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
+                                    Exam</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
+                                    Exam</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
+                                    Material</a>
+                            </li>
+                            <li class="nav-item" id="teacher-view">
+                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    Materials</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                    application</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                    application</a>
+                            </li>
+                        </ul>
                     </li>
 
-                    <li class="navbar-item dropdown header-notification">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="far fa-bell"></i>
-                            <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
-                            <span>8</span>
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title">03 Notifiacations</h6>
-                            </div>
-                            <div class="item-content">
-                                <div class="media">
-                                    <div class="item-icon bg-skyblue">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Complete Today Task</div>
-                                        <span>1 Mins ago</span>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-icon bg-orange">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Director Metting</div>
-                                        <span>20 Mins ago</span>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-icon bg-violet-blue">
-                                        <i class="fas fa-cogs"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Update Password</div>
-                                        <span>45 Mins ago</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                     <li class="navbar-item dropdown header-language">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" 
-                        data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#">English</a>
-                            <a class="dropdown-item" href="#">Japanese</a>
-                        </div>
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
+                                    threads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
+                                    Thread</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
         </div>
-        <!-- Header Menu Area End Here -->
-        <!-- Page Area Start Here -->
-        <div class="dashboard-page-one">
-            <!-- Sidebar Area Start Here -->
-            <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
-                <div class="mobile-sidebar-header d-md-none">
-                    <div class="header-logo">
-                        <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
-                    </div>
-                </div>
-                <div class="sidebar-menu-content">
-                    <ul class="nav nav-sidebar-menu sidebar-toggle-view">
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                            <ul class="nav sub-group-menu sub-group-active">
-                                <li class="nav-item">
-                                    <a href="teacher.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Teachers</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
-                            <ul class="nav sub-group-menu sub-group-active">
-                                <li class="nav-item">
-                                    <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
-                                        Assignment</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
-                                        Assignment</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
-                                    class="flaticon-shopping-list"></i><span>Schedule</span></a>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i
-                                    class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
-                                        <i class="flaticon-menu"></i><span>Class List</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
-                                        Exam</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
-                                        Exam</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
-                                        Material</a>
-                                </li>
-                                <li class="nav-item" id="teacher-view">
-                                    <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                                        Materials</a>
-                                </li>
-
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
-                                        application</a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
-                                        application</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item sidebar-nav-item">
-                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
-                                        threads</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
-                                        Thread</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+        <!-- Sidebar Area End Here -->
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <h3>Assignment Detail</h3>
+                <ul>
+                    <li>
+                        <a href="list-assignment.html">All Assignment</a>
+                    </li>
+                    <li>Assignment Details</li>
+                </ul>
             </div>
-            <!-- Sidebar Area End Here -->
-            <div class="dashboard-content-one">
-                <!-- Breadcubs Area Start Here -->
-                <div class="breadcrumbs-area">
-                    <h3>Assignment Detail</h3>
-                    <ul>
-                        <li>
-                            <a href="list-assignment.html">All Assignment</a>
-                        </li>
-                        <li>Assignment Details</li>
-                    </ul>
-                </div>
-                <!-- Breadcubs Area End Here -->
-                <!-- Student Table Area Start Here -->
-                <div class="card height-auto">
-                    <div class="card-body">
+            <!-- Breadcubs Area End Here -->
+            <!-- Student Table Area Start Here -->
+            <div class="card height-auto">
+                <div class="card-body">
+                    <div class="heading-layout1">
                         <div class="item-title">
-                            <h2>Assignment Detail</h2>
-                        </div>
-                        <div class="heading-layout1">
-                            <div class="item-title">
-                                <h3 class="text-dark-medium font-medium">Description</h3>
-                                <p id="assignment-description"></p>
-                            </div>
-                        </div>
-
-                            <div class="single-info-details">
-                                <div class="item-content">
-                                    <h3 class="text-dark-medium font-medium">Content</h3>
-                                    <p id="assignment-content"></p>
-                                    <table class="table text-nowrap">
-                                        <tbody>
-                                        <tr>
-                                            <td>Created Date:</td>
-                                            <td id="created-date"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>End Date:</td>
-                                            <td id="end-date"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>For Class:</td>
-                                            <td id="assignment-classes"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>File:</td>
-                                            <td id="assignment-files"></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Title:</h3>
+                            <span id="assignment-description" style="display: inline; margin-left: 80px;"></span>
                         </div>
                     </div>
-
-                <div class="card height-auto">
-                    <div class="card-body">
-                        <div class="heading-layout1">
-                            <div class="item-title">
-                                <h2>All Submitted Assignments</h2>
-                            </div>
-
+                    &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
+                    <div class="heading-layout1">
+                        <div class="item-title">
+                            <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Description:</h3>
+                            <span id="assignment-content" style="display: inline; margin-left: 10px;"></span>
                         </div>
-
-                        <div class="table-responsive">
-                            <table class="table display data-table text-nowrap">
-                                <thead>
-                                <tr>
-                                    <th>Description</th>
-                                    <th>Mark</th>
-                                    <th>Created Date</th>
-                                    <th>Status</th>
-                                </tr>
-                                </thead>
-                                <tbody id="submittedAssignment_list">
-
-
-                                </tbody>
-                            </table>
-                        </div>
-
                     </div>
-
+                    &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
+                    <div class="item-content">
+                        <table class="table text-nowrap">
+                            <tbody>
+                            <tr>
+                                <td>Created Date:</td>
+                                <td id="created-date"></td>
+                            </tr>
+                            <tr>
+                                <td>End Date:</td>
+                                <td id="end-date"></td>
+                            </tr>
+                            <tr>
+                                <td>For Class:</td>
+                                <td id="assignment-classes"></td>
+                            </tr>
+                            <tr>
+                                <td>File:</td>
+                                <td id="assignment-files"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-
-                </div>
-
             </div>
 
-
-            <!-- Page Area End Here -->
+            <div class="card height-auto">
+                <div class="card-body">
+                    <div class="heading-layout1">
+                        <div class="item-title">
+                            <h2>All Submitted Assignments</h2>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table display data-table text-nowrap">
+                            <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Mark</th>
+                                <th>Created Date</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody id="submittedAssignment_list">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Page Area End Here -->
+</div>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -366,90 +391,90 @@
 <script src="js/main.js"></script>
 <!-- fetch user -->
 <script>
-      async function fetchAssignmentDetails() {
-          const urlParams = new URLSearchParams(window.location.search);
-          const assignmentId = urlParams.get('id');
+    async function fetchAssignmentDetails() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const assignmentId = urlParams.get('id');
 
-          if (!assignmentId) {
-              alert('Assignment ID is missing in the URL.');
-                    return;
-                }
+        if (!assignmentId) {
+            alert('Assignment ID is missing in the URL.');
+            return;
+        }
 
-                try {
-                    const response = await fetch(`/assignment/detail/${assignmentId}`);
+        try {
+            const response = await fetch(`/assignment/detail/${assignmentId}`);
 
-                    if (!response.ok) {
-                        throw new Error('Error fetching assignment details');
-                    }
-
-                    const assignment = await response.json();
-                    console.log('Assignment details:', assignment);
-
-                    // Populate description and content
-                    document.getElementById('assignment-description').textContent = assignment.description || "No description provided";
-                    document.getElementById('assignment-content').textContent = assignment.content || "No content provided";
-                    document.getElementById('created-date').textContent = assignment.created_date || "N/A";
-                    document.getElementById('end-date').textContent = assignment.end_date || "N/A";
-
-                    // Display class names
-                    const classes = assignment.classes || [];
-                    document.getElementById('assignment-classes').textContent = classes.length > 0 ? classes.join(", ") : "No classes assigned";
-
-                    // Display file download links
-                    const files = assignment.files || [];
-                    console.log('Files:', files);
-                    const filesContainer = document.getElementById('assignment-files');
-                    filesContainer.innerHTML = ""; // Clear any existing content
-                    if (files.length > 0) {
-                        files.forEach(fileUrl => {
-                            const link = document.createElement('a');
-                            link.href = fileUrl;
-                            link.textContent = fileUrl.split('/').pop(); // Display the file name
-                            link.target = '_blank';
-                            link.style.display = 'block'; // Show each file on a new line
-                            filesContainer.appendChild(link);
-                        });
-                    } else {
-                        filesContainer.textContent = "No files uploaded";
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('An error occurred while fetching the assignment details.');
-                }
+            if (!response.ok) {
+                throw new Error('Error fetching assignment details');
             }
 
-      // Call the function on page load
-      fetchAssignmentDetails();
+            const assignment = await response.json();
+            console.log('Assignment details:', assignment);
 
-      // Fetch and display submitted assignments
-      async function fetchAndDisplaySubmittedAssignments() {
-          const urlParams = new URLSearchParams(window.location.search);
-          const assignmentId = urlParams.get('id');
+            // Populate description and content
+            document.getElementById('assignment-description').textContent = assignment.description || "No description provided";
+            document.getElementById('assignment-content').textContent = assignment.content || "No content provided";
+            document.getElementById('created-date').textContent = assignment.created_date || "N/A";
+            document.getElementById('end-date').textContent = assignment.end_date || "N/A";
 
-          try {
-              const response = await fetch(`/student-assignment/list-submitted-assignments?assignmentId=${assignmentId}`);
-              if (!response.ok) {
-                  throw new Error(`Error fetching submitted assignments: ${response.statusText}`);
-              }
+            // Display class names
+            const classes = assignment.classes || [];
+            document.getElementById('assignment-classes').textContent = classes.length > 0 ? classes.join(", ") : "No classes assigned";
 
-              const submittedAssignments = await response.json();
-              console.log("Fetched Submitted Assignments:", submittedAssignments);
+            // Display file download links
+            const files = assignment.files || [];
+            console.log('Files:', files);
+            const filesContainer = document.getElementById('assignment-files');
+            filesContainer.innerHTML = ""; // Clear any existing content
+            if (files.length > 0) {
+                files.forEach(fileUrl => {
+                    const link = document.createElement('a');
+                    link.href = fileUrl;
+                    link.textContent = fileUrl.split('/').pop(); // Display the file name
+                    link.target = '_blank';
+                    link.style.display = 'block'; // Show each file on a new line
+                    filesContainer.appendChild(link);
+                });
+            } else {
+                filesContainer.textContent = "No files uploaded";
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while fetching the assignment details.');
+        }
+    }
 
-              const tableBody = document.getElementById("submittedAssignment_list");
-              tableBody.innerHTML = "";
+    // Call the function on page load
+    fetchAssignmentDetails();
 
-              if (submittedAssignments.length === 0) {
-                  const noDataRow = document.createElement("tr");
-                  noDataRow.innerHTML = `
+    // Fetch and display submitted assignments
+    async function fetchAndDisplaySubmittedAssignments() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const assignmentId = urlParams.get('id');
+
+        try {
+            const response = await fetch(`/student-assignment/list-submitted-assignments?assignmentId=${assignmentId}`);
+            if (!response.ok) {
+                throw new Error(`Error fetching submitted assignments: ${response.statusText}`);
+            }
+
+            const submittedAssignments = await response.json();
+            console.log("Fetched Submitted Assignments:", submittedAssignments);
+
+            const tableBody = document.getElementById("submittedAssignment_list");
+            tableBody.innerHTML = "";
+
+            if (submittedAssignments.length === 0) {
+                const noDataRow = document.createElement("tr");
+                noDataRow.innerHTML = `
                 <td colspan="5" class="text-center">No submitted assignments available.</td>
             `;
-                  tableBody.appendChild(noDataRow);
-                  return;
-              }
+                tableBody.appendChild(noDataRow);
+                return;
+            }
 
-              submittedAssignments.forEach((submittedAssignment) => {
-                  const row = document.createElement("tr");
-                  row.innerHTML = `
+            submittedAssignments.forEach((submittedAssignment) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
                 <td>
                     <a href="/submitted-assignment-detail-teacher.html?id=${submittedAssignment.id}" target="_blank">
                         ${submittedAssignment.description}
@@ -459,20 +484,20 @@
                 <td>${new Date(submittedAssignment.date).toLocaleDateString()}</td>
                 <td>${submittedAssignment.status || "N/A"}</td>
             `;
-                  tableBody.appendChild(row);
-              });
-          } catch (error) {
-              console.error("Error:", error);
-              const tableBody = document.getElementById("submittedAssignment_list");
-              tableBody.innerHTML = `
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Error:", error);
+            const tableBody = document.getElementById("submittedAssignment_list");
+            tableBody.innerHTML = `
             <tr>
                 <td colspan="5" class="text-center text-danger">Failed to load assignments. Please try again later.</td>
             </tr>
         `;
-          }
-      }
+        }
+    }
 
-      fetchAndDisplaySubmittedAssignments();
+    fetchAndDisplaySubmittedAssignments();
 
 </script>
 <script>
@@ -527,41 +552,41 @@
         }
     }
 
-      function submitForm() {
-          // Retrieve userDetails from sessionStorage
-          const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    function submitForm() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
-          if (userDetails && userDetails.teacherId) {
-              // Redirect to the appropriate URL with the teacherId
-              window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
-          } else {
-              console.error("Teacher ID is missing or user details not found in sessionStorage");
-          }
-      }
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
 
-      function toListAssigment() {
-          // Retrieve userDetails from sessionStorage
-          const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    function toListAssigment() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
-          if (userDetails && userDetails.teacherId) {
-              // Redirect to the appropriate URL with the teacherId
-              window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
-          } else {
-              console.error("Teacher ID is missing or user details not found in sessionStorage");
-          }
-      }
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
 
-      function redirectSchedule() {
-          // Retrieve userDetails from sessionStorage
-          const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    function redirectSchedule() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
-          if (userDetails && userDetails.teacherId) {
-              // Redirect to the appropriate URL with the teacherId
-              window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
-          } else {
-              console.error("Teacher ID is missing or user details not found in sessionStorage");
-          }
-      }
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
 </script>
 </body>
 
