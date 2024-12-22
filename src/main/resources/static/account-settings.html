@@ -204,11 +204,6 @@
             font-size: 0.9rem;
             color: #6c757d; /* Màu nhạt hơn cho mô tả */
         }
-
-        /* Tăng kích thước nút */
-
-
-
     </style>
 </head>
 
@@ -297,7 +292,6 @@
                         </div>
                     </div>
                 </li>
-
                 <li class="navbar-item dropdown header-language">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
@@ -311,9 +305,6 @@
                         </a>
                     </div>
                 </li>
-
-
-
             </ul>
         </div>
     </div>
@@ -330,30 +321,30 @@
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span data-i18n="dashboard">Dashboard</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="admin.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Admin</a>
+                                <a href="admin.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i><span data-i18n="admin">Admin</span></a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item">
                         <a href="report-list.html" class="nav-link"><i
-                                class="flaticon-script"></i><span>Report</span></a>
+                                class="flaticon-script"></i><span data-i18n="report">Report</span></a>
                     </li>
                     <li class="nav-item">
                         <a href="notice-board.html" class="nav-link"><i
-                                class="flaticon-script"></i><span>Notification</span></a>
+                                class="flaticon-script"></i><span data-i18n="notification">Notification</span></a>
                     </li>
                     <li class="nav-item">
                         <a href="account-settings.html" class="nav-link menu-active"><i
-                                class="flaticon-settings"></i><span>Account List</span></a>
+                                class="flaticon-settings"></i><span data-i18n="account_list">Account List</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span data-i18n="security">Security</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
+                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="change_password">Change Password</span></a>
                             </li>
                         </ul>
                     </li>
@@ -367,28 +358,15 @@
                     <li>
                         <a href="admin.html" data-i18n="home">Home</a>
                     </li>
-                    <li data-i18n="setting">Setting</li>
+                    <li data-i18n="setting">Account List</li>
                 </ul>
             </div>
             <!-- Account Settings Area Start -->
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-
                         <div class="card-body">
-
-                            <h3 data-i18n="user_action">User Actions</h3>
-
-                            <div class="dropdown" style="margin-bottom: 20px; margin-left: 1100px">
-                                <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" style="font-size: 16px; padding: 10px 20px;" data-i18n="add_import_users">Add or Import Users</a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="create-account.html" data-i18n="add_new_user"><i class="fas fa-plus text-orange-red"></i> Add New User</a>
-                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#standard-modal" data-i18n="import_users"><i class="fas fa-file-import text-green"></i> Import Users</a>
-                                </div>
-                            </div>
-
-
-                            <form>
+                            <form style="padding-bottom: 20px; padding-top: 20px">
                                 <div class="row mb-3 align-items-center">
                                     <div class="col-lg-8">
                                         <input type="text" placeholder="Search by ID..." class="form-control search-input">
@@ -398,7 +376,13 @@
                                     </div>
                                 </div>
                             </form>
-
+                            <div class="dropdown" style="margin-bottom: 20px">
+                                <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" style="font-size: 16px; padding: 10px 20px;" data-i18n="add_import_users">Add or Import Users</a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="create-account.html" data-i18n="add_new_user"><i class="fas fa-plus text-orange-red"></i> Add New User</a>
+                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#standard-modal" data-i18n="import_users"><i class="fas fa-file-import text-green"></i> Import Users</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -408,7 +392,7 @@
                     <div class="card">
 
                         <div class="card-body">
-                            <h3 data-i18n="user_list">User List</h3>
+                            <h3 data-i18n="user_list">Account List</h3>
                             <div class="table-responsive">
                                 <table class="table table-hover text-nowrap">
                                     <thead>
@@ -647,7 +631,8 @@
     document.addEventListener("DOMContentLoaded", function () {
         const tableBody = document.querySelector(".table tbody");
         const paginationContainer = document.querySelector(".pagination-container");
-
+        const language = localStorage.getItem('language') || 'en'; // Mặc định là 'en'
+        getTranslation(language); // Gọi hàm dịch ngôn ngữ
         const usersPerPage = 30;
         let currentPage = 1;
         let totalUsers = 0;
@@ -774,6 +759,7 @@
     function getTranslation(language) {
         const translations = {
             "en": {
+                //Main screen
                 "add_new_user": "Add New User",
                 "import_users": "Import Users",
                 "add_import_users": "Add or Import Users",
@@ -781,31 +767,43 @@
                 "account_setting": "Account Setting",
                 "user_action": "User Actions",
                 "search": "Search",
-                "setting": "Setting",
-                "user_list": "User List",
+                "setting": "Account List",
+                "user_list": "Account List",
                 "id": "ID",
                 "image": "Image",
                 "name": "Name",
                 "role": "Role",
                 "actions": "Actions",
                 "view_details": "View Details",
+                // end main screen
+                // headbar
                 "log_out": "Log Out",
+                // end headbar
                 "add_account": "Add Account",
                 "choose_file": "Choose File",
                 "close": "Close",
                 "submit": "Submit",
                 "j_name": "Japan Name",
-
+                // sidebar admin
+                "admin": "Admin",
+                "dashboard": "Dashboard",
+                "report": "Report",
+                "notification": "Notification",
+                "account_list": "Account List",
+                "security": "Security",
+                "change_password": "Change Password",
+                // end sidebar admin
             },
             "ja": {
+                //Main screen
                 "add_new_user": "新しいユーザーを追加",
                 "import_users": "ユーザーをインポート",
                 "add_import_users": "ユーザーを追加,インポート",
                 "home": "ホーム",
                 "account_setting": "アカウント設定",
                 "user_action": "ユーザーアクション",
-                "search": "検索",
-                "setting": "設定",
+                "search": "設置",
+                "setting": "アカウントリスト",
                 "user_list": "ユーザーリスト",
                 "id": "ID",
                 "image": "写真",
@@ -813,12 +811,24 @@
                 "role": "役割",
                 "actions": "アクション",
                 "view_details": "詳細を見る",
+                // end main screen
+                // headbar
                 "log_out": "ログアウト",
+                // end headbar
                 "add_account": "アカウントを追加",
                 "choose_file": "ファイルを選択",
                 "submit": "送信",
                 "close": "閉じる",
                 "j_name": "日本の名前",
+                // sidebar admin
+                "admin": "管理者",
+                "dashboard": "ダッシュボード",
+                "report": "レポート",
+                "notification": "通知",
+                "account_list": "アカウントリスト",
+                "security": "セキュリティ",
+                "change_password": "パスワード変更"
+                // end sidebar admin
             }
         };
 
