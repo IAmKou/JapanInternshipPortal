@@ -330,30 +330,30 @@
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span data-i18n="dashboard">Dashboard</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="admin.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Admin</a>
+                                <a href="admin.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i><span data-i18n="admin">Admin</span></a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item">
                         <a href="report-list.html" class="nav-link"><i
-                                class="flaticon-script"></i><span>Report</span></a>
+                                class="flaticon-script"></i><span data-i18n="report">Report</span></a>
                     </li>
                     <li class="nav-item">
                         <a href="notice-board.html" class="nav-link"><i
-                                class="flaticon-script"></i><span>Notification</span></a>
+                                class="flaticon-script"></i><span data-i18n="notification">Notification</span></a>
                     </li>
                     <li class="nav-item">
                         <a href="account-settings.html" class="nav-link menu-active"><i
-                                class="flaticon-settings"></i><span>Account List</span></a>
+                                class="flaticon-settings"></i><span data-i18n="account_list">Account List</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span data-i18n="security">Security</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
+                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="change_password">Change Password</span></a>
                             </li>
                         </ul>
                     </li>
@@ -774,6 +774,7 @@
     function getTranslation(language) {
         const translations = {
             "en": {
+                //Main screen
                 "add_new_user": "Add New User",
                 "import_users": "Import Users",
                 "add_import_users": "Add or Import Users",
@@ -789,15 +790,26 @@
                 "role": "Role",
                 "actions": "Actions",
                 "view_details": "View Details",
+                // end main screen
+                // headbar
                 "log_out": "Log Out",
+                // end headbar
                 "add_account": "Add Account",
                 "choose_file": "Choose File",
                 "close": "Close",
                 "submit": "Submit",
                 "j_name": "Japan Name",
-
+                // sidebar admin
+                "dashboard": "Dashboard",
+                "report": "Report",
+                "notification": "Notification",
+                "account_list": "Account List",
+                "security": "Security",
+                "change_password": "Change Password",
+                // end sidebar admin
             },
             "ja": {
+                //Main screen
                 "add_new_user": "新しいユーザーを追加",
                 "import_users": "ユーザーをインポート",
                 "add_import_users": "ユーザーを追加,インポート",
@@ -813,12 +825,23 @@
                 "role": "役割",
                 "actions": "アクション",
                 "view_details": "詳細を見る",
+                // end main screen
+                // headbar
                 "log_out": "ログアウト",
+                // end headbar
                 "add_account": "アカウントを追加",
                 "choose_file": "ファイルを選択",
                 "submit": "送信",
                 "close": "閉じる",
                 "j_name": "日本の名前",
+                // sidebar admin
+                "dashboard": "ダッシュボード",
+                "report": "レポート",
+                "notification": "通知",
+                "account_list": "アカウントリスト",
+                "security": "セキュリティ",
+                "change_password": "パスワード変更"
+                // end sidebar admin
             }
         };
 
