@@ -8,7 +8,6 @@ import com.example.jip.entity.*;
 
 import com.example.jip.entity.Class;
 import com.example.jip.repository.*;
-import com.example.jip.util.FileUploadUtil;
 import jakarta.transaction.Transactional;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -31,7 +30,7 @@ public class AssignmentServices extends AssignmentCreationRequest {
 
     TeacherRepository teacherRepository;
 
-    CloudinaryService cloudinaryService;
+
 
     ClassRepository classRepository;
 
@@ -40,6 +39,8 @@ public class AssignmentServices extends AssignmentCreationRequest {
     AssignmentStudentRepository assignmentStudentRepository;
 
     StudentAssignmentRepository studentAssignmentRepository;
+
+    S3Service s3Service;
 
 
     @PreAuthorize("hasAuthority('TEACHER')")
@@ -109,26 +110,19 @@ public class AssignmentServices extends AssignmentCreationRequest {
         assignment.setContent(request.getContent());
         assignment.setTeacher(teacher);
 
+        // Sanitize and create folder name
+        String folderName = sanitizeFolderName("assignments/" + request.getDescription());
+        assignment.setImgUrl(folderName); // Set folder URL
         if (request.getImgFile() != null) {
-            for (MultipartFile file : request.getImgFile()) {
-                log.info("Received file: " + file.getOriginalFilename());
-            }
             MultipartFile[] imgFiles = request.getImgFile();
             for (int i = 0; i < request.getImgFile().length; i++) {
                 log.info("Uploading file: " + request.getImgFile()[i].getOriginalFilename());
             }
-            if (imgFiles.length > 1) {
-                // Sanitize and create folder name
-                String folderName = sanitizeFolderName("assignments/" + request.getDescription());
-                assignment.setImgUrl(folderName); // Set folder URL
-                uploadFilesToFolder(imgFiles, folderName);
-            } else {
-                assignment.setImgUrl(null); // Ensure `imgUrl` is null if no files are provided
-            }
+            uploadFilesToFolder(imgFiles, folderName);
+
         } else {
             log.warn("No files provided in the request.");
         }
-        // Handle file uploads
 
         // Save assignment
         Assignment savedAssignment = assignmentRepository.save(assignment);
@@ -181,17 +175,17 @@ public class AssignmentServices extends AssignmentCreationRequest {
 
         // Retrieve file URLs from Cloudinary
         String folderName = assignment.getImgUrl();
+
         try {
-            List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
-            List<String> fileUrls = resources.stream()
-                    .map(resource -> (String) resource.get("url"))
-                    .collect(Collectors.toList());
-
-            if (fileUrls.isEmpty()) {
-                log.warn("No files found for assignment with ID: {}", assignmentId);
+            if(!folderName.isEmpty()){
+                List<String> fileUrls = s3Service.listFilesInFolder(folderName);
+                if (fileUrls.isEmpty()) {
+                    log.warn("No files found for assignment with ID: {}", assignmentId);
+                }
+                response.setFiles(fileUrls);
             }
-            response.setFiles(fileUrls);
-
+        } catch (NullPointerException ne){
+            log.error("No file found");
         } catch (Exception e) {
             log.error("Error retrieving files for assignment with ID: {}", assignmentId, e);
             response.setFiles(Collections.emptyList());
@@ -224,17 +218,18 @@ public class AssignmentServices extends AssignmentCreationRequest {
                 .collect(Collectors.toList()));
         String folderName = assignment.getImgUrl();
         try {
-            List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
-            List<String> fileUrls = resources.stream()
-                    .map(resource -> (String) resource.get("url"))
-                    .collect(Collectors.toList());
-
-            if (fileUrls.isEmpty()) {
-                log.warn("No files found for assignment with ID: {}", response.getId());
+            if(!folderName.isEmpty()){
+                List<String> fileUrls = s3Service.listFilesInFolder(folderName);
+                if (fileUrls.isEmpty()) {
+                    log.warn("No files found for assignment with ID: {}", response.getId());
+                }
+                response.setFiles(fileUrls);
             }
-            response.setFiles(fileUrls);  // Assuming these are the file URLs
 
-        } catch (Exception e) {
+        } catch (NullPointerException ne){
+            log.error("No file found");
+        }
+        catch (Exception e) {
             log.error("Error retrieving files for assignment with ID: {}", response.getId(), e);
             response.setFiles(Collections.emptyList());
         }
@@ -255,10 +250,9 @@ public class AssignmentServices extends AssignmentCreationRequest {
         studentAssignmentRepository.deleteByAssignmentId(assignmentId);
 
         // Delete associated cloud resources if applicable
-
         if(assignment.getImgUrl() != null) {
             String folderPath = sanitizeFolderName(assignment.getImgUrl());
-            cloudinaryService.deleteFolder(folderPath);
+            s3Service.deleteFolder(folderPath);
         }
 
         // Finally, delete the assignment
@@ -270,8 +264,8 @@ public class AssignmentServices extends AssignmentCreationRequest {
         for (MultipartFile file : files) {
             if (!file.isEmpty() && uploadedFiles.add(file.getOriginalFilename())) {
                 try {
-                    FileUploadUtil.assertAllowed(file, FileUploadUtil.IMAGE_PATTERN);
-                    cloudinaryService.uploadFileToFolder(file, folderName);
+                    String sanitizedFolderName = sanitizeFolderName(folderName);
+                    s3Service.uploadFile(file, sanitizedFolderName, file.getOriginalFilename());
                 } catch (Exception e) {
                     throw new RuntimeException("Error uploading file: " + file.getOriginalFilename(), e);
                 }
@@ -284,28 +278,27 @@ public class AssignmentServices extends AssignmentCreationRequest {
     }
 
 
-
     @PreAuthorize("hasAuthority('TEACHER')")
     @Transactional
     public Assignment updateAssignment(int assignmentId, AssignmentUpdateRequest request) {
         Assignment assignment = assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new NoSuchElementException("Assignment id not found!"));
 
-        MultipartFile[] newFiles = request.getImgFile();
-        String folderName = sanitizeFolderName("assignments/" + assignment.getDescription()); //Folder name = assignment's description
-
-        if (folderName.isEmpty()) {
-            throw new RuntimeException("Folder name is not set for assignment ID: " + assignmentId);
-        }
-
-        // Append new files if provided
-        if (newFiles != null) {
-            for (MultipartFile file : newFiles) {
-                if (!file.isEmpty()) {
-                    FileUploadUtil.assertAllowed(file, FileUploadUtil.IMAGE_PATTERN);
-                    cloudinaryService.uploadFileToFolder(file, folderName);
-                }
+        if (request.getImgFile() != null) {
+            MultipartFile[] newFiles = request.getImgFile();
+            for (int i = 0; i < request.getImgFile().length; i++) {
+                log.info("Uploading file: " + request.getImgFile()[i].getOriginalFilename());
             }
+            if (newFiles.length > 0) {
+                String folderName = sanitizeFolderName("assignments/" + request.getDescription());
+                if (folderName.isEmpty()) {
+                    throw new RuntimeException("Folder name is not set for assignment ID: " + assignmentId);
+                }
+                uploadFilesToFolder(newFiles, folderName);
+                assignment.setImgUrl(folderName); // Set folder URL
+            }
+        } else {
+            log.warn("No files provided in the request.");
         }
 
         // **Clear existing class associations**
@@ -349,9 +342,40 @@ public class AssignmentServices extends AssignmentCreationRequest {
                 .orElseThrow(() -> new NoSuchElementException("Assignment not found!"))
                 .getDescription());
 
-        cloudinaryService.deleteFile(request.getFileUrl(), folderName);
+        s3Service.deleteFile(request.getFileUrl(), folderName);
     }
 
 
+    public List<AssignmentResponse> getAssignmentByClassId(int classId) {
+        // Find the StudentAssignment by ID
+       Class clas = classRepository.findById(classId)
+                .orElseThrow(() -> new NoSuchElementException("Class not found"));
+
+        // Get the related Assignment
+        Set<Assignment> assignments = clas.getAssignments();
+
+        if (assignments == null || assignments.isEmpty()) {
+            throw new NoSuchElementException("Assignment not found for this Class");
+        }
+        List<AssignmentResponse> assignmentResponses = assignments.stream()
+                .map(assignment -> {
+                    AssignmentResponse response = new AssignmentResponse();
+                    response.setId(assignment.getId());
+                    response.setCreated_date(assignment.getCreated_date());
+                    response.setEnd_date(assignment.getEnd_date());
+                    response.setDescription(assignment.getDescription());
+                    response.setContent(assignment.getContent());
+                    response.setFolder(assignment.getImgUrl());
+                    response.setClasses(
+                            assignment.getClasses().stream()
+                                    .map(Class::getName)
+                                    .collect(Collectors.toList())
+                    );
+                    return response;
+                })
+                .collect(Collectors.toList());
+
+        return assignmentResponses;
+    }
 }
 

@@ -147,6 +147,21 @@ public class AssignmentController {
         }
     }
 
+    @GetMapping("/detailByC/{classId}")
+    public ResponseEntity<List<AssignmentResponse>> getAssignmentByClassId(
+            @PathVariable int classId) {
+        try {
+            List<AssignmentResponse> response = assignmentServices.getAssignmentByClassId(classId);
+            return ResponseEntity.ok(response);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null); // Return 404 if  Assignment is not found
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null); // Return 500 for unexpected errors
+        }
+    }
+
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteAssignment(@RequestParam("assignmentId") int assignmentId) {
@@ -169,9 +184,9 @@ public class AssignmentController {
            log.info("Files: " + response.getFiles());
                if (response != null)  {
                     return ResponseEntity.ok(response);
-                 } else {
+               } else {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-                 }
+           }
     }
 
     @PutMapping("/update/{assignment_id}")

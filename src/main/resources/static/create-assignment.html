@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+
 </head>
 
 <body>
@@ -390,14 +391,10 @@
                                 <textarea id="content" placeholder="Write content..."  class="form-control" name="content" rows="4" required></textarea>
                             </div>
                             <div class="col-xl-12 col-lg-24 col-12 form-group">
-                                <label for="class_id">For Class</label>
-
-                                <select  name="class_id" id="class_id" multiple>
-<!--                                    <option value="">Please Select Class *</option>-->
-<!--                                    <option value="1">Class 1</option>-->
-<!--                                    <option value="2">Class 2</option>-->
-<!--                                    <option value="3">Class 3</option>-->
-                                </select>
+                                <label  for="class_id">For Classes</label>
+                                <div id="class_id">
+                                    <!-- Checkboxes will be dynamically populated here -->
+                                </div>
                             </div>
                             <div class="col-12 form-group mg-t-8">
                                 <label class="text-dark-medium" for="imgFile">File attach </label>
@@ -441,11 +438,6 @@
         document.getElementById("created_date").value = currentDate;
     });
 
-    function isValidImage(file) {
-        const allowedExtensions = ['jpg', 'jpeg', 'png'];
-        const fileExtension = file.name.split('.').pop().toLowerCase();
-        return allowedExtensions.includes(fileExtension);
-    }
 
     async function addAssignment(event) {
         event.preventDefault();
@@ -488,9 +480,10 @@
             return;
         }
 
-        // Get selected class IDs from the <select> element
-        const classSelect = document.getElementById('class_id');
-        const selectedClasses = Array.from(classSelect.selectedOptions).map(option => option.value);
+        // Get selected class IDs from the checkboxes
+        const selectedClasses = Array.from(document.querySelectorAll('input[name="classIds"]:checked'))
+            .map(checkbox => checkbox.value);
+
 
         // Append selected class IDs to the form data
         selectedClasses.forEach(classId => {
@@ -503,15 +496,8 @@
 
         for (let i = 0; i < imgFiles.length; i++) {
             const file = imgFiles[i];
-            if (!addedFileNames.has(file.name)) {
-                if (isValidImage(file)) {
-                    addedFileNames.add(file.name); // Track the file name
-                    formData.append('imgFile', file);
-                } else {
-                    alert(`Invalid file type: ${file.name}. Only .jpg, .jpeg, and .png files are allowed.`);
-                    return;
-                }
-            }
+            addedFileNames.add(file.name); // Track the file name
+            formData.append('imgFile', file);
         }
 
         try {
@@ -549,7 +535,6 @@
     }
 
 
-
     async function populateClasses() {
         try {
             const teacher_id = document.getElementById('userId').value;
@@ -561,18 +546,30 @@
 
             const classes = await response.json();
 
-            // Get the select element
-            const classSelect = document.getElementById('class_id');
+            // Get the div element where checkboxes will be appended
+            const classDiv = document.getElementById('class_id');
 
             // Clear existing options
-            classSelect.innerHTML = '';
+            classDiv.innerHTML = '';
 
-            // Populate options
+            // Populate checkboxes
             classes.forEach((cls) => {
-                const option = document.createElement('option');
-                option.value = cls.id; // Use class ID as value
-                option.textContent = cls.name; // Use class name as display text
-                classSelect.appendChild(option);
+                const label = document.createElement('label');
+                label.classList.add('class-checkbox-label');  // Add custom styling class
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.name = 'classIds';  // Use 'classIds' to collect multiple selections
+                checkbox.value = cls.id;  // Class ID as the value
+                checkbox.id = `class-${cls.id}`;  // ID for the checkbox
+
+                // Append the label and checkbox
+                const textNode = document.createTextNode(cls.name);  // Class name as text
+                label.appendChild(checkbox);
+                label.appendChild(textNode);
+
+                classDiv.appendChild(label);
+                classDiv.appendChild(document.createElement('br'));  // Line break for each checkbox
             });
         } catch (error) {
             console.error('Error populating classes:', error);

@@ -26,6 +26,20 @@ spring:
           starttls:
             enable: true
 
+cloud:
+  aws:
+    credentials:
+      access-key: AKIATG6MG2AF2CR3CFO7
+      secret-key: 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
+    region:
+      static: ap-southeast-2
+    stack:
+        auto: false
+
+application:
+  bucket:
+    name: jip.upload.files
+
 cloudinary:
   cloud-name: dmlethtuv
   api-key: 151443119214651
