@@ -29,6 +29,54 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <style>
+        /* Làm cho toàn bộ ô bảng có chữ đậm */
+        .td-bold {
+            font-weight: bolder; /* Làm chữ đậm hơn */
+            text-align: center;
+            padding: 10px;
+        }
+
+
+        /* Thêm hiệu ứng hover cho các liên kết trong bảng */
+        .table td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .table td a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hiệu ứng làm nổi bật dòng khi di chuột qua */
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Màu nền cho ô bảng */
+        .table td {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+
+        /* Chữ màu xanh cho trạng thái Approved */
+        .approved {
+            color: #28a745; /* Màu xanh lá cây */
+        }
+
+        /* Chữ màu đỏ cho trạng thái Rejected */
+        .rejected {
+            color: #dc3545; /* Màu đỏ */
+        }
+
+        /* Các ô bảng vẫn giữ kiểu bold và căn giữa như trước */
+        .td-bold {
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -282,19 +330,19 @@
                 <!-- Student Table Area Start Here -->
                 <div id="application-view" >
                     <!-- Bảng yêu cầu chung cho giáo viên và học sinh -->
-                    <div class="card height-auto">
+                    <div class="card height-auto" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table display data-table text-nowrap">
-                                    <thead>
-                                    <tr>
-                                        <th>Type</th>
-                                        <th>Purpose</th>
-                                        <th>Create Date</th>
-                                        <th>Process Note</th>
-                                        <th>File</th>
-                                        <th>Status</th>
-                                        <th>Time Response</th>
+                                <table class="table table-striped table-bordered data-table text-nowrap" style="border-collapse: collapse;">
+                                    <thead style="background-color: #f8f9fa;">
+                                    <tr style="text-align: center; color: #007bff;">
+                                        <th style="font-weight: bold;">Type</th>
+                                        <th style="font-weight: bold;">Purpose</th>
+                                        <th style="font-weight: bold;">Create Date</th>
+                                        <th style="font-weight: bold;">Process Note</th>
+                                        <th style="font-weight: bold;">File</th>
+                                        <th style="font-weight: bold;">Status</th>
+                                        <th style="font-weight: bold;">Time Response</th>
                                     </tr>
                                     </thead>
                                     <tbody id="application-table-body">
@@ -435,15 +483,17 @@
 
                             const row = document.createElement('tr');
                             row.innerHTML = `
-                        <td style="font-weight: bold;">${formattedCategory}</td>
-                        <td style="font-weight: bold;">${formattedContent}</td>
-                        <td style="font-weight: bold;">${application.created_date ? new Date(application.created_date).toLocaleDateString() : 'N/A'}</td>
-                        <td style="font-weight: bold;">${formattedReply}</td>
-                        <td style="font-weight: bold;">
-                            ${application.img ? `<a href="${application.img}" target="_blank">File</a>` : 'N/A'}
-                        </td>
-                        <td style="font-weight: bold;">${application.status || 'N/A'}</td>
-                        <td style="font-weight: bold;">${application.replied_date ? new Date(application.replied_date).toLocaleDateString() : 'N/A'}</td>
+                        <td class="td-bold">${formattedCategory}</td>
+<td class="td-bold">${formattedContent}</td>
+<td class="td-bold">${application.created_date ? new Date(application.created_date).toLocaleDateString() : 'N/A'}</td>
+<td class="td-bold">${formattedReply}</td>
+<td class="td-bold">
+    ${application.img ? `<a href="${application.img}" target="_blank">File</a>` : 'N/A'}
+</td>
+<td class="td-bold ${application.status === 'Approved' ? 'approved' : application.status === 'Rejected' ? 'rejected' : ''}">
+    ${application.status || 'N/A'}
+</td>
+<td class="td-bold">${application.replied_date ? new Date(application.replied_date).toLocaleDateString() : 'N/A'}</td>
                     `;
                             tableBody.appendChild(row);
                         });
