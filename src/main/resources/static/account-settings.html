@@ -33,52 +33,206 @@
     <link rel="stylesheet" href="css/jquery.dataTables.min.css">
     <!-- Custom CSS -->
     <link href="style.css" rel="stylesheet">
+    <!-- Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .pagination .page-link {
+            padding: 0.75rem 1.25rem; /* Increase padding for bigger buttons */
+            font-size: 1.25rem; /* Increase font size for larger text */
+            border-radius: 0.375rem; /* Optional: Make buttons slightly rounded */
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #007bff; /* Active button color */
+            border-color: #007bff; /* Active button border color */
+        }
+
+        .pagination .page-item:hover .page-link {
+            background-color: #0056b3; /* Hover effect color */
+            border-color: #0056b3;
+        }
         .pagination-container {
             display: flex;
             justify-content: center;
+            gap: 10px;
             margin-top: 20px;
         }
-
         .page-btn {
-            padding: 5px 10px;
-            margin: 0 5px;
-            border: 1px solid #ccc;
-            background-color: #f8f8f8;
+            border: none;
+            background-color: #f8f9fa;
+            color: #007bff;
+            padding: 8px 16px;
             cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
         }
 
         .page-btn.active {
             background-color: #007bff;
             color: white;
-            border-color: #007bff;
+            pointer-events: none;
         }
 
         .page-btn:hover {
-            background-color: #ddd;
+            background-color: #007bff;
+            color: white;
         }
+
+        .card {
+            border: 1px solid #e1e4e8;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-gradient-yellow {
+            background: linear-gradient(to right, #ffcc00, #ff9900);
+            border: none;
+            color: white;
+        }
+        .btn-gradient-yellow:hover {
+            background: linear-gradient(to right, #ff9900, #ff6600);
+        }
+
+        .table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .table img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        #successMessage {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 5px solid #28a745;
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom Search Input */
+        .search-input {
+            height: 50px; /* Tăng chiều cao của ô nhập */
+            font-size: 16px; /* Tăng kích thước chữ */
+            padding: 10px 15px; /* Tăng khoảng cách bên trong */
+            border-radius: 5px; /* Bo góc mềm mại */
+        }
+
+        /* Custom Button */
+        .btn-search {
+            height: 50px; /* Đồng bộ chiều cao với input */
+            font-size: 16px; /* Kích thước chữ to hơn */
+            font-weight: bold; /* Làm chữ đậm hơn */
+            text-transform: uppercase; /* Viết hoa chữ */
+            border-radius: 5px; /* Bo góc tương tự input */
+            padding: 0 20px; /* Tăng khoảng cách trong nút */
+        }
+
+        /* Custom Modal Styling */
+        #success-modal .modal-header {
+            background-color: #28a745; /* Màu nền của header */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #success-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #success-modal .modal-body .fas.fa-check-circle {
+            color: #28a745;
+        }
+
+        #success-modal .btn-success {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        #success-modal .btn-close {
+            color: white;
+        }
+
+        #success-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+
+        /* Custom Modal Styling for Error Modal */
+        #error-modal .modal-header {
+            background-color: #dc3545; /* Màu nền của header (Đỏ cho lỗi) */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #error-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #error-modal .modal-body .fas.fa-times-circle {
+            color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+        }
+
+        #error-modal .btn-danger {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #dc3545; /* Màu đỏ cho nút lỗi */
+            border-color: #dc3545;
+        }
+
+        #error-modal .btn-close {
+            color: white;
+        }
+
+        #error-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+
+        /* Tăng kích thước nút */
+
+
+
     </style>
 </head>
 
 <body>
 <!-- Preloader Start Here -->
+<!-- Preloader Start Here -->
 <div id="preloader"></div>
 <!-- Preloader End Here -->
-<div class="wrapper bg-ash" id="wrapper">
+<div id="wrapper" class="wrapper bg-ash">
     <!-- Header Menu Area Start Here -->
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
                 <a href="admin.html">
                     <div style="width: 180px; height: 70px; overflow: hidden;">
-                    <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+                        <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                 </a>
             </div>
             <div class="toggle-button sidebar-toggle">
-                <button class="item-link" type="button">
+                <button type="button" class="item-link">
                         <span class="btn-icon-wrap">
                             <span></span>
                             <span></span>
@@ -88,11 +242,11 @@
             </div>
         </div>
         <div class="d-md-none mobile-nav-bar">
-            <button aria-expanded="false" class="navbar-toggler pulse-animation" data-target="#mobile-navbar"
-                    data-toggle="collapse" type="button">
+            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse"
+                    data-target="#mobile-navbar" aria-expanded="false">
                 <i class="far fa-arrow-alt-circle-down"></i>
             </button>
-            <button class="navbar-toggler sidebar-toggle-mobile" type="button">
+            <button type="button" class="navbar-toggler sidebar-toggle-mobile">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -100,21 +254,16 @@
             <ul class="navbar-nav">
                 <li class="navbar-item header-search-bar">
                     <div class="input-group stylish-input-group">
-                            <span class="input-group-addon">
-                                <button type="submit">
-                                    <span aria-hidden="true" class="flaticon-search"></span>
-                                </button>
-                            </span>
-                        <input class="form-control" placeholder="Find Something . . ." type="text">
+
                     </div>
                 </li>
             </ul>
             <ul class="navbar-nav">
                 <li class="navbar-item dropdown header-admin">
-                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                       role="button">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
                         <div class="admin-title">
-                            <h5 class="item-title userFullName"></h5>
+                            <h5 class="item-title userFullName"> </h5>
                             <span class="userRole"></span>
                         </div>
                         <div class="admin-img">
@@ -127,144 +276,47 @@
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
-                                <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
-                                <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
-                                </li>
-                                <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
+
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i><span data-i18n="log_out">Log Out</span></a></li>
                             </ul>
                         </div>
                     </div>
                 </li>
-                <li class="navbar-item dropdown header-message">
-                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                       role="button">
-                        <i class="far fa-envelope"></i>
-                        <div class="item-title d-md-none text-16 mg-l-10">Message</div>
-                        <span>5</span>
-                    </a>
 
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <div class="item-header">
-                            <h6 class="item-title">05 Message</h6>
-                        </div>
-                        <div class="item-content">
-                            <div class="media">
-                                <div class="item-img bg-skyblue author-online">
-                                    <img alt="img" src="img/figure/student11.png">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Maria Zaman</span>
-                                            <span class="item-time">18:30</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-img bg-yellow author-online">
-                                    <img alt="img" src="img/figure/student12.png">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Benny Roy</span>
-                                            <span class="item-time">10:35</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-img bg-pink">
-                                    <img alt="img" src="img/figure/student13.png">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Steven</span>
-                                            <span class="item-time">02:35</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-img bg-violet-blue">
-                                    <img alt="img" src="img/figure/student11.png">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Joshep Joe</span>
-                                            <span class="item-time">12:35</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
+                <!--Notification-->
                 <li class="navbar-item dropdown header-notification">
-                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                       role="button">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                         <i class="far fa-bell"></i>
                         <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
-                        <span>8</span>
+                        <span id="notification-count">0</span>
                     </a>
 
-                    <div class="dropdown-menu dropdown-menu-right">
+                    <div class="dropdown-menu dropdown-menu-right" id="notification-dropdown">
                         <div class="item-header">
-                            <h6 class="item-title">03 Notifiacations</h6>
+                            <h6 class="item-title" id="notification-title">Notifications</h6>
                         </div>
-                        <div class="item-content">
-                            <div class="media">
-                                <div class="item-icon bg-skyblue">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="post-title">Complete Today Task</div>
-                                    <span>1 Mins ago</span>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-icon bg-orange">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="post-title">Director Metting</div>
-                                    <span>20 Mins ago</span>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-icon bg-violet-blue">
-                                    <i class="fas fa-cogs"></i>
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="post-title">Update Password</div>
-                                    <span>45 Mins ago</span>
-                                </div>
-                            </div>
+                        <div class="item-content" id="notification-list">
+                            <!-- Notifications will be dynamically inserted here -->
                         </div>
                     </div>
                 </li>
+
                 <li class="navbar-item dropdown header-language">
-                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown"
-                       href="#" role="button"><i class="fas fa-globe-americas"></i>EN</a>
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
+                    </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#">English</a>
-                        <a class="dropdown-item" href="#">Spanish</a>
-                        <a class="dropdown-item" href="#">Franchis</a>
-                        <a class="dropdown-item" href="#">Chiness</a>
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
+                            <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;"> English
+                        </a>
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
+                            <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese" style="width: 20px; height: 15px;"> 日本語
+                        </a>
                     </div>
                 </li>
+
+
+
             </ul>
         </div>
     </div>
@@ -284,7 +336,7 @@
                         <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
+                                <a href="admin.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Admin</a>
                             </li>
                         </ul>
                     </li>
@@ -297,7 +349,7 @@
                                 class="flaticon-script"></i><span>Notification</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="account-settings.html" class="nav-link"><i
+                        <a href="account-settings.html" class="nav-link menu-active"><i
                                 class="flaticon-settings"></i><span>Account List</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
@@ -313,97 +365,76 @@
         </div>
         <div class="dashboard-content-one">
             <div class="breadcrumbs-area">
-                <h3>Account Setting</h3>
-                <ul>
+                <h3 data-i18n="account_setting">Account Setting</h3>
+                <ul class="breadcrumb">
                     <li>
-                        <a href="admin.html">Home</a>
+                        <a href="admin.html" data-i18n="home">Home</a>
                     </li>
-                    <li>Setting</li>
+                    <li data-i18n="setting">Setting</li>
                 </ul>
             </div>
-            <!-- Breadcubs Area End Here -->
-            <!-- Account Settings Area Start Here -->
+            <!-- Account Settings Area Start -->
             <div class="row">
                 <div class="col-12">
                     <div class="card">
+
                         <div class="card-body">
-                            <div class="heading-layout1">
-                                <div class="item-title">
-                                    <h3>User Management</h3>
-                                    <div id="successMessage" class="alert alert-success" style="display: none;" role="alert"></div>
-                                </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <!-- Di chuyển "User Actions" sang trái một chút -->
+                                <h4 style="margin-right: 500px;" data-i18n="user_action">User Actions</h4>
                                 <div class="dropdown">
-                                    <a aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown" href="#"
-                                       role="button">...</a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="create-account.html"><i
-                                                class="fas fa-plus text-orange-red"></i>Add</a>
-                                        <a class="dropdown-item" data-target="#standard-modal" data-toggle="modal"><i
-                                                class="fas fa-file-import text-green"></i>Import</a>
+                                    <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" style="font-size: 16px; padding: 10px 20px;" data-i18n="add_import_users">Add or Import Users</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="create-account.html" data-i18n="add_new_user"><i class="fas fa-plus text-orange-red"></i> Add New User</a>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#standard-modal" data-i18n="import_users"><i class="fas fa-file-import text-green"></i> Import Users</a>
                                     </div>
+
                                 </div>
                             </div>
-                            <form class="new-added-form">
-                                <div class="row">
+                            <form>
+                                <div class="row mb-3 align-items-center">
+                                    <div class="col-lg-8">
+                                        <input type="text" placeholder="Search by ID..." class="form-control search-input">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <button type="submit" class="btn btn-gradient-yellow btn-search" data-i18n="search">SEARCH</button>
+                                    </div>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12-xxxl col-12">
-                        <div class="card height-auto">
-                            <div class="card-body">
-                                <div class="heading-layout1">
-                                    <div class="item-title">
-                                        <h3>User List</h3>
-                                    </div>
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                                           aria-expanded="false">...</a>
-
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <form class="mg-b-20">
-                                    <div class="row gutters-8">
-                                        <div class="col-lg-4 col-12 form-group">
-                                            <input type="text" placeholder="Search by Id ..." class="form-control">
-                                        </div>
-                                        <div class="col-lg-3 col-12 form-group">
-                                            <input type="text" placeholder="Search by Name ..." class="form-control">
-                                        </div>
-                                        <div class="col-lg-3 col-12 form-group">
-                                            <input type="text" placeholder="Search by Role ..." class="form-control">
-                                        </div>
-                                        <div class="col-lg-2 col-12 form-group">
-                                            <button type="submit"
-                                                    class="fw-btn-fill btn-gradient-yellow">SEARCH
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                                <div class="table-responsive">
-                                    <table class="table display text-nowrap">
-                                        <thead>
-                                        <tr>
-                                            <th>Order</th>
-                                            <th>Image</th>
-                                            <th>Name</th>
-                                            <th>Role</th>
-                                            <th></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 data-i18n="user_list">User List</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th data-i18n="id">ID</th>
+                                        <th data-i18n="image">Image</th>
+                                        <th data-i18n="name">Name</th>
+                                        <th data-i18n="role">Role</th>
+                                        <th data-i18n="actions">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
                                         </tbody>
                                     </table>
-                                    <div class="pagination-container"></div>
-
+                                <div class="pagination-container">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item"><a href="#" class="page-link">Previous</a></li>
+                                        <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                                        <li class="page-item"><a href="#" class="page-link">2</a></li>
+                                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                                    </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -418,7 +449,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Account</h5>
+                    <h5 class="modal-title" data-i18n="add_account" >Add Account</h5>
                     <button aria-label="Close" class="close" data-dismiss="modal"
                             type="button">
                         <span aria-hidden="true">&times;</span>
@@ -426,38 +457,44 @@
                 </div>
                 <form action="/account/import/excel" enctype="multipart/form-data" id="import" method="post">
                     <div class="modal-body">
-                        <label for="file" style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
+                        <label for="file" style="font-weight: bold; color: #464c4d; font-size:14px;" data-i18n="choose_file" >Choose File</label><br>
                         <input class="form-control-file" id="file" name="file" required type="file">
                     </div>
                     <div class="modal-footer">
-                        <button class="footer-btn bg-dark-low" data-dismiss="modal" type="button">Close</button>
-                        <button class="footer-btn bg-linkedin" type="submit">Submit</button>
+                        <button class="footer-btn bg-dark-low" data-dismiss="modal" type="button" data-i18n="close" >Close</button>
+                        <button class="footer-btn bg-linkedin" type="submit" data-i18n="submit" >Submit</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
     <!-- Success Modal -->
-    <div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="successModalLabel">Success</h5>
-                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-                </div>
-                <div class="modal-body">
-                    Account import was successful!
-                </div>
+<div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-success" id="successModalLabel">
+                    <i class="fas fa-check-circle"></i> Success
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                <h4 class="text-success">Account import was successful!</h4>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Error Modal -->
-    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="errorModalLabel">Errors</h5>
+
+<!-- Error Modal -->
+<div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                    <h5 class="modal-title text-danger" id="errorModalLabel">
+                        <i class="fas fa-times-circle"></i> Error
+                    </h5>
                     <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                 </div>
                 <div class="modal-body">
@@ -511,6 +548,8 @@
                 }));
             })
             .then(result => {
+                console.log('Result:', result); // In kết quả trả về
+
                 if (result.status) {
                     // Success Modal
                     const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
@@ -537,43 +576,61 @@
 <!-- fetch user -->
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    const roleTranslations = {
+        "en": {
+            "ADMIN": "Admin",
+            "TEACHER": "Teacher",
+            "STUDENT": "Student"
+        },
+        "ja": {
+            "ADMIN": "管理者",
+            "TEACHER": "教師",
+            "STUDENT": "学生"
+        }
+    };
+
     if (userDetails) {
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
 
-        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
+        // Lấy ngôn ngữ hiện tại từ localStorage
+        const currentLanguage = localStorage.getItem('language') || 'en';  // Mặc định là 'en'
+
+        // Hiển thị thông tin người dùng với tên và vai trò dịch theo ngôn ngữ hiện tại
+        const translatedRoleName = roleTranslations[currentLanguage][userDetails.roleName] || userDetails.roleName;
+
         if (userDetails.roleName === "ADMIN") {
-            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
+            // Hiển thị tên đăng nhập và vai trò cho ADMIN
             userFullNameElements.forEach(element => {
                 element.textContent = userDetails.username;
             });
             userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
+                element.textContent = translatedRoleName;
             });
 
-            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
+            // Ẩn các mục của người dùng khác (giáo viên và học sinh) vì ADMIN không cần
             document.getElementById("teacher-view").style.display = "none";
             document.getElementById("student-view").style.display = "none";
         } else if (userDetails.roleName === "TEACHER") {
-            // Hiển thị đầy đủ tên và vai trò cho giáo viên
+            // Hiển thị tên đầy đủ và vai trò cho giáo viên
             userFullNameElements.forEach(element => {
                 element.textContent = userDetails.fullName;
             });
             userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
+                element.textContent = translatedRoleName;
             });
 
-            // Chỉ hiển thị mục của giáo viên
+            // Chỉ hiển thị mục của giáo viên, ẩn mục của học sinh
             document.getElementById("teacher-view").style.display = "block";
             document.getElementById("student-view").style.display = "none";
             document.getElementById("student-view1").style.display = "none";
         } else if (userDetails.roleName === "STUDENT") {
-            // Hiển thị đầy đủ tên và vai trò cho học sinh
+            // Hiển thị tên đầy đủ và vai trò cho học sinh
             userFullNameElements.forEach(element => {
                 element.textContent = userDetails.fullName;
             });
             userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
+                element.textContent = translatedRoleName;
             });
 
             // Chỉ hiển thị mục của học sinh
@@ -588,107 +645,104 @@
     }
 </script>
 
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const tableBody = document.querySelector('.table tbody');
-        const paginationContainer = document.querySelector('.pagination-container'); // Ensure you have a container for pagination
+    document.addEventListener("DOMContentLoaded", function () {
+        const tableBody = document.querySelector(".table tbody");
+        const paginationContainer = document.querySelector(".pagination-container");
 
         const usersPerPage = 30;
         let currentPage = 1;
         let totalUsers = 0;
         let users = [];
 
-        function fetchUsers() {
-            fetch(`/users`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    users = data; // Store all users
-                    totalUsers = users.length;
-                    renderTable();
-                    renderPagination();
-                })
-                .catch(error => console.error('Error fetching users:', error));
+        // Fetch users
+        async function fetchUsers() {
+            try {
+                const response = await fetch(`/users`);
+                if (!response.ok) throw new Error(`Failed to fetch: ${response.statusText}`);
+                users = await response.json();
+                totalUsers = users.length;
+                renderTable();
+                renderPagination();
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
         }
 
+        // Render table
+        // Render table
         function renderTable() {
-            tableBody.innerHTML = ''; // Clear the table body
-
+            tableBody.innerHTML = "";
             const startIndex = (currentPage - 1) * usersPerPage;
             const endIndex = Math.min(startIndex + usersPerPage, totalUsers);
 
+            const currentLanguage = localStorage.getItem('language') || 'en'; // Lấy ngôn ngữ từ localStorage
+
+            // Vòng lặp qua danh sách người dùng để render
             for (let i = startIndex; i < endIndex; i++) {
                 const user = users[i];
-                const row = document.createElement('tr');
 
-                // Numerical order cell
-                const orderCell = document.createElement('td');
-                orderCell.textContent = i + 1; // Numerical order starts at 1
-                row.appendChild(orderCell);
+                // Bỏ qua người dùng có user.id === 1
+                if (user.id === 1) {
+                    continue;
+                }
 
+                const row = document.createElement("tr");
 
-                // Image cell
-                const imgCell = document.createElement('td');
-                const imgElement = document.createElement('img');
-                imgElement.src = user.img;
-                imgElement.alt = "User Image";
-                imgElement.style.width = "50px";
-                imgElement.style.height = "50px";
-                imgElement.style.objectFit = "cover";
-                imgCell.appendChild(imgElement);
-                row.appendChild(imgCell);
+                // Dịch tên vai trò người dùng theo ngôn ngữ đã chọn
+                const translatedRoleName = roleTranslations[currentLanguage] && roleTranslations[currentLanguage][user.roleName]
+                    ? roleTranslations[currentLanguage][user.roleName]
+                    : user.roleName;  // Nếu không có bản dịch thì giữ nguyên tên
 
-                // Name cell
-                const nameCell = document.createElement('td');
-                nameCell.textContent = user.roleName === "ADMIN" ? user.username : user.fullName;
-                row.appendChild(nameCell);
+                // Dịch tên của liên kết "View Details"
+                const translatedViewDetails = currentLanguage === 'ja' ? '詳細を見る' : 'View Details';
 
-                // Role cell
-                const roleCell = document.createElement('td');
-                roleCell.textContent = user.roleName;
-                row.appendChild(roleCell);
-
-                // Actions cell
-                const actionsCell = document.createElement('td');
-                const dropdown = document.createElement('div');
-                dropdown.className = 'dropdown';
-                const dropdownToggle = document.createElement('a');
-                dropdownToggle.href = '#';
-                dropdownToggle.className = 'dropdown-toggle';
-                dropdownToggle.setAttribute('data-toggle', 'dropdown');
-                dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
-                dropdown.appendChild(dropdownToggle);
-
-                const dropdownMenu = document.createElement('div');
-                dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
-                dropdownMenu.innerHTML = `
-                <a class="dropdown-item" href="users-details.html?userId=${user.id}"><i class="fas fa-glasses text-dark-pastel-green"></i>User Details</a>
-            `;
-                dropdown.appendChild(dropdownMenu);
-                actionsCell.appendChild(dropdown);
-                row.appendChild(actionsCell);
+                row.innerHTML = `
+            <td>${i + 1}</td>
+            <td>
+                <img src="${user.img ? user.img : 'img/figure/admin.jpg'}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+            </td>
+            <td>${user.roleName === "ADMIN" ? user.username : user.fullName}</td>
+            <td>${translatedRoleName}</td>
+            <td>
+                <a href="users-details.html?userId=${user.id}" class="text-decoration-none text-primary" title="View User Details" data-i18n="view_details">
+                    <i class="fas fa-eye" style="font-size: 16px; margin-right: 8px;"></i>
+                    ${translatedViewDetails}
+                </a>
+            </td>
+        `;
 
                 tableBody.appendChild(row);
             }
         }
+        const roleTranslations = {
+            "en": {
+                "ADMIN": "ADMIN", // Tên tiếng Anh cho ADMIN
+                "TEACHER": "TEACHER", // Tên tiếng Anh cho TEACHER
+                "STUDENT": "STUDENT",  // Tên tiếng Anh cho STUDENT
+                "MANAGER": "MANAGER"  // Tên tiếng Anh cho MANAGER
+            },
+            "ja": {
+                "ADMIN": "管理者", // Tên tiếng Nhật cho ADMIN
+                "TEACHER": "教師", // Tên tiếng Nhật cho TEACHER
+                "STUDENT": "学生", // Tên tiếng Nhật cho STUDENT
+                "MANAGER": "管理者"  // Tên tiếng Nhật cho MANAGER
+            }
+        };
 
+
+        // Render pagination
         function renderPagination() {
-            paginationContainer.innerHTML = ''; // Clear the pagination container
-
+            paginationContainer.innerHTML = "";
             const totalPages = Math.ceil(totalUsers / usersPerPage);
 
             for (let i = 1; i <= totalPages; i++) {
-                const pageButton = document.createElement('button');
+                const pageButton = document.createElement("button");
                 pageButton.textContent = i;
-                pageButton.className = 'page-btn';
-                if (i === currentPage) {
-                    pageButton.classList.add('active');
-                }
-                pageButton.addEventListener('click', function () {
+                pageButton.className = "page-btn";
+                if (i === currentPage) pageButton.classList.add("active");
+                pageButton.addEventListener("click", () => {
                     currentPage = i;
                     renderTable();
                     renderPagination();
@@ -716,7 +770,105 @@
         successMessageElement.style.display = "block";  // Make the message visible
     }
 </script>
+<script>
+    // Hàm thay đổi ngôn ngữ
+    // Hàm thay đổi ngôn ngữ
+    function getTranslation(language) {
+        const translations = {
+            "en": {
+                "add_new_user": "Add New User",
+                "import_users": "Import Users",
+                "add_import_users": "Add or Import Users",
+                "home": "Home",
+                "account_setting": "Account Setting",
+                "user_action": "User Actions",
+                "search": "Search",
+                "setting": "Setting",
+                "user_list": "User List",
+                "id": "ID",
+                "image": "Image",
+                "name": "Name",
+                "role": "Role",
+                "actions": "Actions",
+                "view_details": "View Details",
+                "log_out": "Log Out",
+                "add_account": "Add Account",
+                "choose_file": "Choose File",
+                "close": "Close",
+                "submit": "Submit",
 
+
+            },
+            "ja": {
+                "add_new_user": "新しいユーザーを追加",
+                "import_users": "ユーザーをインポート",
+                "add_import_users": "ユーザーを追加,インポート",
+                "home": "ホーム",
+                "account_setting": "アカウント設定",
+                "user_action": "ユーザーアクション",
+                "search": "検索",
+                "setting": "設定",
+                "user_list": "ユーザーリスト",
+                "id": "ID",
+                "image": "写真",
+                "name": "名前",
+                "role": "役割",
+                "actions": "アクション",
+                "view_details": "詳細を見る",
+                "log_out": "ログアウト",
+                "add_account": "アカウントを追加",
+                "choose_file": "ファイルを選択",
+                "submit": "送信",
+                "close": "閉じる",
+
+            }
+        };
+
+        // Cập nhật nội dung các phần tử có thuộc tính data-i18n
+        const elements = document.querySelectorAll('[data-i18n]');
+        elements.forEach(function(element) {
+            const translationKey = element.getAttribute('data-i18n');
+            if (translations[language] && translations[language][translationKey]) {
+                element.innerHTML = translations[language][translationKey];
+            }
+        });
+    }
+
+    // Hàm thay đổi ngôn ngữ và cập nhật ngôn ngữ hiển thị trong thanh điều hướng
+    function changeLanguage(language) {
+        // Lưu ngôn ngữ vào localStorage
+        localStorage.setItem('language', language);
+
+        // Cập nhật lại nhãn ngôn ngữ trong phần tử (nút hiển thị ngôn ngữ)
+        const languageLabel = document.getElementById('languageLabel');
+        if (languageLabel) {
+            languageLabel.innerHTML = language === 'en' ? 'EN' : (language === 'ja' ? 'JA' : 'EN');
+        }
+
+        // Áp dụng ngôn ngữ cho toàn bộ trang
+        getTranslation(language);  // Gọi lại hàm dịch ngôn ngữ ngay lập tức
+
+        // Reload lại trang sau khi thay đổi ngôn ngữ
+        location.reload();  // Tải lại trang
+    }
+
+    // Kiểm tra ngôn ngữ khi trang được tải
+    window.addEventListener('load', function () {
+        const language = localStorage.getItem('language') || 'en'; // Mặc định là 'en' nếu không có ngôn ngữ lưu trữ
+        // Gọi hàm dịch ngôn ngữ
+        getTranslation(language);
+        // Đặt lại nhãn ngôn ngữ trong phần tử (tiếng Anh là EN nếu không có ngôn ngữ)
+        const languageLabel = document.getElementById('languageLabel');
+        if (languageLabel) {
+            languageLabel.innerHTML = language === 'en' ? 'EN' : (language === 'ja' ? 'JA' : 'EN');
+        }
+    });
+
+
+
+
+
+</script>
 
 </body>
 

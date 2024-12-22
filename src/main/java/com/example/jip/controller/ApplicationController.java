@@ -256,13 +256,8 @@ public class ApplicationController {
 
         // Lấy giá trị từ payload
         if (payload.containsKey("status")) {
-            try {
-                Application.Status applicationStatus = Application.Status.valueOf((String) payload.get("status"));
-                application.setStatus(applicationStatus);
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(Map.of("message", "Trạng thái không hợp lệ!"));
-            }
+            String status = (String) payload.get("status");
+            application.setStatus(Application.Status.valueOf(status));  // Không kiểm tra hợp lệ, sử dụng trực tiếp
         }
 
         if (payload.containsKey("reply")) {

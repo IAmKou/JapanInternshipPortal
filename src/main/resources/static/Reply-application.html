@@ -31,6 +31,198 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <style>
+        /* Cải thiện thẩm mỹ cho thẻ card */
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+        /* Định dạng card-body */
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Tạo viền cho bảng và cải thiện tông màu */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .table td {
+            padding: 12px;
+            border-bottom: 1px solid #e4e4e4;
+        }
+
+        .table td strong {
+            font-weight: 600;
+            color: #555555;
+        }
+
+        /* Tạo màu nền nhẹ cho dòng bảng */
+        .table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Tạo kiểu cho tiêu đề bảng */
+        .text-dark-medium {
+            color: #333;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Tinh chỉnh form cho thẩm mỹ */
+        .new-added-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .new-added-form .form-group label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .select2 {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-top: 5px;
+            font-size: 16px;
+        }
+
+        /* Tinh chỉnh Textarea */
+        .textarea.form-control {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        /* Tạo hiệu ứng cho nút save */
+        .btn-fill-lg {
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-fill-lg:hover {
+            background-color: #f1c40f;
+            color: #fff;
+        }
+
+        /* Điều chỉnh các viền nút */
+        .btn-fill-lg:active {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Tùy chỉnh viền cho textarea */
+        .textarea.form-control {
+            border: 2px solid #ced4da; /* Thêm viền màu xám nhẹ */
+            border-radius: 8px; /* Bo góc nhẹ cho textbox */
+            padding: 12px; /* Tạo khoảng cách trong */
+            font-size: 14px; /* Kích thước chữ trong textarea */
+            background-color: #ffffff; /* Đảm bảo nền trắng */
+            transition: border 0.3s ease, box-shadow 0.3s ease; /* Thêm hiệu ứng khi thay đổi viền */
+        }
+
+        /* Thêm hiệu ứng khi textarea được focus */
+        /* Thêm hiệu ứng khi textarea được focus */
+        .textarea.form-control:focus {
+            border-color: #0056b3; /* Viền màu xanh đậm hơn khi focus */
+            box-shadow: 0 0 8px rgba(0, 86, 179, 0.7); /* Bóng xanh đậm hơn để làm nổi bật */
+        }
+
+        #successMessage {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 5px solid #28a745;
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom Modal Styling */
+        #success-modal .modal-header {
+            background-color: #28a745; /* Màu nền của header */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #success-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #success-modal .modal-body .fas.fa-check-circle {
+            color: #28a745;
+        }
+
+        #success-modal .btn-success {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        #success-modal .btn-close {
+            color: white;
+        }
+
+        #success-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+
+        /* Custom Modal Styling for Error Modal */
+        #error-modal .modal-header {
+            background-color: #dc3545; /* Màu nền của header (Đỏ cho lỗi) */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #error-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #error-modal .modal-body .fas.fa-times-circle {
+            color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+        }
+
+        #error-modal .btn-danger {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #dc3545; /* Màu đỏ cho nút lỗi */
+            border-color: #dc3545;
+        }
+
+        #error-modal .btn-close {
+            color: white;
+        }
+
+        #error-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+    </style>
 </head>
 
 <body>
@@ -93,90 +285,13 @@
                             <div class="item-content">
                                 <ul class="settings-list">
                                     <li><a href="users-profile-manager.html"><i class="flaticon-user"></i>My Profile</a></li>
-                                    <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
-                                    <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a></li>
                                     <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
                                     <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                                 </ul>
                             </div>
                         </div>
                     </li>
-                    <li class="navbar-item dropdown header-message">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="far fa-envelope"></i>
-                            <div class="item-title d-md-none text-16 mg-l-10">Message</div>
-                            <span>5</span>
-                        </a>
 
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title">05 Message</h6>
-                            </div>
-                            <div class="item-content">
-                                <div class="media">
-                                    <div class="item-img bg-skyblue author-online">
-                                        <img src="img/figure/student11.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Maria Zaman</span> 
-                                                <span class="item-time">18:30</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-img bg-yellow author-online">
-                                        <img src="img/figure/student12.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Benny Roy</span> 
-                                                <span class="item-time">10:35</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-img bg-pink">
-                                        <img src="img/figure/student13.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Steven</span> 
-                                                <span class="item-time">02:35</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-img bg-violet-blue">
-                                        <img src="img/figure/student11.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Joshep Joe</span> 
-                                                <span class="item-time">12:35</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
                     <li class="navbar-item dropdown header-notification">
                         <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                             aria-expanded="false">
@@ -225,9 +340,7 @@
                         data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" href="#">English</a>
-                            <a class="dropdown-item" href="#">Spanish</a>
-                            <a class="dropdown-item" href="#">Franchis</a>
-                            <a class="dropdown-item" href="#">Chiness</a>
+                            <a class="dropdown-item" href="#">Japanese</a>
                         </div>
                     </li>
                 </ul>
@@ -260,7 +373,7 @@
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i
                                     class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                            <ul class="nav sub-group-menu sub-group-active">
+                            <ul class="nav sub-group-menu">
                                 <li class="nav-item">
                                     <a href="add-class.html" class="nav-link"><i
                                             class="flaticon-multiple-users-silhouette"></i>Add New Class</a>
@@ -274,9 +387,9 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item sidebar-nav-item">
+                        <li class="nav-item sidebar-nav-item ">
                             <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
-                            <ul class="nav sub-group-menu">
+                            <ul class="nav sub-group-menu sub-group-active">
                                 <li class="nav-item">
                                     <a href="View-list-application.html" class="nav-link"><i class="fas fa-angle-right"></i>List
                                         application</a>
@@ -313,7 +426,7 @@
                         <!-- Hiển thị thông tin tĩnh -->
                         <div class="single-info-details">
                             <div class="item-content">
-                                <h3 class="text-dark-medium font-medium">Application Details</h3>
+                                <h3>Application Details</h3>
                                 <table class="table text-nowrap">
                                     <tbody>
                                     <tr>
@@ -335,7 +448,7 @@
                                     <tr>
                                         <td><strong>File:</strong></td>
                                         <td id="imgFile">
-
+                                            <!-- Add dynamic file link or 'N/A' if not available -->
                                         </td>
                                     </tr>
                                     </tbody>
@@ -347,7 +460,7 @@
                         <form class="new-added-form">
                             <div class="row">
                                 <div class="col-xl-2 col-lg-6 col-12 form-group">
-                                    <label for="status" style="font-weight: bold;">Status *</label>
+                                    <label for="status">Status *</label>
                                     <select id="status" name="status" class="select2">
                                         <option value="">Please Select Status *</option>
                                         <option value="Approved">Approved</option>
@@ -356,17 +469,51 @@
                                 </div>
 
                                 <div class="col-lg-6 col-12 form-group">
-                                    <label style="font-weight: bold;">Respond *</label>
+                                    <label for="reply">Respond *</label>
                                     <textarea class="textarea form-control" id="reply" cols="8" rows="5"></textarea>
                                 </div>
 
                                 <div class="col-12 form-group mg-t-8">
-                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" id="saveChanges">Save</button>
+                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow" id="saveChanges">Save</button>
                                 </div>
                             </div>
                         </form>
                     </div>
+                    <!-- Success Modal -->
+                    <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header border-0">
+                                    <h5 class="modal-title text-success" id="successModalLabel">
+                                        <i class="fas fa-check-circle"></i> Success
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                                    <h4 class="text-success">Application reply sucess</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header border-0">
+                                    <h5 class="modal-title text-danger" id="errorModalLabel">
+                                        <i class="fas fa-times-circle"></i> Error
+                                    </h5>
+                                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                                </div>
+                                <div class="modal-body">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
                 <!-- Admit Form Area End Here -->
             </div>
         </div>
@@ -472,8 +619,19 @@
         event.preventDefault(); // Ngừng reload trang
 
         const applicationId = new URLSearchParams(window.location.search).get('id');
-        const status = document.getElementById("status").value.trim();
-        const reply = document.getElementById("reply").value.trim();
+        let status = document.getElementById("status").value.trim();
+        let reply = document.getElementById("reply").value.trim();
+
+        // Kiểm tra nếu có trường nào bị thiếu
+        if (!status || !reply) {
+            // Hiển thị modal lỗi nếu thiếu status hoặc reply
+            const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+            const errorMessage = document.querySelector('#long-modal .modal-body');
+            errorMessage.innerHTML = `<p style="font-weight: bold;">Please fill out all required</p>`;
+
+            errorModal.show();
+            return; // Dừng lại, không gửi request
+        }
 
         fetch(`/application/update/${applicationId}`, {
             method: 'PUT',
@@ -481,31 +639,33 @@
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                status: status, // Đảm bảo gửi đúng giá trị
+                status: status,
                 reply: reply
             })
         })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error("Cập nhật không thành công");
-                }
-            })
+            .then(response => response.json()) // Parse response as JSON
             .then(data => {
-                if (data.message) {
-                    alert(data.message); // Hiển thị thông báo thành công hoặc lỗi
-                    if (data.redirect) {
-                        // Chuyển hướng đến trang mới
-                        window.location.href = data.redirect;
-                    }
+                if (data.redirect) {
+                    // Hiển thị thông báo thành công nếu có
+                    const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+                    successModal.show();
+
+                    // Redirect sau khi modal hiển thị
+                    window.location.href = data.redirect;
                 }
             })
             .catch(error => {
+                // Nếu có lỗi, hiển thị modal lỗi thay cho alert
                 console.error("Lỗi khi cập nhật:", error);
-                alert("Please fill out all field.");
+
+                const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+                const errorMessage = document.querySelector('#long-modal .modal-body');
+                errorMessage.innerHTML = `<p>Something went wrong. Please try again later.</p>`;
+                errorModal.show();
             });
     });
+
+
 </script>
 <script>
     function formatContent(content) {

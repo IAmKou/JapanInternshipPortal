@@ -163,7 +163,7 @@ public class AccountImportServices {
             if (validateColumn(username, password, email, phoneNumber, String.valueOf(gender), fullName, japanname, errors, row.getRowNum())) {
                 return;
             }
-            if (isDuplicate(username, email, phoneNumber, errors)) {
+            if (isDuplicate(username, email, phoneNumber, errors, row.getRowNum())) {
                 return;
             }
 
@@ -251,18 +251,18 @@ public class AccountImportServices {
         return true;
     }
 
-    private boolean isDuplicate(String username, String email, String phoneNumber, List<String> errors) {
+    private boolean isDuplicate(String username, String email, String phoneNumber, List<String> errors, int row) {
         boolean hasError = false;
         if (accountRepository.findByUsername(username).isPresent()) {
-            errors.add("Duplicate username found: " + username);
+            errors.add("Duplicate username: " + username + " found at row: " + row );
             hasError = true;
         }
         if (studentRepository.findByEmail(email).isPresent()) {
-            errors.add("Duplicate email found: " + email);
+            errors.add("Duplicate email: " + email + " found at row: " + row);
             hasError = true;
         }
         if (studentRepository.findByPhoneNumber(phoneNumber).isPresent()) {
-            errors.add("Duplicate phone number found: " + phoneNumber);
+            errors.add("Duplicate phone number: " + phoneNumber + " found at row: " + row);
             hasError = true;
         }
         return hasError;
@@ -286,8 +286,11 @@ public class AccountImportServices {
 
         // Validate email
         if (email == null ) {
-            errors.add("Row " + rowNum + ": Email can't be nu;;");
+            errors.add("Row " + rowNum + ": Email can't be null");
             isValid = true;
+        } else if (!email.matches("^[\\w.%+-]+@(gmail\\.com|fpt\\.edu\\.vn)$")) {
+        errors.add("Row " + rowNum + ": Email must end with @gmail.com or @fpt.edu.vn");
+        isValid = true;
         }
 
         // Validate phone number
@@ -316,7 +319,4 @@ public class AccountImportServices {
 
         return isValid;
     }
-
-
-
 }

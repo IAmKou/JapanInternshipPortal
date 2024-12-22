@@ -38,7 +38,7 @@
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
-                <a href="admin.html">
+                <a href="teacher.html">
                     <div style="width: 180px; height: 70px; overflow: hidden;">
                         <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
@@ -55,7 +55,8 @@
             </div>
         </div>
         <div class="d-md-none mobile-nav-bar">
-            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse" data-target="#mobile-navbar" aria-expanded="false">
+            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse"
+                    data-target="#mobile-navbar" aria-expanded="false">
                 <i class="far fa-arrow-alt-circle-down"></i>
             </button>
             <button type="button" class="navbar-toggler sidebar-toggle-mobile">
@@ -66,7 +67,6 @@
             <ul class="navbar-nav">
                 <li class="navbar-item header-search-bar">
                     <div class="input-group stylish-input-group">
-
                     </div>
                 </li>
             </ul>
@@ -75,101 +75,23 @@
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
                         <div class="admin-title">
-                            <h5 class="item-title">Stevne Zone</h5>
-                            <span>Admin</span>
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
                         </div>
-                        <div class="admin-img">
-                            <img src="img/figure/admin.jpg" alt="Admin">
+                        <div class="admin-img img">
+                            <img src="" style="width: 50px; height: 50px" alt="Admin">
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="item-header">
-                            <h6 class="item-title">Steven Zone</h6>
+                            <h6 class="item-title userFullName"></h6>
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
-                                <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
-                                <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
-                                <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a></li>
+                                <li><a href="users-profile-teacher.html"><i class="flaticon-user"></i>My Profile</a></li>
                                 <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                <li><a href="login.html"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
-                        </div>
-                    </div>
-                </li>
-                <li class="navbar-item dropdown header-message">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false">
-                        <i class="far fa-envelope"></i>
-                        <div class="item-title d-md-none text-16 mg-l-10">Message</div>
-                        <span>5</span>
-                    </a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <div class="item-header">
-                            <h6 class="item-title">05 Message</h6>
-                        </div>
-                        <div class="item-content">
-                            <div class="media">
-                                <div class="item-img bg-skyblue author-online">
-                                    <img src="img/figure/student11.png" alt="img">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Maria Zaman</span>
-                                            <span class="item-time">18:30</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-img bg-yellow author-online">
-                                    <img src="img/figure/student12.png" alt="img">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Benny Roy</span>
-                                            <span class="item-time">10:35</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-img bg-pink">
-                                    <img src="img/figure/student13.png" alt="img">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Steven</span>
-                                            <span class="item-time">02:35</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-img bg-violet-blue">
-                                    <img src="img/figure/student11.png" alt="img">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Joshep Joe</span>
-                                            <span class="item-time">12:35</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </li>
@@ -221,9 +143,7 @@
                        data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#">English</a>
-                        <a class="dropdown-item" href="#">Spanish</a>
-                        <a class="dropdown-item" href="#">Franchis</a>
-                        <a class="dropdown-item" href="#">Chiness</a>
+                        <a class="dropdown-item" href="#">Japanese</a>
                     </div>
                 </li>
             </ul>
@@ -236,7 +156,7 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="teacher.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
@@ -263,18 +183,6 @@
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create
-                                    Thread</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
                         <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
                                 class="flaticon-shopping-list"></i><span>Schedule</span></a>
                     </li>
@@ -289,13 +197,9 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
-                    </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                         <ul class="nav sub-group-menu">
-
                             <li class="nav-item">
                                 <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
                                     Exam</a>
@@ -345,6 +249,14 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
                                     Thread</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
                             </li>
                         </ul>
                     </li>
