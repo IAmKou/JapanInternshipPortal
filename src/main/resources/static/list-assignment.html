@@ -486,7 +486,7 @@
                         <label for="content">Content:</label>
                         <textarea id="content" name="content" rows="4" required></textarea>
 
-                        <label for="class_id">For Class: </label>
+                        <label for="class_id">For Classes: </label>
                         <p id="classes"></p>
                         <select name="class_id" id="class_id" multiple></select>
 
@@ -741,13 +741,13 @@
         const selectedClasses = Array.from(classSelect.selectedOptions).map((opt) => opt.value)
 
         const imgFiles = document.getElementById('img').files;
-        const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i; // Regex to allow jpg, jpeg, and png
-        for (let i = 0; i < imgFiles.length; i++) {
-            if (!allowedExtensions.test(imgFiles[i].name)) {
-                alert(`Invalid file type: ${imgFiles[i].name}. Only JPG, JPEG, and PNG files are allowed.`);
-                return; // Exit the function if a file is invalid
-            }
-        }
+        // const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i; // Regex to allow jpg, jpeg, and png
+        // for (let i = 0; i < imgFiles.length; i++) {
+        //     if (!allowedExtensions.test(imgFiles[i].name)) {
+        //         alert(`Invalid file type: ${imgFiles[i].name}. Only JPG, JPEG, and PNG files are allowed.`);
+        //         return; // Exit the function if a file is invalid
+        //     }
+        // }
 
         const formData = new FormData();
         formData.append('description', description);

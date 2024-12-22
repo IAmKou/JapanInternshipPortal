@@ -1,34 +1,37 @@
 @startuml
 actor Teacher
 activate Teacher
-Teacher -> StudentAssignmentController : PUT student-assignmemt/grade-submitted-assignment\n(studentAssignmentId, StudentAssignmentGradeRequest)
+Teacher -> GradeAssignmentPage : 1. Click "Grade Assignment Button"
+activate GradeAssignmentPage
+
+GradeAssignmentPage --> Teacher: 2. Display "Grade Assignment" pop up
+
+Teacher -> GradeAssignmentPage: 3. Fill in form and click "Submit"
+
+GradeAssignmentPage -> StudentAssignmentController: 4. Request
 activate StudentAssignmentController
-
-StudentAssignmentController -> Service : gradeSubmittedAssignment(studentAssignmentId, StudentAssignmentGradeRequest)
-activate Service
-
-Service -> StudentAssignmentRepository : findById(studentAssignmentId)
+StudentAssignmentController -> StudentAssignmentService: 5. gradeSubmittedAssignment()
+activate StudentAssignmentService
+StudentAssignmentService -> StudentAssignmentRepository: 6. gradeSubmittedAssignment()
 activate StudentAssignmentRepository
-StudentAssignmentRepository --> Service : StudentAssignment
-
+StudentAssignmentRepository -> MySql: 7. Execute query
+activate MySql
+MySql --> StudentAssignmentRepository: 8. Return result
+deactivate MySql
+StudentAssignmentRepository --> StudentAssignmentService:9. Message
 
 alt StudentAssignment found
 
-    Service -> Service : setMark(request.mark)
-
-    Service -> Service : setStatus(request.status)
-    Service -> StudentAssignmentRepository : save(StudentAssignment)
-
-    StudentAssignmentRepository --> Service : Updated StudentAssignment
-
     deactivate StudentAssignmentRepository
-    Service --> StudentAssignmentController : return StudentAssignment
-    deactivate Service
-    StudentAssignmentController --> Teacher : 200 OK\n"Grade submitted successfully."
+    StudentAssignmentService --> StudentAssignmentController : 10.1 Successful message
+    StudentAssignmentController --> GradeAssignmentPage: 11.1 Response
+    GradeAssignmentPage --> Teacher: 12.1 Display successful message and close popup
 else StudentAssignment not found
-    Service --> StudentAssignmentController : NoSuchElementException
-    deactivate Service
-    StudentAssignmentController --> Teacher : 404 Not Found\n"studentAssignmentId not found!"
+    StudentAssignmentService --> StudentAssignmentController : 10.2 Unsuccessful message
+    deactivate StudentAssignmentService
+    StudentAssignmentController --> GradeAssignmentPage: 11.2 Response
+    deactivate StudentAssignmentController
+GradeAssignmentPage --> Teacher: 12.2 Display Unsuccessful message and close popup
 end
 
 deactivate StudentAssignmentController

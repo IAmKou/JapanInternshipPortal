@@ -47,6 +47,8 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'org.springframework.boot:spring-boot-starter-logging'
 
+    implementation 'org.springframework.cloud:spring-cloud-aws-core:2.2.6.RELEASE'
+
     // Test Dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test' // Includes JUnit 5 and Mockito
     testImplementation 'org.springframework.security:spring-security-test'
