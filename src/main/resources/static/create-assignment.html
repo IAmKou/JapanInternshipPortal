@@ -306,7 +306,7 @@
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label for="created_date">Create Date</label>
-                                <input type="date" class="form-control" name="created_date" id="created_date" disabled>
+                                <input type="date" class="form-control" name="created_date" id="created_date" readonly>
                             </div>
                             <div class="col-xl-4 col-lg-12 col-12 form-group">
                                 <label for="end_date">End Date *</label>
@@ -447,7 +447,8 @@
 
     async function checkDescriptionExists(description) {
         try {
-            const response = await fetch(`/assignment/exists?description=${encodeURIComponent(description)}`);
+            const teacher_id = document.getElementById('userId').value;
+            const response = await fetch(`/assignment/exists?description=${encodeURIComponent(description)}&teacherId=${teacher_id}`);
             if (response.ok) {
                 return await response.json(); // true if exists, false otherwise
             } else {

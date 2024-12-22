@@ -24,13 +24,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AssignmentServices extends AssignmentCreationRequest {
+public class AssignmentServices{
 
     AssignmentRepository assignmentRepository;
 
     TeacherRepository teacherRepository;
-
-
 
     ClassRepository classRepository;
 
@@ -112,7 +110,7 @@ public class AssignmentServices extends AssignmentCreationRequest {
         assignment.setTeacher(teacher);
 
         // Sanitize and create folder name
-        String folderName = sanitizeFolderName("assignments/" + request.getDescription());
+        String folderName = sanitizeFolderName("assignments/" + request.getDescription() + "_" + teacher.getFullname());
         assignment.setImgUrl(folderName); // Set folder URL
         if (request.getImgFile() != null) {
             MultipartFile[] imgFiles = request.getImgFile();
@@ -156,8 +154,9 @@ public class AssignmentServices extends AssignmentCreationRequest {
         return assignmentRepository.save(assignment);
     }
 
-    public boolean descriptionExists(String description) {
-        return assignmentRepository.existsByDescription(description);
+    public boolean descriptionExists(String description, int teacherId) {
+
+        return assignmentRepository.existsByDescriptionAndByTeacherId(description, teacherId);
     }
 
 
@@ -286,13 +285,15 @@ public class AssignmentServices extends AssignmentCreationRequest {
         Assignment assignment = assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new NoSuchElementException("Assignment id not found!"));
 
+        Teacher teacher = assignment.getTeacher();
+
         if (request.getImgFile() != null) {
             MultipartFile[] newFiles = request.getImgFile();
             for (int i = 0; i < request.getImgFile().length; i++) {
                 log.info("Uploading file: " + request.getImgFile()[i].getOriginalFilename());
             }
             if (newFiles.length > 0) {
-                String folderName = sanitizeFolderName("assignments/" + request.getDescription());
+                String folderName = sanitizeFolderName("assignments/" + request.getDescription() + "_" + teacher.getFullname());
                 if (folderName.isEmpty()) {
                     throw new RuntimeException("Folder name is not set for assignment ID: " + assignmentId);
                 }
