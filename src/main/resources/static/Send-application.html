@@ -31,7 +31,24 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <!-- Thêm CSS của Select2 -->
+    <!-- Thêm jQuery (nếu chưa có) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Thêm JavaScript của Select2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <!-- Thêm jQuery (nếu chưa có) -->
+
+    <!-- Thêm JavaScript của Select2 -->
+
     <style>
+        .select2 {
+            font-weight: 900; /* Đặt giá trị font-weight cao nhất */
+        }
+        .select2 option {
+            color: #FF5733; /* Thay đổi màu sắc văn bản của các tùy chọn */
+        }
+
         .beautiful-form {
             background: linear-gradient(to bottom, #ffffff, #f0f8ff); /* Nền mờ dần */
             border: 1px solid #a0d7ff; /* Viền xanh nhạt */
@@ -400,13 +417,13 @@
 
                                     <!-- Tên người -->
                                     <div class="col-12 form-group">
-                                        <label style="font-weight: bold;">Name *</label>
+                                        <label style="color: #007bff; font-weight: bold;">Name *</label>
                                         <input type="text" name="name" placeholder="Enter your name" class="form-control" required>
                                     </div>
 
                                     <!-- Loại đơn -->
                                     <div class="col-12 form-group">
-                                        <label style="font-weight: bold;">Application type *</label>
+                                        <label style="color: #007bff; font-weight: bold;">Application type *</label>
                                         <select class="select2" name="category" required>
                                             <option value="0">Please Select</option>
                                             <option value="Đơn xin nghỉ học">Đơn xin nghỉ học</option>
@@ -416,17 +433,18 @@
                                             <option value="Đơn xin đổi giáo viên">Đơn xin đổi giáo viên</option>
                                             <option value="Các loại đơn khác">Các loại đơn khác</option>
                                         </select>
+
                                     </div>
 
                                     <!-- Lý do -->
                                     <div class="col-12 form-group">
-                                        <label style="font-weight: bold;">Reason *</label>
+                                        <label style="color: #007bff; font-weight: bold;">Reason *</label>
                                         <textarea class="textarea form-control" name="content" id="form-message" cols="10" rows="9" required></textarea>
                                     </div>
 
                                     <!-- Tệp đính kèm -->
                                     <div class="col-12 form-group">
-                                        <label class="text-dark-medium">File attach:</label>
+                                        <label style="color: #007bff; font-weight: bold;">File attach:</label>
                                         <input type="file" name="imgFile" class="form-control-file">
                                     </div>
 

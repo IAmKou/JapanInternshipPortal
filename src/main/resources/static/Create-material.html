@@ -31,6 +31,44 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <style>
+        /* Custom Modal Styling */
+        #success-modal .modal-header {
+            background-color: #28a745; /* Màu nền của header */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #success-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #success-modal .modal-body .fas.fa-check-circle {
+            color: #28a745;
+        }
+
+        #success-modal .btn-success {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        #success-modal .btn-close {
+            color: white;
+        }
+
+        #success-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+        .icon-green {
+            color: #28a745; /* Mã màu xanh lá cây */
+        }
+    </style>
 </head>
 
 <body>
@@ -293,54 +331,61 @@
 
 
                         </div>
-                            <form id="materialForm" action="materials/create" method="POST" enctype="multipart/form-data" class="new-added-form">
-                                <div class="row">
-                                    <!-- Hidden input for user_id-->
-                                    <input type="hidden" name="teacher_id" id="userId" value="">
+                        <form id="materialForm" action="materials/create" method="POST" enctype="multipart/form-data" class="new-added-form">
+                            <div class="row">
+                                <!-- Hidden input for user_id-->
+                                <input type="hidden" name="teacher_id" id="userId" value="">
 
-                                    <div class="col-7 form-group">
-                                        <label>Title *</label>
-                                        <input type="text" name="title" placeholder="Enter title" class="form-control" required>
-                                    </div>
-
-                                    <div class="col-7 form-group">
-                                        <label>Content *</label>
-                                        <textarea class="textarea form-control" name="content" cols="10" rows="9" required></textarea>
-                                    </div>
-
-                                    <div class="col-12 form-group">
-                                        <label class="text-dark-medium">File Attach:</label>
-                                        <input type="file" name="imgFile" class="form-control-file">
-                                    </div>
-
-                                    <div class="col-lg-6 col-12 form-group">
-                                        <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
-                                        <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
-                                    </div>
+                                <div class="col-7 form-group">
+                                    <label style="color: #007bff; font-weight: bold;">Title *</label>
+                                    <input type="text" name="title" placeholder="Enter title" class="form-control" required>
                                 </div>
-                            </form>
+
+                                <div class="col-7 form-group">
+                                    <label style="color: #007bff; font-weight: bold;">Content *</label>
+                                    <textarea class="textarea form-control" name="content" cols="10" rows="9" required></textarea>
+                                </div>
+
+                                <div class="col-12 form-group">
+                                    <label style="color: #007bff; font-weight: bold;">File Attach:</label>
+                                    <input type="file" name="imgFile" class="form-control-file">
+                                </div>
+
+                                <div class="col-lg-6 col-12 form-group">
+                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
+                                    <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
+                                </div>
+                            </div>
+                        </form>
 
 
 
-                        </div>
+
+                    </div>
                     </div>
 
                     <!-- Modal -->
                     <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Confirm Save</h5>
+                                <div class="modal-header border-0">
+                                    <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-check-circle icon-green"></i> Confirm Save</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <div class="modal-body">
+                                <div class="modal-body text-center" style="font-size: 20px; font-weight: bold;">
                                     Do you want to create this material?
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                    <button type="button" class="btn btn-primary" onclick="createForm()">Xác nhận</button>
+                                    <button
+                                            type="button"
+                                            class="btn btn-secondary"
+                                            data-dismiss="modal"
+                                            style="font-size: 18px; padding: 10px 20px;">
+                                        Cancel
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onclick="createForm()" style="font-size: 18px; padding: 10px 20px;">Save</button>
                                 </div>
                             </div>
                         </div>

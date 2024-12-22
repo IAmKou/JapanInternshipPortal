@@ -27,676 +27,921 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <STYLE>
+        #successMessage {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 5px solid #28a745;
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Custom Modal Styling */
+        #success-modal .modal-header {
+            background-color: #28a745; /* Màu nền của header */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #success-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #success-modal .modal-body .fas.fa-check-circle {
+            color: #28a745;
+        }
+
+        #success-modal .btn-success {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        #success-modal .btn-close {
+            color: white;
+        }
+
+        #success-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+
+        /* Custom Modal Styling for Error Modal */
+        #error-modal .modal-header {
+            background-color: #dc3545; /* Màu nền của header (Đỏ cho lỗi) */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #error-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #error-modal .modal-body .fas.fa-times-circle {
+            color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+        }
+
+        #error-modal .btn-danger {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #dc3545; /* Màu đỏ cho nút lỗi */
+            border-color: #dc3545;
+        }
+
+        #error-modal .btn-close {
+            color: white;
+        }
+
+        #error-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+    </STYLE>
 </head>
 
 <body>
-    <!-- Preloader Start Here -->
-    <div id="preloader"></div>
-    <!-- Preloader End Here -->
-    <div id="wrapper" class="wrapper bg-ash">
-         <!-- Header Menu Area Start Here -->
-        <div class="navbar navbar-expand-md header-menu-one bg-light">
-            <div class="nav-bar-header-one">
-                <div class="header-logo">
-                    <a href="admin.html">
-                        <div style="width: 180px; height: 70px; overflow: hidden;">
-                            <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
-                        </div>
-                    </a>
-                </div>
-                  <div class="toggle-button sidebar-toggle">
-                    <button type="button" class="item-link">
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<div id="wrapper" class="wrapper bg-ash">
+    <!-- Header Menu Area Start Here -->
+    <div class="navbar navbar-expand-md header-menu-one bg-light">
+        <div class="nav-bar-header-one">
+            <div class="header-logo">
+                <a href="admin.html">
+                    <div style="width: 180px; height: 70px; overflow: hidden;">
+                        <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </a>
+            </div>
+            <div class="toggle-button sidebar-toggle">
+                <button type="button" class="item-link">
                         <span class="btn-icon-wrap">
                             <span></span>
                             <span></span>
                             <span></span>
                         </span>
-                    </button>
+                </button>
+            </div>
+        </div>
+        <div class="d-md-none mobile-nav-bar">
+            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse" data-target="#mobile-navbar" aria-expanded="false">
+                <i class="far fa-arrow-alt-circle-down"></i>
+            </button>
+            <button type="button" class="navbar-toggler sidebar-toggle-mobile">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+            <ul class="navbar-nav">
+                <li class="navbar-item header-search-bar">
+                    <div class="input-group stylish-input-group">
+
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="navbar-item dropdown header-admin">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
+                        <div class="admin-title">
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
+                        </div>
+                        <div class="admin-img img">
+                            <img src="" style="width: 50px; height: 50px" alt="Admin">
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title userFullName"></h6>
+                        </div>
+                        <div class="item-content">
+                            <ul class="settings-list">
+                                <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
+                                <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
+                                <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a></li>
+                                <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
+                                <li><a href="login.html"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item dropdown header-message">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <i class="far fa-envelope"></i>
+                        <div class="item-title d-md-none text-16 mg-l-10">Message</div>
+                        <span>5</span>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title">05 Message</h6>
+                        </div>
+                        <div class="item-content">
+                            <div class="media">
+                                <div class="item-img bg-skyblue author-online">
+                                    <img src="img/figure/student11.png" alt="img">
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="item-title">
+                                        <a href="#">
+                                            <span class="item-name">Maria Zaman</span>
+                                            <span class="item-time">18:30</span>
+                                        </a>
+                                    </div>
+                                    <p>What is the reason of buy this item.
+                                        Is it usefull for me.....</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-img bg-yellow author-online">
+                                    <img src="img/figure/student12.png" alt="img">
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="item-title">
+                                        <a href="#">
+                                            <span class="item-name">Benny Roy</span>
+                                            <span class="item-time">10:35</span>
+                                        </a>
+                                    </div>
+                                    <p>What is the reason of buy this item.
+                                        Is it usefull for me.....</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-img bg-pink">
+                                    <img src="img/figure/student13.png" alt="img">
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="item-title">
+                                        <a href="#">
+                                            <span class="item-name">Steven</span>
+                                            <span class="item-time">02:35</span>
+                                        </a>
+                                    </div>
+                                    <p>What is the reason of buy this item.
+                                        Is it usefull for me.....</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-img bg-violet-blue">
+                                    <img src="img/figure/student11.png" alt="img">
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="item-title">
+                                        <a href="#">
+                                            <span class="item-name">Joshep Joe</span>
+                                            <span class="item-time">12:35</span>
+                                        </a>
+                                    </div>
+                                    <p>What is the reason of buy this item.
+                                        Is it usefull for me.....</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item dropdown header-notification">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <i class="far fa-bell"></i>
+                        <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
+                        <span>8</span>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title">03 Notifiacations</h6>
+                        </div>
+                        <div class="item-content">
+                            <div class="media">
+                                <div class="item-icon bg-skyblue">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Complete Today Task</div>
+                                    <span>1 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-orange">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Director Metting</div>
+                                    <span>20 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-violet-blue">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Update Password</div>
+                                    <span>45 Mins ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item dropdown header-language">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
+                       data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#">English</a>
+                        <a class="dropdown-item" href="#">Spanish</a>
+                        <a class="dropdown-item" href="#">Franchis</a>
+                        <a class="dropdown-item" href="#">Chiness</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Header Menu Area End Here -->
+    <!-- Page Area Start Here -->
+    <div class="dashboard-page-one">
+        <!-- Sidebar Area Start Here -->
+        <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+            <div class="mobile-sidebar-header d-md-none">
+                <div class="header-logo">
+                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
-            <div class="d-md-none mobile-nav-bar">
-               <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse" data-target="#mobile-navbar" aria-expanded="false">
-                    <i class="far fa-arrow-alt-circle-down"></i>
-                </button>
-                <button type="button" class="navbar-toggler sidebar-toggle-mobile">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-            <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
-                <ul class="navbar-nav">
-                    <li class="navbar-item header-search-bar">
-                        <div class="input-group stylish-input-group">
+            <div class="sidebar-menu-content">
+                <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <ul class="nav sub-group-menu ">
+                            <li class="nav-item">
+                                <a href="teacher.html" class="nav-link "><i class="fas fa-angle-right"></i>Teachers</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item" id="teacher-view12">
+                                <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
+                                    Assignment</a>
+                            </li>
+                            <li class="nav-item" id="teacher-view13">
+                                <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                    Assignment</a>
+                            </li>
+                            <li class="nav-item" id="student-view11">
+                                <a href="list-student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
+                            </li>
+                            <li class="nav-item" id="student-view12">
+                                <a href="list-submitted-assignments.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Submitted Assignment</a>
+                            </li>
+                        </ul>
+                    </li>
 
-                        </div>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="javascript:void(0);" class="nav-link" onclick="submitForm();"id="student-view15"><i
+                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
+                        <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();" id="teacher-view15"><i
+                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
                     </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="navbar-item dropdown header-admin">
-                        <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                           role="button">
-                            <div class="admin-title">
-                                <h5 class="item-title userFullName"></h5>
-                                <span class="userRole"></span>
-                            </div>
-                            <div class="admin-img img">
-                                <img src="" style="width: 50px; height: 50px" alt="Admin">
-                            </div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title userFullName"></h6>
-                            </div>
-                            <div class="item-content">
-                                <ul class="settings-list">
-                                    <li><a href="users-profile-student.html"><i class="flaticon-user"></i>My Profile</a></li>
-                                    <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                    <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
-                                </ul>
-                            </div>
-                        </div>
+                    <li class="nav-item sidebar-nav-item" id="teacher-view14">
+                        <a href="#" class="nav-link"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
+                                    <i class="flaticon-menu"></i><span>Class List</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="navbar-item dropdown header-notification">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="far fa-bell"></i>
-                            <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
-                            <span>8</span>
-                        </a>
 
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title">03 Notifiacations</h6>
-                            </div>
-                            <div class="item-content">
-                                <div class="media">
-                                    <div class="item-icon bg-skyblue">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Complete Today Task</div>
-                                        <span>1 Mins ago</span>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-icon bg-orange">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Director Metting</div>
-                                        <span>20 Mins ago</span>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-icon bg-violet-blue">
-                                        <i class="fas fa-cogs"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Update Password</div>
-                                        <span>45 Mins ago</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item" id="teacher-view10">
+                                <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
+                                    Exam</a>
+                            </li>
+                            <li class="nav-item" id="teacher-view11">
+                                <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
+                                    Exam</a>
+                            </li>
+                            <li class="nav-item" id="student-view10">
+                                <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();">
+                                    <i class="fas fa-angle-right"></i>Personal Mark Report</a>
+                            </li>
+                        </ul>
                     </li>
-                     <li class="navbar-item dropdown header-language">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" 
-                        data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#">English</a>
-                            <a class="dropdown-item" href="#">Japanese</a>
-                        </div>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item" id="teacher-view1">
+                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
+                                    Material</a>
+                            </li>
+                            <li class="nav-item" id="teacher-view">
+                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    Materials</a>
+                            </li>
+                            <li class="nav-item" id="student-view1">
+                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    Materials</a>
+                            </li>
+                            <li class="nav-item" id="student-view">
+                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My List
+                                    Materials</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                    application</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                    application</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
+                                    threads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
+                                    Thread</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
         </div>
-        <!-- Header Menu Area End Here -->
-        <!-- Page Area Start Here -->
-        <div class="dashboard-page-one">
-            <!-- Sidebar Area Start Here -->
-            <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
-                <div class="mobile-sidebar-header d-md-none">
-                    <div class="header-logo">
-                        <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
-                    </div>
-                </div>
-                <div class="sidebar-menu-content">
-                    <ul class="nav nav-sidebar-menu sidebar-toggle-view">
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                            <ul class="nav sub-group-menu sub-group-active">
-                                <li class="nav-item">
-                                    <a href="student.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Students</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                        Assignment</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
-                                        Assignment</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();">
-                                        <i class="fas fa-angle-right"></i>Personal Mark Report</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="javascript:void(0);" class="nav-link" onclick="submitForm();"><i
-                                    class="flaticon-shopping-list"></i><span>Schedule</span></a>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
-                                        Schedule</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="Update-student-mark-report.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Exam Grades</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                            <ul class="nav sub-group-menu sub-group-active">
-                                <li class="nav-item" id="teacher-view1">
-                                    <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
-                                        material</a>
-                                </li>
-                                <li class="nav-item" id="teacher-view">
-                                    <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                                        materials</a>
-                                </li>
-                                <li class="nav-item" id="student-view">
-                                    <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list
-                                        materials</a>
-                                </li>
-
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
-                                        application</a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
-                                        application</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item sidebar-nav-item">
-                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
-                                        threads</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+        <!-- Sidebar Area End Here -->
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <h3>View Material Details</h3>
+                <ul>
+                    <li>
+                        <a href="admin.html">Home</a>
+                    </li>
+                    <li>View Material Details</li>
+                </ul>
             </div>
-            <!-- Sidebar Area End Here -->
-            <div class="dashboard-content-one">
-                <!-- Breadcubs Area Start Here -->
-                <div class="breadcrumbs-area">
-                    <h3>View Material Details</h3>
-                    <ul>
-                        <li>
-                            <a href="admin.html">Home</a>
-                        </li>
-                        <li>View Material Details</li>
-                    </ul>
-                </div>
-                <!-- Breadcubs Area End Here -->
-                <!-- Student Details Area Start Here -->
-                <div class="card height-auto">
-                    <div class="card-body">
-                        <div class="heading-layout1">
-                            <div class="item-title">
-                                <h3>Material Details</h3>
-                            </div>
+            <!-- Breadcubs Area End Here -->
+            <!-- Student Details Area Start Here -->
+            <div class="card height-auto">
+                <div class="card-body">
+                    <div class="heading-layout1">
+                        <div class="item-title">
+                            <h3 style="margin-bottom: 30px">Material Details</h3>
                         </div>
-                        <div class="single-info-details">
-                            <div class="item-img" style="margin-bottom: 40px !important;">
-                                <img id="imgFile" src="">
-                            </div>
-                            <div class="item-content">
-                                <div class="header-inline item-header">
-                                    <!-- Tiêu đề sẽ được cập nhật qua JavaScript -->
-                                    <h3 class="text-dark-medium font-medium" id="title"></h3>
+                        <div class="dropdown" id="dropdownMenu" >
 
+                                <a class="dropdown-item editButton" href="#" data-toggle="modal" data-target="#editModal" class="editButton">
+                                    <i class="fas fa-cogs text-dark-pastel-green"></i> Edit
+                                </a>
+
+                        </div>
+                    </div>
+
+                    <div class="single-info-details">
+                        <div class="card mb-3">
+                            <div class="row no-gutters">
+                                <!-- Ảnh được hiển thị ở cột bên trái -->
+                                <div class="col-md-4" >
+                                    <img id="imgFile" src="" class="card-img" alt="Image" style="max-width: 100%; height: auto;">
                                 </div>
-                                <!-- Nội dung sẽ được cập nhật qua JavaScript -->
-                                <p id="content"></p>
-                                <div class="info-table table-responsive">
-                                    <table>
-                                        <tr>
-                                            <td>Teacher:</td>
-                                            <td><span id="teacher"></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Created Date: </td>
-                                            <td><span id="createDate"></span></td>
-                                        </tr>
-                                    </table>
+                                <div class="col-md-8"> <!-- Nội dung thông tin được hiển thị ở cột bên phải -->
+                                    <div class="card-body"> <!-- Tiêu đề sẽ được cập nhật qua JavaScript -->
+                                        <h5 class="card-title text-dark-medium font-medium" id="title" style="font-size: 25px; font-weight: bold;  margin-left: 30px"></h5>
+                                        <!-- Nội dung chi tiết sẽ được cập nhật qua JavaScript -->
+                                        <p id="content" class="card-text" style="font-size: 20px; margin-left: 30px"></p>
+                                        <!-- Thông tin liên quan đến giáo viên và ngày tạo sẽ hiển thị trong bảng -->
+                                        <div class="info-table table-responsive" style="margin-left: 20px"> <table class="table" style="font-size: 18px;">
+                                            <tbody>
+                                            <tr>
+                                                <th scope="row">Teacher:</th>
+                                                <td><span id="teacher"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Created Date:</th>
+                                                <td><span id="createDate"></span></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
 
 
-                <!-- Modal Edit -->
-                <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editModalLabel">Edit Material Details</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="editForm">
-                                    <div class="form-group">
-                                        <label for="materialTitle">Title *</label>
-                                        <input type="text" class="form-control" id="materialTitle" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="materialContent">Content *</label>
-                                        <textarea class="form-control" id="materialContent" style="width: 100%; height: 300px;" required></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="materialFile">File:</label>
-                                        <div id="materialFile"></div>
-                                        <input type="file" id="materialFileInput" name="file">
-
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
-                            </div>
+            <!-- Modal Edit -->
+            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Edit Material Details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                    </div>
-                </div>
+                        <div class="modal-body">
+                            <form id="editForm">
+                                <div class="form-group">
+                                    <label for="materialTitle">Title *</label>
+                                    <input type="text" class="form-control" id="materialTitle" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="materialContent">Content *</label>
+                                    <textarea class="form-control" id="materialContent" style="width: 100%; height: 300px;" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="materialFile">File:</label>
+                                    <div id="materialFile"></div>
+                                    <input type="file" id="materialFileInput" name="file">
 
-                <!-- Modal Confirm Delete -->
-                <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="confirmationModalLabel">Confirm Deletion</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                Are you sure you want to delete this item?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-danger">Delete</button> <!-- Thêm sự kiện ở đây -->
-                            </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 18px; padding: 10px 20px;">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="saveChanges"  style="font-size: 18px; padding: 10px 20px;">Save changes</button>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Modal Confirm Delete -->
+            <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmationModalLabel">Confirm Deletion</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete this item?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-danger">Delete</button> <!-- Thêm sự kiện ở đây -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Modal -->
+            <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <h5 class="modal-title text-success" id="successModalLabel">
+                                <i class="fas fa-check-circle"></i> Success
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                            <h4 class="text-success">Material was update successful!</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Modal -->
+            <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <h5 class="modal-title text-danger" id="errorModalLabel">
+                                <i class="fas fa-times-circle"></i> Error
+                            </h5>
+                            <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                            <h4 class="text-success">Please fill all required field!</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer-wrap-layout1">
+                <div class="copyright">© Copyrights <a href="#">JIP</a> 2019. All rights reserved. Designed by <a href="#">PsdBosS</a></div>
+            </footer>
+
+        </div>
         <!-- Page Area End Here -->
     </div>
-    </div>
-    <!-- jquery-->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <!-- Plugins js -->
-    <script src="js/plugins.js"></script>
-    <!-- Popper js -->
-    <script src="js/popper.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Scroll Up Js -->
-    <script src="js/jquery.scrollUp.min.js"></script>
-    <!-- Custom Js -->
-    <script src="js/main.js"></script>
+</div>
+<!-- jquery-->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Custom Js -->
+<script src="js/main.js"></script>
 
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const materialId = urlParams.get('id');
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-        const userRole = userDetails.roleName; // Lấy vai trò người dùng
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const materialId = urlParams.get('id');
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    const userRole = userDetails.roleName; // Lấy vai trò người dùng
 
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
+    const userFullNameElements = document.querySelectorAll('.userFullName');
+    const userRoleElements = document.querySelectorAll('.userRole');
 
-        let currentTeacherId = null;
-        let currentStudentId = null;
+    let currentTeacherId = null;
+    let currentStudentId = null;
 
+    if (userRole === 'TEACHER') {
+        currentTeacherId = userDetails.id; // Gán currentTeacherId nếu là giáo viên
+    } else if (userRole === 'STUDENT') {
+        currentStudentId = userDetails.id; // Gán currentStudentId nếu là học sinh
+    }
+
+
+    console.log("Current User Role:", userRole);
+    console.log("Current Teacher ID:", currentTeacherId);
+    console.log("Current Student ID:", currentStudentId);
+
+    if (materialId) {
+        let url = `http://localhost:8080/materials/details/${materialId}`;
+
+        // Thêm thông tin accountId vào URL tùy thuộc vào vai trò của người dùng
         if (userRole === 'TEACHER') {
-            currentTeacherId = userDetails.id; // Gán currentTeacherId nếu là giáo viên
+            url += `?accountId=${currentTeacherId}`;
         } else if (userRole === 'STUDENT') {
-            currentStudentId = userDetails.id; // Gán currentStudentId nếu là học sinh
+            url += `?accountId=${currentStudentId}`;
         }
 
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('title').textContent = data.title;
+                document.getElementById('teacher').textContent = data.teacher
+                    ? data.teacher.fullname
+                    : 'Không có giáo viên';
 
-        console.log("Current User Role:", userRole);
-        console.log("Current Teacher ID:", currentTeacherId);
-        console.log("Current Student ID:", currentStudentId);
+                const createdDate = new Date(data.created_date);
+                document.getElementById("createDate").textContent = createdDate
+                    ? `${String(createdDate.getDate()).padStart(2, '0')}/${String(createdDate.getMonth() + 1).padStart(2, '0')}/${createdDate.getFullYear()}`
+                    : "N/A";
 
-        if (materialId) {
-            let url = `http://localhost:8080/materials/details/${materialId}`;
+                const imgElement = document.getElementById('imgFile');
+                if (data.img) {
+                    const imgUrl = data.img.startsWith('http') ? data.img : `http://localhost:8080/${data.img}`;
+                    imgElement.src = imgUrl;
+                    imgElement.alt = data.title;
+                    imgElement.style.display = "block";
+                    imgElement.style.width = '200px';
+                    imgElement.style.height = 'auto';
+                } else {
+                    imgElement.style.display = "none";
+                }
 
-            // Thêm thông tin accountId vào URL tùy thuộc vào vai trò của người dùng
-            if (userRole === 'TEACHER') {
-                url += `?accountId=${currentTeacherId}`;
-            } else if (userRole === 'STUDENT') {
-                url += `?accountId=${currentStudentId}`;
+                // Kiểm tra và hiển thị dropdown dựa trên vai trò người dùng
+                const dropdown = document.getElementById('dropdownMenu');
+                if (userRole === 'TEACHER' && data.teacherId === data.teacher.id) {
+                    dropdown.style.display = 'block';
+                } else {
+                    dropdown.style.display = 'none';
+                }
+
+                const contentElement = document.getElementById('content');
+                if (data.content) {
+                    const urlPattern = /(https?|ftp):\/\/[^\s/$.?#].[^\s]*/g;
+                    const contentHTML = data.content.replace(urlPattern, (url) => {
+                        return `<a href="${url}" target="_blank" style="color: blue; text-decoration: underline;">${url}</a>`;
+                    });
+                    contentElement.innerHTML = contentHTML;
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi khi lấy dữ liệu:', error);
+            });
+    } else {
+        console.error('Không tìm thấy Material ID trong URL.');
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelector('.editButton').addEventListener('click', function (event) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const materialId = urlParams.get('id');
+            console.log(materialId);  // Kiểm tra giá trị materialId
+
+            if (materialId) {
+                let url = `http://localhost:8080/materials/details/${materialId}`;
+
+                // Thêm thông tin accountId vào URL tùy thuộc vào vai trò của người dùng
+                const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+                const userRole = userDetails.roleName;
+                let currentTeacherId = null;
+                let currentStudentId = null;
+
+                if (userRole === 'TEACHER') {
+                    currentTeacherId = userDetails.id; // Gán currentTeacherId nếu là giáo viên
+                    url += `?accountId=${currentTeacherId}`;
+                } else if (userRole === 'STUDENT') {
+                    currentStudentId = userDetails.id; // Gán currentStudentId nếu là học sinh
+                    url += `?accountId=${currentStudentId}`;
+                }
+
+                // Fetch tài liệu từ API
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);  // Kiểm tra dữ liệu trả về từ API
+
+                        // Cập nhật thông tin vào các input trong modal
+                        document.getElementById('materialTitle').value = data.title;
+                        document.getElementById('materialContent').value = data.content;
+                        const filesContainer = document.getElementById('materialFile');
+                        filesContainer.innerHTML = "";  // Clear any existing content
+
+                        // Kiểm tra xem img có tồn tại trong dữ liệu không
+                        if (data.img) {
+                            // Lấy tên tệp từ URL
+                            const fileName = data.img.split('/').pop();  // Tách tên tệp từ URL
+
+                            // Tạo một thẻ <a> để liên kết đến hình ảnh
+                            const link = document.createElement('a');
+                            link.href = data.img;  // URL của hình ảnh
+                            link.textContent = fileName;  // Hiển thị tên tệp (mặc định là tên file)
+                            link.target = '_blank';  // Mở hình ảnh trong tab mới
+
+                            // Thêm thẻ <a> vào container
+                            filesContainer.appendChild(link);
+                        } else {
+                            filesContainer.innerHTML = "";  // Nếu không có hình ảnh
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Lỗi khi lấy dữ liệu:', error);
+                    });
+            } else {
+                console.error('Không tìm thấy Material ID trong URL.');
+            }
+        });
+        document.getElementById('saveChanges').addEventListener('click', function () {
+            // Lấy thông tin từ các input trong modal
+            const title = document.getElementById('materialTitle').value;
+            const content = document.getElementById('materialContent').value;
+            const fileInput = document.getElementById('materialFileInput');  // Lấy input file
+
+            // Lấy file từ input (nếu có thay đổi)
+            const file = fileInput.files.length > 0 ? fileInput.files[0] : null;  // Kiểm tra xem có file được chọn không
+
+            // Kiểm tra file mới
+            if (file) {
+                console.log("File mới được chọn:", file.name);
+            } else {
+                console.log("Không có file mới được chọn.");
             }
 
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('title').textContent = data.title;
-                    document.getElementById('teacher').textContent = data.teacher
-                        ? data.teacher.fullname
-                        : 'Không có giáo viên';
+            const urlParams = new URLSearchParams(window.location.search);
+            const materialId = urlParams.get('id'); // materialId từ URL
 
-                    const createdDate = new Date(data.created_date);
-                    document.getElementById("createDate").textContent = createdDate
-                        ? `${String(createdDate.getDate()).padStart(2, '0')}/${String(createdDate.getMonth() + 1).padStart(2, '0')}/${createdDate.getFullYear()}`
-                        : "N/A";
+            // Kiểm tra các giá trị
+            if (materialId && title && content) {
+                const formData = new FormData();
+                formData.append('title', title);
+                formData.append('content', content);
 
-                    const imgElement = document.getElementById('imgFile');
-                    if (data.img) {
-                        const imgUrl = data.img.startsWith('http') ? data.img : `http://localhost:8080/${data.img}`;
-                        imgElement.src = imgUrl;
-                        imgElement.alt = data.title;
-                        imgElement.style.display = "block";
-                        imgElement.style.width = '200px';
-                        imgElement.style.height = 'auto';
-                    } else {
-                        imgElement.style.display = "none";
-                    }
-
-                    // Kiểm tra và hiển thị dropdown dựa trên vai trò người dùng
-                    const dropdown = document.getElementById('dropdownMenu');
-                    if (userRole === 'TEACHER' && data.teacherId === data.teacher.id) {
-                        dropdown.style.display = 'block';
-                    } else {
-                        dropdown.style.display = 'none';
-                    }
-
-                    const contentElement = document.getElementById('content');
-                    if (data.content) {
-                        const urlPattern = /(https?|ftp):\/\/[^\s/$.?#].[^\s]*/g;
-                        const contentHTML = data.content.replace(urlPattern, (url) => {
-                            return `<a href="${url}" target="_blank" style="color: blue; text-decoration: underline;">${url}</a>`;
-                        });
-                        contentElement.innerHTML = contentHTML;
-                    }
-                })
-                .catch(error => {
-                    console.error('Lỗi khi lấy dữ liệu:', error);
-                });
-        } else {
-            console.error('Không tìm thấy Material ID trong URL.');
-        }
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelector('.editButton').addEventListener('click', function (event) {
-                const urlParams = new URLSearchParams(window.location.search);
-                const materialId = urlParams.get('id');
-                console.log(materialId);  // Kiểm tra giá trị materialId
-
-                if (materialId) {
-                    let url = `http://localhost:8080/materials/details/${materialId}`;
-
-                    // Thêm thông tin accountId vào URL tùy thuộc vào vai trò của người dùng
-                    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-                    const userRole = userDetails.roleName;
-                    let currentTeacherId = null;
-                    let currentStudentId = null;
-
-                    if (userRole === 'TEACHER') {
-                        currentTeacherId = userDetails.id; // Gán currentTeacherId nếu là giáo viên
-                        url += `?accountId=${currentTeacherId}`;
-                    } else if (userRole === 'STUDENT') {
-                        currentStudentId = userDetails.id; // Gán currentStudentId nếu là học sinh
-                        url += `?accountId=${currentStudentId}`;
-                    }
-
-                    // Fetch tài liệu từ API
-                    fetch(url)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(data);  // Kiểm tra dữ liệu trả về từ API
-
-                            // Cập nhật thông tin vào các input trong modal
-                            document.getElementById('materialTitle').value = data.title;
-                            document.getElementById('materialContent').value = data.content;
-                            const filesContainer = document.getElementById('materialFile');
-                            filesContainer.innerHTML = "";  // Clear any existing content
-
-                            // Kiểm tra xem img có tồn tại trong dữ liệu không
-                            if (data.img) {
-                                // Lấy tên tệp từ URL
-                                const fileName = data.img.split('/').pop();  // Tách tên tệp từ URL
-
-                                // Tạo một thẻ <a> để liên kết đến hình ảnh
-                                const link = document.createElement('a');
-                                link.href = data.img;  // URL của hình ảnh
-                                link.textContent = fileName;  // Hiển thị tên tệp (mặc định là tên file)
-                                link.target = '_blank';  // Mở hình ảnh trong tab mới
-
-                                // Thêm thẻ <a> vào container
-                                filesContainer.appendChild(link);
-                            } else {
-                                filesContainer.innerHTML = "";  // Nếu không có hình ảnh
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Lỗi khi lấy dữ liệu:', error);
-                        });
-                } else {
-                    console.error('Không tìm thấy Material ID trong URL.');
-                }
-            });
-            document.getElementById('saveChanges').addEventListener('click', function () {
-                // Lấy thông tin từ các input trong modal
-                const title = document.getElementById('materialTitle').value;
-                const content = document.getElementById('materialContent').value;
-                const fileInput = document.getElementById('materialFileInput');  // Lấy input file
-
-                // Lấy file từ input (nếu có thay đổi)
-                const file = fileInput.files.length > 0 ? fileInput.files[0] : null;  // Kiểm tra xem có file được chọn không
-
-                // Kiểm tra file mới
+                // Nếu có file mới thì gửi file mới, nếu không có file mới thì không gửi file
                 if (file) {
-                    console.log("File mới được chọn:", file.name);
-                } else {
-                    console.log("Không có file mới được chọn.");
+                    formData.append('file', file); // Gửi file mới nếu có
                 }
 
-                const urlParams = new URLSearchParams(window.location.search);
-                const materialId = urlParams.get('id'); // materialId từ URL
-
-                // Kiểm tra các giá trị
-                if (materialId && title && content) {
-                    const formData = new FormData();
-                    formData.append('title', title);
-                    formData.append('content', content);
-
-                    // Nếu có file mới thì gửi file mới, nếu không có file mới thì không gửi file
-                    if (file) {
-                        formData.append('file', file); // Gửi file mới nếu có
-                    }
-
-                    // Gửi dữ liệu cập nhật đến API
-                    fetch(`http://localhost:8080/materials/update/${materialId}`, {
-                        method: 'PUT',  // Sử dụng PUT để cập nhật
-                        body: formData,
-                    })
-                        .then(response => response.text())  // Đảm bảo phản hồi từ API là chuỗi
-                        .then(data => {
-                            if (data === "Cập nhật tài liệu thành công!") {
-                                alert('Cập nhật thành công!');
-                                // Đóng modal
-                                $('#editModal').modal('hide');
-                                // Tải lại trang để cập nhật thông tin mới
+                // Gửi dữ liệu cập nhật đến API
+                fetch(`http://localhost:8080/materials/update/${materialId}`, {
+                    method: 'PUT',  // Sử dụng PUT để cập nhật
+                    body: formData,
+                })
+                    .then(response => response.text())  // Đảm bảo phản hồi từ API là chuỗi
+                    .then(data => {
+                        if (data === "Cập nhật tài liệu thành công!") {
+                            $('#success-modal').modal('show');
+                            // Đóng modal
+                            $('#editModal').modal('hide');
+                            // Tải lại trang để cập nhật thông tin mới
+                            setTimeout(() => {
                                 window.location.reload(); // Tải lại trang để cập nhật thông tin mới
-                            } else {
-                                alert('Có lỗi xảy ra: ' + data);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Lỗi khi gửi yêu cầu cập nhật:', error);
-                            alert('Có lỗi xảy ra. Vui lòng thử lại!');
-                        });
-                } else {
-                    alert('Vui lòng điền đầy đủ thông tin!');
-                }
-            });
-        });
-        document.addEventListener('DOMContentLoaded', function () {
-            // Cập nhật sự kiện khi người dùng nhấn nút "Delete" trong Modal xác nhận xóa
-            document.querySelector('.btn-danger').addEventListener('click', function () {
-                const urlParams = new URLSearchParams(window.location.search);
-                const materialId = urlParams.get('id'); // Lấy materialId từ URL
-                console.log("Material ID:", materialId);
-
-                // Kiểm tra nếu có materialId
-                if (materialId) {
-                    // Gửi yêu cầu DELETE đến API để xóa material
-                    fetch(`http://localhost:8080/materials/delete/${materialId}`, {
-                        method: 'DELETE',  // Phương thức HTTP là DELETE
+                            }, 1500);
+                        } else {
+                            $('#long-modal .modal-body').text(`Có lỗi xảy ra: ${data}`);
+                            $('#long-modal').modal('show');
+                        }
                     })
-                        .then(response => response.text())
-                        .then(data => {
-                            if (data === "Xóa tài liệu thành công!") {
-                                alert('Xóa tài liệu thành công!');
-                                // Đóng modal xác nhận xóa
-                                $('#confirmationModal').modal('hide');
-                                // Chuyển hướng về trang danh sách hoặc trang khác
-                                window.location.href = 'View-list-materials.html';  // Thay đổi đường dẫn theo nhu cầu
-                            } else {
-                                alert('Có lỗi xảy ra khi xóa tài liệu!');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Lỗi khi xóa tài liệu:', error);
-                            alert('Có lỗi xảy ra. Vui lòng thử lại!');
-                        });
-                } else {
-                    console.error('Không tìm thấy Material ID trong URL.');
+                    .catch(error => {
+                        console.error('Lỗi khi gửi yêu cầu cập nhật:', error);
+
+                        // Hiển thị modal lỗi khi có lỗi kết nối hoặc yêu cầu
+                        $('#long-modal .modal-body').text('Có lỗi xảy ra. Vui lòng thử lại!');
+                        $('#long-modal').modal('show');
+                    });
+            }
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        // Cập nhật sự kiện khi người dùng nhấn nút "Delete" trong Modal xác nhận xóa
+        document.querySelector('.btn-danger').addEventListener('click', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const materialId = urlParams.get('id'); // Lấy materialId từ URL
+            console.log("Material ID:", materialId);
+
+            // Kiểm tra nếu có materialId
+            if (materialId) {
+                // Gửi yêu cầu DELETE đến API để xóa material
+                fetch(`http://localhost:8080/materials/delete/${materialId}`, {
+                    method: 'DELETE',  // Phương thức HTTP là DELETE
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        if (data === "Xóa tài liệu thành công!") {
+                            alert('Xóa tài liệu thành công!');
+                            // Đóng modal xác nhận xóa
+                            $('#confirmationModal').modal('hide');
+                            // Chuyển hướng về trang danh sách hoặc trang khác
+                            window.location.href = 'View-list-materials.html';  // Thay đổi đường dẫn theo nhu cầu
+                        } else {
+                            alert('Có lỗi xảy ra khi xóa tài liệu!');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Lỗi khi xóa tài liệu:', error);
+                        alert('Có lỗi xảy ra. Vui lòng thử lại!');
+                    });
+            } else {
+                console.error('Không tìm thấy Material ID trong URL.');
+            }
+        });
+    });
+</script>
+
+
+<!-- fetch user -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails) {
+            console.log("User details:", userDetails);
+
+            // Populate ID
+            const userIdElement = document.getElementById('userId');
+            if (userIdElement) {
+                userIdElement.value = userDetails.id;
+            }
+
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            const userRoleElements = document.querySelectorAll('.userRole');
+
+            // Populate Name
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName || "Unknown";
+            });
+
+            // Populate Role
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName || "Unknown Role";
+            });
+
+            // Populate Image
+            const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img'); // Select the <img> inside the div
+                if (imgElement) {
+                    imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
                 }
             });
-        });
-    </script>
 
+            // Role-specific UI adjustments
+            if (userFullNameElements.length && userRoleElements.length) {
+                if (userDetails.roleName === "ADMIN") {
+                    // Show for ADMIN
+                    document.getElementById("teacher-view").style.display = "none";
+                    document.getElementById("student-view").style.display = "none";
+                } else if (userDetails.roleName === "TEACHER") {
+                    // Show for TEACHER
+                    document.getElementById("teacher-view").style.display = "block";
+                    document.getElementById("student-view").style.display = "none";
+                    document.getElementById("student-view1").style.display = "none";
+                    document.getElementById("teacher-view1").style.display = "block";
+                    document.getElementById("teacher-view11").style.display = "block";
+                    document.getElementById("teacher-view10").style.display = "block";
+                    document.getElementById("student-view10").style.display = "none";
+                    document.getElementById("teacher-view12").style.display = "block";
+                    document.getElementById("teacher-view13").style.display = "block";
+                    document.getElementById("student-view11").style.display = "none";
+                    document.getElementById("student-view12").style.display = "none";
+                    document.getElementById("teacher-view15").style.display = "block";
+                    document.getElementById("student-view15").style.display = "none";
 
-    <!-- fetch user -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-            if (userDetails) {
-                console.log("User details:", userDetails);
-
-                // Populate ID
-                const userIdElement = document.getElementById('userId');
-                if (userIdElement) {
-                    userIdElement.value = userDetails.id;
-                }
-
-                const userFullNameElements = document.querySelectorAll('.userFullName');
-                const userRoleElements = document.querySelectorAll('.userRole');
-
-                // Populate Name
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName || "Unknown";
-                });
-
-                // Populate Role
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName || "Unknown Role";
-                });
-
-                // Populate Image
-                const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
-                imgContainers.forEach(container => {
-                    const imgElement = container.querySelector('img'); // Select the <img> inside the div
-                    if (imgElement) {
-                        imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
-                    }
-                });
-
-                // Role-specific UI adjustments
-                if (userFullNameElements.length && userRoleElements.length) {
-                    if (userDetails.roleName === "ADMIN") {
-                        // Show for ADMIN
-                        document.getElementById("teacher-view").style.display = "none";
-                        document.getElementById("student-view").style.display = "none";
-                    } else if (userDetails.roleName === "TEACHER") {
-                        // Show for TEACHER
-                        document.getElementById("teacher-view").style.display = "block";
-                        document.getElementById("student-view").style.display = "none";
-                        document.getElementById("student-view1").style.display = "none";
-                        document.getElementById("teacher-view1").style.display = "block";
-                        document.getElementById("teacher-view11").style.display = "block";
-                        document.getElementById("teacher-view10").style.display = "block";
-                        document.getElementById("student-view10").style.display = "none";
-                        document.getElementById("teacher-view12").style.display = "block";
-                        document.getElementById("teacher-view13").style.display = "block";
-                        document.getElementById("student-view11").style.display = "none";
-                        document.getElementById("student-view12").style.display = "none";
-                        document.getElementById("teacher-view15").style.display = "block";
-                        document.getElementById("student-view15").style.display = "none";
-
-                    } else if (userDetails.roleName === "STUDENT") {
-                        // Show for STUDENT
-                        document.getElementById("teacher-view").style.display = "none";
-                        document.getElementById("student-view").style.display = "block";
-                        document.getElementById("student-view1").style.display = "block";
-                        document.getElementById("teacher-view1").style.display = "none";
-                        document.getElementById("teacher-view11").style.display = "none";
-                        document.getElementById("teacher-view10").style.display = "none";
-                        document.getElementById("student-view10").style.display = "block";
-                        document.getElementById("teacher-view12").style.display = "none";
-                        document.getElementById("teacher-view13").style.display = "none";
-                        document.getElementById("student-view11").style.display = "block";
-                        document.getElementById("student-view12").style.display = "block";
-                        document.getElementById("teacher-view15").style.display = "none";
-                        document.getElementById("student-view15").style.display = "block";
-                    } else {
-                        console.warn("Unrecognized role:", userDetails.roleName);
-                    }
+                } else if (userDetails.roleName === "STUDENT") {
+                    // Show for STUDENT
+                    document.getElementById("teacher-view").style.display = "none";
+                    document.getElementById("student-view").style.display = "block";
+                    document.getElementById("student-view1").style.display = "block";
+                    document.getElementById("teacher-view1").style.display = "none";
+                    document.getElementById("teacher-view11").style.display = "none";
+                    document.getElementById("teacher-view10").style.display = "none";
+                    document.getElementById("student-view10").style.display = "block";
+                    document.getElementById("teacher-view12").style.display = "none";
+                    document.getElementById("teacher-view13").style.display = "none";
+                    document.getElementById("student-view11").style.display = "block";
+                    document.getElementById("student-view12").style.display = "block";
+                    document.getElementById("teacher-view15").style.display = "none";
+                    document.getElementById("student-view15").style.display = "block";
                 } else {
-                    console.error("Required DOM elements are missing.");
+                    console.warn("Unrecognized role:", userDetails.roleName);
                 }
             } else {
-                console.error("User details not found in sessionStorage");
+                console.error("Required DOM elements are missing.");
             }
-        });
-    </script>
+        } else {
+            console.error("User details not found in sessionStorage");
+        }
+    });
+</script>
 <script>
     function submitForm() {
         // Retrieve userDetails from sessionStorage

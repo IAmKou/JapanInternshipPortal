@@ -80,10 +80,7 @@
             color: white;
         }
 
-        .card {
-            border: 1px solid #e1e4e8;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        }
+
 
         .btn-gradient-yellow {
             background: linear-gradient(to right, #ffcc00, #ff9900);
@@ -379,18 +376,18 @@
                     <div class="card">
 
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <!-- Di chuyển "User Actions" sang trái một chút -->
-                                <h4 style="margin-right: 500px;" data-i18n="user_action">User Actions</h4>
-                                <div class="dropdown">
-                                    <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" style="font-size: 16px; padding: 10px 20px;" data-i18n="add_import_users">Add or Import Users</a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="create-account.html" data-i18n="add_new_user"><i class="fas fa-plus text-orange-red"></i> Add New User</a>
-                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#standard-modal" data-i18n="import_users"><i class="fas fa-file-import text-green"></i> Import Users</a>
-                                    </div>
 
+                            <h3 data-i18n="user_action">User Actions</h3>
+
+                            <div class="dropdown" style="margin-bottom: 20px; margin-left: 1100px">
+                                <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" style="font-size: 16px; padding: 10px 20px;" data-i18n="add_import_users">Add or Import Users</a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="create-account.html" data-i18n="add_new_user"><i class="fas fa-plus text-orange-red"></i> Add New User</a>
+                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#standard-modal" data-i18n="import_users"><i class="fas fa-file-import text-green"></i> Import Users</a>
                                 </div>
                             </div>
+
+
                             <form>
                                 <div class="row mb-3 align-items-center">
                                     <div class="col-lg-8">
@@ -409,10 +406,9 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header">
-                            <h3 data-i18n="user_list">User List</h3>
-                        </div>
+
                         <div class="card-body">
+                            <h3 data-i18n="user_list">User List</h3>
                             <div class="table-responsive">
                                 <table class="table table-hover text-nowrap">
                                     <thead>
@@ -420,6 +416,7 @@
                                         <th data-i18n="id">ID</th>
                                         <th data-i18n="image">Image</th>
                                         <th data-i18n="name">Name</th>
+                                        <th data-i18n="j_name">Japan Name</th>
                                         <th data-i18n="role">Role</th>
                                         <th data-i18n="actions">Actions</th>
                                     </tr>
@@ -704,6 +701,7 @@
                 <img src="${user.img ? user.img : 'img/figure/admin.jpg'}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
             </td>
             <td>${user.roleName === "ADMIN" ? user.username : user.fullName}</td>
+            <td>${user.roleName === "ADMIN" ? user.username : user.jname}</td>
             <td>${translatedRoleName}</td>
             <td>
                 <a href="users-details.html?userId=${user.id}" class="text-decoration-none text-primary" title="View User Details" data-i18n="view_details">
@@ -796,7 +794,7 @@
                 "choose_file": "Choose File",
                 "close": "Close",
                 "submit": "Submit",
-
+                "j_name": "Japan Name",
 
             },
             "ja": {
@@ -820,7 +818,7 @@
                 "choose_file": "ファイルを選択",
                 "submit": "送信",
                 "close": "閉じる",
-
+                "j_name": "日本の名前",
             }
         };
 
