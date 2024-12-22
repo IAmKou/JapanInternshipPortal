@@ -4,38 +4,42 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "Notification")
 @Getter
 @Setter
-
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="Title", nullable=false)
+    @Column(name = "Title", nullable = false)
     private String title;
 
-    @Column(name="content", nullable=false)
-    private String content;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private java.util.Date createdAt;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "account_id", nullable = false, referencedColumnName = "Id")
-    private Account account;
+    private Account account; // Sender's account
+
+    @ManyToOne
+    @JoinColumn(name = "recipient_account_id", referencedColumnName = "Id")
+    private Account recipientAccount; // Optional recipient account
 
     public Notification() {}
 
-    public Notification(int id, String title, String content) {
+    public Notification(int id, String title, Date createdAt, Account account, Account recipientAccount) {
         this.id = id;
         this.title = title;
-        this.content = content;
+        this.createdAt = createdAt;
+        this.account = account;
+        this.recipientAccount = recipientAccount;
+
     }
 
-    public Notification(int id, String title, String content, Account account) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.account = account;
-    }
 }
+

@@ -16,6 +16,7 @@ import com.example.jip.repository.AssignmentClassRepository;
 import com.example.jip.repository.ClassRepository;
 import com.example.jip.repository.TeacherRepository;
 import com.example.jip.services.AssignmentServices;
+import com.example.jip.services.NotificationServices;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -47,6 +48,8 @@ public class AssignmentController {
     ClassRepository classRepository;
 
     AssignmentClassRepository assignmentClassRepository;
+
+    NotificationServices notificationServices;
 
     @GetMapping("/list")
     public ResponseEntity<List<AssignmentResponse>> getAllAssignments(@RequestParam("teacherId") int teacherId) {
@@ -84,6 +87,8 @@ public class AssignmentController {
             request.setTeacher(teacherDTO);
 
             assignmentServices.createAssignment(request);
+
+
             log.info("Assignment create successfully.");
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
