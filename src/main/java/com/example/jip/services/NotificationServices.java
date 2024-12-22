@@ -1,62 +1,60 @@
 package com.example.jip.services;
 
+import com.example.jip.dto.AutoNotificationDTO;
 import com.example.jip.dto.NotificationDTO;
 import com.example.jip.entity.Account;
 import com.example.jip.entity.Notification;
 import com.example.jip.repository.AccountRepository;
 import com.example.jip.repository.NotificationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.Date;
 
 @Service
 public class NotificationServices {
+    @Autowired
+    private NotificationRepository notificationRepository;
 
-    private final NotificationRepository notificationRepository;
-    private final AccountRepository accountRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
-    public NotificationServices(NotificationRepository notificationRepository, AccountRepository accountRepository) {
-        this.notificationRepository = notificationRepository;
-        this.accountRepository = accountRepository;
-    }
+    public NotificationDTO createNotification(String title, Integer senderId) {
+        Account sender = accountRepository.findById(senderId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid sender ID"));
 
-    public Notification createNotification(NotificationDTO notificationDTO) {
-        if (notificationDTO.getTitle() == null || notificationDTO.getTitle().isEmpty()) {
-            throw new IllegalArgumentException("Title cannot be null or empty.");
-        }
 
-        if (notificationDTO.getContent() == null || notificationDTO.getContent().isEmpty()) {
-            throw new IllegalArgumentException("Content cannot be null or empty.");
-        }
-
-        Optional<Account> account = accountRepository.findById(notificationDTO.getOwnerId());
-        if (account.isEmpty()) {
-            throw new IllegalArgumentException("Account not found with ID: " + notificationDTO.getOwnerId());
-        }
+        Date currentDateTime = new Date();
 
         Notification notification = new Notification();
-        notification.setTitle(notificationDTO.getTitle());
-        notification.setContent(notificationDTO.getContent());
-        notification.setAccount(account.get());
+        notification.setTitle(title);
+        notification.setCreatedAt(currentDateTime);
+        notification.setAccount(sender);
 
-        return notificationRepository.save(notification);
+        notificationRepository.save(notification);
+
+        return new NotificationDTO(notification);
     }
 
-    public List<Notification> getAllNotifications() {
-        return notificationRepository.findAll();
+    public AutoNotificationDTO createAutoNotificationForAssignment(String title, Integer senderId, Integer receiverId) {
+    Account sender = accountRepository.findById(senderId)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid sender ID"));
+
+    Account receiver = accountRepository.findById(receiverId)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid receiver ID"));
+
+    Date currentDateTime = new Date();
+    Notification notification = new Notification();
+    notification.setTitle(title);
+    notification.setCreatedAt(currentDateTime);
+    notification.setAccount(sender);
+    notification.setRecipientAccount(receiver);
+
+    notificationRepository.save(notification);
+
+    return new AutoNotificationDTO(notification);
     }
 
-    public List<Notification> getNotificationsOfAdmin() {
-        List<Notification> listAll = notificationRepository.findAll();
-        List<Notification> notifications = new ArrayList<>();
-        for (Notification notification : listAll) {
-            if (notification.getAccount().getRole().getName().equals("ADMIN")) {
-                notifications.add(notification);
-            }
-        }
-        return notifications;
-    }
+
 }
+
