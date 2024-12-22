@@ -1,8 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="">
 
-
-<!-- Mirrored from teacher-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:48 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -28,6 +26,39 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
 </head>
+
+<style>
+    #content {
+        height: 200px; /* Thay đổi chiều cao tùy ý */
+    }
+
+    table td {
+        font-weight: bold;
+    }
+
+    /* Reduce the padding for table cells */
+    table td {
+        padding: 8px 12px;  /* You can adjust this value as needed */
+    }
+
+    /* Reduce the padding for the table overall */
+    table {
+        margin-bottom: 15px;  /* Keeps the space below the table */
+        width: 100%;
+    }
+
+    /* Optionally, reduce space between rows */
+    table tr {
+        margin-bottom: 5px;
+    }
+    /* Làm chữ title đậm và căn chúng cùng một hàng */
+    .item-title h3 {
+        font-weight: bold;
+        display: inline-block;
+        margin-right: 15px;  /* Đảm bảo khoảng cách giữa title và description */
+    }
+
+</style>
 
 <body>
 <!-- Preloader Start Here -->
@@ -66,7 +97,6 @@
             <ul class="navbar-nav">
                 <li class="navbar-item header-search-bar">
                     <div class="input-group stylish-input-group">
-
                     </div>
                 </li>
             </ul>
@@ -269,16 +299,17 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h2>Assignment Detail</h2>
-                            <h3 class="text-dark-medium font-medium">Description</h3>
+                            <h3 class="text-dark-medium font-medium" style="display: inline;">Title </h3>
                             <p id="assignment-description"></p>
                         </div>
                     </div>
-
-                    <div class="single-info-details">
-                        <div class="item-content">
-                            <h3 class="text-dark-medium font-medium">Content</h3>
+                    <div class="heading-layout1">
+                        <div class="item-title">
+                            <h3 class="text-dark-medium font-medium" style="display: inline;">Description </h3>
                             <p id="assignment-content"></p>
+                        </div>
+                    </div>
+                        <div class="item-content">
                             <table class="table text-nowrap">
                                 <tbody>
                                 <tr>
@@ -300,7 +331,6 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
                 </div>
             </div>
 
@@ -308,8 +338,7 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h2 class="text-dark-medium font-medium">Submission</h2>
-
+                            <h2 class="text-dark-medium font-medium">Your Submission</h2>
                         </div>
                     </div>
 
@@ -320,22 +349,23 @@
                                 <input type="hidden" name="assignment_id" id="assignmentid"/>
 
                                 <div class="col-xl-8 col-lg-6 col-12 form-group">
-                                    <label for="description">Desciption *</label>
+                                    <label for="description">Title *</label>
                                     <input type="text" placeholder="Write description..." class="form-control" name="description" id="description" required>
                                 </div>
+
                                 <div class="col-xl-4 col-lg-6 col-12 form-group">
                                     <label for="created_date">Create Date </label>
-                                    <input type="date" class="form-control" name="created_date" id="created_date" readonly>
+                                    <input type="date" class="form-control" name="created_date" id="created_date" disabled value="2024-12-22">
                                 </div>
 
                                 <div class="col-xl-12 col-lg-12 col-12 form-group">
-                                    <label for="content">Content *</label>
-                                    <textarea id="content" placeholder="Write content..."  class="form-control" name="content" rows="4" required></textarea>
+                                    <label for="content">Description *</label>
+                                    <textarea id="content" placeholder="Write content..." class="form-control" name="content" rows="4" required></textarea>
                                 </div>
 
                                 <div class="col-12 form-group mg-t-8">
-                                    <button type="submit" onclick="submitAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Add</button>
-                                    <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
+                                    <button type="submit" onclick="submitAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Submit</button>
+                                    <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Clear Form</button>
                                 </div>
                             </div>
                         </form>
