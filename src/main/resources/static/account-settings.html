@@ -292,7 +292,6 @@
                         </div>
                     </div>
                 </li>
-
                 <li class="navbar-item dropdown header-language">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
@@ -306,9 +305,6 @@
                         </a>
                     </div>
                 </li>
-
-
-
             </ul>
         </div>
     </div>
@@ -635,7 +631,8 @@
     document.addEventListener("DOMContentLoaded", function () {
         const tableBody = document.querySelector(".table tbody");
         const paginationContainer = document.querySelector(".pagination-container");
-
+        const language = localStorage.getItem('language') || 'en'; // Mặc định là 'en'
+        getTranslation(language); // Gọi hàm dịch ngôn ngữ
         const usersPerPage = 30;
         let currentPage = 1;
         let totalUsers = 0;
@@ -788,6 +785,7 @@
                 "submit": "Submit",
                 "j_name": "Japan Name",
                 // sidebar admin
+                "admin": "Admin",
                 "dashboard": "Dashboard",
                 "report": "Report",
                 "notification": "Notification",
@@ -823,6 +821,7 @@
                 "close": "閉じる",
                 "j_name": "日本の名前",
                 // sidebar admin
+                "admin": "管理者",
                 "dashboard": "ダッシュボード",
                 "report": "レポート",
                 "notification": "通知",

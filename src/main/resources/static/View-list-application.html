@@ -435,6 +435,18 @@
             return result;
         }
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Đảm bảo chỉ chạy khi các th đã được tải và áp dụng.
+            setTimeout(function() {
+                // Loại bỏ các lớp "sorting" và "sorting_asc" nếu tồn tại trên th
+                const thElements = document.querySelectorAll('th.sorting, th.sorting_asc');
+                thElements.forEach(function(thElement) {
+                    thElement.classList.remove('sorting', 'sorting_asc');
+                });
+            }, 100);  // Điều chỉnh thời gian đợi cho phù hợp
+        });
+    </script>
 </body>
 
 

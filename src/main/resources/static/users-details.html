@@ -468,12 +468,12 @@
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3>Users</h3>
+                <h3 data-i18n="users">Users</h3>
                 <ul>
                     <li>
-                        <a href="admin.html">Home</a>
+                        <a href="admin.html" data-i18n="home">Home</a>
                     </li>
-                    <li>Users Details</li>
+                    <li data-i18n="user_details">Users Details</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
@@ -584,7 +584,22 @@
 <!-- fetch user -->
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    const roleTranslations = {
+        "en": {
+            "ADMIN": "Admin",
+            "TEACHER": "Teacher",
+            "STUDENT": "Student"
+        },
+        "ja": {
+            "ADMIN": "管理者",
+            "TEACHER": "教師",
+            "STUDENT": "学生"
+        }
+    };
+    const currentLanguage = localStorage.getItem('language') || 'en';  // Mặc định là 'en'
 
+    // Hiển thị thông tin người dùng với tên và vai trò dịch theo ngôn ngữ hiện tại
+    const translatedRoleName = roleTranslations[currentLanguage][userDetails.roleName] || userDetails.roleName;
     if (userDetails) {
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
@@ -596,7 +611,7 @@
 
         // Populate Role
         userRoleElements.forEach(element => {
-            element.textContent = userDetails.roleName;
+            element.textContent = translatedRoleName;
         });
     } else {
         console.error("User details not found in sessionStorage");
@@ -607,6 +622,8 @@
     document.addEventListener('DOMContentLoaded', function () {
         const userId = new URLSearchParams(window.location.search).get('userId');
         let currentUser = null;
+        const language = localStorage.getItem('language') || 'en'; // Mặc định là 'en'
+        getTranslation(language); // Gọi hàm dịch ngôn ngữ
 
         // Initially hide the save button
         document.querySelector('.save-button').style.display = 'none';
@@ -646,7 +663,8 @@
             <tr><td class="font-medium text-dark-medium" data-i18n="j_name">Japan Name:</td>
                 <td><input type="text" value="${user.jname}" required id="jname-input" class="input-text"></td></tr>
             <tr><td class="font-medium text-dark-medium" data-i18n="role">Role Name:</td>
-                <td> <input type="text" value="${user.roleName}" id="rname-input" readonly class="form-control-plaintext" data-i18n="roleName"></td></tr>
+                <td>        <input type="text" value="${user.roleName}" id="rname-input" readonly class="form-control-plaintext" data-i18n="roleName">
+</td></tr>
             <tr><td class="font-medium text-dark-medium" data-i18n="gender">Gender:</td>
                 <td>
                     <div class="form-check-inline">
@@ -667,8 +685,6 @@
         `;
                     // Show the save button after editing
                     document.querySelector('.save-button').style.display = 'inline-block';
-                    const language = localStorage.getItem('language') || 'en'; // Lấy ngôn ngữ hiện tại
-                    getTranslation(language); // Gọi hàm dịch ngôn ngữ
                 });
             })
             .catch(error => {
@@ -813,8 +829,8 @@
             "en": {
                 //Main screen
                 "home": "Home",
-                "account_setting": "Account Setting",
-                "user_action": "User Actions",
+                "users": "Users",
+                "user_details": "User Details",
                 "search": "Search",
                 "setting": "Setting",
                 "user_list": "User List",
@@ -838,6 +854,7 @@
                 "close": "Close",
                 "submit": "Submit",
                 // sidebar admin
+                "admin": "Admin",
                 "dashboard": "Dashboard",
                 "report": "Report",
                 "notification": "Notification",
@@ -850,6 +867,8 @@
             "ja": {
                 //Main screen
                 "home": "ホーム:",
+                "users": "ユーザー",
+                "user_details": "ユーザー詳細",
                 "name": "名前:",
                 "role": "役割:",
                 "gender": "性別:",
@@ -869,12 +888,13 @@
                 "close": "閉じる",
                 "j_name": "日本の名前:",
                 // sidebar admin
+                "admin": "管理者",
                 "dashboard": "ダッシュボード",
                 "report": "レポート",
                 "notification": "通知",
                 "account_list": "アカウントリスト",
                 "security": "セキュリティ",
-                "change_password": "パスワード変更"
+                "change_password": "パスワード変更",
                 // end sidebar admin
             }
         };
@@ -909,24 +929,22 @@
 
         const roleElement = document.querySelector('[data-i18n="roleName"]');
         if (roleElement) {
-            const roleValue = roleElement.innerHTML.trim(); // Lấy giá trị hiện tại
+            const roleValue = roleElement.value.trim(); // Lấy giá trị từ thuộc tính 'value' của input
             if (language === "ja") {
-                if (roleElement === "TEACHER") {
-                    genderElement.innerHTML = "教師"; // Chuyển thành "Nam"
-                } else if (roleElement === "STUDENT") {
-                    genderElement.innerHTML = "学生"; // Chuyển thành "Nữ"
-                }
-                else if (roleElement === "MANAGER") {
-                    genderElement.innerHTML = "管理者"; // Chuyển thành "Nữ"
+                if (roleValue === "TEACHER") {
+                    roleElement.value = "教師"; // Chuyển thành "Teacher" tiếng Nhật
+                } else if (roleValue === "STUDENT") {
+                    roleElement.value = "学生"; // Chuyển thành "Student" tiếng Nhật
+                } else if (roleValue === "MANAGER") {
+                    roleElement.value = "管理者"; // Chuyển thành "Manager" tiếng Nhật
                 }
             } else if (language === "en") {
-                if (roleElement === "教師") {
-                    genderElement.innerHTML = "TEACHER"; // Trở về "Male"
-                } else if (roleElement === "学生") {
-                    genderElement.innerHTML = "STUDENT"; // Trở về "Female"
-                }
-                else if (roleElement === "管理者") {
-                    genderElement.innerHTML = "MANAGER"; // Trở về "Female"
+                if (roleValue === "教師") {
+                    roleElement.value = "TEACHER"; // Trở về "Teacher" tiếng Anh
+                } else if (roleValue === "学生") {
+                    roleElement.value = "STUDENT"; // Trở về "Student" tiếng Anh
+                } else if (roleValue === "管理者") {
+                    roleElement.value = "MANAGER"; // Trở về "Manager" tiếng Anh
                 }
             }
         }
