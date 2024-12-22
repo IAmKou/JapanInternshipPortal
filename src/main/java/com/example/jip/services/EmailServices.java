@@ -99,7 +99,7 @@ public class EmailServices {
         }
     }
 
-    public String sendEmailCreateAssignment(String recipientEmail, String className) {
+    public void sendEmailCreateAssignment(String recipientEmail, String className) {
         // Email configuration
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -133,13 +133,12 @@ public class EmailServices {
 
             // Send the email
             Transport.send(message);
-            return "Email sent successfully to " + recipientEmail;
         } catch (MessagingException e) {
             e.printStackTrace();
-            return "Failed to send email to " + recipientEmail + ": " + e.getMessage();
+            e.getMessage();
         }
     }
-    public String sendEmailSubmittedAssignment(String recipientEmail, String studentName, String className) {
+    public void sendEmailSubmittedAssignment(String recipientEmail, String studentName, String className) {
         // Email configuration
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -173,10 +172,47 @@ public class EmailServices {
 
             // Send the email
             Transport.send(message);
-            return "Email sent successfully to " + recipientEmail;
+
         } catch (MessagingException e) {
             e.printStackTrace();
-            return "Failed to send email to " + recipientEmail + ": " + e.getMessage();
+
+        }
+    }
+
+    public void sendEmailApplication(String recipientEmail) {
+        // Email configuration
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        // Authenticate
+        Session session = Session.getInstance(props, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(senderEmail, senderPassword);
+            }
+        });
+
+        try {
+            // Create the email content
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(senderEmail));
+            message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
+            message.setSubject("Your Account Details");
+
+            // Email body
+            String emailBody = "There is a new application send check it out.";
+
+            message.setText(emailBody);
+
+            // Send the email
+            Transport.send(message);
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+
         }
     }
 

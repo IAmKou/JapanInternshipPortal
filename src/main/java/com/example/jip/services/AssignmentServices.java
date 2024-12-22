@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AssignmentServices extends AssignmentCreationRequest {
+public class AssignmentServices {
 
     AssignmentRepository assignmentRepository;
 
@@ -39,7 +39,10 @@ public class AssignmentServices extends AssignmentCreationRequest {
     AssignmentStudentRepository assignmentStudentRepository;
 
     StudentAssignmentRepository studentAssignmentRepository;
-    private final NotificationServices notificationServices;
+
+    EmailServices emailServices;
+
+    NotificationServices notificationServices;
 
     S3Service s3Service;
 
@@ -134,15 +137,26 @@ public class AssignmentServices extends AssignmentCreationRequest {
                 Optional<Class> clasOpt = classRepository.findById(classId);
                 if (clasOpt.isPresent()) {
                     Class clas = clasOpt.get();
-
+                    log.info("Number of students in the class list: {}", clas.getClassLists() != null ? clas.getClassLists().size() : "null");
                     // Link assignment to class
                     assignmentClassRepository.save(new AssignmentClass(savedAssignment, clas));
 
                     // Link assignment to all students in the class
                     for (Listt listEntry : clas.getClassLists()) {
                         Student student = listEntry.getStudent();
+                        log.info("Creating notification for student ID: {}", student.getAccount().getId());
+                        try {
+                            notificationServices.createAutoNotificationForAssignment(
+                                    "New assignment created",
+                                    teacher.getAccount().getId(),
+                                    student.getAccount().getId()
+                            );
+                            log.info("Notification created for student ID: {}", student.getAccount().getId());
+                        } catch (Exception e) {
+                            log.error("Failed to create notification for student ID: {}", student.getAccount().getId(), e);
+                        }
+                        emailServices.sendEmailCreateAssignment(student.getEmail(),clas.getName());
                         assignmentStudentRepository.save(new AssignmentStudent(savedAssignment, student));
-                        notificationServices.createAutoNotificationForAssignment("New assignment have been created", teacher.getId(), student.getId());
                     }
                 } else {
                     log.warn("Class with ID {} not found", classId);
@@ -155,7 +169,6 @@ public class AssignmentServices extends AssignmentCreationRequest {
         // Save the assignment
         return assignmentRepository.save(assignment);
     }
-
     public boolean descriptionExists(String description) {
         return assignmentRepository.existsByDescription(description);
     }
@@ -319,6 +332,7 @@ public class AssignmentServices extends AssignmentCreationRequest {
                 // Link assignment to all students in the class
                 for (Listt listEntry : clas.getClassLists()) {
                     Student student = listEntry.getStudent();
+
                     assignmentStudentRepository.save(new AssignmentStudent(assignment, student));
                 }
             }
@@ -379,5 +393,6 @@ public class AssignmentServices extends AssignmentCreationRequest {
 
         return assignmentResponses;
     }
+
 }
 

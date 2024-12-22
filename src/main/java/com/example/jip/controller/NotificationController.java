@@ -35,13 +35,18 @@ public class NotificationController {
         }
     }
 
-    @GetMapping("/get")
-    public List<NotificationDTO> getAllUserNotifications(int recipientId) {
+    @GetMapping("/get/{recipientId}")
+    public List<NotificationDTO> getAllUserNotifications(@PathVariable int recipientId) {
         List<Notification> notifications = notificationRepository.findNotificationsByRecipient(recipientId);
 
         return notifications.stream()
                 .map(NotificationDTO::new)
                 .collect(Collectors.toList());
+    }
+    @PostMapping("/test-notification")
+    public ResponseEntity<String> testNotification() {
+        notificationServices.createAutoNotificationForAssignment("Test notification", 1, 71);
+        return ResponseEntity.ok("Notification created successfully!");
     }
 
     @GetMapping("/getAll")
