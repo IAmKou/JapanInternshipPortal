@@ -4,16 +4,21 @@ import com.example.jip.entity.Notification;
 
 public class NotificationDTO {
     private String title;
-    private String content;
-    private int ownerId;
+    private int senderId;
 
     public NotificationDTO() {
     }
 
+    public NotificationDTO(String title, int senderId) {
+        this.title = title;
+        this.senderId = senderId;
+
+    }
+
     public NotificationDTO(Notification notification) {
         this.title = notification.getTitle();
-        this.content = notification.getContent();
-        this.ownerId = notification.getAccount().getId();
+        this.senderId = notification.getAccount().getId();  // Assuming Account has a getId() method
+
     }
 
     public String getTitle() {
@@ -24,20 +29,12 @@ public class NotificationDTO {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public int getSenderId() {
+        return senderId;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public int getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
+    public void setSenderId(int senderId) {
+        this.senderId = senderId;
     }
 
 }

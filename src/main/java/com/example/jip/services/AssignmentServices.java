@@ -39,6 +39,7 @@ public class AssignmentServices extends AssignmentCreationRequest {
     AssignmentStudentRepository assignmentStudentRepository;
 
     StudentAssignmentRepository studentAssignmentRepository;
+    private final NotificationServices notificationServices;
 
     S3Service s3Service;
 
@@ -141,6 +142,7 @@ public class AssignmentServices extends AssignmentCreationRequest {
                     for (Listt listEntry : clas.getClassLists()) {
                         Student student = listEntry.getStudent();
                         assignmentStudentRepository.save(new AssignmentStudent(savedAssignment, student));
+                        notificationServices.createAutoNotificationForAssignment("New assignment have been created", teacher.getId(), student.getId());
                     }
                 } else {
                     log.warn("Class with ID {} not found", classId);

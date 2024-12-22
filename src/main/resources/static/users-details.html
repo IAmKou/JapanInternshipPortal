@@ -281,11 +281,7 @@
                         <div class="item-content">
                             <ul class="settings-list">
 
-                                <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
-                                <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a>
-                                </li>
-                                <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i><span data-i18n="log_out">Log Out</span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -410,13 +406,16 @@
                     </div>
                 </li>
                 <li class="navbar-item dropdown header-language">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
-                       data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
+                    </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="/?lang=en">English</a>
-                        <a class="dropdown-item" href="/?lang=ja">Japanese</a> <!-- Thêm dòng này -->
-                        <a class="dropdown-item" href="#">Franchis</a>
-                        <a class="dropdown-item" href="#">Chiness</a>
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
+                            <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;"> English
+                        </a>
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
+                            <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese" style="width: 20px; height: 15px;"> 日本語
+                        </a>
                     </div>
                 </li>
             </ul>
@@ -435,31 +434,30 @@
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span data-i18n="dashboard">Dashboard</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
+                                <a href="admin.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i><span data-i18n="admin">Admin</span></a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item">
                         <a href="report-list.html" class="nav-link"><i
-                                class="flaticon-script"></i><span>Report</span></a>
+                                class="flaticon-script"></i><span data-i18n="report">Report</span></a>
                     </li>
                     <li class="nav-item">
                         <a href="notice-board.html" class="nav-link"><i
-                                class="flaticon-script"></i><span>Notification</span></a>
+                                class="flaticon-script"></i><span data-i18n="notification">Notification</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="account-settings.html" class="nav-link"><i
-                                class="flaticon-settings"></i><span>Account List</span></a>
+                        <a href="account-settings.html" class="nav-link menu-active"><i
+                                class="flaticon-settings"></i><span data-i18n="account_list">Account List</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span data-i18n="security">Security</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change
-                                    Password</a>
+                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="change_password">Change Password</span></a>
                             </li>
                         </ul>
                     </li>
@@ -500,7 +498,7 @@
 
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="editButton">
                                             <a class="dropdown-item custom-dropdown-item" id="editButton">
-                                                <i class="fas fa-cogs text-primary mr-2"></i> Edit
+                                                <i class="fas fa-cogs text-primary mr-2"></i><span data-i18n="edit"> Edit</span>
                                             </a>
 
                                         </div>
@@ -629,12 +627,12 @@
 
                 // Populate user details table
                 document.querySelector('.info-table tbody').innerHTML = `
-        <tr><td class="font-medium text-dark-medium">Name:</td><td style="width: 1000px; font-weight: bold; padding-left: 40px;">${user.fullName}</td></tr>
-        <tr><td class="font-medium text-dark-medium">Japan Name:</td><td style="width: 1000px; font-weight: bold; padding-left: 40px;">${user.jname}</td></tr>
-        <tr><td class="font-medium text-dark-medium">Gender:</td><td style="width: 1000px; font-weight: bold; padding-left: 40px;">${user.gender}</td></tr>
+        <tr><td class="font-medium text-dark-medium" data-i18n="name">Name:</td><td style="width: 1000px; font-weight: bold; padding-left: 40px;">${user.fullName}</td></tr>
+        <tr><td class="font-medium text-dark-medium" data-i18n="j_name">Japan Name:</td><td style="width: 1000px; font-weight: bold; padding-left: 40px;">${user.jname}</td></tr>
+        <tr><td class="font-medium text-dark-medium" data-i18n="gender">Gender:</td><td style="width: 1000px; font-weight: bold; padding-left: 40px;">${user.gender}</td></tr>
         ${dobRow}
-        <tr><td class="font-medium text-dark-medium">Email:</td><td style="width: 1000px; font-weight: bold; padding-left: 40px;">${user.email}</td></tr>
-        <tr><td class="font-medium text-dark-medium">Phone:</td><td style="width: 1000px; font-weight: bold; padding-left: 40px;">${user.phoneNumber}</td></tr>
+        <tr><td class="font-medium text-dark-medium" data-i18n="email">Email:</td><td style="width: 1000px; font-weight: bold; padding-left: 40px;">${user.email}</td></tr>
+        <tr><td class="font-medium text-dark-medium" data-i18n="phone">Phone:</td><td style="width: 1000px; font-weight: bold; padding-left: 40px;">${user.phoneNumber}</td></tr>
     `;
 
                 document.getElementById('img').src = user.img;
@@ -643,32 +641,34 @@
                 // Enable editing when the edit button is clicked
                 document.querySelector('#editButton').addEventListener('click', () => {
                     document.querySelector('#userInfoTable').innerHTML = `
-            <tr><td class="font-medium text-dark-medium">Name:</td>
+            <tr><td class="font-medium text-dark-medium" data-i18n="name">Name:</td>
                 <td><input type="text" value="${user.fullName}" required id="name-input" class="input-text"></td></tr>
-            <tr><td class="font-medium text-dark-medium">Japan Name:</td>
+            <tr><td class="font-medium text-dark-medium" data-i18n="j_name">Japan Name:</td>
                 <td><input type="text" value="${user.jname}" required id="jname-input" class="input-text"></td></tr>
-            <tr><td class="font-medium text-dark-medium">Role Name:</td>
-                <td><input type="text" value="${user.roleName}" id="rname-input" readonly class="form-control-plaintext"></td></tr>
-            <tr><td class="font-medium text-dark-medium">Gender:</td>
+            <tr><td class="font-medium text-dark-medium" data-i18n="role">Role Name:</td>
+                <td> <input type="text" value="${user.roleName}" id="rname-input" readonly class="form-control-plaintext" data-i18n="roleName"></td></tr>
+            <tr><td class="font-medium text-dark-medium" data-i18n="gender">Gender:</td>
                 <td>
                     <div class="form-check-inline">
                         <input type="radio" name="gender" value="Male" id="male" class="form-check-input" ${user.gender === 'Male' ? 'checked' : ''}>
-                        <label for="male" class="form-check-label">Male</label>
+                        <label for="male" class="form-check-label" data-i18n="male">Male</label>
                     </div>
                     <div class="form-check-inline">
                         <input type="radio" name="gender" value="Female" id="female" class="form-check-input" ${user.gender === 'Female' ? 'checked' : ''}>
-                        <label for="female" class="form-check-label">Female</label>
+                        <label for="female" class="form-check-label" data-i18n="female">Female</label>
                     </div>
                 </td></tr>
-            ${user.dob ? `<tr><td class="font-medium text-dark-medium">Date of Birth:</td>
+            ${user.dob ? `<tr><td class="font-medium text-dark-medium" data-i18n="date_of_birth">Date of Birth:</td>
                 <td><input type="date" required value="${user.dob.split('T')[0]}" id="dob-input" class="input-text"></td></tr>` : ''}
-            <tr><td class="font-medium text-dark-medium">Email:</td>
+            <tr><td class="font-medium text-dark-medium" data-i18n="email">Email:</td>
                 <td><input type="email" required value="${user.email}" id="email-input" class="input-text"></td></tr>
-            <tr><td class="font-medium text-dark-medium">Phone Number:</td>
+            <tr><td class="font-medium text-dark-medium" data-i18n="phone_number">Phone Number:</td>
                 <td><input type="text" required value="${user.phoneNumber}" id="phone-input" class="input-text"></td></tr>
         `;
                     // Show the save button after editing
                     document.querySelector('.save-button').style.display = 'inline-block';
+                    const language = localStorage.getItem('language') || 'en'; // Lấy ngôn ngữ hiện tại
+                    getTranslation(language); // Gọi hàm dịch ngôn ngữ
                 });
             })
             .catch(error => {
@@ -804,6 +804,169 @@
         });
 
     });
+</script>
+<script>
+    // Hàm thay đổi ngôn ngữ
+    // Hàm thay đổi ngôn ngữ
+    function getTranslation(language) {
+        const translations = {
+            "en": {
+                //Main screen
+                "home": "Home",
+                "account_setting": "Account Setting",
+                "user_action": "User Actions",
+                "search": "Search",
+                "setting": "Setting",
+                "user_list": "User List",
+                "image": "Image",
+                "name": "Name:",
+                "j_name": "Japan Name:",
+                "gender": "Gender:",
+                "email": "Email:",
+                "phone": "Phone:",
+                "role": "Role:",
+                "edit": "Edit",
+                "phone_number": "Phone Number",
+                "male": "Male",
+                "female": "Female",
+                // end main screen
+                // headbar
+                "log_out": "Log Out",
+                // end headbar
+                "add_account": "Add Account",
+                "choose_file": "Choose File",
+                "close": "Close",
+                "submit": "Submit",
+                // sidebar admin
+                "dashboard": "Dashboard",
+                "report": "Report",
+                "notification": "Notification",
+                "account_list": "Account List",
+                "security": "Security",
+                "change_password": "Change Password",
+
+                // end sidebar admin
+            },
+            "ja": {
+                //Main screen
+                "home": "ホーム:",
+                "name": "名前:",
+                "role": "役割:",
+                "gender": "性別:",
+                "email": "メール:",
+                "phone": "電話:",
+                "edit": "編集",
+                "phone_number": "電話番号",
+                "male": "男性",
+                "female": "女性",
+                // end main screen
+                // headbar
+                "log_out": "ログアウト",
+                // end headbar
+                "add_account": "アカウントを追加",
+                "choose_file": "ファイルを選択",
+                "submit": "送信",
+                "close": "閉じる",
+                "j_name": "日本の名前:",
+                // sidebar admin
+                "dashboard": "ダッシュボード",
+                "report": "レポート",
+                "notification": "通知",
+                "account_list": "アカウントリスト",
+                "security": "セキュリティ",
+                "change_password": "パスワード変更"
+                // end sidebar admin
+            }
+        };
+
+        // Cập nhật nội dung các phần tử có thuộc tính data-i18n
+        const elements = document.querySelectorAll('[data-i18n]');
+        elements.forEach(function(element) {
+            const translationKey = element.getAttribute('data-i18n');
+            if (translations[language] && translations[language][translationKey]) {
+                element.innerHTML = translations[language][translationKey];
+            }
+        });
+
+        // Xử lý riêng cho trường "Gender" dựa trên giá trị động (Male/Female)
+        const genderElement = document.querySelector('[data-i18n="gender"] + td');
+        if (genderElement) {
+            const genderValue = genderElement.innerHTML.trim(); // Lấy giá trị hiện tại
+            if (language === "ja") {
+                if (genderValue === "Male") {
+                    genderElement.innerHTML = "男性"; // Chuyển thành "Nam"
+                } else if (genderValue === "Female") {
+                    genderElement.innerHTML = "女性"; // Chuyển thành "Nữ"
+                }
+            } else if (language === "en") {
+                if (genderValue === "男性") {
+                    genderElement.innerHTML = "Male"; // Trở về "Male"
+                } else if (genderValue === "女性") {
+                    genderElement.innerHTML = "Female"; // Trở về "Female"
+                }
+            }
+        }
+
+        const roleElement = document.querySelector('[data-i18n="roleName"]');
+        if (roleElement) {
+            const roleValue = roleElement.innerHTML.trim(); // Lấy giá trị hiện tại
+            if (language === "ja") {
+                if (roleElement === "TEACHER") {
+                    genderElement.innerHTML = "教師"; // Chuyển thành "Nam"
+                } else if (roleElement === "STUDENT") {
+                    genderElement.innerHTML = "学生"; // Chuyển thành "Nữ"
+                }
+                else if (roleElement === "MANAGER") {
+                    genderElement.innerHTML = "管理者"; // Chuyển thành "Nữ"
+                }
+            } else if (language === "en") {
+                if (roleElement === "教師") {
+                    genderElement.innerHTML = "TEACHER"; // Trở về "Male"
+                } else if (roleElement === "学生") {
+                    genderElement.innerHTML = "STUDENT"; // Trở về "Female"
+                }
+                else if (roleElement === "管理者") {
+                    genderElement.innerHTML = "MANAGER"; // Trở về "Female"
+                }
+            }
+        }
+
+    }
+
+    // Hàm thay đổi ngôn ngữ và cập nhật ngôn ngữ hiển thị trong thanh điều hướng
+    function changeLanguage(language) {
+        // Lưu ngôn ngữ vào localStorage
+        localStorage.setItem('language', language);
+
+        // Cập nhật lại nhãn ngôn ngữ trong phần tử (nút hiển thị ngôn ngữ)
+        const languageLabel = document.getElementById('languageLabel');
+        if (languageLabel) {
+            languageLabel.innerHTML = language === 'en' ? 'EN' : (language === 'ja' ? 'JA' : 'EN');
+        }
+
+        // Áp dụng ngôn ngữ cho toàn bộ trang
+        getTranslation(language);  // Gọi lại hàm dịch ngôn ngữ ngay lập tức
+
+        // Reload lại trang sau khi thay đổi ngôn ngữ
+        location.reload();  // Tải lại trang
+    }
+
+    // Kiểm tra ngôn ngữ khi trang được tải
+    window.addEventListener('load', function () {
+        const language = localStorage.getItem('language') || 'en'; // Mặc định là 'en' nếu không có ngôn ngữ lưu trữ
+        // Gọi hàm dịch ngôn ngữ
+        getTranslation(language);
+        // Đặt lại nhãn ngôn ngữ trong phần tử (tiếng Anh là EN nếu không có ngôn ngữ)
+        const languageLabel = document.getElementById('languageLabel');
+        if (languageLabel) {
+            languageLabel.innerHTML = language === 'en' ? 'EN' : (language === 'ja' ? 'JA' : 'EN');
+        }
+    });
+
+
+
+
+
 </script>
 </body>
 

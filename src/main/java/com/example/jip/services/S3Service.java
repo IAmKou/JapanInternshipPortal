@@ -47,7 +47,7 @@ public class S3Service {
         // Return the file URL
         // Get the public URL of the uploaded file (it should be accessible via HTTP)
         String fileUrl = s3Client.getUrl(bucketName, fullPath).toString();
-        return "File uploaded and publicly accessible at: " + fileUrl;
+        return fileUrl;
     }
 
     public void deleteFile(String fileUrl, String folderName) {
