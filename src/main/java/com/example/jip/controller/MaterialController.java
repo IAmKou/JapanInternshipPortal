@@ -7,6 +7,7 @@ import com.example.jip.entity.*;
 import com.example.jip.repository.*;
 import com.example.jip.services.CloudinaryService;
 import com.example.jip.services.MaterialServices;
+import com.example.jip.services.S3Service;
 import com.example.jip.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,6 +52,8 @@ public class MaterialController {
     @Autowired
     private PersonalMaterialRepository personalMaterialRepository;
 
+    @Autowired
+    private S3Service s3Service;
 
     @PostMapping("/create")
     public RedirectView createMaterial(
@@ -84,7 +87,13 @@ public class MaterialController {
 
             // Upload image and set it to materialDTO
             if (imgFile != null) {
-                String img = cloudinaryService.uploadFileToFolder(imgFile, "Materials/").getUrl();
+                String fileName = imgFile.getOriginalFilename(); // Get the original file name
+                String folderName = "Materials" + materialDTO.getTitle(); // Folder name in S3
+
+                // Upload the file to S3
+                String img = s3Service.uploadFile(imgFile, folderName, fileName);
+
+                // Set the image URL to the materialDTO
                 materialDTO.setImg(img);
             }
 
@@ -169,15 +178,16 @@ public class MaterialController {
         // Nếu có ảnh mới, xử lý và lưu ảnh
         if (file != null && !file.isEmpty()) {
             try {
-                String folderName = sanitizeFolderName("material/" + title); // Tạo folder cho ảnh
-                FileUploadUtil.assertAllowed(file, FileUploadUtil.IMAGE_PATTERN);  // Kiểm tra ảnh hợp lệ
-                cloudinaryService.uploadFileToFolder(file, folderName);  // Upload ảnh lên Cloudinary
+                String fileName = file.getOriginalFilename(); // Lấy tên file gốc
+                String folderName = "Materials/" + sanitizeFolderName(material.getTitle()); // Đặt folder theo title mới
 
-                // Cập nhật lại thông tin ảnh trong material
-                material.setImg(folderName);  // Lưu lại URL ảnh hoặc folder path mới
+                // Upload ảnh lên S3 hoặc dịch vụ tương tự
+                String img = s3Service.uploadFile(file, folderName, fileName);
 
+                // Cập nhật lại URL ảnh mới
+                material.setImg(img);
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image.");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image: " + e.getMessage());
             }
         }
 

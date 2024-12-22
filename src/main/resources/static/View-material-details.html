@@ -28,6 +28,16 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <STYLE>
+        #fileDisplay {
+            width: 100%; /* Đảm bảo phần tử này chiếm toàn bộ chiều rộng của cột */
+            white-space: nowrap; /* Ngăn không cho phần tử xuống dòng */
+        }
+
+        /* Đảm bảo nội dung của thẻ PDF được nhúng không bị lỗi */
+        #pdfEmbed {
+            width: 100%;
+            height: 500px; /* Thiết lập chiều cao của PDF */
+        }
         #successMessage {
             background-color: #d4edda;
             color: #155724;
@@ -472,37 +482,46 @@
                         </div>
                     </div>
 
-                    <div class="single-info-details">
-                        <div class="card mb-3">
-                            <div class="row no-gutters">
-                                <!-- Ảnh được hiển thị ở cột bên trái -->
-                                <div class="col-md-4" >
-                                    <img id="imgFile" src="" class="card-img" alt="Image" style="max-width: 100%; height: auto;">
-                                </div>
-                                <div class="col-md-8"> <!-- Nội dung thông tin được hiển thị ở cột bên phải -->
-                                    <div class="card-body"> <!-- Tiêu đề sẽ được cập nhật qua JavaScript -->
-                                        <h5 class="card-title text-dark-medium font-medium" id="title" style="font-size: 25px; font-weight: bold;  margin-left: 30px"></h5>
-                                        <!-- Nội dung chi tiết sẽ được cập nhật qua JavaScript -->
-                                        <p id="content" class="card-text" style="font-size: 20px; margin-left: 30px"></p>
-                                        <!-- Thông tin liên quan đến giáo viên và ngày tạo sẽ hiển thị trong bảng -->
-                                        <div class="info-table table-responsive" style="margin-left: 20px"> <table class="table" style="font-size: 18px;">
-                                            <tbody>
-                                            <tr>
-                                                <th scope="row">Teacher:</th>
-                                                <td><span id="teacher"></span></td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Created Date:</th>
-                                                <td><span id="createDate"></span></td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="single-info-details">
+                            <div class="card mb-3">
+                                <!-- Thông tin liên quan đến giáo viên và ngày tạo sẽ hiển thị trong bảng -->
+                                <table class="table text-nowrap">
+                                    <tbody>
+                                    <tr>
+                                        <td><strong>Title:</strong></td>
+                                        <td><span id="title"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Content:</strong></td>
+                                        <td><span id="content"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Teacher:</strong></td>
+                                        <td><span id="teacher"></span></td>
+                                    </tr>
+
+                                    <tr id="fileDisplay">
+                                        <td><strong>File:</strong></td>
+                                        <td>
+                                            <!-- Hiển thị link tải tệp, dù có hay không có tệp -->
+                                            <div id="fileContent" style="white-space: nowrap;">
+                                                <a id="fileLink" href="" target="_blank" class="card-img" style="display: inline-block;">
+                                                    <img src="default-document-icon.png" alt="Tài liệu" style="max-width: 100%; height: auto;">
+                                                </a>
+                                                <!-- Embed tài liệu PDF nếu có -->
+                                                <div id="pdfEmbed" style="display: none;"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Create Date:</strong></td>
+                                        <td><span id="createDate"></span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
+
                         </div>
-                    </div>
                 </div>
             </div>
 
@@ -529,11 +548,23 @@
                                     <textarea class="form-control" id="materialContent" style="width: 100%; height: 300px;" required></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label for="materialFile">File:</label>
-                                    <div id="materialFile"></div>
-                                    <input type="file" id="materialFileInput" name="file">
+                                    <label for="materialFile"><strong>File:</strong></label>
+                                    <div id="materialFile" style="white-space: nowrap;">
+                                        <!-- Nơi hiển thị thông tin file -->
+                                        <a id="fileLink2" href="" target="_blank" class="card-img" style="display: inline-block;">
+                                            <img src="default-document-icon.png" alt="Tài liệu" style="max-width: 100%; height: auto;">
+                                        </a>
+                                        <div id="pdfEmbed2" style="display: none;"></div>
 
+                                        <!-- Input để upload file -->
+
+                                    </div>
                                 </div>
+                                <div class="form-group">
+                                    <input type="file" id="materialFileInput" name="file">
+                                </div>
+
+
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -668,16 +699,30 @@
                     ? `${String(createdDate.getDate()).padStart(2, '0')}/${String(createdDate.getMonth() + 1).padStart(2, '0')}/${createdDate.getFullYear()}`
                     : "N/A";
 
-                const imgElement = document.getElementById('imgFile');
+                // Xử lý phần hiển thị tài liệu (hình ảnh hoặc các tài liệu khác)
+                const fileElement = document.getElementById('fileDisplay');  // Thẻ dùng để hiển thị tài liệu
+
                 if (data.img) {
                     const imgUrl = data.img.startsWith('http') ? data.img : `http://localhost:8080/${data.img}`;
-                    imgElement.src = imgUrl;
-                    imgElement.alt = data.title;
-                    imgElement.style.display = "block";
-                    imgElement.style.width = '200px';
-                    imgElement.style.height = 'auto';
+                    const fileElement = document.getElementById("fileContent");
+
+                    if (data.img.endsWith('.pdf') || data.img.endsWith('.docx')) {
+                        // Nếu tài liệu là PDF hoặc DOCX, hiển thị dưới dạng liên kết
+                        const fileName = decodeURIComponent(imgUrl.substring(imgUrl.lastIndexOf("/") + 1));
+
+                        // Hiển thị tên file dưới dạng liên kết
+                        fileElement.innerHTML = `<a href="${imgUrl}" target="_blank" style="color: blue; text-decoration: underline;">${fileName}</a>`;
+                    } else {
+                        // Nếu tài liệu là loại khác (hình ảnh hoặc tài liệu hỗ trợ)
+                        const imgElement = document.getElementById('imgFile');
+                        imgElement.src = imgUrl;
+                        imgElement.alt = data.title;
+                        imgElement.style.display = "block";
+                        imgElement.style.width = '200px';
+                        imgElement.style.height = 'auto';
+                    }
                 } else {
-                    imgElement.style.display = "none";
+                    fileElement.style.display = "none"; // Ẩn phần hiển thị tài liệu nếu không có tài liệu
                 }
 
                 // Kiểm tra và hiển thị dropdown dựa trên vai trò người dùng
@@ -730,29 +775,33 @@
                 fetch(url)
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);  // Kiểm tra dữ liệu trả về từ API
+                        console.log(data); // Kiểm tra dữ liệu trả về
 
-                        // Cập nhật thông tin vào các input trong modal
+                        // Cập nhật các thông tin khác nếu cần
                         document.getElementById('materialTitle').value = data.title;
                         document.getElementById('materialContent').value = data.content;
-                        const filesContainer = document.getElementById('materialFile');
-                        filesContainer.innerHTML = "";  // Clear any existing content
 
-                        // Kiểm tra xem img có tồn tại trong dữ liệu không
+                        const fileElement = document.getElementById('materialFile');
+                        const fileInput = document.getElementById('materialFileInput');
+
                         if (data.img) {
-                            // Lấy tên tệp từ URL
-                            const fileName = data.img.split('/').pop();  // Tách tên tệp từ URL
+                            const imgUrl = data.img.startsWith('http') ? data.img : `http://localhost:8080/${data.img}`;
+                            if (data.img.endsWith('.pdf') || data.img.endsWith('.docx')) {
+                                // Hiển thị file dưới dạng liên kết
+                                const fileName = decodeURIComponent(imgUrl.substring(imgUrl.lastIndexOf("/") + 1));
+                                fileElement.innerHTML = `
+                    <a href="${imgUrl}" target="_blank" style="color: blue; text-decoration: underline;">${fileName}</a>
 
-                            // Tạo một thẻ <a> để liên kết đến hình ảnh
-                            const link = document.createElement('a');
-                            link.href = data.img;  // URL của hình ảnh
-                            link.textContent = fileName;  // Hiển thị tên tệp (mặc định là tên file)
-                            link.target = '_blank';  // Mở hình ảnh trong tab mới
-
-                            // Thêm thẻ <a> vào container
-                            filesContainer.appendChild(link);
+                `;
+                            } else {
+                                // Hiển thị nếu là loại file khác
+                                const fileIcon = `<img src="${imgUrl}" alt="${data.title}" style="width: 200px; height: auto;">`;
+                                fileElement.innerHTML = fileIcon;
+                            }
                         } else {
-                            filesContainer.innerHTML = "";  // Nếu không có hình ảnh
+                            // Nếu không có file, hiển thị thông báo
+                            fileElement.innerHTML = `<span style="color: grey;">Không có tài liệu</span>
+            <input type="file" id="materialFileInput" name="file" style="margin-top: 10px;">`;
                         }
                     })
                     .catch(error => {
