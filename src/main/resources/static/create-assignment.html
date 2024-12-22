@@ -30,8 +30,13 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
-
 </head>
+
+<style>
+    #content {
+        height: 200px; /* Thay đổi chiều cao tùy ý */
+    }
+</style>
 
 <body>
 <!-- Preloader Start Here -->
@@ -296,34 +301,34 @@
                             <input type="hidden" name="teacher_id" id="userId">
 
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label for="description">Description *</label>
+                                <label for="description">Assignment Title *</label>
                                 <input type="text" placeholder="Write description..." class="form-control" name="description" id="description" required>
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label for="created_date">Create Date </label>
-                                <input type="date" class="form-control" name="created_date" id="created_date" readonly>
+                                <label for="created_date">Create Date</label>
+                                <input type="date" class="form-control" name="created_date" id="created_date" disabled>
                             </div>
                             <div class="col-xl-4 col-lg-12 col-12 form-group">
                                 <label for="end_date">End Date *</label>
                                 <input type="date" class="form-control" name="end_date" id="end_date" required>
                             </div>
                             <div class="col-xl-6 col-lg-12 col-12 form-group">
-                                <label for="content">Content *</label>
+                                <label for="content">Description *</label>
                                 <textarea id="content" placeholder="Write content..."  class="form-control" name="content" rows="4" required></textarea>
                             </div>
                             <div class="col-xl-12 col-lg-24 col-12 form-group">
-                                <label  for="class_id">For Classes</label>
+                                <label  for="class_id">Select Class *</label>
                                 <div id="class_id">
                                     <!-- Checkboxes will be dynamically populated here -->
                                 </div>
                             </div>
                             <div class="col-12 form-group mg-t-8">
-                                <label class="text-dark-medium" for="imgFile">File attach </label>
-                                <input type="file" class="form-control-file" name="imgFile" id="imgFile"  multiple>
+                                <label class="text-dark-medium" for="imgFile">Select File or Image</label>
+                                <input type="file" class="form-control-file" name="imgFile" id="imgFile" multiple>
                             </div>
                             <div class="col-12 form-group mg-t-8">
-                                <button type="submit" onclick="addAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Add</button>
-                                <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
+                                <button type="submit" onclick="addAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Create Assignment</button>
+                                <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Clear Form</button>
                             </div>
                         </div>
                     </form>
