@@ -1,8 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="">
 
-
-<!-- Mirrored from teacher-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:48 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -28,6 +26,39 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
 </head>
+
+<style>
+    #content {
+        height: 200px; /* Thay đổi chiều cao tùy ý */
+    }
+
+    table td {
+        font-weight: bold;
+    }
+
+    /* Reduce the padding for table cells */
+    table td {
+        padding: 8px 12px;  /* You can adjust this value as needed */
+    }
+
+    /* Reduce the padding for the table overall */
+    table {
+        margin-bottom: 15px;  /* Keeps the space below the table */
+        width: 100%;
+    }
+
+    /* Optionally, reduce space between rows */
+    table tr {
+        margin-bottom: 5px;
+    }
+    /* Làm chữ title đậm và căn chúng cùng một hàng */
+    .item-title h3 {
+        font-weight: bold;
+        display: inline-block;
+        margin-right: 15px;  /* Đảm bảo khoảng cách giữa title và description */
+    }
+
+</style>
 
 <body>
 <!-- Preloader Start Here -->
@@ -289,37 +320,41 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h2>Assignment Detail</h2>
-                            <h3 class="text-dark-medium font-medium">Description</h3>
-                            <p id="assignment-description"></p>
+                            <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Title:</h3>
+                            <span id="assignment-description" style="display: inline; margin-left: 80px;"></span>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
+                    <div class="heading-layout1">
+                        <div class="item-title">
+                            <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Description:</h3>
+                            <span id="assignment-content" style="display: inline; margin-left: 10px;"></span>
                         </div>
                     </div>
 
-                    <div class="single-info-details">
-                        <div class="item-content">
-                            <h3 class="text-dark-medium font-medium">Content</h3>
-                            <p id="assignment-content"></p>
-                            <table class="table text-nowrap">
-                                <tbody>
-                                <tr>
-                                    <td>Created Date:</td>
-                                    <td id="created-date"></td>
-                                </tr>
-                                <tr>
-                                    <td>End Date:</td>
-                                    <td id="end-date"></td>
-                                </tr>
-                                <tr>
-                                    <td>For Class:</td>
-                                    <td id="assignment-classes"></td>
-                                </tr>
-                                <tr>
-                                    <td>File:</td>
-                                    <td id="assignment-files"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
+
+                    <div class="item-content">
+                        <table class="table text-nowrap">
+                            <tbody>
+                            <tr>
+                                <td>Created Date:</td>
+                                <td id="created-date"></td>
+                            </tr>
+                            <tr>
+                                <td>End Date:</td>
+                                <td id="end-date"></td>
+                            </tr>
+                            <tr>
+                                <td>For Class:</td>
+                                <td id="assignment-classes"></td>
+                            </tr>
+                            <tr>
+                                <td>File:</td>
+                                <td id="assignment-files"></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

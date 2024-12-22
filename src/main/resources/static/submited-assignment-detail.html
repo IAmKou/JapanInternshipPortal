@@ -29,6 +29,39 @@
   <script src="js/modernizr-3.6.0.min.js"></script>
 </head>
 
+<style>
+  #content {
+    height: 200px; /* Thay đổi chiều cao tùy ý */
+  }
+
+  table td {
+    font-weight: bold;
+  }
+
+  /* Reduce the padding for table cells */
+  table td {
+    padding: 8px 12px;  /* You can adjust this value as needed */
+  }
+
+  /* Reduce the padding for the table overall */
+  table {
+    margin-bottom: 15px;  /* Keeps the space below the table */
+    width: 100%;
+  }
+
+  /* Optionally, reduce space between rows */
+  table tr {
+    margin-bottom: 5px;
+  }
+  /* Làm chữ title đậm và căn chúng cùng một hàng */
+  .item-title h3 {
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 15px;  /* Đảm bảo khoảng cách giữa title và description */
+  }
+
+</style>
+
 <body>
 <!-- Preloader Start Here -->
 <div id="preloader"></div>
@@ -144,9 +177,7 @@
              data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
           <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" href="#">English</a>
-            <a class="dropdown-item" href="#">Spanish</a>
-            <a class="dropdown-item" href="#">Franchis</a>
-            <a class="dropdown-item" href="#">Chiness</a>
+            <a class="dropdown-item" href="#">Japanese</a>
           </div>
         </li>
       </ul>
@@ -270,37 +301,41 @@
         <div class="card-body">
           <div class="heading-layout1">
             <div class="item-title">
-              <h2>Assignment Detail</h2>
-              <h3 class="text-dark-medium font-medium">Description</h3>
-              <p id="assignment-description"></p>
+              <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Title:</h3>
+              <span id="assignment-description" style="display: inline; margin-left: 80px;"></span>
+            </div>
+          </div>
+          &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
+          <div class="heading-layout1">
+            <div class="item-title">
+              <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Description:</h3>
+              <span id="assignment-content" style="display: inline; margin-left: 10px;"></span>
             </div>
           </div>
 
-          <div class="single-info-details">
-            <div class="item-content">
-              <h3 class="text-dark-medium font-medium">Content</h3>
-              <p id="assignment-content"></p>
-              <table class="table text-nowrap">
-                <tbody>
-                <tr>
-                  <td>Created Date:</td>
-                  <td id="created-date"></td>
-                </tr>
-                <tr>
-                  <td>End Date:</td>
-                  <td id="end-date"></td>
-                </tr>
-                <tr>
-                  <td>For Class:</td>
-                  <td id="assignment-classes"></td>
-                </tr>
-                <tr>
-                  <td>File:</td>
-                  <td id="assignment-files"></td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
+          &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
+
+          <div class="item-content">
+            <table class="table text-nowrap">
+              <tbody>
+              <tr>
+                <td>Created Date:</td>
+                <td id="created-date"></td>
+              </tr>
+              <tr>
+                <td>End Date:</td>
+                <td id="end-date"></td>
+              </tr>
+              <tr>
+                <td>For Class:</td>
+                <td id="assignment-classes"></td>
+              </tr>
+              <tr>
+                <td>File:</td>
+                <td id="assignment-files"></td>
+              </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -309,36 +344,30 @@
         <div class="card-body">
           <div class="heading-layout1">
             <div class="item-title">
-              <h2 class="text-dark-medium font-medium">Your Submission</h2>
-
+              <h2 class="text-dark-medium font-medium">Your Submitted Submission</h2>
             </div>
           </div>
-
           <div class="single-info-details">
             <form class="new-added-form" action="javascript:void(0);" onsubmit="updateAssignment(event)">
               <div id="statusMessage" class="alert alert-info" style="display: none;"></div>
               <div class="row">
-
                 <div class="col-xl-8 col-lg-6 col-12 form-group">
-                  <label for="description">Desciption *</label>
+                  <label for="description">Description *</label>
                   <input type="text" class="form-control" name="description" id="description" required>
                 </div>
                 <div class="col-xl-4 col-lg-6 col-12 form-group">
                   <label for="created_date">Create Date </label>
-                  <input type="date" class="form-control" name="created_date" id="created_date" readonly>
+                  <input type="date" class="form-control" name="created_date" id="created_date" disabled value="2024-12-22">
                 </div>
-
                 <div class="col-xl-12 col-lg-12 col-12 form-group">
                   <label for="content">Content *</label>
                   <textarea id="content" class="form-control" name="content" rows="4" required></textarea>
                 </div>
-
                 <div class="col-12 form-group mg-t-8">
                   <button type="submit" onclick="updateAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" id="submitBtn">Update</button>
                 </div>
               </div>
             </form>
-
           </div>
         </div>
       </div>
