@@ -40,7 +40,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin.html").hasAuthority("ADMIN")
+                        .requestMatchers("/admin.html","/export.html").hasAuthority("ADMIN")
                         .requestMatchers("/student.html", "list-student-assignment.html").hasAuthority("STUDENT")
                         .requestMatchers("/teacher.html", "add-assignment.html", "list-assignment.html").hasAuthority("TEACHER")
                         .requestMatchers("/manager.html").hasAuthority("MANAGER")

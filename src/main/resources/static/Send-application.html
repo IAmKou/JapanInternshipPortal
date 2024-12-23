@@ -436,7 +436,11 @@
                                 <div class="col-12 form-group">
                                     <label style="color: #007bff; font-weight: bold;" data-i18n="app-type">Application type *</label>
                                     <select class="select2" name="category" required>
-
+                                        <option value="Đơn xin nghỉ học">Absent Application</option>
+                                        <option value="Đơn xin đi thực tập tại FPT Japan">Internship Application</option>
+                                        <option value="Đơn xin đổi lịch giảng dạy">Schedule Changing Application</option>
+                                        <option value="Đơn xin đổi giáo viên">Changing Teacher Application</option>
+                                        <option value="Các loại đơn khác">Others Application</option>
                                     </select>
                                 </div>
 
@@ -449,21 +453,20 @@
 
                                 <!-- Tệp đính kèm -->
                                 <div class="col-12 form-group">
-                                    <label style="color: #007bff; font-weight: bold;">Attach a File:</label>
+                                    <label style="color: #007bff; font-weight: bold;" data-i18n="attach">Attach a File:</label>
                                     <input class="form-control-file" name="imgFile" type="file">
                                 </div>
 
                                 <!-- Các nút -->
                                 <div class="col-12 form-group mg-t-8 text-end">
-                                    <button class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" type="submit">
-                                        Save
+                                    <button class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" type="submit" data-i18n="send">
+                                        Send
                                     </button>
-                                    <button class="btn-fill-lg bg-blue-dark btn-hover-yellow" type="reset">Reset
+                                    <button class="btn-fill-lg bg-blue-dark btn-hover-yellow" type="reset" data-i18n="clear-form">Clear Form
                                     </button>
                                 </div>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>
@@ -540,25 +543,11 @@
             "STUDENT": "学生"
         }
     };
-    const applicationTranslations = {
-        en: {
-            absent: "Absent Application",
-            internship: "Internship Application",
-            others: "Others Application",
-            "schedule-change": "Schedule Changing Application",
-            "change_teacher": "Teacher Change Application"
-        },
-        ja: {
-            absent: "欠席申請",
-            internship: "インターンシップ申請",
-            others: "その他の申請",
-            "schedule-change": "スケジュール変更申請",
-            "change_teacher": "教師変更申請"
-        }
-    };
-
     if (userDetails) {
-        const currentLanguage = localStorage.getItem('language') || 'en'; // Lấy ngôn ngữ hiện tại
+        // Lấy ngôn ngữ hiện tại từ localStorage
+        const currentLanguage = localStorage.getItem('language') || 'en';  // Mặc định là 'en'
+
+        // Hiển thị thông tin người dùng với tên và vai trò dịch theo ngôn ngữ hiện tại
         const translatedRoleName = roleTranslations[currentLanguage][userDetails.roleName] || userDetails.roleName;
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
@@ -572,46 +561,42 @@
         userRoleElements.forEach(element => {
             element.textContent = translatedRoleName;
         });
-
         if (userDetails.roleName === "TEACHER") {
+            // Set teacher-related values
             document.getElementById('teacherId').value = userDetails.id;
             document.getElementById('studentId').value = '';
         } else if (userDetails.roleName === "STUDENT") {
+            // Set student-related values
             document.getElementById('studentId').value = userDetails.id;
             document.getElementById('teacherId').value = '';
         }
-
         const applicationTypeSelect = document.querySelector('.select2');
         applicationTypeSelect.innerHTML = '';
 
         let options = [];
         if (userDetails.roleName === "STUDENT") {
             options = [
-                { value: "Absent application", text: "absent" }, // Chỉ lưu key, bản dịch sẽ được áp dụng sau
-                { value: "Internship Application", text: "internship" },
-                { value: "Others Application", text: "others" }
+                {value: "Đơn xin nghỉ học", text: "Đơn xin nghỉ học"},
+                {value: "Đơn xin đi thực tập tại FPT Japan", text: "Đơn xin đi thực tập tại FPT Japan"},
+                {value: "Các loại đơn khác", text: "Các loại đơn khác"}
             ];
         } else if (userDetails.roleName === "TEACHER") {
             options = [
-                { value: "Schedule Changing Application", text: "schedule-change" },
-                { value: "Teacher Change Application", text: "change_teacher" },
-                { value: "Others Application", text: "others" }
+                {value: "Đơn xin đổi lịch giảng dạy", text: "Đơn xin đổi lịch giảng dạy"},
+                {value: "Đơn xin đổi giáo viên", text: "Đơn xin đổi giáo viên"},
+                {value: "Các loại đơn khác", text: "Các loại đơn khác"}
             ];
         }
 
         options.forEach(option => {
             const newOption = document.createElement('option');
             newOption.value = option.value;
-            newOption.textContent = applicationTranslations[currentLanguage][option.text] || option.text;  // Dịch tùy chọn
-            newOption.setAttribute('data-i18n', option.text);  // Đảm bảo mỗi option có attribute data-i18n cho phép dịch
+            newOption.textContent = option.text;
             applicationTypeSelect.appendChild(newOption);
         });
 
         // Reinitialize select2
-        $(applicationTypeSelect).trigger('change');
-
-        // Cập nhật lại ngôn ngữ hiển thị
-         // Áp dụng ngôn ngữ hiện tại lên toàn bộ trang
+        $(applicationTypeSelect).trigger('change')
         const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
 
         imgContainers.forEach(container => {
@@ -623,7 +608,7 @@
     } else {
         console.error("User details not found in sessionStorage");
     }
-    getTranslation(currentLanguage);
+
     function submitForm() {
         // Retrieve userDetails from sessionStorage
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -751,11 +736,10 @@
                 "app-detail":"Application Detail",
                 "app-name":"Title *",
                 "app-type":"Application Type *",
-                "absent": "Absent Application",
-                "internship": "Internship Application",
-                "others": "Others Application",
-                "schedule_change": "Schedule Changing Application",
-                "change_teacher": "Teacher Change Application"
+                "absent":"Absent Application",
+                "reason":"Reason *",
+                "attach":"Attach a File",
+                "send"
             },
             "ja": {
                 //Main screen
@@ -797,11 +781,7 @@
                 "app-detail":"アップリケション内容",
                 "app-name":"題名 *",
                 "app-type":"アップリケションタイプ *",
-                "absent": "休みアップリケション",
-                "internship": "インターンシップ申請",
-                "others": "その他の申請",
-                "schedule_change": "スケジュール変更申請",
-                "change_teacher": "教師変更申請"
+                "absent":"休みアップリケション",
             }
         };
 
@@ -813,19 +793,6 @@
                 element.innerHTML = translations[language][translationKey];
             }
         });
-        const selectElements = document.querySelectorAll('select');
-        selectElements.forEach(function (select) {
-            const options = select.querySelectorAll('option');
-            options.forEach(function (option) {
-                const translationKey = option.getAttribute('data-i18n');
-                // Kiểm tra và thay đổi nội dung tùy chọn nếu có bản dịch
-                if (translations[language] && translations[language][translationKey]) {
-                    option.innerHTML = translations[language][translationKey];
-                }
-            });
-        });
-
-
     }
 
     // Hàm thay đổi ngôn ngữ và cập nhật ngôn ngữ hiển thị trong thanh điều hướng
