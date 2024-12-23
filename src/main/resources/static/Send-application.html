@@ -5,30 +5,30 @@
 <!-- Mirrored from admit-form.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:43 GMT -->
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
     <title>Send an application</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+    <link href="img/favicon.png" rel="shortcut icon" type="image/x-icon">
     <!-- Normalize CSS -->
-    <link rel="stylesheet" href="css/normalize.css">
+    <link href="css/normalize.css" rel="stylesheet">
     <!-- Main CSS -->
-    <link rel="stylesheet" href="css/main.css">
+    <link href="css/main.css" rel="stylesheet">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="css/all.min.css">
+    <link href="css/all.min.css" rel="stylesheet">
     <!-- Flaticon CSS -->
-    <link rel="stylesheet" href="fonts/flaticon.css">
+    <link href="fonts/flaticon.css" rel="stylesheet">
     <!-- Animate CSS -->
-    <link rel="stylesheet" href="css/animate.min.css">
+    <link href="css/animate.min.css" rel="stylesheet">
     <!-- Select 2 CSS -->
-    <link rel="stylesheet" href="css/select2.min.css">
+    <link href="css/select2.min.css" rel="stylesheet">
     <!-- Date Picker CSS -->
-    <link rel="stylesheet" href="css/datepicker.min.css">
+    <link href="css/datepicker.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link href="style.css" rel="stylesheet">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <!-- Thêm CSS của Select2 -->
@@ -45,10 +45,10 @@
         .select2 {
             font-weight: 900; /* Đặt giá trị font-weight cao nhất */
         }
+
         .select2 option {
             color: #FF5733; /* Thay đổi màu sắc văn bản của các tùy chọn */
         }
-
 
 
         .beautiful-form label {
@@ -137,6 +137,7 @@
             font-size: 0.9rem;
             color: #6c757d; /* Màu nhạt hơn cho mô tả */
         }
+
         .icon-green {
             color: #28a745; /* Mã màu xanh lá cây */
         }
@@ -144,472 +145,523 @@
 </head>
 
 <body>
-    <!-- Preloader Start Here -->
-    <div id="preloader"></div>
-    <!-- Preloader End Here -->
-    <div id="wrapper" class="wrapper bg-ash">
-        <!-- Header Menu Area Start Here -->
-        <div class="navbar navbar-expand-md header-menu-one bg-light">
-            <div class="nav-bar-header-one">
-                <div class="header-logo">
-                    <a href="teacher.html">
-                        <div style="width: 180px; height: 70px; overflow: hidden;">
-                            <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
-                        </div>
-                    </a>
-                </div>
-                <div class="toggle-button sidebar-toggle">
-                    <button type="button" class="item-link">
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<div class="wrapper bg-ash" id="wrapper">
+    <!-- Header Menu Area Start Here -->
+    <div class="navbar navbar-expand-md header-menu-one bg-light">
+        <div class="nav-bar-header-one">
+            <div class="header-logo">
+                <a href="teacher.html">
+                    <div style="width: 180px; height: 70px; overflow: hidden;">
+                        <img alt="logo" src="img/JIP%20LOGO%20n.png"
+                             style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </a>
+            </div>
+            <div class="toggle-button sidebar-toggle">
+                <button class="item-link" type="button">
                         <span class="btn-icon-wrap">
                             <span></span>
                             <span></span>
                             <span></span>
                         </span>
-                    </button>
-                </div>
-            </div>
-            <div class="d-md-none mobile-nav-bar">
-                <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse"
-                        data-target="#mobile-navbar" aria-expanded="false">
-                    <i class="far fa-arrow-alt-circle-down"></i>
-                </button>
-                <button type="button" class="navbar-toggler sidebar-toggle-mobile">
-                    <i class="fas fa-bars"></i>
                 </button>
             </div>
-            <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
-                <ul class="navbar-nav">
-                    <li class="navbar-item header-search-bar">
-                        <div class="input-group stylish-input-group">
-
-                        </div>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="navbar-item dropdown header-admin">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                           aria-expanded="false">
-                            <div class="admin-title">
-                                <h5 class="item-title userFullName"></h5>
-                                <span class="userRole"></span>
-                            </div>
-                            <div class="admin-img img">
-                                <img src="" style="height: 50px; width: 50px" alt="Admin">
-                            </div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title userFullName"></h6>
-                            </div>
-                            <div class="item-content">
-                                <ul class="settings-list">
-                                    <li><a href="users-profile-student.html"><i class="flaticon-user"></i>My Profile</a></li>
-                                    <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                    <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="navbar-item dropdown header-notification">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                           aria-expanded="false">
-                            <i class="far fa-bell"></i>
-                            <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
-                            <span>8</span>
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title">03 Notifiacations</h6>
-                            </div>
-                            <div class="item-content">
-                                <div class="media">
-                                    <div class="item-icon bg-skyblue">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Complete Today Task</div>
-                                        <span>1 Mins ago</span>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-icon bg-orange">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Director Metting</div>
-                                        <span>20 Mins ago</span>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-icon bg-violet-blue">
-                                        <i class="fas fa-cogs"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Update Password</div>
-                                        <span>45 Mins ago</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="navbar-item dropdown header-language">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
-                           data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#">English</a>
-                            <a class="dropdown-item" href="#">Japanese</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
         </div>
-        <!-- Header Menu Area End Here -->
-        <!-- Page Area Start Here -->
-        <div class="dashboard-page-one">
-            <!-- Sidebar Area Start Here -->
-            <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
-                <div class="mobile-sidebar-header d-md-none">
-                    <div class="header-logo">
-                        <a href="teacher.html"><img src="img/logo1.png" alt="logo"></a>
-                    </div>
-                </div>
-                <div class="sidebar-menu-content">
-                    <ul class="nav nav-sidebar-menu sidebar-toggle-view">
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>Teachers</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
-                                        Assignment</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
-                                        Assignment</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
-                                    class="flaticon-shopping-list"></i><span>Schedule</span></a>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i
-                                    class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
-                                        <i class="flaticon-menu"></i><span>Class List</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
-                                        Exam</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
-                                        Exam</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
-                                        Material</a>
-                                </li>
-                                <li class="nav-item" id="teacher-view">
-                                    <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                                        Materials</a>
-                                </li>
-
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
-                            <ul class="nav sub-group-menu sub-group-active">
-                                <li class="nav-item">
-                                    <a href="Send-application.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Send
-                                        application</a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
-                                        application</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item sidebar-nav-item">
-                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
-                                        threads</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
-                                        Thread</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <!-- Sidebar Area End Here -->
-            <div class="dashboard-content-one">
-                <!-- Breadcubs Area Start Here -->
-                <div class="breadcrumbs-area">
-                    <h3>Send Application</h3>
-                    <ul>
-                        <li>
-                            <a href="home.html">Home</a>
-
-                        </li>
-                        <li>Send Application</li>
-                    </ul>
-                </div>
-                <!-- Breadcubs Area End Here -->
-                <!-- Admit Form Area Start Here -->
-                <div class="col-xl-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="heading-layout1">
-                                <div class="item-title">
-                                    <h3 style="margin-bottom: 20px;">Application details</h3>
-                                </div>
-
-                            </div>
-                            <form id="applicationForm" method="POST" action="application/create" enctype="multipart/form-data" class="new-added-form beautiful-form">
-                                <div class="row">
-                                    <input type="hidden" name="teacher_id" id="teacherId" value="">
-                                    <input type="hidden" name="student_id" id="studentId" value="">
-                                    <div id="message" style="display: none;" class="alert alert-danger"></div>
-
-                                    <!-- Tên người -->
-                                    <div class="col-12 form-group">
-                                        <label style="color: #007bff; font-weight: bold;">Name *</label>
-                                        <input type="text" name="name" placeholder="Enter your name" class="form-control" required>
-                                    </div>
-
-                                    <!-- Loại đơn -->
-                                    <div class="col-12 form-group">
-                                        <label style="color: #007bff; font-weight: bold;">Application type *</label>
-                                        <select class="select2" name="category" required>
-                                            <option value="0">Please Select</option>
-                                            <option value="Đơn xin nghỉ học">Đơn xin nghỉ học</option>
-                                            <option value="Đơn xin đi thực tập tại FPT Japan">Đơn xin đi thực tập</option>
-                                            <option value="Các loại đơn khác">Các loại đơn khác</option>
-                                            <option value="Đơn xin đổi lịch giảng dạy">Đơn xin đổi lịch giảng dạy</option>
-                                            <option value="Đơn xin đổi giáo viên">Đơn xin đổi giáo viên</option>
-                                            <option value="Các loại đơn khác">Các loại đơn khác</option>
-                                        </select>
-
-                                    </div>
-
-                                    <!-- Lý do -->
-                                    <div class="col-12 form-group">
-                                        <label style="color: #007bff; font-weight: bold;">Reason *</label>
-                                        <textarea class="textarea form-control" name="content" id="form-message" cols="10" rows="9" required></textarea>
-                                    </div>
-
-                                    <!-- Tệp đính kèm -->
-                                    <div class="col-12 form-group">
-                                        <label style="color: #007bff; font-weight: bold;">File attach:</label>
-                                        <input type="file" name="imgFile" class="form-control-file">
-                                    </div>
-
-                                    <!-- Các nút -->
-                                    <div class="col-12 form-group mg-t-8 text-end">
-                                        <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
-                                        <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
-                                    </div>
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal -->
-
-                <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header border-0">
-                                <h5 class="modal-title" id="confirmationModalLabel"><i class="fas fa-check-circle icon-green"></i> Confirm Save</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body text-center" style="font-size: 20px; font-weight: bold;">
-                                Are you sure you want to save the application?
-                            </div>
-                            <div class="modal-footer">
-                                <button
-                                        type="button"
-                                        class="btn btn-secondary"
-                                        data-dismiss="modal"
-                                        style="font-size: 18px; padding: 10px 20px;">
-                                    Cancel
-                                </button>
-                                <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        id="confirmSave"
-                                        style="font-size: 18px; padding: 10px 20px;">
-                                    Save
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Add Notice Area End Here -->
-                <!-- All Notice Area Start Here -->
-                <!-- Admit Form Area End Here -->
-            </div>
+        <div class="d-md-none mobile-nav-bar">
+            <button aria-expanded="false" class="navbar-toggler pulse-animation" data-target="#mobile-navbar"
+                    data-toggle="collapse" type="button">
+                <i class="far fa-arrow-alt-circle-down"></i>
+            </button>
+            <button class="navbar-toggler sidebar-toggle-mobile" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
-        <!-- Page Area End Here -->
+        <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+            <ul class="navbar-nav">
+                <li class="navbar-item header-search-bar">
+                    <div class="input-group stylish-input-group">
+
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="navbar-item dropdown header-admin">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
+                        <div class="admin-title">
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
+                        </div>
+                        <div class="admin-img img">
+                            <img alt="Admin" src="" style="height: 50px; width: 50px">
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title userFullName"></h6>
+                        </div>
+                        <div class="item-content">
+                            <ul class="settings-list">
+                                <li><a href="users-profile-student.html"><i class="flaticon-user"></i>My Profile</a>
+                                </li>
+                                <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="navbar-item dropdown header-notification">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
+                        <i class="far fa-bell"></i>
+                        <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
+                        <span>8</span>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title">03 Notifiacations</h6>
+                        </div>
+                        <div class="item-content">
+                            <div class="media">
+                                <div class="item-icon bg-skyblue">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Complete Today Task</div>
+                                    <span>1 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-orange">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Director Metting</div>
+                                    <span>20 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-violet-blue">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Update Password</div>
+                                    <span>45 Mins ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item dropdown header-language">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
+                        <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
+                            <img alt="English" src="img/figure/flag-anh.webp" style="width: 20px; height: 15px;">
+                            English
+                        </a>
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
+                            <img alt="Japanese" src="img/figure/Flag_of_Japan.svg.webp"
+                                 style="width: 20px; height: 15px;"> 日本語
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
-    <!-- jquery-->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <!-- Plugins js -->
-    <script src="js/plugins.js"></script>
-    <!-- Popper js -->
-    <script src="js/popper.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Select 2 Js -->
-    <script src="js/select2.min.js"></script>
-    <!-- Date Picker Js -->
-    <script src="js/datepicker.min.js"></script>
-    <!-- Scroll Up Js -->
-    <script src="js/jquery.scrollUp.min.js"></script>
-    <!-- Custom Js -->
-    <script src="js/main.js"></script>
+    <!-- Header Menu Area End Here -->
+    <!-- Page Area Start Here -->
+    <div class="dashboard-page-one">
+        <!-- Sidebar Area Start Here -->
+        <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+            <div class="mobile-sidebar-header d-md-none">
+                <div class="header-logo">
+                    <a href="teacher.html"><img alt="logo" src="img/logo1.png"></a>
+                </div>
+            </div>
+            <div class="sidebar-menu-content">
+                <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="teacher.html"><i class="fas fa-angle-right"></i>Teachers</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-books"></i><span>Assignment</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" onclick="toListAssigment();"><i
+                                        class="fas fa-angle-right"></i>All
+                                    Assignment</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="create-assignment.html"><i class="fas fa-angle-right"></i>Add
+                                    New
+                                    Assignment</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="javascript:void(0);" onclick="redirectSchedule();"><i
+                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript:void(0);" onclick="submitForm();">
+                                    <i class="flaticon-menu"></i><span>Class List</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
+                                    Exam</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
+                                    Exam</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create
+                                    Material</a>
+                            </li>
+                            <li class="nav-item" id="teacher-view">
+                                <a class="nav-link" href="View-list-materials.html"><i class="fas fa-angle-right"></i>List
+                                    Materials</a>
+                            </li>
 
-    <script>
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-        if (userDetails) {
-            const userFullNameElements = document.querySelectorAll('.userFullName');
-            const userRoleElements = document.querySelectorAll('.userRole');
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-chat"></i><span>Application</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item">
+                                <a class="nav-link menu-active" href="Send-application.html"><i
+                                        class="fas fa-angle-right"></i>Send
+                                    application</a>
+                            </li>
 
-            // Populate Name
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
-            });
+                            <li class="nav-item">
+                                <a class="nav-link" href="View-my-application.html"><i class="fas fa-angle-right"></i>My
+                                    application</a>
+                            </li>
+                        </ul>
+                    </li>
 
-            // Populate Role
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-            if (userDetails.roleName === "TEACHER") {
-                // Set teacher-related values
-                document.getElementById('teacherId').value = userDetails.id;
-                document.getElementById('studentId').value = '';
-            } else if (userDetails.roleName === "STUDENT") {
-                // Set student-related values
-                document.getElementById('studentId').value = userDetails.id;
-                document.getElementById('teacherId').value = '';
-            }
-            const applicationTypeSelect = document.querySelector('.select2');
-            applicationTypeSelect.innerHTML = '';
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
+                                    threads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
+                                    Thread</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-chat"></i><span>Security</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="change-password.html"><i class="fas fa-angle-right"></i>Change
+                                    Password</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Sidebar Area End Here -->
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <h3 data-i18n="send-app">Send Application</h3>
+                <ul>
+                    <li>
+                        <a href="home.html">Home</a>
 
-            let options = [];
-            if (userDetails.roleName === "STUDENT") {
-                options = [
-                    { value: "Đơn xin nghỉ học", text: "Đơn xin nghỉ học" },
-                    { value: "Đơn xin đi thực tập tại FPT Japan", text: "Đơn xin đi thực tập tại FPT Japan" },
-                    { value: "Các loại đơn khác", text: "Các loại đơn khác" }
-                ];
-            } else if (userDetails.roleName === "TEACHER") {
-                options = [
-                    { value: "Đơn xin đổi lịch giảng dạy", text: "Đơn xin đổi lịch giảng dạy" },
-                    { value: "Đơn xin đổi giáo viên", text: "Đơn xin đổi giáo viên" },
-                    { value: "Các loại đơn khác", text: "Các loại đơn khác" }
-                ];
-            }
+                    </li>
+                    <li>Send Application</li>
+                </ul>
+            </div>
+            <!-- Breadcubs Area End Here -->
+            <!-- Admit Form Area Start Here -->
+            <div class="col-xl-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="heading-layout1">
+                            <div class="item-title">
+                                <h3 style="margin-bottom: 20px;" data-i18n="app-detail">Application Details</h3>
+                            </div>
 
-            options.forEach(option => {
-                const newOption = document.createElement('option');
-                newOption.value = option.value;
-                newOption.textContent = option.text;
-                applicationTypeSelect.appendChild(newOption);
-            });
+                        </div>
+                        <form action="application/create" class="new-added-form beautiful-form" enctype="multipart/form-data"
+                              id="applicationForm" method="POST">
+                            <div class="row">
+                                <input id="teacherId" name="teacher_id" type="hidden" value="">
+                                <input id="studentId" name="student_id" type="hidden" value="">
+                                <div class="alert alert-danger" id="message" style="display: none;"></div>
 
-            // Reinitialize select2
-            $(applicationTypeSelect).trigger('change')
-            const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+                                <!-- Tên người -->
+                                <div class="col-12 form-group">
+                                    <label style="color: #007bff; font-weight: bold;" data-i18n="app-name">Name *</label>
+                                    <input class="form-control" name="name" placeholder="Enter your name" required
+                                           type="text">
+                                </div>
 
-            imgContainers.forEach(container => {
-                const imgElement = container.querySelector('img'); // Select the <img> inside the div
-                if (imgElement) {
-                    imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
-                }
-            });
-        } else {
-            console.error("User details not found in sessionStorage");
-        }
-        function submitForm() {
-            // Retrieve userDetails from sessionStorage
-            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+                                <!-- Loại đơn -->
+                                <div class="col-12 form-group">
+                                    <label style="color: #007bff; font-weight: bold;" data-i18n="app-type">Application type *</label>
+                                    <select class="select2" name="category" required>
 
-            if (userDetails && userDetails.teacherId) {
-                // Redirect to the appropriate URL with the teacherId
-                window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
-            } else {
-                console.error("Teacher ID is missing or user details not found in sessionStorage");
-            }
-        }
+                                    </select>
+                                </div>
 
-        function toListAssigment() {
-            // Retrieve userDetails from sessionStorage
-            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+                                <!-- Lý do -->
+                                <div class="col-12 form-group">
+                                    <label style="color: #007bff; font-weight: bold;" data-i18n="reason" >Reason *</label>
+                                    <textarea class="textarea form-control" cols="10" id="form-message" name="content"
+                                              required rows="9"></textarea>
+                                </div>
 
-            if (userDetails && userDetails.teacherId) {
-                // Redirect to the appropriate URL with the teacherId
-                window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
-            } else {
-                console.error("Teacher ID is missing or user details not found in sessionStorage");
-            }
-        }
+                                <!-- Tệp đính kèm -->
+                                <div class="col-12 form-group">
+                                    <label style="color: #007bff; font-weight: bold;">Attach a File:</label>
+                                    <input class="form-control-file" name="imgFile" type="file">
+                                </div>
 
-        function redirectSchedule() {
-            // Retrieve userDetails from sessionStorage
-            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+                                <!-- Các nút -->
+                                <div class="col-12 form-group mg-t-8 text-end">
+                                    <button class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" type="submit">
+                                        Save
+                                    </button>
+                                    <button class="btn-fill-lg bg-blue-dark btn-hover-yellow" type="reset">Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
 
-            if (userDetails && userDetails.teacherId) {
-                // Redirect to the appropriate URL with the teacherId
-                window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
-            } else {
-                console.error("Teacher ID is missing or user details not found in sessionStorage");
-            }
-        }
-    </script>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+
+            <div aria-hidden="true" aria-labelledby="confirmationModalLabel" class="modal fade" id="confirmationModal"
+                 role="dialog" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <h5 class="modal-title" id="confirmationModalLabel"><i
+                                    class="fas fa-check-circle icon-green"></i> Confirm Save</h5>
+                            <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center" style="font-size: 20px; font-weight: bold;">
+                            Are you sure you want to save the application?
+                        </div>
+                        <div class="modal-footer">
+                            <button
+                                    class="btn btn-secondary"
+                                    data-dismiss="modal"
+                                    style="font-size: 18px; padding: 10px 20px;"
+                                    type="button">
+                                Cancel
+                            </button>
+                            <button
+                                    class="btn btn-primary"
+                                    id="confirmSave"
+                                    style="font-size: 18px; padding: 10px 20px;"
+                                    type="button">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Add Notice Area End Here -->
+            <!-- All Notice Area Start Here -->
+            <!-- Admit Form Area End Here -->
+        </div>
+    </div>
+    <!-- Page Area End Here -->
+</div>
+<!-- jquery-->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Select 2 Js -->
+<script src="js/select2.min.js"></script>
+<!-- Date Picker Js -->
+<script src="js/datepicker.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Custom Js -->
+<script src="js/main.js"></script>
+
 <script>
-    document.querySelector('button[type="submit"]').addEventListener('click', function(event) {
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    const roleTranslations = {
+        "en": {
+            "ADMIN": "Admin",
+            "TEACHER": "Teacher",
+            "STUDENT": "Student"
+        },
+        "ja": {
+            "ADMIN": "管理者",
+            "TEACHER": "教師",
+            "STUDENT": "学生"
+        }
+    };
+    const applicationTranslations = {
+        en: {
+            absent: "Absent Application",
+            internship: "Internship Application",
+            others: "Others Application",
+            "schedule-change": "Schedule Changing Application",
+            "change_teacher": "Teacher Change Application"
+        },
+        ja: {
+            absent: "欠席申請",
+            internship: "インターンシップ申請",
+            others: "その他の申請",
+            "schedule-change": "スケジュール変更申請",
+            "change_teacher": "教師変更申請"
+        }
+    };
+
+    if (userDetails) {
+        const currentLanguage = localStorage.getItem('language') || 'en'; // Lấy ngôn ngữ hiện tại
+        const translatedRoleName = roleTranslations[currentLanguage][userDetails.roleName] || userDetails.roleName;
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        const userRoleElements = document.querySelectorAll('.userRole');
+
+        // Populate Name
+        userFullNameElements.forEach(element => {
+            element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
+        });
+
+        // Populate Role
+        userRoleElements.forEach(element => {
+            element.textContent = translatedRoleName;
+        });
+
+        if (userDetails.roleName === "TEACHER") {
+            document.getElementById('teacherId').value = userDetails.id;
+            document.getElementById('studentId').value = '';
+        } else if (userDetails.roleName === "STUDENT") {
+            document.getElementById('studentId').value = userDetails.id;
+            document.getElementById('teacherId').value = '';
+        }
+
+        const applicationTypeSelect = document.querySelector('.select2');
+        applicationTypeSelect.innerHTML = '';
+
+        let options = [];
+        if (userDetails.roleName === "STUDENT") {
+            options = [
+                { value: "Absent application", text: "absent" }, // Chỉ lưu key, bản dịch sẽ được áp dụng sau
+                { value: "Internship Application", text: "internship" },
+                { value: "Others Application", text: "others" }
+            ];
+        } else if (userDetails.roleName === "TEACHER") {
+            options = [
+                { value: "Schedule Changing Application", text: "schedule-change" },
+                { value: "Teacher Change Application", text: "change_teacher" },
+                { value: "Others Application", text: "others" }
+            ];
+        }
+
+        options.forEach(option => {
+            const newOption = document.createElement('option');
+            newOption.value = option.value;
+            newOption.textContent = applicationTranslations[currentLanguage][option.text] || option.text;  // Dịch tùy chọn
+            newOption.setAttribute('data-i18n', option.text);  // Đảm bảo mỗi option có attribute data-i18n cho phép dịch
+            applicationTypeSelect.appendChild(newOption);
+        });
+
+        // Reinitialize select2
+        $(applicationTypeSelect).trigger('change');
+
+        // Cập nhật lại ngôn ngữ hiển thị
+         // Áp dụng ngôn ngữ hiện tại lên toàn bộ trang
+        const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+
+        imgContainers.forEach(container => {
+            const imgElement = container.querySelector('img'); // Select the <img> inside the div
+            if (imgElement) {
+                imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
+            }
+        });
+    } else {
+        console.error("User details not found in sessionStorage");
+    }
+    getTranslation(currentLanguage);
+    function submitForm() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+
+    function toListAssigment() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+
+    function redirectSchedule() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+</script>
+<script>
+    document.querySelector('button[type="submit"]').addEventListener('click', function (event) {
         event.preventDefault();  // Stop form submission by default
 
         // Get the input values
@@ -631,36 +683,182 @@
     });
 
     // Confirmation click in Modal
-    document.getElementById('confirmSave').addEventListener('click', function() {
+    document.getElementById('confirmSave').addEventListener('click', function () {
         // Submit the form if user confirms in the modal
         document.getElementById('applicationForm').submit();
     });
 
 </script>
-    <script>
-        // Function to get query parameter values
-        function getQueryParam(param) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param);
+<script>
+    // Function to get query parameter values
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    // Get the error message from the URL
+    const errorMessage = getQueryParam('error');
+    const messageDiv = document.getElementById('message');
+
+    // Display the error message if it exists
+    if (errorMessage) {
+        messageDiv.style.display = 'block';
+        messageDiv.innerText = errorMessage;
+    }
+</script>
+
+<script>
+    // Hàm thay đổi ngôn ngữ
+    function getTranslation(language) {
+        const translations = {
+            "en": {
+                //Main screen
+                "add_new_user": "Add New User",
+                "import_users": "Import Users",
+                "add_import_users": "Add or Import Users",
+                "home": "Home",
+                "account_setting": "Account Setting",
+                "user_action": "User Actions",
+                "search": "Search",
+                "setting": "Account List",
+                "user_list": "Account List",
+                "id": "ID",
+                "image": "Image",
+                "name": "Name",
+                "role": "Role",
+                "actions": "Actions",
+                "view_details": "View Details",
+                // end main screen
+                // headbar
+                "log_out": "Log Out",
+                // end headbar
+                "add_account": "Add Account",
+                "choose_file": "Choose File",
+                "close": "Close",
+                "submit": "Submit",
+                "j_name": "Japan Name",
+                // sidebar admin
+                "admin": "Admin",
+                "dashboard": "Dashboard",
+                "report": "Report",
+                "notification": "Notification",
+                "account_list": "Account List",
+                "security": "Security",
+                "change_password": "Change Password",
+                // end sidebar admin
+                //application
+                "send-app":"Send Application",
+                "app-detail":"Application Detail",
+                "app-name":"Title *",
+                "app-type":"Application Type *",
+                "absent": "Absent Application",
+                "internship": "Internship Application",
+                "others": "Others Application",
+                "schedule_change": "Schedule Changing Application",
+                "change_teacher": "Teacher Change Application"
+            },
+            "ja": {
+                //Main screen
+                "add_new_user": "新しいユーザーを追加",
+                "import_users": "ユーザーをインポート",
+                "add_import_users": "ユーザーを追加,インポート",
+                "home": "ホーム",
+                "account_setting": "アカウント設定",
+                "user_action": "ユーザーアクション",
+                "search": "設置",
+                "setting": "アカウントリスト",
+                "user_list": "ユーザーリスト",
+                "id": "ID",
+                "image": "写真",
+                "name": "名前",
+                "role": "役割",
+                "actions": "アクション",
+                "view_details": "詳細を見る",
+                // end main screen
+                // headbar
+                "log_out": "ログアウト",
+                // end headbar
+                "add_account": "アカウントを追加",
+                "choose_file": "ファイルを選択",
+                "submit": "送信",
+                "close": "閉じる",
+                "j_name": "日本の名前",
+                // sidebar admin
+                "admin": "管理者",
+                "dashboard": "ダッシュボード",
+                "report": "レポート",
+                "notification": "通知",
+                "account_list": "アカウントリスト",
+                "security": "セキュリティ",
+                "change_password": "パスワード変更",
+                // end sidebar admin
+                //application
+                "send-app":"アップリケション送信",
+                "app-detail":"アップリケション内容",
+                "app-name":"題名 *",
+                "app-type":"アップリケションタイプ *",
+                "absent": "休みアップリケション",
+                "internship": "インターンシップ申請",
+                "others": "その他の申請",
+                "schedule_change": "スケジュール変更申請",
+                "change_teacher": "教師変更申請"
+            }
+        };
+
+        // Cập nhật nội dung các phần tử có thuộc tính data-i18n
+        const elements = document.querySelectorAll('[data-i18n]');
+        elements.forEach(function (element) {
+            const translationKey = element.getAttribute('data-i18n');
+            if (translations[language] && translations[language][translationKey]) {
+                element.innerHTML = translations[language][translationKey];
+            }
+        });
+        const selectElements = document.querySelectorAll('select');
+        selectElements.forEach(function (select) {
+            const options = select.querySelectorAll('option');
+            options.forEach(function (option) {
+                const translationKey = option.getAttribute('data-i18n');
+                // Kiểm tra và thay đổi nội dung tùy chọn nếu có bản dịch
+                if (translations[language] && translations[language][translationKey]) {
+                    option.innerHTML = translations[language][translationKey];
+                }
+            });
+        });
+
+
+    }
+
+    // Hàm thay đổi ngôn ngữ và cập nhật ngôn ngữ hiển thị trong thanh điều hướng
+    function changeLanguage(language) {
+        // Lưu ngôn ngữ vào localStorage
+        localStorage.setItem('language', language);
+
+        // Cập nhật lại nhãn ngôn ngữ trong phần tử (nút hiển thị ngôn ngữ)
+        const languageLabel = document.getElementById('languageLabel');
+        if (languageLabel) {
+            languageLabel.innerHTML = language === 'en' ? 'EN' : (language === 'ja' ? 'JA' : 'EN');
         }
 
-        // Get the error message from the URL
-        const errorMessage = getQueryParam('error');
-        const messageDiv = document.getElementById('message');
+        // Áp dụng ngôn ngữ cho toàn bộ trang
+        getTranslation(language);  // Gọi lại hàm dịch ngôn ngữ ngay lập tức
 
-        // Display the error message if it exists
-        if (errorMessage) {
-            messageDiv.style.display = 'block';
-            messageDiv.innerText = errorMessage;
+        // Reload lại trang sau khi thay đổi ngôn ngữ
+        location.reload();  // Tải lại trang
+    }
+
+    // Kiểm tra ngôn ngữ khi trang được tải
+    window.addEventListener('load', function () {
+        const language = localStorage.getItem('language') || 'en'; // Mặc định là 'en' nếu không có ngôn ngữ lưu trữ
+        // Gọi hàm dịch ngôn ngữ
+        getTranslation(language);
+        // Đặt lại nhãn ngôn ngữ trong phần tử (tiếng Anh là EN nếu không có ngôn ngữ)
+        const languageLabel = document.getElementById('languageLabel');
+        if (languageLabel) {
+            languageLabel.innerHTML = language === 'en' ? 'EN' : (language === 'ja' ? 'JA' : 'EN');
         }
-    </script>
+    });
+</script>
 
 
 </body>
-<!-- fetch user -->
-
-
-
-
-
 </html>
