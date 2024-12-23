@@ -764,7 +764,6 @@
                     element.innerHTML = translations[language][translationKey];
                 }
             });
-
         }
 
         // Hàm thay đổi ngôn ngữ và cập nhật ngôn ngữ hiển thị trong thanh điều hướng
@@ -802,101 +801,6 @@
 
 
     </script>
-<script>
-    $(document).ready(function() {
-        // Mặc định sử dụng tiếng Anh
-        var table = $('.data-table').DataTable({
-            "language": {
-                "sProcessing": "Processing...",
-                "sLengthMenu": "_MENU_ records per page",
-                "sZeroRecords": "No records found",
-                "sInfo": "Showing _START_ to _END_ of _TOTAL_ records",
-                "sInfoEmpty": "Showing 0 to 0 of 0 records",
-                "sInfoFiltered": "(filtered from _MAX_ total records)",
-                "sSearch": "Search:",
-                "oPaginate": {
-                    "sFirst": "First",
-                    "sPrevious": "Previous", // Nút "Previous"
-                    "sNext": "Next",         // Nút "Next"
-                    "sLast": "Last"
-                }
-            }
-        });
-
-        // Cập nhật DataTable khi người dùng chọn ngôn ngữ
-        $('#language-selector').on('change', function() {
-            var selectedLanguage = $(this).val();
-
-            if (selectedLanguage == 'ja') {
-                table.language({
-                    "sProcessing": "処理中...",
-                    "sLengthMenu": "_MENU_ 件表示",
-                    "sZeroRecords": "データは見つかりませんでした。",
-                    "sInfo": "_START_ から _END_ まで、 _TOTAL_ 件中",
-                    "sInfoEmpty": "0 件中 0 件を表示",
-                    "sInfoFiltered": "(全 _MAX_ 件からフィルタリングしています)",
-                    "sSearch": "検索:",
-                    "oPaginate": {
-                        "sFirst": "最初",
-                        "sPrevious": "前へ",
-                        "sNext": "次へ",
-                        "sLast": "最後"
-                    }
-                });
-            } else {
-                table.language({
-                    "sProcessing": "Processing...",
-                    "sLengthMenu": "_MENU_ records per page",
-                    "sZeroRecords": "No records found",
-                    "sInfo": "Showing _START_ to _END_ of _TOTAL_ records",
-                    "sInfoEmpty": "Showing 0 to 0 of 0 records",
-                    "sInfoFiltered": "(filtered from _MAX_ total records)",
-                    "sSearch": "Search:",
-                    "oPaginate": {
-                        "sFirst": "First",
-                        "sPrevious": "Previous", // Nút "Previous"
-                        "sNext": "Next",         // Nút "Next"
-                        "sLast": "Last"
-                    }
-                });
-            }
-
-            // Reinitialize DataTable after language change
-            table.destroy();
-            table = $('.data-table').DataTable({
-                "language": selectedLanguage == 'ja' ? {
-                    "sProcessing": "処理中...",
-                    "sLengthMenu": "_MENU_ 件表示",
-                    "sZeroRecords": "データは見つかりませんでした。",
-                    "sInfo": "_START_ から _END_ まで、 _TOTAL_ 件中",
-                    "sInfoEmpty": "0 件中 0 件を表示",
-                    "sInfoFiltered": "(全 _MAX_ 件からフィルタリングしています)",
-                    "sSearch": "検索:",
-                    "oPaginate": {
-                        "sFirst": "最初",
-                        "sPrevious": "前へ",
-                        "sNext": "次へ",
-                        "sLast": "最後"
-                    }
-                } : {
-                    "sProcessing": "Processing...",
-                    "sLengthMenu": "_MENU_ records per page",
-                    "sZeroRecords": "No records found",
-                    "sInfo": "Showing _START_ to _END_ of _TOTAL_ records",
-                    "sInfoEmpty": "Showing 0 to 0 of 0 records",
-                    "sInfoFiltered": "(filtered from _MAX_ total records)",
-                    "sSearch": "Search:",
-                    "oPaginate": {
-                        "sFirst": "First",
-                        "sPrevious": "Previous", // Nút "Previous"
-                        "sNext": "Next",         // Nút "Next"
-                        "sLast": "Last"
-                    }
-                }
-            });
-        });
-    });
-</script>
 </body>
 
 
