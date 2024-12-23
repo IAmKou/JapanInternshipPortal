@@ -401,10 +401,10 @@
                 <h3 data-i18n="send-app">Send Application</h3>
                 <ul>
                     <li>
-                        <a href="home.html">Home</a>
+                        <a href="home.html" data-i18n="home">Home</a>
 
                     </li>
-                    <li>Send Application</li>
+                    <li data-i18n="send-app">Send Application</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
@@ -453,21 +453,20 @@
 
                                 <!-- Tệp đính kèm -->
                                 <div class="col-12 form-group">
-                                    <label style="color: #007bff; font-weight: bold;">Attach a File:</label>
+                                    <label style="color: #007bff; font-weight: bold;" data-i18n="attach">Attach a File:</label>
                                     <input class="form-control-file" name="imgFile" type="file">
                                 </div>
 
                                 <!-- Các nút -->
                                 <div class="col-12 form-group mg-t-8 text-end">
-                                    <button class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" type="submit">
-                                        Save
+                                    <button class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" type="submit" data-i18n="send">
+                                        Send
                                     </button>
-                                    <button class="btn-fill-lg bg-blue-dark btn-hover-yellow" type="reset">Reset
+                                    <button class="btn-fill-lg bg-blue-dark btn-hover-yellow" type="reset" data-i18n="clear-form">Clear Form
                                     </button>
                                 </div>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>
@@ -738,6 +737,10 @@
                 "app-name":"Title *",
                 "app-type":"Application Type *",
                 "absent":"Absent Application",
+                "reason":"Reason *",
+                "attach":"Attach a File",
+                "send":"Send",
+                "clear-form":"Clear Form"
             },
             "ja": {
                 //Main screen
@@ -780,6 +783,10 @@
                 "app-name":"題名 *",
                 "app-type":"アップリケションタイプ *",
                 "absent":"休みアップリケション",
+                "reason":"理由 *",
+                "attach":"ファイルを付け",
+                "send":"送信",
+                "clear-form":"クリエア"
             }
         };
 
