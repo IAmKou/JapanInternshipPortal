@@ -1,7 +1,11 @@
 package com.example.jip.dto;
 
 import com.example.jip.entity.Student;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class StudentWithClassDTO {
     private int studentId;
     private String studentName;
@@ -21,46 +25,6 @@ public class StudentWithClassDTO {
         this.studentId = studentId;
         this.studentName = studentName;
         this.img = img;
-        this.className = className;
-    }
-
-    public int getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
-    }
-
-    public String getStudentName() {
-        return studentName;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
-    }
-
-    public Student.Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Student.Gender gender) {
-        this.gender = gender;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
         this.className = className;
     }
 }

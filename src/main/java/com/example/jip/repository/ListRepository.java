@@ -43,6 +43,7 @@ public interface ListRepository extends JpaRepository<Listt, ListId> {
             "JOIN MarkReport mr ON s.id = mr.student.id " +
             "WHERE mr.attendance_rate IS NOT NULL " +
             "AND mr.avg_assignment_mark IS NOT NULL " +
-            "AND mr.avg_exam_mark IS NOT NULL")
+            "AND mr.avg_exam_mark IS NOT NULL " +
+            "AND l.clas.id IS NOT NULL")
     List<StudentWithClassDTO> getStudentsWithCompleteMarkReport();
 }
