@@ -331,6 +331,12 @@ public class AssignmentServices {
                     Student student = listEntry.getStudent();
 
                     assignmentStudentRepository.save(new AssignmentStudent(assignment, student));
+                    notificationServices.createAutoNotificationForAssignment(
+                            "New assignment created",
+                            teacher.getAccount().getId(),
+                            student.getAccount().getId()
+                    );
+                    emailServices.sendEmailCreateAssignment(student.getEmail(),clas.getName());
                 }
             }
         }
