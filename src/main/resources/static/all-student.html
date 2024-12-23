@@ -438,6 +438,11 @@
                 fetchStudents('/student/getAllWithoutClass');
             });
 
+            document.getElementById('getStudentsWithCompleteMarkReport').addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent form submission
+                fetchStudents('/student/getStudentsWithCompleteMarkReport');
+            });
+
             // Fetch and display all students on page load by default
             fetchStudents('/student/getAllStudent');
         });
