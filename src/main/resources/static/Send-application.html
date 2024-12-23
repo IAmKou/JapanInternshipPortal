@@ -587,15 +587,15 @@
         let options = [];
         if (userDetails.roleName === "STUDENT") {
             options = [
-                { value: "absent", text: "absent" }, // Chỉ lưu key, bản dịch sẽ được áp dụng sau
-                { value: "internship", text: "internship" },
-                { value: "others", text: "others" }
+                { value: "Absent application", text: "absent" }, // Chỉ lưu key, bản dịch sẽ được áp dụng sau
+                { value: "Internship Application", text: "internship" },
+                { value: "Others Application", text: "others" }
             ];
         } else if (userDetails.roleName === "TEACHER") {
             options = [
-                { value: "schedule-change", text: "schedule-change" },
-                { value: "change_teacher", text: "change_teacher" },
-                { value: "others", text: "others" }
+                { value: "Schedule Changing Application", text: "schedule-change" },
+                { value: "Teacher Change Application", text: "change_teacher" },
+                { value: "Others Application", text: "others" }
             ];
         }
 
