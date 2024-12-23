@@ -87,15 +87,16 @@ public class MaterialController {
 
             // Upload image and set it to materialDTO
             if (imgFile != null) {
-                String fileName = imgFile.getOriginalFilename(); // Get the original file name
-                String folderName = "Materials" + materialDTO.getTitle(); // Folder name in S3
+                String fileName = imgFile.getOriginalFilename(); // Lấy tên file gốc
+                String folderName = "Materials/" + materialDTO.getTitle(); // Đường dẫn thư mục tổng và con
 
-                // Upload the file to S3
+                // Tải file lên S3
                 String img = s3Service.uploadFile(imgFile, folderName, fileName);
 
-                // Set the image URL to the materialDTO
+                // Cập nhật URL ảnh vào materialDTO
                 materialDTO.setImg(img);
             }
+
 
             // Set teacher to materialDTO
             TeacherDTO teacherDTO = new TeacherDTO();
