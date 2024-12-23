@@ -1,8 +1,5 @@
 <!doctype html>
 <html class="no-js" lang="">
-
-
-<!-- Mirrored from notice-board.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -193,17 +190,7 @@
                             <div class="card-body">
                                 <div class="heading-layout1">
                                     <div class="item-title">
-                                        <h3>Create A Notification</h3>
-                                    </div>
-                                     <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button"
-                                        data-toggle="dropdown" aria-expanded="false">...</a>
-
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                            <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                            <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                                        </div>
+                                        <h3>Create New Notification</h3>
                                     </div>
                                 </div>
                                 <form class="new-added-form" action="notification/create" method="post">
@@ -213,18 +200,9 @@
                                             <label>Title</label>
                                             <input type="text" placeholder="" class="form-control" name="title" required>
                                         </div>
-                                        <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                            <label>Content</label>
-                                            <input type="text" placeholder="" class="form-control" name="content" required>
-                                        </div>
-<!--                                        <div class="col-12-xxxl col-lg-6 col-12 form-group">-->
-<!--                                            <label>Posted By </label>-->
-<!--                                            <input type="text" placeholder="" class="form-control" id="nameCreateNoti" readonly>-->
-<!--                                            <i class="fas fa-user"></i>-->
-<!--                                        </div>-->
                                         <div class="col-12 form-group mg-t-8">
-                                            <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
-                                            <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
+                                            <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Create</button>
+                                            <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Clear Form</button>
                                         </div>
                                     </div>
                                 </form>
@@ -240,30 +218,8 @@
                                     <div class="item-title">
                                         <h3>Notice Board</h3>
                                     </div>
-                                     <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button"
-                                        data-toggle="dropdown" aria-expanded="false">...</a>
-
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                            <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                            <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                                        </div>
-                                    </div>
                                 </div>
-                                <form class="mg-b-20">
-                                    <div class="row gutters-8">
-                                        <div class="col-lg-5 col-12 form-group">
-                                            <input type="text" placeholder="Search by Date ..." class="form-control">
-                                        </div>
-                                        <div class="col-lg-5 col-12 form-group">
-                                            <input type="text" placeholder="Search by Title ..." class="form-control">
-                                        </div>
-                                        <div class="col-lg-2 col-12 form-group">
-                                            <button type="submit" class="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                                        </div>
-                                    </div>
-                                </form>
+
                                 <div class="notice-board-wrap" id="notice-board-wrap">
                                     <!-- Notifications will be populated here dynamically -->
                                 </div>
@@ -272,10 +228,6 @@
                     </div>
                     <!-- All Notice Area End Here -->
                 </div>
-                <footer class="footer-wrap-layout1">
-                    <div class="copyright">© Copyrights <a href="#">JIP</a> 2019. All rights reserved. Designed by
-                        <a href="#">PsdBosS</a></div>
-                </footer>
             </div>
         </div>
         <!-- Page Area End Here -->
@@ -447,9 +399,5 @@
             console.error("User details not found in sessionStorage");
         }
     </script>
-
 </body>
-
-
-<!-- Mirrored from notice-board.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>
