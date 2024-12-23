@@ -1,15 +1,16 @@
 package com.example.jip.services;
 
-import com.example.jip.dto.AutoNotificationDTO;
 import com.example.jip.dto.NotificationDTO;
-import com.example.jip.entity.Account;
-import com.example.jip.entity.Notification;
+import com.example.jip.entity.*;
 import com.example.jip.repository.AccountRepository;
 import com.example.jip.repository.NotificationRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import lombok.*;
 
 import java.util.Date;
+import java.util.Set;
 
 @Service
 public class NotificationServices {
@@ -36,7 +37,7 @@ public class NotificationServices {
         return new NotificationDTO(notification);
     }
 
-    public AutoNotificationDTO createAutoNotificationForAssignment(String title, Integer senderId, Integer receiverId) {
+    public void createAutoNotificationForAssignment(String title, Integer senderId, Integer receiverId) {
     Account sender = accountRepository.findById(senderId)
             .orElseThrow(() -> new IllegalArgumentException("Invalid sender ID"));
 
@@ -52,9 +53,7 @@ public class NotificationServices {
 
     notificationRepository.save(notification);
 
-    return new AutoNotificationDTO(notification);
     }
-
 
 }
 
