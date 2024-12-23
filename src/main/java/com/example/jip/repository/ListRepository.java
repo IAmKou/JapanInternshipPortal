@@ -35,4 +35,14 @@ public interface ListRepository extends JpaRepository<Listt, ListId> {
             "LEFT JOIN Listt l ON s.id = l.student.id " +
             "LEFT JOIN Class c ON l.clas.id = c.id")
     List<StudentWithClassDTO> findAllStudentsWithClassInfo();
+
+    @Query("SELECT new com.example.jip.dto.StudentWithClassDTO(s.id, s.fullname, s.img, c.name) " +
+            "FROM Student s " +
+            "JOIN Listt l ON s.id = l.student.id " +
+            "JOIN Class c ON l.clas.id = c.id " +
+            "JOIN MarkReport mr ON s.id = mr.student.id " +
+            "WHERE mr.attendance_rate IS NOT NULL " +
+            "AND mr.avg_assignment_mark IS NOT NULL " +
+            "AND mr.avg_exam_mark IS NOT NULL")
+    List<StudentWithClassDTO> getStudentsWithCompleteMarkReport();
 }
