@@ -115,7 +115,7 @@ public class StudentController {
         return new StudentDTO(student);
     }
 
-    @GetMapping("/getAllWithoutClass")
+    @GetMapping("/getStudentsWithCompleteMarkReport")
     public List<StudentWithClassDTO> getStudentsWithCompleteMarkReport() {
         return listRepository.getStudentsWithCompleteMarkReport();
     }
