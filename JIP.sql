@@ -199,17 +199,17 @@ CREATE TABLE Application (
     FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
 );
 
+
 CREATE TABLE Notification (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Title VARCHAR(100) NOT NULL,
-    Content VARCHAR(250) NOT NULL,
     Created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     account_id INT, 
-    role ENUM('Admin', 'Teacher', 'Student', 'Manager') NOT NULL, 
-    recipient_id INT DEFAULT NULL, 
+    recipient_account_id INT DEFAULT NULL, 
     FOREIGN KEY (account_id) REFERENCES Account(Id),
-    FOREIGN KEY (recipient_id) REFERENCES Account(Id)
+    FOREIGN KEY (recipient_account_id) REFERENCES Account(Id)
 );
+
 
 Create table Report(
 Id int auto_increment primary key,
