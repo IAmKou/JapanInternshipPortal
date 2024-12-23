@@ -20,3 +20,4 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Integer>
     @Query("SELECT COUNT(a) > 0 FROM Assignment a WHERE a.description = ?1 AND a.teacher.id  = ?2")
     boolean existsByDescriptionAndByTeacherId(String description, int teacherId);
 }
+

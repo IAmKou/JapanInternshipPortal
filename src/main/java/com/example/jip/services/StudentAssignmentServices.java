@@ -38,6 +38,10 @@ public class StudentAssignmentServices {
 
     CloudinaryService cloudinaryService;
 
+    NotificationServices notificationServices;
+
+    EmailServices emailServices;
+
 
 
     @PreAuthorize("hasAuthority('STUDENT')")
@@ -57,6 +61,9 @@ public class StudentAssignmentServices {
         studentAssignment.setStudent(student);
         studentAssignment.setStatus(StudentAssignment.Status.SUBMITTED);
         studentAssignment.setAssignment(assignment);
+
+        notificationServices.createAutoNotificationForAssignment(student.getFullname() + "has submitted an assignment",student.getId(),assignment.getTeacher().getId());
+        emailServices.sendEmailSubmittedAssignment(student.getEmail(),student.getFullname(),assignment.getClasses().toString());
 
         return studentAssignmentRepository.save(studentAssignment);
     }

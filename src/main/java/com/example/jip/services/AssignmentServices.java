@@ -24,11 +24,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AssignmentServices{
+public class AssignmentServices {
 
     AssignmentRepository assignmentRepository;
 
     TeacherRepository teacherRepository;
+
+
 
     ClassRepository classRepository;
 
@@ -37,7 +39,10 @@ public class AssignmentServices{
     AssignmentStudentRepository assignmentStudentRepository;
 
     StudentAssignmentRepository studentAssignmentRepository;
-    private final NotificationServices notificationServices;
+
+    EmailServices emailServices;
+
+    NotificationServices notificationServices;
 
     S3Service s3Service;
 
@@ -132,15 +137,22 @@ public class AssignmentServices{
                 Optional<Class> clasOpt = classRepository.findById(classId);
                 if (clasOpt.isPresent()) {
                     Class clas = clasOpt.get();
-
+                    log.info("Number of students in the class list: {}", clas.getClassLists() != null ? clas.getClassLists().size() : "null");
                     // Link assignment to class
                     assignmentClassRepository.save(new AssignmentClass(savedAssignment, clas));
 
                     // Link assignment to all students in the class
                     for (Listt listEntry : clas.getClassLists()) {
                         Student student = listEntry.getStudent();
+                        log.info("Creating notification for student ID: {}", student.getAccount().getId());
+
                         assignmentStudentRepository.save(new AssignmentStudent(savedAssignment, student));
-                        notificationServices.createAutoNotificationForAssignment("New assignment have been created", teacher.getId(), student.getId());
+                        notificationServices.createAutoNotificationForAssignment(
+                                "New assignment created",
+                                teacher.getAccount().getId(),
+                                student.getAccount().getId()
+                        );
+                        emailServices.sendEmailCreateAssignment(student.getEmail(),clas.getName());
                     }
                 } else {
                     log.warn("Class with ID {} not found", classId);
@@ -153,7 +165,6 @@ public class AssignmentServices{
         // Save the assignment
         return assignmentRepository.save(assignment);
     }
-
     public boolean descriptionExists(String description, int teacherId) {
 
         return assignmentRepository.existsByDescriptionAndByTeacherId(description, teacherId);
@@ -284,9 +295,7 @@ public class AssignmentServices{
     public Assignment updateAssignment(int assignmentId, AssignmentUpdateRequest request) {
         Assignment assignment = assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new NoSuchElementException("Assignment id not found!"));
-
         Teacher teacher = assignment.getTeacher();
-
         if (request.getImgFile() != null) {
             MultipartFile[] newFiles = request.getImgFile();
             for (int i = 0; i < request.getImgFile().length; i++) {
@@ -320,7 +329,14 @@ public class AssignmentServices{
                 // Link assignment to all students in the class
                 for (Listt listEntry : clas.getClassLists()) {
                     Student student = listEntry.getStudent();
+
                     assignmentStudentRepository.save(new AssignmentStudent(assignment, student));
+                    notificationServices.createAutoNotificationForAssignment(
+                            "New assignment created",
+                            teacher.getAccount().getId(),
+                            student.getAccount().getId()
+                    );
+                    emailServices.sendEmailCreateAssignment(student.getEmail(),clas.getName());
                 }
             }
         }
@@ -380,5 +396,6 @@ public class AssignmentServices{
 
         return assignmentResponses;
     }
+
 }
 

@@ -337,6 +337,38 @@
 
         </div>
     </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-success" id="successModalLabel">
+                        <i class="fas fa-check-circle"></i> Success
+                    </h5>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-danger" id="errorModalLabel">
+                        <i class="fas fa-times-circle"></i> Error
+                    </h5>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     <!-- Page Area End Here -->
 </div>
 <!-- jquery-->
@@ -364,6 +396,19 @@
         document.getElementById("created_date").value = currentDate;
     });
 
+    // Function to show the success modal
+    function showSuccessModal(message) {
+        document.getElementById('success-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        successModal.show();
+    }
+
+    // Function to show the error modal
+    function showErrorModal(message) {
+        document.getElementById('long-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
+        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+        errorModal.show();
+    }
 
     async function addAssignment(event) {
         event.preventDefault();
@@ -379,37 +424,36 @@
 
         // Check if required fields are empty
         if (!description) {
-            alert('Description is required.');
+            showErrorModal('Title is required.');
             return;
         }
 
         if (!content) {
-            alert('Content is required.');
+            showErrorModal('Description is required.');
             return;
         }
 
         if (!endDate) {
-            alert('End date is required.');
+            showErrorModal('Deadline not specified.');
             return;
         }
 
         // Check if the created date is after the end date
         if (new Date(createdDate) >= new Date(endDate)) {
-            alert('Create date cannot be after the end date.');
+            showErrorModal('Deadline must be after the Date Created.');
             return;
         }
 
         // Check if the description already exists in the database
         const descriptionExists = await checkDescriptionExists(description);
         if (descriptionExists) {
-            alert('Description already exists. Please use a different description.');
+            showErrorModal('Title existed. Please use a different title for this assignment.');
             return;
         }
 
         // Get selected class IDs from the checkboxes
         const selectedClasses = Array.from(document.querySelectorAll('input[name="classIds"]:checked'))
             .map(checkbox => checkbox.value);
-
 
         // Append selected class IDs to the form data
         selectedClasses.forEach(classId => {
@@ -433,17 +477,18 @@
             });
 
             if (response.ok) {
-                alert('Assignment added successfully!');
-                toListAssigment();
+                showSuccessModal('Assignment added successfully!');
+                setTimeout(toListAssigment, 2000); // Delay redirection by 2 seconds
             } else {
                 const errorData = await response.json();
-                alert(`Failed to create assignment: ${errorData.message || 'Please try again.'}`);
+                showErrorModal(`Failed to create assignment: ${errorData.message || 'Please try again.'}`);
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred. Please try again.');
+            showErrorModal('An error occurred. Please try again.');
         }
     }
+
 
     async function checkDescriptionExists(description) {
         try {
@@ -460,7 +505,6 @@
             return false;
         }
     }
-
 
     async function populateClasses() {
         try {
@@ -500,14 +544,12 @@
             });
         } catch (error) {
             console.error('Error populating classes:', error);
-            alert('Could not fetch classes. Please try again later.');
+            showErrorModal('Could not fetch classes. Please try again later.');
         }
     }
 
     // Call the function on page load
     document.addEventListener('DOMContentLoaded', populateClasses);
-
-
 
     (async function fetchUserData() {
         try {
@@ -552,8 +594,6 @@
         console.error("User details not found in sessionStorage");
     }
 
-
-
     function submitForm() {
         // Retrieve userDetails from sessionStorage
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -589,13 +629,7 @@
             console.error("Teacher ID is missing or user details not found in sessionStorage");
         }
     }
-
-
 </script>
 
-
 </body>
-
-
-<!-- Mirrored from create-assignment.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>
