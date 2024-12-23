@@ -28,6 +28,9 @@ public class ApplicationServices {
     @Autowired
     private ApplicationRepository applicationRepository;
 
+    @Autowired
+    private NotificationServices notificationServices;
+
     public String saveImage(MultipartFile img) throws IOException {
         if (img.isEmpty()) {
             throw new IOException("File is empty");

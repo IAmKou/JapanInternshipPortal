@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.Date;
 
 @Entity
-@Table(name = "Notification")
+@Table(name = "notification")
 @Getter
 @Setter
 public class Notification {
@@ -41,5 +41,11 @@ public class Notification {
 
     }
 
+    public Notification(String title, Date currentDateTime, Integer id, Integer id1) {
+        this.title = title;
+        this.createdAt = currentDateTime;
+        this.id = id;
+        this.recipientAccount = null;
+    }
 }
 

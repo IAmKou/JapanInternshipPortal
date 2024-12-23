@@ -447,7 +447,8 @@
 
     async function checkDescriptionExists(description) {
         try {
-            const response = await fetch(`/assignment/exists?description=${encodeURIComponent(description)}`);
+            const teacher_id = document.getElementById('userId').value;
+            const response = await fetch(`/assignment/exists?description=${encodeURIComponent(description)}&teacherId=${teacher_id}`);
             if (response.ok) {
                 return await response.json(); // true if exists, false otherwise
             } else {
