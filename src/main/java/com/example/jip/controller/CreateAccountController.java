@@ -25,7 +25,6 @@ public class CreateAccountController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createAccount(@RequestParam String username,
-                                           @RequestParam String password,
                                            @RequestParam int role) {
 
         Role roleEntity = roleRepository.findById(role)
@@ -40,10 +39,16 @@ public class CreateAccountController {
         }
 
         try {
+            String password = generateVerifyCode();
             int accountId = accountServices.createAccount(username, password, role);
             return ResponseEntity.ok(accountId);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating account");
         }
+    }
+
+    private String generateVerifyCode() {
+        int code = (int) (Math.random() * 1000000);  // Generates a 6-digit random code
+        return String.format("%06d", code);  // Ensure it's always 6 digits
     }
 }

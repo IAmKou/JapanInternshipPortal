@@ -100,7 +100,9 @@ public class AssignmentController {
 
     @GetMapping("/exists")
     public ResponseEntity<Boolean> checkIfDescriptionExists(@RequestParam("description") String description, @RequestParam("teacherId") int teacherId) {
-        boolean exists = assignmentServices.descriptionExists(description, teacherId);
+        log.info("teacherId: {}", teacherId);
+        Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
+        boolean exists = assignmentServices.descriptionExists(description, teacherOpt.get().getId());
         return ResponseEntity.ok(exists);
     }
 
