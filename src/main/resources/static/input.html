@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="ie=edge" http-equiv="x-ua-compatible">
-    <title>JIP | Students Details</title>
+    <title>JIP | Export Information</title>
     <meta content="" name="description">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <!-- Favicon -->
@@ -164,6 +164,15 @@
         .table td {
             padding: 10px; /* Tăng khoảng cách giữa các ô */
             font-size: 18px; /* Thay đổi kích cỡ chữ */
+        }
+        /* Custom Button */
+        .btn-search {
+            height: 50px; /* Đồng bộ chiều cao với input */
+            font-size: 16px; /* Kích thước chữ to hơn */
+            font-weight: bold; /* Làm chữ đậm hơn */
+            text-transform: uppercase; /* Viết hoa chữ */
+            border-radius: 5px; /* Bo góc tương tự input */
+            padding: 0 20px; /* Tăng khoảng cách trong nút */
         }
     </style>
 
@@ -406,15 +415,15 @@
                                 <td class="font-medium text-dark-medium" id="user-id"></td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Name: My Nigga</td>
+                                <td class="font-weight-bold">Name: Anh Long Dep Zai</td>
                                 <td class="font-medium text-dark-medium" id="user-name"></td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Class: Gey</td>
+                                <td class="font-weight-bold">Class: Black</td>
                                 <td class="font-medium text-dark-medium" id="what"></td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Teacher's Commentation: Ass</td>
+                                <td class="font-weight-bold">Teacher's Commentation: Sample123</td>
                                 <td class="font-medium text-dark-medium" id="user-jname"></td>
                             </tr>
                             </tbody>
@@ -440,13 +449,13 @@
 
                             </tr>
                             <tr>
-                                <td>Presentation Skill</td>
+                                <td>Presentation</td>
                                 <td>Final Presentation</td>
-                                <td>69%</td>
+                                <td>40%</td>
                                 <td>1</td>
                             </tr>
                             <tr>
-                                <td>Daily Exams (Kanji, Bunpo, Kotoba)</td>
+                                <td>Daily Exams</td>
                                 <td>Avg Exams Mark</td>
                                 <td>40%</td>
                                 <td>9</td>
@@ -467,10 +476,15 @@
                                 <td style="font-weight: bold;">Course Total</td>
                                 <td></td>
                                 <td></td>
-                                <td style="font-weight: bold;" >8</td>
+                                <td style="font-weight: bold;">7.5</td>
                             </tr>
                             </tbody>
                         </table>
+                        <form action="/export-csv" method="post" style="margin-top: 20px">
+                            <div class="col-lg-4">
+                                <button type="submit" class="btn btn-gradient-yellow btn-search">Export</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <button class="save-button btn btn-success mt-3" style="display: none;">Save</button>
