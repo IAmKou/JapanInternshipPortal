@@ -31,7 +31,6 @@
     #content {
         height: 200px; /* Thay đổi chiều cao tùy ý */
     }
-
     table td {
         font-weight: bold;
     }
@@ -57,6 +56,85 @@
         display: inline-block;
         margin-right: 15px;  /* Đảm bảo khoảng cách giữa title và description */
     }
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Custom Modal Styling */
+    #success-modal .modal-header {
+        background-color: #28a745; /* Màu nền của header */
+        color: #fff;
+        font-size: 1.25rem;
+    }
+
+    #success-modal .modal-body {
+        font-size: 1.1rem;
+        padding: 30px;
+        background-color: #f8f9fa;
+        color: #333;
+    }
+
+    #success-modal .modal-body .fas.fa-check-circle {
+        color: #28a745;
+    }
+
+    #success-modal .btn-success {
+        font-size: 1rem;
+        padding: 10px 20px;
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    #success-modal .btn-close {
+        color: white;
+    }
+
+    #success-modal .modal-body p {
+        font-size: 0.9rem;
+        color: #6c757d; /* Màu nhạt hơn cho mô tả */
+    }
+
+    /* Custom Modal Styling for Error Modal */
+    #error-modal .modal-header {
+        background-color: #dc3545; /* Màu nền của header (Đỏ cho lỗi) */
+        color: #fff;
+        font-size: 1.25rem;
+    }
+
+    #error-modal .modal-body {
+        font-size: 1.1rem;
+        padding: 30px;
+        background-color: #f8f9fa;
+        color: #333;
+    }
+
+    #error-modal .modal-body .fas.fa-times-circle {
+        color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+    }
+
+    #error-modal .btn-danger {
+        font-size: 1rem;
+        padding: 10px 20px;
+        background-color: #dc3545; /* Màu đỏ cho nút lỗi */
+        border-color: #dc3545;
+    }
+
+    #error-modal .btn-close {
+        color: white;
+    }
+
+    #error-modal .modal-body p {
+        font-size: 0.9rem;
+        color: #6c757d; /* Màu nhạt hơn cho mô tả */
+    }
+
 </style>
 
 <body>
@@ -375,6 +453,38 @@
             </div>
         </div>
     </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-success" id="successModalLabel">
+                        <i class="fas fa-check-circle"></i> Success
+                    </h5>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-danger" id="errorModalLabel">
+                        <i class="fas fa-times-circle"></i> Error
+                    </h5>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     <!-- Page Area End Here -->
 </div>
 <!-- jquery-->
@@ -391,7 +501,6 @@
 <script src="js/main.js"></script>
 <!-- fetch user -->
 <script>
-
     document.addEventListener("DOMContentLoaded", function() {
         const currentDate = new Date().toISOString().split("T")[0];
         document.getElementById("created_date").value = currentDate;
@@ -399,6 +508,21 @@
 
     let endAssignmentDate = null;
 
+    // Function to show the success modal
+    function showSuccessModal(message) {
+        document.getElementById('success-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        successModal.show();
+    }
+
+    // Function to show the error modal
+    function showErrorModal(message) {
+        document.getElementById('long-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
+        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+        errorModal.show();
+    }
+
+    // Fetch assignment details
     async function fetchAssignmentDetails() {
         const urlParams = new URLSearchParams(window.location.search);
         const assignmentId = urlParams.get('id');
@@ -406,7 +530,8 @@
         if (assignmentId) {
             document.getElementById('assignmentid').value = assignmentId;
         } else {
-            console.error("Assignment ID is missing in the URL.");
+            showErrorModal("Assignment ID is missing in the URL.");
+            return;
         }
 
         try {
@@ -426,8 +551,9 @@
             document.getElementById('end-date').textContent = assignment.end_date || "N/A";
             document.getElementById('assignmentid').value = assignment.id;
 
-            endAssignmentDate =  new Date(assignment.end_date);
+            endAssignmentDate = new Date(assignment.end_date);
             console.log(endAssignmentDate);
+
             // Display class names
             const classes = assignment.classes || [];
             document.getElementById('assignment-classes').textContent = classes.length > 0 ? classes.join(", ") : "No classes assigned";
@@ -450,21 +576,23 @@
                 filesContainer.textContent = "No files uploaded";
             }
 
+            // Show success modal
+            showSuccessModal('Assignment details loaded successfully!');
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while fetching the assignment details.');
+            showErrorModal('An error occurred while fetching the assignment details.');
         }
     }
 
     // Call the function on page load
     fetchAssignmentDetails();
 
+    // Submit assignment
     async function submitAssignment(event) {
         event.preventDefault();
 
         const form = event.target.closest('form');
         const formData = new FormData(form);
-
 
         const studentId = formData.get('student_id');
         const assignmentId = formData.get('assignment_id');
@@ -473,26 +601,27 @@
         const created_date = new Date(formData.get('created_date'));
 
         // Check if the assignment is overdue
-        if (created_date > endAssignmentDate){
-            alert('Submission date exceeds the assignment end date.');
+        if (created_date > endAssignmentDate) {
+            showErrorModal('Submission date exceeds the assignment end date.');
             window.location.href = '/list-student-assignment.html';
+            return;
         }
 
-        if (!description.trim() || !content.trim()){
-            alert('Please fill in all the required fields!');
+        if (!description.trim() || !content.trim()) {
+            showErrorModal('Please fill in all the required fields!');
             return; // Exit the function if validation fails
         }
 
         // Validate if studentId and assignmentId are valid integers
         if (!studentId || !assignmentId || isNaN(studentId) || isNaN(assignmentId)) {
-            alert('Invalid student or assignment ID.');
+            showErrorModal('Invalid student or assignment ID.');
             return;
         }
+
         // Log all form data for debugging
         for (const [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
         }
-
 
         try {
             const response = await fetch('/student-assignment/submit', {
@@ -501,22 +630,36 @@
             });
 
             if (response.ok) {
-                alert('Assignment submitted successfully!');
+                showSuccessModal('Assignment submitted successfully!');
                 window.location.href = '/list-submitted-assignments.html';
             } else {
                 const errorData = await response.json();
-                alert(`Failed to submit assignment: ${errorData.message || 'Please try again.'}`);
+                showErrorModal(`Failed to submit assignment: ${errorData.message || 'Please try again.'}`);
             }
         } catch (error) {
-
             console.error('Error:', error);
-            alert('An error occurred. Please try again.');
+            showErrorModal('An error occurred. Please try again.');
         }
     }
 
-
 </script>
+
 <script>
+    // Function to show success modal
+    function showSuccessModal(message) {
+        const modalBody = document.querySelector("#success-modal .modal-body");
+        modalBody.querySelector("h4").textContent = message;
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        successModal.show();
+    }
+
+    // Function to show error modal
+    function showErrorModal(message) {
+        const modalBody = document.querySelector("#long-modal .modal-body");
+        modalBody.textContent = message;
+        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+        errorModal.show();
+    }
 
     (async function fetchUserData() {
         try {
@@ -527,12 +670,11 @@
                 console.log("User data stored in sessionStorage:", userData);
                 getUserDetails(userData);
                 // Ensure that the fetch functions are called after userDetails are set
-
             } else {
-                console.error("Failed to fetch user details:", response.statusText);
+                showErrorModal("Failed to fetch user details: " + response.statusText);
             }
         } catch (error) {
-            console.error("Error fetching user details:", error);
+            showErrorModal("Error fetching user details: " + error.message);
         }
     })();
 
@@ -561,49 +703,47 @@
                         : '/path/to/default-passport.jpg';
                     console.log("Image source set to:", imgElement.src);
                 } else {
-                    console.error("Image element not found in:", container);
+                    showErrorModal("Image element not found in: " + container);
                 }
             });
         } else {
-            console.error("User details not found in sessionStorage");
+            showErrorModal("User details not found in sessionStorage");
         }
     }
 
-    // Lấy dữ liệu userDetails từ sessionStorage và gọi hàm getUserDetails
-    userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    // Retrieve userDetails from sessionStorage and call getUserDetails
+    let userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
     if (userDetails) {
         getUserDetails(userDetails);
     } else {
         fetchUserData();  // Fetch user data if not found in sessionStorage
     }
 
-
+    // Function to handle form submission
     function submitForm() {
         // Retrieve userDetails from sessionStorage
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
         if (userDetails && userDetails.studentId) {
-            // Redirect to the appropriate URL with the teacherId
+            // Redirect to the appropriate URL with the studentId
             window.location.href = `schedule-list-student.html?studentId=${userDetails.studentId}`;
         } else {
-            console.error("Teacher ID is missing or user details not found in sessionStorage");
+            showErrorModal("Student ID is missing or user details not found in sessionStorage");
         }
     }
 
+    // Function to redirect to the personal mark report page
     function toMarkReport() {
         // Retrieve userDetails from sessionStorage
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
         if (userDetails && userDetails.studentId) {
-            // Redirect to the appropriate URL with the teacherId
+            // Redirect to the appropriate URL with the studentId
             window.location.href = `personal-mark-report.html?studentId=${userDetails.studentId}`;
         } else {
-            console.error("Teacher ID is missing or user details not found in sessionStorage");
+            showErrorModal("Student ID is missing or user details not found in sessionStorage");
         }
     }
 </script>
 </body>
-
-
-<!-- Mirrored from teacher-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:49 GMT -->
 </html>
