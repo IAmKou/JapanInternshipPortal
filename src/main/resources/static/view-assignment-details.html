@@ -1,8 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="">
 
-
-<!-- Mirrored from teacher-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:48 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -55,7 +53,84 @@
         display: inline-block;
         margin-right: 15px;  /* Đảm bảo khoảng cách giữa title và description */
     }
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
+    /* Custom Modal Styling */
+    #success-modal .modal-header {
+        background-color: #28a745; /* Màu nền của header */
+        color: #fff;
+        font-size: 1.25rem;
+    }
+
+    #success-modal .modal-body {
+        font-size: 1.1rem;
+        padding: 30px;
+        background-color: #f8f9fa;
+        color: #333;
+    }
+
+    #success-modal .modal-body .fas.fa-check-circle {
+        color: #28a745;
+    }
+
+    #success-modal .btn-success {
+        font-size: 1rem;
+        padding: 10px 20px;
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    #success-modal .btn-close {
+        color: white;
+    }
+
+    #success-modal .modal-body p {
+        font-size: 0.9rem;
+        color: #6c757d; /* Màu nhạt hơn cho mô tả */
+    }
+
+    /* Custom Modal Styling for Error Modal */
+    #error-modal .modal-header {
+        background-color: #dc3545; /* Màu nền của header (Đỏ cho lỗi) */
+        color: #fff;
+        font-size: 1.25rem;
+    }
+
+    #error-modal .modal-body {
+        font-size: 1.1rem;
+        padding: 30px;
+        background-color: #f8f9fa;
+        color: #333;
+    }
+
+    #error-modal .modal-body .fas.fa-times-circle {
+        color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+    }
+
+    #error-modal .btn-danger {
+        font-size: 1rem;
+        padding: 10px 20px;
+        background-color: #dc3545; /* Màu đỏ cho nút lỗi */
+        border-color: #dc3545;
+    }
+
+    #error-modal .btn-close {
+        color: white;
+    }
+
+    #error-modal .modal-body p {
+        font-size: 0.9rem;
+        color: #6c757d; /* Màu nhạt hơn cho mô tả */
+    }
 </style>
 
 <body>
@@ -375,7 +450,39 @@
         </div>
     </div>
 
-    <!-- Page Area End Here -->
+    <!-- Success Modal -->
+    <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-success" id="successModalLabel">
+                        <i class="fas fa-check-circle"></i> Success
+                    </h5>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-danger" id="errorModalLabel">
+                        <i class="fas fa-times-circle"></i> Error
+                    </h5>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page Area End Here -->
 </div>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
@@ -391,12 +498,27 @@
 <script src="js/main.js"></script>
 <!-- fetch user -->
 <script>
+    // Function to show the success modal
+    function showSuccessModal(message) {
+        document.getElementById('success-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        successModal.show();
+    }
+
+    // Function to show the error modal
+    function showErrorModal(message) {
+        document.getElementById('long-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
+        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+        errorModal.show();
+    }
+
+    // Fetch assignment details
     async function fetchAssignmentDetails() {
         const urlParams = new URLSearchParams(window.location.search);
         const assignmentId = urlParams.get('id');
 
         if (!assignmentId) {
-            alert('Assignment ID is missing in the URL.');
+            showErrorModal('Assignment ID is missing in the URL.');
             return;
         }
 
@@ -437,9 +559,12 @@
             } else {
                 filesContainer.textContent = "No files uploaded";
             }
+
+            // Show success modal
+            showSuccessModal('Assignment details loaded successfully!');
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while fetching the assignment details.');
+            showErrorModal('An error occurred while fetching the assignment details.');
         }
     }
 
@@ -466,8 +591,8 @@
             if (submittedAssignments.length === 0) {
                 const noDataRow = document.createElement("tr");
                 noDataRow.innerHTML = `
-                <td colspan="5" class="text-center">No submitted assignments available.</td>
-            `;
+            <td colspan="5" class="text-center">No submitted assignments available.</td>
+        `;
                 tableBody.appendChild(noDataRow);
                 return;
             }
@@ -475,32 +600,56 @@
             submittedAssignments.forEach((submittedAssignment) => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                <td>
-                    <a href="/submitted-assignment-detail-teacher.html?id=${submittedAssignment.id}" target="_blank">
-                        ${submittedAssignment.description}
-                    </a>
-                </td>
-                <td>${submittedAssignment.mark || "N/A"}</td>
-                <td>${new Date(submittedAssignment.date).toLocaleDateString()}</td>
-                <td>${submittedAssignment.status || "N/A"}</td>
-            `;
+            <td>
+                <a href="/submitted-assignment-detail-teacher.html?id=${submittedAssignment.id}" target="_blank">
+                    ${submittedAssignment.description}
+                </a>
+            </td>
+            <td>${submittedAssignment.mark || "N/A"}</td>
+            <td>${new Date(submittedAssignment.date).toLocaleDateString()}</td>
+            <td>${submittedAssignment.status || "N/A"}</td>
+        `;
                 tableBody.appendChild(row);
             });
+
+            // Show success modal
+            showSuccessModal('Submitted assignments loaded successfully!');
         } catch (error) {
             console.error("Error:", error);
             const tableBody = document.getElementById("submittedAssignment_list");
             tableBody.innerHTML = `
-            <tr>
-                <td colspan="5" class="text-center text-danger">Failed to load assignments. Please try again later.</td>
-            </tr>
-        `;
+        <tr>
+            <td colspan="5" class="text-center text-danger">Failed to load assignments. Please try again later.</td>
+        </tr>
+    `;
+
+            // Show error modal
+            showErrorModal('An error occurred while loading submitted assignments.');
         }
     }
 
+    // Call the function to fetch and display submitted assignments
     fetchAndDisplaySubmittedAssignments();
 
 </script>
+
 <script>
+    // Function to show success modal
+    function showSuccessModal(message) {
+        const modalBody = document.querySelector("#success-modal .modal-body");
+        modalBody.querySelector("h4").textContent = message;
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        successModal.show();
+    }
+
+    // Function to show error modal
+    function showErrorModal(message) {
+        const modalBody = document.querySelector("#long-modal .modal-body");
+        modalBody.textContent = message;
+        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+        errorModal.show();
+    }
+
     (async function fetchUserData() {
         try {
             const response = await fetch('/user-detail');
@@ -513,9 +662,11 @@
 
             } else {
                 console.error("Failed to fetch user details:", response.statusText);
+                showErrorModal("Failed to fetch user details: " + response.statusText);
             }
         } catch (error) {
             console.error("Error fetching user details:", error);
+            showErrorModal("An error occurred while fetching user details.");
         }
     })();
 
@@ -545,10 +696,12 @@
                     console.log("Image source set to:", imgElement.src);
                 } else {
                     console.error("Image element not found in:", container);
+                    showErrorModal("Image element not found.");
                 }
             });
         } else {
             console.error("User details not found in sessionStorage");
+            showErrorModal("User details not found in sessionStorage.");
         }
     }
 
@@ -559,8 +712,10 @@
         if (userDetails && userDetails.teacherId) {
             // Redirect to the appropriate URL with the teacherId
             window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
+            showSuccessModal("Redirecting to class list...");
         } else {
             console.error("Teacher ID is missing or user details not found in sessionStorage");
+            showErrorModal("Teacher ID is missing or user details not found in sessionStorage.");
         }
     }
 
@@ -571,8 +726,10 @@
         if (userDetails && userDetails.teacherId) {
             // Redirect to the appropriate URL with the teacherId
             window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
+            showSuccessModal("Redirecting to assignment list...");
         } else {
             console.error("Teacher ID is missing or user details not found in sessionStorage");
+            showErrorModal("Teacher ID is missing or user details not found in sessionStorage.");
         }
     }
 
@@ -583,13 +740,12 @@
         if (userDetails && userDetails.teacherId) {
             // Redirect to the appropriate URL with the teacherId
             window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
+            showSuccessModal("Redirecting to schedule list...");
         } else {
             console.error("Teacher ID is missing or user details not found in sessionStorage");
+            showErrorModal("Teacher ID is missing or user details not found in sessionStorage.");
         }
     }
 </script>
 </body>
-
-
-<!-- Mirrored from teacher-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:49 GMT -->
 </html>
