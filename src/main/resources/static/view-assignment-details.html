@@ -403,7 +403,7 @@
                         <table class="table text-nowrap">
                             <tbody>
                             <tr>
-                                <td>Created Date:</td>
+                                <td>Start Date:</td>
                                 <td id="created-date"></td>
                             </tr>
                             <tr>
@@ -531,12 +531,13 @@
 
             const assignment = await response.json();
             console.log('Assignment details:', assignment);
-
+            const createdDateFormatted = formatDateTime(assignment.created_date);
+            const endDateFormatted = formatDateTime(assignment.end_date);
             // Populate description and content
             document.getElementById('assignment-description').textContent = assignment.description || "No description provided";
             document.getElementById('assignment-content').textContent = assignment.content || "No content provided";
-            document.getElementById('created-date').textContent = assignment.created_date || "N/A";
-            document.getElementById('end-date').textContent = assignment.end_date || "N/A";
+            document.getElementById('created-date').textContent = createdDateFormatted  || "N/A";
+            document.getElementById('end-date').textContent = endDateFormatted || "N/A";
 
             // Display class names
             const classes = assignment.classes || [];
@@ -560,8 +561,6 @@
                 filesContainer.textContent = "No files uploaded";
             }
 
-            // Show success modal
-            showSuccessModal('Assignment details loaded successfully!');
         } catch (error) {
             console.error('Error:', error);
             showErrorModal('An error occurred while fetching the assignment details.');
@@ -570,6 +569,24 @@
 
     // Call the function on page load
     fetchAssignmentDetails();
+
+    function formatDateTime(dateString) {
+        const date = new Date(dateString);
+
+        // Subtract 10 hours (10 hours * 60 minutes * 60 seconds * 1000 milliseconds)
+        date.setTime(date.getTime() - 10 * 60 * 60 * 1000);
+
+        // Format the adjusted date
+        return date.toLocaleString('vi-VN', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            timeZone: 'UTC'
+        });
+    }
 
     // Fetch and display submitted assignments
     async function fetchAndDisplaySubmittedAssignments() {

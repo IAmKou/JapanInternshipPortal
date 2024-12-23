@@ -9,6 +9,12 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  jackson:
+    time-zone: UTC
+    datasource:
+      hikari:
+        data-source-properties:
+          serverTimezone: UTC
   servlet:
     multipart:
       enabled: true
