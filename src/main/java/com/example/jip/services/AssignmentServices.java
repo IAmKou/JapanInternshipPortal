@@ -115,7 +115,7 @@ public class AssignmentServices {
         assignment.setTeacher(teacher);
 
         // Sanitize and create folder name
-        String folderName = sanitizeFolderName("assignments/" + request.getDescription());
+        String folderName = sanitizeFolderName("assignments/" + request.getDescription() + "_" + teacher.getFullname());
         assignment.setImgUrl(folderName); // Set folder URL
         if (request.getImgFile() != null) {
             MultipartFile[] imgFiles = request.getImgFile();
@@ -145,18 +145,14 @@ public class AssignmentServices {
                     for (Listt listEntry : clas.getClassLists()) {
                         Student student = listEntry.getStudent();
                         log.info("Creating notification for student ID: {}", student.getAccount().getId());
-                        try {
-                            notificationServices.createAutoNotificationForAssignment(
-                                    "New assignment created",
-                                    teacher.getAccount().getId(),
-                                    student.getAccount().getId()
-                            );
-                            log.info("Notification created for student ID: {}", student.getAccount().getId());
-                        } catch (Exception e) {
-                            log.error("Failed to create notification for student ID: {}", student.getAccount().getId(), e);
-                        }
-                        emailServices.sendEmailCreateAssignment(student.getEmail(),clas.getName());
+
                         assignmentStudentRepository.save(new AssignmentStudent(savedAssignment, student));
+                        notificationServices.createAutoNotificationForAssignment(
+                                "New assignment created",
+                                teacher.getAccount().getId(),
+                                student.getAccount().getId()
+                        );
+                        emailServices.sendEmailCreateAssignment(student.getEmail(),clas.getName());
                     }
                 } else {
                     log.warn("Class with ID {} not found", classId);
@@ -169,8 +165,9 @@ public class AssignmentServices {
         // Save the assignment
         return assignmentRepository.save(assignment);
     }
-    public boolean descriptionExists(String description) {
-        return assignmentRepository.existsByDescription(description);
+    public boolean descriptionExists(String description, int teacherId) {
+
+        return assignmentRepository.existsByDescriptionAndByTeacherId(description, teacherId);
     }
 
 
@@ -298,14 +295,14 @@ public class AssignmentServices {
     public Assignment updateAssignment(int assignmentId, AssignmentUpdateRequest request) {
         Assignment assignment = assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new NoSuchElementException("Assignment id not found!"));
-
+        Teacher teacher = assignment.getTeacher();
         if (request.getImgFile() != null) {
             MultipartFile[] newFiles = request.getImgFile();
             for (int i = 0; i < request.getImgFile().length; i++) {
                 log.info("Uploading file: " + request.getImgFile()[i].getOriginalFilename());
             }
             if (newFiles.length > 0) {
-                String folderName = sanitizeFolderName("assignments/" + request.getDescription());
+                String folderName = sanitizeFolderName("assignments/" + request.getDescription() + "_" + teacher.getFullname());
                 if (folderName.isEmpty()) {
                     throw new RuntimeException("Folder name is not set for assignment ID: " + assignmentId);
                 }
