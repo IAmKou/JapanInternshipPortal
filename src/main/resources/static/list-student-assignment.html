@@ -283,6 +283,7 @@
                                 <th>Description</th>
                                 <th>Creating Date</th>
                                 <th>End Date</th>
+                                <th>Status</th>
                             </tr>
                             </thead>
                             <tbody id="assignment_list">
@@ -320,6 +321,26 @@
 <script src="js/main.js"></script>
 
 <script>
+    function formatDateTime(dateString) {
+        const date = new Date(dateString);
+
+        // Adjust for your timezone (if needed, e.g., UTC+7 for Vietnam)
+        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
+
+        // Format the date and time in 12-hour format with AM/PM
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        let hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12; // Convert to 12-hour format, 0 becomes 12
+
+        return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+    }
+
     async function fetchAndDisplayAssignments() {
         try {
             const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -346,6 +367,7 @@
                 throw new Error(`Error fetching assignments: ${assignmentResponse.statusText}`);
             }
 
+
             const assignments = await assignmentResponse.json();
             console.log("Fetched Assignments:", assignments);
 
@@ -362,6 +384,12 @@
             }
 
             assignments.forEach(assignment => {
+                console.log("Raw Date for Created Date: ", assignment.created_date);  // Log raw created date
+                console.log("Raw Date for End Date: ", assignment.end_date);  // Log raw end date
+
+                const createdDateFormatted = formatDateTime(assignment.created_date);
+                const endDateFormatted = formatDateTime(assignment.end_date);
+
                 const row = document.createElement('tr');
                 row.innerHTML = `
                 <td>
@@ -369,8 +397,9 @@
                         ${assignment.description}
                     </a>
                 </td>
-                <td>${new Date(assignment.created_date).toLocaleDateString()}</td>
-                <td>${new Date(assignment.end_date).toLocaleDateString()}</td>
+                <td>${createdDateFormatted}</td>
+                <td>${endDateFormatted}</td>
+                <td>${assignment.status}</td>
             `;
                 tableBody.appendChild(row);
             });
@@ -385,7 +414,8 @@
         `;
         }
     }
-
+    // Set auto-refresh every 1 minute (60000 milliseconds)
+    setInterval(fetchAndDisplayAssignments, 60000);
     document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
 
     // Lấy dữ liệu userDetails từ sessionStorage và gọi hàm getUserDetails

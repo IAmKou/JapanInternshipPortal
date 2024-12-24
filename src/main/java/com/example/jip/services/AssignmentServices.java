@@ -78,14 +78,16 @@ public class AssignmentServices {
         log.info("Fetching assignments for student ID: {}", studentId);
         List<Assignment> allAssignments = assignmentRepository.findAssignmentsByStudentId(studentId);
         List<Integer> submittedAssignmentIds = studentAssignmentRepository.findSubmittedAssignmentIdsByStudentId(studentId);
+
         return allAssignments.stream()
-                .filter(assignment -> !submittedAssignmentIds.contains(assignment.getId()))
+                .filter(assignment -> !submittedAssignmentIds.contains(assignment.getId()) /*&& assignment.getStatus().toString().equalsIgnoreCase("OPEN")*/)
                 .map(assignment -> {
                     AssignmentResponse response = new AssignmentResponse();
                     response.setId(assignment.getId());
                     response.setDescription(assignment.getDescription());
                     response.setCreated_date(assignment.getCreated_date());
                     response.setEnd_date(assignment.getEnd_date());
+                    response.setStatus(assignment.getStatus().toString());
                     return response;
                 })
                 .collect(Collectors.toList());
@@ -453,5 +455,6 @@ class ScheduledTask {
         log.info("Scanning to update Assignment status...");
         assignmentStatusService.updateAssignmentStatus();
     }
+
 }
 

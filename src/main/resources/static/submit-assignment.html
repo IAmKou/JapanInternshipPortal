@@ -522,6 +522,26 @@
         errorModal.show();
     }
 
+    function formatDateTime(dateString) {
+        const date = new Date(dateString);
+
+        // Adjust for your timezone (if needed, e.g., UTC+7 for Vietnam)
+        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
+
+        // Format the date and time in 12-hour format with AM/PM
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        let hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12; // Convert to 12-hour format, 0 becomes 12
+
+        return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+    }
+
     // Fetch assignment details
     async function fetchAssignmentDetails() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -542,13 +562,16 @@
             }
 
             const assignment = await response.json();
+
             console.log('Assignment details:', assignment);
+            const createdDateFormatted = formatDateTime(assignment.created_date);
+            const endDateFormatted = formatDateTime(assignment.end_date);
 
             // Populate description and content
             document.getElementById('assignment-description').textContent = assignment.description || "No description provided";
             document.getElementById('assignment-content').textContent = assignment.content || "No content provided";
-            document.getElementById('created-date').textContent = assignment.created_date || "N/A";
-            document.getElementById('end-date').textContent = assignment.end_date || "N/A";
+            document.getElementById('created-date').textContent = createdDateFormatted  || "N/A";
+            document.getElementById('end-date').textContent = endDateFormatted || "N/A";
             document.getElementById('assignmentid').value = assignment.id;
 
             endAssignmentDate = new Date(assignment.end_date);
@@ -576,8 +599,6 @@
                 filesContainer.textContent = "No files uploaded";
             }
 
-            // Show success modal
-            showSuccessModal('Assignment details loaded successfully!');
         } catch (error) {
             console.error('Error:', error);
             showErrorModal('An error occurred while fetching the assignment details.');
@@ -603,7 +624,6 @@
         // Check if the assignment is overdue
         if (created_date > endAssignmentDate) {
             showErrorModal('Submission date exceeds the assignment end date.');
-            window.location.href = '/list-student-assignment.html';
             return;
         }
 
