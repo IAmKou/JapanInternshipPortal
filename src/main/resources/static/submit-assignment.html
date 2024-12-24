@@ -628,7 +628,7 @@
             });
 
             if (response.ok) {
-                showSuccessModal('Assignment submitted successfully!');
+                alert('Assignment submitted successfully!');
                 window.location.href = '/list-submitted-assignments.html';
             } else {
                 const errorData = await response.json();
