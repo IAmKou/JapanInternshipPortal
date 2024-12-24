@@ -392,7 +392,7 @@
                         <table class="table text-nowrap">
                             <tbody>
                             <tr>
-                                <td>Created Date:</td>
+                                <td>Start Date:</td>
                                 <td id="created-date"></td>
                             </tr>
                             <tr>
@@ -422,19 +422,15 @@
                     </div>
 
                     <div class="single-info-details">
-                        <form class="new-added-form" action="/student-assignment/submit" method="post"  onsubmit="submitAssignment(event)">
+                        <form class="new-added-form" action="/student-assignment/submit" method="post" onsubmit="submitAssignment(event)">
+                            <div id="statusMessage" class="alert alert-danger" style="display: none;"></div>
                             <div class="row">
-                                <input type="hidden" name="student_id" id="userId"/>
-                                <input type="hidden" name="assignment_id" id="assignmentid"/>
-
+                                <input type="hidden" name="student_id" id="userId" />
+                                <input type="hidden" name="assignment_id" id="assignmentid" />
+                                <input type="hidden" name="status" id="status" />
                                 <div class="col-xl-8 col-lg-6 col-12 form-group">
                                     <label for="description">Title *</label>
                                     <input type="text" placeholder="Write description..." class="form-control" name="description" id="description" required>
-                                </div>
-
-                                <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                    <label for="created_date">Create Date </label>
-                                    <input type="date" class="form-control" name="created_date" id="created_date" disabled value="2024-12-22">
                                 </div>
 
                                 <div class="col-xl-12 col-lg-12 col-12 form-group">
@@ -443,7 +439,7 @@
                                 </div>
 
                                 <div class="col-12 form-group mg-t-8">
-                                    <button type="submit" onclick="submitAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Submit</button>
+                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Submit</button>
                                     <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Clear Form</button>
                                 </div>
                             </div>
@@ -501,26 +497,6 @@
 <script src="js/main.js"></script>
 <!-- fetch user -->
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const currentDate = new Date().toISOString().split("T")[0];
-        document.getElementById("created_date").value = currentDate;
-    });
-
-    let endAssignmentDate = null;
-
-    // Function to show the success modal
-    function showSuccessModal(message) {
-        document.getElementById('success-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
-        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
-        successModal.show();
-    }
-
-    // Function to show the error modal
-    function showErrorModal(message) {
-        document.getElementById('long-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
-        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
-        errorModal.show();
-    }
 
     function formatDateTime(dateString) {
         const date = new Date(dateString);
@@ -572,10 +548,18 @@
             document.getElementById('assignment-content').textContent = assignment.content || "No content provided";
             document.getElementById('created-date').textContent = createdDateFormatted  || "N/A";
             document.getElementById('end-date').textContent = endDateFormatted || "N/A";
+            document.getElementById('status').value = assignment.status;
             document.getElementById('assignmentid').value = assignment.id;
 
-            endAssignmentDate = new Date(assignment.end_date);
-            console.log(endAssignmentDate);
+            // Check assignment status and disable the form if not OPEN
+            const formElements = document.querySelectorAll('.new-added-form input, .new-added-form textarea, .new-added-form button');
+            if (assignment.status !== "OPEN") {
+                formElements.forEach(element => {
+                    element.disabled = true; // Disable all form elements
+                });
+                document.getElementById('statusMessage').textContent = 'This assignment is not open for submissions.';
+                document.getElementById('statusMessage').style.display = 'block';
+            }
 
             // Display class names
             const classes = assignment.classes || [];
@@ -619,13 +603,7 @@
         const assignmentId = formData.get('assignment_id');
         const description = formData.get('description');
         const content = formData.get('content');
-        const created_date = new Date(formData.get('created_date'));
 
-        // Check if the assignment is overdue
-        if (created_date > endAssignmentDate) {
-            showErrorModal('Submission date exceeds the assignment end date.');
-            return;
-        }
 
         if (!description.trim() || !content.trim()) {
             showErrorModal('Please fill in all the required fields!');

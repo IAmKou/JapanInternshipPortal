@@ -14,8 +14,6 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentAssignmentSubmitRequest {
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    Date date;
     @NonNull
     String description;
     @NonNull
