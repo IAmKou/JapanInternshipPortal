@@ -63,6 +63,27 @@
             font-size: 0.9rem;
             color: #6c757d; /* Màu nhạt hơn cho mô tả */
         }
+
+        .search-input {
+            height: 50px; /* Tăng chiều cao của ô nhập */
+            font-size: 16px; /* Tăng kích thước chữ */
+            padding: 10px 15px; /* Tăng khoảng cách bên trong */
+            border-radius: 5px; /* Bo góc mềm mại */
+            border: 1px solid #000; /* Viền màu đen */
+            box-shadow: none; /* Loại bỏ bóng */
+        }
+
+
+
+        /* Custom Button */
+        .btn-search {
+            height: 50px; /* Đồng bộ chiều cao với input */
+            font-size: 16px; /* Kích thước chữ to hơn */
+            font-weight: bold; /* Làm chữ đậm hơn */
+            text-transform: uppercase; /* Viết hoa chữ */
+            border-radius: 5px; /* Bo góc tương tự input */
+            padding: 0 20px; /* Tăng khoảng cách trong nút */
+        }
     </style>
 </head>
 
@@ -317,20 +338,56 @@
                         <li data-i18n="list_materials">View List Materials</li>
                     </ul>
                 </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="d-flex align-items-center">
+                                    <label for="searchInput" class="text-primary font-weight-bold me-3 mb-0" data-i18n="search">
+                                        Search
+                                    </label>
+                                </div>
+                                <form style="padding-bottom: 20px; padding-top: 10px;" id="searchForm" onsubmit="return handleSearch(event)">
+                                    <div class="row mb-3 align-items-center">
+                                        <div class="col-lg-6">
+                                            <input
+                                                    type="text"
+                                                    class="form-control search-input"
+                                                    id="searchInput"
+                                                    style="border: 1px solid #000; box-shadow: none;"
+                                            />
+                                        </div>
+
+                                        <div class="col-lg-2">
+                                            <button
+                                                    type="submit"
+                                                    class="btn btn-gradient-yellow btn-search"
+                                                    data-i18n="search">
+                                                SEARCH
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Breadcubs Area End Here -->
                 <!-- Class Table Area Start Here -->
                 <div class="card height-auto">
                     <div class="card-body">
                         <div class="heading-layout1">
                             <div class="item-title">
-                                <h3 data-i18n="all_list_materials">All List Materials</h3>
+                                <h3 data-i18n="all_list_materials" style="margin-bottom: 25px">All List Materials</h3>
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table display data-table text-nowrap" style="border-collapse: collapse;">
+                            <table id="example" class="table display data-table text-nowrap" style="border-collapse: collapse;">
                                 <thead>
                                 <tr>
-                                    <!-- Các tiêu đề cột sẽ nằm ở đây -->
 
                                 </tr>
                                 </thead>
@@ -339,6 +396,7 @@
                                 </tbody>
                             </table>
                         </div>
+
                     </div>
                 </div>
                 <!-- Modal Confirm Delete -->
@@ -429,6 +487,7 @@
             // Lấy teacher_id từ sessionStorage
             const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
             const currentTeacherId = userDetails ? userDetails.id : null;
+
             console.log("Current Teacher ID: ", currentTeacherId);
 
             // Fetch dữ liệu từ backend và lấy teacherId cùng với materials
@@ -497,11 +556,19 @@
                                 "targets": 'no-sort',
                                 "orderable": false
                             }],
+                            "language": {
+                                "paginate": {
+                                    "first": i18n[lang].paginate.first,
+                                    "previous": i18n[lang].paginate.previous,
+                                    "next": i18n[lang].paginate.next,
+                                    "last": i18n[lang].paginate.last,
+                                }
+                            },
                             "header": false,  // Tắt phần header nếu không muốn nó hiển thị
                             "ordering": false,  // Tắt sắp xếp nếu không cần
                             "scrollY": "300px",  // Nếu bạn muốn hiển thị cuộn dọc cho bảng
                             "scrollCollapse": true,  // Cho phép cuộn bảng nếu không đủ chỗ
-                            "paging": false  // Tắt phân trang
+                            "paging": true  // Tắt phân trang
                         });
                     }
                 })
@@ -641,6 +708,13 @@
         function getTranslation(language) {
             const translations = {
                 "en": {
+                    paginate: {
+                        first: "First",
+                        previous: "Previous",
+                        next: "Next",
+                        last: "Last"
+                    },
+
                     //Main screen
                     "create_material": "Create Material",
                     "material_details": "Material Details",
@@ -698,6 +772,13 @@
                     // end sidebar admin
                 },
                 "ja": {
+                    paginate: {
+
+                        previous: "前",
+                        next: "次",
+
+                    },
+
                     //Main screen
                     "create_material": "教材を作成",
                     "material_details": "教材の詳細",
@@ -754,7 +835,9 @@
                     "change_password": "パスワード変更"
                     // end sidebar admin
                 }
+
             };
+
 
             // Cập nhật nội dung các phần tử có thuộc tính data-i18n
             const elements = document.querySelectorAll('[data-i18n]');
@@ -764,7 +847,19 @@
                     element.innerHTML = translations[language][translationKey];
                 }
             });
+            if ($.fn.dataTable.isDataTable('.data-table')) {
+                var table = $('.data-table').DataTable();
+                table.settings()[0].oLanguage.sSearch = translations[language].search || '';
+                table.settings()[0].oLanguage.oPaginate = {
+                    sFirst: translations[language].paginate.first,
+                    sPrevious: translations[language].paginate.previous,
+                    sNext: translations[language].paginate.next,
+                    sLast: translations[language].paginate.last,
+                };
+                table.draw();
+            }
         }
+
 
         // Hàm thay đổi ngôn ngữ và cập nhật ngôn ngữ hiển thị trong thanh điều hướng
         function changeLanguage(language) {
@@ -801,6 +896,129 @@
 
 
     </script>
+<script>
+    let originalMaterialsData = [];  // Lưu trữ dữ liệu ban đầu từ API
+
+    // Hàm lấy danh sách materials từ API và hiển thị trên frontend
+    function fetchMaterials() {
+        // Lấy teacher_id từ sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        const currentTeacherId = userDetails ? userDetails.id : null;
+
+        console.log("Current Teacher ID: ", currentTeacherId);
+
+        // Fetch dữ liệu từ backend và lấy teacherId cùng với materials
+        fetch('/materials/list?accountId=' + currentTeacherId)  // Truyền accountId vào request
+            .then(response => response.json())
+            .then(data => {
+                const teacherIdFromBackend = data.teacherId;  // Lấy teacherId từ backend
+                console.log("Teacher ID from backend: ", teacherIdFromBackend);
+
+                // Lưu dữ liệu vào biến global
+                originalMaterialsData = data.materials;
+
+                // Hiển thị danh sách materials
+                renderMaterialsList(originalMaterialsData, teacherIdFromBackend);
+            })
+            .catch(error => console.error('Error fetching materials:', error));
+    }
+
+    // Hàm render danh sách materials lên UI
+    function renderMaterialsList(materials, teacherId) {
+        const materialList = document.getElementById('material-list');
+        materialList.innerHTML = '';  // Xóa nội dung hiện tại
+
+        materials.forEach(material => {
+            const row = document.createElement('tr');
+            let dropdownHtml = '';
+
+            // Kiểm tra nếu teacher_id của material trùng với teacher_id của người dùng
+            if (material.teacher.id === teacherId) {
+                dropdownHtml = `
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <span class="flaticon-more-button-of-three-dots"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i><span data-i18n="close">Close</span></a>
+                        <button type="button" class="dropdown-item" onclick="openDeleteModal('${material.id}')">
+                            <i class="fas fa-trash text-orange-peel"></i><span data-i18n="delete">Delete</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+            }
+
+            row.innerHTML = `
+            <td class="text-left">
+                <span style="display: flex; align-items: center;">
+                    <i class="flaticon-script" style="font-size: 20px; margin-right: 8px;"></i>
+                    <a href="View-material-details.html?id=${material.id}" style=" color:  #007bff;">
+                        ${material.title}
+                    </a>
+                </span>
+            </td>
+            <td>
+                ${dropdownHtml}
+            </td>
+        `;
+            materialList.appendChild(row);
+        });
+
+        // Cập nhật lại DataTable mà không phá hủy bảng cũ
+        if ($.fn.dataTable.isDataTable('.data-table')) {
+            var table = $('.data-table').DataTable();
+            table.clear();  // Xóa dữ liệu cũ
+            table.rows.add(materialList.rows);  // Thêm các dòng mới
+            table.draw();  // Vẽ lại bảng
+        } else {
+            // Khởi tạo DataTable chỉ khi nó chưa được khởi tạo
+            $('.data-table').DataTable({
+                "bSort": false,
+                "bPaginate": false,
+                "bInfo": false,
+                "bFilter": false,
+                "autoWidth": false,
+                "columnDefs": [{
+                    "targets": 'no-sort',
+                    "orderable": false
+                }],
+                "language": {
+                    "paginate": {
+                        "first": i18n[lang].paginate.first,
+                        "previous": i18n[lang].paginate.previous,
+                        "next": i18n[lang].paginate.next,
+                        "last": i18n[lang].paginate.last,
+                    }
+                },
+                "header": false,  // Tắt phần header nếu không muốn nó hiển thị
+                "ordering": false,  // Tắt sắp xếp nếu không cần
+                "scrollY": "300px",  // Nếu bạn muốn hiển thị cuộn dọc cho bảng
+                "scrollCollapse": true,  // Cho phép cuộn bảng nếu không đủ chỗ
+                "paging": true  // Tắt phân trang
+            });
+        }
+    }
+
+    // Hàm xử lý sự kiện tìm kiếm khi submit form
+    function handleSearch(event) {
+        event.preventDefault(); // Ngăn không cho form reload trang
+
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+        // Lọc lại danh sách materials theo từ khóa tìm kiếm
+        const filteredMaterials = originalMaterialsData.filter(material => {
+            const materialTitle = material.title ? material.title.toLowerCase() : '';  // Kiểm tra title
+            const teacherName = material.teacher && material.teacher.name ? material.teacher.name.toLowerCase() : '';  // Kiểm tra teacher và name
+
+            return materialTitle.includes(searchTerm) || teacherName.includes(searchTerm);
+        });
+
+        // Render lại danh sách materials đã lọc
+        renderMaterialsList(filteredMaterials, originalMaterialsData[0]?.teacher.id);
+    }
+
+</script>
 </body>
 
 

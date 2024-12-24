@@ -101,7 +101,11 @@
             font-size: 16px; /* Tăng kích thước chữ */
             padding: 10px 15px; /* Tăng khoảng cách bên trong */
             border-radius: 5px; /* Bo góc mềm mại */
+            border: 1px solid #000; /* Viền màu đen */
+            box-shadow: none; /* Loại bỏ bóng */
         }
+
+
 
         /* Custom Button */
         .btn-search {
@@ -180,6 +184,8 @@
             font-size: 0.9rem;
             color: #6c757d; /* Màu nhạt hơn cho mô tả */
         }
+
+
     </style>
 </head>
 
@@ -342,16 +348,6 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <form style="padding-bottom: 20px; padding-top: 20px">
-                                <div class="row mb-3 align-items-center">
-                                    <div class="col-lg-8">
-                                        <input type="text" placeholder="Search by ID..." class="form-control search-input">
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <button type="submit" class="btn btn-gradient-yellow btn-search" data-i18n="search">SEARCH</button>
-                                    </div>
-                                </div>
-                            </form>
                             <div class="dropdown" style="margin-bottom: 20px">
                                 <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" style="font-size: 16px; padding: 10px 20px;" data-i18n="add_import_users">Add or Import Users</a>
                                 <div class="dropdown-menu dropdown-menu-end">
@@ -359,6 +355,51 @@
                                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#standard-modal" data-i18n="import_users"><i class="fas fa-file-import text-green"></i> Import Users</a>
                                 </div>
                             </div>
+                            <div class="d-flex align-items-center">
+                                <label for="searchInput" class="text-primary font-weight-bold me-3 mb-0" data-i18n="search">
+                                    Search
+                                </label>
+                                <label for="filterSelect" class="text-primary font-weight-bold mb-0" style="margin-left: 610px;" data-i18n="filter">
+                                    Filter:
+                                </label>
+                            </div>
+
+
+
+                            <form style="padding-bottom: 20px; padding-top: 10px;" id="searchForm">
+                            <div class="row mb-3 align-items-center">
+                                <div class="col-lg-6">
+                                    <input
+                                            type="text"
+                                            class="form-control search-input"
+                                            id="searchInput"
+                                            style=" border: 1px solid #000;  box-shadow: none;"
+                                    />
+                                </div>
+                                <div class="col-lg-2">
+                                <div class="form-group">
+                                    <div class="position-relative">
+                                        <i class="fas fa-sort position-absolute" style="right: 12px; top: 50%; transform: translateY(-50%); color: #aaa;"></i>
+                                        <select class="form-control filter-select" id="filterSelect" style="padding-right: 35px; font-size: 1.25rem; height: 45px; padding-left: 10px; padding-right: 10px; margin-top: 7px;">
+                                            <option value="name">Name</option>
+                                            <option value="role">Role</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                                <div class="col-lg-2">
+                                    <button
+                                            type="submit"
+                                            class="btn btn-gradient-yellow btn-search"
+                                            data-i18n="search">
+                                        SEARCH
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
                         </div>
                     </div>
                 </div>
@@ -381,9 +422,8 @@
                                         <th data-i18n="actions">Actions</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                        </tbody>
-                                    </table>
+                                    <tbody></tbody>
+                                </table>
                                 <div class="pagination-container">
                                     <ul class="pagination justify-content-center">
                                         <li class="page-item"><a href="#" class="page-link">Previous</a></li>
@@ -749,6 +789,7 @@
                 "role": "Role",
                 "actions": "Actions",
                 "view_details": "View Details",
+                "filter":"Filter:",
                 // end main screen
                 // headbar
                 "log_out": "Log Out",
@@ -785,6 +826,7 @@
                 "role": "役割",
                 "actions": "アクション",
                 "view_details": "詳細を見る",
+                "filter":"フィルター",
                 // end main screen
                 // headbar
                 "log_out": "ログアウト",
@@ -844,6 +886,76 @@
         if (languageLabel) {
             languageLabel.innerHTML = language === 'en' ? 'EN' : (language === 'ja' ? 'JA' : 'EN');
         }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("searchForm");
+        const searchInput = document.getElementById("searchInput");
+        const tableBody = document.querySelector(".table tbody");
+        let users = []; // Dữ liệu người dùng
+
+        // Hàm fetch và render ban đầu
+        async function fetchUsers() {
+            try {
+                const response = await fetch(`/users`);
+                if (!response.ok) throw new Error(`Failed to fetch: ${response.statusText}`);
+                users = await response.json();
+                renderTable(users);
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        }
+
+        // Hàm render table với dữ liệu lọc
+        function renderTable(filteredUsers) {
+            tableBody.innerHTML = ""; // Xóa nội dung bảng
+
+            filteredUsers.forEach((user, index) => {
+                if (user.id === 1) return; // Bỏ qua ID = 1
+
+                const fullName = user.fullName || "N/A";
+                const roleName = user.roleName || "N/A";
+                const jname = user.jname || "N/A";
+                const img = user.img || 'img/figure/admin.jpg';
+
+                const row = `
+            <tr>
+                <td>${index + 1}</td>
+                <td><img src="${img}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;"></td>
+                <td>${fullName}</td>
+                <td>${jname}</td>
+                <td>${roleName}</td>
+                <td><a href="users-details.html?userId=${user.id}" class="text-decoration-none text-primary" title="View User Details">
+                        <i class="fas fa-eye" style="font-size: 16px; margin-right: 8px;"></i>View Details</a></td>
+            </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        // Xử lý khi form được submit
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const query = searchInput.value.toLowerCase().trim();
+            const selectedFilter = document.getElementById("filterSelect").value; // "name" hoặc "role"
+
+            const filteredUsers = users.filter(user => {
+                const fullName = user.fullName ? user.fullName.toLowerCase() : "";
+                const roleName = user.roleName ? user.roleName.toLowerCase() : "";
+
+                // Lọc theo tiêu chí được chọn (name hoặc role)
+                if (selectedFilter === "name") {
+                    return fullName.includes(query);
+                } else if (selectedFilter === "role") {
+                    return roleName.includes(query);
+                }
+            });
+
+            renderTable(filteredUsers); // Render dữ liệu đã lọc
+        });
+
+        fetchUsers();
     });
 </script>
 

@@ -114,13 +114,19 @@
                 </li>
 
                 <li class="navbar-item dropdown header-language">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
-                       data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
+                    </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#">English</a>
-                        <a class="dropdown-item" href="#">Japanese</a>
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
+                            <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;"> English
+                        </a>
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
+                            <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese" style="width: 20px; height: 15px;"> 日本語
+                        </a>
                     </div>
                 </li>
+
             </ul>
         </div>
     </div>
@@ -169,7 +175,7 @@
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3>Admin Dashboard</h3>
+                <h3 data-translate data-original="Admin Dashboard">Admin Dashboard</h3>
                 <ul>
                     <li>
                         <a href="admin.html">Home</a>
@@ -268,9 +274,7 @@
                             </div>
 
                         </div>
-                        <form action="/notification/test-notification" method="post" >
-                            <button type="submit">test</button>
-                        </form>
+
                     </div>
                 </div>
             </div>
@@ -501,6 +505,7 @@
             noticeBoardWrap.innerHTML = '<p>Failed to load notifications.</p>';
         });
 </script>
+
 </body>
 
 

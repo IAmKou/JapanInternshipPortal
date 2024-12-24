@@ -21,10 +21,13 @@ configurations {
 
 repositories {
     mavenCentral()
+
+
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.liquibase:liquibase-core'
     implementation 'com.microsoft.sqlserver:mssql-jdbc:12.8.1.jre11'
     implementation 'org.springframework.boot:spring-boot-starter-security'

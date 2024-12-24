@@ -31,6 +31,8 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <style>
         /* Cải thiện thẩm mỹ cho thẻ card */
         .card {
@@ -222,6 +224,67 @@
             font-size: 0.9rem;
             color: #6c757d; /* Màu nhạt hơn cho mô tả */
         }
+
+        #reply {
+            border: 2px solid #007bff;  /* Đặt màu border là màu xanh dương */
+            border-radius: 5px;         /* Thêm góc bo tròn nếu cần */
+        }
+
+        /* Tạo hiệu ứng khi người dùng hover vào Quill editor */
+        #reply:hover {
+            border-color: #28a745;      /* Chuyển màu border thành màu xanh lá khi hover */
+        }
+
+        /* Tạo hiệu ứng khi Quill editor có focus (khi người dùng click vào) */
+        #reply:focus {
+            border-color: #ff6347;      /* Chuyển màu border thành màu cam khi có focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm bóng để nổi bật hơn */
+        }
+
+        /* Chỉnh màu border cho select2 (chỉ áp dụng cho select) */
+        .select2-selection {
+            border: 2px solid #007bff !important;  /* Đặt màu xanh dương cho border của select */
+            border-radius: 5px;                    /* Bo góc nếu cần */
+        }
+
+        /* Khi người dùng focus vào select */
+        .select2-selection:focus {
+            border-color: #007bff !important;      /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        }
+
+        /* Khi người dùng hover vào select */
+        .select2-selection:hover {
+            border-color: #007bff !important;     /* Giữ màu xanh khi hover */
+        }
+
+        /* Đảm bảo không có border xung quanh select2 container */
+        .select2-container {
+            border: none !important;               /* Loại bỏ border mặc định của container */
+        }
+        /* Làm chữ bên trong select và option đậm lên */
+        .select2-container .select2-selection__rendered {
+            font-weight: bold !important;  /* Làm chữ bên trong đậm */
+        }
+
+        /* Làm chữ trong các option đậm lên */
+        .select2-dropdown .select2-results__option {
+            font-weight: bold !important;  /* Làm chữ bên trong các option đậm */
+        }
+        table tr td strong {
+            color: #007bff !important;  /* Đảm bảo màu xanh dương */
+        }
+        /* Màu chữ cho các label */
+        label {
+            color: #007bff !important;  /* Màu xanh dương cho tất cả các thẻ label */
+        }
+
+        /* Nếu muốn chỉ định màu cho các label cụ thể (Status và Respond) */
+        label[for="status"], label[for="reply"] {
+            color: #007bff !important;  /* Màu xanh cho chữ trong label Status và Respond */
+        }
+
+
     </style>
 </head>
 
@@ -426,7 +489,8 @@
                         <!-- Hiển thị thông tin tĩnh -->
                         <div class="single-info-details">
                             <div class="item-content">
-                                <h3>Application Details</h3>
+                                <h3 class="blue-text" style="font-weight: 500">Application Details</h3>
+
                                 <table class="table text-nowrap">
                                     <tbody>
                                     <tr>
@@ -470,7 +534,8 @@
 
                                 <div class="col-lg-6 col-12 form-group">
                                     <label for="reply">Respond *</label>
-                                    <textarea class="textarea form-control" id="reply" cols="8" rows="5"></textarea>
+                                    <!-- Đặt một div để Quill editor thay cho textarea -->
+                                    <div id="reply" class="form-control" style="height: 200px;"></div>
                                 </div>
 
                                 <div class="col-12 form-group mg-t-8">
@@ -583,7 +648,15 @@
                 // Hiển thị thông tin tĩnh trong bảng
                 document.getElementById("name").textContent = data.name || "N/A";
                 document.getElementById("applicationType").textContent = data.category || "N/A";
-                document.getElementById("content").innerHTML = formatContent(data.content || "N/A");
+                if (data.content) {
+                    // Loại bỏ thẻ block như <p>, <div>, và thay chúng bằng các ký tự newline '\n' hoặc giữ lại chúng dưới dạng văn bản thuần.
+                    var sanitizedContent = data.content.replace(/<\/?(p|div)[^>]*>/gi, '');
+
+                    // Hiển thị HTML chỉ chứa các thẻ inline (chẳng hạn <strong>, <em>, <u> ...)
+                    document.getElementById('content').innerHTML = sanitizedContent;
+                } else {
+                    console.error('Không tìm thấy content trong dữ liệu');
+                }
 
                 const createdDate = new Date(data.created_date);
                 document.getElementById("createDate").textContent = createdDate
@@ -615,55 +688,76 @@
         });
 </script>
 <script>
-    document.getElementById("saveChanges").addEventListener("click", function(event) {
-        event.preventDefault(); // Ngừng reload trang
+    document.addEventListener('DOMContentLoaded', function () {
+        // Khởi tạo Quill với các tùy chọn, thay thế textarea bằng div với id "reply"
+        var quill = new Quill('#reply', {
+            theme: 'snow',  // Chọn theme 'snow' hoặc 'bubble'
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline'],    // Các nút định dạng văn bản
+                    ['link'],  // Chèn link
+                    [{ 'list': 'ordered'}, { 'list': 'bullet'}], // Các kiểu danh sách
+                    ['image']  // Chèn ảnh
+                ]
+            }
+        });
 
-        const applicationId = new URLSearchParams(window.location.search).get('id');
-        let status = document.getElementById("status").value.trim();
-        let reply = document.getElementById("reply").value.trim();
+        // Khi bấm lưu thay đổi
+        document.getElementById("saveChanges").addEventListener("click", function(event) {
+            event.preventDefault(); // Ngừng reload trang
 
-        // Kiểm tra nếu có trường nào bị thiếu
-        if (!status || !reply) {
-            // Hiển thị modal lỗi nếu thiếu status hoặc reply
-            const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
-            const errorMessage = document.querySelector('#long-modal .modal-body');
-            errorMessage.innerHTML = `<p style="font-weight: bold;">Please fill out all required</p>`;
+            const applicationId = new URLSearchParams(window.location.search).get('id');
+            let status = document.getElementById("status").value.trim();
 
-            errorModal.show();
-            return; // Dừng lại, không gửi request
-        }
+            // Lấy nội dung từ Quill
+            let reply = quill.root.innerHTML.trim();
 
-        fetch(`/application/update/${applicationId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                status: status,
-                reply: reply
-            })
-        })
-            .then(response => response.json()) // Parse response as JSON
-            .then(data => {
-                if (data.redirect) {
-                    // Hiển thị thông báo thành công nếu có
-                    const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
-                    successModal.show();
-
-                    // Redirect sau khi modal hiển thị
-                    window.location.href = data.redirect;
-                }
-            })
-            .catch(error => {
-                // Nếu có lỗi, hiển thị modal lỗi thay cho alert
-                console.error("Lỗi khi cập nhật:", error);
-
+            // Kiểm tra nếu có trường nào bị thiếu
+            if (!status || !reply || reply === "<p><br></p>") {
+                // Hiển thị modal lỗi nếu thiếu status hoặc reply
                 const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
                 const errorMessage = document.querySelector('#long-modal .modal-body');
-                errorMessage.innerHTML = `<p>Something went wrong. Please try again later.</p>`;
+                errorMessage.innerHTML = `<p style="font-weight: bold;">Please fill out all required fields</p>`;
                 errorModal.show();
-            });
+                return; // Dừng lại, không gửi request
+            }
+
+            fetch(`/application/update/${applicationId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    status: status,
+                    reply: reply
+                })
+            })
+                .then(response => response.json()) // Parse response as JSON
+                .then(data => {
+                    if (data.redirect) {
+                        // Hiển thị thông báo thành công nếu có
+                        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+                        successModal.show();
+
+                        // Đợi 2 giây trước khi chuyển trang (2000 ms)
+                        setTimeout(() => {
+                            // Chuyển hướng sang trang mới sau khi hiển thị modal trong 2 giây
+                            window.location.href = data.redirect;
+                        }, 2000); // 2 giây là thời gian bạn muốn hiển thị modal thành công trước khi chuyển trang
+                    }
+
+                })
+                .catch(error => {
+                    // Nếu có lỗi, hiển thị modal lỗi thay cho alert
+                    console.error("Lỗi khi cập nhật:", error);
+                    const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+                    const errorMessage = document.querySelector('#long-modal .modal-body');
+                    errorMessage.innerHTML = `<p>Something went wrong. Please try again later.</p>`;
+                    errorModal.show();
+                });
+        });
     });
+
 
 
 </script>
