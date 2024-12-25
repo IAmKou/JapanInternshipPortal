@@ -9,7 +9,7 @@ CREATE TABLE Role (
 
 CREATE TABLE Account (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    Username VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci UNIQUE NOT NULL,
+    Username NVARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci UNIQUE NOT NULL,
     Password VARCHAR(255) NOT NULL,
     role_id INT,
     FOREIGN KEY (role_id) REFERENCES Role(Id)
@@ -17,7 +17,7 @@ CREATE TABLE Account (
 
 CREATE TABLE Student (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    Fullname VARCHAR(100) NOT NULL,
+    Fullname NVARCHAR(100) NOT NULL,
     Japanname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     DoB DATE NOT NULL,
     Passport_url VARCHAR(255),
@@ -32,7 +32,7 @@ CREATE TABLE Student (
 
 CREATE TABLE Teacher (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    Fullname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    Fullname NVARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     Jname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     email VARCHAR(100) NOT NULL,
     phone_number VARCHAR(20),
@@ -44,7 +44,7 @@ CREATE TABLE Teacher (
 
 CREATE TABLE Manager (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    Fullname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    Fullname NVARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     Jname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     email VARCHAR(100) NOT NULL,
     phone_number VARCHAR(20),
@@ -98,11 +98,11 @@ CREATE TABLE Schedule (
     date DATE NOT NULL,
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
     class_id INT DEFAULT NULL,
-    room VARCHAR(100) DEFAULT NULL,
-    activity VARCHAR(100),
+    room VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    activity VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci default  null,
     curriculum_id INT,
     semester_id INT,
-    time_slot VARCHAR(50) NOT NULL,
+    time_slot VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ,
     status ENUM('Draft', 'Published') DEFAULT 'Draft',
     FOREIGN KEY (class_id) REFERENCES Class(id) ON DELETE SET NULL,
     FOREIGN KEY (curriculum_id) REFERENCES Curriculum(id) ON DELETE CASCADE,
