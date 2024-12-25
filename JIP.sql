@@ -166,23 +166,6 @@ CREATE TABLE Thread (
     FOREIGN KEY (creator_id) REFERENCES Account(Id)
 );
 
-CREATE TABLE Post (
-    Id INT AUTO_INCREMENT PRIMARY KEY,
-    replies VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    date_created DATE NOT NULL,
-    image BLOB,
-    creator_id INT,
-    FOREIGN KEY (creator_id) REFERENCES Account(Id)
-);
-
-CREATE TABLE Comment (
-    Id INT AUTO_INCREMENT PRIMARY KEY,
-    content TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-    date DATE NOT NULL,
-    creator_id INT,
-    FOREIGN KEY (creator_id) REFERENCES Account(Id)
-);
-
 CREATE TABLE Application (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     img VARCHAR(255),
@@ -212,9 +195,9 @@ CREATE TABLE Notification (
 
 
 Create table Report(
-Id int auto_increment primary key,
-Title varchar(100),
-Content varchar(100),
-reporter_id int,
-foreign key (reporter_id) references Account(id)
+    Id int auto_increment primary key,
+    Title varchar(100),
+    Content varchar(100),
+    reporter_id int,
+    foreign key (reporter_id) references Account(id)
 );
