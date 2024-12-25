@@ -114,6 +114,7 @@ CREATE TABLE Student_assignment (
     mark DECIMAL(5,2),
     description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     content longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    file VARCHAR(255),
     date DATE NOT NULL,
     FOREIGN KEY (student_id) REFERENCES Student(Id),
     FOREIGN KEY (assignment_id) REFERENCES Assignment(Id)
@@ -129,14 +130,16 @@ CREATE TABLE Exam (
 );
 
 CREATE TABLE Mark_report (
-    Id INT AUTO_INCREMENT PRIMARY KEY,
-    student_id INT,
-    attendance_rate DECIMAL(5,2),
-    avg_assignment_mark DECIMAL(5,2),
-    avg_exam_mark DECIMAL(5,2),
-    FOREIGN KEY (student_id) REFERENCES Student(Id)
+     Id INT AUTO_INCREMENT PRIMARY KEY,
+     student_id INT,
+     softskill DECIMAL(5,2),
+     avg_exam_mark DECIMAL(5,2),
+     middle_exam DECIMAL(5,2),
+     final_exam DECIMAL(5,2),
+     attitude DECIMAL(5,2),
+     final_mark DECIMAL(5,2),
+     FOREIGN KEY (student_id) REFERENCES Student(Id)
 );
-
 CREATE TABLE Material (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     content VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,

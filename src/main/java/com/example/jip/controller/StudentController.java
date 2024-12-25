@@ -115,8 +115,4 @@ public class StudentController {
         return new StudentDTO(student);
     }
 
-    @GetMapping("/getStudentsWithCompleteMarkReport")
-    public List<StudentWithClassDTO> getStudentsWithCompleteMarkReport() {
-        return listRepository.getStudentsWithCompleteMarkReport();
-    }
 }
