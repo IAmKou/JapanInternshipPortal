@@ -147,14 +147,7 @@ CREATE TABLE Student_assignment (
 );
 
 CREATE TABLE Mark_report (
-    Id INT AUTO_INCREMENT PRIMARY KEY,
-    student_id INT,
-    attendance_rate DECIMAL(5,2),
-    avg_assignment_mark DECIMAL(5,2),
-    midterm_mark DECIMAL(5,2),
-    final_mark DECIMAL(5,2),
-    avg_exam_mark DECIMAL(5,2),
-    FOREIGN KEY (student_id) REFERENCES Student(Id)
+
      Id INT AUTO_INCREMENT PRIMARY KEY,
      student_id INT,
      softskill DECIMAL(5,2),
