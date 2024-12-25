@@ -1,0 +1,531 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <title>JIP | Export Information</title>
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <!-- Favicon -->
+    <link href="img/favicon.png" rel="shortcut icon" type="image/x-icon">
+    <!-- Normalize CSS -->
+    <link href="css/normalize.css" rel="stylesheet">
+    <!-- Main CSS -->
+    <link href="css/main.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fontawesome CSS -->
+    <link href="css/all.min.css" rel="stylesheet">
+    <!-- Flaticon CSS -->
+    <link href="fonts/flaticon.css" rel="stylesheet">
+    <!-- Animate CSS -->
+    <link href="css/animate.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="style.css" rel="stylesheet">
+    <!-- Modernize js -->
+    <script src="js/modernizr-3.6.0.min.js"></script>
+    <style>
+        /* Custom Modal Styling for Error Modal */
+        #error-modal .modal-dialog {
+            position: fixed !important; /* Giữ modal ở vị trí cố định */
+            top: 0; /* Đặt modal ngay đầu trang */
+            left: 50%; /* Căn giữa modal theo chiều ngang */
+            transform: translateX(-50%); /* Căn giữa modal */
+            z-index: 1050; /* Đảm bảo modal luôn hiển thị trên các phần tử khác */
+            margin-top: 10px; /* Khoảng cách phía trên của modal */
+        }
+
+        #error-modal .modal-header {
+            background-color: #dc3545; /* Màu nền đỏ cho header */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #error-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa; /* Nền sáng cho phần thân */
+            color: #333;
+        }
+
+        #error-modal .modal-body .fas.fa-times-circle {
+            color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+            font-size: 2rem; /* Tăng kích thước biểu tượng */
+            margin-right: 10px;
+        }
+
+        #error-modal .modal-title {
+            display: flex;
+            align-items: center;
+        }
+
+        #error-modal .btn-danger {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #dc3545;
+            border-color: #dc3545;
+            border-radius: 5px;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #error-modal .btn-close {
+            color: white;
+        }
+
+        #error-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+
+        /* Tối ưu giao diện cho bảng thông tin */
+        .info-table td {
+            padding: 12px;
+            vertical-align: middle;
+        }
+
+        /* Cải tiến hình ảnh */
+        .item-img img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* Nút Save */
+        .save-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .save-button:hover {
+            background-color: #218838;
+        }
+
+        /* Nút chỉnh sửa (Edit) */
+        .dropdown-menu .dropdown-item {
+            font-size: 14px;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Định dạng thẻ tiêu đề */
+        .header-inline h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Cải thiện bảng */
+        .table-borderless td, .table-borderless th {
+            border: none;
+        }
+
+        .custom-dropdown-item i {
+            font-size: 18px; /* Cải thiện kích thước biểu tượng */
+        }
+
+        /* Tạo hiệu ứng cho menu dropdown */
+        .dropdown-menu {
+            padding: 0;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 8px;
+        }
+
+        .custom-dropdown-btn i {
+            color: #007bff; /* Màu của biểu tượng */
+        }
+
+        .custom-dropdown-btn:hover i {
+            color: white; /* Màu biểu tượng khi hover */
+        }
+
+        .font-medium {
+            font-weight: 500; /* Cho chữ dày hơn */
+        }
+
+        .text-dark-medium {
+            color: #333333; /* Màu sắc chữ tối hơn để tăng độ tương phản */
+        }
+
+        .table td {
+            padding: 10px; /* Tăng khoảng cách giữa các ô */
+            font-size: 18px; /* Thay đổi kích cỡ chữ */
+        }
+        /* Custom Button */
+        .btn-search {
+            height: 50px; /* Đồng bộ chiều cao với input */
+            font-size: 16px; /* Kích thước chữ to hơn */
+            font-weight: bold; /* Làm chữ đậm hơn */
+            text-transform: uppercase; /* Viết hoa chữ */
+            border-radius: 5px; /* Bo góc tương tự input */
+            padding: 0 20px; /* Tăng khoảng cách trong nút */
+        }
+    </style>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            max-width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+    </style>
+</head>
+
+<body>
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<div class="wrapper bg-ash" id="wrapper">
+    <!-- Header Menu Area Start Here -->
+    <div class="navbar navbar-expand-md header-menu-one bg-light">
+        <div class="nav-bar-header-one">
+            <div class="header-logo">
+                <a href="admin.html">
+                    <div style="width: 180px; height: 70px; overflow: hidden;">
+                        <img alt="logo" src="img/JIP%20LOGO%20n.png"
+                             style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </a>
+            </div>
+            <div class="toggle-button sidebar-toggle">
+                <button class="item-link" type="button">
+                        <span class="btn-icon-wrap">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                </button>
+            </div>
+        </div>
+        <div class="d-md-none mobile-nav-bar">
+            <button aria-expanded="false" class="navbar-toggler pulse-animation" data-target="#mobile-navbar"
+                    data-toggle="collapse" type="button">
+                <i class="far fa-arrow-alt-circle-down"></i>
+            </button>
+            <button class="navbar-toggler sidebar-toggle-mobile" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+            <ul class="navbar-nav">
+                <li class="navbar-item header-search-bar">
+                    <div class="input-group stylish-input-group">
+
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="navbar-item dropdown header-admin">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
+                        <div class="admin-title">
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
+                        </div>
+                        <div class="admin-img">
+                            <img alt="Admin" src="img/figure/admin.jpg">
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title userFullName"></h6>
+                        </div>
+                        <div class="item-content">
+                            <ul class="settings-list">
+
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i><span
+                                        data-i18n="log_out">Log Out</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item dropdown header-notification">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
+                        <i class="far fa-bell"></i>
+                        <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
+                        <span>8</span>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title">03 Notifiacations</h6>
+                        </div>
+                        <div class="item-content">
+                            <div class="media">
+                                <div class="item-icon bg-skyblue">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Complete Today Task</div>
+                                    <span>1 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-orange">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Director Metting</div>
+                                    <span>20 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-violet-blue">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Update Password</div>
+                                    <span>45 Mins ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item dropdown header-language">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
+                        <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
+                            <img alt="English" src="img/figure/flag-anh.webp" style="width: 20px; height: 15px;">
+                            English
+                        </a>
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
+                            <img alt="Japanese" src="img/figure/Flag_of_Japan.svg.webp"
+                                 style="width: 20px; height: 15px;"> 日本語
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Header Menu Area End Here -->
+    <!-- Page Area Start Here -->
+    <div class="dashboard-page-one">
+        <!-- Sidebar Area Start Here -->
+        <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+            <div class="mobile-sidebar-header d-md-none">
+                <div class="header-logo">
+                    <a href="admin.html"><img alt="logo" src="img/logo1.png"></a>
+                </div>
+            </div>
+            <div class="sidebar-menu-content">
+                <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-dashboard"></i><span data-i18n="dashboard">Dashboard</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link menu-active" href="admin.html"><i
+                                        class="fas fa-angle-right"></i><span data-i18n="admin">Admin</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="report-list.html"><i
+                                class="flaticon-script"></i><span data-i18n="report">Report</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="notice-board.html"><i
+                                class="flaticon-script"></i><span data-i18n="notification">Notification</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-active" href="account-settings.html"><i
+                                class="flaticon-settings"></i><span data-i18n="account_list">Account List</span></a>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-chat"></i><span
+                                data-i18n="security">Security</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="change-password.html"><i class="fas fa-angle-right"></i><span
+                                        data-i18n="change_password">Change Password</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Sidebar Area End Here -->
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <h3 data-i18n="users">Users</h3>
+                <ul>
+                    <li>
+                        <a data-i18n="home" href="admin.html">Account List</a>
+                    </li>
+                    <li data-i18n="user_details">Export Information</li>
+                </ul>
+            </div>
+            <!-- Breadcubs Area End Here -->
+            <!-- Student Details Area Start Here -->
+            <div class="card height-auto">
+                <div class="card-body">
+                    <h3 style="padding-left: 8px; padding-top: 5px">Student Information Export Form</h3>
+                    <div class="item-content">
+                        <table class="table table-borderless text-nowrap" id="userInfoTable">
+                            <tbody>
+                            <tr>
+                                <td class="font-weight-bold">Learning Program : Japan Internship Program</td>
+                                <td class="font-medium text-dark-medium" id="user-id"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Name: Anh Long Dep Zai</td>
+                                <td class="font-medium text-dark-medium" id="user-name"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Class: Black</td>
+                                <td class="font-medium text-dark-medium" id="what"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Teacher's Commentation: Sample123</td>
+                                <td class="font-medium text-dark-medium" id="user-jname"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <h4 style="padding-left: 8px; padding-top: 5px">Score Board</h4>
+                        <table style="margin-left: 8px">
+                            <thead>
+                            <tr>
+                                <th>Grade Category</th>
+                                <th>Grade Items</th>
+                                <th>Weight</th>
+                                <th>Value</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td rowspan="2">Participation</td>
+                                <td>Attendance Rate</td>
+                                <td>10%</td>
+                                <td>8</td>
+                            </tr>
+                            <tr>
+
+                            </tr>
+                            <tr>
+                                <td>Presentation</td>
+                                <td>Final Presentation</td>
+                                <td>40%</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Daily Exams</td>
+                                <td>Avg Exams Mark</td>
+                                <td>40%</td>
+                                <td>9</td>
+                            </tr>
+                            <tr>
+                                <td>Midterm Test</td>
+                                <td>Mid-term Exam</td>
+                                <td>25%</td>
+                                <td>8</td>
+                            </tr>
+                            <tr>
+                                <td>Final Exam Test</td>
+                                <td>End-term Exam</td>
+                                <td>25%</td>
+                                <td>8</td>
+                            </tr>
+                            <tr class="no-border">
+                                <td style="font-weight: bold;">Course Total</td>
+                                <td></td>
+                                <td></td>
+                                <td style="font-weight: bold;">7.5</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <form action="/export-csv" method="post" style="margin-top: 20px">
+                            <div class="col-lg-4">
+                                <button type="submit" class="btn btn-gradient-yellow btn-search">Export</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <button class="save-button btn btn-success mt-3" style="display: none;">Save</button>
+            </div>
+            <!-- Student Details Area End Here -->
+        </div>
+    </div>
+    <!-- Modal -->
+    <!-- Modal Lỗi -->
+    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+        <div class="modal-dialog"> <!-- Không dùng lớp "modal-dialog-centered" nữa -->
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-danger" id="errorModalLabel">
+                        <i class="fas fa-times-circle"></i> Error
+                    </h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body" id="modalMessage">
+                    <!-- Message will go here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<!-- Page Area End Here -->
+</div>
+<!-- jquery-->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Custom Js -->
+<script src="js/main.js"></script>
+<!-- fetch user -->
+</body>
+</html>

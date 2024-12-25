@@ -53,7 +53,6 @@ public class StudentAssignmentServices {
                .orElseThrow(() -> new RuntimeException("Assignment ID not found: " + request.getAssignment().getId()));
 
         Date today = new Date();
-
         StudentAssignment studentAssignment = new StudentAssignment();
         studentAssignment.setDate(today);
         studentAssignment.setDescription(request.getDescription());

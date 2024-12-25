@@ -13,7 +13,11 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,8 +33,6 @@ public class AssignmentServices {
     AssignmentRepository assignmentRepository;
 
     TeacherRepository teacherRepository;
-
-
 
     ClassRepository classRepository;
 
@@ -54,9 +56,12 @@ public class AssignmentServices {
                     AssignmentResponse response = new AssignmentResponse();
                     response.setId(assignment.getId());
                     response.setCreated_date(assignment.getCreated_date());
+                    log.info("Start Date {}", assignment.getCreated_date());
                     response.setEnd_date(assignment.getEnd_date());
+                    log.info("End date {}", assignment.getEnd_date());
                     response.setDescription(assignment.getDescription());
                     response.setContent(assignment.getContent());
+                    response.setStatus(assignment.getStatus().toString());
                     response.setFolder(assignment.getImgUrl());
                     response.setClasses(
                             assignment.getClasses().stream()
@@ -75,13 +80,14 @@ public class AssignmentServices {
         List<Integer> submittedAssignmentIds = studentAssignmentRepository.findSubmittedAssignmentIdsByStudentId(studentId);
 
         return allAssignments.stream()
-                .filter(assignment -> !submittedAssignmentIds.contains(assignment.getId()))
+                .filter(assignment -> !submittedAssignmentIds.contains(assignment.getId()) /*&& assignment.getStatus().toString().equalsIgnoreCase("OPEN")*/)
                 .map(assignment -> {
                     AssignmentResponse response = new AssignmentResponse();
                     response.setId(assignment.getId());
                     response.setDescription(assignment.getDescription());
                     response.setCreated_date(assignment.getCreated_date());
                     response.setEnd_date(assignment.getEnd_date());
+                    response.setStatus(assignment.getStatus().toString());
                     return response;
                 })
                 .collect(Collectors.toList());
@@ -109,6 +115,13 @@ public class AssignmentServices {
         Assignment assignment = new Assignment();
         assignment.setCreated_date(request.getCreated_date());
         assignment.setEnd_date(request.getEnd_date());
+
+        Date currentDate = new Date();
+        if (currentDate.after(assignment.getCreated_date()) && currentDate.before(assignment.getEnd_date())) {
+            assignment.setStatus(Assignment.Status.OPEN);
+       } else {
+            assignment.setStatus(Assignment.Status.CLOSE);
+       }
 
         assignment.setDescription(request.getDescription());
         assignment.setContent(request.getContent());
@@ -165,9 +178,25 @@ public class AssignmentServices {
         // Save the assignment
         return assignmentRepository.save(assignment);
     }
-    public boolean descriptionExists(String description, int teacherId) {
 
+    public boolean descriptionExists(String description, int teacherId) {
         return assignmentRepository.existsByDescriptionAndByTeacherId(description, teacherId);
+    }
+
+    public void updateAssignmentStatus() {
+        List<Assignment> assignments = assignmentRepository.findAll();
+
+        Date currentDate = new Date();
+        for (Assignment assignment : assignments) {
+            if (currentDate.after(assignment.getCreated_date()) && currentDate.before(assignment.getEnd_date())) {
+                assignment.setStatus(Assignment.Status.OPEN);
+            } else {
+                assignment.setStatus(Assignment.Status.CLOSE);
+            }
+        }
+
+        // Save updated assignments back to the database
+        assignmentRepository.saveAll(assignments);
     }
 
 
@@ -181,6 +210,7 @@ public class AssignmentServices {
         response.setContent(assignment.getContent());
         response.setCreated_date(assignment.getCreated_date());
         response.setEnd_date(assignment.getEnd_date());
+        response.setStatus(assignment.getStatus().toString());
         response.setClasses(assignment.getClasses().stream()
                 .map(Class::getName)
                 .collect(Collectors.toList()));
@@ -341,9 +371,22 @@ public class AssignmentServices {
             }
         }
         // Update other fields
+        if (request.getCreated_date() != null){
+            log.info("Updating start date: {}", request.getCreated_date());
+            assignment.setCreated_date(request.getCreated_date());
+        }
         if (request.getEnd_date() != null) {
+            log.info("Updating end date: " + request.getEnd_date());
             assignment.setEnd_date(request.getEnd_date());
         }
+
+        Date currentDate = new Date();
+        if (currentDate.after(assignment.getCreated_date()) && currentDate.before(assignment.getEnd_date())) {
+            assignment.setStatus(Assignment.Status.OPEN);
+        } else {
+            assignment.setStatus(Assignment.Status.CLOSE);
+        }
+
         if (request.getDescription() != null) {
             assignment.setDescription(request.getDescription());
         }
@@ -395,6 +438,22 @@ public class AssignmentServices {
                 .collect(Collectors.toList());
 
         return assignmentResponses;
+    }
+
+}
+
+@Component
+@EnableScheduling
+@Slf4j
+class ScheduledTask {
+    @Autowired
+    private AssignmentServices assignmentStatusService;
+
+    // Run the task every minute to update assignment status
+    @Scheduled(fixedRate = 60000) // 60000 ms = 1 minute
+    public void updateAssignmentStatuses() {
+        log.info("Scanning to update Assignment status...");
+        assignmentStatusService.updateAssignmentStatus();
     }
 
 }

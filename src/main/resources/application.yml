@@ -9,6 +9,7 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
   servlet:
     multipart:
       enabled: true
@@ -34,13 +35,18 @@ cloud:
     region:
       static: ap-southeast-2
     stack:
-        auto: false
+      auto: false
 
 application:
   bucket:
     name: jip.upload.files
 
+  # Thêm cấu hình cho đường dẫn file HTML và CSV
+  file-paths:
+    html-path: "/path/to/export.html"
+
 cloudinary:
   cloud-name: dmlethtuv
   api-key: 151443119214651
   api-secret: LRXCKQiCmQNqx-GP4RFnOdf_xwY
+

@@ -32,18 +32,22 @@
             text-align: center;
         }
 
-        .pagination-button {
-            margin: 0 5px;
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-            background-color: white;
-            cursor: pointer;
+        /* Custom Search Input */
+        .search-input {
+            height: 50px; /* Tăng chiều cao của ô nhập */
+            font-size: 16px; /* Tăng kích thước chữ */
+            padding: 10px 15px; /* Tăng khoảng cách bên trong */
+            border-radius: 5px; /* Bo góc mềm mại */
         }
 
-        .pagination-button.active {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
+        /* Custom Button */
+        .btn-search {
+            height: 50px; /* Đồng bộ chiều cao với input */
+            font-size: 16px; /* Kích thước chữ to hơn */
+            font-weight: bold; /* Làm chữ đậm hơn */
+            text-transform: uppercase; /* Viết hoa chữ */
+            border-radius: 5px; /* Bo góc tương tự input */
+            padding: 0 20px; /* Tăng khoảng cách trong nút */
         }
     </style>
 </head>
@@ -260,7 +264,15 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h3>All Students Data</h3>
+                            <h3 style="padding-bottom: 15px">All Students Data</h3>
+                        </div>
+                    </div>
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-lg-8">
+                            <input type="text" placeholder="Search by ID..." class="form-control search-input">
+                        </div>
+                        <div class="col-lg-4">
+                            <button type="submit" class="btn btn-gradient-yellow btn-search" data-i18n="search">SEARCH</button>
                         </div>
                     </div>
                     <form class="mg-b-20">

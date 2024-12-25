@@ -319,7 +319,7 @@
             <table class="table text-nowrap">
               <tbody>
               <tr>
-                <td>Created Date:</td>
+                <td>Start Date:</td>
                 <td id="created-date"></td>
               </tr>
               <tr>
@@ -349,15 +349,11 @@
           </div>
           <div class="single-info-details">
             <form class="new-added-form" action="javascript:void(0);" onsubmit="updateAssignment(event)">
-              <div id="statusMessage" class="alert alert-info" style="display: none;"></div>
+              <div id="statusMessage" class="alert alert-danger" style="display: none;"></div>
               <div class="row">
                 <div class="col-xl-8 col-lg-6 col-12 form-group">
                   <label for="description">Description *</label>
                   <input type="text" class="form-control" name="description" id="description" required>
-                </div>
-                <div class="col-xl-4 col-lg-6 col-12 form-group">
-                  <label for="created_date">Create Date </label>
-                  <input type="date" class="form-control" name="created_date" id="created_date" readonly value="2024-12-22">
                 </div>
                 <div class="col-xl-12 col-lg-12 col-12 form-group">
                   <label for="content">Content *</label>
@@ -390,6 +386,26 @@
 <!-- fetch user -->
 <script>
 
+  function formatDateTime(dateString) {
+    const date = new Date(dateString);
+
+    // Adjust for your timezone (if needed, e.g., UTC+7 for Vietnam)
+    date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
+
+    // Format the date and time in 12-hour format with AM/PM
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12; // Convert to 12-hour format, 0 becomes 12
+
+    return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+  }
+
   async function fetchAssignmentDetails() {
     const urlParams = new URLSearchParams(window.location.search);
     const studentAssignmentId = urlParams.get('id'); // Get the StudentAssignment ID from the URL
@@ -410,12 +426,14 @@
 
       const assignment = await response.json();
       console.log('Assignment details:', assignment);
+      const createdDateFormatted = formatDateTime(assignment.created_date);
+      const endDateFormatted = formatDateTime(assignment.end_date);
 
       // Populate the form fields with the fetched assignment details
       document.getElementById('assignment-description').textContent = assignment.description || ""; // Populate description field
       document.getElementById('assignment-content').textContent = assignment.content || ""; // Populate content field
-      document.getElementById('created-date').textContent = assignment.created_date || "N/A"; // Populate created date
-      document.getElementById('end-date').textContent = assignment.end_date || "N/A"; // Display end date
+      document.getElementById('created-date').textContent = createdDateFormatted || "N/A"; // Populate created date
+      document.getElementById('end-date').textContent = endDateFormatted || "N/A"; // Display end date
 
       // Optionally display classes and files (if needed for reference)
       const classes = assignment.classes || [];
@@ -469,10 +487,6 @@
       // Populate form fields with the fetched data
       document.getElementById('description').value = studentAssignment.description;
       document.getElementById('content').value = studentAssignment.content;
-      // Format date to yyyy-MM-dd for input fields
-      const formattedDate = new Date(studentAssignment.date).toISOString().split("T")[0];
-      document.getElementById('created_date').value = formattedDate;
-
       const status = studentAssignment.status;
 
       if(status == 'MARKED'){

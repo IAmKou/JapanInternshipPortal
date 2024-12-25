@@ -403,7 +403,7 @@
                         <table class="table text-nowrap">
                             <tbody>
                             <tr>
-                                <td>Created Date:</td>
+                                <td>Start Date:</td>
                                 <td id="created-date"></td>
                             </tr>
                             <tr>
@@ -531,12 +531,14 @@
 
             const assignment = await response.json();
             console.log('Assignment details:', assignment);
+            const createdDateFormatted = formatDateTime(assignment.created_date);
+            const endDateFormatted = formatDateTime(assignment.end_date);
 
             // Populate description and content
             document.getElementById('assignment-description').textContent = assignment.description || "No description provided";
             document.getElementById('assignment-content').textContent = assignment.content || "No content provided";
-            document.getElementById('created-date').textContent = assignment.created_date || "N/A";
-            document.getElementById('end-date').textContent = assignment.end_date || "N/A";
+            document.getElementById('created-date').textContent = createdDateFormatted  || "N/A";
+            document.getElementById('end-date').textContent = endDateFormatted || "N/A";
 
             // Display class names
             const classes = assignment.classes || [];
@@ -560,8 +562,6 @@
                 filesContainer.textContent = "No files uploaded";
             }
 
-            // Show success modal
-            showSuccessModal('Assignment details loaded successfully!');
         } catch (error) {
             console.error('Error:', error);
             showErrorModal('An error occurred while fetching the assignment details.');
@@ -570,6 +570,26 @@
 
     // Call the function on page load
     fetchAssignmentDetails();
+
+    function formatDateTime(dateString) {
+        const date = new Date(dateString);
+
+        // Adjust for your timezone (if needed, e.g., UTC+7 for Vietnam)
+        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
+
+        // Format the date and time in 12-hour format with AM/PM
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        let hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12; // Convert to 12-hour format, 0 becomes 12
+
+        return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+    }
 
     // Fetch and display submitted assignments
     async function fetchAndDisplaySubmittedAssignments() {
@@ -612,8 +632,6 @@
                 tableBody.appendChild(row);
             });
 
-            // Show success modal
-            showSuccessModal('Submitted assignments loaded successfully!');
         } catch (error) {
             console.error("Error:", error);
             const tableBody = document.getElementById("submittedAssignment_list");

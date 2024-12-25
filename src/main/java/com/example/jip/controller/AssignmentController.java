@@ -5,13 +5,9 @@ import com.example.jip.dto.TeacherDTO;
 import com.example.jip.dto.request.assignment.AssignmentCreationRequest;
 import com.example.jip.dto.request.assignment.AssignmentUpdateRequest;
 import com.example.jip.dto.request.FileDeleteRequest;
-import com.example.jip.dto.request.studentAssignment.StudentAssignmentGradeRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.dto.response.assignmentClass.AssignmentClassResponse;
-import com.example.jip.dto.response.studentAssignment.StudentAssignmentResponse;
-import com.example.jip.entity.AssignmentClass;
 import com.example.jip.entity.Teacher;
-import com.example.jip.exception.NotFoundException;
 import com.example.jip.repository.AssignmentClassRepository;
 import com.example.jip.repository.ClassRepository;
 import com.example.jip.repository.TeacherRepository;
@@ -28,10 +24,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -58,7 +52,6 @@ public class AssignmentController {
         if (assignments.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
-
         return ResponseEntity.ok(assignments);
     }
 

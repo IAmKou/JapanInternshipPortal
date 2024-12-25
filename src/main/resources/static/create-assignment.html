@@ -305,19 +305,19 @@
                                 <input type="text" placeholder="Write description..." class="form-control" name="description" id="description" required>
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label for="created_date">Create Date</label>
-                                <input type="date" class="form-control" name="created_date" id="created_date" readonly>
+                                <label for="created_date">Start Date *</label>
+                                <input type="datetime-local" class="form-control" name="created_date" id="created_date" required>
                             </div>
                             <div class="col-xl-4 col-lg-12 col-12 form-group">
                                 <label for="end_date">End Date *</label>
-                                <input type="date" class="form-control" name="end_date" id="end_date" required>
+                                <input type="datetime-local" class="form-control" name="end_date" id="end_date" required>
                             </div>
                             <div class="col-xl-6 col-lg-12 col-12 form-group">
                                 <label for="content">Description *</label>
                                 <textarea id="content" placeholder="Write content..."  class="form-control" name="content" rows="4" required></textarea>
                             </div>
                             <div class="col-xl-12 col-lg-24 col-12 form-group">
-                                <label  for="class_id">Select Class *</label>
+                                <label  for="class_id">Select Class</label>
                                 <div id="class_id">
                                     <!-- Checkboxes will be dynamically populated here -->
                                 </div>
@@ -391,10 +391,6 @@
 <script src="js/main.js"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const currentDate = new Date().toISOString().split("T")[0];
-        document.getElementById("created_date").value = currentDate;
-    });
 
     // Function to show the success modal
     function showSuccessModal(message) {
@@ -409,6 +405,7 @@
         const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
         errorModal.show();
     }
+
 
     async function addAssignment(event) {
         event.preventDefault();
@@ -438,9 +435,24 @@
             return;
         }
 
-        // Check if the created date is after the end date
-        if (new Date(createdDate) >= new Date(endDate)) {
-            showErrorModal('Deadline must be after the Date Created.');
+        // Check if the Create Date is after the current date
+        const currentDate = new Date();
+        const createdDateObj = new Date(createdDate);
+        if (createdDateObj < currentDate) {
+            showErrorModal('Create Date must be after the Current Date.');
+            return;
+        }
+
+        // Check if the End Date is after the Current Date
+        const endDateObj = new Date(endDate);
+        if (endDateObj < currentDate) {
+            showErrorModal('End Date must be after the Current Date.');
+            return;
+        }
+
+        // Check if the Create Date is before the End Date
+        if (createdDateObj > endDateObj) {
+            showErrorModal('End Date must be after the Create Date.');
             return;
         }
 

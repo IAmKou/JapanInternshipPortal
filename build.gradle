@@ -51,7 +51,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-logging'
 
     implementation 'org.springframework.cloud:spring-cloud-aws-core:2.2.6.RELEASE'
-
+    implementation 'org.jsoup:jsoup:1.15.4'   // Jsoup để trích xuất dữ liệu từ HTML
+    implementation 'com.opencsv:opencsv:5.7.1' // OpenCSV để tạo file CSV
     // Test Dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test' // Includes JUnit 5 and Mockito
     testImplementation 'org.springframework.security:spring-security-test'

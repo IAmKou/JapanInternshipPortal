@@ -453,8 +453,9 @@
                             <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>Date Created</th>
+                                <th>Start Date</th>
                                 <th>End Date</th>
+                                <th>Status</th>
                                 <th>Options</th>
                             </tr>
                             </thead>
@@ -474,11 +475,11 @@
                         <label for="description">Title:</label>
                         <input id="description" name="description" required type="text"/>
 
-                        <label for="create_date">Create Date:</label>
-                        <input id="create_date" name="create_date" readonly type="date"/>
+                        <label for="create_date">Start Date:</label>
+                        <input id="create_date" name="create_date" required type="datetime-local"/>
 
                         <label for="end_date">End Date:</label>
-                        <input id="end_date" name="end_date" required type="date"/>
+                        <input id="end_date" name="end_date" required type="datetime-local"/>
 
                         <label for="content">Description:</label>
                         <textarea id="content" name="content" required rows="4"></textarea>
@@ -539,43 +540,48 @@
         try {
             const urlParams = new URLSearchParams(window.location.search);
             const teacherId = urlParams.get('teacherId');
-            console.log('Fetching assignments...');
             const response = await fetch(`${API_BASE_URL}/list?teacherId=${teacherId}`);
-            console.log('Response received:', response);
             if (!response.ok) {
                 throw new Error('Error fetching assignments: ' + response.statusText);
             }
-            const assignments = await response.json();
-            console.log('Assignments data:', assignments);
 
-            // Clear existing rows in the table
+            const assignments = await response.json();
+            console.log('Assignments data:', assignments);  // Log raw response for verification
+
             const tableBody = document.getElementById('assignment_list');
             tableBody.innerHTML = '';
 
             assignments.forEach(assignment => {
+                console.log("Raw Date for Start Date: ", assignment.created_date);  // Log raw created date
+                console.log("Raw Date for End Date: ", assignment.end_date);  // Log raw end date
+
+                const createdDateFormatted = formatDateTime(assignment.created_date);
+                const endDateFormatted = formatDateTime(assignment.end_date);
+
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td style="font-weight: bold;">
-                    <a href="/view-assignment-details.html?id=${assignment.id}" target="_blank" style="display: block; font-weight: bold;">
-                        ${assignment.description}
-                    </a>
-                    </td>
-                    <td>${assignment.created_date}</td>
-                    <td>${assignment.end_date}</td>
-                    <td>
-                        <div class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="flaticon-more-button-of-three-dots"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
-                                    <i class="fas fa-times text-orange-red"></i>Delete</a>
-                                <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
-                                    <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
-                            </div>
-                        </div>
-                    </td>
-                `;
+                 <td style="font-weight: bold;">
+                     <a href="/view-assignment-details.html?id=${assignment.id}" target="_blank" style="display: block; font-weight: bold;">
+                         ${assignment.description}
+                     </a>
+                 </td>
+                 <td>${createdDateFormatted}</td>
+                 <td>${endDateFormatted}</td>
+                 <td>${assignment.status}</td>
+                 <td>
+                     <div class="dropdown">
+                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                             <span class="flaticon-more-button-of-three-dots"></span>
+                         </a>
+                         <div class="dropdown-menu dropdown-menu-right">
+                             <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
+                                 <i class="fas fa-times text-orange-red"></i>Delete</a>
+                             <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
+                                 <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
+                         </div>
+                     </div>
+                 </td>
+             `;
                 tableBody.appendChild(row);
             });
         } catch (error) {
@@ -583,6 +589,41 @@
         }
     }
 
+    function formatDateTime(dateString) {
+        const date = new Date(dateString);
+
+        // Adjust for your timezone (if needed, e.g., UTC+7 for Vietnam)
+        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
+
+        // Format the date and time in 12-hour format with AM/PM
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        let hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12; // Convert to 12-hour format, 0 becomes 12
+
+        return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+    }
+
+    function formatDateTimeForInput(dateString) {
+        const date = new Date(dateString);
+
+        // Subtract 10 hours (10 hours * 60 minutes * 60 seconds * 1000 milliseconds)
+        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
+
+        // Convert to YYYY-MM-DDTHH:mm format
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
     // Function to open the update popup async
     async function openUpdatePopup(assignmentId) {
         try {
@@ -630,9 +671,12 @@
                 classSelect.appendChild(option);
             });
 
+            const createdDateFormatted = formatDateTimeForInput(assignment.created_date);
+            const endDateFormatted = formatDateTimeForInput(assignment.end_date);
             // Fill the form with the assignment data
             document.getElementById('description').value = assignment.description;
-            document.getElementById('end_date').value = assignment.end_date;
+            document.getElementById('create_date').value = createdDateFormatted;
+            document.getElementById('end_date').value = endDateFormatted;
             document.getElementById('content').value = assignment.content;
 
             const assignmentResponse = await fetch(`${API_BASE_URL}/detail/${assignmentId}`);
@@ -641,12 +685,6 @@
             }
             const clas = assignment.classes || [];
             document.getElementById('classes').textContent = clas.length > 0 ? clas.join(", ") : "No classes assigned";
-
-            // Append 'T00:00:00Z' to the date to ensure it is correctly parsed
-            const createDateString = `${assignment.created_date}T00:00:00Z`;
-            const createDate = new Date(createDateString);
-
-            document.getElementById('create_date').value = createDate.toISOString().split("T")[0];
 
 
             // Display file download links
@@ -719,39 +757,46 @@
         event.preventDefault();
 
         const description = document.getElementById('description').value;
-        const endDate = document.getElementById('end_date').value;
         const createDate = document.getElementById('create_date').value;
+        const endDate = document.getElementById('end_date').value;
         const content = document.getElementById('content').value;
 
-        if (!description.trim() || !endDate || !content.trim()) {
+        if (!description.trim() || !endDate || !createDate || !content.trim()) {
             alert('Please fill in all the required fields!');
             return; // Exit the function if validation fails
         }
 
-        // Validation check: Ensure create_date is before end_date
-        if (new Date(createDate) > new Date(endDate)) {
-            alert('The create date cannot be later than the end date!');
-            return; // Exit the function if validation fails
+        // Check if the Create Date is after the current date
+        const currentDate = new Date();
+        const createdDateObj = new Date(createDate);
+        if (createdDateObj < currentDate) {
+            alert('Create Date must be after the Current Date.');
+            return;
         }
 
+        // Check if the End Date is after the Current Date
+        const endDateObj = new Date(endDate);
+        if (endDateObj < currentDate) {
+            alert('End Date must be after the Current Date.');
+            return;
+        }
+
+        // Check if the Create Date is before the End Date
+        if (createdDateObj > endDateObj) {
+            alert('End Date must be after the Create Date.');
+            return;
+        }
 
         // Get selected class IDs
         const classSelect = document.getElementById('class_id');
         const selectedClasses = Array.from(classSelect.selectedOptions).map((opt) => opt.value)
 
         const imgFiles = document.getElementById('img').files;
-        // const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i; // Regex to allow jpg, jpeg, and png
-        // for (let i = 0; i < imgFiles.length; i++) {
-        //     if (!allowedExtensions.test(imgFiles[i].name)) {
-        //         alert(`Invalid file type: ${imgFiles[i].name}. Only JPG, JPEG, and PNG files are allowed.`);
-        //         return; // Exit the function if a file is invalid
-        //     }
-        // }
 
         const formData = new FormData();
         formData.append('description', description);
+        formData.append('created_date', createDate);
         formData.append('end_date', endDate);
-        formData.append('create_date', createDate);
         formData.append('content', content);
         selectedClasses.forEach((classId) => {
             formData.append('classIds', classId);
@@ -786,6 +831,14 @@
     function closePopup() {
         document.getElementById('assignmentPopup').style.display = 'none';
         document.getElementById('overlay').style.display = 'none';
+    }
+
+
+    // Function to show the error modal
+    function showErrorModal(message) {
+        document.getElementById('long-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
+        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+        errorModal.show();
     }
 
 
