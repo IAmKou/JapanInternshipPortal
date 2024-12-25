@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,44 +12,71 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.*;
 import java.io.IOException;
 
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 @RestController
 public class FileController {
+    private static final String HTML_FILE_PATH = "src/main/resources/static/input.html";
 
-    @Value("${application.file-paths.html-path}")
-    private String htmlFilePath;  // Đường dẫn tới file HTML (thêm cấu hình trong application.yml)
+    @PostMapping("/export-csv")
+    public void exportCsv(HttpServletResponse response) {
+        try {
+            // Đọc file HTML
+            File inputFile = new File(HTML_FILE_PATH);
+            Document doc = Jsoup.parse(inputFile, "UTF-8");
 
-    @PostMapping
-    @ResponseBody
-    public void exportCsv(HttpServletResponse response) throws IOException {
-        // Đọc file HTML từ đường dẫn
-        Document doc = Jsoup.parse(new java.io.File(htmlFilePath), "UTF-8");
+            // Lấy dữ liệu từ HTML
+            String learningProgram = getDataFromHtml(doc, "Learning Program");
+            String name = getDataFromHtml(doc, "Name");
+            String teacherComment = getDataFromHtml(doc, "Teacher\\'s Commentation");
+            String participation = getValueFromTable(doc, "Attendance Rate");
+            String dailyExams = getValueFromTable(doc, "Avg Exams Mark");
+            String midtermTest = getValueFromTable(doc, "Mid-term Exam");
+            String finalExamTest = getValueFromTable(doc, "End-term Exam");
+            String courseFinal = getValueFromTable(doc, "Course Total");
 
-        // Lấy các dữ liệu từ HTML
-        String learningProgram = doc.select("td:contains(Learning Program)").first().text().split(":")[1].trim();
-        String name = doc.select("td:contains(Name)").first().text().split(":")[1].trim();
-        String teacherComment = doc.select("td:contains(Teacher's Commentation)").first().text().split(":")[1].trim();
-        String participation = doc.select("td:contains(Attendance Rate)").first().parent().select("td").last().text().trim();
-        String dailyExams = doc.select("td:contains(Avg Exams Mark)").first().parent().select("td").last().text().trim();
-        String midtermTest = doc.select("td:contains(Mid-term Exam)").first().parent().select("td").last().text().trim();
-        String finalExamTest = doc.select("td:contains(End-term Exam)").first().parent().select("td").last().text().trim();
-        String courseFinal = doc.select("td:contains(Course Total)").first().parent().select("td").last().text().trim();
+            // Cấu hình header CSV
+            response.setContentType("text/csv");
+            response.setHeader("Content-Disposition", "attachment; filename=\"export.csv\"");
 
-        // Cấu hình header CSV
-        response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment; filename=\"export.csv\"");
-        PrintWriter writer = response.getWriter();
+            // Ghi dữ liệu vào CSV
+            try (PrintWriter writer = response.getWriter()) {
+                // Ghi header
+                writer.println("\"Learning Program\",\"Name\",\"Teacher Commentation\",\"Participation\",\"Daily Exams\",\"Midterm Test\",\"Final Exam Test\",\"Course Final\"");
+                // Ghi dữ liệu
+                writer.println("\"" + learningProgram + "\",\"" + name + "\",\"" + teacherComment + "\",\"" + participation + "\",\"" + dailyExams + "\",\"" + midtermTest + "\",\"" + finalExamTest + "\",\"" + courseFinal + "\"");
+            }
 
-        // Ghi header vào CSV
-        writer.println("\"Learning Program\",\"Name\",\"Teacher Commentation\",\"Participation\",\"Daily Exams\",\"Midterm Test\",\"Final Exam Test\",\"Course Final\"");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
 
-        // Ghi dữ liệu vào CSV
-        writer.println("\"" + learningProgram + "\",\"" + name + "\",\"" + teacherComment + "\",\"" + participation + "\",\"" + dailyExams + "\",\"" + midtermTest + "\",\"" + finalExamTest + "\",\"" + courseFinal + "\"");
+    // Hàm lấy dữ liệu từ HTML theo tiêu đề (cột)
+    private String getDataFromHtml(Document doc, String keyword) {
+        Element element = doc.selectFirst("td:contains(" + keyword + ")");
+        if (element != null) {
+            String[] parts = element.text().split(":");
+            if (parts.length > 1) {
+                return parts[1].trim();
+            }
+        }
+        return ""; // Trả về chuỗi rỗng nếu không tìm thấy
+    }
 
-        // Đóng writer
-        writer.flush();
+    // Hàm lấy giá trị cuối cùng trong bảng (hàng tương ứng)
+    private String getValueFromTable(Document doc, String keyword) {
+        Element element = doc.selectFirst("td:contains(" + keyword + ")");
+        if (element != null) {
+            Element parentRow = element.parent(); // Lấy hàng chứa keyword
+            if (parentRow != null) {
+                return parentRow.select("td").last().text().trim(); // Lấy cột cuối cùng
+            }
+        }
+        return ""; // Trả về chuỗi rỗng nếu không tìm thấy
     }
 }
