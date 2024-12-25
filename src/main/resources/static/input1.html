@@ -1,0 +1,683 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+
+<!-- Mirrored from manager.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:32 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>JIP | Home 4</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+    <!-- Normalize CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="css/all.min.css">
+    <!-- Flaticon CSS -->
+    <link rel="stylesheet" href="fonts/flaticon.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="css/animate.min.css">
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Modernize js -->
+    <script src="js/modernizr-3.6.0.min.js"></script>
+    <style>
+        /* Custom Modal Styling for Error Modal */
+        #error-modal .modal-dialog {
+            position: fixed !important; /* Giữ modal ở vị trí cố định */
+            top: 0; /* Đặt modal ngay đầu trang */
+            left: 50%; /* Căn giữa modal theo chiều ngang */
+            transform: translateX(-50%); /* Căn giữa modal */
+            z-index: 1050; /* Đảm bảo modal luôn hiển thị trên các phần tử khác */
+            margin-top: 10px; /* Khoảng cách phía trên của modal */
+        }
+
+        #error-modal .modal-header {
+            background-color: #dc3545; /* Màu nền đỏ cho header */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #error-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa; /* Nền sáng cho phần thân */
+            color: #333;
+        }
+
+        #error-modal .modal-body .fas.fa-times-circle {
+            color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+            font-size: 2rem; /* Tăng kích thước biểu tượng */
+            margin-right: 10px;
+        }
+
+        #error-modal .modal-title {
+            display: flex;
+            align-items: center;
+        }
+
+        #error-modal .btn-danger {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #dc3545;
+            border-color: #dc3545;
+            border-radius: 5px;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #error-modal .btn-close {
+            color: white;
+        }
+
+        #error-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+
+        /* Tối ưu giao diện cho bảng thông tin */
+        .info-table td {
+            padding: 12px;
+            vertical-align: middle;
+        }
+
+        /* Cải tiến hình ảnh */
+        .item-img img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* Nút Save */
+        .save-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .save-button:hover {
+            background-color: #218838;
+        }
+
+        /* Nút chỉnh sửa (Edit) */
+        .dropdown-menu .dropdown-item {
+            font-size: 14px;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Định dạng thẻ tiêu đề */
+        .header-inline h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Cải thiện bảng */
+        .table-borderless td, .table-borderless th {
+            border: none;
+        }
+
+        .custom-dropdown-item i {
+            font-size: 18px; /* Cải thiện kích thước biểu tượng */
+        }
+
+        /* Tạo hiệu ứng cho menu dropdown */
+        .dropdown-menu {
+            padding: 0;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 8px;
+        }
+
+        .custom-dropdown-btn i {
+            color: #007bff; /* Màu của biểu tượng */
+        }
+
+        .custom-dropdown-btn:hover i {
+            color: white; /* Màu biểu tượng khi hover */
+        }
+
+        .font-medium {
+            font-weight: 500; /* Cho chữ dày hơn */
+        }
+
+        .text-dark-medium {
+            color: #333333; /* Màu sắc chữ tối hơn để tăng độ tương phản */
+        }
+
+        .table td {
+            padding: 10px; /* Tăng khoảng cách giữa các ô */
+            font-size: 18px; /* Thay đổi kích cỡ chữ */
+        }
+        /* Custom Button */
+        .btn-search {
+            height: 50px; /* Đồng bộ chiều cao với input */
+            font-size: 16px; /* Kích thước chữ to hơn */
+            font-weight: bold; /* Làm chữ đậm hơn */
+            text-transform: uppercase; /* Viết hoa chữ */
+            border-radius: 5px; /* Bo góc tương tự input */
+            padding: 0 20px; /* Tăng khoảng cách trong nút */
+        }
+    </style>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            max-width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+    </style>
+</head>
+
+<body>
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<div id="wrapper" class="wrapper bg-ash">
+    <!-- Header Menu Area Start Here -->
+    <div class="navbar navbar-expand-md header-menu-one bg-light">
+        <div class="nav-bar-header-one">
+            <div class="header-logo">
+                <a href="manager.html">
+                    <div style="width: 180px; height: 70px; overflow: hidden;">
+                        <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </a>
+            </div>
+            <div class="toggle-button sidebar-toggle">
+                <button type="button" class="item-link">
+                        <span class="btn-icon-wrap">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                </button>
+            </div>
+        </div>
+        <div class="d-md-none mobile-nav-bar">
+            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse" data-target="#mobile-navbar" aria-expanded="false">
+                <i class="far fa-arrow-alt-circle-down"></i>
+            </button>
+            <button type="button" class="navbar-toggler sidebar-toggle-mobile">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+            <ul class="navbar-nav">
+                <li class="navbar-item header-search-bar">
+                    <div class="input-group stylish-input-group">
+
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="navbar-item dropdown header-admin">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <div class="admin-title">
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
+                        </div>
+                        <div class="admin-img img">
+                            <img src="" style="width: 50px; height: 50px" alt="Admin">
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title userFullName"></h6>
+                        </div>
+                        <div class="item-content">
+                            <ul class="settings-list">
+                                <li><a href="users-profile-manager.html"><i class="flaticon-user"></i>My Profile</a></li>
+                                <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="navbar-item dropdown header-notification">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <i class="far fa-bell"></i>
+                        <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
+                        <span>8</span>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title">03 Notifiacations</h6>
+                        </div>
+                        <div class="item-content">
+                            <div class="media">
+                                <div class="item-icon bg-skyblue">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Complete Today Task</div>
+                                    <span>1 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-orange">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Director Metting</div>
+                                    <span>20 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-violet-blue">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Update Password</div>
+                                    <span>45 Mins ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item dropdown header-language">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
+                       data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#">English</a>
+                        <a class="dropdown-item" href="#">Japanese</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Header Menu Area End Here -->
+    <!-- Page Area Start Here -->
+    <div class="dashboard-page-one">
+        <!-- Sidebar Area Start Here -->
+        <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+            <div class="mobile-sidebar-header d-md-none">
+                <div class="header-logo">
+                    <a href="manager.html"><img src="img/logo1.png" alt="logo"></a>
+                </div>
+            </div>
+            <div class="sidebar-menu-content">
+                <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item">
+                                <a href="manager.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Manager</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="all-student.html" class="nav-link"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>All Student</span></a>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="add-class.html" class="nav-link"><i
+                                        class="flaticon-multiple-users-silhouette"></i>Add New Class</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="class-list.html" class="nav-link"><i
+                                        class="flaticon-menu"></i><span>All Class</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="schedule-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Schedule List</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="View-list-application.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    application</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="input1.html" class="nav-link"><i class="fas fa-angle-right"></i>Test Export</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Sidebar Area End Here -->
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+            <h3 data-i18n="users">Users</h3>
+            <ul>
+                <li>
+                    <a data-i18n="home" href="admin.html">Account List</a>
+                </li>
+                <li data-i18n="user_details">Export Information</li>
+            </ul>
+        </div>
+            <!-- Breadcubs Area End Here -->
+            <!-- Dashboard summery Start Here -->
+            <div class="card height-auto">
+                <div class="card-body">
+                    <h3 style="padding-left: 8px; padding-top: 5px">Student Information Export Form</h3>
+                    <div class="item-content">
+                        <table class="table table-borderless text-nowrap" id="userInfoTable">
+                            <tbody>
+                            <tr>
+                                <td class="font-weight-bold">Learning Program : Japan Internship Program</td>
+                                <td class="font-medium text-dark-medium" id="user-id"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Name: Anh Long Dep Zai</td>
+                                <td class="font-medium text-dark-medium" id="user-name"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Class: Black</td>
+                                <td class="font-medium text-dark-medium" id="what"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-bold">Teacher's Commentation: Sample123</td>
+                                <td class="font-medium text-dark-medium" id="user-jname"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <h4 style="padding-left: 8px; padding-top: 5px">Score Board</h4>
+                        <table style="margin-left: 8px">
+                            <thead>
+                            <tr>
+                                <th>Grade Category</th>
+                                <th>Grade Items</th>
+                                <th>Weight</th>
+                                <th>Value</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td rowspan="2">Participation</td>
+                                <td>Attendance Rate</td>
+                                <td>10%</td>
+                                <td>8</td>
+                            </tr>
+                            <tr>
+
+                            </tr>
+                            <tr>
+                                <td>Presentation</td>
+                                <td>Final Presentation</td>
+                                <td>40%</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Daily Exams</td>
+                                <td>Avg Exams Mark</td>
+                                <td>40%</td>
+                                <td>9</td>
+                            </tr>
+                            <tr>
+                                <td>Midterm Test</td>
+                                <td>Mid-term Exam</td>
+                                <td>25%</td>
+                                <td>8</td>
+                            </tr>
+                            <tr>
+                                <td>Final Exam Test</td>
+                                <td>End-term Exam</td>
+                                <td>25%</td>
+                                <td>8</td>
+                            </tr>
+                            <tr class="no-border">
+                                <td style="font-weight: bold;">Course Total</td>
+                                <td></td>
+                                <td></td>
+                                <td style="font-weight: bold;">7.5</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <form action="/export-csv" method="post" style="margin-top: 20px">
+                            <div class="col-lg-4">
+                                <button type="submit" class="btn btn-gradient-yellow btn-search">Export</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <button class="save-button btn btn-success mt-3" style="display: none;">Save</button>
+            </div>
+            <!-- Dashboard Content End Here -->
+        </div>
+    </div>
+    <!-- Page Area End Here -->
+</div>
+<!-- jquery-->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Counterup Js -->
+<script src="js/jquery.counterup.min.js"></script>
+<!-- Waypoints Js -->
+<script src="js/jquery.waypoints.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Data Table Js -->
+<script src="js/jquery.dataTables.min.js"></script>
+<!-- Custom Js -->
+<script src="js/main.js"></script>
+
+<script>
+    (async function fetchUserData() {
+        try {
+            const response = await fetch('/user-detail');
+            if (response.ok) {
+                const userData = await response.json();
+                sessionStorage.setItem('userDetails', JSON.stringify(userData));
+                console.log("User data stored in sessionStorage:", userData);
+
+
+                getUserDetails(userData);
+            } else {
+                console.error("Failed to fetch user details:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error fetching user details:", error);
+        }
+    })();
+
+    function getUserDetails(userDetails) {
+        if (userDetails) {
+            console.log("Setting user details:", userDetails);
+
+
+            document.querySelectorAll('.userFullName').forEach(element => {
+                element.textContent = userDetails.fullName || "Unknown Name";
+            });
+            document.querySelectorAll('.userRole').forEach(element => {
+                element.textContent = userDetails.roleName || "Unknown Role";
+            });
+
+            const userIdElement = document.getElementById('userId');
+            if (userIdElement) {
+                userIdElement.value = userDetails.id || "";
+            }
+
+
+            const imgContainers = document.querySelectorAll('.img');
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img');
+                if (imgElement) {
+                    imgElement.src = userDetails.img
+                        ? `${userDetails.img}?v=${new Date().getTime()}`
+                        : '/path/to/default-passport.jpg';
+                    console.log("Image source set to:", imgElement.src);
+                } else {
+                    console.error("Image element not found in:", container);
+                }
+            });
+
+        } else {
+            console.error("User details not found in sessionStorage");
+        }
+
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        let url = '/application/list'; // URL mặc định.
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch applications');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tableBody = document.getElementById('application-table-body');
+
+                if (tableBody) {
+                    tableBody.innerHTML = ''; // Xóa các hàng cũ
+
+                    // Sắp xếp theo ngày gần nhất (giảm dần)
+                    const sortedData = data.sort((a, b) => {
+                        const dateA = new Date(a.created_date).getTime();
+                        const dateB = new Date(b.created_date).getTime();
+                        return dateB - dateA; // Giảm dần
+                    });
+
+                    // Lấy tối đa 10 ứng dụng
+                    const limitedData = sortedData.slice(0, 10);
+
+                    // Hiển thị dữ liệu đã giới hạn
+                    limitedData.forEach(application => {
+                        const content = application.content || 'N/A';
+                        const formattedContent = wrapText(content, 50); // Hàm tự động xuống dòng
+
+                        const category = application.category || 'N/A';
+                        const formattedCategory = wrapText(category, 8); // Xử lý category
+
+                        const reply = application.reply || 'N/A';
+                        const formattedReply = wrapText(reply, 30); // Hàm tự động xuống dòng cho reply
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                        <td style="font-weight: bold;">${formattedCategory}</td>
+                        <td style="font-weight: bold;">${formattedContent}</td>
+                        <td style="font-weight: bold;">${application.created_date ? new Date(application.created_date).toLocaleDateString() : 'N/A'}</td>
+                        <td style="font-weight: bold;">${formattedReply || 'N/A'}</td>
+                        <td style="font-weight: bold;">
+                            ${application.img ? `<a href="${application.img}" target="_blank">File</a>` : 'N/A'}
+                        </td>
+                        <td style="font-weight: bold;">${application.status || 'N/A'}</td>
+                        <td style="font-weight: bold;">
+                            ${
+                            application.replied_date
+                                ? new Date(application.replied_date).toLocaleDateString() + '<br>' + new Date(application.replied_date).toLocaleTimeString()
+                                : 'N/A'
+                        }
+                        </td>
+                        <td style="font-weight: bold;">
+                            ${
+                            application.reply || application.replied_date
+                                ? '<span class="text-success">Replied</span>'
+                                : `<button onclick="window.location.href='Reply-application.html?id=${application.id}'" class="btn btn-primary">Reply</button>`
+                        }
+                        </td>
+                    `;
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    console.error('Table body not found');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching applications:', error);
+            });
+    });
+    function wrapText(text, maxLength) {
+        let result = '';
+        let currentLine = '';
+
+        const words = text.split(' '); // Chia văn bản thành các từ
+
+        words.forEach(word => {
+            if (currentLine.length + word.length + 1 > maxLength) {
+                result += currentLine + '<br>';
+                currentLine = word;
+            } else {
+                currentLine += (currentLine.length ? ' ' : '') + word;
+            }
+        });
+
+        result += currentLine; // Thêm phần còn lại vào cuối
+        return result;
+    }
+</script>
+</body>
+
+
+<!-- Mirrored from manager.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:33 GMT -->
+</html>

@@ -179,7 +179,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+
         }
 
         .table-container {
@@ -374,16 +374,19 @@
                                 class="flaticon-script"></i><span data-i18n="notification">Notification</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu-active" href="account-settings.html"><i
+                        <a class="nav-link" href="account-settings.html"><i
                                 class="flaticon-settings"></i><span data-i18n="account_list">Account List</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a class="nav-link" href="#"><i class="flaticon-chat"></i><span
                                 data-i18n="security">Security</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
                                 <a class="nav-link" href="change-password.html"><i class="fas fa-angle-right"></i><span
                                         data-i18n="change_password">Change Password</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="input1.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Test Export</a>
                             </li>
                         </ul>
                     </li>
@@ -406,77 +409,77 @@
             <!-- Student Details Area Start Here -->
             <div class="card height-auto">
                 <div class="card-body">
-                    <h3 style="padding-left: 8px; padding-top: 5px">Student Information Export Form</h3>
+                    <h3 style="padding-left: 8px; padding-top: 5px; font-weight: bold">Student Information Export Form</h3>
                     <div class="item-content">
                         <table class="table table-borderless text-nowrap" id="userInfoTable">
                             <tbody>
                             <tr>
-                                <td class="font-weight-bold">Learning Program : Japan Internship Program</td>
+                                <td style="color: #000">Learning Program : Japan Internship Program</td>
                                 <td class="font-medium text-dark-medium" id="user-id"></td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Name: Anh Long Dep Zai</td>
+                                <td  style="color: #000">Name: Anh Long Dep Zai</td>
                                 <td class="font-medium text-dark-medium" id="user-name"></td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Class: Black</td>
+                                <td  style="color: #000">Class: Black</td>
                                 <td class="font-medium text-dark-medium" id="what"></td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">Teacher's Commentation: Sample123</td>
+                                <td  style="color: #000">Teacher's Commentation: Sample123</td>
                                 <td class="font-medium text-dark-medium" id="user-jname"></td>
                             </tr>
                             </tbody>
                         </table>
-                        <h4 style="padding-left: 8px; padding-top: 5px">Score Board</h4>
+                        <h4 style="padding-left: 8px; padding-top: 5px; color: #007bff">Score Board</h4>
                         <table style="margin-left: 8px">
-                            <thead>
+                            <thead style="background-color: #007bff;">
                             <tr>
-                                <th>Grade Category</th>
-                                <th>Grade Items</th>
-                                <th>Weight</th>
-                                <th>Value</th>
+                                <th style="font-weight: bold; color: #000; background-color: #ff9625; text-align: center">Grade Category</th>
+                                <th style="font-weight: bold; color: #000;background-color: #ff9625; text-align: center">Grade Items</th>
+                                <th style="font-weight: bold; color: #000;background-color: #ff9625; text-align: center">Weight</th>
+                                <th style="font-weight: bold; color: #000;background-color: #ff9625; text-align: center ">Value</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td rowspan="2">Participation</td>
-                                <td>Attendance Rate</td>
-                                <td>10%</td>
-                                <td>8</td>
+                                <td rowspan="2" style=" color: #000; ">Participation</td>
+                                <td style=" color: #000;">Attendance Rate</td>
+                                <td style="font-weight: bold; color: #007bff;">10%</td>
+                                <td style=" color: #000;">8</td>
                             </tr>
                             <tr>
 
                             </tr>
                             <tr>
-                                <td>Presentation</td>
-                                <td>Final Presentation</td>
-                                <td>40%</td>
-                                <td>1</td>
+                                <td style=" color: #000;">Presentation</td>
+                                <td style=" color: #000;">Final Presentation</td>
+                                <td style="font-weight: bold; color: #007bff;">40%</td>
+                                <td style="color: #000;">1</td>
                             </tr>
                             <tr>
-                                <td>Daily Exams</td>
-                                <td>Avg Exams Mark</td>
-                                <td>40%</td>
-                                <td>9</td>
+                                <td style=" color: #000;">Daily Exams</td>
+                                <td style=" color: #000;">Avg Exams Mark</td>
+                                <td style="font-weight: bold; color: #007bff;">40%</td>
+                                <td style=" color: #000;">9</td>
                             </tr>
                             <tr>
-                                <td>Midterm Test</td>
-                                <td>Mid-term Exam</td>
-                                <td>25%</td>
-                                <td>8</td>
+                                <td style=" color: #000;">Midterm Test</td>
+                                <td style=" color: #000;">Mid-term Exam</td>
+                                <td style="font-weight: bold; color: #007bff;">25%</td>
+                                <td style=" color: #000;">8</td>
                             </tr>
                             <tr>
-                                <td>Final Exam Test</td>
-                                <td>End-term Exam</td>
-                                <td>25%</td>
-                                <td>8</td>
+                                <td style=" color: #000;">Final Exam Test</td>
+                                <td style=" color: #000;">End-term Exam</td>
+                                <td style="font-weight: bold; color: #007bff;">25%</td>
+                                <td style=" color: #000;">8</td>
                             </tr>
                             <tr class="no-border">
-                                <td style="font-weight: bold;">Course Total</td>
+                                <td style="font-weight: bold; color: #000;">Course Total</td>
                                 <td></td>
                                 <td></td>
-                                <td style="font-weight: bold;">7.5</td>
+                                <td style="font-weight: bold; color: #000;">7.5</td>
                             </tr>
                             </tbody>
                         </table>
