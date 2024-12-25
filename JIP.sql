@@ -1,4 +1,5 @@
 
+
 CREATE DATABASE jip;
 USE jip;
 
@@ -21,7 +22,7 @@ CREATE TABLE Student (
     Japanname VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     DoB DATE NOT NULL,
     Passport_url VARCHAR(255),
-    Gender ENUM('Male', 'Female') NOT NULL,
+    Gender VARCHAR(10) NOT NULL ,
     phone_number VARCHAR(20),
     img VARCHAR(255),
     email VARCHAR(100) NOT NULL,
@@ -56,9 +57,10 @@ CREATE TABLE Manager (
 
 CREATE TABLE Class (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    Name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    teacher_id INT NOT NULL,
+    name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    status ENUM('Active', 'Inactive') DEFAULT 'Inactive',
     number_of_student INT,
-    teacher_id INT,
     FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
 );
 
@@ -70,19 +72,43 @@ CREATE TABLE List (
     FOREIGN KEY (student_id) REFERENCES Student(Id)
 );
 
-CREATE TABLE Schedule (
-    Id INT AUTO_INCREMENT PRIMARY KEY,
-    Date date,
-    day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') NOT NULL,
-    class_id INT,
-    start_time TIME NULL,
-    end_time TIME NULL,
-    description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
-    event VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
-    location varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    FOREIGN KEY (class_id) REFERENCES Class(Id)
+CREATE TABLE Semester (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    start_time DATE NOT NULL,
+    end_time DATE NOT NULL,
+    status ENUM('Active', 'Inactive') DEFAULT 'Inactive'
 );
 
+CREATE TABLE Holiday (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100)  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    date DATE NOT NULL UNIQUE
+);
+
+CREATE TABLE Curriculum (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    subject VARCHAR(100)  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    total_slot INT default 52,
+    subject_description LONGTEXT  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    total_time INT DEFAULT 536 -- Total time in hours
+);
+
+CREATE TABLE Schedule (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    date DATE NOT NULL,
+    day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
+    class_id INT DEFAULT NULL,
+    room VARCHAR(100) DEFAULT NULL,
+    activity VARCHAR(100),
+    curriculum_id INT,
+    semester_id INT,
+    time_slot VARCHAR(50) NOT NULL,
+    status ENUM('Draft', 'Published') DEFAULT 'Draft',
+    FOREIGN KEY (class_id) REFERENCES Class(id) ON DELETE SET NULL,
+    FOREIGN KEY (curriculum_id) REFERENCES Curriculum(id) ON DELETE CASCADE,
+    FOREIGN KEY (semester_id) REFERENCES Semester(id) ON DELETE CASCADE
+);
 
 CREATE TABLE Attendant (
     Id INT AUTO_INCREMENT PRIMARY KEY,
@@ -90,6 +116,7 @@ CREATE TABLE Attendant (
     schedule_id INT,
     status ENUM('Present', 'Absent', 'Late', 'Permitted') NOT NULL,
     date DATE NOT NULL,
+    total_slot int,
     FOREIGN KEY (student_id) REFERENCES Student(Id),
     FOREIGN KEY (schedule_id) REFERENCES Schedule(Id)
 );
@@ -113,19 +140,10 @@ CREATE TABLE Student_assignment (
     assignment_id INT,
     mark DECIMAL(5,2),
     description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-    content longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    content VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     date DATE NOT NULL,
     FOREIGN KEY (student_id) REFERENCES Student(Id),
     FOREIGN KEY (assignment_id) REFERENCES Assignment(Id)
-);
-
-CREATE TABLE Exam (
-    Id INT AUTO_INCREMENT PRIMARY KEY,
-    teacher_id INT,
-    exam_name VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-    content longtext character set utf8mb4 COLLATE utf8mb4_unicode_ci not null ,
-    exam_date DATE NOT NULL,
-    FOREIGN KEY (teacher_id) REFERENCES teacher(Id)
 );
 
 CREATE TABLE Mark_report (
@@ -133,6 +151,8 @@ CREATE TABLE Mark_report (
     student_id INT,
     attendance_rate DECIMAL(5,2),
     avg_assignment_mark DECIMAL(5,2),
+    midterm_mark DECIMAL(5,2),
+    final_mark DECIMAL(5,2),
     avg_exam_mark DECIMAL(5,2),
     FOREIGN KEY (student_id) REFERENCES Student(Id)
 );
@@ -151,9 +171,7 @@ CREATE TABLE Personal_material (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT,
     material_link VARCHAR(255),
-    material_id INT,
-    FOREIGN KEY (student_id) REFERENCES Student(Id),
-    FOREIGN KEY (material_id) REFERENCES Material(Id) ON DELETE CASCADE
+    FOREIGN KEY (student_id) REFERENCES Student(Id)
 );
 
 CREATE TABLE Thread (
@@ -162,6 +180,23 @@ CREATE TABLE Thread (
     date_created DATE NOT NULL,
     description TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
     image BLOB,
+    creator_id INT,
+    FOREIGN KEY (creator_id) REFERENCES Account(Id)
+);
+
+CREATE TABLE Post (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    replies VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    date_created DATE NOT NULL,
+    image BLOB,
+    creator_id INT,
+    FOREIGN KEY (creator_id) REFERENCES Account(Id)
+);
+
+CREATE TABLE Comment (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    content TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    date DATE NOT NULL,
     creator_id INT,
     FOREIGN KEY (creator_id) REFERENCES Account(Id)
 );
@@ -182,7 +217,6 @@ CREATE TABLE Application (
     FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
 );
 
-
 CREATE TABLE Notification (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Title VARCHAR(100) NOT NULL,
@@ -195,9 +229,9 @@ CREATE TABLE Notification (
 
 
 Create table Report(
-    Id int auto_increment primary key,
-    Title varchar(100),
-    Content varchar(100),
-    reporter_id int,
-    foreign key (reporter_id) references Account(id)
+Id int auto_increment primary key,
+Title varchar(100),
+Content varchar(100),
+reporter_id int,
+foreign key (reporter_id) references Account(id)
 );
