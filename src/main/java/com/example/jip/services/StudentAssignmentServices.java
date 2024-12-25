@@ -2,6 +2,8 @@ package com.example.jip.services;
 
 
 
+import com.example.jip.dto.request.assignment.FileDeleteRequest;
+import com.example.jip.dto.request.studentAssignment.StudentAssignmentFileDeleteRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentGradeRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentSubmitRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentUpdateRequest;
@@ -18,6 +20,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,11 +39,10 @@ public class StudentAssignmentServices {
 
     StudentRepository studentRepository;
 
-    CloudinaryService cloudinaryService;
+    S3Service s3Service;
 
     NotificationServices notificationServices;
 
-    EmailServices emailServices;
 
 
 
@@ -61,10 +63,41 @@ public class StudentAssignmentServices {
         studentAssignment.setStatus(StudentAssignment.Status.SUBMITTED);
         studentAssignment.setAssignment(assignment);
 
+        // Sanitize and create folder name
+        String folderName = sanitizeFolderName("submissions/" + request.getDescription() + "_" + student.getFullname());
+        studentAssignment.setFile_url(folderName); // Set folder URL
+        if (request.getImgFile() != null) {
+            MultipartFile[] imgFiles = request.getImgFile();
+            for (int i = 0; i < request.getImgFile().length; i++) {
+                log.info("Uploading file: " + request.getImgFile()[i].getOriginalFilename());
+            }
+            uploadFilesToFolder(imgFiles, folderName);
+
+        } else {
+            log.warn("No files provided in the request.");
+        }
+
         notificationServices.createAutoNotificationForAssignment(student.getFullname() + "has submitted an assignment",student.getId(),assignment.getTeacher().getId());
-        emailServices.sendEmailSubmittedAssignment(student.getEmail(),student.getFullname(),assignment.getClasses().toString());
 
         return studentAssignmentRepository.save(studentAssignment);
+    }
+
+    private void uploadFilesToFolder(MultipartFile[] files, String folderName) {
+        Set<String> uploadedFiles = new HashSet<>();
+        for (MultipartFile file : files) {
+            if (!file.isEmpty() && uploadedFiles.add(file.getOriginalFilename())) {
+                try {
+                    String sanitizedFolderName = sanitizeFolderName(folderName);
+                    s3Service.uploadFile(file, sanitizedFolderName, file.getOriginalFilename());
+                } catch (Exception e) {
+                    throw new RuntimeException("Error uploading file: " + file.getOriginalFilename(), e);
+                }
+            }
+        }
+    }
+
+    private String sanitizeFolderName(String folderName) {
+        return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim().replace(" ", "_");
     }
 
     @PreAuthorize("hasAuthority('TEACHER')")
@@ -101,6 +134,7 @@ public class StudentAssignmentServices {
                         response.setAssignmentId(sa.getAssignment().getId());
                         response.setStudentId(sa.getStudent().getId());
                         response.setAssignmentName(sa.getAssignment().getDescription());
+
                         return response;
                     })
                     .collect(Collectors.toList());
@@ -124,9 +158,25 @@ public class StudentAssignmentServices {
         response.setAssignmentId(studentAssignment.getAssignment().getId()); // Includes assignment details
         response.setStudentId(studentAssignment.getStudent().getId()); // Includes student details
         response.setStudentName(studentAssignment.getStudent().getFullname()); // Includes student
+        String folderName = studentAssignment.getFile_url();
+        try {
+            if(!folderName.isEmpty()){
+                List<String> fileUrls = s3Service.listFilesInFolder(folderName);
+                if (fileUrls.isEmpty()) {
+                    log.warn("No files found for assignment with ID: {}", response.getId());
+                }
+                response.setFiles(fileUrls);
+            }
+
+        } catch (NullPointerException ne){
+            log.error("No file found");
+        }
+        catch (Exception e) {
+            log.error("Error retrieving files for assignment with ID: {}", response.getId(), e);
+            response.setFiles(Collections.emptyList());
+        }
         return response;
     }
-
 
 
     @PreAuthorize("hasAuthority('TEACHER')")
@@ -162,9 +212,38 @@ public class StudentAssignmentServices {
 
         existingAssignment.setDescription(request.getDescription());
         existingAssignment.setContent(request.getContent());
-        existingAssignment.setDate(new Date());
+
+        Student student = studentRepository.findById(existingAssignment.getStudent().getId())
+                .orElseThrow(() -> new NoSuchElementException("Student not found"));
+        if (request.getImgFile() != null) {
+            MultipartFile[] newFiles = request.getImgFile();
+            for (int i = 0; i < request.getImgFile().length; i++) {
+                log.info("Uploading file: " + request.getImgFile()[i].getOriginalFilename());
+            }
+            if (newFiles.length > 0) {
+                String folderName = sanitizeFolderName("submissions/" + request.getDescription() + "_" + student.getFullname());
+                if (folderName.isEmpty()) {
+                    throw new RuntimeException("Folder name is not set for student_assignment ID: " + existingAssignment.getId());
+                }
+                uploadFilesToFolder(newFiles, folderName);
+                existingAssignment.setFile_url(folderName); // Set folder URL
+            }
+        } else {
+            log.warn("No files provided in the request.");
+        }
 
         return studentAssignmentRepository.save(existingAssignment);
+    }
+
+    public void deleteFile(StudentAssignmentFileDeleteRequest request){
+        StudentAssignment studentAssignment = studentAssignmentRepository.findById(request.getStudentAssignmentId())
+                .orElseThrow(() -> new RuntimeException("StudentAssignment not found"));
+        // Sanitize folder name and delete the file
+        String folderName = sanitizeFolderName("submissions/" + studentAssignmentRepository.findById(request.getStudentAssignmentId())
+                .orElseThrow(() -> new NoSuchElementException("Student Assignment not found!"))
+                .getDescription() + "_" + studentAssignment.getStudent().getFullname());
+
+        s3Service.deleteFile(request.getFileUrl(), folderName);
     }
 
     @PreAuthorize("hasAuthority('STUDENT')")
@@ -174,6 +253,12 @@ public class StudentAssignmentServices {
 
         if (existingAssignment.getStatus() == StudentAssignment.Status.MARKED) {
             throw new RuntimeException("Cannot delete a marked assignment.");
+        }
+
+        // Delete associated cloud resources if applicable
+        if(existingAssignment.getFile_url() != null) {
+            String folderPath = sanitizeFolderName(existingAssignment.getFile_url());
+            s3Service.deleteFolder(folderPath);
         }
 
         studentAssignmentRepository.delete(existingAssignment);

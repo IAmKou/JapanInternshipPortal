@@ -555,6 +555,12 @@
                 return;
             }
 
+            const isDescriptionUnique = await checkDescriptionExists(description);
+            if (isDescriptionUnique) {
+                showErrorModal('Title already exists.');
+                return;
+            }
+
             if (content === '' || content === '<p><br></p>') {
                 showErrorModal('Description is required.');
                 return;
@@ -594,7 +600,9 @@
             const teacher_id = document.getElementById('userId').value;
             const response = await fetch(`/assignment/exists?description=${encodeURIComponent(description)}&teacherId=${teacher_id}`);
             if (response.ok) {
-                return await response.json(); // true if exists, false otherwise
+                const exists = await response.json();
+                console.log(`Description exists: ${exists}`); // Log the response for debugging
+                return exists; // true if exists, false otherwise
             } else {
                 console.error('Failed to check description existence.');
                 return false;

@@ -39,6 +39,9 @@ public class StudentAssignment {
     @Column(name = "date", nullable = false)
     Date date;
 
+    @Column(name = "file_url")
+    String file_url;
+
     @Enumerated(EnumType.STRING) // Use String for readability
     @Column(name = "status", nullable = false)
     Status status; // NEW: Status field

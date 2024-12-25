@@ -1,4 +1,4 @@
-package com.example.jip.dto.request;
+package com.example.jip.dto.request.assignment;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

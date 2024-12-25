@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -20,4 +21,5 @@ public class StudentAssignmentUpdateRequest {
     Date date;
     String description;
     String content;
+    MultipartFile[] imgFile;
 }
