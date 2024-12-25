@@ -31,6 +31,10 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+
     <style>
         /* Custom Modal Styling */
         #success-modal .modal-header {
@@ -68,6 +72,42 @@
         .icon-green {
             color: #28a745; /* Mã màu xanh lá cây */
         }
+
+        /* Đặt border và màu sắc mặc định */
+        #contentEditor {
+            border: 2px solid #007bff;  /* Đặt màu border là màu xanh dương */
+            border-radius: 5px;         /* Thêm góc bo tròn nếu cần */
+        }
+
+        /* Tạo hiệu ứng khi người dùng hover vào Quill editor */
+        #contentEditor:hover {
+            border-color: #28a745;      /* Chuyển màu border thành màu xanh lá khi hover */
+        }
+
+        /* Tạo hiệu ứng khi Quill editor có focus (khi người dùng click vào) */
+        #contentEditor:focus {
+            border-color: #ff6347;      /* Chuyển màu border thành màu cam khi có focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm bóng để nổi bật hơn */
+        }
+
+        /* Đặt border và màu sắc mặc định cho input */
+        /* Đặt border màu xanh cho input */
+        input[name="title"] {
+            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="title"]:hover {
+            border-color: #28a745 !important;
+        }
+        /* Khi người dùng focus vào input */
+        input[name="title"]:focus {
+            border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        }
+
+
+
     </style>
 </head>
 
@@ -326,14 +366,12 @@
                 </div>
                 <!-- Breadcubs Area End Here -->
                 <!-- Admit Form Area Start Here -->
-                <div class="card height-auto">
+                <div class="card shadow-lg rounded-3 p-4">
                     <div class="card-body">
                         <div class="heading-layout1">
-                        <div class="item-title">
-                            <h3 data-i18n="material_details">Material Details</h3>
-                        </div>
-
-
+                            <div class="item-title text-center">
+                                <h3 class="text-primary fw-bold" data-i18n="material_details">Material Details</h3>
+                            </div>
                         </div>
                         <form id="materialForm" action="materials/create" method="POST" enctype="multipart/form-data" class="new-added-form">
                             <div class="row">
@@ -347,12 +385,20 @@
 
                                 <div class="col-7 form-group">
                                     <label style="color: #007bff; font-weight: bold;" data-i18n="content">Content *</label>
-                                    <textarea class="textarea form-control" name="content" cols="10" rows="9" required></textarea>
+                                    <!-- Quill editor được thay thế vào đây -->
+                                    <div id="contentEditor" class="form-control" style="height: 200px;"></div>
+                                    <!-- Thêm một textarea ẩn để lưu giá trị và gửi trong form -->
+                                    <textarea name="content" style="display: none;"></textarea>
                                 </div>
+
+
+
 
                                 <div class="col-12 form-group">
                                     <label style="color: #007bff; font-weight: bold;" data-i18n="file_attach">File Attach:</label>
-                                    <input type="file" name="imgFile" class="form-control-file">
+                                    <input type="file" name="imgFile" class="form-control-file" onchange="previewFile(this)">
+                                    <img id="previewImage" class="mt-3 d-none" style="width: 100px; height: auto; border-radius: 10px;"/>
+
                                 </div>
 
                                 <div class="col-lg-6 col-12 form-group">
@@ -419,23 +465,58 @@
         <!-- Custom Js -->
         <script src="js/main.js"></script>
 
+    <script src="https://cdn.tiny.cloud/1/b5864490vqk2l7pskztbrvi830gxoz662ugtkx8w8b4mmpgk/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
     </body>
 <script>
-
-
-    document.getElementById("materialForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Ngăn chặn gửi form ngay lập tức
-        $('#confirmationModal').modal('show'); // Hiển thị modal xác nhận
+    // Khởi tạo Quill với selector tương ứng với div
+    var quill = new Quill('#contentEditor', {
+        theme: 'snow',  // Chọn theme của Quill (có thể chọn giữa 'snow' và 'bubble')
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],    // Các nút định dạng văn bản
+                ['link'],  // Chèn link
+                ['blockquote'],  // Blockquote
+                [{ 'list': 'ordered'}, { 'list': 'bullet'}], // Các kiểu danh sách
+                ['image']  // Chèn ảnh
+            ]
+        }
     });
 
-    // Hàm để gửi biểu mẫu khi người dùng nhấn "Xác nhận" trong modal
+    // Khi form được gửi đi, lấy nội dung từ Quill và đặt vào trong textarea ẩn (để gửi dữ liệu)
+    document.getElementById("materialForm").addEventListener("submit", function(event) {
+        event.preventDefault();  // Ngừng việc gửi form
+        $('#confirmationModal').modal('show');  // Hiển thị modal xác nhận
+    });
+
     function createForm() {
         $('#confirmationModal').modal('hide'); // Đóng modal
+
+        // Lấy dữ liệu từ Quill editor dưới dạng HTML (chứ không phải văn bản thuần)
+        const contentHTML = quill.root.innerHTML.trim();  // Sử dụng innerHTML để giữ lại định dạng HTML
+
+        // Kiểm tra nếu không có nội dung
+        if (!contentHTML) {
+            alert("Content is required.");
+            return; // Ngừng việc gửi form nếu không có nội dung
+        }
+
+        // Gán lại HTML vào textarea ẩn
+        const textarea = document.querySelector('textarea[name="content"]');
+        if (textarea) {
+            textarea.value = contentHTML;  // Gán giá trị HTML vào textarea
+        } else {
+            console.error('Textarea with name="content" not found!');
+        }
 
         // Gửi form
         document.getElementById("materialForm").submit();
     }
 </script>
+
+
+
+
 
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -674,6 +755,23 @@
 
 
 
+</script>
+<script>
+    function previewFile(input) {
+        const file = input.files[0];
+        const preview = document.getElementById('previewImage');
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.classList.remove('d-none');
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = "";
+            preview.classList.add('d-none');
+        }
+    }
 </script>
 
 <!-- Mirrored from admit-form.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:46 GMT -->
