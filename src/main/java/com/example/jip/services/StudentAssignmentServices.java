@@ -130,7 +130,7 @@ public class StudentAssignmentServices {
 
 
     @PreAuthorize("hasAuthority('TEACHER')")
-    public List<StudentAssignmentResponse> getSubmittedAssignmentsByAssignmentId(int assignmentId){
+    public List<StudentAssignmentResponse> getSubmittedAssignmentsByAssignmentId(int assignmentId) {
         List<StudentAssignment> studentAssignments = studentAssignmentRepository.findByAssignmentId(assignmentId);
         List<StudentAssignmentResponse> responses = studentAssignments.stream()
                 // Map to DTOs
@@ -141,14 +141,15 @@ public class StudentAssignmentServices {
                     response.setDescription(sa.getDescription());
                     response.setContent(sa.getContent());
                     response.setDate(sa.getDate());
-                    response.setStatus(sa.getStatus().toString());
                     response.setAssignmentId(sa.getAssignment().getId());
                     response.setStudentId(sa.getStudent().getId());
+                    response.setStudentName(sa.getStudent().getFullname()); // Thêm tên học sinh vào response
                     return response;
                 })
                 .collect(Collectors.toList());
         return responses;
     }
+
 
     @PreAuthorize("hasAuthority('STUDENT')")
     public StudentAssignment updateStudentAssignment(int submittedAssignmentId, StudentAssignmentUpdateRequest request) {
