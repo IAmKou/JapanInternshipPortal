@@ -100,12 +100,11 @@ CREATE TABLE Schedule (
     class_id INT DEFAULT NULL,
     room VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
     activity VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci default  null,
-    curriculum_id INT,
+    color VARCHAR(50) DEFAULT '#3788d8',
     semester_id INT,
     time_slot VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ,
     status ENUM('Draft', 'Published') DEFAULT 'Draft',
     FOREIGN KEY (class_id) REFERENCES Class(id) ON DELETE SET NULL,
-    FOREIGN KEY (curriculum_id) REFERENCES Curriculum(id) ON DELETE CASCADE,
     FOREIGN KEY (semester_id) REFERENCES Semester(id) ON DELETE CASCADE
 );
 
