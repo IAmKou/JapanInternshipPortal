@@ -26,6 +26,7 @@ public class Semester {
     private Date end_time;
 
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private status status;
 
     @OneToMany(mappedBy = "semester", fetch = FetchType.LAZY)

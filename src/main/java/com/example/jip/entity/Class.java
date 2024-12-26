@@ -27,6 +27,7 @@ import java.util.Set;
         private Teacher teacher;
 
         @Column(name="status")
+        @Enumerated(EnumType.STRING)
         private status status;
 
         @OneToMany(mappedBy = "clas", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -47,9 +48,6 @@ import java.util.Set;
             this.number_of_student = number_of_student;
             this.name = name;
             this.id = id;
-        }
-
-        public Class(int i, String mathematics, Teacher teacher) {
         }
 
         public enum status{

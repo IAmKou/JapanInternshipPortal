@@ -39,6 +39,7 @@ public class Schedule {
     private String time_slot;
 
     @Column(name="status")
+    @Enumerated(EnumType.STRING)
     private status status;
 
 
