@@ -20,11 +20,4 @@ public class StudentWithClassDTO {
         this.img = img;
         this.className = className;
     }
-
-    public StudentWithClassDTO(int studentId, String studentName, String img, String className) {
-        this.studentId = studentId;
-        this.studentName = studentName;
-        this.img = img;
-        this.className = className;
-    }
 }

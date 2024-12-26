@@ -270,27 +270,27 @@
                             <h3 style="padding-bottom: 15px">All Students Data</h3>
                         </div>
                     </div>
-                    <div class="row mb-3 align-items-center">
-                        <div class="col-lg-8">
-                            <input type="text" placeholder="Search by ID..." class="form-control search-input">
-                        </div>
-                        <div class="col-lg-4">
-                            <button type="submit" class="btn btn-gradient-yellow btn-search" data-i18n="search">SEARCH</button>
-                        </div>
-                    </div>
+<!--                    <div class="row mb-3 align-items-center">-->
+<!--                        <div class="col-lg-8">-->
+<!--                            <input type="text" placeholder="Search by ID..." class="form-control search-input">-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-4">-->
+<!--                            <button type="submit" class="btn btn-gradient-yellow btn-search" data-i18n="search">SEARCH</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <form class="mg-b-20">
                         <div class="row gutters-8">
                             <!-- Cột 1 -->
                             <div class="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                                <button type="button" class="fw-btn-fill btn-gradient-yellow" id="getAllStudents">GET ALL</button>
+                                <button type="button" class="fw-btn-fill btn-gradient-yellow" id="getAllStudents">ALL STUDENT</button>
                             </div>
                             <!-- Cột 2 -->
                             <div class="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                                <button type="button" class="fw-btn-fill btn-gradient-yellow" id="getStudentsWithoutClass">GET STUDENT WITHOUT CLASS</button>
+                                <button type="button" class="fw-btn-fill btn-gradient-yellow" id="getStudentsWithoutClass">STUDENT WITHOUT CLASS</button>
                             </div>
                             <!-- Cột 3 -->
                             <div class="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                                <button type="button" class="fw-btn-fill btn-gradient-yellow" id="getStudentsWithCompleteMarkReport">GET STUDENT WITH GRADES</button>
+                                <button type="button" class="fw-btn-fill btn-gradient-yellow" id="getStudentsWithCompleteMarkReport">CLASS TO EXPORT</button>
                             </div>
                         </div>
                     </form>
@@ -298,7 +298,7 @@
                         <table class="table display text-nowrap" id="studentTable">
                             <thead>
                             <tr>
-                                <th>Order</th>
+                                <th>#</th>
                                 <th>Photo</th>
                                 <th>Name</th>
                                 <th>Gender</th>
@@ -314,6 +314,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Student Table Area End Here -->
         </div>
     </div>
     <!-- Page Area End Here -->
@@ -437,17 +438,10 @@
             event.preventDefault(); // Prevent form submission
             fetchStudents('/student/getAllStudent');
         });
-
         document.getElementById('getStudentsWithoutClass').addEventListener('click', (event) => {
             event.preventDefault(); // Prevent form submission
             fetchStudents('/student/getAllWithoutClass');
         });
-
-        document.getElementById('getStudentsWithCompleteMarkReport').addEventListener('click', (event) => {
-            event.preventDefault(); // Prevent form submission
-            fetchStudents('/student/getStudentsWithCompleteMarkReport', true);
-        });
-
         // Fetch and display all students on page load by default
         fetchStudents('/student/getAllStudent');
     });

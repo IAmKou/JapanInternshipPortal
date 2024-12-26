@@ -1,8 +1,5 @@
 <!doctype html>
 <html class="no-js" lang="">
-
-
-<!-- Mirrored from all-class-student.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -94,82 +91,6 @@
                                     <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
                                     <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                                 </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="navbar-item dropdown header-message">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="far fa-envelope"></i>
-                            <div class="item-title d-md-none text-16 mg-l-10">Message</div>
-                            <span>5</span>
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title">05 Message</h6>
-                            </div>
-                            <div class="item-content">
-                                <div class="media">
-                                    <div class="item-img bg-skyblue author-online">
-                                        <img src="img/figure/student11.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Maria Zaman</span> 
-                                                <span class="item-time">18:30</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-img bg-yellow author-online">
-                                        <img src="img/figure/student12.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Benny Roy</span> 
-                                                <span class="item-time">10:35</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-img bg-pink">
-                                        <img src="img/figure/student13.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Steven</span> 
-                                                <span class="item-time">02:35</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-img bg-violet-blue">
-                                        <img src="img/figure/student11.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Joshep Joe</span> 
-                                                <span class="item-time">12:35</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </li>
@@ -310,22 +231,15 @@
                             <div class="item-title">
                                 <h3>All Class Student</h3>
                             </div>
-                           <div class="dropdown">
-                                <a class="dropdown-toggle" href="#" role="button" 
-                                data-toggle="dropdown" aria-expanded="false">...</a>
-        
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                                </div>
+                            <div class="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                                <button id="viewGradesButton" type="button" class="fw-btn-fill btn-gradient-yellow">VIEW GRADES</button>
                             </div>
                         </div>
                         <div class="table-responsive">
                             <table class="table display text-nowrap">
                                 <thead>
                                     <tr>
-                                        <th>Order</th>
+                                        <th>#</th>
                                         <th>Photo</th>
                                         <th>Name</th>
                                         <th>Gender</th>
@@ -388,15 +302,19 @@
             console.error("User details not found in sessionStorage");
         }
     </script>
-    <!-- fetch student --><script>
+    <!-- fetch student -->
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             const tableBody = document.querySelector('.table tbody');
+            const tableHead = document.querySelector('.table thead');
+            const viewGradesButton = document.getElementById('viewGradesButton');
             const urlParams = new URLSearchParams(window.location.search);
             const classId = urlParams.get('classId');
+            let isGradesViewInitialized = false; // Track if grades view is already initialized
 
             // Ensure classId is valid before proceeding
             if (classId) {
-                fetch(`/student/${classId}/getAll`) // Use backticks here
+                fetch(`/student/${classId}/getAll`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok ' + response.statusText);
@@ -414,7 +332,7 @@
                             numberCell.textContent = studentNumber++; // Increment student number
                             row.appendChild(numberCell);
 
-                            // image cell
+                            // Image cell
                             const imgCell = document.createElement('td');
                             const imgElement = document.createElement('img');
                             imgElement.src = student.img;
@@ -430,12 +348,10 @@
                             nameCell.textContent = student.fullname;
                             row.appendChild(nameCell);
 
-                            // gender cell
-                            const nos = document.createElement('td');
-                            nos.textContent = student.gender;
-                            row.appendChild(nos);
-
-                            // Actions cell (can be added later if needed)
+                            // Gender cell
+                            const genderCell = document.createElement('td');
+                            genderCell.textContent = student.gender;
+                            row.appendChild(genderCell);
 
                             // Append the row to the table body
                             tableBody.appendChild(row);
@@ -445,11 +361,100 @@
             } else {
                 console.error("classId is missing from the URL.");
             }
+
+            // View Grades Button Logic
+            viewGradesButton.addEventListener('click', function () {
+                console.log('View Grades button clicked'); // Log when the button is clicked
+
+                if (isGradesViewInitialized) {
+                    console.log("Grades view already initialized. Preventing duplicate fetch.");
+                    return; // Prevent reinitialization if already initialized
+                }
+
+                isGradesViewInitialized = true; // Set flag to true
+
+                // Change the table header for grades
+                tableHead.innerHTML = `
+                <tr>
+                    <th>#</th>
+                    <th>Student Name</th>
+                    <th>Teacher Comment</th>
+                    <th>Participation</th>
+                    <th>Daily Exams</th>
+                    <th>Midterm Test</th>
+                    <th>Final Test</th>
+                    <th>Course Final</th>
+                </tr>
+            `;
+
+                // Clear the table body
+                tableBody.innerHTML = '';
+
+                // Fetch grades for the students
+                console.log(`Fetching grades for classId: ${classId}`); // Log classId before making the fetch call
+                fetch(`/student/${classId}/getAllGrades`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(grades => {
+                        let studentNumber = 1; // Initialize student number counter
+
+                        grades.forEach(grade => {
+                            const row = document.createElement('tr');
+
+                            // Number cell (numerical order)
+                            const numberCell = document.createElement('td');
+                            numberCell.textContent = studentNumber++; // Increment student number
+                            row.appendChild(numberCell);
+
+                            // Student Name cell
+                            const studentNameCell = document.createElement('td');
+                            studentNameCell.textContent = grade.fullname; // Replace with actual student name lookup if needed
+                            row.appendChild(studentNameCell);
+
+                            // Comment cell
+                            const commentCell = document.createElement('td');
+                            commentCell.textContent = grade.comment || "N/A"; // If the comment is available, use it
+                            row.appendChild(commentCell);
+
+                            // Participation cell
+                            const participationCell = document.createElement('td');
+                            participationCell.textContent = grade.attitude || "N/A";
+                            row.appendChild(participationCell);
+
+                            // Daily Exams cell
+                            const dailyExamsCell = document.createElement('td');
+                            dailyExamsCell.textContent = grade.avgExamMark || "N/A";
+                            row.appendChild(dailyExamsCell);
+
+                            // Midterm cell
+                            const midtermCell = document.createElement('td');
+                            midtermCell.textContent = grade.middleExam || "N/A";
+                            row.appendChild(midtermCell);
+
+                            // Final Test cell
+                            const endtermCell = document.createElement('td');
+                            endtermCell.textContent = grade.finalExam || "N/A";
+                            row.appendChild(endtermCell);
+
+                            // Course Final cell
+                            const finalCell = document.createElement('td');
+                            finalCell.textContent = grade.finalMark || "N/A";
+                            row.appendChild(finalCell);
+
+                            // Append the row to the table body
+                            tableBody.appendChild(row);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching grades:', error);
+                        console.log('Error fetching grades for classId: ' + classId); // Additional log to track fetch errors
+                    });
+            });
         });
     </script>
-
 </body>
-
-
-<!-- Mirrored from all-class-student.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>
