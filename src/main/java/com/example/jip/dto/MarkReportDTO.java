@@ -14,6 +14,7 @@ public class MarkReportDTO {
     private BigDecimal softskill;
     private BigDecimal avgExamMark;
     private BigDecimal middleExam;
+    private BigDecimal skill;
     private BigDecimal finalExam;
     private BigDecimal attitude;
     private BigDecimal finalMark;
@@ -21,7 +22,7 @@ public class MarkReportDTO {
 
     // Constructor
     public MarkReportDTO(Integer studentId, String fullname, BigDecimal softskill, BigDecimal avgExamMark,
-                         BigDecimal middleExam, BigDecimal finalExam, BigDecimal attitude, BigDecimal finalMark, String comment) {
+                         BigDecimal middleExam, BigDecimal finalExam, BigDecimal attitude, BigDecimal finalMark, String comment,BigDecimal skill ) {
         this.studentId = studentId;
         this.fullname = fullname; // Initialize fullname
         this.softskill = softskill;
@@ -31,6 +32,7 @@ public class MarkReportDTO {
         this.attitude = attitude;
         this.finalMark = finalMark;
         this.comment = comment;
+        this.skill = skill;
     }
 
 }

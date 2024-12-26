@@ -2,14 +2,13 @@ package com.example.jip.dto;
 
 import com.example.jip.entity.Assignment;
 import com.example.jip.entity.Class;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
+@Setter
+@Getter
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,59 +38,5 @@ public class ClassDTO {
         this.numberOfStudents = clasz.getNumber_of_student();
         this.teacherName = clasz.getTeacher().getFullname();
     }
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getNumberOfStudents() {
-        return numberOfStudents;
-    }
-
-    public void setNumberOfStudents(int numberOfStudents) {
-        this.numberOfStudents = numberOfStudents;
-    }
-
-    public TeacherDTO getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(TeacherDTO teacher) {
-        this.teacher = teacher;
-    }
-
-    public List<Integer> getStudentIds() {
-        return studentIds;
-    }
-
-    public void setStudentIds(List<Integer> studentIds) {
-        this.studentIds = studentIds;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTeacherName() {
-        return teacherName;
-    }
-
-    public void setTeacherName(String teacherName) {
-        this.teacherName = teacherName;
-    }
-
-    public List<Integer> getAssignmentIds() {
-        return assignmentIds;
-    }
-
-    public void setAssignmentIds(List<Integer> assignmentIds) {
-        this.assignmentIds = assignmentIds;
-    }
 }

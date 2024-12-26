@@ -1,10 +1,7 @@
 package com.example.jip.repository;
 
-import com.example.jip.dto.response.markReport.MarkReportResponse;
 import com.example.jip.entity.MarkReport;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,4 +16,6 @@ public interface MarkReportRepository extends CrudRepository<MarkReport, Integer
             "on mr.student.id = l.student.id " +
             "AND l.clas.id = :classId")
     List<MarkReport> findAllByClassId(int classId);
+    Optional<MarkReport> findByStudentId(int studentId);
+    List<MarkReport> findByStudentIdIn(List<Integer> studentIds);
 }

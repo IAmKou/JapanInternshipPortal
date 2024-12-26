@@ -14,15 +14,13 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MarkReport {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-
     @OneToOne
     @JoinColumn(name = "student_id", referencedColumnName = "id", nullable = false)
     Student student;
-
+    private String comment;
     @Column(name = "softskill")
     BigDecimal softskill;
     @Column(name = "avg_exam_mark")
