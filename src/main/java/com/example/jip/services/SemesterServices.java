@@ -54,6 +54,7 @@ public class SemesterServices {
                 Schedule schedule = new Schedule();
                 schedule.setDate(holiday.getDate());
                 schedule.setActivity(holiday.getName());
+                schedule.setColor("#fac702");
                 schedule.setStatus(Schedule.status.Draft);
 
 

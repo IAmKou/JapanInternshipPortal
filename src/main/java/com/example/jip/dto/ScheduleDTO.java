@@ -20,11 +20,13 @@ public class ScheduleDTO {
     private String time_slot;
     private Schedule.status status;
     private int semesterId;
+    private Date startTime;
+    private Date endTime;
 
     public ScheduleDTO() {
     }
 
-    public ScheduleDTO(int id, String date, Schedule.dayOfWeek dayOfWeek, String class_name, String color, String room, String activity, String semesterName, String time_slot, Schedule.status status, int semesterId) {
+    public ScheduleDTO(int id, String date, Schedule.dayOfWeek dayOfWeek, String class_name, String color, String room, String activity, String semesterName, String time_slot, Schedule.status status, int semesterId, Date startTime, Date endTime) {
         this.id = id;
         this.date = date;
         this.dayOfWeek = dayOfWeek;
@@ -36,6 +38,8 @@ public class ScheduleDTO {
         this.time_slot = time_slot;
         this.status = status;
         this.semesterId = semesterId;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     public ScheduleDTO(Schedule schedule) {
@@ -50,8 +54,25 @@ public class ScheduleDTO {
         this.time_slot = schedule.getTime_slot();
         this.status = schedule.getStatus();
         this.semesterId = schedule.getSemester().getId();
+        this.startTime = schedule.getSemester().getStart_time();
+        this.endTime = schedule.getSemester().getEnd_time();
     }
 
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public int getId() {
         return id;

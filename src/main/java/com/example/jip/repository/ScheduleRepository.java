@@ -2,7 +2,9 @@ package com.example.jip.repository;
 
 import com.example.jip.entity.Schedule;
 import com.example.jip.entity.Semester;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -20,7 +22,10 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 
     List<Schedule> findBySemesterId(int semesterId);
 
-
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Schedule s WHERE s.semester.id = :semesterId")
+    void deleteBySemesterId(@Param("semesterId") int semesterId);
 
 
 }

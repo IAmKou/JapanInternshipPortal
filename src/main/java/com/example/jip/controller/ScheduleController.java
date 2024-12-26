@@ -50,27 +50,36 @@ public class ScheduleController {
     @PostMapping("/saveDraft")
     public ResponseEntity<?> saveDraft(@RequestBody List<ScheduleDTO> schedules) {
         try {
+            // Validate semester ID from the first schedule
+            if (schedules.isEmpty()) {
+                return ResponseEntity.badRequest().body("No schedules provided.");
+            }
+
+            int semesterId = schedules.get(0).getSemesterId();
+            Semester semester = semesterRepository.findById(semesterId)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid Semester ID: " + semesterId));
+
+            // Delete existing schedules for the semester
+            scheduleRepository.deleteBySemesterId(semesterId);
+
+            // Save new schedules
             for (ScheduleDTO scheduleDTO : schedules) {
                 Schedule schedule = new Schedule();
                 schedule.setActivity(scheduleDTO.getActivity());
                 schedule.setColor(scheduleDTO.getColor());
-                LocalDate localDate = ZonedDateTime.parse(scheduleDTO.getDate()).toLocalDate();
+                LocalDate localDate = LocalDate.parse(scheduleDTO.getDate()).plusDays(1);
                 schedule.setDate(Date.valueOf(localDate));
-                Date date = Date.valueOf(localDate);
-                schedule.setDay_of_week(getDayOfWeekFromDate(date));
-                int semesterId = scheduleDTO.getSemesterId();
-                Semester semester = semesterRepository.findById(semesterId)
-                        .orElseThrow(() -> new IllegalArgumentException("Invalid Semester ID: " + semesterId));
+                schedule.setDay_of_week(getDayOfWeekFromDate(Date.valueOf(localDate)));
                 schedule.setSemester(semester);
+                schedule.setTime_slot("All day");
                 schedule.setStatus(Schedule.status.Draft);
-
 
                 scheduleRepository.save(schedule);
             }
-            return ResponseEntity.ok("Draft saved successfully");
+            return ResponseEntity.ok("Schedules updated successfully for semester ID: " + semesterId);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving draft");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating schedules");
         }
     }
     private Schedule.dayOfWeek getDayOfWeekFromDate(java.sql.Date date) {
