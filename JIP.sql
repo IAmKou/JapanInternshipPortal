@@ -160,18 +160,18 @@ CREATE TABLE Student_assignment (
 );
 
 -- MarkReport table (linked with Student)
-CREATE TABLE Mark_report (
+CREATE TABLE mark_report (
                              Id INT AUTO_INCREMENT PRIMARY KEY,
                              student_id INT,
-                             softskill DECIMAL(5,2),
-                             avg_exam_mark DECIMAL(5,2),
-                             middle_exam DECIMAL(5,2),
-                             final_exam DECIMAL(5,2),
-                             attitude DECIMAL(5,2),
-                             final_mark DECIMAL(5,2),
-                             FOREIGN KEY (student_id) REFERENCES Student(Id)
+                             softskill DECIMAL(5,2) NULL,
+                             avg_exam_mark DECIMAL(5,2) NULL,
+                             middle_exam DECIMAL(5,2) NULL,
+                             final_exam DECIMAL(5,2) NULL,
+                             skill DECIMAL(5,2) NULL,
+                             attitude DECIMAL(5,2) NULL,
+                             final_mark DECIMAL(5,2) NULL,
+                             FOREIGN KEY (student_id) REFERENCES student(Id)
 );
-
 -- Material table (linked with Teacher)
 CREATE TABLE Material (
                           Id INT AUTO_INCREMENT PRIMARY KEY,

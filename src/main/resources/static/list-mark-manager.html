@@ -2,11 +2,10 @@
 <html class="no-js" lang="">
 
 
-<!-- Mirrored from teacher-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:48 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>JIP | Exam Details</title>
+    <title>JIP | Mark List</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -23,12 +22,14 @@
     <link rel="stylesheet" href="fonts/flaticon.css">
     <!-- Animate CSS -->
     <link rel="stylesheet" href="css/animate.min.css">
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
-
     <style>
+
         /* Overlay */
         .overlay {
             display: none; /* Hidden by default */
@@ -37,42 +38,50 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
-            z-index: 8; /* Layering */
+            background-color: rgba(0, 0, 0, 0.7); /* Black background with 70% transparency */
+            z-index: 8; /* Behind the popup */
         }
 
         /* Popup container */
         .popup {
-            position: fixed;
+            display: none; /* Hidden by default */
+            position: fixed; /* Fixed positioning for proper centering */
             z-index: 9; /* In front of the overlay */
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
             width: 90%; /* Adjust width for responsiveness */
-            max-width: 500px; /* Maximum width */
-            background-color: #ffffff; /* White background */
+            max-width: 600px; /* Maximum width */
+            max-height: 90%; /* Prevent overflow of the screen */
+            background-color: white;
             padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-            animation: fadeIn 0.3s ease-in-out; /* Smooth appearance */
+            border: 1px solid #888;
+            border-radius: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden; /* Hide overflow by default */
         }
 
         /* Popup content */
         .popup-content {
             width: 100%;
+            max-height: 100%;
+            overflow-y: auto; /* Enable vertical scrolling */
+            padding: 20px;
+            border-radius: 20px;
         }
 
         /* Close button */
         .close {
+            color: #aaa;
             float: right;
-            font-size: 1.5rem;
-            color: #888;
+            font-size: 28px;
             font-weight: bold;
             cursor: pointer;
         }
 
         .close:hover, .close:focus {
-            color: #ff0000; /* Red for hover effect */
+            color: black;
+            text-decoration: none;
         }
 
         /* Form styling */
@@ -83,54 +92,100 @@
 
         form label {
             margin-top: 10px;
-            font-weight: bold;
-            color: #333; /* Darker text for better visibility */
         }
 
-        form input {
+        form input, form textarea, form select {
             padding: 10px;
             margin-top: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 1rem;
-            width: 100%;
+            font-size: 14px;
         }
 
-        form input:focus {
-            border-color: #007bff; /* Blue focus border */
-            outline: none;
-        }
-
-        form button {
-            background-color: #007bff; /* Primary blue */
-            color: white;
-            padding: 10px;
+        /* Button styling */
+        .btn {
             margin-top: 20px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            font-size: 16px;
         }
 
-        form button:hover {
-            background-color: #0056b3; /* Darker blue */
+        .btn:hover {
+            background-color: #45a049;
         }
 
-        /* Smooth animation for popup */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        /* Modal Background (Overlay) */
+        .modal-background {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Black with transparency */
+            justify-content: center;
+            align-items: center;
+            z-index: 2000; /* High z-index to stay above other content */
+        }
+
+        /* Modal Content Box */
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 350px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        /* Buttons inside the modal */
+        .modal-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        /* Confirm Button Style */
+        .confirm-btn {
+            background-color: #dc3545; /* Red background for delete */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Confirm Button Hover Effect */
+        .confirm-btn:hover {
+            background-color: #c82333; /* Darker red on hover */
+        }
+
+        /* Cancel Button Style */
+        .cancel-btn {
+            background-color: #6c757d; /* Gray background for cancel */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Cancel Button Hover Effect */
+        .cancel-btn:hover {
+            background-color: #5a6268; /* Darker gray on hover */
         }
     </style>
 </head>
 
 <body>
+
+
 <!-- Preloader Start Here -->
 <div id="preloader"></div>
 <!-- Preloader End Here -->
@@ -139,7 +194,7 @@
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
-                <a href="admin.html">
+                <a href="teacher.html">
                     <div style="width: 180px; height: 70px; overflow: hidden;">
                         <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
@@ -176,11 +231,11 @@
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
                         <div class="admin-title">
-                        <h5 class="item-title userFullName"></h5>
-                        <span class="userRole"></span>
-                    </div>
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
+                        </div>
                         <div class="admin-img img">
-                            <img src="" style="width: 50px; height: 50px" alt="Admin">
+                            <img src="" style="height: 50px; width: 50px" alt="Admin">
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -189,13 +244,14 @@
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
-                                <li><a href="users-profile-student.html"><i class="flaticon-user"></i>My Profile</a></li>
+                                <li><a href="users-profile-teacher.html"><i class="flaticon-user"></i>My Profile</a></li>
                                 <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
                                 <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
                     </div>
                 </li>
+
                 <li class="navbar-item dropdown header-notification">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
@@ -251,13 +307,14 @@
         </div>
     </div>
     <!-- Header Menu Area End Here -->
+
     <!-- Page Area Start Here -->
     <div class="dashboard-page-one">
         <!-- Sidebar Area Start Here -->
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="teacher.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
@@ -298,14 +355,11 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
-                    </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
+                                <a class="nav-link menu-active" href="list-mark.html"><i class="fas fa-angle-right"></i>List
                                     Exam</a>
                             </li>
                             <li class="nav-item">
@@ -356,6 +410,14 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -363,70 +425,50 @@
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3>Exam Detail</h3>
+                <h2>List Mark</h2>
                 <ul>
                     <li>
-                        <a href="list-exam.html">All Exam</a>
+                        <a href="teacher.html">Home</a>
                     </li>
-                    <li>Exam Details</li>
+                    <li>List Mark</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
-            <!-- Student Table Area Start Here -->
-            <div class="card height-auto">
-                <div class="card-body">
-                    <div class="item-title">
-                        <h2>Exam Detail</h2>
-                    </div>
-                    <div class="heading-layout1">
-                        <div class="item-title">
-                            <h3 class="text-dark-medium font-medium">Exam name</h3>
-                            <p id="exam-name"></p>
-                        </div>
-                    </div>
 
-                    <div class="single-info-details">
-                        <div class="item-content">
-                            <h3 class="text-dark-medium font-medium">Content</h3>
-                            <p id="exam-content"></p>
-                            <table class="table text-nowrap">
-                                <tbody>
-                                <tr>
-                                    <td>Created Date:</td>
-                                    <td id="created-date"></td>
-                                </tr>
-
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            <!-- Teacher Table Area Start Here -->
             <div class="card height-auto">
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h2>All Exam Results</h2>
+                            <h2>List Mark</h2>
                         </div>
 
                     </div>
 
                     <div class="table-responsive">
+                        <button id="import-by-csv">Import by csv</button>
+                        <button id="import-by-excel">Import by excel</button>
                         <table class="table display data-table text-nowrap">
                             <thead>
                             <tr>
-                                <th class="col-xl-2 col-lg-6 col-12">ID</th>
-                                <th class="col-xl-4 col-lg-6 col-12">Name</th>
-                                <th class="col-xl-2 col-lg-6 col-12">Mark</th>
-                                <th class="col-xl-4 col-lg-6 col-12">Action</th>
+                                <th>Name</th>
+                                <th>Soft Skill</th>
+                                <th>Average Exam Mark</th>
+                                <th>Middle Exam Mark</th>
+                                <th>Final Exam Mark</th>
+                                <th>Skill</th>
+                                <th>Attitude</th>
+                                <th>Final Mark</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody id="examResult_list">
+                            <tbody id="mark_list">
 
 
                             </tbody>
+
+                            <button id="export-by-csv">Export csv</button>
+                            <button id="export-by-excel">Export excel</button>
                         </table>
                     </div>
 
@@ -434,31 +476,32 @@
 
             </div>
 
-        </div>
 
+        </div>
         <div id="overlay" class="overlay">
-            <div id="gradeModal" class="popup" style="display: none;">
+            <div id="examPopup" class="popup">
                 <div class="popup-content">
-                    <span class="close" onclick="closeGradeModal()">&times;</span>
-                    <h2>Update Exam Result</h2>
-                    <form class="new-added-form" id="gradeForm">
-                        <input type="hidden" id="examResultId">
-                        <div>
-                            <label for="studentName">Student Name:</label>
-                            <input type="text" id="studentName" name="studentName" readonly>
-                        </div>
-                        <div>
-                            <label for="mark">Mark:</label>
-                            <input type="number" id="mark" name="mark" min="0" max="100" required>
-                        </div>
-                        <button type="submit">Submit</button>
+                    <span class="close" onclick="closePopup()">&times;</span>
+                    <h2>Update Mark</h2>
+                    <form class="new-added-form" action="javascript:void(0);" onsubmit="updateExam(event)">
+                        <label for="exam_name">Exam Name:</label>
+                        <input type="text" id="exam_name" name="exam_name" required/>
+
+                        <label for="exam_date">Date:</label>
+                        <input type="date" id="exam_date" name="exam_date" required/>
+
+                        <label for="content">Content:</label>
+                        <textarea id="content" name="content" rows="4" required></textarea>
+
+                        <button type="submit" class="btn">Update</button>
                     </form>
                 </div>
             </div>
         </div>
+
+
+
     </div>
-
-
     <!-- Page Area End Here -->
 </div>
 <!-- jquery-->
@@ -471,211 +514,201 @@
 <script src="js/bootstrap.min.js"></script>
 <!-- Scroll Up Js -->
 <script src="js/jquery.scrollUp.min.js"></script>
+<!-- Data Table Js -->
+<script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
-<!-- fetch user -->
+
 <script>
-    async function fetchExamDetails() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const examId = urlParams.get('id');
 
-        if (!examId) {
-            alert('Exam ID is missing in the URL.');
-            return;
-        }
+    const API_BASE_URL = '/exam';
+    let currentExamId = null;
 
+    async function fetchAndDisplayExams() {
         try {
-            const response = await fetch(`/exam/detail/${examId}`);
-
+            console.log('Fetching exams...');
+            const response = await fetch(`${API_BASE_URL}/list`);
+            console.log('Response received:', response);
             if (!response.ok) {
-                throw new Error('Error fetching Exam details');
+                throw new Error('Error fetching exams: ' + response.statusText);
             }
+            const exams = await response.json();
+            console.log('Exams data:', exams);
 
-            const exam = await response.json();
-            console.log('Exam details:', exam);
+            // Clear existing rows in the table
+            const tableBody = document.getElementById('exam_list');
+            tableBody.innerHTML = '';
 
-            // Populate description and content
-            document.getElementById('exam-name').textContent = exam.exam_name || "No name provided";
-            document.getElementById('exam-content').textContent = exam.content || "No content provided";
-            document.getElementById('created-date').textContent = exam.exam_date || "N/A";
-
-
-        } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred while fetching the exam details.');
-        }
-    }
-
-    // Call the function on page load
-    fetchExamDetails();
-
-    // Fetch and display submitted assignments
-    async function fetchAndDisplayExamResults() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const examId = urlParams.get('id');
-
-        try {
-            const response = await fetch(`/examResult/list-exam-results?examId=${examId}`);
-            if (!response.ok) {
-                throw new Error(`Error fetching student result: ${response.statusText}`);
-            }
-
-            const examResults= await response.json();
-            console.log("Fetched Exam results:", examResults);
-
-            const tableBody = document.getElementById("examResult_list");
-            tableBody.innerHTML = "";
-
-            if (examResults.length === 0) {
-                const noDataRow = document.createElement("tr");
-                noDataRow.innerHTML = `
-                <td colspan="5" class="text-center">No exam result available.</td>
-            `;
-                tableBody.appendChild(noDataRow);
-                return;
-            }
-
-            examResults.forEach((examResult) => {
-                const row = document.createElement("tr");
+            exams.forEach(exam => {
+                const row = document.createElement('tr');
                 row.innerHTML = `
-                <td class="col-xl-2 col-lg-6 col-12">${examResult.studentId || "N/A"}</td>
-                <td class="col-xl-4 col-lg-6 col-12">
-                    <a href="/student-mark-report.html?studentId=${examResult.studentId}">
-                        ${examResult.studentName}
-                    </a>
-                </td>
-                <td class="col-xl-4 col-lg-6 col-12">${examResult.mark || "N/A"}</td>
-                <td class="col-xl-4 col-lg-6 col-12">
-                       <button type="button" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" onclick="openUpdateModal(${examResult.id}, '${examResult.studentName}', ${examResult.mark})" >
-                           Update
-                       </button>
-                </td>
-            `;
+                    <a href="/view-exam-detail.html?id=${exam.id}" target="_blank">${exam.exam_name}</a>
+                    <td>${exam.exam_date.toString().split("T")[0]}</td>
+
+                    <td>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="flaticon-more-button-of-three-dots"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" onclick="openDeleteConfirmModal(${exam.id})">
+                                    <i class="fas fa-times text-orange-red"></i>Delete</a>
+                                <a class="dropdown-item" onclick="openUpdatePopup(${exam.id})">
+                                    <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
+                            </div>
+                        </div>
+                    </td>
+                `;
                 tableBody.appendChild(row);
             });
         } catch (error) {
-            console.error("Error:", error);
-            const tableBody = document.getElementById("examResult_list");
-            tableBody.innerHTML = `
-            <tr>
-                <td colspan="5" class="text-center text-danger">Failed to load exam result. Please try again later.</td>
-            </tr>
-        `;
+            console.error('Error:', error);
+        }
+    }
+    // Initialize the table with exams on page load
+    document.addEventListener('DOMContentLoaded', fetchAndDisplayExams);
+
+    // Function to open the update popup async
+    async function openUpdatePopup(examId) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/detail/${examId}`);
+            if (!response.ok) {
+                throw new Error('Error fetching exam for update: ' + response.statusText);
+            }
+
+            const exam = await response.json();
+
+
+            // Fill the form with the exam data
+            document.getElementById('exam_name').value = exam.exam_name;
+            document.getElementById('exam_date').value = exam.exam_date;
+            document.getElementById('content').value = exam.content;
+
+
+
+            // Show the update popup
+            currentExamId = exam.id;
+            document.getElementById('examPopup').style.display = 'flex';
+            document.getElementById('overlay').style.display = 'flex';
+        } catch (error) {
+            console.error(error);
         }
     }
 
-    fetchAndDisplayExamResults();
-
-    let currentExamResultId = null;
-
-    function openUpdateModal(examResultId, studentName, currentMark) {
-        // Set current Exam Result ID
-        currentExamResultId = examResultId;
-
-        // Populate modal fields
-        document.getElementById("examResultId").value = examResultId;
-        document.getElementById("studentName").value = studentName;
-        document.getElementById("mark").value = currentMark || "N/A";
-
-        // Show the modal and overlay
-        document.getElementById("overlay").style.display = "block";
-        document.getElementById("gradeModal").style.display = "block";
-    }
-
-    function closeGradeModal() {
-        // Hide the modal and overlay
-        document.getElementById("overlay").style.display = "none";
-        document.getElementById("gradeModal").style.display = "none";
-        currentExamResultId = null;
-    }
-
-    // Handle form submission
-    document.getElementById("gradeForm").addEventListener("submit", async function (event) {
+    async function updateExam(event) {
         event.preventDefault();
 
-        const examResultId = document.getElementById("examResultId").value;
-        const mark = document.getElementById("mark").value;
 
-        if(!mark || mark < 0 || mark > 100){
-            alert("Invalid mark. Mark should be a number between 0 and 100.");
-            return;
+
+        const exam_name = document.getElementById('exam_name').value;
+        const date = document.getElementById('exam_date').value;
+        const content = document.getElementById('content').value;
+
+        if(!exam_name.trim() || !content.trim()){
+            alert('Please fill in all the required fields!');
+            return; // Exit the function if validation fails
         }
 
+        const formData = new FormData();
+        formData.append('exam_name', exam_name);
+        formData.append('exam_date', date);
+        formData.append('content', content);
+
+
         try {
-            const response = await fetch(`/examResult/update?examResultId=${examResultId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ mark }),
+            const response = await fetch(`${API_BASE_URL}/update/${currentExamId}`, {
+                method: 'PUT',
+                body: formData,
             });
 
             if (response.ok) {
-                alert("Grade submitted successfully.");
-                closeGradeModal();
-                fetchAndDisplayExamResults(); // Refresh the table
+                alert('Exam updated successfully!');
+                closePopup();
+                fetchAndDisplayExams();
+            } else if (response.status === 404) {
+                alert('Exam not found!');
+                closePopup();
             } else {
-                throw new Error("Failed to submit grade.");
+                console.error('Error updating exam:', response.statusText);
             }
         } catch (error) {
-            console.error("Error:", error);
-            alert("An error occurred while submitting the grade.");
+            console.error('Error:', error);
         }
-    });
+    }
+
+    // Function to close the update popup
+    function closePopup() {
+        document.getElementById('examPopup').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+
+
+    // Function to open the delete confirmation modal
+    function openDeleteConfirmModal(examId) {
+        document.getElementById('deleteConfirmModal').dataset.examId = examId;
+        document.getElementById('deleteConfirmModal').style.display = 'flex';
+    }
+
+    // Function to close the delete confirmation modal
+    function closeDeleteConfirmModal() {
+        document.getElementById('deleteConfirmModal').style.display = 'none';
+    }
+
+    // Function to confirm delete
+    async function confirmDelete() {
+        const examId = document.getElementById('deleteConfirmModal').dataset.examId;
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/delete/${examId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                alert('Exam deleted successfully!');
+                fetchAndDisplayExams();
+                closeDeleteConfirmModal();
+            } else if (response.status === 404) {
+                alert('Exam not found!');
+                closeDeleteConfirmModal();
+            } else {
+                console.error('Error deleting Exam:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
 
 
 </script>
+<!-- fetch user -->
 <script>
-    (async function fetchUserData() {
-        try {
-            const response = await fetch('/user-detail');
-            if (response.ok) {
-                const userData = await response.json();
-                sessionStorage.setItem('userDetails', JSON.stringify(userData));
-                console.log("User data stored in sessionStorage:", userData);
-                getUserDetails(userData);
-                // Ensure that the fetch functions are called after userDetails are set
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    if (userDetails) {
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        const userRoleElements = document.querySelectorAll('.userRole');
 
-            } else {
-                console.error("Failed to fetch user details:", response.statusText);
+        userFullNameElements.forEach(element => {
+            element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
+        });
+
+        // Populate Role
+        userRoleElements.forEach(element => {
+            element.textContent = userDetails.roleName;
+        });
+
+        const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+
+        imgContainers.forEach(container => {
+            const imgElement = container.querySelector('img'); // Select the <img> inside the div
+            if (imgElement) {
+                imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
             }
-        } catch (error) {
-            console.error("Error fetching user details:", error);
-        }
-    })();
-
-    // Function to set user details in the UI
-    function getUserDetails(userDetails) {
-        if (userDetails) {
-            console.log("Setting user details:", userDetails);
-
-            document.querySelectorAll('.userFullName').forEach(element => {
-                element.textContent = userDetails.fullName || "Unknown Name";
-            });
-            document.querySelectorAll('.userRole').forEach(element => {
-                element.textContent = userDetails.roleName || "Unknown Role";
-            });
-            const userIdElement = document.getElementById('userId');
-            if (userIdElement) {
-                userIdElement.value = userDetails.id || "";
-            }
-
-            const imgContainers = document.querySelectorAll('.img');
-            imgContainers.forEach(container => {
-                const imgElement = container.querySelector('img');
-                if (imgElement) {
-                    imgElement.src = userDetails.img
-                        ? `${userDetails.img}?v=${new Date().getTime()}`
-                        : '/path/to/default-passport.jpg';
-                    console.log("Image source set to:", imgElement.src);
-                } else {
-                    console.error("Image element not found in:", container);
-                }
-            });
-        } else {
-            console.error("User details not found in sessionStorage");
-        }
+        });
+    } else {
+        console.error("User details not found in sessionStorage");
     }
+
     function submitForm() {
         // Retrieve userDetails from sessionStorage
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -712,8 +745,7 @@
         }
     }
 </script>
+
 </body>
 
-
-<!-- Mirrored from teacher-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:49 GMT -->
 </html>

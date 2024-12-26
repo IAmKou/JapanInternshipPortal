@@ -1,43 +1,40 @@
 package com.example.jip.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "mark_report")
 @Setter
 @Getter
-@Entity
-@Table(name = "Mark_report")
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MarkReport {
 
-    // Getters and Setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    int id;
 
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    private Student student;
+    @OneToOne
+    @JoinColumn(name = "student_id", referencedColumnName = "id", nullable = false)
+    Student student;
 
-    @Column(precision = 5, scale = 2)
-    private BigDecimal softskill;
-
-    @Column(precision = 5, scale = 2)
-    private BigDecimal avg_exam_mark;
-
-    @Column(precision = 5, scale = 2)
-    private BigDecimal middle_exam;
-
-    @Column(precision = 5, scale = 2)
-    private BigDecimal final_exam;
-
-    @Column(precision = 5, scale = 2)
-    private BigDecimal attitude;
-
-    @Column(precision = 5, scale = 2)
-    private BigDecimal final_mark;
-
-    private String comment;
+    @Column(name = "softskill")
+    BigDecimal softskill;
+    @Column(name = "avg_exam_mark")
+    BigDecimal avg_exam_mark;
+    @Column(name = "middle_exam")
+    BigDecimal middle_exam;
+    @Column(name = "final_exam")
+    BigDecimal final_exam;
+    @Column(name = "skill")
+    String skill;
+    @Column(name = "attitude")
+    BigDecimal attitude;
+    @Column(name = "final_mark")
+    BigDecimal final_mark;
 }
