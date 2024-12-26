@@ -17,11 +17,11 @@ public class Assignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    @Column(name =  "date_created", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Column(name = "date_created", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     Date created_date;
-    @Column(name =  "end_date", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Column(name = "end_date", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     Date end_date;
     @Column(name = "description")
     String description;
@@ -44,4 +44,13 @@ public class Assignment {
     @Column(name = "img")
     String imgUrl;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    Status status;
+
+
+    // Enum for assignment status
+    public enum Status {
+        OPEN, CLOSE
+    }
 }

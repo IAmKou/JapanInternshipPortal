@@ -1,15 +1,14 @@
 package com.example.jip.controller;
 
-import com.example.jip.dto.MarkReportDTO;
+
 import com.example.jip.entity.MarkReport;
 import com.example.jip.services.MarkReportServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
-import java.math.BigDecimal;
+
+
 import java.util.Optional;
 
 @RestController

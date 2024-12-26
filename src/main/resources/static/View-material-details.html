@@ -263,9 +263,9 @@
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span data-i18n="dashboard">Dashboard</span></a>
-                        <ul class="nav sub-group-menu sub-group-active">
+                        <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="teacher.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i><span data-i18n="teacher">Teachers</span></a>
+                                <a href="teacher.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="teacher">Teachers</span></a>
                             </li>
                         </ul>
                     </li>
@@ -464,15 +464,15 @@
                         <div class="modal-body">
                             <form id="editForm">
                                 <div class="form-group">
-                                    <label for="materialTitle">Title *</label>
+                                    <label for="materialTitle" data-i18n="title1">Title *</label>
                                     <input type="text" class="form-control" id="materialTitle" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="materialContent">Content *</label>
+                                    <label for="materialContent" data-i18n="content1">Content *</label>
                                     <textarea class="form-control" id="materialContent" style="width: 100%; height: 300px;" required></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label for="materialFile"><strong>File:</strong></label>
+                                    <label for="materialFile"><strong><span data-i18n="file">File:</span></strong></label>
                                     <div id="materialFile" style="white-space: nowrap;">
                                         <!-- Nơi hiển thị thông tin file -->
                                         <a id="fileLink2" href="" target="_blank" class="card-img" style="display: inline-block;">
@@ -492,8 +492,8 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 18px; padding: 10px 20px;">Cancel</button>
-                            <button type="button" class="btn btn-primary" id="saveChanges"  style="font-size: 18px; padding: 10px 20px;">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 18px; padding: 10px 20px;" data-i18n="cancel">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="saveChanges"  style="font-size: 18px; padding: 10px 20px;" data-i18n="save">Save changes</button>
                         </div>
                     </div>
                 </div>
@@ -532,7 +532,7 @@
                         </div>
                         <div class="modal-body text-center">
                             <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
-                            <h4 class="text-success">Material was update successful!</h4>
+                            <h4 class="text-success" data-i18n="update">Material was update successful!</h4>
                         </div>
                     </div>
                 </div>
@@ -623,6 +623,15 @@
                     ? `${String(createdDate.getDate()).padStart(2, '0')}/${String(createdDate.getMonth() + 1).padStart(2, '0')}/${createdDate.getFullYear()}`
                     : "N/A";
 
+                if (data.content) {
+                    // Loại bỏ thẻ block như <p>, <div>, và thay chúng bằng các ký tự newline '\n' hoặc giữ lại chúng dưới dạng văn bản thuần.
+                    var sanitizedContent = data.content.replace(/<\/?(p|div)[^>]*>/gi, '');
+
+                    // Hiển thị HTML chỉ chứa các thẻ inline (chẳng hạn <strong>, <em>, <u> ...)
+                    document.getElementById('content').innerHTML = sanitizedContent;
+                } else {
+                    console.error('Không tìm thấy content trong dữ liệu');
+                }
                 // Xử lý phần hiển thị tài liệu (hình ảnh hoặc các tài liệu khác)
                 const fileElement = document.getElementById('fileDisplay');  // Thẻ dùng để hiển thị tài liệu
 
@@ -657,14 +666,8 @@
                     dropdown.style.display = 'none';
                 }
 
-                const contentElement = document.getElementById('content');
-                if (data.content) {
-                    const urlPattern = /(https?|ftp):\/\/[^\s/$.?#].[^\s]*/g;
-                    const contentHTML = data.content.replace(urlPattern, (url) => {
-                        return `<a href="${url}" target="_blank" style="color: blue; text-decoration: underline;">${url}</a>`;
-                    });
-                    contentElement.innerHTML = contentHTML;
-                }
+
+
             })
             .catch(error => {
                 console.error('Lỗi khi lấy dữ liệu:', error);
@@ -980,6 +983,8 @@
                 "all_list_materials": "All List Materials",
                 "view_material_details": "View Material Details",
                 "edit": "Edit",
+                "title1": "Title *",
+                "content1": "Content *",
                 "title": "Title:",
                 "content": "Content:",
                 "create_date":"Create Date:",
@@ -1001,6 +1006,7 @@
                 "cancel": "Cancel",
                 "success": "Success",
                 "delete_material_success": "Delete material was successful!",
+                "update": "Material was update successful!",
                 // end main screen
                 // headbar
                 "log_out": "Log Out",
@@ -1045,7 +1051,9 @@
                 "all_list_materials": "すべての資料リスト",
                 "view_material_details": "資料の詳細を見る",
                 "edit": "編集",
-                "title": "タイトル",
+                "title1": "タイトル *",
+                "content1": "内容 *",
+                "title": "タイトル:",
                 "create_date": "作成日:",
                 "content": "内容:",
                 "teacher1":"教師:",
@@ -1066,6 +1074,7 @@
                 "cancel": "キャンセル",
                 "success": "成功",
                 "delete_material_success": "資料の削除に成功しました！",
+                "update": "資料が正常に更新されました！",
                 // end main screen
                 // headbar
                 "log_out": "ログアウト",

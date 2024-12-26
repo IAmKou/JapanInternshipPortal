@@ -75,6 +75,27 @@
             text-align: center;
             padding: 10px;
         }
+
+        .search-input {
+            height: 50px; /* Tăng chiều cao của ô nhập */
+            font-size: 16px; /* Tăng kích thước chữ */
+            padding: 10px 15px; /* Tăng khoảng cách bên trong */
+            border-radius: 5px; /* Bo góc mềm mại */
+            border: 1px solid #000; /* Viền màu đen */
+            box-shadow: none; /* Loại bỏ bóng */
+        }
+
+
+
+        /* Custom Button */
+        .btn-search {
+            height: 50px; /* Đồng bộ chiều cao với input */
+            font-size: 16px; /* Kích thước chữ to hơn */
+            font-weight: bold; /* Làm chữ đậm hơn */
+            text-transform: uppercase; /* Viết hoa chữ */
+            border-radius: 5px; /* Bo góc tương tự input */
+            padding: 0 20px; /* Tăng khoảng cách trong nút */
+        }
     </style>
 </head>
 
@@ -270,6 +291,57 @@
                         <li>View List Application</li>
                     </ul>
                 </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="d-flex align-items-center">
+                                    <label for="searchInput" class="text-primary font-weight-bold me-3 mb-0" data-i18n="search">
+                                        Search
+                                    </label>
+                                    <label for="filterSelect" class="text-primary font-weight-bold mb-0" style="margin-left: 630px;" data-i18n="filter">
+                                        Filter:
+                                    </label>
+                                </div>
+                                <form style="padding-bottom: 20px; padding-top: 10px;" id="searchForm" onsubmit="return handleSearch(event)">
+                                    <div class="row mb-3 align-items-center">
+                                        <div class="col-lg-6">
+                                            <input
+                                                    type="text"
+                                                    class="form-control search-input"
+                                                    id="searchInput"
+                                                    style="border: 1px solid #000; box-shadow: none;"
+                                            />
+                                        </div>
+
+                                        <div class="col-lg-2">
+                                            <div class="form-group">
+                                                <div class="position-relative">
+                                                    <select class="form-control filter-select" id="filterSelect" style="padding-right: 35px; font-size: 1.25rem; height: 45px; padding-left: 10px; padding-right: 10px; margin-top: 7px;">
+                                                        <option value="content">Purpose</option> <!-- Filtering based on content -->
+                                                        <option value="category">Type</option> <!-- Filtering based on category -->
+                                                        <option value="status">Status</option> <!-- Filtering based on status -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-2">
+                                            <button
+                                                    type="submit"
+                                                    class="btn btn-gradient-yellow btn-search"
+                                                    data-i18n="search">
+                                                SEARCH
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Breadcubs Area End Here -->
                 <!-- Student Table Area Start Here -->
                 <div id="application-view">
@@ -394,9 +466,13 @@
                         <td class="td-bold ${application.status === 'Approved' ? 'approved' : application.status === 'Rejected' ? 'rejected' : ''}">
                             ${application.status || 'N/A'}
                         </td>
-                        <td class="td-bold">
-                            ${application.replied_date ? new Date(application.replied_date).toLocaleDateString() + '<br>' + new Date(application.replied_date).toLocaleTimeString() : 'N/A'}
-                        </td>
+<td class="td-bold">
+    ${application.replied_date ?
+                                new Date(application.replied_date).toLocaleDateString('en-GB') + '<br>' + new Date(application.replied_date).toLocaleTimeString('en-GB')
+                                : 'N/A'}
+</td>
+
+
                         <td style="font-weight: bold;">
     ${
                                 application.reply || application.replied_date
@@ -447,8 +523,109 @@
             }, 100);  // Điều chỉnh thời gian đợi cho phù hợp
         });
     </script>
-</body>
 
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        let url = '/application/list'; // URL mặc định.
+
+        // Function to handle search
+        function handleSearch(event) {
+            event.preventDefault();  // Prevent form submission
+
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+            const filterType = document.getElementById('filterSelect').value;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch applications');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const tableBody = document.getElementById('application-table-body');
+                    if (tableBody) {
+                        tableBody.innerHTML = '';  // Clear existing rows
+
+                        // Apply filter based on search query
+                        const filteredData = data.filter(application => {
+                            if (filterType === 'content') {
+                                return application.content && application.content.toLowerCase().includes(searchQuery);
+                            }
+                            if (filterType === 'category') {
+                                return application.category && application.category.toLowerCase().includes(searchQuery);
+                            }
+                            if (filterType === 'status') {
+                                return application.status && application.status.toLowerCase().includes(searchQuery);
+                            }
+                            if (filterType === 'created_date') {
+                                // Chuyển searchQuery thành đối tượng Date
+                                const queryDate = new Date(searchQuery);
+
+                                if (!queryDate.getTime()) {
+                                    return false; // Nếu ngày nhập không hợp lệ
+                                }
+
+                                // So sánh ngày (chỉ so sánh ngày, không quan tâm đến giờ)
+                                const createdDate = application.created_date ? new Date(application.created_date) : null;
+
+                                if (createdDate) {
+                                    return createdDate.toLocaleDateString() === queryDate.toLocaleDateString();
+                                }
+                                return false;
+                            }
+                            return false;
+                        });
+
+                        // Hiển thị ứng dụng sau khi lọc
+                        filteredData.forEach(application => {
+                            const content = application.content || 'N/A';
+                            const formattedContent = wrapText(content, 40);
+
+                            const category = application.category || 'N/A';
+                            const formattedCategory = wrapText(category, 8);
+
+                            const reply = application.reply || 'N/A';
+                            const formattedReply = wrapText(reply, 30);
+
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                            <td class="td-bold">${formattedCategory}</td>
+                            <td class="td-bold">${formattedContent}</td>
+                            <td class="td-bold">${application.created_date ? new Date(application.created_date).toLocaleDateString() : 'N/A'}</td>
+                            <td class="td-bold">${formattedReply}</td>
+                            <td class="td-bold">
+                                ${application.img ? `<a href="${application.img}" target="_blank">File</a>` : 'N/A'}
+                            </td>
+                            <td class="td-bold ${application.status === 'Approved' ? 'approved' : application.status === 'Rejected' ? 'rejected' : ''}">
+                                ${application.status || 'N/A'}
+                            </td>
+                            <td class="td-bold">
+                                ${application.replied_date ? new Date(application.replied_date).toLocaleDateString() + '<br>' + new Date(application.replied_date).toLocaleTimeString() : 'N/A'}
+                            </td>
+                            <td style="font-weight: bold;">
+                                ${
+                                application.reply || application.replied_date
+                                    ? '<span class="text-success">Replied</span>'
+                                    : `<button onclick="window.location.href='Reply-application.html?id=${application.id}'" class="btn btn-primary btn-lg">Reply</button>`
+                            }
+                            </td>
+                        `;
+                            tableBody.appendChild(row);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching applications:', error);
+                });
+        }
+
+        // Add event listener for the form submission
+        document.getElementById('searchForm').addEventListener('submit', handleSearch);
+    });
+</script>
 
 <!-- Mirrored from www.radiustheme.com/demo/html/psdboss/JIP/JIP/all-student.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:41 GMT -->
 </html>

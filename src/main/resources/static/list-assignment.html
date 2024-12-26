@@ -28,6 +28,8 @@
     <link href="style.css" rel="stylesheet">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <style>
 
         /* Overlay */
@@ -180,6 +182,230 @@
         .cancel-btn:hover {
             background-color: #5a6268; /* Darker gray on hover */
         }
+
+        .search-input {
+            height: 50px; /* Tăng chiều cao của ô nhập */
+            font-size: 16px; /* Tăng kích thước chữ */
+            padding: 10px 15px; /* Tăng khoảng cách bên trong */
+            border-radius: 5px; /* Bo góc mềm mại */
+            border: 1px solid #000; /* Viền màu đen */
+            box-shadow: none; /* Loại bỏ bóng */
+            flex: 1; /* Để nó chiếm không gian rộng nhất trong cột */
+        }
+
+        .btn-search {
+            height: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 5px;
+            padding: 0 20px;
+            margin-top: 4px; /* Dịch chuyển nút xuống một chút */
+        }
+
+
+
+        input[name="description"] {
+            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="description"]:hover {
+            border-color: #28a745 !important;
+        }
+        /* Khi người dùng focus vào input */
+        input[name="description"]:focus {
+            border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        }
+
+        input[name="create_date"] {
+            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="create_date"]:hover {
+            border-color: #28a745 !important;
+        }
+        /* Khi người dùng focus vào input */
+        input[name="create_date"]:focus {
+            border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        }
+
+        input[name="end_date"] {
+            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="end_date"]:hover {
+            border-color: #28a745 !important;
+        }
+        /* Khi người dùng focus vào input */
+        input[name="end_date"]:focus {
+            border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        }
+
+        input[name="end_date"] {
+            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="end_date"]:hover {
+            border-color: #28a745 !important;
+        }
+        /* Khi người dùng focus vào input */
+        input[name="end_date"]:focus {
+            border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        }
+
+        #content {
+            border: 2px solid #007bff;  /* Đặt màu border là màu xanh dương */
+            border-radius: 5px;         /* Thêm góc bo tròn nếu cần */
+        }
+
+        /* Tạo hiệu ứng khi người dùng hover vào Quill editor */
+        #content:hover {
+            border-color: #28a745;      /* Chuyển màu border thành màu xanh lá khi hover */
+        }
+
+        /* Tạo hiệu ứng khi Quill editor có focus (khi người dùng click vào) */
+        #content:focus {
+            border-color: #ff6347;      /* Chuyển màu border thành màu cam khi có focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm bóng để nổi bật hơn */
+        }
+
+        #class_id {
+            border: 2px solid #007bff;  /* Đặt màu border là màu xanh dương */
+            border-radius: 5px;         /* Thêm góc bo tròn nếu cần */
+        }
+
+        /* Tạo hiệu ứng khi người dùng hover vào Quill editor */
+        #class_id:hover {
+            border-color: #28a745;      /* Chuyển màu border thành màu xanh lá khi hover */
+        }
+
+        /* Tạo hiệu ứng khi Quill editor có focus (khi người dùng click vào) */
+        #class_id:focus {
+            border-color: #ff6347;      /* Chuyển màu border thành màu cam khi có focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm bóng để nổi bật hơn */
+        }
+
+        /* Áp dụng cho bảng có id 'submittedAssignment_table' */
+        #submittedAssignment_table {
+            table-layout: fixed;  /* Đảm bảo các cột có chiều rộng đều */
+            width: 100%;  /* Bảng chiếm hết chiều rộng */
+            border-collapse: collapse;  /* Loại bỏ khoảng cách giữa các ô */
+        }
+
+        #submittedAssignment_table th, #submittedAssignment_table td {
+            padding: 10px;  /* Thêm khoảng cách trong mỗi ô */
+            text-align: center;  /* Căn giữa nội dung trong ô */
+            border: 1px solid #ddd;  /* Đặt đường viền mỏng cho các ô */
+            word-wrap: break-word;  /* Đảm bảo nội dung không tràn ra ngoài ô */
+        }
+
+        #submittedAssignment_table th {
+            background-color: #f8f8f8;  /* Màu nền cho tiêu đề */
+            font-weight: bold;  /* Đảm bảo tiêu đề nổi bật */
+        }
+
+        /* Custom Modal Styling for Error Modal */
+        #error-modal .modal-dialog {
+            position: fixed !important; /* Giữ modal ở vị trí cố định */
+            top: 0; /* Đặt modal ngay đầu trang */
+            left: 50%; /* Căn giữa modal theo chiều ngang */
+            transform: translateX(-50%); /* Căn giữa modal */
+            z-index: 1050; /* Đảm bảo modal luôn hiển thị trên các phần tử khác */
+            margin-top: 10px; /* Khoảng cách phía trên của modal */
+        }
+
+        #error-modal .modal-header {
+            background-color: #dc3545; /* Màu nền đỏ cho header */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #error-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa; /* Nền sáng cho phần thân */
+            color: #333;
+        }
+
+        #error-modal .modal-body .fas.fa-times-circle {
+            color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+            font-size: 2rem; /* Tăng kích thước biểu tượng */
+            margin-right: 10px;
+        }
+
+        #error-modal .modal-title {
+            display: flex;
+            align-items: center;
+        }
+
+        #error-modal .btn-danger {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #dc3545;
+            border-color: #dc3545;
+            border-radius: 5px;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #error-modal .btn-close {
+            color: white;
+        }
+
+        #error-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+
+        #successMessage {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 5px solid #28a745;
+            animation: fadeIn 1s;
+        }
+
+        /* Custom Modal Styling */
+        #success-modal .modal-header {
+            background-color: #28a745; /* Màu nền của header */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #success-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #success-modal .modal-body .fas.fa-check-circle {
+            color: #28a745;
+        }
+
+        #success-modal .btn-success {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        #success-modal .btn-close {
+            color: white;
+        }
+
+        #success-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+
     </style>
 </head>
 
@@ -439,6 +665,48 @@
                     <li>All Assignment</li>
                 </ul>
             </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="d-flex align-items-center">
+                                <label for="searchInput" class="text-primary font-weight-bold me-3 mb-0" data-i18n="search">
+                                    Search
+                                </label>
+                            </div>
+                            <form id="searchForm">
+                                <div class="row mb-3 align-items-center">
+                                    <div class="col-lg-6">
+                                        <div class="d-flex align-items-center">
+                                            <input
+                                                    type="text"
+                                                    class="form-control search-input"
+                                                    id="searchInput"
+                                                    style="border: 1px solid #000; box-shadow: none;"
+                                                    placeholder="Search assignments..."
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="d-flex align-items-center">
+                                            <button
+                                                    type="submit"
+                                                    class="btn btn-gradient-yellow btn-search"
+                                                    data-i18n="search"
+                                            >
+                                                SEARCH
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Breadcubs Area End Here -->
             <!-- Teacher Table Area Start Here -->
             <div class="card height-auto">
@@ -449,13 +717,14 @@
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table class="table display data-table text-nowrap">
+                        <table id="submittedAssignment_table" class="table display data-table text-nowrap">
                             <thead>
                             <tr>
-                                <th>Title</th>
-                                <th>Date Created</th>
-                                <th>End Date</th>
-                                <th>Options</th>
+                                <th style="font-weight: bold; color: #000;">Title</th>
+                                <th style="font-weight: bold; color: #000;">Start Date</th>
+                                <th style="font-weight: bold; color: #000;">End Date</th>
+                                <th style="font-weight: bold; color: #000;">Status</th>
+                                <th style="font-weight: bold; color: #000;">Options</th>
                             </tr>
                             </thead>
                             <tbody id="assignment_list">
@@ -471,26 +740,26 @@
                     <span class="close" onclick="closePopup()">&times;</span>
                     <h2>Update Assignment</h2>
                     <form action="javascript:void(0);" class="new-added-form" onsubmit="updateAssignment(event)">
-                        <label for="description">Title:</label>
+                        <label for="description" style="color: #007bff; font-weight: bold;">Title:</label>
                         <input id="description" name="description" required type="text"/>
 
-                        <label for="create_date">Create Date:</label>
-                        <input id="create_date" name="create_date" readonly type="date"/>
+                        <label for="create_date" style="color: #007bff; font-weight: bold;">Start Date:</label>
+                        <input id="create_date" name="create_date" required type="datetime-local"/>
 
-                        <label for="end_date">End Date:</label>
-                        <input id="end_date" name="end_date" required type="date"/>
+                        <label for="end_date" style="color: #007bff; font-weight: bold;">End Date:</label>
+                        <input id="end_date" name="end_date" required type="datetime-local"/>
 
-                        <label for="content">Description:</label>
-                        <textarea id="content" name="content" required rows="4"></textarea>
+                        <label for="content" style="color: #007bff; font-weight: bold;">Description:</label>
+                        <div id="content" class="form-control" style="height: 200px;"></div>
 
-                        <label for="class_id">Class: </label>
+                        <label for="class_id" style="color: #007bff; font-weight: bold;">Class: </label>
                         <p id="classes"></p>
                         <select id="class_id" multiple name="class_id"></select>
 
-                        <label for="assignment-files">Input Files:</label>
+                        <label for="assignment-files" style="color: #007bff; font-weight: bold;">Existed Files:</label>
                         <div id="assignment-files"></div>
 
-                        <label for="img">Image:</label>
+                        <label for="img" style="color: #007bff; font-weight: bold;">File:</label>
                         <input id="img" multiple name="imgFile" type="file"/>
 
                         <button class="btn" type="submit">Update</button>
@@ -508,6 +777,38 @@
                 <div class="modal-buttons">
                     <button class="confirm-btn" onclick="confirmDelete()">Confirm</button>
                     <button class="cancel-btn" onclick="closeDeleteConfirmModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title text-success" id="successModalLabel">
+                            <i class="fas fa-check-circle"></i> Success
+                        </h5>
+                    </div>
+                    <div class="modal-body text-center" style="font-size: 20px; font-weight: bold;">
+                        Assignment updated successfully!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Modal -->
+        <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title text-danger" id="errorModalLabel">
+                            <i class="fas fa-times-circle"></i> Error
+                        </h5>
+                    </div>
+                    <div class="modal-body text-center" style="font-size: 20px; font-weight: bold;">
+                        Assignment not found!
+                    </div>
                 </div>
             </div>
         </div>
@@ -534,48 +835,54 @@
 
     const API_BASE_URL = '/assignment';
     let currentAssignmentId = null;
+      // Biến để lưu trữ toàn bộ assignments
 
     async function fetchAndDisplayAssignments() {
         try {
             const urlParams = new URLSearchParams(window.location.search);
             const teacherId = urlParams.get('teacherId');
-            console.log('Fetching assignments...');
             const response = await fetch(`${API_BASE_URL}/list?teacherId=${teacherId}`);
-            console.log('Response received:', response);
             if (!response.ok) {
                 throw new Error('Error fetching assignments: ' + response.statusText);
             }
-            const assignments = await response.json();
-            console.log('Assignments data:', assignments);
 
-            // Clear existing rows in the table
+            const assignments = await response.json();
+            console.log('Assignments data:', assignments);  // Log raw response for verification
+
             const tableBody = document.getElementById('assignment_list');
             tableBody.innerHTML = '';
 
             assignments.forEach(assignment => {
+                console.log("Raw Date for Start Date: ", assignment.created_date);  // Log raw created date
+                console.log("Raw Date for End Date: ", assignment.end_date);  // Log raw end date
+
+                const createdDateFormatted = formatDateTime(assignment.created_date);
+                const endDateFormatted = formatDateTime(assignment.end_date);
+
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td style="font-weight: bold;">
-                    <a href="/view-assignment-details.html?id=${assignment.id}" target="_blank" style="display: block; font-weight: bold;">
-                        ${assignment.description}
-                    </a>
-                    </td>
-                    <td>${assignment.created_date}</td>
-                    <td>${assignment.end_date}</td>
-                    <td>
-                        <div class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="flaticon-more-button-of-three-dots"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
-                                    <i class="fas fa-times text-orange-red"></i>Delete</a>
-                                <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
-                                    <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
-                            </div>
-                        </div>
-                    </td>
-                `;
+                 <td style="font-weight: bold;">
+                     <a href="/view-assignment-details.html?id=${assignment.id}" target="_blank" style="display: block; font-weight: bold;">
+                         ${assignment.description}
+                     </a>
+                 </td>
+                 <td>${createdDateFormatted}</td>
+                 <td>${endDateFormatted}</td>
+                 <td>${assignment.status}</td>
+                 <td>
+                     <div class="dropdown">
+                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                             <span class="flaticon-more-button-of-three-dots"></span>
+                         </a>
+                         <div class="dropdown-menu dropdown-menu-right">
+                             <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
+                                 <i class="fas fa-times text-orange-red"></i>Delete</a>
+                             <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
+                                 <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
+                         </div>
+                     </div>
+                 </td>
+             `;
                 tableBody.appendChild(row);
             });
         } catch (error) {
@@ -583,7 +890,45 @@
         }
     }
 
+    function formatDateTime(dateString) {
+        const date = new Date(dateString);
+
+        // Adjust for your timezone (if needed, e.g., UTC+7 for Vietnam)
+        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
+
+        // Format the date and time in 12-hour format with AM/PM
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        let hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12; // Convert to 12-hour format, 0 becomes 12
+
+        return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+    }
+    document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
+
+    function formatDateTimeForInput(dateString) {
+        const date = new Date(dateString);
+
+        // Subtract 10 hours (10 hours * 60 minutes * 60 seconds * 1000 milliseconds)
+        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
+
+        // Convert to YYYY-MM-DDTHH:mm format
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
     // Function to open the update popup async
+    let quill;
+
     async function openUpdatePopup(assignmentId) {
         try {
             // Fetch assignment details
@@ -630,29 +975,40 @@
                 classSelect.appendChild(option);
             });
 
-            // Fill the form with the assignment data
-            document.getElementById('description').value = assignment.description;
-            document.getElementById('end_date').value = assignment.end_date;
-            document.getElementById('content').value = assignment.content;
+            const createdDateFormatted = formatDateTimeForInput(assignment.created_date);
+            const endDateFormatted = formatDateTimeForInput(assignment.end_date);
 
-            const assignmentResponse = await fetch(`${API_BASE_URL}/detail/${assignmentId}`);
-            if (!assignmentResponse.ok) {
-                throw new Error('Error fetching assignment details: ' + assignmentResponse.statusText);
+            // Chỉ khởi tạo Quill nếu chưa có một instance nào
+            if (!quill) {
+                quill = new Quill('#content', {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            ['bold', 'italic', 'underline'], // Basic formatting tools
+                            [{ 'list': 'ordered' }, { 'list': 'bullet' }], // List tools
+                            ['link', 'image'] // Link and image tools
+                        ]
+                    }
+                });
             }
+
+            // Set initial value for the content in Quill
+            quill.root.innerHTML = assignment.content; // Use assignment content to set editor content
+
+            // Fill in other form fields
+            document.getElementById('description').value = assignment.description;
+            document.getElementById('create_date').value = createdDateFormatted;
+            document.getElementById('end_date').value = endDateFormatted;
+
+            // Handle classes in the assignment
             const clas = assignment.classes || [];
             document.getElementById('classes').textContent = clas.length > 0 ? clas.join(", ") : "No classes assigned";
 
-            // Append 'T00:00:00Z' to the date to ensure it is correctly parsed
-            const createDateString = `${assignment.created_date}T00:00:00Z`;
-            const createDate = new Date(createDateString);
-
-            document.getElementById('create_date').value = createDate.toISOString().split("T")[0];
-
-
-            // Display file download links
+            // Display file download links (if any)
             const files = assignment.files || [];
             const filesContainer = document.getElementById('assignment-files');
             filesContainer.innerHTML = ''; // Clear any existing content
+
             if (files.length > 0) {
                 files.forEach((fileUrl) => {
                     const fileRow = document.createElement('div');
@@ -670,13 +1026,13 @@
 
                     // Delete icon
                     const deleteIcon = document.createElement('span');
-                    deleteIcon.textContent = '🗑️'; // Use any icon or emoji
+                    deleteIcon.textContent = '🗑️';
                     deleteIcon.style.cursor = 'pointer';
                     deleteIcon.style.marginLeft = '10px';
                     deleteIcon.title = 'Delete this file';
                     deleteIcon.onclick = () => deleteFile(fileUrl, assignmentId, fileRow);
 
-                    // Append link and icon to the container
+                    // Append file link and icon
                     fileRow.appendChild(link);
                     fileRow.appendChild(deleteIcon);
                     filesContainer.appendChild(fileRow);
@@ -691,6 +1047,85 @@
             document.getElementById('overlay').style.display = 'flex';
         } catch (error) {
             console.error(error);
+        }
+    }
+
+    async function updateAssignment(event) {
+        event.preventDefault();
+
+        const description = document.getElementById('description').value;
+        const createDate = document.getElementById('create_date').value;
+        const endDate = document.getElementById('end_date').value;
+        const content = quill.root.innerHTML;  // Get content from Quill editor
+
+        if (!description.trim() || !endDate || !createDate || !content.trim()) {
+            alert('Please fill in all the required fields!');
+            return; // Exit the function if validation fails
+        }
+
+        // Check if the Create Date is after the current date
+        const currentDate = new Date();
+        const createdDateObj = new Date(createDate);
+        if (createdDateObj < currentDate) {
+            alert('Create Date must be after the Current Date.');
+            return;
+        }
+
+        // Check if the End Date is after the Current Date
+        const endDateObj = new Date(endDate);
+        if (endDateObj < currentDate) {
+            alert('End Date must be after the Current Date.');
+            return;
+        }
+
+        // Check if the Create Date is before the End Date
+        if (createdDateObj > endDateObj) {
+            alert('End Date must be after the Create Date.');
+            return;
+        }
+
+        // Get selected class IDs
+        const classSelect = document.getElementById('class_id');
+        const selectedClasses = Array.from(classSelect.selectedOptions).map((opt) => opt.value);
+
+        const imgFiles = document.getElementById('img').files;
+
+        const formData = new FormData();
+        formData.append('description', description);
+        formData.append('created_date', createDate);
+        formData.append('end_date', endDate);
+        formData.append('content', content); // Use content from Quill editor
+        selectedClasses.forEach((classId) => {
+            formData.append('classIds', classId);
+        });
+
+        for (let i = 0; i < imgFiles.length; i++) {
+            formData.append('imgFile', imgFiles[i]); // Match the backend field
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/update/${currentAssignmentId}`, {
+                method: 'PUT',
+                body: formData,
+            });
+
+            if (response.ok) {
+                // Show success modal
+                $('#success-modal').modal('show');  // Mở modal thông báo thành công
+                closePopup();
+                fetchAndDisplayAssignments();
+            } else if (response.status === 404) {
+                // Show error modal with a custom error message
+                const modalBody = document.querySelector('#long-modal .modal-body');
+                modalBody.innerHTML = "Assignment not found!";  // Custom error message
+                $('#long-modal').modal('show');  // Mở modal thông báo lỗi
+                closePopup();
+            }
+            else {
+                console.error('Error updating assignment:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error:', error);
         }
     }
 
@@ -715,77 +1150,19 @@
         }
     }
 
-    async function updateAssignment(event) {
-        event.preventDefault();
-
-        const description = document.getElementById('description').value;
-        const endDate = document.getElementById('end_date').value;
-        const createDate = document.getElementById('create_date').value;
-        const content = document.getElementById('content').value;
-
-        if (!description.trim() || !endDate || !content.trim()) {
-            alert('Please fill in all the required fields!');
-            return; // Exit the function if validation fails
-        }
-
-        // Validation check: Ensure create_date is before end_date
-        if (new Date(createDate) > new Date(endDate)) {
-            alert('The create date cannot be later than the end date!');
-            return; // Exit the function if validation fails
-        }
-
-
-        // Get selected class IDs
-        const classSelect = document.getElementById('class_id');
-        const selectedClasses = Array.from(classSelect.selectedOptions).map((opt) => opt.value)
-
-        const imgFiles = document.getElementById('img').files;
-        // const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i; // Regex to allow jpg, jpeg, and png
-        // for (let i = 0; i < imgFiles.length; i++) {
-        //     if (!allowedExtensions.test(imgFiles[i].name)) {
-        //         alert(`Invalid file type: ${imgFiles[i].name}. Only JPG, JPEG, and PNG files are allowed.`);
-        //         return; // Exit the function if a file is invalid
-        //     }
-        // }
-
-        const formData = new FormData();
-        formData.append('description', description);
-        formData.append('end_date', endDate);
-        formData.append('create_date', createDate);
-        formData.append('content', content);
-        selectedClasses.forEach((classId) => {
-            formData.append('classIds', classId);
-        });
-
-        for (let i = 0; i < imgFiles.length; i++) {
-            formData.append('imgFile', imgFiles[i]); // Match the backend field
-        }
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/update/${currentAssignmentId}`, {
-                method: 'PUT',
-                body: formData,
-            });
-
-            if (response.ok) {
-                alert('Assignment updated successfully!');
-                closePopup();
-                fetchAndDisplayAssignments();
-            } else if (response.status === 404) {
-                alert('Assignment not found!');
-                closePopup();
-            } else {
-                console.error('Error updating assignment:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
 
     // Function to close the update popup
     function closePopup() {
         document.getElementById('assignmentPopup').style.display = 'none';
         document.getElementById('overlay').style.display = 'none';
+    }
+
+
+    // Function to show the error modal
+    function showErrorModal(message) {
+        document.getElementById('long-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
+        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+        errorModal.show();
     }
 
 
@@ -913,6 +1290,113 @@
             });
         }, 100);  // Điều chỉnh thời gian đợi cho phù hợp
     });
+</script>
+<script>
+    let currentAssignments = [];  // Biến để lưu trữ toàn bộ assignments
+
+    // Hàm để lấy và hiển thị assignments
+    async function fetchAndDisplayAssignments() {
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const teacherId = urlParams.get('teacherId');
+            const response = await fetch(`${API_BASE_URL}/list?teacherId=${teacherId}`);
+            if (!response.ok) {
+                throw new Error('Error fetching assignments: ' + response.statusText);
+            }
+
+            // Lưu toàn bộ danh sách assignments vào biến
+            currentAssignments = await response.json();
+
+            // Hiển thị toàn bộ assignments ban đầu
+            displayAssignments(currentAssignments);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    // Hàm để hiển thị danh sách assignments
+    function displayAssignments(assignments) {
+        const tableBody = document.getElementById('assignment_list');
+        tableBody.innerHTML = '';
+
+        assignments.forEach(assignment => {
+            const createdDateFormatted = formatDateTime(assignment.created_date);
+            const endDateFormatted = formatDateTime(assignment.end_date);
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            <td style="font-weight: bold;">
+                <a href="/view-assignment-details.html?id=${assignment.id}" target="_blank" style="display: block; font-weight: bold;">
+                    ${assignment.description}
+                </a>
+            </td>
+            <td>${createdDateFormatted}</td>
+            <td>${endDateFormatted}</td>
+            <td>${assignment.status}</td>
+            <td>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <span class="flaticon-more-button-of-three-dots"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
+                            <i class="fas fa-times text-orange-red"></i>Delete</a>
+                        <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
+                            <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
+                    </div>
+                </div>
+            </td>
+        `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Hàm định dạng thời gian (giữ nguyên)
+    function formatDateTime(dateString) {
+        const date = new Date(dateString);
+        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);  // Điều chỉnh múi giờ nếu cần (VD: UTC+7 cho Việt Nam)
+
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        let hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+
+        return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+    }
+
+    // Hàm xử lý sự kiện khi người dùng nhấn tìm kiếm
+    function handleSearch(event) {
+        event.preventDefault();  // Ngừng gửi form mặc định
+
+        const query = document.getElementById('searchInput').value.toLowerCase();  // Lấy từ khóa tìm kiếm và chuyển thành chữ thường
+
+        if (query.trim() === "") {
+            displayAssignments(currentAssignments);  // Nếu không có từ khóa, hiển thị toàn bộ danh sách
+        } else {
+            // Lọc danh sách assignments theo mô tả
+            const filteredAssignments = currentAssignments.filter(assignment =>
+                assignment.description.toLowerCase().includes(query)
+            );
+
+            // Hiển thị kết quả lọc
+            displayAssignments(filteredAssignments);
+        }
+    }
+
+    // Chạy hàm fetch khi tài liệu đã sẵn sàng
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchAndDisplayAssignments();
+
+        // Gắn sự kiện vào form tìm kiếm sau khi DOM đã sẵn sàng
+        const searchForm = document.getElementById('searchForm');
+        if (searchForm) {
+            searchForm.addEventListener('submit', handleSearch);
+        }
+    });
+
 </script>
 
 </body>

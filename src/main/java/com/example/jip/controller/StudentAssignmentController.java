@@ -1,6 +1,8 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.StudentDTO;
+import com.example.jip.dto.request.assignment.FileDeleteRequest;
+import com.example.jip.dto.request.studentAssignment.StudentAssignmentFileDeleteRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentGradeRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentSubmitRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentUpdateRequest;
@@ -92,6 +94,18 @@ public class StudentAssignmentController {
         }
     }
 
+    @DeleteMapping("/delete-file")
+    public ResponseEntity<?> deleteFile(@RequestBody StudentAssignmentFileDeleteRequest request) {
+        try {
+            log.info("StudentAssignment id {}", request.getStudentAssignmentId());
+            studentAssignmentServices.deleteFile(request);
+
+            return ResponseEntity.ok("File deleted successfully.");
+        } catch (Exception e) {
+            log.error("Error deleting file: {}", request.getFileUrl(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting file.");
+        }
+    }
 
 
     @PutMapping("/grade-submitted-assignment")

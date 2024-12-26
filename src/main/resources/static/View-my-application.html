@@ -190,11 +190,19 @@
                         </div>
                     </li>
                     <li class="navbar-item dropdown header-language">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
-                           data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
+                        <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                           role="button">
+                            <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
+                        </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#">English</a>
-                            <a class="dropdown-item" href="#">Japanese</a>
+                            <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
+                                <img alt="English" src="img/figure/flag-anh.webp" style="width: 20px; height: 15px;">
+                                English
+                            </a>
+                            <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
+                                <img alt="Japanese" src="img/figure/Flag_of_Japan.svg.webp"
+                                     style="width: 20px; height: 15px;"> 日本語
+                            </a>
                         </div>
                     </li>
                 </ul>
@@ -213,101 +221,101 @@
                 <div class="sidebar-menu-content">
                     <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                         <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                            <ul class="nav sub-group-menu sub-group-active">
+                            <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span data-i18n="dashboard">Dashboard</span></a>
+                            <ul class="nav sub-group-menu ">
                                 <li class="nav-item">
-                                    <a href="teacher.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Teachers</a>
+                                    <a href="teacher.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="teacher">Teachers</span></a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
+                            <a href="#" class="nav-link"><i class="flaticon-books"></i><span data-i18n="assignment">Assignment</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
-                                        Assignment</a>
+                                    <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i><span data-i18n="all_assignment">All
+                                        Assignment</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
-                                        Assignment</a>
+                                    <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="add_new_assignment">Add New
+                                        Assignment</span></a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
-                                    class="flaticon-shopping-list"></i><span>Schedule</span></a>
+                                    class="flaticon-shopping-list"></i><span data-i18n="schedule">Schedule</span></a>
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i
-                                    class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
+                                    class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span data-i18n="class">Class</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
                                     <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
-                                        <i class="flaticon-menu"></i><span>Class List</span>
+                                        <i class="flaticon-menu"></i><span data-i18n="class_list">Class List</span>
                                     </a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
+                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span data-i18n="exam">Exam</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
-                                        Exam</a>
+                                    <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i><span data-i18n="list_exam">List
+                                        Exam</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
-                                        Exam</a>
+                                    <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i><span data-i18n="create_exam">Create
+                                        Exam</span></a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span data-i18n="material">Material</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
-                                        Material</a>
+                                    <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="create_material">Create
+                                        Material</span></a>
                                 </li>
                                 <li class="nav-item" id="teacher-view">
-                                    <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                                        Materials</a>
+                                    <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="list_materials">List
+                                        Materials</span></a>
                                 </li>
 
                             </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span data-i18n="application">Application</span></a>
                             <ul class="nav sub-group-menu sub-group-active">
                                 <li class="nav-item">
-                                    <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
-                                        application</a>
+                                    <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="send_application">Send
+                                        application</span></a>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="View-my-application.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>My
-                                        application</a>
+                                    <a href="View-my-application.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i><span data-i18n="my_application">My
+                                        application</span></a>
                                 </li>
                             </ul>
                         </li>
 
                         <li class="nav-item sidebar-nav-item">
-                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
+                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span data-i18n="thread">Thread</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
-                                        threads</a>
+                                    <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i><span data-i18n="view_list_threads">View list
+                                        threads</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
-                                        Thread</a>
+                                    <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i><span data-i18n="create_thread">Create
+                                        Thread</span></a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
+                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span data-i18n="security">Security</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
+                                    <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="change_password">Change Password</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -318,12 +326,12 @@
             <div class="dashboard-content-one">
                 <!-- Breadcubs Area Start Here -->
                 <div class="breadcrumbs-area">
-                    <h3>View My Application</h3>
+                    <h3 data-i18n="view_my_application">View My Application</h3>
                     <ul>
                         <li>
-                            <a href="teacher.html">Home</a>
+                            <a href="teacher.html" data-i18n="home">Home</a>
                         </li>
-                        <li>View My Application</li>
+                        <li data-i18n="view_my_application">View My Application</li>
                     </ul>
                 </div>
                 <!-- Breadcubs Area End Here -->
@@ -336,13 +344,13 @@
                                 <table class="table table-striped table-bordered data-table text-nowrap" style="border-collapse: collapse;">
                                     <thead style="background-color: #f8f9fa;">
                                     <tr style="text-align: center; color: #007bff;">
-                                        <th style="font-weight: bold;">Type</th>
-                                        <th style="font-weight: bold;">Purpose</th>
-                                        <th style="font-weight: bold;">Create Date</th>
-                                        <th style="font-weight: bold;">Process Note</th>
-                                        <th style="font-weight: bold;">File</th>
-                                        <th style="font-weight: bold;">Status</th>
-                                        <th style="font-weight: bold;">Time Response</th>
+                                        <th style="font-weight: bold;" data-i18n="type">Type</th>
+                                        <th style="font-weight: bold;" data-i18n="purpose">Purpose</th>
+                                        <th style="font-weight: bold;" data-i18n="create_date">Create Date</th>
+                                        <th style="font-weight: bold;" data-i18n="process_note">Process Note</th>
+                                        <th style="font-weight: bold;" data-i18n="file">File</th>
+                                        <th style="font-weight: bold;" data-i18n="status">Status</th>
+                                        <th style="font-weight: bold;" data-i18n="time_response">Time Response</th>
                                     </tr>
                                     </thead>
                                     <tbody id="application-table-body">
@@ -375,7 +383,21 @@
     <!-- fetch user -->
     <script>
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        const roleTranslations = {
+            "en": {
+                "ADMIN": "Admin",
+                "TEACHER": "Teacher",
+                "STUDENT": "Student"
+            },
+            "ja": {
+                "ADMIN": "管理者",
+                "TEACHER": "教師",
+                "STUDENT": "学生"
+            }
+        };
         if (userDetails) {
+            const currentLanguage = localStorage.getItem('language') || 'en'; // Lấy ngôn ngữ hiện tại
+            const translatedRoleName = roleTranslations[currentLanguage][userDetails.roleName] || userDetails.roleName;
             const userFullNameElements = document.querySelectorAll('.userFullName');
             const userRoleElements = document.querySelectorAll('.userRole');
 
@@ -386,7 +408,7 @@
 
             // Populate Role
             userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
+                element.textContent = translatedRoleName;
             });
 
             const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
@@ -493,7 +515,12 @@
 <td class="td-bold ${application.status === 'Approved' ? 'approved' : application.status === 'Rejected' ? 'rejected' : ''}">
     ${application.status || 'N/A'}
 </td>
-<td class="td-bold">${application.replied_date ? new Date(application.replied_date).toLocaleDateString() : 'N/A'}</td>
+<td class="td-bold">
+    ${application.replied_date ?
+                                new Date(application.replied_date).toLocaleDateString('en-GB') + (application.replied_date && application.replied_date.toLocaleTimeString ? '<br>' + new Date(application.replied_date).toLocaleTimeString('en-GB') : '')
+                                : 'N/A'}
+</td>
+
                     `;
                             tableBody.appendChild(row);
                         });
@@ -537,7 +564,252 @@
             }, 100);  // Điều chỉnh thời gian đợi cho phù hợp
         });
     </script>
+    <script>
+        // Hàm thay đổi ngôn ngữ
+        function getTranslation(language) {
+            const translations = {
+                "en": {
+                    paginate: {
+                        first: "First",
+                        previous: "Previous",
+                        next: "Next",
+                        last: "Last"
+                    },
+                    "Absent Application": "Absent Application",
+                    "Internship Application": "Internship Application",
+                    "Others Application": "Others Application",
+                    "Schedule Changing Application": "Schedule Changing Application",
+                    "Teacher Change Application": "Teacher Change Application",
+                    //Main screen
+                    "type": "Type",
+                    "purpose": "Purpose",
+                    "create_date": "Create Date",
+                    "process_note": "Process Note",
+                    "file": "File",
+                    "status": "Status",
+                    "time_response": "Time response",
+                    "view_my_application": "View My Application",
+                    "home": "Home",
+                    "user_list": "Account List",
+                    "id": "ID",
+                    "image": "Image",
+                    "name": "Name",
+                    "role": "Role",
+                    "actions": "Actions",
+                    "view_details": "View Details",
+                    "cancel": "Cancel",
+                    "save": "Save",
+                    "confirm_save": "Confirm Save",
+                    "are_you":"Are you sure you want to save the application?",
+                    "reset":"Reset",
+                    // end main screen
+                    // headbar
+                    "log_out": "Log Out",
+                    "my_profile":"My Profile",
+                    // end headbar
+                    "add_account": "Add Account",
+                    "choose_file": "Choose File",
+                    "close": "Close",
+                    "submit": "Submit",
+                    "j_name": "Japan Name",
+                    // sidebar admin
+                    "dashboard": "Dashboard",
+                    "teacher": "Teacher",
+                    "assignment": "Assignment",
+                    "all_assignment": "All Assignment",
+                    "add_new_assignment": "Add New Assignment",
+                    "schedule": "Schedule",
+                    "class": "Class",
+                    "class_list": "Class List",
+                    "exam": "Exam",
+                    "list_exam": "List Exam",
+                    "create_exam": "Create Exam",
+                    "material": "Material",
+                    "list_materials": "List Materials",
+                    "application": "Application",
+                    "send_application": "Send Application",
+                    "my_application": "My Application",
+                    "thread": "Thread",
+                    "view_list_threads": "View List Threads",
+                    "create_thread": "Create Thread",
+                    "security": "Security",
+                    "change_password": "Change Password",
+                    "create_material": "Create Material",
+                    // end sidebar admin
+                    //application
+                    "send-app":"Send Application",
+                    "app-detail":"Application Detail",
+                    "app-name":"Title *",
+                    "app-type":"Application Type *",
+                    "absent": "Absent Application",
+                    "internship": "Internship Application",
+                    "others": "Others Application",
+                    "schedule_change": "Schedule Changing Application",
+                    "change_teacher": "Teacher Change Application",
+                    "reason":"Reason *",
+                    "attach_a_file":"Attach a File:"
+                },
+                "ja": {
+                    paginate: {
 
+                        previous: "前",
+                        next: "次",
+
+                    },
+                    //Main screen
+                    "Absent Application": "休み申請",
+                    "Internship Application": "インターンシップ申請",
+                    "Others Application": "その他の申請",
+                    "Schedule Changing Application": "スケジュール変更申請",
+                    "Teacher Change Application": "教師変更申請",
+                    "home": "ホーム",
+                    "type": "種類",
+                    "purpose": "目的 ",
+                    "create_date": "作成日",
+                    "process_note": "処理ノート",
+                    "file": "ファイル ",
+                    "status": "ステータス",
+                    "time_response": "返答時間",
+                    "view_my_application": "自分の申請を見る",
+                    "search": "設置",
+                    "setting": "アカウントリスト",
+                    "user_list": "ユーザーリスト",
+                    "id": "ID",
+                    "image": "写真",
+                    "name": "名前",
+                    "role": "役割",
+                    "actions": "アクション",
+                    "view_details": "詳細を見る",
+                    // end main screen
+                    // headbar
+                    "log_out": "ログアウト",
+                    "my_profile":"私のプロフィール ",
+                    // end headbar
+                    "add_account": "アカウントを追加",
+                    "choose_file": "ファイルを選択",
+                    "submit": "送信",
+                    "close": "閉じる",
+                    "j_name": "日本の名前",
+                    "cancel": "キャンセル",
+                    "save": "保存",
+                    "confirm_save": "保存を確認",
+                    "are_you": "アプリケーションを保存してもよろしいですか？",
+                    "reset":"リセット",
+
+                    // sidebar teacher
+                    "dashboard": "ダッシュボード",
+                    "teacher": "教師",
+                    "assignment": "課題",
+                    "all_assignment": "すべての課題",
+                    "add_new_assignment": "新しい課題を追加",
+                    "schedule": "スケジュール",
+                    "class": "クラス",
+                    "class_list": "クラス一覧",
+                    "exam": "試験",
+                    "list_exam": "試験一覧",
+                    "create_exam": "試験を作成",
+                    "material": "教材",
+                    "list_materials": "教材一覧",
+                    "application": "申請",
+                    "send_application": "申請を送信",
+                    "my_application": "私の申請",
+                    "thread": "スレッド",
+                    "view_list_threads": "スレッド一覧を表示",
+                    "create_thread": "スレッドを作成",
+                    "security": "セキュリティ",
+                    "change_password": "パスワード変更",
+                    "create_material": "教材を作成",
+                    // end sidebar admin
+                    //application
+                    "send-app":"アップリケション送信",
+                    "app-detail":"アップリケション内容",
+                    "app-name":"題名 *",
+                    "app-type":"アップリケションタイプ *",
+                    "absent": "休みアップリケション",
+                    "internship": "インターンシップ申請",
+                    "others": "その他の申請",
+                    "schedule_change": "スケジュール変更申請",
+                    "change_teacher": "教師変更申請",
+                    "reason":"理由 *",
+                    "attach_a_file":"ファイルを添付:"
+                }
+            };
+
+            // Cập nhật nội dung các phần tử có thuộc tính data-i18n
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(function (element) {
+                const translationKey = element.getAttribute('data-i18n');
+                if (translations[language] && translations[language][translationKey]) {
+                    element.innerHTML = translations[language][translationKey];
+                }
+            });
+            const selectElements = document.querySelectorAll('select');
+            selectElements.forEach(function (select) {
+                const options = select.querySelectorAll('option');
+                options.forEach(function (option) {
+                    const translationKey = option.getAttribute('data-i18n');
+                    // Kiểm tra và thay đổi nội dung tùy chọn nếu có bản dịch
+                    if (translations[language] && translations[language][translationKey]) {
+                        option.innerHTML = translations[language][translationKey];
+                    }
+                });
+            });
+            if ($.fn.dataTable.isDataTable('.data-table')) {
+                var table = $('.data-table').DataTable();
+                table.settings()[0].oLanguage.sSearch = translations[language].search || '';
+                table.settings()[0].oLanguage.oPaginate = {
+                    sFirst: translations[language].paginate.first,
+                    sPrevious: translations[language].paginate.previous,
+                    sNext: translations[language].paginate.next,
+                    sLast: translations[language].paginate.last,
+                };
+                table.draw();
+            }
+
+
+        }
+
+        // Hàm thay đổi ngôn ngữ và cập nhật ngôn ngữ hiển thị trong thanh điều hướng
+        function changeLanguage(language) {
+            // Lưu ngôn ngữ vào localStorage
+            localStorage.setItem('language', language);
+
+            // Cập nhật lại nhãn ngôn ngữ trong phần tử (nút hiển thị ngôn ngữ)
+            const languageLabel = document.getElementById('languageLabel');
+            if (languageLabel) {
+                languageLabel.innerHTML = language === 'en' ? 'EN' : (language === 'ja' ? 'JA' : 'EN');
+            }
+
+            // Áp dụng ngôn ngữ cho toàn bộ trang
+            getTranslation(language);  // Gọi lại hàm dịch ngôn ngữ ngay lập tức
+
+            // Reload lại trang sau khi thay đổi ngôn ngữ
+            location.reload();  // Tải lại trang
+        }
+
+        // Kiểm tra ngôn ngữ khi trang được tải
+        window.addEventListener('load', function () {
+            const language = localStorage.getItem('language') || 'en'; // Mặc định là 'en' nếu không có ngôn ngữ lưu trữ
+            // Gọi hàm dịch ngôn ngữ
+            getTranslation(language);
+            // Đặt lại nhãn ngôn ngữ trong phần tử (tiếng Anh là EN nếu không có ngôn ngữ)
+            const languageLabel = document.getElementById('languageLabel');
+            if (languageLabel) {
+                languageLabel.innerHTML = language === 'en' ? 'EN' : (language === 'ja' ? 'JA' : 'EN');
+            }
+        });
+        function translateCategory(category, language) {
+            // Kiểm tra xem bản dịch có tồn tại cho ngôn ngữ hiện tại hay không
+            if (translations[language] && translations[language][category]) {
+                return translations[language][category];
+            }
+            return category;  // Nếu không có bản dịch, giữ nguyên giá trị ban đầu
+        }
+
+
+        // Áp dụng dịch cho giá trị ngẫu nhiên này dựa trên ngôn ngữ hiện tại
+        formattedCategory = translateCategory(formattedCategory, localStorage.getItem('language') || 'en');
+    </script>
 </body>
 
 

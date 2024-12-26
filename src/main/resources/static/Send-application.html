@@ -38,7 +38,8 @@
     <!-- Thêm JavaScript của Select2 -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <!-- Thêm jQuery (nếu chưa có) -->
-
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <!-- Thêm JavaScript của Select2 -->
 
     <style>
@@ -141,6 +142,109 @@
         .icon-green {
             color: #28a745; /* Mã màu xanh lá cây */
         }
+
+        /* Custom Modal Styling for Error Modal */
+        #error-modal .modal-header {
+            background-color: #dc3545; /* Màu nền của header (Đỏ cho lỗi) */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #error-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #error-modal .modal-body .fas.fa-times-circle {
+            color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+        }
+
+        #error-modal .btn-danger {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #dc3545; /* Màu đỏ cho nút lỗi */
+            border-color: #dc3545;
+        }
+
+        #error-modal .btn-close {
+            color: white;
+        }
+
+        #error-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+
+        input[name="name"] {
+            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="name"]:hover {
+            border-color: #28a745 !important;
+        }
+        /* Khi người dùng focus vào input */
+        input[name="name"]:focus {
+            border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        }
+
+        /* Chỉnh màu border cho select */
+        .select2-container {
+            border: none !important; /* Đảm bảo không có border đen ở bên ngoài */
+        }
+        .select2 {
+            border: 2px solid #007bff !important;  /* Đặt màu xanh dương cho border */
+            border-radius: 5px;                    /* Bo góc nếu cần */
+        }
+
+        /* Khi người dùng focus vào select */
+        .select2:focus {
+            border-color: #007bff !important;  /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        }
+
+        /* Khi người dùng hover vào select */
+        .select2:hover {
+            border-color: #007bff !important;   /* Giữ màu xanh khi hover */
+        }
+
+        /* Cải thiện màu cho phần option bên trong select2 nếu cần */
+
+
+        /* Tùy chỉnh cho khi người dùng mở menu select2 */
+        .select2-container--open .select2-selection {
+            border-color: #28a745 !important;     /* Màu của border khi mở menu */
+        }
+        /* Đảm bảo không có màu nền đen hoặc không mong muốn */
+        .select2-selection__clear {
+            color: #007bff;   /* Xử lý màu cho button clear nếu có */
+        }
+
+        /* Loại bỏ màu đen bất kỳ từ phần option */
+        .select2-results__option {
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+
+        #reasonEditor {
+            border: 2px solid #007bff;  /* Đặt màu border là màu xanh dương */
+            border-radius: 5px;         /* Thêm góc bo tròn nếu cần */
+        }
+
+        /* Tạo hiệu ứng khi người dùng hover vào Quill editor */
+        #reasonEditor:hover {
+            border-color: #28a745;      /* Chuyển màu border thành màu xanh lá khi hover */
+        }
+
+        /* Tạo hiệu ứng khi Quill editor có focus (khi người dùng click vào) */
+        #reasonEditor:focus {
+            border-color: #ff6347;      /* Chuyển màu border thành màu cam khi có focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm bóng để nổi bật hơn */
+        }
     </style>
 </head>
 
@@ -205,10 +309,9 @@
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
-                                <li><a href="users-profile-student.html"><i class="flaticon-user"></i>My Profile</a>
+                                <li><a href="users-profile-student.html"><i class="flaticon-user"></i><span data-i18n="my_profile">My Profile</span></a>
                                 </li>
-                                <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i><span data-i18n="log_out">Log Out</span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -283,111 +386,107 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="teacher.html"><img alt="logo" src="img/logo1.png"></a>
+                    <a href="teacher.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                        <ul class="nav sub-group-menu">
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span data-i18n="dashboard">Dashboard</span></a>
+                        <ul class="nav sub-group-menu ">
                             <li class="nav-item">
-                                <a class="nav-link" href="teacher.html"><i class="fas fa-angle-right"></i>Teachers</a>
+                                <a href="teacher.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="teacher">Teachers</span></a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-books"></i><span>Assignment</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-books"></i><span data-i18n="assignment">Assignment</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="javascript:void(0);" onclick="toListAssigment();"><i
-                                        class="fas fa-angle-right"></i>All
-                                    Assignment</a>
+                                <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i><span data-i18n="all_assignment">All
+                                        Assignment</span></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="create-assignment.html"><i class="fas fa-angle-right"></i>Add
-                                    New
-                                    Assignment</a>
+                                <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="add_new_assignment">Add New
+                                        Assignment</span></a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="javascript:void(0);" onclick="redirectSchedule();"><i
-                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
+                        <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
+                                class="flaticon-shopping-list"></i><span data-i18n="schedule">Schedule</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i
-                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
+                        <a href="#" class="nav-link"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span data-i18n="class">Class</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="javascript:void(0);" onclick="submitForm();">
-                                    <i class="flaticon-menu"></i><span>Class List</span>
+                                <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
+                                    <i class="flaticon-menu"></i><span data-i18n="class_list">Class List</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span data-i18n="exam">Exam</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i>List
-                                    Exam</a>
+                                <a class="nav-link" href="list-exam.html"><i class="fas fa-angle-right"></i><span data-i18n="list_exam">List
+                                        Exam</span></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
-                                    Exam</a>
+                                <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i><span data-i18n="create_exam">Create
+                                        Exam</span></a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span data-i18n="material">Material</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="Create-material.html"><i class="fas fa-angle-right"></i>Create
-                                    Material</a>
+                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="create_material">Create
+                                        Material</span></a>
                             </li>
                             <li class="nav-item" id="teacher-view">
-                                <a class="nav-link" href="View-list-materials.html"><i class="fas fa-angle-right"></i>List
-                                    Materials</a>
+                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="list_materials">List
+                                        Materials</span></a>
                             </li>
 
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-chat"></i><span>Application</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span data-i18n="application">Application</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a class="nav-link menu-active" href="Send-application.html"><i
-                                        class="fas fa-angle-right"></i>Send
-                                    application</a>
+                                <a href="Send-application.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i><span data-i18n="send_application">Send
+                                        application</span></a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="View-my-application.html"><i class="fas fa-angle-right"></i>My
-                                    application</a>
+                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="my_application">My
+                                        application</span></a>
                             </li>
                         </ul>
                     </li>
 
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
+                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span data-i18n="thread">Thread</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
-                                    threads</a>
+                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i><span data-i18n="view_list_threads">View list
+                                        threads</span></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
-                                    Thread</a>
+                                <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i><span data-i18n="create_thread">Create
+                                        Thread</span></a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-chat"></i><span>Security</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span data-i18n="security">Security</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="change-password.html"><i class="fas fa-angle-right"></i>Change
-                                    Password</a>
+                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="change_password">Change Password</span></a>
                             </li>
                         </ul>
                     </li>
@@ -404,7 +503,7 @@
                         <a href="home.html" data-i18n="home">Home</a>
 
                     </li>
-                    <li data-i18n="send-app">Send Application</li>
+                    <li>Send Application</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
@@ -428,45 +527,44 @@
                                 <!-- Tên người -->
                                 <div class="col-12 form-group">
                                     <label style="color: #007bff; font-weight: bold;" data-i18n="app-name">Name *</label>
-                                    <input class="form-control" name="name" placeholder="Enter your name" required
-                                           type="text">
+                                    <input class="form-control" name="name" required type="text">
                                 </div>
 
                                 <!-- Loại đơn -->
-                                <div class="col-12 form-group">
-                                    <label style="color: #007bff; font-weight: bold;" data-i18n="app-type">Application type *</label>
-                                    <select class="select2" name="category" required>
-                                        <option value="Đơn xin nghỉ học">Absent Application</option>
-                                        <option value="Đơn xin đi thực tập tại FPT Japan">Internship Application</option>
-                                        <option value="Đơn xin đổi lịch giảng dạy">Schedule Changing Application</option>
-                                        <option value="Đơn xin đổi giáo viên">Changing Teacher Application</option>
-                                        <option value="Các loại đơn khác">Others Application</option>
-                                    </select>
-                                </div>
+                                    <div class="col-12 form-group">
+                                        <label style="color: #007bff; font-weight: bold;" data-i18n="app-type">Application type *</label>
+                                        <select class="select2" name="category" required>
+                                            <!-- Các option có thể được thêm vào ở đây -->
+                                        </select>
+                                    </div>
 
                                 <!-- Lý do -->
                                 <div class="col-12 form-group">
-                                    <label style="color: #007bff; font-weight: bold;" data-i18n="reason" >Reason *</label>
-                                    <textarea class="textarea form-control" cols="10" id="form-message" name="content"
-                                              required rows="9"></textarea>
+                                    <label style="color: #007bff; font-weight: bold;" data-i18n="reason">Reason *</label>
+                                    <!-- Div dùng cho Quill editor -->
+                                    <div id="reasonEditor" class="form-control" style="height: 200px;"></div>
+                                    <!-- Textarea ẩn để lưu nội dung Quill -->
+                                    <textarea name="content" style="display: none;"></textarea>
                                 </div>
+
 
                                 <!-- Tệp đính kèm -->
                                 <div class="col-12 form-group">
-                                    <label style="color: #007bff; font-weight: bold;" data-i18n="attach">Attach a File:</label>
+                                    <label style="color: #007bff; font-weight: bold;" data-i18n="attach_a_file">Attach a File:</label>
                                     <input class="form-control-file" name="imgFile" type="file">
                                 </div>
 
                                 <!-- Các nút -->
                                 <div class="col-12 form-group mg-t-8 text-end">
-                                    <button class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" type="submit" data-i18n="send">
-                                        Send
+                                    <button class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" type="submit" data-i18n="save">
+                                        Save
                                     </button>
-                                    <button class="btn-fill-lg bg-blue-dark btn-hover-yellow" type="reset" data-i18n="clear-form">Clear Form
+                                    <button class="btn-fill-lg bg-blue-dark btn-hover-yellow" type="reset" data-i18n="reset">Reset
                                     </button>
                                 </div>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -478,12 +576,12 @@
                     <div class="modal-content">
                         <div class="modal-header border-0">
                             <h5 class="modal-title" id="confirmationModalLabel"><i
-                                    class="fas fa-check-circle icon-green"></i> Confirm Save</h5>
+                                    class="fas fa-check-circle icon-green"></i><span data-i18n="confirm_save">Confirm Save</span> </h5>
                             <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body text-center" style="font-size: 20px; font-weight: bold;">
+                        <div class="modal-body text-center" style="font-size: 20px; font-weight: bold;" data-i18n="are_you">
                             Are you sure you want to save the application?
                         </div>
                         <div class="modal-footer">
@@ -491,16 +589,32 @@
                                     class="btn btn-secondary"
                                     data-dismiss="modal"
                                     style="font-size: 18px; padding: 10px 20px;"
-                                    type="button">
+                                    type="button" data-i18n="cancel">
                                 Cancel
                             </button>
                             <button
                                     class="btn btn-primary"
                                     id="confirmSave"
                                     style="font-size: 18px; padding: 10px 20px;"
-                                    type="button">
+                                    type="button" data-i18n="save">
                                 Save
                             </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Error Modal -->
+            <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <h5 class="modal-title text-danger" id="errorModalLabel">
+                                <i class="fas fa-times-circle"></i> Error
+                            </h5>
+
+                        </div>
+                        <div class="modal-body text-center" style="font-size: 20px; font-weight: bold;">
+                            Please fill out all required field
                         </div>
                     </div>
                 </div>
@@ -543,11 +657,25 @@
             "STUDENT": "学生"
         }
     };
-    if (userDetails) {
-        // Lấy ngôn ngữ hiện tại từ localStorage
-        const currentLanguage = localStorage.getItem('language') || 'en';  // Mặc định là 'en'
+    const applicationTranslations = {
+        en: {
+            absent: "Absent Application",
+            internship: "Internship Application",
+            others: "Others Application",
+            "schedule-change": "Schedule Changing Application",
+            "change_teacher": "Teacher Change Application"
+        },
+        ja: {
+            absent: "欠席申請",
+            internship: "インターンシップ申請",
+            others: "その他の申請",
+            "schedule-change": "スケジュール変更申請",
+            "change_teacher": "教師変更申請"
+        }
+    };
 
-        // Hiển thị thông tin người dùng với tên và vai trò dịch theo ngôn ngữ hiện tại
+    if (userDetails) {
+        const currentLanguage = localStorage.getItem('language') || 'en'; // Lấy ngôn ngữ hiện tại
         const translatedRoleName = roleTranslations[currentLanguage][userDetails.roleName] || userDetails.roleName;
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
@@ -561,42 +689,46 @@
         userRoleElements.forEach(element => {
             element.textContent = translatedRoleName;
         });
+
         if (userDetails.roleName === "TEACHER") {
-            // Set teacher-related values
             document.getElementById('teacherId').value = userDetails.id;
             document.getElementById('studentId').value = '';
         } else if (userDetails.roleName === "STUDENT") {
-            // Set student-related values
             document.getElementById('studentId').value = userDetails.id;
             document.getElementById('teacherId').value = '';
         }
+
         const applicationTypeSelect = document.querySelector('.select2');
         applicationTypeSelect.innerHTML = '';
 
         let options = [];
         if (userDetails.roleName === "STUDENT") {
             options = [
-                {value: "Đơn xin nghỉ học", text: "Đơn xin nghỉ học"},
-                {value: "Đơn xin đi thực tập tại FPT Japan", text: "Đơn xin đi thực tập tại FPT Japan"},
-                {value: "Các loại đơn khác", text: "Các loại đơn khác"}
+                { value: "Absent application", text: "absent" }, // Chỉ lưu key, bản dịch sẽ được áp dụng sau
+                { value: "Internship Application", text: "internship" },
+                { value: "Others Application", text: "others" }
             ];
         } else if (userDetails.roleName === "TEACHER") {
             options = [
-                {value: "Đơn xin đổi lịch giảng dạy", text: "Đơn xin đổi lịch giảng dạy"},
-                {value: "Đơn xin đổi giáo viên", text: "Đơn xin đổi giáo viên"},
-                {value: "Các loại đơn khác", text: "Các loại đơn khác"}
+                { value: "Schedule Changing Application", text: "schedule-change" },
+                { value: "Teacher Change Application", text: "change_teacher" },
+                { value: "Others Application", text: "others" }
             ];
         }
 
         options.forEach(option => {
             const newOption = document.createElement('option');
             newOption.value = option.value;
-            newOption.textContent = option.text;
+            newOption.textContent = applicationTranslations[currentLanguage][option.text] || option.text;  // Dịch tùy chọn
+            newOption.setAttribute('data-i18n', option.text);  // Đảm bảo mỗi option có attribute data-i18n cho phép dịch
             applicationTypeSelect.appendChild(newOption);
         });
 
         // Reinitialize select2
-        $(applicationTypeSelect).trigger('change')
+        $(applicationTypeSelect).trigger('change');
+
+        // Cập nhật lại ngôn ngữ hiển thị
+         // Áp dụng ngôn ngữ hiện tại lên toàn bộ trang
         const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
 
         imgContainers.forEach(container => {
@@ -608,7 +740,7 @@
     } else {
         console.error("User details not found in sessionStorage");
     }
-
+    getTranslation(currentLanguage);
     function submitForm() {
         // Retrieve userDetails from sessionStorage
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -646,33 +778,51 @@
     }
 </script>
 <script>
-    document.querySelector('button[type="submit"]').addEventListener('click', function (event) {
-        event.preventDefault();  // Stop form submission by default
+    // Khởi tạo Quill cho reason editor
+    var quill = new Quill('#reasonEditor', {
+        theme: 'snow',  // Chọn theme 'snow' hoặc 'bubble'
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],    // Các nút định dạng văn bản
+                ['link'],  // Chèn link
+                [{ 'list': 'ordered'}, { 'list': 'bullet'}], // Các kiểu danh sách
+                ['image']  // Chèn ảnh
+            ]
+        }
+    });
 
-        // Get the input values
+    // Thêm sự kiện khi nút submit được nhấn
+    document.querySelector('button[type="submit"]').addEventListener('click', function (event) {
+        event.preventDefault();  // Ngừng việc gửi form mặc định
+
+        // Lấy nội dung từ Quill editor
+        const reasonContent = quill.root.innerHTML;
+
+        // Gán nội dung vào textarea ẩn
+        const hiddenTextarea = document.querySelector('textarea[name="content"]');
+        hiddenTextarea.value = reasonContent;
+
+        // Lấy dữ liệu từ các input khác
         const nameInput = document.querySelector('input[name="name"]').value;
         const applicationTypeSelect = document.querySelector('select[name="category"]').value;
-        const reasonInput = document.querySelector('textarea[name="content"]').value;
 
-        // Validate required fields
-        if (!nameInput || applicationTypeSelect === "0" || !reasonInput) {
-            // Display an error message if required fields are missing
-            const messageDiv = document.getElementById('message');
-            messageDiv.style.display = 'block';
-            messageDiv.innerText = 'Please fill out all required fields.';
-            return;  // Stop form submission
+        // Kiểm tra các trường nhập liệu
+        if (!nameInput || applicationTypeSelect === "0" || !reasonContent) {
+            // Nếu có trường nhập liệu không hợp lệ, hiển thị modal lỗi
+            const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+            errorModal.show();
+            return;  // Dừng gửi form
         }
 
-        // If fields are valid, show confirmation modal
+        // Nếu dữ liệu hợp lệ, hiển thị modal xác nhận
         $('#confirmationModal').modal('show');
     });
 
-    // Confirmation click in Modal
+    // Xử lý sự kiện khi người dùng xác nhận trong modal
     document.getElementById('confirmSave').addEventListener('click', function () {
-        // Submit the form if user confirms in the modal
+        // Khi người dùng xác nhận, gửi form
         document.getElementById('applicationForm').submit();
     });
-
 </script>
 <script>
     // Function to get query parameter values
@@ -713,9 +863,15 @@
                 "role": "Role",
                 "actions": "Actions",
                 "view_details": "View Details",
+                "cancel": "Cancel",
+                "save": "Save",
+                "confirm_save": "Confirm Save",
+                "are_you":"Are you sure you want to save the application?",
+                "reset":"Reset",
                 // end main screen
                 // headbar
                 "log_out": "Log Out",
+                "my_profile":"My Profile",
                 // end headbar
                 "add_account": "Add Account",
                 "choose_file": "Choose File",
@@ -723,24 +879,41 @@
                 "submit": "Submit",
                 "j_name": "Japan Name",
                 // sidebar admin
-                "admin": "Admin",
                 "dashboard": "Dashboard",
-                "report": "Report",
-                "notification": "Notification",
-                "account_list": "Account List",
+                "teacher": "Teacher",
+                "assignment": "Assignment",
+                "all_assignment": "All Assignment",
+                "add_new_assignment": "Add New Assignment",
+                "schedule": "Schedule",
+                "class": "Class",
+                "class_list": "Class List",
+                "exam": "Exam",
+                "list_exam": "List Exam",
+                "create_exam": "Create Exam",
+                "material": "Material",
+                "list_materials": "List Materials",
+                "application": "Application",
+                "send_application": "Send Application",
+                "my_application": "My Application",
+                "thread": "Thread",
+                "view_list_threads": "View List Threads",
+                "create_thread": "Create Thread",
                 "security": "Security",
                 "change_password": "Change Password",
+                "create_material": "Create Material",
                 // end sidebar admin
                 //application
                 "send-app":"Send Application",
                 "app-detail":"Application Detail",
                 "app-name":"Title *",
                 "app-type":"Application Type *",
-                "absent":"Absent Application",
+                "absent": "Absent Application",
+                "internship": "Internship Application",
+                "others": "Others Application",
+                "schedule_change": "Schedule Changing Application",
+                "change_teacher": "Teacher Change Application",
                 "reason":"Reason *",
-                "attach":"Attach a File",
-                "send":"Send",
-                "clear-form":"Clear Form"
+                "attach_a_file":"Attach a File:"
             },
             "ja": {
                 //Main screen
@@ -762,31 +935,55 @@
                 // end main screen
                 // headbar
                 "log_out": "ログアウト",
+                "my_profile":"私のプロフィール ",
                 // end headbar
                 "add_account": "アカウントを追加",
                 "choose_file": "ファイルを選択",
                 "submit": "送信",
                 "close": "閉じる",
                 "j_name": "日本の名前",
-                // sidebar admin
-                "admin": "管理者",
+                "cancel": "キャンセル",
+                "save": "保存",
+                "confirm_save": "保存を確認",
+                "are_you": "アプリケーションを保存してもよろしいですか？",
+                "reset":"リセット",
+
+                // sidebar teacher
                 "dashboard": "ダッシュボード",
-                "report": "レポート",
-                "notification": "通知",
-                "account_list": "アカウントリスト",
+                "teacher": "教師",
+                "assignment": "課題",
+                "all_assignment": "すべての課題",
+                "add_new_assignment": "新しい課題を追加",
+                "schedule": "スケジュール",
+                "class": "クラス",
+                "class_list": "クラス一覧",
+                "exam": "試験",
+                "list_exam": "試験一覧",
+                "create_exam": "試験を作成",
+                "material": "教材",
+                "list_materials": "教材一覧",
+                "application": "申請",
+                "send_application": "申請を送信",
+                "my_application": "私の申請",
+                "thread": "スレッド",
+                "view_list_threads": "スレッド一覧を表示",
+                "create_thread": "スレッドを作成",
                 "security": "セキュリティ",
                 "change_password": "パスワード変更",
+                "create_material": "教材を作成",
                 // end sidebar admin
                 //application
                 "send-app":"アップリケション送信",
                 "app-detail":"アップリケション内容",
                 "app-name":"題名 *",
                 "app-type":"アップリケションタイプ *",
-                "absent":"休みアップリケション",
+                "absent": "休みアップリケション",
+                "internship": "インターンシップ申請",
+                "others": "その他の申請",
+                "schedule_change": "スケジュール変更申請",
+                "change_teacher": "教師変更申請",
                 "reason":"理由 *",
-                "attach":"ファイルを付け",
-                "send":"送信",
-                "clear-form":"クリエア"
+                "attach_a_file":"ファイルを添付:"
             }
         };
 
@@ -798,6 +995,19 @@
                 element.innerHTML = translations[language][translationKey];
             }
         });
+        const selectElements = document.querySelectorAll('select');
+        selectElements.forEach(function (select) {
+            const options = select.querySelectorAll('option');
+            options.forEach(function (option) {
+                const translationKey = option.getAttribute('data-i18n');
+                // Kiểm tra và thay đổi nội dung tùy chọn nếu có bản dịch
+                if (translations[language] && translations[language][translationKey]) {
+                    option.innerHTML = translations[language][translationKey];
+                }
+            });
+        });
+
+
     }
 
     // Hàm thay đổi ngôn ngữ và cập nhật ngôn ngữ hiển thị trong thanh điều hướng

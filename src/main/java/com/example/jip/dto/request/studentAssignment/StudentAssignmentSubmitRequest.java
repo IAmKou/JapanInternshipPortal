@@ -6,6 +6,7 @@ import com.example.jip.entity.Assignment;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -14,12 +15,11 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentAssignmentSubmitRequest {
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    Date date;
     @NonNull
     String description;
     @NonNull
     String content;
     StudentDTO student;
+    MultipartFile[] imgFile;
     AssignmentResponse assignment;
 }

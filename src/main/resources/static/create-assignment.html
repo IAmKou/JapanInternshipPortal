@@ -30,12 +30,124 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 </head>
 
 <style>
     #content {
         height: 200px; /* Thay đổi chiều cao tùy ý */
     }
+    input[name="description"] {
+        border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+        border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+    }
+
+    input[name="description"]:hover {
+        border-color: #28a745 !important;
+    }
+    /* Khi người dùng focus vào input */
+    input[name="description"]:focus {
+        border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+        box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+    }
+    input[name="created_date"] {
+        border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+        border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+    }
+
+    input[name="created_date"]:hover {
+        border-color: #28a745 !important;
+    }
+    /* Khi người dùng focus vào input */
+    input[name="created_date"]:focus {
+        border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+        box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+    }
+
+    input[name="end_date"] {
+        border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+        border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+    }
+
+    input[name="end_date"]:hover {
+        border-color: #28a745 !important;
+    }
+    /* Khi người dùng focus vào input */
+    input[name="end_date"]:focus {
+        border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+        box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+    }
+
+    #content {
+        border: 2px solid #007bff;  /* Đặt màu border là màu xanh dương */
+        border-radius: 5px;         /* Thêm góc bo tròn nếu cần */
+    }
+
+    /* Tạo hiệu ứng khi người dùng hover vào Quill editor */
+    #content:hover {
+        border-color: #28a745;      /* Chuyển màu border thành màu xanh lá khi hover */
+    }
+
+    /* Tạo hiệu ứng khi Quill editor có focus (khi người dùng click vào) */
+    #content:focus {
+        border-color: #ff6347;      /* Chuyển màu border thành màu cam khi có focus */
+        box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm bóng để nổi bật hơn */
+    }
+
+    /* Style cho toàn bộ container chứa các checkbox */
+    #class_id {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    /* Cải thiện sự bố trí của mỗi checkbox */
+    .class-checkbox-label {
+        display: inline-block;
+        font-weight: bold;  /* Đặt chữ cho tên lớp đậm */
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    /* Thiết lập kiểu dáng cho checkbox */
+    .class-checkbox-label input[type="checkbox"] {
+        margin-right: 8px;
+        cursor: pointer;
+    }
+
+    /* Thêm màu sắc khi checkbox được chọn */
+    .class-checkbox-label input[type="checkbox"]:checked {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    /* Sửa phần hover cho checkbox */
+    .class-checkbox-label:hover input[type="checkbox"] {
+        background-color: #0056b3;
+    }
+
+    /* Style cho label của checkbox */
+    .class-checkbox-label {
+        padding: 5px;
+        background-color: #f4f4f4;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        transition: background-color 0.3s;
+    }
+
+    /* Thêm một màu nền khi hover vào label */
+    .class-checkbox-label:hover {
+        background-color: #e1e1e1;
+    }
+
+    /* Style cho các checkbox đã được checked */
+    .class-checkbox-label input[type="checkbox"]:checked + span {
+        font-weight: bold;
+        color: #007bff;
+    }
+
 </style>
 
 <body>
@@ -301,23 +413,23 @@
                             <input type="hidden" name="teacher_id" id="userId">
 
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label for="description">Assignment Title *</label>
-                                <input type="text" placeholder="Write description..." class="form-control" name="description" id="description" required>
+                                <label for="description" style="color: #007bff; font-weight: bold;">Assignment Title *</label>
+                                <input type="text"  class="form-control" name="description" id="description" >
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label for="created_date">Create Date</label>
-                                <input type="date" class="form-control" name="created_date" id="created_date" readonly>
+                                <label for="created_date" style="color: #007bff; font-weight: bold;">Start Date *</label>
+                                <input type="datetime-local" class="form-control" name="created_date" id="created_date" >
                             </div>
                             <div class="col-xl-4 col-lg-12 col-12 form-group">
-                                <label for="end_date">End Date *</label>
-                                <input type="date" class="form-control" name="end_date" id="end_date" required>
+                                <label for="end_date" style="color: #007bff; font-weight: bold;">End Date *</label>
+                                <input type="datetime-local" class="form-control" name="end_date" id="end_date" >
                             </div>
                             <div class="col-xl-6 col-lg-12 col-12 form-group">
-                                <label for="content">Description *</label>
-                                <textarea id="content" placeholder="Write content..."  class="form-control" name="content" rows="4" required></textarea>
+                                <label for="content" style="color: #007bff; font-weight: bold;">Description *</label>
+                                <div id="content" class="form-control" style="height: 200px;"></div>
                             </div>
                             <div class="col-xl-12 col-lg-24 col-12 form-group">
-                                <label  for="class_id">Select Class *</label>
+                                <label  for="class_id" style="color: #007bff; font-weight: bold;">Select Class:</label>
                                 <div id="class_id">
                                     <!-- Checkboxes will be dynamically populated here -->
                                 </div>
@@ -391,10 +503,6 @@
 <script src="js/main.js"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const currentDate = new Date().toISOString().split("T")[0];
-        document.getElementById("created_date").value = currentDate;
-    });
 
     // Function to show the success modal
     function showSuccessModal(message) {
@@ -410,92 +518,91 @@
         errorModal.show();
     }
 
-    async function addAssignment(event) {
-        event.preventDefault();
 
-        const form = event.target.closest('form');
-        const formData = new FormData(form);
-
-        // Get field values
-        const description = document.getElementById('description').value.trim();
-        const content = document.getElementById('content').value.trim();
-        const endDate = document.getElementById('end_date').value;
-        const createdDate = document.getElementById('created_date').value;
-
-        // Check if required fields are empty
-        if (!description) {
-            showErrorModal('Title is required.');
-            return;
-        }
-
-        if (!content) {
-            showErrorModal('Description is required.');
-            return;
-        }
-
-        if (!endDate) {
-            showErrorModal('Deadline not specified.');
-            return;
-        }
-
-        // Check if the created date is after the end date
-        if (new Date(createdDate) >= new Date(endDate)) {
-            showErrorModal('Deadline must be after the Date Created.');
-            return;
-        }
-
-        // Check if the description already exists in the database
-        const descriptionExists = await checkDescriptionExists(description);
-        if (descriptionExists) {
-            showErrorModal('Title existed. Please use a different title for this assignment.');
-            return;
-        }
-
-        // Get selected class IDs from the checkboxes
-        const selectedClasses = Array.from(document.querySelectorAll('input[name="classIds"]:checked'))
-            .map(checkbox => checkbox.value);
-
-        // Append selected class IDs to the form data
-        selectedClasses.forEach(classId => {
-            formData.append('classIds', classId);
+    document.addEventListener('DOMContentLoaded', function () {
+        // Khởi tạo Quill
+        var quill = new Quill('#content', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline'], // Các công cụ định dạng cơ bản
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Các công cụ danh sách
+                    ['link', 'image'] // Các công cụ thêm liên kết và hình ảnh
+                ]
+            }
         });
 
-        // Append image files to the form data, avoiding duplicates
-        const imgFiles = document.getElementById('imgFile').files;
-        const addedFileNames = new Set();
+        // Hàm xử lý việc thêm assignment
+        async function addAssignment(event) {
+            event.preventDefault(); // Ngừng hành động submit mặc định của form
+            const form = event.target.closest('form');
+            const formData = new FormData(form);
 
-        for (let i = 0; i < imgFiles.length; i++) {
-            const file = imgFiles[i];
-            addedFileNames.add(file.name); // Track the file name
-            formData.append('imgFile', file);
-        }
+            // Lấy nội dung từ Quill
+            const content = quill.root.innerHTML.trim(); // Lấy nội dung HTML từ Quill
 
-        try {
-            const response = await fetch('/assignment/create', {
-                method: 'POST',
-                body: formData,
-            });
+            // Thêm nội dung vào FormData
+            formData.append('content', content);
 
-            if (response.ok) {
-                showSuccessModal('Assignment added successfully!');
-                setTimeout(toListAssigment, 2000); // Delay redirection by 2 seconds
-            } else {
-                const errorData = await response.json();
-                showErrorModal(`Failed to create assignment: ${errorData.message || 'Please try again.'}`);
+            // Lấy giá trị từ các input khác trong form
+            const description = document.getElementById('description').value.trim();
+            const endDate = document.getElementById('end_date').value;
+            const createdDate = document.getElementById('created_date').value;
+
+            // Kiểm tra các giá trị rỗng và hiển thị lỗi nếu cần
+            if (!description) {
+                showErrorModal('Title is required.');
+                return;
             }
-        } catch (error) {
-            console.error('Error:', error);
-            showErrorModal('An error occurred. Please try again.');
-        }
-    }
 
+            const isDescriptionUnique = await checkDescriptionExists(description);
+            if (isDescriptionUnique) {
+                showErrorModal('Title already exists.');
+                return;
+            }
+
+            if (content === '' || content === '<p><br></p>') {
+                showErrorModal('Description is required.');
+                return;
+            }
+
+            if (!endDate || !createdDate) {
+                showErrorModal('Dates are required.');
+                return;
+            }
+
+            // Gửi form qua Fetch API
+            try {
+                const response = await fetch('/assignment/create', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    showSuccessModal('Assignment added successfully!');
+                    setTimeout(toListAssigment, 2000); // Quay lại trang danh sách assignment sau 2 giây
+                } else {
+                    const errorData = await response.json();
+                    showErrorModal(`Failed to create assignment: ${errorData.message || 'Please try again.'}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showErrorModal('An error occurred. Please try again.');
+            }
+        }
+
+        // Gắn sự kiện submit vào form
+        document.querySelector('form').addEventListener('submit', addAssignment);
+    });
 
     async function checkDescriptionExists(description) {
         try {
             const teacher_id = document.getElementById('userId').value;
             const response = await fetch(`/assignment/exists?description=${encodeURIComponent(description)}&teacherId=${teacher_id}`);
             if (response.ok) {
-                return await response.json(); // true if exists, false otherwise
+                const exists = await response.json();
+                console.log(`Description exists: ${exists}`); // Log the response for debugging
+                return exists; // true if exists, false otherwise
             } else {
                 console.error('Failed to check description existence.');
                 return false;
@@ -534,19 +641,22 @@
                 checkbox.value = cls.id;  // Class ID as the value
                 checkbox.id = `class-${cls.id}`;  // ID for the checkbox
 
-                // Append the label and checkbox
-                const textNode = document.createTextNode(cls.name);  // Class name as text
-                label.appendChild(checkbox);
-                label.appendChild(textNode);
+                const span = document.createElement('span');  // Add a span element for better text styling
+                span.textContent = cls.name;  // Class name as text
 
+                // Append checkbox and the span with label
+                label.appendChild(checkbox);
+                label.appendChild(span);
+
+                // Append label to the div
                 classDiv.appendChild(label);
-                classDiv.appendChild(document.createElement('br'));  // Line break for each checkbox
             });
         } catch (error) {
             console.error('Error populating classes:', error);
             showErrorModal('Could not fetch classes. Please try again later.');
         }
     }
+
 
     // Call the function on page load
     document.addEventListener('DOMContentLoaded', populateClasses);

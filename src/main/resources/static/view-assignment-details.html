@@ -131,6 +131,45 @@
         font-size: 0.9rem;
         color: #6c757d; /* Màu nhạt hơn cho mô tả */
     }
+    .item-content {
+        color: #000;  /* Chọn màu xám đậm cho tất cả văn bản trong .item-content */
+    }
+
+    .item-content table {
+        width: 100%;
+    }
+
+    .item-content td {
+        color: #333;  /* Tạo màu chữ tương phản cao với nền trắng */
+    }
+
+    .item-content td:first-child {
+        font-weight: bold;  /* Làm đậm các nhãn (label) */
+    }
+
+    .item-content td:last-child {
+        color: #000;  /* Màu chữ đen cho các giá trị */
+    }
+    /* Áp dụng cho bảng có id 'submittedAssignment_table' */
+    #submittedAssignment_table {
+        table-layout: fixed;  /* Đảm bảo các cột có chiều rộng đều */
+        width: 100%;  /* Bảng chiếm hết chiều rộng */
+        border-collapse: collapse;  /* Loại bỏ khoảng cách giữa các ô */
+    }
+
+    #submittedAssignment_table th, #submittedAssignment_table td {
+        padding: 10px;  /* Thêm khoảng cách trong mỗi ô */
+        text-align: center;  /* Căn giữa nội dung trong ô */
+        border: 1px solid #ddd;  /* Đặt đường viền mỏng cho các ô */
+        word-wrap: break-word;  /* Đảm bảo nội dung không tràn ra ngoài ô */
+    }
+
+    #submittedAssignment_table th {
+        background-color: #f8f8f8;  /* Màu nền cho tiêu đề */
+        font-weight: bold;  /* Đảm bảo tiêu đề nổi bật */
+    }
+
+
 </style>
 
 <body>
@@ -388,22 +427,24 @@
                     <div class="heading-layout1">
                         <div class="item-title">
                             <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Title:</h3>
-                            <span id="assignment-description" style="display: inline; margin-left: 80px;"></span>
+                            <span id="assignment-description" style="display: inline; margin-left: 80px; font-weight: bold; color: #000;"></span>
                         </div>
                     </div>
                     &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
                     <div class="heading-layout1">
                         <div class="item-title">
                             <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Description:</h3>
-                            <span id="assignment-content" style="display: inline; margin-left: 10px;"></span>
+                            <span id="assignment-content" style="display: inline; margin-left: 10px; font-weight: bold; color: #000;"></span>
                         </div>
                     </div>
+
+
                     &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
                     <div class="item-content">
                         <table class="table text-nowrap">
                             <tbody>
                             <tr>
-                                <td>Created Date:</td>
+                                <td>Start Date:</td>
                                 <td id="created-date"></td>
                             </tr>
                             <tr>
@@ -432,13 +473,13 @@
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table class="table display data-table text-nowrap">
+                        <table id="submittedAssignment_table" class="table display data-table text-nowrap">
                             <thead>
                             <tr>
-                                <th>Description</th>
-                                <th>Mark</th>
-                                <th>Created Date</th>
-                                <th>Status</th>
+                                <th style="font-weight: bold; color: #000;">Name</th>
+                                <th style="font-weight: bold; color: #000;">Assignment</th>
+                                <th style="font-weight: bold; color: #000;">Mark</th>
+                                <th style="font-weight: bold; color: #000;">Created Date</th>
                             </tr>
                             </thead>
                             <tbody id="submittedAssignment_list">
@@ -531,12 +572,28 @@
 
             const assignment = await response.json();
             console.log('Assignment details:', assignment);
+            const createdDateFormatted = formatDateTime(assignment.created_date);
+            const endDateFormatted = formatDateTime(assignment.end_date);
 
             // Populate description and content
+            // Cập nhật nội dung của description và content với cỡ chữ lớn hơn
             document.getElementById('assignment-description').textContent = assignment.description || "No description provided";
-            document.getElementById('assignment-content').textContent = assignment.content || "No content provided";
-            document.getElementById('created-date').textContent = assignment.created_date || "N/A";
-            document.getElementById('end-date').textContent = assignment.end_date || "N/A";
+            document.getElementById('assignment-description').style.fontSize = "18px";  // Tăng cỡ chữ cho description
+
+            if (assignment.content) {
+                // Loại bỏ thẻ block như <p>, <div>, thay thế bằng newline '\n'
+                var sanitizedContent = assignment.content.replace(/<\/?(p|div)[^>]*>/gi, '\n');
+
+                // Hiển thị nội dung trong HTML, giữ các thẻ inline như <strong>, <em>...
+                document.getElementById('assignment-content').innerHTML = sanitizedContent;
+                document.getElementById('assignment-content').style.fontSize = "18px";  // Tăng cỡ chữ cho content
+            } else {
+                document.getElementById('assignment-content').textContent = "No content provided";
+                document.getElementById('assignment-content').style.fontSize = "18px";  // Tăng cỡ chữ khi không có nội dung
+            }
+
+            document.getElementById('created-date').textContent = createdDateFormatted  || "N/A";
+            document.getElementById('end-date').textContent = endDateFormatted || "N/A";
 
             // Display class names
             const classes = assignment.classes || [];
@@ -560,8 +617,6 @@
                 filesContainer.textContent = "No files uploaded";
             }
 
-            // Show success modal
-            showSuccessModal('Assignment details loaded successfully!');
         } catch (error) {
             console.error('Error:', error);
             showErrorModal('An error occurred while fetching the assignment details.');
@@ -570,6 +625,26 @@
 
     // Call the function on page load
     fetchAssignmentDetails();
+
+    function formatDateTime(dateString) {
+        const date = new Date(dateString);
+
+        // Adjust for your timezone (if needed, e.g., UTC+7 for Vietnam)
+        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
+
+        // Format the date and time in 12-hour format with AM/PM
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        let hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12; // Convert to 12-hour format, 0 becomes 12
+
+        return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+    }
 
     // Fetch and display submitted assignments
     async function fetchAndDisplaySubmittedAssignments() {
@@ -591,8 +666,8 @@
             if (submittedAssignments.length === 0) {
                 const noDataRow = document.createElement("tr");
                 noDataRow.innerHTML = `
-            <td colspan="5" class="text-center">No submitted assignments available.</td>
-        `;
+                <td colspan="4" class="text-center">No submitted assignments available.</td>
+            `;
                 tableBody.appendChild(noDataRow);
                 return;
             }
@@ -600,33 +675,33 @@
             submittedAssignments.forEach((submittedAssignment) => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-            <td>
-                <a href="/submitted-assignment-detail-teacher.html?id=${submittedAssignment.id}" target="_blank">
-                    ${submittedAssignment.description}
-                </a>
-            </td>
-            <td>${submittedAssignment.mark || "N/A"}</td>
-            <td>${new Date(submittedAssignment.date).toLocaleDateString()}</td>
-            <td>${submittedAssignment.status || "N/A"}</td>
-        `;
+<td>${submittedAssignment.studentName || "N/A"}</td> <!-- Hiển thị tên học sinh thay vì status -->
+                <td>
+                    <a href="/submitted-assignment-detail-teacher.html?id=${submittedAssignment.id}" target="_blank">
+                        ${submittedAssignment.description}
+                    </a>
+                </td>
+                <td>${submittedAssignment.mark || "N/A"}</td>
+                <td>${new Date(submittedAssignment.date).toLocaleDateString()}</td>
+
+            `;
                 tableBody.appendChild(row);
             });
 
-            // Show success modal
-            showSuccessModal('Submitted assignments loaded successfully!');
         } catch (error) {
             console.error("Error:", error);
             const tableBody = document.getElementById("submittedAssignment_list");
             tableBody.innerHTML = `
-        <tr>
-            <td colspan="5" class="text-center text-danger">Failed to load assignments. Please try again later.</td>
-        </tr>
-    `;
+            <tr>
+                <td colspan="4" class="text-center text-danger">Failed to load assignments. Please try again later.</td>
+            </tr>
+        `;
 
             // Show error modal
             showErrorModal('An error occurred while loading submitted assignments.');
         }
     }
+
 
     // Call the function to fetch and display submitted assignments
     fetchAndDisplaySubmittedAssignments();
