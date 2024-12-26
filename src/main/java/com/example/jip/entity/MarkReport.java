@@ -23,14 +23,16 @@ public class MarkReport {
     @JoinColumn(name = "student_id", referencedColumnName = "id", nullable = false)
     Student student;
 
-    @Column(name = "softskill", nullable = false)
+    @Column(name = "softskill")
     BigDecimal softskill;
-    @Column(name = "avg_exam_mark", nullable = false)
+    @Column(name = "avg_exam_mark")
     BigDecimal avg_exam_mark;
-    @Column(name = "middle_exam", nullable = false)
+    @Column(name = "middle_exam")
     BigDecimal middle_exam;
-    @Column(name = "final_exam", nullable = false)
+    @Column(name = "final_exam")
     BigDecimal final_exam;
+    @Column(name = "skill")
+    String skill;
     @Column(name = "attitude")
     BigDecimal attitude;
     @Column(name = "final_mark")

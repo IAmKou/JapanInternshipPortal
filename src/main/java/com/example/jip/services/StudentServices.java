@@ -1,8 +1,10 @@
 package com.example.jip.services;
 
 import com.example.jip.entity.Account;
+import com.example.jip.entity.MarkReport;
 import com.example.jip.entity.Student;
 import com.example.jip.repository.AccountRepository;
+import com.example.jip.repository.MarkReportRepository;
 import com.example.jip.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,9 @@ public class StudentServices {
 
     @Autowired
     private EmailServices emailServices;
+
+    @Autowired
+    private MarkReportRepository markReportRepository;
 
     public Student createStudent(String fullname, String japanname, Date dob, String gender, String phoneNumber, String email, MultipartFile img, MultipartFile passport, int accountId) {
         Optional<Account> accountOpt = accountRepository.findById(accountId);
@@ -58,10 +63,14 @@ public class StudentServices {
         student.setPassport(passUrl);
         student.setAccount(accountOpt.get());
         student.setMark(false);
-        
+
 
         // Save the student to the database
         Student savedStudent = studentRepository.save(student);
+
+        MarkReport markReport = new MarkReport();
+        markReport.setStudent(savedStudent);
+        markReportRepository.save(markReport);
 
         String account = accountOpt.get().getUsername();
         String password = accountOpt.get().getPassword();

@@ -2,10 +2,12 @@ package com.example.jip.services;
 
 import com.example.jip.dto.response.CloudinaryResponse;
 import com.example.jip.entity.Account;
+import com.example.jip.entity.MarkReport;
 import com.example.jip.entity.Role;
 import com.example.jip.entity.Student;
 import com.example.jip.entity.Student.Gender;
 import com.example.jip.repository.AccountRepository;
+import com.example.jip.repository.MarkReportRepository;
 import com.example.jip.repository.RoleRepository;
 import com.example.jip.repository.StudentRepository;
 import org.apache.poi.ooxml.POIXMLDocumentPart;
@@ -36,6 +38,8 @@ public class AccountImportServices {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private CloudinaryService cloudinaryService;
+    @Autowired
+    private MarkReportRepository markReportRepository;
 
     public List<String> importAccounts(MultipartFile file) {
         List<String> errors = new ArrayList<>();
@@ -167,9 +171,6 @@ public class AccountImportServices {
                 return;
             }
 
-
-
-
             // Find role
             Optional<Role> roleOpt = roleRepository.findById(roleId);
             if (roleOpt.isEmpty()) {
@@ -197,6 +198,11 @@ public class AccountImportServices {
             student.setAccount(account);
             student.setMark(false);
             studentRepository.save(student);
+
+            //Create Mark rp for student
+            MarkReport markReport = new MarkReport();
+            markReport.setStudent(student);
+            markReportRepository.save(markReport);
 
         } catch (Exception e) {
             errors.add("Failed to process row: " + (row.getRowNum() + 1) + " due to: " + e.getMessage());

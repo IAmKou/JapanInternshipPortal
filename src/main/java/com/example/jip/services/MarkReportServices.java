@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 @Service
 public class MarkReportServices {
@@ -13,7 +14,7 @@ public class MarkReportServices {
     @Autowired
     private MarkReportRepository markReportRepository;
 
-    public Optional<MarkReport> getMarkReportByStudentId(int studentId) {
+    public List<MarkReport> getMarkReportByStudentId(int studentId) {
         return markReportRepository.findByStudentId(studentId);
     }
 
