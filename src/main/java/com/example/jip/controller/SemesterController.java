@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -80,5 +81,12 @@ public class SemesterController {
         return semesterRepository.findAll().stream()
                 .map(SemesterDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/get/{semesterId}")
+    public SemesterDTO getSemesterById(@PathVariable int semesterId) {
+        return semesterRepository.findById(semesterId)
+                .map(SemesterDTO::new)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Semester not found"));
     }
 }
