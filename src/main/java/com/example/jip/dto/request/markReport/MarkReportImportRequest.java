@@ -9,7 +9,11 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MarkReportCreationRequest {
+public class MarkReportImportRequest {
+    @NonNull
+    String name;
+    @NonNull
+    String email;
     @NonNull
     BigDecimal softskill;
     @NonNull
@@ -18,6 +22,5 @@ public class MarkReportCreationRequest {
     BigDecimal middle_exam;
     @NonNull
     BigDecimal final_exam;
-    BigDecimal attitude;
-    BigDecimal final_mark;
+
 }

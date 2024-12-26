@@ -29,6 +29,9 @@ public class Attendant {
     @Column(name="Date")
     private Date date;
 
+    @OneToOne
+    @JoinColumn(name = "curriculum_id", referencedColumnName = "id", nullable = false)
+    private Curriculum curriculum;
 
     public Attendant(){}
 

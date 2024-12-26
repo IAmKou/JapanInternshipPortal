@@ -131,6 +131,11 @@ CREATE TABLE Attendant (
                            FOREIGN KEY (schedule_id) REFERENCES Schedule(Id)
 );
 
+ALTER TABLE attendant
+    add column curriculum_id int NOT NULL,
+    ADD CONSTRAINT fk_attendance_curriculum
+        FOREIGN KEY (curriculum_id) REFERENCES curriculum(id);
+
 -- Assignment table
 CREATE TABLE Assignment (
                             Id INT AUTO_INCREMENT PRIMARY KEY,

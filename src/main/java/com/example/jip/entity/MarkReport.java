@@ -32,7 +32,7 @@ public class MarkReport {
     @Column(name = "final_exam")
     BigDecimal final_exam;
     @Column(name = "skill")
-    String skill;
+    BigDecimal skill;
     @Column(name = "attitude")
     BigDecimal attitude;
     @Column(name = "final_mark")
