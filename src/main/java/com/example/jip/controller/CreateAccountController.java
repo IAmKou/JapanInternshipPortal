@@ -39,7 +39,7 @@ public class CreateAccountController {
         }
 
         try {
-            String password = "123456";
+            String password = generateVerifyCode();
             int accountId = accountServices.createAccount(username, password, role);
 
             return ResponseEntity.ok(accountId);
