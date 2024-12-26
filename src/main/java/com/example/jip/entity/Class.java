@@ -26,6 +26,9 @@ import java.util.Set;
         @JoinColumn(name = "teacher_id", nullable = false)
         private Teacher teacher;
 
+        @Column(name="status")
+        private status status;
+
         @OneToMany(mappedBy = "clas", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
         private Set<Listt> classLists = new HashSet<>();
 
@@ -38,13 +41,18 @@ import java.util.Set;
 
         public Class(){}
 
-        public Class(int id, String name, int number_of_student, Teacher teacher) {
-            this.id = id;
-            this.name = name;
-            this.number_of_student = number_of_student;
+        public Class(Class.status status, Teacher teacher, int number_of_student, String name, int id) {
+            this.status = status;
             this.teacher = teacher;
+            this.number_of_student = number_of_student;
+            this.name = name;
+            this.id = id;
         }
 
         public Class(int i, String mathematics, Teacher teacher) {
+        }
+
+        public enum status{
+            Active, Inactive
         }
     }

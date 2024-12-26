@@ -42,6 +42,7 @@ public class ClassServices {
         newClass.setName(classDTO.getName());
         newClass.setTeacher(teacher);
         newClass.setNumber_of_student(studentIds.size());
+        newClass.setStatus(Class.status.Inactive);
 
         Class savedClass = classRepository.save(newClass);
 
