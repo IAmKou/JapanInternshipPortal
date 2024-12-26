@@ -14,11 +14,9 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MarkReport {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-
     @OneToOne
     @JoinColumn(name = "student_id", referencedColumnName = "id", nullable = false)
     Student student;

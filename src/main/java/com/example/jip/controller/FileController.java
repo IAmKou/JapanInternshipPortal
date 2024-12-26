@@ -29,13 +29,14 @@ public class FileController {
             // Write CSV data
             try (PrintWriter writer = response.getWriter()) {
                 // Write headers
-                writer.println("\"Student Name\",\"Teacher Comment\",\"Participation\",\"Daily Exams\",\"Midterm Test\",\"Final Test\",\"Course Final\"");
+                writer.println("\"Student Name\",\"Teacher Comment\",\"Participation\",\"Daily Exams\",\"Skill\",\"Midterm Test\",\"Final Test\",\"Course Final\"");
                 // Write rows
                 for (Map<String, String> grade : gradesList) {
                     writer.println("\"" + grade.get("fullname") + "\",\""
                             + grade.getOrDefault("comment", "N/A") + "\",\""
                             + grade.getOrDefault("attitude", "N/A") + "\",\""
                             + grade.getOrDefault("avgExamMark", "N/A") + "\",\""
+                            + grade.getOrDefault("skill", "N/A") + "\",\""
                             + grade.getOrDefault("middleExam", "N/A") + "\",\""
                             + grade.getOrDefault("finalExam", "N/A") + "\",\""
                             + grade.getOrDefault("finalMark", "N/A") + "\"");
