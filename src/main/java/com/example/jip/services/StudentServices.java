@@ -4,6 +4,7 @@ import com.example.jip.entity.Account;
 import com.example.jip.entity.MarkReport;
 import com.example.jip.entity.Student;
 import com.example.jip.repository.AccountRepository;
+import com.example.jip.repository.MarkReportRepository;
 import com.example.jip.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
