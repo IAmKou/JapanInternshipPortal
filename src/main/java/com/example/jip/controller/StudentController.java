@@ -36,6 +36,9 @@ public class StudentController {
     @Autowired
     ListRepository listRepository;
 
+    @Autowired
+    private MarkReportRepository markReportRepository;
+
 
     @PostMapping("/save")
     public RedirectView saveStudent(
@@ -118,4 +121,12 @@ public class StudentController {
         return new StudentDTO(student);
     }
 
+    @GetMapping("/{classId}/getAllGrades")
+    public List<MarkReportDTO> getAllGrades(@PathVariable Integer classId) {
+        if (classId == null) {
+            throw new IllegalArgumentException("classId must not be null");
+        }
+        List<MarkReportDTO> markReports = listRepository.getStudentsWithMarkReportsByClassId(classId);
+        return markReports;
+    }
 }
