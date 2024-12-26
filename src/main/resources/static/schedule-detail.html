@@ -1,0 +1,581 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/JIP/JIP/schedule-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>JIP | Class Schedule</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+    <!-- Normalize CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="css/all.min.css">
+    <!-- Flaticon CSS -->
+    <link rel="stylesheet" href="fonts/flaticon.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="css/animate.min.css">
+    <!-- Select 2 CSS -->
+    <link rel="stylesheet" href="css/select2.min.css">
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Modernize js -->
+    <script src="js/modernizr-3.6.0.min.js"></script>
+    <script src='/dist/index.global.js'></script>
+
+    <style>
+        body {
+            margin-top: 40px;
+            font-size: 14px;
+            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+        }
+
+        #wrap {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        #external-events {
+            width: 200px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background: #eee;
+            text-align: left;
+            margin-right: 20px; /* Adds spacing between container and calendar */
+        }
+
+        #external-events h4 {
+            font-size: 16px;
+            margin-top: 0;
+            padding-top: 1em;
+        }
+
+        #external-events .fc-event {
+            margin: 3px 0;
+            cursor: move;
+        }
+
+        #external-events p {
+            margin: 1.5em 0;
+            font-size: 11px;
+            color: #666;
+        }
+
+        #external-events p input {
+            margin: 0;
+            vertical-align: middle;
+        }
+
+        #calendar-wrap {
+            flex-grow: 1; /* Ensures the calendar takes up remaining space */
+        }
+
+        #calendar {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<div id="wrapper" class="wrapper bg-ash">
+    <!-- Header Menu Area Start Here -->
+    <div class="navbar navbar-expand-md header-menu-one bg-light">
+        <div class="nav-bar-header-one">
+            <div class="header-logo">
+                <a href="manager.html">
+                    <div style="width: 180px; height: 70px; overflow: hidden;">
+                        <img src="img/JIP%20LOGO%20n.png" alt="logo"
+                             style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </a>
+            </div>
+            <div class="toggle-button sidebar-toggle">
+                <button type="button" class="item-link">
+                        <span class="btn-icon-wrap">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                </button>
+            </div>
+        </div>
+        <div class="d-md-none mobile-nav-bar">
+            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse"
+                    data-target="#mobile-navbar" aria-expanded="false">
+                <i class="far fa-arrow-alt-circle-down"></i>
+            </button>
+            <button type="button" class="navbar-toggler sidebar-toggle-mobile">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+            <ul class="navbar-nav">
+                <li class="navbar-item header-search-bar">
+                    <div class="input-group stylish-input-group">
+
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="navbar-item dropdown header-admin">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <div class="admin-title">
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
+                        </div>
+                        <div class="admin-img img">
+                            <img src="" alt="Admin" style="width: 50px; height: 50px">
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title userFullName"></h6>
+                        </div>
+                        <div class="item-content">
+                            <ul class="settings-list">
+                                <li><a href="users-profile-manager.html"><i class="flaticon-user"></i>My Profile</a>
+                                </li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="navbar-item dropdown header-notification">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <i class="far fa-bell"></i>
+                        <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
+                        <span>8</span>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title">03 Notifiacations</h6>
+                        </div>
+                        <div class="item-content">
+                            <div class="media">
+                                <div class="item-icon bg-skyblue">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="media">
+                                    <div class="item-icon bg-violet-blue">
+                                        <i class="fas fa-cogs"></i>
+                                    </div>
+                                    <div class="media-body space-sm">
+                                        <div class="post-title">Update Password</div>
+                                        <span>45 Mins ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="navbar-item dropdown header-language">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
+                       data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#">English</a>
+                        <a class="dropdown-item" href="#">Japanese</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Header Menu Area End Here -->
+    <!-- Page Area Start Here -->
+    <div class="dashboard-page-one">
+        <!-- Sidebar Area Start Here -->
+        <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+            <div class="mobile-sidebar-header d-md-none">
+                <div class="header-logo">
+                    <a href="manager.html"><img src="img/logo1.png" alt="logo"></a>
+                </div>
+            </div>
+            <div class="sidebar-menu-content">
+                <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <ul class="nav sub-group-menu ">
+                            <li class="nav-item">
+                                <a href="manager.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Manager</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="all-student.html" class="nav-link"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>All Student</span></a>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
+                        <ul class="nav sub-group-menu ">
+                            <li class="nav-item">
+                                <a href="add-class.html" class="nav-link"><i
+                                        class="flaticon-multiple-users-silhouette"></i>Add New Class</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="class-list.html" class="nav-link"><i
+                                        class="flaticon-menu"></i><span>All Class</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="schedule-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Schedule List</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="View-list-application.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    application</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change
+                                    Password</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>        <!-- Sidebar Area End Here -->
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <h3>Schedule Detail</h3>
+                <ul>
+                    <li>
+                        <a href="manager.html">Home</a>
+                    </li>
+                    <li>Schedule</li>
+                </ul>
+            </div>
+            <!-- Breadcubs Area End Here -->
+            <!-- Class Routine Area Start Here -->
+            <div class="row">
+                <div class="col-12-xxxl col-12">
+                    <div class="card height-auto">
+                        <div class="card-body">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3>Schedule Detail</h3>
+                                </div>
+                            </div>
+
+                            <!-- Create Event Form -->
+                        </div>
+                        <div id='wrap'>
+
+                            <div id='external-events'>
+                                <h4>Draggable Events</h4>
+
+                                <div id='external-events-list'>
+                                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'style="background-color: #136002; border-color: #136002;">
+                                        <div class='fc-event-main' >Kanji Test</div>
+                                    </div>
+                                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event' style="background-color: #33cfff; border-color: #33cfff;">
+                                        <div class='fc-event-main'>Bunpou Test</div>
+                                    </div>
+                                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event' style="background-color: #ff5733; border-color: #ff5733;">
+                                        <div class='fc-event-main'>Kotoba Test</div>
+                                    </div>
+                                </div>
+
+                                <!-- Create Event Section -->
+                                <h4>Create Event</h4>
+                                <select id="event-select" class="form-control">
+                                    <option value="default">Default Event</option>
+                                    <option value="new">New Event</option>
+                                </select>
+                                <div id="new-event-form" style="margin-top: 10px; display: none;">
+                                    <input type="text" id="new-event-title" class="form-control" placeholder="Event Title" />
+                                    <input type="color" id="new-event-color" class="form-control" value="#3788d8" />
+                                    <button id="add-event" class="btn btn-primary btn-sm mt-2">Add Event</button>
+
+                                </div>
+                                <button id="save-draft" class="btn btn-warning btn-sm mt-3">Save as Draft</button>
+                            </div>
+
+                            <div id='calendar-wrap'>
+                                <div id='calendar'></div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Class Routine Area End Here -->
+    </div>
+</div>
+<!-- Success Modal -->
+<div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Success</h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+                Schedule import was successful!
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Error Modal -->
+<div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Errors</h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- confirm modal -->
+<div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog success-modal-content" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="success-message">
+                    <div class="item-icon">
+                        <i class="fas fa-exclamation"></i>
+                    </div>
+                    <h3 class="item-title">You want to delete this schedule?</h3>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <input type="hidden" name="id" id="Cid">
+                <button type="button" id="confirm-delete" class="footer-btn bg-linkedin">Ok</button>
+                <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- jquery-->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Select 2 Js -->
+<script src="js/select2.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Data Table Js -->
+<script src="js/jquery.dataTables.min.js"></script>
+<!-- Custom Js -->
+<script src="js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    if (userDetails) {
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        const userRoleElements = document.querySelectorAll('.userRole');
+
+        // Populate Name
+        userFullNameElements.forEach(element => {
+            element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
+        });
+
+        // Populate Role
+        userRoleElements.forEach(element => {
+            element.textContent = userDetails.roleName;
+        });
+
+        const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+
+        imgContainers.forEach(container => {
+            const imgElement = container.querySelector('img'); // Select the <img> inside the div
+            if (imgElement) {
+                imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
+            }
+        });
+    } else {
+        console.error("User details not found in sessionStorage");
+    }
+</script>
+<script>
+    let calendar;
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize draggable events
+        const containerEl = document.getElementById('external-events-list');
+        const calendarEl = document.getElementById('calendar');
+        new FullCalendar.Draggable(containerEl, {
+            itemSelector: '.fc-event',
+            eventData: function (eventEl) {
+                return {
+                    title: eventEl.innerText.trim(),
+                    backgroundColor: eventEl.style.backgroundColor,
+                    borderColor: eventEl.style.borderColor
+                };
+            }
+        });
+
+        // Initialize the calendar
+
+        calendar = new FullCalendar.Calendar(calendarEl, {
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth'
+            },
+            editable: true,
+            droppable: true ,// Allow events to be dropped onto the calendar
+            events: function(fetchInfo, successCallback, failureCallback) {
+                // Fetch events from backend
+                const urlParams = new URLSearchParams(window.location.search);
+                const semesterId = urlParams.get('semesterId');
+                fetch(`/schedule/get/${semesterId}`) // Replace with your API endpoint
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch schedules');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (!data || data.length === 0) {
+                            console.warn('No schedules found for this semesterId');
+                            successCallback([]); // Pass an empty array if no data
+                            return;
+                        }
+                        console.log('Fetched data:', data);
+                        const events = data.map(schedule => ({
+                            id: schedule.id,
+                            title: schedule.activity,
+                            start: schedule.date, // Ensure the date format matches ISO 8601
+                            backgroundColor: '#fac702', // Optional: Add custom colors
+                            borderColor: '#fac702',     // Optional: Add custom colors
+                        }));
+                        successCallback(events);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching events:', error);
+                        failureCallback(error);
+                    });
+            }
+        });
+        calendar.render();
+
+        // Event Dropdown and Create Event Feature
+        const eventSelect = document.getElementById('event-select');
+        const newEventForm = document.getElementById('new-event-form');
+        const addEventButton = document.getElementById('add-event');
+
+        // Toggle the new event form based on dropdown selection
+        eventSelect.addEventListener('change', function () {
+            if (eventSelect.value === 'new') {
+                newEventForm.style.display = 'block';
+            } else {
+                newEventForm.style.display = 'none';
+            }
+        });
+
+        // Add new event to the draggable list
+        addEventButton.addEventListener('click', function () {
+            const newEventTitle = document.getElementById('new-event-title').value.trim();
+            const newEventColor = document.getElementById('new-event-color').value;
+
+            if (newEventTitle) {
+                // Create new draggable event element
+                const newEvent = document.createElement('div');
+                newEvent.className = 'fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event';
+                newEvent.style.backgroundColor = newEventColor;
+                newEvent.style.borderColor = newEventColor;
+                newEvent.innerHTML = `<div class='fc-event-main'>${newEventTitle}</div>`;
+                containerEl.appendChild(newEvent);
+
+                // Clear input fields
+                document.getElementById('new-event-title').value = '';
+                document.getElementById('new-event-color').value = '#3788d8';
+                
+
+                alert('Event added successfully!');
+            } else {
+                alert('Please enter a title for the new event.');
+            }
+        });
+    });
+
+    document.getElementById('save-draft').addEventListener('click', function () {
+        if (!calendar) {
+            console.error('Calendar instance is not available');
+            return;
+        }
+        const urlParams = new URLSearchParams(window.location.search);
+        const semesterId = urlParams.get('semesterId');
+
+        const events = calendar.getEvents();
+        const eventsData = events.map(event => ({
+            activity: event.title,
+            date: event.start.toISOString(),
+            color: event.backgroundColor,
+            semesterId: semesterId,
+        }));
+
+        fetch('/schedule/saveDraft', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(eventsData),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to save draft');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Draft saved successfully!');
+                console.log('Saved data:', data);
+            })
+            .catch(error => {
+                console.error('Error saving draft:', error);
+                alert('Error saving draft');
+            });
+    });
+</script>
+
+</body>
+</html>

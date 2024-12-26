@@ -1,11 +1,12 @@
 package com.example.jip.controller;
 
+import com.example.jip.dto.MarkReportDTO;
 import com.example.jip.dto.StudentDTO;
 import com.example.jip.dto.StudentWithClassDTO;
-import com.example.jip.dto.TeacherDTO;
+import com.example.jip.entity.MarkReport;
 import com.example.jip.entity.Student;
-import com.example.jip.entity.Teacher;
 import com.example.jip.repository.ListRepository;
+import com.example.jip.repository.MarkReportRepository;
 import com.example.jip.repository.StudentRepository;
 import com.example.jip.services.StudentServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class StudentController {
     @Autowired
     ListRepository listRepository;
 
+    @Autowired
+    private MarkReportRepository markReportRepository;
+
     @PostMapping("/save")
     public RedirectView saveStudent(
             @RequestParam String fullname,
@@ -45,6 +49,7 @@ public class StudentController {
             @RequestParam String phoneNumber,
             @RequestParam(required = false) MultipartFile img,
             @RequestParam(required = false) MultipartFile passport_img,
+            @RequestParam String plainPassword,
             @RequestParam int account_id,
             RedirectAttributes redirectAttributes) {
 
@@ -62,7 +67,7 @@ public class StudentController {
             }
 
             // Call the service to create the student
-            studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, passport_img, account_id);
+            studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, passport_img, account_id,plainPassword);
             redirectAttributes.addFlashAttribute("successMessage", "Student saved successfully!");
 
         } catch (IllegalArgumentException e) {
@@ -114,5 +119,12 @@ public class StudentController {
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new IllegalArgumentException("Student not found"));
         return new StudentDTO(student);
     }
-
+    @GetMapping("/{classId}/getAllGrades")
+    public List<MarkReportDTO> getAllGrades(@PathVariable Integer classId) {
+        if (classId == null) {
+            throw new IllegalArgumentException("classId must not be null");
+        }
+        List<MarkReportDTO> markReports = listRepository.getStudentsWithMarkReportsByClassId(classId);
+        return markReports;
+    }
 }

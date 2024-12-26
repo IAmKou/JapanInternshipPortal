@@ -21,13 +21,12 @@ configurations {
 
 repositories {
     mavenCentral()
-
-
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-json'
+    implementation 'org.json:json:20210307'
     implementation 'org.liquibase:liquibase-core'
     implementation 'com.microsoft.sqlserver:mssql-jdbc:12.8.1.jre11'
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -38,6 +37,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework:spring-test'
+    implementation 'org.jsoup:jsoup:1.16.1'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
@@ -49,10 +50,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'org.springframework.boot:spring-boot-starter-logging'
-
+    implementation 'org.jsoup:jsoup:1.16.1' // Thay phiên bản theo nhu cầu
     implementation 'org.springframework.cloud:spring-cloud-aws-core:2.2.6.RELEASE'
-    implementation 'org.jsoup:jsoup:1.15.4'   // Jsoup để trích xuất dữ liệu từ HTML
-    implementation 'com.opencsv:opencsv:5.7.1' // OpenCSV để tạo file CSV
+
     // Test Dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test' // Includes JUnit 5 and Mockito
     testImplementation 'org.springframework.security:spring-security-test'

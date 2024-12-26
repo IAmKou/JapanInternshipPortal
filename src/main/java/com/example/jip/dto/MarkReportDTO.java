@@ -8,29 +8,29 @@ import java.math.BigDecimal;
 @Setter
 @Getter
 public class MarkReportDTO {
-    private int id;
-    private int studentId;
-    private BigDecimal attendantRate;
-    private BigDecimal avgAssignmentMark;
+
+    private Integer studentId;
+    private String fullname; // Add fullname field
+    private BigDecimal softskill;
     private BigDecimal avgExamMark;
-    private BigDecimal readingMark;
-    private BigDecimal listeningMark;
-    private BigDecimal speakingMark;
-    private BigDecimal totalSkillMarks;
-    private BigDecimal courseTotal;
+    private BigDecimal middleExam;
+    private BigDecimal finalExam;
+    private BigDecimal attitude;
+    private BigDecimal finalMark;
+    private String comment;
 
-    public MarkReportDTO() {}
-
-    public MarkReportDTO(int id, int studentId, BigDecimal attendantRate, BigDecimal avgAssignmentMark, BigDecimal avgExamMark, BigDecimal readingMark, BigDecimal listeningMark, BigDecimal speakingMark, BigDecimal totalSkillMarks, BigDecimal courseTotal) {
-        this.id = id;
+    // Constructor
+    public MarkReportDTO(Integer studentId, String fullname, BigDecimal softskill, BigDecimal avgExamMark,
+                         BigDecimal middleExam, BigDecimal finalExam, BigDecimal attitude, BigDecimal finalMark, String comment) {
         this.studentId = studentId;
-        this.attendantRate = attendantRate;
-        this.avgAssignmentMark = avgAssignmentMark;
+        this.fullname = fullname; // Initialize fullname
+        this.softskill = softskill;
         this.avgExamMark = avgExamMark;
-        this.readingMark = readingMark;
-        this.listeningMark = listeningMark;
-        this.speakingMark = speakingMark;
-        this.totalSkillMarks = totalSkillMarks;
-        this.courseTotal = courseTotal;
+        this.middleExam = middleExam;
+        this.finalExam = finalExam;
+        this.attitude = attitude;
+        this.finalMark = finalMark;
+        this.comment = comment;
     }
+
 }

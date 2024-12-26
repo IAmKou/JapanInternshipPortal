@@ -1,8 +1,5 @@
 <!doctype html>
 <html class="no-js" lang="">
-
-
-<!-- Mirrored from all-class-student.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -30,6 +27,125 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
 </head>
+
+<style>
+    /* Custom Modal Styling for Error Modal */
+    #error-modal .modal-dialog {
+        position: fixed !important; /* Giữ modal ở vị trí cố định */
+        top: 0; /* Đặt modal ngay đầu trang */
+        left: 50%; /* Căn giữa modal theo chiều ngang */
+        transform: translateX(-50%); /* Căn giữa modal */
+        z-index: 1050; /* Đảm bảo modal luôn hiển thị trên các phần tử khác */
+        margin-top: 10px; /* Khoảng cách phía trên của modal */
+    }
+
+    #error-modal .modal-header {
+        background-color: #dc3545; /* Màu nền đỏ cho header */
+        color: #fff;
+        font-size: 1.25rem;
+    }
+
+    #error-modal .modal-body {
+        font-size: 1.1rem;
+        padding: 30px;
+        background-color: #f8f9fa; /* Nền sáng cho phần thân */
+        color: #333;
+    }
+
+    #error-modal .modal-body .fas.fa-times-circle {
+        color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+        font-size: 2rem; /* Tăng kích thước biểu tượng */
+        margin-right: 10px;
+    }
+
+    #error-modal .modal-title {
+        display: flex;
+        align-items: center;
+    }
+
+    #error-modal .btn-danger {
+        font-size: 1rem;
+        padding: 10px 20px;
+        background-color: #dc3545;
+        border-color: #dc3545;
+        border-radius: 5px;
+        color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #error-modal .btn-close {
+        color: white;
+    }
+
+    #error-modal .modal-body p {
+        font-size: 0.9rem;
+        color: #6c757d; /* Màu nhạt hơn cho mô tả */
+    }
+
+    /* Tối ưu giao diện cho bảng thông tin */
+    .info-table td {
+        padding: 12px;
+        vertical-align: middle;
+    }
+
+    /* Cải tiến hình ảnh */
+    .item-img img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+
+    /* Nút chỉnh sửa (Edit) */
+    .dropdown-menu .dropdown-item {
+        font-size: 14px;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+    }
+
+    .dropdown-menu .dropdown-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    /* Định dạng thẻ tiêu đề */
+    .header-inline h3 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    /* Cải thiện bảng */
+    .table-borderless td, .table-borderless th {
+        border: none;
+    }
+
+    .custom-dropdown-item i {
+        font-size: 18px; /* Cải thiện kích thước biểu tượng */
+    }
+
+    .custom-dropdown-btn i {
+        color: #007bff; /* Màu của biểu tượng */
+    }
+
+    .custom-dropdown-btn:hover i {
+        color: white; /* Màu biểu tượng khi hover */
+    }
+
+    .table td {
+        padding: 10px; /* Tăng khoảng cách giữa các ô */
+        font-size: 18px; /* Thay đổi kích cỡ chữ */
+    }
+    /* Custom Button */
+    .btn-search {
+        height: 50px; /* Đồng bộ chiều cao với input */
+        font-size: 16px; /* Kích thước chữ to hơn */
+        font-weight: bold; /* Làm chữ đậm hơn */
+        text-transform: uppercase; /* Viết hoa chữ */
+        border-radius: 5px; /* Bo góc tương tự input */
+        padding: 0 20px; /* Tăng khoảng cách trong nút */
+    }
+</style>
 
 <body>
     <!-- Preloader Start Here -->
@@ -94,82 +210,6 @@
                                     <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
                                     <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                                 </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="navbar-item dropdown header-message">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="far fa-envelope"></i>
-                            <div class="item-title d-md-none text-16 mg-l-10">Message</div>
-                            <span>5</span>
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title">05 Message</h6>
-                            </div>
-                            <div class="item-content">
-                                <div class="media">
-                                    <div class="item-img bg-skyblue author-online">
-                                        <img src="img/figure/student11.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Maria Zaman</span> 
-                                                <span class="item-time">18:30</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-img bg-yellow author-online">
-                                        <img src="img/figure/student12.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Benny Roy</span> 
-                                                <span class="item-time">10:35</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-img bg-pink">
-                                        <img src="img/figure/student13.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Steven</span> 
-                                                <span class="item-time">02:35</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-img bg-violet-blue">
-                                        <img src="img/figure/student11.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Joshep Joe</span> 
-                                                <span class="item-time">12:35</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </li>
@@ -310,22 +350,15 @@
                             <div class="item-title">
                                 <h3>All Class Student</h3>
                             </div>
-                           <div class="dropdown">
-                                <a class="dropdown-toggle" href="#" role="button" 
-                                data-toggle="dropdown" aria-expanded="false">...</a>
-        
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                                </div>
+                            <div class="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                                <button id="viewGradesButton" type="button" class="fw-btn-fill btn-gradient-yellow">VIEW GRADES</button>
                             </div>
                         </div>
                         <div class="table-responsive">
                             <table class="table display text-nowrap">
                                 <thead>
                                     <tr>
-                                        <th>Order</th>
+                                        <th>#</th>
                                         <th>Photo</th>
                                         <th>Name</th>
                                         <th>Gender</th>
@@ -339,26 +372,132 @@
                             </table>
                         </div>
                     </div>
+                    <form id="exportForm" action="/export-csv" method="post" style="margin-top: 20px">
+                        <input type="hidden" id="gradesData" name="gradesData" />
+                        <div class="col-lg-4">
+                            <button type="submit" class="btn btn-gradient-yellow btn-search">Export</button>
+                        </div>
+                    </form>
                 </div>
                 <!-- Class Table Area End Here -->
             </div>
         </div>
         <!-- Page Area End Here -->
     </div>
-    <!-- jquery-->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <!-- Plugins js -->
-    <script src="js/plugins.js"></script>
-    <!-- Popper js -->
-    <script src="js/popper.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Scroll Up Js -->
-    <script src="js/jquery.scrollUp.min.js"></script>
-    <!-- Data Table Js -->
-    <script src="js/jquery.dataTables.min.js"></script>
-    <!-- Custom Js -->
-    <script src="js/main.js"></script>
+    <!-- fetch student -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tableBody = document.querySelector('.table tbody');
+            const tableHead = document.querySelector('.table thead');
+            const viewGradesButton = document.getElementById('viewGradesButton');
+            const exportForm = document.getElementById('exportForm');
+            const gradesDataInput = document.getElementById('gradesData');
+            const urlParams = new URLSearchParams(window.location.search);
+            const classId = urlParams.get('classId');
+            let gradesData = []; // To store fetched grades
+
+            let isGradesViewInitialized = false;
+
+            // Ensure classId is valid before proceeding
+            if (classId) {
+                fetch(`/student/${classId}/getAll`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(students => {
+                        let studentNumber = 1; // Initialize student number counter
+
+                        students.forEach(student => {
+                            const row = document.createElement('tr');
+
+                            // Number cell (numerical order)
+                            const numberCell = document.createElement('td');
+                            numberCell.textContent = studentNumber++; // Increment student number
+                            row.appendChild(numberCell);
+
+                            // Image cell
+                            const imgCell = document.createElement('td');
+                            const imgElement = document.createElement('img');
+                            imgElement.src = student.img;
+                            imgElement.alt = "Student Image";
+                            imgElement.style.width = "50px";
+                            imgElement.style.height = "50px";
+                            imgElement.style.objectFit = "cover";
+                            imgCell.appendChild(imgElement);
+                            row.appendChild(imgCell);
+
+                            // Name cell
+                            const nameCell = document.createElement('td');
+                            nameCell.textContent = student.fullname;
+                            row.appendChild(nameCell);
+
+                            // Gender cell
+                            const genderCell = document.createElement('td');
+                            genderCell.textContent = student.gender;
+                            row.appendChild(genderCell);
+
+                            // Append the row to the table body
+                            tableBody.appendChild(row);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching students:', error));
+            } else {
+                console.error("classId is missing from the URL.");
+            }
+
+            // Fetch and render grades
+            viewGradesButton.addEventListener('click', function () {
+                if (isGradesViewInitialized) return; // Prevent multiple fetches
+                isGradesViewInitialized = true;
+
+                // Update table header
+                tableHead.innerHTML = `
+                <tr>
+                    <th>#</th>
+                    <th>Student Name</th>
+                    <th>Teacher Comment</th>
+                    <th>Participation</th>
+                    <th>Daily Exams</th>
+                    <th>Midterm Test</th>
+                    <th>Final Test</th>
+                    <th>Course Final</th>
+                </tr>
+            `;
+
+                // Fetch grades data
+                fetch(`/student/${classId}/getAllGrades`)
+                    .then(response => response.json())
+                    .then(grades => {
+                        gradesData = grades; // Store fetched data
+                        tableBody.innerHTML = ''; // Clear table body
+
+                        let studentNumber = 1; // Student counter
+                        grades.forEach(grade => {
+                            const row = `
+                            <tr>
+                                <td>${studentNumber++}</td>
+                                <td>${grade.fullname || 'N/A'}</td>
+                                <td>${grade.comment || 'N/A'}</td>
+                                <td>${grade.attitude || 'N/A'}</td>
+                                <td>${grade.avgExamMark || 'N/A'}</td>
+                                <td>${grade.middleExam || 'N/A'}</td>
+                                <td>${grade.finalExam || 'N/A'}</td>
+                                <td>${grade.finalMark || 'N/A'}</td>
+                            </tr>
+                        `;
+                            tableBody.insertAdjacentHTML('beforeend', row);
+                        });
+
+                        // Store data as JSON string for export
+                        gradesDataInput.value = JSON.stringify(gradesData);
+                    })
+                    .catch(error => console.error('Error fetching grades:', error));
+            });
+        });
+    </script>
     <!-- fetch user -->
     <script>
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -388,68 +527,19 @@
             console.error("User details not found in sessionStorage");
         }
     </script>
-    <!-- fetch student --><script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const tableBody = document.querySelector('.table tbody');
-            const urlParams = new URLSearchParams(window.location.search);
-            const classId = urlParams.get('classId');
-
-            // Ensure classId is valid before proceeding
-            if (classId) {
-                fetch(`/student/${classId}/getAll`) // Use backticks here
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok ' + response.statusText);
-                        }
-                        return response.json();
-                    })
-                    .then(students => {
-                        let studentNumber = 1; // Initialize student number counter
-
-                        students.forEach(student => {
-                            const row = document.createElement('tr');
-
-                            // Number cell (numerical order)
-                            const numberCell = document.createElement('td');
-                            numberCell.textContent = studentNumber++; // Increment student number
-                            row.appendChild(numberCell);
-
-                            // image cell
-                            const imgCell = document.createElement('td');
-                            const imgElement = document.createElement('img');
-                            imgElement.src = student.img;
-                            imgElement.alt = "Student Image";
-                            imgElement.style.width = "50px";
-                            imgElement.style.height = "50px";
-                            imgElement.style.objectFit = "cover";
-                            imgCell.appendChild(imgElement);
-                            row.appendChild(imgCell);
-
-                            // Name cell
-                            const nameCell = document.createElement('td');
-                            nameCell.textContent = student.fullname;
-                            row.appendChild(nameCell);
-
-                            // gender cell
-                            const nos = document.createElement('td');
-                            nos.textContent = student.gender;
-                            row.appendChild(nos);
-
-                            // Actions cell (can be added later if needed)
-
-                            // Append the row to the table body
-                            tableBody.appendChild(row);
-                        });
-                    })
-                    .catch(error => console.error('Error fetching students:', error));
-            } else {
-                console.error("classId is missing from the URL.");
-            }
-        });
-    </script>
-
+    <!-- jquery-->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <!-- Plugins js -->
+    <script src="js/plugins.js"></script>
+    <!-- Popper js -->
+    <script src="js/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Scroll Up Js -->
+    <script src="js/jquery.scrollUp.min.js"></script>
+    <!-- Data Table Js -->
+    <script src="js/jquery.dataTables.min.js"></script>
+    <!-- Custom Js -->
+    <script src="js/main.js"></script>
 </body>
-
-
-<!-- Mirrored from all-class-student.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>
