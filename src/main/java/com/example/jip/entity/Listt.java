@@ -24,17 +24,4 @@ import lombok.Setter;
 
         public Listt(){}
 
-        public Listt(ListId id, Class clas, Student student) {
-            this.id = id;
-            this.clas = clas;
-            this.student = student;
-        }
-
-        public Listt(Class clas, Student student) {
-            this.clas = clas;
-            this.student = student;
-            this.id = new ListId(clas.getId(), student.getId());
-        }
-
-
     }

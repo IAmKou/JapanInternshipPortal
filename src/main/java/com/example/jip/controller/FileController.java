@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.*;
-import java.io.IOException;
-
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -29,7 +26,7 @@ public class FileController {
             Document doc = Jsoup.parse(inputFile, "UTF-8");
 
             // Lấy dữ liệu từ HTML
-            String learningProgram = getDataFromHtml(doc, "Learning Program");
+//            String learningProgram = getDataFromHtml(doc, "Learning Program");
             String name = getDataFromHtml(doc, "Name");
             String teacherComment = getDataFromHtml(doc, "Teacher\\'s Commentation");
             String participation = getValueFromTable(doc, "Attendance Rate");
@@ -40,14 +37,14 @@ public class FileController {
 
             // Cấu hình header CSV
             response.setContentType("text/csv");
-            response.setHeader("Content-Disposition", "attachment; filename=\"export.csv\"");
+            response.setHeader("Content-Disposition", "attachment; filename=\"classinfo.csv\"");
 
             // Ghi dữ liệu vào CSV
             try (PrintWriter writer = response.getWriter()) {
                 // Ghi header
-                writer.println("\"Learning Program\",\"Name\",\"Teacher Commentation\",\"Participation\",\"Daily Exams\",\"Midterm Test\",\"Final Exam Test\",\"Course Final\"");
+                writer.println("\"Name\",\"Teacher Commentation\",\"Participation\",\"Daily Exams\",\"Midterm Test\",\"Final Exam Test\",\"Course Final\"");
                 // Ghi dữ liệu
-                writer.println("\"" + learningProgram + "\",\"" + name + "\",\"" + teacherComment + "\",\"" + participation + "\",\"" + dailyExams + "\",\"" + midtermTest + "\",\"" + finalExamTest + "\",\"" + courseFinal + "\"");
+                writer.println("\",\"" + name + "\",\"" + teacherComment + "\",\"" + participation + "\",\"" + dailyExams + "\",\"" + midtermTest + "\",\"" + finalExamTest + "\",\"" + courseFinal + "\"");
             }
 
         } catch (Exception e) {

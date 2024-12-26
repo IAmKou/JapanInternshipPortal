@@ -1,11 +1,12 @@
 package com.example.jip.controller;
 
+import com.example.jip.dto.MarkReportDTO;
 import com.example.jip.dto.StudentDTO;
 import com.example.jip.dto.StudentWithClassDTO;
-import com.example.jip.dto.TeacherDTO;
+import com.example.jip.entity.MarkReport;
 import com.example.jip.entity.Student;
-import com.example.jip.entity.Teacher;
 import com.example.jip.repository.ListRepository;
+import com.example.jip.repository.MarkReportRepository;
 import com.example.jip.repository.StudentRepository;
 import com.example.jip.services.StudentServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class StudentController {
 
     @Autowired
     ListRepository listRepository;
+
+    @Autowired
+    private MarkReportRepository markReportRepository;
 
     @PostMapping("/save")
     public RedirectView saveStudent(
@@ -115,5 +119,12 @@ public class StudentController {
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new IllegalArgumentException("Student not found"));
         return new StudentDTO(student);
     }
-
+    @GetMapping("/{classId}/getAllGrades")
+    public List<MarkReportDTO> getAllGrades(@PathVariable Integer classId) {
+        if (classId == null) {
+            throw new IllegalArgumentException("classId must not be null");
+        }
+        List<MarkReportDTO> markReports = listRepository.getStudentsWithMarkReportsByClassId(classId);
+        return markReports;
+    }
 }

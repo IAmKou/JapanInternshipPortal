@@ -10,9 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequestMapping("/accounts")
 public class CreateAccountController {
@@ -42,7 +39,7 @@ public class CreateAccountController {
         }
 
         try {
-            String password = generateVerifyCode();
+            String password = "123456";
             int accountId = accountServices.createAccount(username, password, role);
 
             return ResponseEntity.ok(accountId);
