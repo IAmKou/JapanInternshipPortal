@@ -22,5 +22,6 @@ public class MarkReportImportRequest {
     BigDecimal middle_exam;
     @NonNull
     BigDecimal final_exam;
-
+    @NonNull
+    String comment;
 }

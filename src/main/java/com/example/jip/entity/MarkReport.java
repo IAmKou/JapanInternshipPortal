@@ -37,4 +37,6 @@ public class MarkReport {
     BigDecimal attitude;
     @Column(name = "final_mark")
     BigDecimal final_mark;
+    @Column(name = "comment")
+    String comment;
 }

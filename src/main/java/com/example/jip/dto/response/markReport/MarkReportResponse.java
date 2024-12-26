@@ -1,7 +1,6 @@
 package com.example.jip.dto.response.markReport;
 
-import com.example.jip.entity.MarkReport;
-import com.example.jip.entity.Student;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,5 +23,5 @@ public class MarkReportResponse {
     BigDecimal skill;
     BigDecimal attitude;
     BigDecimal final_mark;
-
+    String comment;
 }

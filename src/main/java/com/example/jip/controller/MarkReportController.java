@@ -34,7 +34,7 @@ public class MarkReportController {
             return ResponseEntity.badRequest().body("File is empty.");
         }
         try {
-            List<MarkReportImportRequest> markReports = markReportServices.parseCsv(file);
+            List<MarkReportImportRequest> markReports = markReportServices.parseExcel(file);
             markReportServices.saveMarkReports(markReports);
             return ResponseEntity.ok("File imported successfully.");
         } catch (Exception e) {
@@ -44,8 +44,9 @@ public class MarkReportController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<MarkReportResponse>> getMarkReport() {
-        List<MarkReportResponse> responses = markReportServices.getListMarkReport();
+    public ResponseEntity<List<MarkReportResponse>> getMarkReport(@RequestParam("classId") int classId) {
+        List<MarkReportResponse> responses = markReportServices.getListMarkReport(classId);
+        log.info("Mark reports: {}", responses);
         if (responses.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }

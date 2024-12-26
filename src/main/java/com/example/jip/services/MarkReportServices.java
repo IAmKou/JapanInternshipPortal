@@ -1,11 +1,7 @@
 package com.example.jip.services;
 
-import com.example.jip.dto.AccountDTO;
 import com.example.jip.dto.request.markReport.MarkReportImportRequest;
-import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.dto.response.markReport.MarkReportResponse;
-import com.example.jip.entity.Class;
-import com.example.jip.entity.Curriculum;
 import com.example.jip.entity.MarkReport;
 import com.example.jip.entity.Student;
 import com.example.jip.repository.*;
@@ -14,6 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,8 +39,8 @@ public class MarkReportServices {
     StudentAssignmentRepository studentAssignmentRepository;
     AttendantRepository attendantRepository;
 
-    public List<MarkReportResponse> getListMarkReport() {
-        List<MarkReport> results = (List<MarkReport>) markReportRepository.findAll();
+    public List<MarkReportResponse> getListMarkReport(int classId) {
+        List<MarkReport> results =  markReportRepository.findAllByClassId(classId);
         return results.stream()
                 .map(markReport -> {
                     MarkReportResponse response = new MarkReportResponse();
@@ -52,37 +52,32 @@ public class MarkReportServices {
                     response.setFinal_exam(markReport.getFinal_exam());
                     response.setSkill(markReport.getSkill());
                     response.setAttitude(markReport.getAttitude());
-                    response.setFinal_mark(markReport.getFinal_mark()
-                    );
+                    response.setFinal_mark(markReport.getFinal_mark());
                     return response;
                 })
                 .collect(Collectors.toList());
     }
 
 
-    public List<MarkReportImportRequest> parseCsv(MultipartFile file) throws IOException {
+    public List<MarkReportImportRequest> parseExcel(MultipartFile file) throws IOException {
         List<MarkReportImportRequest> markReports = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-            String line;
-            boolean isFirstLine = true;
-            while ((line = reader.readLine()) != null) {
-                if (isFirstLine) {
-                    isFirstLine = false; // Skip header
+        try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
+            Sheet sheet = workbook.getSheetAt(0);
+            boolean isFirstRow = true;
+            for (Row row : sheet) {
+                if (isFirstRow) {
+                    isFirstRow = false; // Skip header
                     continue;
                 }
-                // Split by tab instead of comma
-                String[] values = line.split("\t");
-                if (values.length < 6) { // Adjust based on your fields
-                    throw new IllegalArgumentException("Invalid CSV format");
-                }
-                markReports.add(new MarkReportImportRequest(
-                        values[0].trim(),               // name
-                        values[1].trim(),               // email
-                        new BigDecimal(values[2].trim()), // softskill
-                        new BigDecimal(values[3].trim()), // avg_exam_mark
-                        new BigDecimal(values[4].trim()), // middle_exam
-                        new BigDecimal(values[5].trim())  // final_exam
-                ));
+                String name = row.getCell(0).getStringCellValue().trim();
+                String email = row.getCell(1).getStringCellValue().trim();
+                BigDecimal softSkill = new BigDecimal(row.getCell(2).getNumericCellValue());
+                BigDecimal avgExamMark = new BigDecimal(row.getCell(3).getNumericCellValue());
+                BigDecimal middleExam = new BigDecimal(row.getCell(4).getNumericCellValue());
+                BigDecimal finalExam = new BigDecimal(row.getCell(5).getNumericCellValue());
+                String comment = row.getCell(6).getStringCellValue().trim();
+
+                markReports.add(new MarkReportImportRequest(name, email, softSkill, avgExamMark, middleExam, finalExam, comment));
             }
         }
         return markReports;
@@ -142,6 +137,7 @@ public class MarkReportServices {
                     markReport.setSkill(skill);
                     markReport.setAttitude(attitude);
                     markReport.setFinal_mark(finalMark);
+                    markReport.setComment(request.getComment());
                     return markReport;
                 })
                 .collect(Collectors.toList());
