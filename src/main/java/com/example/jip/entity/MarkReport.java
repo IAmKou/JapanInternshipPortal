@@ -20,7 +20,6 @@ public class MarkReport {
     @OneToOne
     @JoinColumn(name = "student_id", referencedColumnName = "id", nullable = false)
     Student student;
-    private String comment;
     @Column(name = "softskill")
     BigDecimal softskill;
     @Column(name = "avg_exam_mark")
