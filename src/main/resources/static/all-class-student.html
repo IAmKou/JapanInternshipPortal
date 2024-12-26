@@ -28,6 +28,125 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
 </head>
 
+<style>
+    /* Custom Modal Styling for Error Modal */
+    #error-modal .modal-dialog {
+        position: fixed !important; /* Giữ modal ở vị trí cố định */
+        top: 0; /* Đặt modal ngay đầu trang */
+        left: 50%; /* Căn giữa modal theo chiều ngang */
+        transform: translateX(-50%); /* Căn giữa modal */
+        z-index: 1050; /* Đảm bảo modal luôn hiển thị trên các phần tử khác */
+        margin-top: 10px; /* Khoảng cách phía trên của modal */
+    }
+
+    #error-modal .modal-header {
+        background-color: #dc3545; /* Màu nền đỏ cho header */
+        color: #fff;
+        font-size: 1.25rem;
+    }
+
+    #error-modal .modal-body {
+        font-size: 1.1rem;
+        padding: 30px;
+        background-color: #f8f9fa; /* Nền sáng cho phần thân */
+        color: #333;
+    }
+
+    #error-modal .modal-body .fas.fa-times-circle {
+        color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+        font-size: 2rem; /* Tăng kích thước biểu tượng */
+        margin-right: 10px;
+    }
+
+    #error-modal .modal-title {
+        display: flex;
+        align-items: center;
+    }
+
+    #error-modal .btn-danger {
+        font-size: 1rem;
+        padding: 10px 20px;
+        background-color: #dc3545;
+        border-color: #dc3545;
+        border-radius: 5px;
+        color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #error-modal .btn-close {
+        color: white;
+    }
+
+    #error-modal .modal-body p {
+        font-size: 0.9rem;
+        color: #6c757d; /* Màu nhạt hơn cho mô tả */
+    }
+
+    /* Tối ưu giao diện cho bảng thông tin */
+    .info-table td {
+        padding: 12px;
+        vertical-align: middle;
+    }
+
+    /* Cải tiến hình ảnh */
+    .item-img img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+
+    /* Nút chỉnh sửa (Edit) */
+    .dropdown-menu .dropdown-item {
+        font-size: 14px;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+    }
+
+    .dropdown-menu .dropdown-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    /* Định dạng thẻ tiêu đề */
+    .header-inline h3 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    /* Cải thiện bảng */
+    .table-borderless td, .table-borderless th {
+        border: none;
+    }
+
+    .custom-dropdown-item i {
+        font-size: 18px; /* Cải thiện kích thước biểu tượng */
+    }
+
+    .custom-dropdown-btn i {
+        color: #007bff; /* Màu của biểu tượng */
+    }
+
+    .custom-dropdown-btn:hover i {
+        color: white; /* Màu biểu tượng khi hover */
+    }
+
+    .table td {
+        padding: 10px; /* Tăng khoảng cách giữa các ô */
+        font-size: 18px; /* Thay đổi kích cỡ chữ */
+    }
+    /* Custom Button */
+    .btn-search {
+        height: 50px; /* Đồng bộ chiều cao với input */
+        font-size: 16px; /* Kích thước chữ to hơn */
+        font-weight: bold; /* Làm chữ đậm hơn */
+        text-transform: uppercase; /* Viết hoa chữ */
+        border-radius: 5px; /* Bo góc tương tự input */
+        padding: 0 20px; /* Tăng khoảng cách trong nút */
+    }
+</style>
+
 <body>
     <!-- Preloader Start Here -->
     <div id="preloader"></div>
@@ -253,64 +372,31 @@
                             </table>
                         </div>
                     </div>
+                    <form id="exportForm" action="/export-csv" method="post" style="margin-top: 20px">
+                        <input type="hidden" id="gradesData" name="gradesData" />
+                        <div class="col-lg-4">
+                            <button type="submit" class="btn btn-gradient-yellow btn-search">Export</button>
+                        </div>
+                    </form>
                 </div>
                 <!-- Class Table Area End Here -->
             </div>
         </div>
         <!-- Page Area End Here -->
     </div>
-    <!-- jquery-->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <!-- Plugins js -->
-    <script src="js/plugins.js"></script>
-    <!-- Popper js -->
-    <script src="js/popper.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Scroll Up Js -->
-    <script src="js/jquery.scrollUp.min.js"></script>
-    <!-- Data Table Js -->
-    <script src="js/jquery.dataTables.min.js"></script>
-    <!-- Custom Js -->
-    <script src="js/main.js"></script>
-    <!-- fetch user -->
-    <script>
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-        if (userDetails) {
-            const userFullNameElements = document.querySelectorAll('.userFullName');
-            const userRoleElements = document.querySelectorAll('.userRole');
-
-            // Populate Name
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
-            });
-
-            // Populate Role
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
-
-            imgContainers.forEach(container => {
-                const imgElement = container.querySelector('img'); // Select the <img> inside the div
-                if (imgElement) {
-                    imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
-                }
-            });
-        } else {
-            console.error("User details not found in sessionStorage");
-        }
-    </script>
     <!-- fetch student -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const tableBody = document.querySelector('.table tbody');
             const tableHead = document.querySelector('.table thead');
             const viewGradesButton = document.getElementById('viewGradesButton');
+            const exportForm = document.getElementById('exportForm');
+            const gradesDataInput = document.getElementById('gradesData');
             const urlParams = new URLSearchParams(window.location.search);
             const classId = urlParams.get('classId');
-            let isGradesViewInitialized = false; // Track if grades view is already initialized
+            let gradesData = []; // To store fetched grades
+
+            let isGradesViewInitialized = false;
 
             // Ensure classId is valid before proceeding
             if (classId) {
@@ -362,18 +448,12 @@
                 console.error("classId is missing from the URL.");
             }
 
-            // View Grades Button Logic
+            // Fetch and render grades
             viewGradesButton.addEventListener('click', function () {
-                console.log('View Grades button clicked'); // Log when the button is clicked
+                if (isGradesViewInitialized) return; // Prevent multiple fetches
+                isGradesViewInitialized = true;
 
-                if (isGradesViewInitialized) {
-                    console.log("Grades view already initialized. Preventing duplicate fetch.");
-                    return; // Prevent reinitialization if already initialized
-                }
-
-                isGradesViewInitialized = true; // Set flag to true
-
-                // Change the table header for grades
+                // Update table header
                 tableHead.innerHTML = `
                 <tr>
                     <th>#</th>
@@ -387,74 +467,79 @@
                 </tr>
             `;
 
-                // Clear the table body
-                tableBody.innerHTML = '';
-
-                // Fetch grades for the students
-                console.log(`Fetching grades for classId: ${classId}`); // Log classId before making the fetch call
+                // Fetch grades data
                 fetch(`/student/${classId}/getAllGrades`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok ' + response.statusText);
-                        }
-                        return response.json();
-                    })
+                    .then(response => response.json())
                     .then(grades => {
-                        let studentNumber = 1; // Initialize student number counter
+                        gradesData = grades; // Store fetched data
+                        tableBody.innerHTML = ''; // Clear table body
 
+                        let studentNumber = 1; // Student counter
                         grades.forEach(grade => {
-                            const row = document.createElement('tr');
-
-                            // Number cell (numerical order)
-                            const numberCell = document.createElement('td');
-                            numberCell.textContent = studentNumber++; // Increment student number
-                            row.appendChild(numberCell);
-
-                            // Student Name cell
-                            const studentNameCell = document.createElement('td');
-                            studentNameCell.textContent = grade.fullname; // Replace with actual student name lookup if needed
-                            row.appendChild(studentNameCell);
-
-                            // Comment cell
-                            const commentCell = document.createElement('td');
-                            commentCell.textContent = grade.comment || "N/A"; // If the comment is available, use it
-                            row.appendChild(commentCell);
-
-                            // Participation cell
-                            const participationCell = document.createElement('td');
-                            participationCell.textContent = grade.attitude || "N/A";
-                            row.appendChild(participationCell);
-
-                            // Daily Exams cell
-                            const dailyExamsCell = document.createElement('td');
-                            dailyExamsCell.textContent = grade.avgExamMark || "N/A";
-                            row.appendChild(dailyExamsCell);
-
-                            // Midterm cell
-                            const midtermCell = document.createElement('td');
-                            midtermCell.textContent = grade.middleExam || "N/A";
-                            row.appendChild(midtermCell);
-
-                            // Final Test cell
-                            const endtermCell = document.createElement('td');
-                            endtermCell.textContent = grade.finalExam || "N/A";
-                            row.appendChild(endtermCell);
-
-                            // Course Final cell
-                            const finalCell = document.createElement('td');
-                            finalCell.textContent = grade.finalMark || "N/A";
-                            row.appendChild(finalCell);
-
-                            // Append the row to the table body
-                            tableBody.appendChild(row);
+                            const row = `
+                            <tr>
+                                <td>${studentNumber++}</td>
+                                <td>${grade.fullname || 'N/A'}</td>
+                                <td>${grade.comment || 'N/A'}</td>
+                                <td>${grade.attitude || 'N/A'}</td>
+                                <td>${grade.avgExamMark || 'N/A'}</td>
+                                <td>${grade.middleExam || 'N/A'}</td>
+                                <td>${grade.finalExam || 'N/A'}</td>
+                                <td>${grade.finalMark || 'N/A'}</td>
+                            </tr>
+                        `;
+                            tableBody.insertAdjacentHTML('beforeend', row);
                         });
+
+                        // Store data as JSON string for export
+                        gradesDataInput.value = JSON.stringify(gradesData);
                     })
-                    .catch(error => {
-                        console.error('Error fetching grades:', error);
-                        console.log('Error fetching grades for classId: ' + classId); // Additional log to track fetch errors
-                    });
+                    .catch(error => console.error('Error fetching grades:', error));
             });
         });
     </script>
+    <!-- fetch user -->
+    <script>
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails) {
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            const userRoleElements = document.querySelectorAll('.userRole');
+
+            // Populate Name
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
+            });
+
+            // Populate Role
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+
+            const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img'); // Select the <img> inside the div
+                if (imgElement) {
+                    imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
+                }
+            });
+        } else {
+            console.error("User details not found in sessionStorage");
+        }
+    </script>
+    <!-- jquery-->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <!-- Plugins js -->
+    <script src="js/plugins.js"></script>
+    <!-- Popper js -->
+    <script src="js/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Scroll Up Js -->
+    <script src="js/jquery.scrollUp.min.js"></script>
+    <!-- Data Table Js -->
+    <script src="js/jquery.dataTables.min.js"></script>
+    <!-- Custom Js -->
+    <script src="js/main.js"></script>
 </body>
 </html>

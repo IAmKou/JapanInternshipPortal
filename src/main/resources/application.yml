@@ -43,7 +43,7 @@ application:
 
   # Thêm cấu hình cho đường dẫn file HTML và CSV
   file-paths:
-    html-path: "src/main/resources/static/input.html"
+    html-path: "src/main/resources/static/all-class-student.html"
 
 cloudinary:
   cloud-name: dmlethtuv
