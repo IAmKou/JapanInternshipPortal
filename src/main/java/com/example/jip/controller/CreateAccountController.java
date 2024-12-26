@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/accounts")
 public class CreateAccountController {
@@ -41,6 +44,7 @@ public class CreateAccountController {
         try {
             String password = generateVerifyCode();
             int accountId = accountServices.createAccount(username, password, role);
+
             return ResponseEntity.ok(accountId);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating account");

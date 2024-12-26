@@ -57,16 +57,13 @@ public class EmailServices {
         return verifyCode;
     }
 
-    public String sendEmail(String recipientEmail, String accountUsername, String encryptedPassword) {
-        // Email configuration
-
+    public String sendEmail(String recipientEmail, String accountUsername, String plainPassword) {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
 
-        // Authenticate
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -75,22 +72,19 @@ public class EmailServices {
         });
 
         try {
-            // Create the email content
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(senderEmail));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
             message.setSubject("Your Account Details");
 
-            // Email body
             String emailBody = String.format(
-                    "Your account is: %s\nAnd password is: %s\n\n" +
-                            "Remember to change your account password after logging in successfully.",
-                    accountUsername, encryptedPassword
+                    "Your account username: %s\nYour temporary password: %s\n\n" +
+                            "Please log in and change your password immediately for security.",
+                    accountUsername, plainPassword
             );
 
             message.setText(emailBody);
 
-            // Send the email
             Transport.send(message);
             return "Email sent successfully to " + recipientEmail;
         } catch (MessagingException e) {

@@ -45,6 +45,7 @@ public class StudentController {
             @RequestParam String phoneNumber,
             @RequestParam(required = false) MultipartFile img,
             @RequestParam(required = false) MultipartFile passport_img,
+            @RequestParam String plainPassword,
             @RequestParam int account_id,
             RedirectAttributes redirectAttributes) {
 
@@ -62,7 +63,7 @@ public class StudentController {
             }
 
             // Call the service to create the student
-            studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, passport_img, account_id);
+            studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, passport_img, account_id,plainPassword);
             redirectAttributes.addFlashAttribute("successMessage", "Student saved successfully!");
 
         } catch (IllegalArgumentException e) {

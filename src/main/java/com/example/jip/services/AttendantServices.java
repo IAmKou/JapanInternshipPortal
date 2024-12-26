@@ -31,37 +31,37 @@ public class AttendantServices {
     @Autowired
     private StudentRepository studentRepository;
 
-    public Attendant createAttendant(int student_id, int schedule_id, String status, Date date, int class_id) {
-        List<Schedule> schedules = scheduleRepository.findByClassIdAndDate(class_id, date);
-        if (schedules.isEmpty()) {
-            throw new IllegalArgumentException("No schedule found for class_id: " + class_id + " and date: " + date);
-        }
-
-        // Find the schedule that matches the time range
-        LocalTime currentLocalTime = LocalTime.now();
-        Time currentTime = Time.valueOf(currentLocalTime);
-
-        Schedule matchingSchedule = schedules.stream()
-                .filter(schedule -> !currentTime.before(schedule.getStart_time()) && !currentTime.after(schedule.getEnd_time()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("No matching schedule slot found for the current time"));
-
-        // Fetch the student
-        Optional<Student> studentOpt = studentRepository.findById(student_id);
-        if (!studentOpt.isPresent()) {
-            throw new IllegalArgumentException("No student found with id: " + student_id);
-        }
-
-
-        // Create and save the attendance record
-        Attendant attendant = new Attendant();
-        attendant.setStudent(studentOpt.get());
-        attendant.setSchedule(matchingSchedule);
-        attendant.setStatus(Attendant.Status.valueOf(status));
-        attendant.setDate(date);
-
-        return attendantRepository.save(attendant);
-    }
+//    public Attendant createAttendant(int student_id, int schedule_id, String status, Date date, int class_id) {
+//        List<Schedule> schedules = scheduleRepository.findByClassIdAndDate(class_id, date);
+//        if (schedules.isEmpty()) {
+//            throw new IllegalArgumentException("No schedule found for class_id: " + class_id + " and date: " + date);
+//        }
+//
+//        // Find the schedule that matches the time range
+//        LocalTime currentLocalTime = LocalTime.now();
+//        Time currentTime = Time.valueOf(currentLocalTime);
+//
+//        Schedule matchingSchedule = schedules.stream()
+//                .filter(schedule -> !currentTime.before(schedule.getStart_time()) && !currentTime.after(schedule.getEnd_time()))
+//                .findFirst()
+//                .orElseThrow(() -> new IllegalArgumentException("No matching schedule slot found for the current time"));
+//
+//        // Fetch the student
+//        Optional<Student> studentOpt = studentRepository.findById(student_id);
+//        if (!studentOpt.isPresent()) {
+//            throw new IllegalArgumentException("No student found with id: " + student_id);
+//        }
+//
+//
+//        // Create and save the attendance record
+//        Attendant attendant = new Attendant();
+//        attendant.setStudent(studentOpt.get());
+//        attendant.setSchedule(matchingSchedule);
+//        attendant.setStatus(Attendant.Status.valueOf(status));
+//        attendant.setDate(date);
+//
+//        return attendantRepository.save(attendant);
+//    }
 
     public void updateAttendance(int classId, List<AttendantDTO> attendanceData) {
         LocalDate today = LocalDate.now();

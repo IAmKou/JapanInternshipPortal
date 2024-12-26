@@ -10,113 +10,70 @@ import java.sql.Time;
 
 public class ScheduleDTO {
     private int id;
+    private String date;
     private Schedule.dayOfWeek dayOfWeek;
-    private int classId;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-    private Time startTime;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-    private Time endTime;
-    private String description;
-    private String event;
-    private Date date;
-    private String location;
-    private String className;
-    private int teacherId;
-    private String teacherFullName;
+    private String class_name;
+    private String color;
+    private String room;
+    private String activity;
+    private String semesterName;
+    private String time_slot;
+    private Schedule.status status;
+    private int semesterId;
 
     public ScheduleDTO() {
     }
 
+    public ScheduleDTO(int id, String date, Schedule.dayOfWeek dayOfWeek, String class_name, String color, String room, String activity, String semesterName, String time_slot, Schedule.status status, int semesterId) {
+        this.id = id;
+        this.date = date;
+        this.dayOfWeek = dayOfWeek;
+        this.class_name = class_name;
+        this.color = color;
+        this.room = room;
+        this.activity = activity;
+        this.semesterName = semesterName;
+        this.time_slot = time_slot;
+        this.status = status;
+        this.semesterId = semesterId;
+    }
+
     public ScheduleDTO(Schedule schedule) {
         this.id = schedule.getId();
-        this.date = schedule.getDate();
+        this.date = String.valueOf(schedule.getDate());
         this.dayOfWeek = schedule.getDay_of_week();
-        this.className = schedule.getClasz() != null ? schedule.getClasz().getName() : null;
-        this.location = schedule.getLocation();
-        this.startTime = schedule.getStart_time();
-        this.teacherFullName = schedule.getClasz() != null && schedule.getClasz().getTeacher() != null
-                ? schedule.getClasz().getTeacher().getFullname()
-                : null;
-        this.endTime = schedule.getEnd_time();
-        this.description = schedule.getDescription();
-        this.event = schedule.getEvent();
-        this.classId = schedule.getClasz() != null ? schedule.getClasz().getId() : null;
-        this.teacherId = schedule.getClasz() != null && schedule.getClasz().getTeacher() != null
-                ? schedule.getClasz().getTeacher().getId()
-                : null;
+        this.class_name = (schedule.getClasz() != null) ? schedule.getClasz().getName() : "No Class Assigned";
+        this.room = schedule.getRoom();
+        this.color = (schedule.getColor() != null) ? schedule.getColor() : "No Color";
+        this.activity = schedule.getActivity();
+        this.semesterName = (schedule.getSemester() != null) ? schedule.getSemester().getName() : "No Semester Assigned";
+        this.time_slot = schedule.getTime_slot();
+        this.status = schedule.getStatus();
+        this.semesterId = schedule.getSemester().getId();
     }
 
-    public ScheduleDTO(int id,Schedule.dayOfWeek dayOfWeek, int classId, Time startTime, Time endTime,
-                       String description, String event, Date date, String location,
-                       String className, int teacherId, String teacherFullName) {
-        this.id = id;
-        this.dayOfWeek = dayOfWeek;
-        this.classId = classId;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.description = description;
-        this.event = event;
-        this.date = date;
-        this.location = location;
-        this.className = className;
-        this.teacherId = teacherId;
-        this.teacherFullName = teacherFullName;
-    }
-
-
-    public int getClassId() {
-        return classId;
-    }
-
-    public void setClassId(int classId) {
-        this.classId = classId;
-    }
-
-    public int getTeacherId() {
-        return teacherId;
-    }
-
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
-    }
 
     public int getId() {
         return id;
+    }
+
+    public int getSemesterId() {
+        return semesterId;
+    }
+
+    public void setSemesterId(int semesterId) {
+        this.semesterId = semesterId;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public String getTeacherFullName() {
-        return teacherFullName;
-    }
-
-    public void setTeacherFullName(String teacherFullName) {
-        this.teacherFullName = teacherFullName;
-    }
-
-    public String getEvent() {
-        return event;
-    }
-
-    public void setEvent(String event) {
-        this.event = event;
-    }
-
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -124,40 +81,63 @@ public class ScheduleDTO {
         return dayOfWeek;
     }
 
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     public void setDayOfWeek(Schedule.dayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public Time getStartTime() {
-        return startTime;
+    public String getClass_name() {
+        return class_name;
     }
 
-    public void setStartTime(Time startTime) {
-        this.startTime = startTime;
+    public void setClass_name(String class_name) {
+        this.class_name = class_name;
     }
 
-    public Time getEndTime() {
-        return endTime;
+    public String getRoom() {
+        return room;
     }
 
-    public void setEndTime(Time endTime) {
-        this.endTime = endTime;
+    public void setRoom(String room) {
+        this.room = room;
     }
 
-    public String getDescription() {
-        return description;
+    public String getActivity() {
+        return activity;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setActivity(String activity) {
+        this.activity = activity;
     }
 
-    public String getClassName() {
-        return className;
+    public String getSemesterName() {
+        return semesterName;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void setSemesterName(String semesterName) {
+        this.semesterName = semesterName;
     }
 
+    public String getTime_slot() {
+        return time_slot;
+    }
+
+    public void setTime_slot(String time_slot) {
+        this.time_slot = time_slot;
+    }
+
+    public Schedule.status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Schedule.status status) {
+        this.status = status;
+    }
 }
