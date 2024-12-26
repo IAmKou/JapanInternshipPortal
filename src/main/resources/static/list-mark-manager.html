@@ -363,7 +363,7 @@
                                     Exam</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
+                                <a class="nav-link" href="create-markrp.html"><i class="fas fa-angle-right"></i>Create
                                     Exam</a>
                             </li>
                         </ul>
@@ -446,8 +446,10 @@
                     </div>
 
                     <div class="table-responsive">
-                        <button id="import-by-csv">Import by csv</button>
-                        <button id="import-by-excel">Import by excel</button>
+                        <input type="file" id="csv-file" accept=".csv">
+                        <button id="import-csv">Import CSV</button>
+
+<!--                        <button id="import-by-excel">Import by excel</button>-->
                         <table class="table display data-table text-nowrap">
                             <thead>
                             <tr>
@@ -479,16 +481,16 @@
 
         </div>
         <div id="overlay" class="overlay">
-            <div id="examPopup" class="popup">
+            <div id="markrpPopup" class="popup">
                 <div class="popup-content">
                     <span class="close" onclick="closePopup()">&times;</span>
                     <h2>Update Mark</h2>
                     <form class="new-added-form" action="javascript:void(0);" onsubmit="updateExam(event)">
-                        <label for="exam_name">Exam Name:</label>
-                        <input type="text" id="exam_name" name="exam_name" required/>
+                        <label for="markrp_name">Exam Name:</label>
+                        <input type="text" id="markrp_name" name="markrp_name" required/>
 
-                        <label for="exam_date">Date:</label>
-                        <input type="date" id="exam_date" name="exam_date" required/>
+                        <label for="markrp_date">Date:</label>
+                        <input type="date" id="markrp_date" name="markrp_date" required/>
 
                         <label for="content">Content:</label>
                         <textarea id="content" name="content" rows="4" required></textarea>
@@ -521,74 +523,77 @@
 
 <script>
 
-    const API_BASE_URL = '/exam';
+    const API_BASE_URL = '/mark-report';
     let currentExamId = null;
 
-    async function fetchAndDisplayExams() {
+    async function fetchAndDisplayMarks() {
         try {
-            console.log('Fetching exams...');
+            console.log('Fetching mark reports...');
             const response = await fetch(`${API_BASE_URL}/list`);
             console.log('Response received:', response);
             if (!response.ok) {
-                throw new Error('Error fetching exams: ' + response.statusText);
+                throw new Error('Error fetching mark reports: ' + response.statusText);
             }
-            const exams = await response.json();
-            console.log('Exams data:', exams);
+            const mark_reports = await response.json();
+            console.log('mark reports data:', mark_reports);
 
             // Clear existing rows in the table
-            const tableBody = document.getElementById('exam_list');
+            const tableBody = document.getElementById('mark_list');
             tableBody.innerHTML = '';
-
-            exams.forEach(exam => {
+            mark_reports.forEach(markrp => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <a href="/view-exam-detail.html?id=${exam.id}" target="_blank">${exam.exam_name}</a>
-                    <td>${exam.exam_date.toString().split("T")[0]}</td>
-
-                    <td>
-                        <div class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="flaticon-more-button-of-three-dots"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" onclick="openDeleteConfirmModal(${exam.id})">
-                                    <i class="fas fa-times text-orange-red"></i>Delete</a>
-                                <a class="dropdown-item" onclick="openUpdatePopup(${exam.id})">
-                                    <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
-                            </div>
-                        </div>
-                    </td>
-                `;
+    <td><a href="/view-student-mark-report.html?id=${markrp.id}" target="_blank">${markrp.studentName}</a></td>
+    <td>${markrp.softskill}</td>
+    <td>${markrp.avg_exam_mark}</td>
+    <td>${markrp.middle_exam}</td>
+    <td>${markrp.final_exam}</td>
+    <td>${markrp.skill}</td>
+    <td>${markrp.attitude}</td>
+    <td>${markrp.final_mark}</td>
+    <td>
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="flaticon-more-button-of-three-dots"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" onclick="openUpdatePopup(${markrp.id})">
+                    <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
+            </div>
+        </div>
+    </td>
+`;
                 tableBody.appendChild(row);
             });
         } catch (error) {
             console.error('Error:', error);
         }
     }
-    // Initialize the table with exams on page load
-    document.addEventListener('DOMContentLoaded', fetchAndDisplayExams);
+
+    // Initialize the table with mark_reports on page load
+    document.addEventListener('DOMContentLoaded', fetchAndDisplayMarks);
 
     // Function to open the update popup async
-    async function openUpdatePopup(examId) {
+    async function openUpdatePopup(markrpId) {
         try {
-            const response = await fetch(`${API_BASE_URL}/detail/${examId}`);
+            const response = await fetch(`${API_BASE_URL}/detail/${markrpId}`);
             if (!response.ok) {
-                throw new Error('Error fetching exam for update: ' + response.statusText);
+                throw new Error('Error fetching markrp for update: ' + response.statusText);
             }
 
-            const exam = await response.json();
+            const markrp = await response.json();
 
 
-            // Fill the form with the exam data
-            document.getElementById('exam_name').value = exam.exam_name;
-            document.getElementById('exam_date').value = exam.exam_date;
-            document.getElementById('content').value = exam.content;
+            // Fill the form with the markrp data
+            document.getElementById('markrp_name').value = markrp.markrp_name;
+            document.getElementById('markrp_date').value = markrp.markrp_date;
+            document.getElementById('content').value = markrp.content;
 
 
 
             // Show the update popup
-            currentExamId = exam.id;
-            document.getElementById('examPopup').style.display = 'flex';
+            currentExamId = markrp.id;
+            document.getElementById('markrpPopup').style.display = 'flex';
             document.getElementById('overlay').style.display = 'flex';
         } catch (error) {
             console.error(error);
@@ -600,18 +605,18 @@
 
 
 
-        const exam_name = document.getElementById('exam_name').value;
-        const date = document.getElementById('exam_date').value;
+        const markrp_name = document.getElementById('markrp_name').value;
+        const date = document.getElementById('markrp_date').value;
         const content = document.getElementById('content').value;
 
-        if(!exam_name.trim() || !content.trim()){
+        if(!markrp_name.trim() || !content.trim()){
             alert('Please fill in all the required fields!');
             return; // Exit the function if validation fails
         }
 
         const formData = new FormData();
-        formData.append('exam_name', exam_name);
-        formData.append('exam_date', date);
+        formData.append('markrp_name', markrp_name);
+        formData.append('markrp_date', date);
         formData.append('content', content);
 
 
@@ -629,7 +634,7 @@
                 alert('Exam not found!');
                 closePopup();
             } else {
-                console.error('Error updating exam:', response.statusText);
+                console.error('Error updating markrp:', response.statusText);
             }
         } catch (error) {
             console.error('Error:', error);
@@ -638,46 +643,40 @@
 
     // Function to close the update popup
     function closePopup() {
-        document.getElementById('examPopup').style.display = 'none';
+        document.getElementById('markrpPopup').style.display = 'none';
         document.getElementById('overlay').style.display = 'none';
     }
 
 
 
-    // Function to open the delete confirmation modal
-    function openDeleteConfirmModal(examId) {
-        document.getElementById('deleteConfirmModal').dataset.examId = examId;
-        document.getElementById('deleteConfirmModal').style.display = 'flex';
-    }
+    document.getElementById("import-csv").addEventListener("click", async () => {
+        const fileInput = document.getElementById("csv-file");
+        if (!fileInput.files[0]) {
+            showErrorModal("Please select a file to import.");
+            return;
+        }
 
-    // Function to close the delete confirmation modal
-    function closeDeleteConfirmModal() {
-        document.getElementById('deleteConfirmModal').style.display = 'none';
-    }
-
-    // Function to confirm delete
-    async function confirmDelete() {
-        const examId = document.getElementById('deleteConfirmModal').dataset.examId;
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
 
         try {
-            const response = await fetch(`${API_BASE_URL}/delete/${examId}`, {
-                method: 'DELETE'
+            const response = await fetch("/mark-report/import", {
+                method: "POST",
+                body: formData,
             });
 
             if (response.ok) {
-                alert('Exam deleted successfully!');
-                fetchAndDisplayExams();
-                closeDeleteConfirmModal();
-            } else if (response.status === 404) {
-                alert('Exam not found!');
-                closeDeleteConfirmModal();
+                showSuccessModal("File imported successfully!");
+                // Reload or fetch data to update the table
             } else {
-                console.error('Error deleting Exam:', response.statusText);
+                const errorText = await response.text();
+                showErrorModal(`Import failed: ${errorText}`);
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error("Error:", error);
+            showErrorModal("An error occurred while importing the file.");
         }
-    }
+    });
 
 
 </script>

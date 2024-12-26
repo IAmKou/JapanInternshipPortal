@@ -109,7 +109,6 @@ public class AssignmentController {
 
     @GetMapping("/getCByTid2")
     public List<ClassDTO> getClassByTid2(@RequestParam("teacherId") Integer teacherId) {
-
         return classRepository.findByTeacher_Id(teacherId).stream()
                 .map(ClassDTO::new)
                 .collect(Collectors.toList());
@@ -130,6 +129,7 @@ public class AssignmentController {
                 })
                 .collect(Collectors.toList());
     }
+
     @GetMapping("/detailByAS/{studentAssignmentId}")
     public ResponseEntity<AssignmentResponse> getAssignmentByStudentAssignmentId(
             @PathVariable int studentAssignmentId) {

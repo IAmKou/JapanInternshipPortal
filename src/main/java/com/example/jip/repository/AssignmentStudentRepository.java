@@ -14,4 +14,6 @@ public interface AssignmentStudentRepository extends JpaRepository<AssignmentStu
     @Transactional
     @Query("DELETE FROM AssignmentStudent ast WHERE ast.assignment.id = :assignmentId")
     void deleteByAssignmentId(@Param("assignmentId") int assignmentId);
+
+    int countByStudentId(int studentId);
 }
