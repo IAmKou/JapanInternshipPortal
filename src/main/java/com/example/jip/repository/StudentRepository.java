@@ -27,5 +27,5 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
             "ORDER BY s.fullname ASC ")
     List<StudentDTO> findTopUnassignedStudents();
 
-    Optional<Student> findByFullnameAndEmail(String fullname, String email);
+    Student findByFullnameAndEmail(String fullname, String email);
 }

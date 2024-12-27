@@ -18,6 +18,11 @@ public interface MarkReportRepository extends CrudRepository<MarkReport, Integer
             "AND l.clas.id = :classId")
     List<MarkReport> findAllByClassId(int classId);
 
+    @Query ("SELECT DISTINCT mr " +
+            "FROM MarkReport mr " +
+            "WHERE mr.student.email = :email")
+    MarkReport findByEmail(String email);
+
     Optional<MarkReport> findByStudentId(int studentId);
     List<MarkReport> findByStudentIdIn(List<Integer> studentIds);
 }
