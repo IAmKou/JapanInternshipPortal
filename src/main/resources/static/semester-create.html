@@ -374,13 +374,56 @@
                 .then(data => {
                     // Display success message
                     alert(data.message);
-                    // You can redirect the user to another page or clear the form here
+                    window.location.reload();
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     alert('An error occurred while creating the semester.');
                 });
         });
+    </script>
+    <script>
+        // Fetch notifications from the backend
+        fetch('/semester/get')
+            .then(response => response.json()) // Parse the response as JSON
+            .then(data => {
+                const noticeBoardWrap = document.getElementById('notice-board-wrap');
+
+                // Check if the list is empty
+                if (data.length === 0) {
+                    noticeBoardWrap.innerHTML = '<p>No semester available.</p>';
+                    return;
+                }
+
+                // Loop through each semester and add it to the page
+                data.forEach(semester => {
+                    // Create the new semester div
+                    const semesterDiv = document.createElement('div');
+                    semesterDiv.classList.add('semester-item');
+
+                    // Create the semester name
+                    const semesterName = document.createElement('h6');
+                    semesterName.classList.add('semester-name');
+                    semesterName.textContent = semester.semesterName;
+
+                    // Create the semester start and end date
+                    const semesterDetails = document.createElement('p');
+                    semesterDetails.classList.add('semester-details');
+                    semesterDetails.textContent = `Start Date: ${semester.semesterStart}, End Date: ${semester.semesterEnd}`;
+
+                    // Append the details to the semester div
+                    semesterDiv.appendChild(semesterName);
+                    semesterDiv.appendChild(semesterDetails);
+
+                    // Append the semester div to the noticeBoardWrap
+                    noticeBoardWrap.appendChild(semesterDiv);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching semesters:', error);
+                const noticeBoardWrap = document.getElementById('notice-board-wrap');
+                noticeBoardWrap.innerHTML = '<p>Failed to load semesters.</p>';
+            });
     </script>
 </body>
 </html>

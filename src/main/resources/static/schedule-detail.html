@@ -326,7 +326,7 @@
                                     <option value="Room 302">Room 302</option>
                                 </select>
                                 <button id="save-draft" class="btn btn-warning btn-sm mt-3">Save as Draft</button>
-
+                                <button id="save-public" class="btn btn-outline-success btn-sm mt-3">Save Publish</button>
                             </div>
                             <div id='calendar-wrap'>
                                 <div id='calendar'></div>
@@ -457,6 +457,8 @@
         const addEventButton = document.getElementById('add-event');
         const saveDraftButton = document.getElementById('save-draft');
         const savePublicButton = document.getElementById('save-public');
+        const classDropdown = document.getElementById('class-dropdown');
+        const roomDropdown = document.getElementById('room-select');
         const urlParams = new URLSearchParams(window.location.search);
         const semesterId = urlParams.get('semesterId');
 
@@ -567,6 +569,30 @@
                 console.error('Error initializing calendar:', error);
             });
 
+        function loadClasses() {
+            fetch('/class/get')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch classes');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    data.forEach(clasz => {
+                        const option = document.createElement('option');
+                        option.value = clasz.id;
+                        option.textContent = clasz.name;
+                        classDropdown.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching classes:', error);
+                    alert("There was an error fetching the class. Please try again.");
+                });
+        }
+
+        loadClasses();
+
         // Save functions
         function saveSchedule(apiEndpoint, isPublic) {
             if (!calendar) {
@@ -620,6 +646,11 @@
                 })
                 .then(data => {
                     alert(data.message || (isPublic ? 'Schedule saved as public successfully!' : 'Draft saved successfully!'));
+                    if (isPublic) {
+                        window.location.href = '/schedule-list.html'; // Redirect to schedule-list for public save
+                    } else {
+                        window.location.href = '/semester-list.html'; // Redirect to semester-list for draft save
+                    }
                 })
                 .catch(error => {
                     console.error('Error saving schedule:', error);
@@ -631,6 +662,5 @@
         savePublicButton?.addEventListener('click', () => saveSchedule('/schedule/savePublic', true));
     });
 </script>
-
 </body>
 </html>
