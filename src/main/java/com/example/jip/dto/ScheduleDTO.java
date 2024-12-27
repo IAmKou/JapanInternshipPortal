@@ -22,6 +22,7 @@ public class ScheduleDTO {
     private int semesterId;
     private Date startTime;
     private Date endTime;
+    private int classId;
 
     public ScheduleDTO() {
     }
@@ -56,6 +57,15 @@ public class ScheduleDTO {
         this.semesterId = schedule.getSemester().getId();
         this.startTime = schedule.getSemester().getStart_time();
         this.endTime = schedule.getSemester().getEnd_time();
+        this.classId = (schedule.getClasz() != null) ? schedule.getClasz().getId() : 0;
+    }
+
+    public int getClassId() {
+        return classId;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
     }
 
     public Date getStartTime() {

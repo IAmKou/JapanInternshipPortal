@@ -35,6 +35,7 @@
 <!-- Preloader End Here -->
 <div id="wrapper" class="wrapper bg-ash">
     <!-- Header Menu Area Start Here -->
+    <div id="google_translate_element"></div>
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
@@ -147,6 +148,10 @@
                                 <a href="admin.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Admin</a>
                             </li>
                         </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="semester-create.html" class="nav-link"><i
+                                class="flaticon-settings"></i><span>Semester</span></a>
                     </li>
                     <li class="nav-item">
                         <a href="report-list.html" class="nav-link"><i
@@ -300,6 +305,20 @@
 <script src="js/Chart.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
+<script src="script.js"></script>
+
+<script type="text/javascript">
+    // This function will initialize Google Translate
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en', // Set the default language of the page
+            includedLanguages: 'en,es,fr,de,ja', // Add the languages you want to support
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+    }
+
+</script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         fetch('/report/counts')
@@ -357,8 +376,6 @@
 </script>
 <!-- fetch notification -->
 <script>
-    // Fetch notifications from the backend
-    // Fetch notifications from the backend
     fetch('/notification/getAll')
         .then(response => response.json()) // Parse the response as JSON
         .then(data => {
@@ -497,7 +514,27 @@
             noticeBoardWrap.innerHTML = '<p>Failed to load notifications.</p>';
         });
 </script>
+<script>
+    function changeLanguage(languageCode) {
+        const apiUrl = "https://script.google.com/macros/s/AKfycbz153PaKjWBPU-Tro4jsmhI28FxWewGNxmpBKUmPOGmF4-QITnRiiBgx2SN5mP_FVKU/exec"; // Thay bằng URL API của bạn
 
+        // Văn bản cần dịch
+        const textToTranslate = document.body.innerHTML;
+
+        console.log("Đang gửi yêu cầu API...");
+        fetch(`${apiUrl}?text=${encodeURIComponent(textToTranslate)}&source=en&target=${languageCode}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Kết quả API:", data);
+                document.body.innerHTML = data.translatedText;
+                document.getElementById("languageLabel").textContent = languageCode.toUpperCase();
+            })
+            .catch(error => {
+                console.error("Có lỗi khi gọi API:", error);
+            });
+    }
+
+</script>
 </body>
 
 

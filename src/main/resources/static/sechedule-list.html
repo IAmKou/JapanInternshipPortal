@@ -228,14 +228,13 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="table-responsive">
                                 <table class="table display text-nowrap">
                                     <thead>
                                     <tr>
+                                        <th>Class</th>
+                                        <th>Room</th>
                                         <th>Semester</th>
-                                        <th>Start Time</th>
-                                        <th>End Time</th>
                                         <th></th>
                                     </tr>
                                     </thead>
@@ -251,30 +250,6 @@
         </div>
     </div>
     <!-- Page Area End Here -->
-    <div aria-hidden="true" class="modal fade" id="standard-modal" role="dialog"
-         tabindex="-1">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add schedule</h5>
-                    <button aria-label="Close" class="close" data-dismiss="modal"
-                            type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="/schedule/import" enctype="multipart/form-data" id="import" method="post">
-                    <div class="modal-body">
-                        <label for="file" style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
-                        <input class="form-control-file" id="file" name="file" required type="file">
-                    </div>
-                    <div class="modal-footer">
-                        <button class="footer-btn bg-dark-low" data-dismiss="modal" type="button">Close</button>
-                        <button class="footer-btn bg-linkedin" type="submit">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
     <!-- Success Modal -->
     <div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal" tabindex="-1">
         <div class="modal-dialog">
@@ -380,7 +355,7 @@
 </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-        fetch("/semester/get")
+        fetch("/schedule/unique")
             .then(response => response.json())
             .then(data => {
                 const tableBody = document.querySelector("table tbody");
@@ -391,9 +366,9 @@
 
                     // Add columns for semester name and schedule status
                     row.innerHTML = `
+                        <td>${item.className}</td>
+                        <td>${item.room}</td>
                         <td>${item.semesterName}</td>
-                        <td>${item.semesterStart}</td>
-                        <td>${item.semesterEnd}</td>
 
                     `;
 
@@ -412,7 +387,7 @@
                     const dropdownMenu = document.createElement('div');
                     dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
                     dropdownMenu.innerHTML = `
-                        <a class="dropdown-item" href="/schedule-detail.html?semesterId=${item.semesterId}">
+                        <a class="dropdown-item" href="/schedule-detail.html?semesterId=${item.classId}">
                             <i class="fas fa-glasses text-dark-pastel-green"></i> View Schedule
                         </a>
                     `;
