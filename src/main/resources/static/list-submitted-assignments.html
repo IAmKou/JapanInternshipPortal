@@ -129,6 +129,72 @@
             background-color: #f8f8f8;  /* Màu nền cho tiêu đề */
             font-weight: bold;  /* Đảm bảo tiêu đề nổi bật */
         }
+        #success-modal .modal-header {
+            background-color: #28a745; /* Màu nền của header */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #success-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #success-modal .modal-body .fas.fa-check-circle {
+            color: #28a745;
+        }
+
+        #success-modal .btn-success {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        #success-modal .btn-close {
+            color: white;
+        }
+
+        #success-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+
+        /* Custom Modal Styling for Error Modal */
+        #error-modal .modal-header {
+            background-color: #dc3545; /* Màu nền của header (Đỏ cho lỗi) */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #error-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #error-modal .modal-body .fas.fa-times-circle {
+            color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+        }
+
+        #error-modal .btn-danger {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #dc3545; /* Màu đỏ cho nút lỗi */
+            border-color: #dc3545;
+        }
+
+        #error-modal .btn-close {
+            color: white;
+        }
+
+        #error-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
     </style>
 </head>
 
@@ -541,18 +607,37 @@
             });
 
             if (response.ok) {
-                alert('Assignment deleted successfully!');
-                fetchAndDisplaySubmittedAssignments()
+                // Hiển thị modal thành công và thông báo
+                showSuccessModal('Assignment deleted successfully!');
+                fetchAndDisplaySubmittedAssignments();
                 closeDeleteConfirmModal();
             } else if (response.status === 404) {
-                alert('Assignment not found!');
+                // Hiển thị modal lỗi và thông báo
+                showErrorModal('Assignment not found!');
                 closeDeleteConfirmModal();
             } else {
                 console.error('Error deleting assignment:', response.statusText);
             }
         } catch (error) {
             console.error('Error:', error);
+            showErrorModal('An error occurred while deleting the assignment.');
         }
+    }
+
+    // Hàm hiển thị modal thành công
+    function showSuccessModal(message) {
+        const successModalBody = document.querySelector('#success-modal .modal-body');
+        successModalBody.textContent = message;
+        successModalBody.style.fontSize = '18px';  // Cập nhật kích thước chữ
+        $('#success-modal').modal('show');
+    }
+
+    // Hàm hiển thị modal lỗi
+    function showErrorModal(message) {
+        const errorModalBody = document.querySelector('#long-modal .modal-body');
+        errorModalBody.textContent = message;
+        errorModalBody.style.fontSize = '18px';  // Cập nhật kích thước chữ
+        $('#long-modal').modal('show');
     }
 
 

@@ -476,17 +476,22 @@
                                 <input type="hidden" name="assignment_id" id="assignmentid" />
                                 <input type="hidden" name="status" id="status" />
                                 <div class="col-xl-8 col-lg-6 col-12 form-group">
-                                    <label for="description">Title *</label>
-                                    <input type="text" placeholder="Write title..." class="form-control" name="description" id="description" required>
+                                    <label for="description" style="color: #007bff; font-weight: bold;">Title *</label>
+                                    <input type="text"  class="form-control" name="description" id="description" required>
                                 </div>
 
                                 <div class="col-xl-12 col-lg-12 col-12 form-group">
-                                    <label for="content">Description *</label>
-                                    <textarea id="content" placeholder="Write description..." class="form-control" name="content" rows="4" required></textarea>
+                                    <label for="content" style="color: #007bff; font-weight: bold;">Description *</label>
+                                    <div id="content" class="form-control" style="height: 200px;"></div>
+                                    <!-- Thêm input ẩn để gửi nội dung của Quill -->
+                                    <input type="hidden" name="content">
                                 </div>
 
+
+
+
                                 <div class="col-12 form-group mg-t-8">
-                                    <label class="text-dark-medium" for="imgFile">Select File or Image</label>
+                                    <label class="text-dark-medium" for="imgFile" style="color: #007bff; font-weight: bold;">Select File or Image</label>
                                     <input type="file" class="form-control-file" name="imgFile" id="imgFile" multiple>
                                 </div>
 
@@ -547,6 +552,8 @@
 <script src="js/jquery.scrollUp.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 <!-- fetch user -->
 <script>
 
@@ -657,38 +664,61 @@
     fetchAssignmentDetails();
 
     // Submit assignment
+    // Khởi tạo Quill
+    var quill = new Quill('#content', {
+        theme: 'snow', // Giao diện Quill
+        placeholder: 'Enter your description here...',  // Văn bản placeholder
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],
+                [{'list': 'ordered'}, {'list': 'bullet'}],
+                [{'header': [1, 2, 3, false]}],
+                ['clean']
+            ]
+        }
+    });
+
+    // Lắng nghe sự thay đổi để đồng bộ nội dung Quill vào input ẩn
+    var hiddenContent = document.querySelector('input[name="content"]');
+    quill.on('text-change', function () {
+        hiddenContent.value = quill.root.innerHTML;  // Cập nhật giá trị vào input ẩn
+    });
+
+    // Hàm submitAssignment
     async function submitAssignment(event) {
-        event.preventDefault();
+        event.preventDefault();  // Ngừng hành động mặc định của form
 
         const form = event.target.closest('form');
-        const formData = new FormData(form);
+        const formData = new FormData(form);  // Lấy tất cả dữ liệu trong form
 
-        const studentId = formData.get('student_id');
-        const assignmentId = formData.get('assignment_id');
+        // Lấy giá trị từ các trường của form, trong đó có Quill
         const description = formData.get('description');
-        const content = formData.get('content');
+        const content = formData.get('content');  // Giá trị từ Quill dưới dạng HTML
 
-
+        // Kiểm tra xem các trường có hợp lệ không
         if (!description.trim() || !content.trim()) {
             showErrorModal('Please fill in all the required fields!');
-            return; // Exit the function if validation fails
+            return;  // Dừng hàm nếu có trường không hợp lệ
         }
 
-        // Validate if studentId and assignmentId are valid integers
+        // Kiểm tra ID của học sinh và bài tập có hợp lệ không
+        const studentId = formData.get('student_id');
+        const assignmentId = formData.get('assignment_id');
         if (!studentId || !assignmentId || isNaN(studentId) || isNaN(assignmentId)) {
             showErrorModal('Invalid student or assignment ID.');
             return;
         }
 
-        // Log all form data for debugging
+        // Log dữ liệu để kiểm tra
         for (const [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
         }
 
+        // Gửi formData (bao gồm nội dung Quill) đến backend
         try {
             const response = await fetch('/student-assignment/submit', {
                 method: 'POST',
-                body: formData,
+                body: formData  // Gửi dữ liệu bao gồm cả giá trị Quill
             });
 
             if (response.ok) {

@@ -149,6 +149,10 @@
                         </ul>
                     </li>
                     <li class="nav-item">
+                        <a href="semester-create.html" class="nav-link"><i
+                                class="flaticon-settings"></i><span>Semester</span></a>
+                    </li>
+                    <li class="nav-item">
                         <a href="report-list.html" class="nav-link"><i
                                 class="flaticon-script"></i><span>Report</span></a>
                     </li>
@@ -495,7 +499,27 @@
             noticeBoardWrap.innerHTML = '<p>Failed to load notifications.</p>';
         });
 </script>
+<script>
+    function changeLanguage(languageCode) {
+        const apiUrl = "https://script.google.com/macros/s/AKfycbz153PaKjWBPU-Tro4jsmhI28FxWewGNxmpBKUmPOGmF4-QITnRiiBgx2SN5mP_FVKU/exec"; // Thay bằng URL API của bạn
 
+        // Văn bản cần dịch
+        const textToTranslate = document.body.innerHTML;
+
+        console.log("Đang gửi yêu cầu API...");
+        fetch(`${apiUrl}?text=${encodeURIComponent(textToTranslate)}&source=en&target=${languageCode}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Kết quả API:", data);
+                document.body.innerHTML = data.translatedText;
+                document.getElementById("languageLabel").textContent = languageCode.toUpperCase();
+            })
+            .catch(error => {
+                console.error("Có lỗi khi gọi API:", error);
+            });
+    }
+
+</script>
 </body>
 
 

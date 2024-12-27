@@ -35,9 +35,10 @@ public class MarkReportController {
         }
         try {
             List<MarkReportImportRequest> markReports = markReportServices.parseExcel(file);
-            markReportServices.saveMarkReports(markReports);
+            markReportServices.importMarkReports(markReports);
             return ResponseEntity.ok("File imported successfully.");
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to import file: " + e.getMessage());
         }
