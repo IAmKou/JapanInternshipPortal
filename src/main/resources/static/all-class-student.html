@@ -366,6 +366,10 @@
                         </div>
                     </div>
                     <!-- Export Form -->
+
+                         <input type="file" id="xlsx-file" accept=".xlsx">
+                         <button id="import-xlsx" class="btn btn-gradient-yellow btn-search">Import Excel</button>
+
                     <form id="exportForm" action="/export-csv" method="post" style="margin-top: 20px; display: none">
                         <input type="hidden" id="gradesData" name="gradesData" />
                         <div class="col-lg-4">
@@ -373,6 +377,38 @@
                         </div>
                     </form>
                 </div>
+
+                <!-- Success Modal -->
+                <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header border-0">
+                                <h5 class="modal-title text-success" id="successModalLabel">
+                                    <i class="fas fa-check-circle"></i> Success
+                                </h5>
+                            </div>
+                            <div class="modal-body text-center">
+                                <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Modal -->
+                <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header border-0">
+                                <h5 class="modal-title text-danger" id="errorModalLabel">
+                                    <i class="fas fa-times-circle"></i> Error
+                                </h5>
+                            </div>
+                            <div class="modal-body">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Class Table Area End Here -->
 
                 <script>
@@ -520,6 +556,21 @@
 
                 <!-- fetch user -->
     <script>
+
+        // Function to show the success modal
+        function showSuccessModal(message) {
+            document.getElementById('success-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
+            const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+            successModal.show();
+        }
+
+        // Function to show the error modal
+        function showErrorModal(message) {
+            document.getElementById('long-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
+            const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+            errorModal.show();
+        }
+
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
         if (userDetails) {
             const userFullNameElements = document.querySelectorAll('.userFullName');
@@ -546,6 +597,37 @@
         } else {
             console.error("User details not found in sessionStorage");
         }
+
+        document.getElementById("import-xlsx").addEventListener("click", async () => {
+            const fileInput = document.getElementById("xlsx-file");
+            if (!fileInput.files[0]) {
+                showErrorModal("Please select a file to import.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            try {
+                const response = await fetch("/mark-report/import", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    showSuccessModal("File imported successfully!");
+                    window.location.reload();
+                    // Reload or fetch data to update the table
+                } else {
+                    const errorText = await response.text();
+                    showErrorModal(`Import failed: ${errorText}`);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                showErrorModal("An error occurred while importing the file.");
+            }
+        });
+
     </script>
     <!-- jquery-->
     <script src="js/jquery-3.3.1.min.js"></script>

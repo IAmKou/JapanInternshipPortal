@@ -87,7 +87,8 @@ public class MarkReportServices {
                         continue;
                     }
 
-                    Student studentExisted = studentRepository.findByFullnameAndEmail(name, email);
+                    Student studentExisted = studentRepository.findByEmail(email)
+                            .orElseThrow();
                     if (studentExisted == null) {
                         errors.add("Row " + rowNumber + ": Student not found.");
                         continue;
