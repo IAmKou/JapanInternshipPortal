@@ -1,8 +1,10 @@
 package com.example.jip.services;
 
 import com.example.jip.entity.Account;
+import com.example.jip.entity.MarkReport;
 import com.example.jip.entity.Student;
 import com.example.jip.repository.AccountRepository;
+import com.example.jip.repository.MarkReportRepository;
 import com.example.jip.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,11 +28,17 @@ public class StudentServices {
     @Autowired
     private EmailServices emailServices;
 
-    public Student createStudent(String fullname, String japanname, Date dob, String gender, String phoneNumber, String email, MultipartFile img, MultipartFile passport, int accountId) {
+    @Autowired
+    private MarkReportRepository markReportRepository;
+
+
+    public Student createStudent(String fullname, String japanname, Date dob, String gender, String phoneNumber,
+                                 String email, MultipartFile img, MultipartFile passport, int accountId, String plainPassword) {
         Optional<Account> accountOpt = accountRepository.findById(accountId);
         if (!accountOpt.isPresent()) {
             throw new IllegalArgumentException("No account found with id: " + accountId);
         }
+
         // Check for duplicate email or phone number
         if (isDuplicate(email, phoneNumber)) {
             throw new IllegalArgumentException("Duplicate email or phone number found");
@@ -63,10 +71,12 @@ public class StudentServices {
         // Save the student to the database
         Student savedStudent = studentRepository.save(student);
 
-        String account = accountOpt.get().getUsername();
-        String password = accountOpt.get().getPassword();
+        MarkReport markReport = new MarkReport();
+        markReport.setStudent(savedStudent);
+        markReportRepository.save(markReport);
 
-        String emailStatus = emailServices.sendEmail(email, password, account);
+        // Send email with plain-text password
+        String emailStatus = emailServices.sendEmail(email, accountOpt.get().getUsername(), plainPassword);
         if (emailStatus == null) {
             System.out.println("Failed to send email to: " + email);
         } else {

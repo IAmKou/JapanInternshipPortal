@@ -1,5 +1,6 @@
 package com.example.jip.repository;
 
+import com.example.jip.dto.MarkReportDTO;
 import com.example.jip.entity.Student;
 import com.example.jip.dto.StudentDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,6 +27,5 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
             "ORDER BY s.fullname ASC ")
     List<StudentDTO> findTopUnassignedStudents();
 
-
-
+    Optional<Student> findByFullnameAndEmail(String fullname, String email);
 }

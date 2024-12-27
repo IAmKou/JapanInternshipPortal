@@ -1,30 +1,39 @@
 package com.example.jip.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 
 @Entity
+@Table(name = "mark_report")
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MarkReport {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    // Tham chiếu tới bảng Student (Khóa ngoại)
-    @ManyToOne
+    int id;
+    @OneToOne
     @JoinColumn(name = "student_id", referencedColumnName = "id", nullable = false)
-    private Student student;
-
-    private BigDecimal attendance_rate; // Tỷ lệ tham gia
-    private BigDecimal avg_assignment_mark; // Điểm bài tập
-    private BigDecimal avg_exam_mark; // Điểm thi
-
-    // Constructor không tham số
-    public MarkReport() {}
-
+    Student student;
+    @Column(name = "softskill")
+    BigDecimal softskill;
+    @Column(name = "avg_exam_mark")
+    BigDecimal avg_exam_mark;
+    @Column(name = "middle_exam")
+    BigDecimal middle_exam;
+    @Column(name = "final_exam")
+    BigDecimal final_exam;
+    @Column(name = "skill")
+    BigDecimal skill;
+    @Column(name = "attitude")
+    BigDecimal attitude;
+    @Column(name = "final_mark")
+    BigDecimal final_mark;
+    @Column(name = "comment")
+    String comment;
 }

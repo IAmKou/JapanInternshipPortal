@@ -15,48 +15,59 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="Date")
+    @Column(name="date")
     private Date date;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "day_of_week", nullable = false)
     private dayOfWeek day_of_week;
 
-    @Column(name="location")
-    private String location;
+    @Column(name="room")
+    private String room;
+
+    @Column(name="color")
+    private String color;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="class_id")
     private Class clasz;
 
-    @Column(name = "start_time")
-    private Time start_time;
+    @Column(name = "activity")
+    private String activity;
 
-    @Column(name = "end_time")
-    private Time end_time;
+    @Column(name = "time_slot")
+    private String time_slot;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name="status")
+    @Enumerated(EnumType.STRING)
+    private status status;
 
-    @Column(name = "event")
-    private String event;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="semester_id", nullable = false)
+    private Semester semester;
 
     public Schedule() {}
 
-    public Schedule(int id, Date date, dayOfWeek day_of_week, String location, Class clasz, Time start_time, Time end_time, String description, String event) {
+    public Schedule(int id, Date date, dayOfWeek day_of_week, String room, String color, Class clasz, String activity, String time_slot, Schedule.status status, Semester semester) {
         this.id = id;
         this.date = date;
         this.day_of_week = day_of_week;
-        this.location = location;
+        this.room = room;
+        this.color = color;
         this.clasz = clasz;
-        this.start_time = start_time;
-        this.end_time = end_time;
-        this.description = description;
-        this.event = event;
+        this.activity = activity;
+        this.time_slot = time_slot;
+        this.status = status;
+        this.semester = semester;
     }
 
     public enum dayOfWeek{
-        Monday,Tuesday,Wednesday,Thursday,Friday,Saturday
+        Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday
+    }
+
+    public enum status{
+        Draft, Published
     }
 
 }

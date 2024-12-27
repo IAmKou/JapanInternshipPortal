@@ -4,7 +4,7 @@ import com.example.jip.dto.ClassDTO;
 import com.example.jip.dto.TeacherDTO;
 import com.example.jip.dto.request.assignment.AssignmentCreationRequest;
 import com.example.jip.dto.request.assignment.AssignmentUpdateRequest;
-import com.example.jip.dto.request.FileDeleteRequest;
+import com.example.jip.dto.request.assignment.FileDeleteRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.dto.response.assignmentClass.AssignmentClassResponse;
 import com.example.jip.entity.Teacher;
@@ -23,8 +23,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -111,7 +109,6 @@ public class AssignmentController {
 
     @GetMapping("/getCByTid2")
     public List<ClassDTO> getClassByTid2(@RequestParam("teacherId") Integer teacherId) {
-
         return classRepository.findByTeacher_Id(teacherId).stream()
                 .map(ClassDTO::new)
                 .collect(Collectors.toList());
@@ -132,6 +129,7 @@ public class AssignmentController {
                 })
                 .collect(Collectors.toList());
     }
+
     @GetMapping("/detailByAS/{studentAssignmentId}")
     public ResponseEntity<AssignmentResponse> getAssignmentByStudentAssignmentId(
             @PathVariable int studentAssignmentId) {

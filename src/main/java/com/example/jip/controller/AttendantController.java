@@ -31,44 +31,44 @@ public class AttendantController {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
-    @PostMapping("/save/{classId}")
-    public ResponseEntity<String> save(@RequestBody List<AttendantDTO> attendanceRequests, @PathVariable int classId) {
-        System.out.println("Received attendance requests: " + attendanceRequests);
-
-        for (AttendantDTO request : attendanceRequests) {
-            int studentId = request.getStudentId();
-            Attendant.Status status = request.getStatus();
-            Date date = request.getDate();
-
-            if (date == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Date is missing in the request.");
-            }
-
-            List<Schedule> schedules = scheduleRepository.findByClassIdAndDate(classId, date);
-            if (schedules.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No schedule found for the given class and date.");
-            }
-
-            LocalTime currentLocalTime = LocalTime.now();
-            Time currentTime = Time.valueOf(currentLocalTime);
-
-            Schedule matchingSchedule = schedules.stream()
-                    .filter(schedule -> !currentTime.before(schedule.getStart_time()) && !currentTime.after(schedule.getEnd_time()))
-                    .findFirst()
-                    .orElse(null);
-
-            if (matchingSchedule == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("Attendance cannot be saved as the time does not match any schedule slot.");
-            }
-
-            int scheduleId = matchingSchedule.getId();
-            // Create attendant record only if all conditions are valid
-            attendantServices.createAttendant(studentId, scheduleId, String.valueOf(status), date, classId);
-        }
-
-        return ResponseEntity.status(HttpStatus.CREATED).body("Attendance saved successfully.");
-    }
+//    @PostMapping("/save/{classId}")
+//    public ResponseEntity<String> save(@RequestBody List<AttendantDTO> attendanceRequests, @PathVariable int classId) {
+//        System.out.println("Received attendance requests: " + attendanceRequests);
+//
+//        for (AttendantDTO request : attendanceRequests) {
+//            int studentId = request.getStudentId();
+//            Attendant.Status status = request.getStatus();
+//            Date date = request.getDate();
+//
+//            if (date == null) {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Date is missing in the request.");
+//            }
+//
+//            List<Schedule> schedules = scheduleRepository.findByClassIdAndDate(classId, date);
+//            if (schedules.isEmpty()) {
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No schedule found for the given class and date.");
+//            }
+//
+//            LocalTime currentLocalTime = LocalTime.now();
+//            Time currentTime = Time.valueOf(currentLocalTime);
+//
+//            Schedule matchingSchedule = schedules.stream()
+//                    .filter(schedule -> !currentTime.before(schedule.getStart_time()) && !currentTime.after(schedule.getEnd_time()))
+//                    .findFirst()
+//                    .orElse(null);
+//
+//            if (matchingSchedule == null) {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                        .body("Attendance cannot be saved as the time does not match any schedule slot.");
+//            }
+//
+//            int scheduleId = matchingSchedule.getId();
+//            // Create attendant record only if all conditions are valid
+//            attendantServices.createAttendant(studentId, scheduleId, String.valueOf(status), date, classId);
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body("Attendance saved successfully.");
+//    }
 
 
 

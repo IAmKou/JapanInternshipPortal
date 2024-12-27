@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,6 +25,7 @@ public class StudentAssignmentResponse {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date date;
     String status;
+    List<String> files;
     int studentId;
     int assignmentId;
     String assignmentName;

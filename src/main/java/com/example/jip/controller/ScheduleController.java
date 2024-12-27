@@ -1,29 +1,20 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.ScheduleDTO;
-import com.example.jip.dto.StudentScheduleDTO;
-import com.example.jip.entity.Attendant;
 import com.example.jip.entity.Schedule;
+import com.example.jip.entity.Semester;
+import com.example.jip.repository.CurriculumRepository;
 import com.example.jip.repository.ScheduleRepository;
-import com.example.jip.services.ScheduleServices;
-import jakarta.persistence.Tuple;
+import com.example.jip.repository.SemesterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
 import java.sql.Date;
-import java.sql.Time;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.time.ZonedDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,38 +22,11 @@ import java.util.stream.Collectors;
 public class ScheduleController {
 
     @Autowired
-    ScheduleServices scheduleServices;
+    SemesterRepository semesterRepository;
 
     @Autowired
     ScheduleRepository scheduleRepository;
 
-    @PostMapping("/import")
-    public ResponseEntity<?> importSchedules(@RequestParam("file") MultipartFile file) {
-        if (!file.getOriginalFilename().endsWith(".xlsx")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    Map.of("status", false, "message", "Invalid file format. Please upload an Excel file."));
-        }
-        try {
-            List<String> errors = scheduleServices.importSchedules(file);
-            if (!errors.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                        Map.of("status", false, "data", errors));
-            } else {
-                return ResponseEntity.ok(Map.of("status", true, "message", "Successfully imported schedules."));
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    Map.of("status", false, "message", "Error importing schedules: " + e.getMessage()));
-        }
-    }
-
-
-    @GetMapping("/get")
-    public List<ScheduleDTO> getSchedules() {
-        return scheduleRepository.findAll().stream()
-                .map(ScheduleDTO::new)
-                .collect(Collectors.toList());
-    }
 
     @DeleteMapping("/delete/{id}")
     public boolean deleteSchedule(@PathVariable int id) {
@@ -72,133 +36,73 @@ public class ScheduleController {
         }
         return false;
     }
-
-    @PostMapping("/update/{id}")
-    public ResponseEntity<ScheduleDTO> updateSchedule(@PathVariable int id, @RequestBody ScheduleDTO dto) {
-
-        // Adjust startTime if it's non-null and not empty
-        if (dto.getStartTime() != null && !dto.getStartTime().toString().trim().isEmpty()) {
-            if (dto.getStartTime().toString().length() == 5) {
-                String adjustedStartTime = dto.getStartTime().toString() + ":00";
-                try {
-                    dto.setStartTime(Time.valueOf(adjustedStartTime));
-                } catch (IllegalArgumentException e) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-                }
-            }
-        } else {
-            dto.setStartTime(null); // Set to null if empty
+    @GetMapping("/get/{semesterId}")
+    public List<ScheduleDTO> getSchedule(@PathVariable int semesterId) {
+        List<Schedule> schedules = scheduleRepository.findBySemesterId(semesterId);
+        if (schedules == null) {
+            return new ArrayList<>(); // Return an empty list if no data
         }
+        return schedules.stream()
+                .map(ScheduleDTO::new)
+                .collect(Collectors.toList());
+    }
 
-        // Adjust endTime if it's non-null and not empty
-        if (dto.getEndTime() != null && !dto.getEndTime().toString().trim().isEmpty()) {
-            if (dto.getEndTime().toString().length() == 5) {
-                String adjustedEndTime = dto.getEndTime().toString() + ":00";
-                try {
-                    dto.setEndTime(Time.valueOf(adjustedEndTime));
-                } catch (IllegalArgumentException e) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-                }
-            }
-        } else {
-            dto.setEndTime(null); // Set to null if empty
-        }
-
+    @PostMapping("/saveDraft")
+    public ResponseEntity<?> saveDraft(@RequestBody List<ScheduleDTO> schedules) {
         try {
-            ScheduleDTO updatedSchedule = scheduleServices.updateSchedule(id, dto.getClassName(), dto);
-            return ResponseEntity.ok(updatedSchedule);
-        } catch (NoSuchElementException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
-
-    @GetMapping("/getS/{studentId}")
-    public List<StudentScheduleDTO> getStudentSchedule(@PathVariable int studentId) {
-
-        List<Object[]> result = scheduleRepository.findStudentSchedule(studentId);
-        List<StudentScheduleDTO> scheduleDTOs = new ArrayList<>();
-        for (Object[] row : result) {
-            int scheduleId = (int) row[0];  // schedule_id
-            String className = (String) row[1];  // class_name
-            String teacherName = (String) row[2];
-            String location = (String) row[3];// teacher_name
-            Schedule.dayOfWeek dayOfWeek = Schedule.dayOfWeek.valueOf((String) row[4]);
-            Time startTime = (Time) row[5];  // start_time
-            Time endTime = (Time) row[6];  // end_time
-            Attendant.Status attendanceStatus = Attendant.Status.valueOf((String) row[7]);  // attendance_status
-            Date date = (Date) row[8];  // date
-            String description = (String) row[9];  // description
-            String event = (String) row[10];  // event
-
-            // Create DTO and add to list
-            StudentScheduleDTO dto = new StudentScheduleDTO(
-                    scheduleId, className, teacherName,location, dayOfWeek, startTime, endTime,
-                    attendanceStatus, date, description, event
-            );
-
-            scheduleDTOs.add(dto);
-        }
-
-        return scheduleDTOs;
-    }
-
-    @GetMapping("/getT/{teacherId}")
-    public List<ScheduleDTO> getScheduleForTeacher(@PathVariable int teacherId) {
-        List<ScheduleDTO> result = scheduleRepository.findTeacherSchedule(teacherId);
-        return result;
-    }
-
-    @GetMapping("/search")
-    public List<ScheduleDTO> searchSchedules(@RequestParam(name="className", required = false) String className,
-                                             @RequestParam(name="teacherName", required = false) String teacherName,
-                                             @RequestParam(name="date", required = false) String date) {
-        System.out.println("Class Name: " + className);
-        System.out.println("Teacher Name: " + teacherName);
-        System.out.println("Date: " + date);
-
-        LocalDate localDate = null;
-        if (date != null && !date.isEmpty()) {
-            try {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                localDate = LocalDate.parse(date, formatter);
-            } catch (DateTimeParseException e) {
-                System.out.println("Invalid date format: " + e.getMessage());
+            // Validate semester ID from the first schedule
+            if (schedules.isEmpty()) {
+                return ResponseEntity.badRequest().body("No schedules provided.");
             }
-        }
 
-        // Convert to java.sql.Date if valid
-        java.sql.Date sqlDate = null;
-        if (localDate != null) {
-            sqlDate = java.sql.Date.valueOf(localDate);
-        }
+            int semesterId = schedules.get(0).getSemesterId();
+            Semester semester = semesterRepository.findById(semesterId)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid Semester ID: " + semesterId));
 
-        // Debugging the state of sqlDate
-        System.out.println("Parsed sqlDate: " + sqlDate);
+            // Delete existing schedules for the semester
+            scheduleRepository.deleteBySemesterId(semesterId);
 
-        // Apply the conditions based on the available parameters
-        if (className != null && teacherName != null && sqlDate != null) {
-            System.out.println("Running the first case");
-            return scheduleRepository.findByClassNameAndTeacherNameAndDate(className, teacherName, sqlDate);
-        } else if (className != null) {
-            System.out.println("Running the fifth case");
-            return scheduleRepository.findByClassName(className);
-        } else if (teacherName != null) {
-            System.out.println("Running the sixth case");
-            return scheduleRepository.findByTeacherName(teacherName);
-        } else if (sqlDate != null) {
-            System.out.println("Running the seventh case");
-            return scheduleRepository.findByDate(sqlDate).stream()
-                    .map(ScheduleDTO::new)
-                    .collect(Collectors.toList());
-        } else {
-            System.out.println("Running the eighth case (default case)");
-            return scheduleRepository.findAll().stream()
-                    .map(ScheduleDTO::new)
-                    .collect(Collectors.toList());
+            // Save new schedules
+            for (ScheduleDTO scheduleDTO : schedules) {
+                Schedule schedule = new Schedule();
+                schedule.setActivity(scheduleDTO.getActivity());
+                schedule.setColor(scheduleDTO.getColor());
+                LocalDate localDate = LocalDate.parse(scheduleDTO.getDate()).plusDays(1);
+                schedule.setDate(Date.valueOf(localDate));
+                schedule.setDay_of_week(getDayOfWeekFromDate(Date.valueOf(localDate)));
+                schedule.setSemester(semester);
+                schedule.setTime_slot("All day");
+                schedule.setStatus(Schedule.status.Draft);
+
+                scheduleRepository.save(schedule);
+            }
+            return ResponseEntity.ok("Schedules updated successfully for semester ID: " + semesterId);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating schedules");
         }
     }
+    private Schedule.dayOfWeek getDayOfWeekFromDate(java.sql.Date date) {
+        java.time.LocalDate localDate = date.toLocalDate();
+        java.time.DayOfWeek dayOfWeek = localDate.getDayOfWeek();
 
+        switch (dayOfWeek) {
+            case MONDAY:
+                return Schedule.dayOfWeek.Monday;
+            case TUESDAY:
+                return Schedule.dayOfWeek.Tuesday;
+            case WEDNESDAY:
+                return Schedule.dayOfWeek.Wednesday;
+            case THURSDAY:
+                return Schedule.dayOfWeek.Thursday;
+            case FRIDAY:
+                return Schedule.dayOfWeek.Friday;
+            case SATURDAY:
+                return Schedule.dayOfWeek.Saturday;
+            case SUNDAY:
+                return Schedule.dayOfWeek.Sunday;
+            default:
+                return null; // In case of an invalid date, you can return null or handle it differently
+        }
+    }
 }

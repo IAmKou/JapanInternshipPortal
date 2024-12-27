@@ -47,15 +47,15 @@ public class ManagerServices {
         manager.setAccount(accountOpt.get());
         Manager savedManager = managerRepository.save(manager);
 
-        String account = accountOpt.get().getUsername();
-        String password = accountOpt.get().getPassword();
-
-        String emailStatus = emailServices.sendEmail(email, password, account);
-        if (emailStatus == null) {
-            System.out.println("Failed to send email to: " + email);
-        } else {
-            System.out.println("Email sent successfully to: " + email);
-        }
+//        String account = accountOpt.get().getUsername();
+//        String password = accountOpt.get().getPassword();
+//
+//        String emailStatus = emailServices.sendEmail(email, password, account);
+//        if (emailStatus == null) {
+//            System.out.println("Failed to send email to: " + email);
+//        } else {
+//            System.out.println("Email sent successfully to: " + email);
+//        }
 
         return savedManager;
 

@@ -253,14 +253,9 @@
                                 <table class="table display text-nowrap">
                                     <thead>
                                     <tr>
-                                        <th>Class</th>
-                                        <th>Location</th>
-                                        <th>Teacher</th>
+                                        <th>Semester</th>
                                         <th>Start Time</th>
                                         <th>End Time</th>
-                                        <th>Date</th>
-                                        <th>Note</th>
-                                        <th>Event</th>
                                         <th></th>
                                     </tr>
                                     </thead>
@@ -403,374 +398,55 @@
         console.error("User details not found in sessionStorage");
     }
 </script>
-<script>
-    document.getElementById('import').addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevents page reload
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        fetch("/semester/get")
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.querySelector("table tbody");
+                tableBody.innerHTML = ""; // Clear existing rows
 
-        // Select the file input element
-        const fileInput = document.getElementById('file'); // Ensure the id matches your file input field in the HTML
+                data.forEach(item => {
+                    const row = document.createElement("tr");
 
-        // Check if a file is selected
-        if (!fileInput.files.length) {
-            alert("Please select a file before submitting.");
-            return;
-        }
+                    // Add columns for semester name and schedule status
+                    row.innerHTML = `
+                        <td>${item.semesterName}</td>
+                        <td>${item.semesterStart}</td>
+                        <td>${item.semesterEnd}</td>
 
-        // Prepare the form data
-        const formData = new FormData();
-        formData.append("file", fileInput.files[0]);
+                    `;
 
-        // Make the fetch request
-        fetch("/schedule/import", {
-            method: "POST",
-            body: formData,
-        })
-            .then(response => {
-                return response.json();  // Always return the parsed JSON
-            })
-            .then(result => {
-                if (result.status) {
-                    // Success Modal
-                    console.log('Displaying success modal');
-                    const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
-                    successModal.show();
-                } else {
-                    // Error Modal
-                    const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
-                    const errorList = document.getElementById('long-modal').querySelector('.modal-body');
-                    errorList.innerHTML = '';  // Clear previous errors
-
-                    result.data.forEach(error => {
-                        const errorItem = document.createElement('p');
-                        errorItem.textContent = error;
-                        errorList.appendChild(errorItem);
-                    });
-
-                    errorModal.show();
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert("An error occurred while uploading the file.");
-            });
-    });
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const tableBody = document.querySelector('.table tbody');
-
-        fetch(`/schedule/get`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(schedule => {
-                schedule.forEach(item => {
-                    const row = document.createElement('tr');
-
-                    // Function to create cells
-                    const createCell = (content) => {
-                        const cell = document.createElement('td');
-                        cell.textContent = content;
-                        return cell;
-                    };
-
-                    // Create table cells
-                    const cnCell = createCell(item.className);
-                    const locationCell = createCell(item.location);
-                    const tnCell = createCell(item.teacherFullName);
-                    const stCell = createCell(item.startTime?.slice(0, 5));
-                    const etCell = createCell(item.endTime?.slice(0, 5));
-                    const dateCell = createCell(new Date(item.date).toLocaleDateString('en-US'));
-                    const noteCell = createCell(item.description || '');
-                    const eventCell = createCell(item.event || '');
-
-                    // Append cells to row
-                    row.append(cnCell, locationCell, tnCell, stCell, etCell, dateCell, noteCell, eventCell);
-
-                    // Action buttons
+                    // Create actions cell with dropdown
                     const actionsCell = document.createElement('td');
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'dropdown';
 
-                    const editButton = document.createElement('button');
-                    editButton.textContent = 'Edit';
-                    editButton.className = 'footer-btn';
+                    const dropdownToggle = document.createElement('a');
+                    dropdownToggle.href = '#';
+                    dropdownToggle.className = 'dropdown-toggle';
+                    dropdownToggle.setAttribute('data-toggle', 'dropdown');
+                    dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
+                    dropdown.appendChild(dropdownToggle);
 
-                    const saveButton = document.createElement('button');
-                    saveButton.textContent = 'Save';
-                    saveButton.className = 'footer-btn d-none';
-
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'Delete';
-                    deleteButton.className = 'footer-btn bg-linkedin';
-
-                    actionsCell.append(editButton, saveButton, deleteButton);
+                    const dropdownMenu = document.createElement('div');
+                    dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
+                    dropdownMenu.innerHTML = `
+                        <a class="dropdown-item" href="/schedule-detail.html?semesterId=${item.semesterId}">
+                            <i class="fas fa-glasses text-dark-pastel-green"></i> View Schedule
+                        </a>
+                    `;
+                    dropdown.appendChild(dropdownMenu);
+                    actionsCell.appendChild(dropdown);
                     row.appendChild(actionsCell);
+
+                    // Append the row to the table body
                     tableBody.appendChild(row);
-
-                    // Edit button functionality
-                    editButton.addEventListener('click', () => {
-                        [locationCell, stCell, etCell, noteCell, eventCell].forEach(cell => {
-                            const input = document.createElement('input');
-                            input.type = 'text';
-                            input.value = cell.textContent.trim();
-                            input.className = 'form-control';
-                            cell.innerHTML = ''; // Clear cell
-                            cell.appendChild(input);
-                        });
-
-                        editButton.classList.add('d-none');
-                        saveButton.classList.remove('d-none');
-                    });
-
-                    // Save button functionality
-                    saveButton.addEventListener('click', () => {
-                        // Get the updated schedule data from the input fields
-                        const updatedSchedule = {
-                            id: item.id,
-                            className: item.className,
-                            location: locationCell.querySelector('input').value,
-                            startTime: stCell.querySelector('input').value,
-                            endTime: etCell.querySelector('input').value,
-                            description: noteCell.querySelector('input').value,
-                            event: eventCell.querySelector('input').value,
-                        };
-
-                        if (updatedSchedule.startTime.trim() === "") {
-                            updatedSchedule.startTime = null;
-                        } else {
-                            updatedSchedule.startTime = updatedSchedule.startTime + ':00'; // Add ":00" for time format
-                        }
-
-                        if (updatedSchedule.endTime.trim() === "") {
-                            updatedSchedule.endTime = null;
-                        } else {
-                            updatedSchedule.endTime = updatedSchedule.endTime + ':00'; // Add ":00" for time format
-                        }
-
-                        // Send the updated schedule to the backend
-                        fetch(`/schedule/update/${item.id}`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(updatedSchedule),
-                        })
-                            .then(response => {
-                                if (!response.ok) {
-                                    return response.text().then(errorMessage => { throw new Error(errorMessage); });
-                                }
-                                return response.json();
-                            })
-                            .then(() => {
-                                alert('Schedule updated successfully!');
-                                location.reload(); // Reload table
-                            })
-                            .catch(error => alert(error.message));
-                    });
-
-                    // Delete button functionality
-                    deleteButton.addEventListener('click', () => {
-                        if (confirm('Are you sure you want to delete this schedule?')) {
-                            fetch(`/schedule/delete/${item.id}`, {
-                                method: 'DELETE',
-                            })
-                                .then(response => {
-                                    if (!response.ok) throw new Error('Failed to delete schedule');
-                                    row.remove();
-                                })
-                                .catch(err => {
-                                    console.error(err);
-                                    alert('Failed to delete schedule');
-                                });
-                        }
-                    });
                 });
             })
-            .catch(error => console.error('Error fetching schedule:', error));
+            .catch(error => console.error("Error fetching data:", error));
     });
 </script>
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const tableBody = document.querySelector('.table tbody');
-        const form = document.querySelector('form');
-
-        form.addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent default form submission
-
-            const formData = new FormData(form);
-            const params = new URLSearchParams(formData).toString(); // Prepare query parameters
-
-            // Clear the table before inserting new data
-            tableBody.innerHTML = '';
-
-            // Make the fetch request to search schedules
-            fetch(`/schedule/search?${params}`, {
-                method: 'GET', // Using GET here since we are querying data
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.json(); // Parse the JSON response
-                })
-                .then(schedules => {
-                    // Iterate through the returned schedule data and populate the table
-                    schedules.forEach(schedule => {
-                        const row = document.createElement('tr');
-
-                        // Class name cell
-                        const cnCell = document.createElement('td');
-                        cnCell.textContent = schedule.className;
-                        row.appendChild(cnCell);
-
-                        // Location cell
-                        const locationCell = document.createElement('td');
-                        locationCell.textContent = schedule.location;
-                        row.appendChild(locationCell);
-
-                        // Teacher name cell
-                        const tnCell = document.createElement('td');
-                        tnCell.textContent = schedule.teacherFullName;
-                        row.appendChild(tnCell);
-
-                        // Start time cell
-                        const stCell = document.createElement('td');
-                        stCell.textContent = schedule.startTime ? schedule.startTime.slice(0, 5) : '';
-                        row.appendChild(stCell);
-
-                        // End time cell
-                        const etCell = document.createElement('td');
-                        etCell.textContent = schedule.endTime ? schedule.endTime.slice(0, 5) : '';
-                        row.appendChild(etCell);
-
-                        // Date cell
-                        const dateCell = document.createElement('td');
-                        dateCell.textContent = schedule.date
-                            ? new Date(schedule.date).toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric',
-                            })
-                            : '';
-                        row.appendChild(dateCell);
-
-                        // Note cell
-                        const noteCell = document.createElement('td');
-                        noteCell.textContent = schedule.description || '';
-                        row.appendChild(noteCell);
-
-                        // Event cell
-                        const eventCell = document.createElement('td');
-                        eventCell.textContent = schedule.event || '';
-                        row.appendChild(eventCell);
-
-                        // Action cell
-                        const actionsCell = document.createElement('td');
-
-                        const editButton = document.createElement('button');
-                        editButton.textContent = 'Edit';
-                        editButton.className = 'footer-btn';
-
-                        const saveButton = document.createElement('button');
-                        saveButton.textContent = 'Save';
-                        saveButton.className = 'footer-btn d-none';
-
-                        const deleteButton = document.createElement('button');
-                        deleteButton.textContent = 'Delete';
-                        deleteButton.className = 'footer-btn bg-linkedin';
-
-                        actionsCell.append(editButton, saveButton, deleteButton);
-                        row.appendChild(actionsCell);
-                        tableBody.appendChild(row);
-
-                        // Edit button functionality
-                        editButton.addEventListener('click', () => {
-                            [locationCell, stCell, etCell, noteCell, eventCell].forEach(cell => {
-                                const input = document.createElement('input');
-                                input.type = 'text';
-                                input.value = cell.textContent.trim();
-                                input.className = 'form-control';
-                                cell.innerHTML = ''; // Clear cell
-                                cell.appendChild(input);
-                            });
-
-                            editButton.classList.add('d-none');
-                            saveButton.classList.remove('d-none');
-                        });
-
-                        // Save button functionality
-                        saveButton.addEventListener('click', () => {
-                            // Get the updated schedule data from the input fields
-                            console.log('Schedule ID:', schedule.id);
-                            row.dataset.id = schedule.id;
-                            const updatedSchedule = {
-                                id: row.dataset.id,  // Retrieve the ID stored in the row's dataset
-                                className: cnCell.textContent, // Class name is not editable in your script
-                                location: locationCell.querySelector('input').value,
-                                startTime: stCell.querySelector('input').value,
-                                endTime: etCell.querySelector('input').value,
-                                description: noteCell.querySelector('input').value,
-                                event: eventCell.querySelector('input').value,
-                            };
-
-                            if (updatedSchedule.startTime.trim() === "") {
-                                updatedSchedule.startTime = null;
-                            } else {
-                                updatedSchedule.startTime = updatedSchedule.startTime + ':00'; // Add ":00" for time format
-                            }
-
-                            if (updatedSchedule.endTime.trim() === "") {
-                                updatedSchedule.endTime = null;
-                            } else {
-                                updatedSchedule.endTime = updatedSchedule.endTime + ':00'; // Add ":00" for time format
-                            }
-
-                            // Send the updated schedule to the backend
-                            fetch(`/schedule/update/${updatedSchedule.id}`, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify(updatedSchedule),
-                            })
-                                .then(response => {
-                                    if (!response.ok) {
-                                        return response.text().then(errorMessage => {
-                                            throw new Error(errorMessage);
-                                        });
-                                    }
-                                    return response.json();
-                                })
-                                .then(() => {
-                                    alert('Schedule updated successfully!');
-                                    location.reload(); // Reload table
-                                })
-                                .catch(error => alert(error.message));
-                        });
-                        // Delete button functionality
-                        deleteButton.addEventListener('click', () => {
-                            if (confirm('Are you sure you want to delete this schedule?')) {
-                                fetch(`/schedule/delete/${schedule.id}`, {
-                                    method: 'DELETE',
-                                })
-                                    .then(response => {
-                                        if (!response.ok) throw new Error('Failed to delete schedule');
-                                        row.remove();
-                                    })
-                                    .catch(err => {
-                                        console.error(err);
-                                        alert('Failed to delete schedule');
-                                    });
-                            }
-                        });
-                    });
-                })
-                .catch(error => console.error('Error fetching schedule:', error));
-        });
-    });
-</script>
-
 
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.example.jip.repository;
 import com.example.jip.dto.AttendantDTO;
 import com.example.jip.entity.Attendant;
 import com.example.jip.entity.Schedule;
+import com.example.jip.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -43,4 +44,11 @@ public interface AttendantRepository extends JpaRepository<Attendant, Integer> {
             "WHERE s.clasz.id = :classId AND s.date = :date")
     boolean existsByClassIdAndDate(@Param("classId") Integer classId, @Param("date") Date date);
 
+    int countAttendedByStudentId(Student student);
+
+    @Query("SELECT c.total_slot " +
+            "FROM Attendant a " +
+            "JOIN a.curriculum c " +
+            "WHERE a.student.id = :studentId")
+    Integer findTotalSlotByStudentId(@Param("studentId") Integer studentId);
 }

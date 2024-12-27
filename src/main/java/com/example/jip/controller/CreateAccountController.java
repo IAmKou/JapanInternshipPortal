@@ -41,6 +41,7 @@ public class CreateAccountController {
         try {
             String password = generateVerifyCode();
             int accountId = accountServices.createAccount(username, password, role);
+
             return ResponseEntity.ok(accountId);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating account");

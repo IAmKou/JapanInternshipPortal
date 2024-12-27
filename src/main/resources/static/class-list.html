@@ -364,7 +364,10 @@
 
                     // Name cell
                     const nameCell = document.createElement('td');
-                    nameCell.textContent = clasz.name;
+                    const link = document.createElement('a'); // Create an anchor element
+                    link.textContent = clasz.name; // Set the text of the link
+                    link.href = `/list-mark-manager.html?classId=${clasz.id}`; // Set the href attribute to the desired HTML page
+                    nameCell.appendChild(link); // Append the anchor element to the cell
                     row.appendChild(nameCell);
 
                     // Teacher Name cell

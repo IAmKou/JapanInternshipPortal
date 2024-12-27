@@ -337,7 +337,7 @@
         <div class="card-body">
           <div class="heading-layout1">
             <div class="item-title">
-              <h2 class="text-dark-medium font-medium">Your Submitted Submission</h2>
+              <h2 class="text-dark-medium font-medium">Your Submission</h2>
             </div>
           </div>
           <div class="single-info-details">
@@ -352,9 +352,18 @@
                   <label for="content">Content *</label>
                   <textarea id="content" class="form-control" name="content" rows="4" required></textarea>
                 </div>
+                <div class="col-xl-12 col-lg-12 col-12 form-group">
+                <label for="studentAssignment-files" style="color: #007bff; font-weight: bold;">Existed Files:</label>
+                <div id="studentAssignment-files"></div>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-12 form-group">
+                  <label for="img" style="color: #007bff; font-weight: bold;">File:</label>
+                  <input id="img" multiple name="imgFile" type="file"/>
+                </div>
                 <div class="col-12 form-group mg-t-8">
                   <button type="submit" onclick="updateAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" id="submitBtn">Update</button>
                 </div>
+
               </div>
             </form>
           </div>
@@ -482,11 +491,50 @@
       document.getElementById('content').value = studentAssignment.content;
       const status = studentAssignment.status;
 
+      // Display file download links (if any)
+      const files = studentAssignment.files || [];
+      const filesContainer = document.getElementById('studentAssignment-files');
+      filesContainer.innerHTML = ''; // Clear any existing content
+
+      if (files.length > 0) {
+        files.forEach((fileUrl) => {
+          const fileRow = document.createElement('div');
+          fileRow.style.display = 'flex';
+          fileRow.style.alignItems = 'center';
+          fileRow.style.marginBottom = '8px';
+
+          // File link
+          const link = document.createElement('a');
+          link.href = fileUrl;
+          link.textContent = fileUrl.split('/').pop();
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.style.flex = '1';
+
+          // Delete icon
+          const deleteIcon = document.createElement('span');
+          deleteIcon.textContent = '🗑️';
+          deleteIcon.style.cursor = 'pointer';
+          deleteIcon.style.marginLeft = '10px';
+          deleteIcon.title = 'Delete this file';
+          deleteIcon.onclick = () => deleteFile(fileUrl, studentAssignmentId, fileRow);
+
+          // Append file link and icon
+          fileRow.appendChild(link);
+          fileRow.appendChild(deleteIcon);
+          filesContainer.appendChild(fileRow);
+        });
+      } else {
+        document.getElementById('studentAssignment-files').textContent = "No files uploaded";
+      }
+
       if(status == 'MARKED'){
         document.getElementById('statusMessage').textContent = 'This assignment has been marked and cannot be updated.';
         document.getElementById('statusMessage').style.display = 'block';
         document.getElementById('description').disabled = true;
         document.getElementById('content').disabled = true;
+        document.getElementById('studentAssignment-files').disabled = true;
+        deleteIcon.disabled = true;
         document.getElementById('submitBtn').disabled = true;
       }
 
@@ -497,6 +545,28 @@
   }
 
   fetchStudentAssignmentDetails()
+
+  async function deleteFile(fileUrl, studentAssignmentId, fileRow) {
+    if (!confirm('Are you sure you want to delete this file?')) return;
+
+    try {
+      console.log("studentAssignmentId: " + studentAssignmentId);
+      const response = await fetch(`student-assignment/delete-file`, {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({fileUrl, studentAssignmentId})
+      });
+
+      if (response.ok) {
+        alert('File deleted successfully!');
+        fileRow.remove(); // Remove the file row from the DOM
+      } else {
+        alert('Failed to delete the file. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error deleting file:', error);
+    }
+  }
 
   async function updateAssignment(event) {
     event.preventDefault(); // Prevent default form submission behavior
@@ -511,7 +581,7 @@
       const description = document.getElementById('description').value.trim();
       const content = document.getElementById('content').value.trim();
       const currentDate = new Date().toISOString().split("T")[0];
-
+      const imgFiles = document.getElementById('img').files;
       // Validate inputs
       if (!description || !content) {
         alert("Please fill in all required fields.");
@@ -523,6 +593,10 @@
       formData.append("description", description);
       formData.append("content", content);
       formData.append("date", currentDate);
+
+      for (let i = 0; i < imgFiles.length; i++) {
+        formData.append('imgFile', imgFiles[i]); // Match the backend field
+      }
 
       // Make the PUT request to update the StudentAssignment
       const response = await fetch(`student-assignment/update/${studentAssignmentId}`, {

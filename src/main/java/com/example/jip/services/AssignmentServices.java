@@ -2,7 +2,7 @@ package com.example.jip.services;
 
 import com.example.jip.dto.request.assignment.AssignmentCreationRequest;
 import com.example.jip.dto.request.assignment.AssignmentUpdateRequest;
-import com.example.jip.dto.request.FileDeleteRequest;
+import com.example.jip.dto.request.assignment.FileDeleteRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.entity.*;
 
@@ -46,7 +46,10 @@ public class AssignmentServices {
 
     NotificationServices notificationServices;
 
+    StudentAssignmentServices studentAssignmentServices;
+
     S3Service s3Service;
+
 
 
     @PreAuthorize("hasAuthority('TEACHER')")
@@ -165,7 +168,7 @@ public class AssignmentServices {
                                 teacher.getAccount().getId(),
                                 student.getAccount().getId()
                         );
-                        emailServices.sendEmailCreateAssignment(student.getEmail(),clas.getName());
+//                        emailServices.sendEmailCreateAssignment(student.getEmail(),clas.getName());
                     }
                 } else {
                     log.warn("Class with ID {} not found", classId);
@@ -289,7 +292,13 @@ public class AssignmentServices {
         // Delete related rows in dependent tables
         assignmentStudentRepository.deleteByAssignmentId(assignmentId);
         assignmentClassRepository.deleteByAssignmentId(assignmentId);
-        studentAssignmentRepository.deleteByAssignmentId(assignmentId);
+        for(StudentAssignment studentAssignment : studentAssignmentRepository.findByAssignmentId(assignmentId)) {
+            studentAssignmentRepository.deleteByAssignmentId(assignmentId);
+            if(studentAssignment.getFile_url() != null) {
+                String folderPath = sanitizeFolderName(studentAssignment.getFile_url());
+                s3Service.deleteFolder(folderPath);
+            }
+        }
 
         // Delete associated cloud resources if applicable
         if(assignment.getImgUrl() != null) {
@@ -366,7 +375,7 @@ public class AssignmentServices {
                             teacher.getAccount().getId(),
                             student.getAccount().getId()
                     );
-                    emailServices.sendEmailCreateAssignment(student.getEmail(),clas.getName());
+//                    emailServices.sendEmailCreateAssignment(student.getEmail(),clas.getName());
                 }
             }
         }
@@ -399,10 +408,12 @@ public class AssignmentServices {
 
 
     public void deleteFile(FileDeleteRequest request){
+        Assignment assignment = assignmentRepository.findById(request.getAssignmentId())
+                .orElseThrow(() -> new NoSuchElementException("Assignment id not found!"));
     // Sanitize folder name and delete the file
         String folderName = sanitizeFolderName("assignments/" + assignmentRepository.findById(request.getAssignmentId())
                 .orElseThrow(() -> new NoSuchElementException("Assignment not found!"))
-                .getDescription());
+                .getDescription() + "_" + assignment.getTeacher().getFullname());
 
         s3Service.deleteFile(request.getFileUrl(), folderName);
     }
