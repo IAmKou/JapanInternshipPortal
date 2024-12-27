@@ -35,6 +35,7 @@
 <!-- Preloader End Here -->
 <div id="wrapper" class="wrapper bg-ash">
     <!-- Header Menu Area Start Here -->
+    <div id="google_translate_element"></div>
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
@@ -304,6 +305,20 @@
 <script src="js/Chart.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
+<script src="script.js"></script>
+
+<script type="text/javascript">
+    // This function will initialize Google Translate
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en', // Set the default language of the page
+            includedLanguages: 'en,es,fr,de,ja', // Add the languages you want to support
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+    }
+
+</script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         fetch('/report/counts')
