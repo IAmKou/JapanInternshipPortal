@@ -400,7 +400,8 @@
 
                     const noticeLink = document.createElement('a');
                     noticeLink.href = "#";
-                    noticeLink.textContent = notification.title;
+                    const plainTextTitle = notification.title.replace(/<\/?[^>]+(>|$)/g, '');
+                    noticeLink.textContent = plainTextTitle;
 
                     noticeTitle.appendChild(noticeLink);
                     noticeDiv.appendChild(noticeTitle);

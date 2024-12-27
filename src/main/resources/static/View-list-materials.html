@@ -481,7 +481,8 @@
             // Lấy teacher_id từ sessionStorage
             const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
             const currentTeacherId = userDetails ? userDetails.id : null;
-
+            const language = localStorage.getItem('language') || 'en';  // Mặc định 'en'
+            getTranslation(language);  // Áp dụng ngôn ngữ ngay lập tức khi tải nhiệm vụ
             console.log("Current Teacher ID: ", currentTeacherId);
 
             // Fetch dữ liệu từ backend và lấy teacherId cùng với materials
@@ -531,7 +532,9 @@
 `;
                         materialList.appendChild(row);
                     });
-
+                    setTimeout(() => {
+                        getTranslation(language);
+                    }, 100);  // Gọi lại dịch sau 100ms để các phần tử được render và dịch
                     // Cập nhật lại DataTable mà không phá hủy bảng cũ
                     if ($.fn.dataTable.isDataTable('.data-table')) {
                         var table = $('.data-table').DataTable();
@@ -793,6 +796,7 @@
                     "are_you": "この資料を削除してもよろしいですか？",
                     "delete": "削除",
                     "cancel": "キャンセル",
+
                     "success": "成功",
                     "delete_material_success": "資料の削除に成功しました！",
                     // end main screen

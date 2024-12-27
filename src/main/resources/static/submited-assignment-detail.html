@@ -27,11 +27,25 @@
   <link rel="stylesheet" href="style.css">
   <!-- Modernize js -->
   <script src="js/modernizr-3.6.0.min.js"></script>
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 </head>
 
 <style>
-  #content {
-    height: 200px; /* Thay đổi chiều cao tùy ý */
+  /* Chỉnh sửa kích thước chữ trong nội dung modal */
+  .modal-body {
+    font-size: 2rem;  /* Tăng kích thước chữ lên 2rem (hoặc px tùy theo mong muốn) */
+    font-weight: 600;   /* Đậm chữ thêm để nổi bật */
+  }
+
+  /* Chỉnh sửa kích thước chữ trong modal lỗi */
+  #long-modal .modal-body {
+    font-size: 2rem;  /* Kích thước chữ trong modal lỗi */
+  }
+
+  /* Chỉnh sửa kích thước chữ trong modal thành công */
+  #success-modal .modal-body {
+    font-size: 2rem;  /* Kích thước chữ trong modal thành công */
   }
 
   table td {
@@ -59,7 +73,180 @@
     display: inline-block;
     margin-right: 15px;  /* Đảm bảo khoảng cách giữa title và description */
   }
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
+  /* Custom Modal Styling */
+  #success-modal .modal-header {
+    background-color: #28a745; /* Màu nền của header */
+    color: #fff;
+    font-size: 1.25rem;
+  }
+
+  #success-modal .modal-body {
+    font-size: 1.1rem;
+    padding: 30px;
+    background-color: #f8f9fa;
+    color: #333;
+  }
+
+  #success-modal .modal-body .fas.fa-check-circle {
+    color: #28a745;
+  }
+
+  #success-modal .btn-success {
+    font-size: 1rem;
+    padding: 10px 20px;
+    background-color: #28a745;
+    border-color: #28a745;
+  }
+
+  #success-modal .btn-close {
+    color: white;
+  }
+
+  #success-modal .modal-body p {
+    font-size: 0.9rem;
+    color: #6c757d; /* Màu nhạt hơn cho mô tả */
+  }
+
+  /* Custom Modal Styling for Error Modal */
+  #error-modal .modal-header {
+    background-color: #dc3545; /* Màu nền của header (Đỏ cho lỗi) */
+    color: #fff;
+    font-size: 1.25rem;
+  }
+
+  #error-modal .modal-body {
+    font-size: 1.1rem;
+    padding: 30px;
+    background-color: #f8f9fa;
+    color: #333;
+  }
+
+  #error-modal .modal-body .fas.fa-times-circle {
+    color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+  }
+
+  #error-modal .btn-danger {
+    font-size: 1rem;
+    padding: 10px 20px;
+    background-color: #dc3545; /* Màu đỏ cho nút lỗi */
+    border-color: #dc3545;
+  }
+
+  #error-modal .btn-close {
+    color: white;
+  }
+
+  #error-modal .modal-body p {
+    font-size: 0.9rem;
+    color: #6c757d; /* Màu nhạt hơn cho mô tả */
+  }
+  .item-content {
+    color: #000;  /* Chọn màu xám đậm cho tất cả văn bản trong .item-content */
+  }
+
+  .item-content table {
+    width: 100%;
+  }
+
+  .item-content td {
+    color: #333;  /* Tạo màu chữ tương phản cao với nền trắng */
+  }
+
+  .item-content td:first-child {
+    font-weight: bold;  /* Làm đậm các nhãn (label) */
+  }
+
+  .item-content td:last-child {
+    color: #000;  /* Màu chữ đen cho các giá trị */
+  }
+  /* Áp dụng cho bảng có id 'submittedAssignment_table' */
+  #submittedAssignment_table {
+    table-layout: fixed;  /* Đảm bảo các cột có chiều rộng đều */
+    width: 100%;  /* Bảng chiếm hết chiều rộng */
+    border-collapse: collapse;  /* Loại bỏ khoảng cách giữa các ô */
+  }
+
+  #submittedAssignment_table th, #submittedAssignment_table td {
+    padding: 10px;  /* Thêm khoảng cách trong mỗi ô */
+    text-align: center;  /* Căn giữa nội dung trong ô */
+    border: 1px solid #ddd;  /* Đặt đường viền mỏng cho các ô */
+    word-wrap: break-word;  /* Đảm bảo nội dung không tràn ra ngoài ô */
+  }
+
+  #submittedAssignment_table th {
+    background-color: #f8f8f8;  /* Màu nền cho tiêu đề */
+    font-weight: bold;  /* Đảm bảo tiêu đề nổi bật */
+  }
+  table {
+    width: 100%;  /* Đảm bảo bảng chiếm toàn bộ chiều rộng */
+    border-collapse: collapse;  /* Loại bỏ khoảng trống giữa các ô trong bảng */
+  }
+
+  td {
+    padding: 4px 8px; /* Điều chỉnh giảm khoảng cách trái/phải và trên/dưới */
+    vertical-align: middle; /* Căn chỉnh dọc cho nội dung */
+    line-height: 1.2; /* Giảm chiều cao dòng để nội dung gần nhau hơn */
+  }
+
+  td:first-child {
+    width: 12%; /* Thêm chiều rộng cho các thẻ tiêu đề */
+    font-weight: bold; /* Tiêu đề đậm */
+  }
+
+  input[name="description"] {
+    border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+    border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+  }
+
+  input[name="description"]:hover {
+    border-color: #28a745 !important;
+  }
+  /* Khi người dùng focus vào input */
+  input[name="description"]:focus {
+    border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+    box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+  }
+
+  input[name="content"] {
+    border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+    border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+  }
+
+  input[name="content"]:hover {
+    border-color: #28a745 !important;
+  }
+  /* Khi người dùng focus vào input */
+  input[name="content"]:focus {
+    border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+    box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+  }
+
+  #content {
+    border: 2px solid #007bff;  /* Đặt màu border là màu xanh dương */
+    border-radius: 5px;         /* Thêm góc bo tròn nếu cần */
+  }
+
+  /* Tạo hiệu ứng khi người dùng hover vào Quill editor */
+  #content:hover {
+    border-color: #28a745;      /* Chuyển màu border thành màu xanh lá khi hover */
+  }
+
+  /* Tạo hiệu ứng khi Quill editor có focus (khi người dùng click vào) */
+  #content:focus {
+    border-color: #ff6347;      /* Chuyển màu border thành màu cam khi có focus */
+    box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm bóng để nổi bật hơn */
+  }
 </style>
 
 <body>
@@ -295,14 +482,14 @@
           <div class="heading-layout1">
             <div class="item-title">
               <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Title:</h3>
-              <span id="assignment-description" style="display: inline; margin-left: 80px;"></span>
+              <span id="assignment-description" style="display: inline; margin-left: 80px; font-weight: bold; color: #000;"></span>
             </div>
           </div>
           &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
           <div class="heading-layout1">
             <div class="item-title">
               <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Description:</h3>
-              <span id="assignment-content" style="display: inline; margin-left: 10px;"></span>
+              <span id="assignment-content" style="display: inline; margin-left: 10px; font-weight: bold; color: #000;"></span>
             </div>
           </div>
 
@@ -345,13 +532,14 @@
               <div id="statusMessage" class="alert alert-danger" style="display: none;"></div>
               <div class="row">
                 <div class="col-xl-8 col-lg-6 col-12 form-group">
-                  <label for="description">Description *</label>
+                  <label for="description" style="color: #007bff; font-weight: bold;">Description *</label>
                   <input type="text" class="form-control" name="description" id="description" required>
                 </div>
                 <div class="col-xl-12 col-lg-12 col-12 form-group">
-                  <label for="content">Content *</label>
-                  <textarea id="content" class="form-control" name="content" rows="4" required></textarea>
+                  <label for="content" style="color: #007bff; font-weight: bold;">Content *</label>
+                  <div id="content" class="form-control" style="height: 200px;"></div> <!-- Quill editor -->
                 </div>
+
                 <div class="col-xl-12 col-lg-12 col-12 form-group">
                 <label for="studentAssignment-files" style="color: #007bff; font-weight: bold;">Existed Files:</label>
                 <div id="studentAssignment-files"></div>
@@ -370,6 +558,39 @@
         </div>
       </div>
     </div>
+    <!-- Success Modal -->
+    <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h5 class="modal-title text-success" id="successModalLabel">
+              <i class="fas fa-check-circle"></i> Success
+            </h5>
+          </div>
+          <div class="modal-body text-center">
+            <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+            <!-- Dòng thông báo sẽ hiển thị ở đây -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h5 class="modal-title text-danger" id="errorModalLabel">
+              <i class="fas fa-times-circle"></i> Error
+            </h5>
+          </div>
+          <div class="modal-body">
+            <!-- Dòng thông báo lỗi sẽ hiển thị ở đây -->
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
   <!-- Page Area End Here -->
 </div>
@@ -432,8 +653,20 @@
       const endDateFormatted = formatDateTime(assignment.end_date);
 
       // Populate the form fields with the fetched assignment details
-      document.getElementById('assignment-description').textContent = assignment.description || ""; // Populate description field
-      document.getElementById('assignment-content').textContent = assignment.content || ""; // Populate content field
+      document.getElementById('assignment-description').textContent = assignment.description || "No description provided";
+      document.getElementById('assignment-description').style.fontSize = "18px";  // Tăng cỡ chữ cho description
+
+      if (assignment.content) {
+        // Loại bỏ thẻ block như <p>, <div>, thay thế bằng newline '\n'
+        var sanitizedContent = assignment.content.replace(/<\/?(p|div)[^>]*>/gi, '\n');
+
+        // Hiển thị nội dung trong HTML, giữ các thẻ inline như <strong>, <em>...
+        document.getElementById('assignment-content').innerHTML = sanitizedContent;
+        document.getElementById('assignment-content').style.fontSize = "18px";  // Tăng cỡ chữ cho content
+      } else {
+        document.getElementById('assignment-content').textContent = "No content provided";
+        document.getElementById('assignment-content').style.fontSize = "18px";  // Tăng cỡ chữ khi không có nội dung
+      }
       document.getElementById('created-date').textContent = createdDateFormatted || "N/A"; // Populate created date
       document.getElementById('end-date').textContent = endDateFormatted || "N/A"; // Display end date
 
@@ -466,8 +699,22 @@
   // Call the function on page load
   fetchAssignmentDetails();
 
+  // Khởi tạo Quill
+  let quill = new Quill('#content', {
+    theme: 'snow',
+    placeholder: 'Content goes here...',
+    modules: {
+      toolbar: [
+        ['bold', 'italic', 'underline'],
+        [{'list': 'ordered'}, {'list': 'bullet'}],
+        [{'header': [1, 2, 3, false]}],
+        ['clean']
+      ]
+    }
+  });
+
+  // Hàm để lấy chi tiết bài tập sinh viên
   async function fetchStudentAssignmentDetails() {
-    // Get the studentAssignmentId from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const studentAssignmentId = urlParams.get('id');
 
@@ -477,24 +724,26 @@
     }
 
     try {
-      // Fetch the StudentAssignment details
       const response = await fetch(`student-assignment/detail?studentAssignmentId=${studentAssignmentId}`);
       if (!response.ok) {
         throw new Error('Error fetching StudentAssignment for update: ' + response.statusText);
       }
 
       const studentAssignment = await response.json();
-      console.log("Fetched Assignment:", studentAssignment); // Debugging log
+      console.log("Fetched Assignment:", studentAssignment);  // Log để debug
 
-      // Populate form fields with the fetched data
+      // Điền dữ liệu vào form
       document.getElementById('description').value = studentAssignment.description;
-      document.getElementById('content').value = studentAssignment.content;
+
+      // Cập nhật nội dung cho Quill
+      quill.root.innerHTML = studentAssignment.content;
+
       const status = studentAssignment.status;
 
-      // Display file download links (if any)
+      // Hiển thị các liên kết tải về tệp (nếu có)
       const files = studentAssignment.files || [];
       const filesContainer = document.getElementById('studentAssignment-files');
-      filesContainer.innerHTML = ''; // Clear any existing content
+      filesContainer.innerHTML = '';  // Xóa các tệp cũ
 
       if (files.length > 0) {
         files.forEach((fileUrl) => {
@@ -503,7 +752,6 @@
           fileRow.style.alignItems = 'center';
           fileRow.style.marginBottom = '8px';
 
-          // File link
           const link = document.createElement('a');
           link.href = fileUrl;
           link.textContent = fileUrl.split('/').pop();
@@ -511,7 +759,6 @@
           link.rel = 'noopener noreferrer';
           link.style.flex = '1';
 
-          // Delete icon
           const deleteIcon = document.createElement('span');
           deleteIcon.textContent = '🗑️';
           deleteIcon.style.cursor = 'pointer';
@@ -519,7 +766,6 @@
           deleteIcon.title = 'Delete this file';
           deleteIcon.onclick = () => deleteFile(fileUrl, studentAssignmentId, fileRow);
 
-          // Append file link and icon
           fileRow.appendChild(link);
           fileRow.appendChild(deleteIcon);
           filesContainer.appendChild(fileRow);
@@ -528,11 +774,12 @@
         document.getElementById('studentAssignment-files').textContent = "No files uploaded";
       }
 
-      if(status == 'MARKED'){
+      // Hiển thị thông báo nếu bài tập đã được đánh dấu
+      if (status === 'MARKED') {
         document.getElementById('statusMessage').textContent = 'This assignment has been marked and cannot be updated.';
         document.getElementById('statusMessage').style.display = 'block';
         document.getElementById('description').disabled = true;
-        document.getElementById('content').disabled = true;
+        quill.root.contentEditable = false; // Vô hiệu hóa Quill khi bài tập đã được đánh dấu
         document.getElementById('studentAssignment-files').disabled = true;
         deleteIcon.disabled = true;
         document.getElementById('submitBtn').disabled = true;
@@ -544,7 +791,8 @@
     }
   }
 
-  fetchStudentAssignmentDetails()
+  // Gọi hàm khi trang được tải
+  fetchStudentAssignmentDetails();
 
   async function deleteFile(fileUrl, studentAssignmentId, fileRow) {
     if (!confirm('Are you sure you want to delete this file?')) return;
@@ -569,57 +817,82 @@
   }
 
   async function updateAssignment(event) {
-    event.preventDefault(); // Prevent default form submission behavior
+    event.preventDefault(); // Ngăn hành vi gửi form mặc định
 
-    // Get the studentAssignmentId from the URL
+    // Lấy studentAssignmentId từ URL
     const urlParams = new URLSearchParams(window.location.search);
     const studentAssignmentId = urlParams.get('id');
 
-    // Prepare for update on form submission
+    // Chuẩn bị cho việc cập nhật khi form được gửi
     try {
-      // Fetch values from the form
+      // Lấy giá trị từ form và Quill editor
       const description = document.getElementById('description').value.trim();
-      const content = document.getElementById('content').value.trim();
+      const content = quill.root.innerHTML.trim();  // Lấy nội dung từ Quill editor
       const currentDate = new Date().toISOString().split("T")[0];
       const imgFiles = document.getElementById('img').files;
-      // Validate inputs
+
+      // Kiểm tra dữ liệu đầu vào
       if (!description || !content) {
-        alert("Please fill in all required fields.");
+        showErrorModal("Please fill in all required fields.");
         return;
       }
 
-      // Prepare the data to send in the request
+      // Tạo FormData để gửi dữ liệu
       const formData = new FormData();
       formData.append("description", description);
       formData.append("content", content);
       formData.append("date", currentDate);
 
       for (let i = 0; i < imgFiles.length; i++) {
-        formData.append('imgFile', imgFiles[i]); // Match the backend field
+        formData.append('imgFile', imgFiles[i]); // Kết nối trường ảnh với backend
       }
 
-      // Make the PUT request to update the StudentAssignment
+      // Thực hiện PUT request để cập nhật StudentAssignment
       const response = await fetch(`student-assignment/update/${studentAssignmentId}`, {
         method: "PUT",
         body: formData,
       });
 
       if (response.ok) {
-        // Update successful
-        alert("StudentAssignment updated successfully.");
-        window.location.href = '/list-submitted-assignments.html';
+        // Cập nhật thành công, hiển thị modal success
+        showSuccessModal("StudentAssignment updated successfully.");
+        setTimeout(() => {
+          window.location.href = '/list-submitted-assignments.html';
+        }, 1500);  // Chờ 1.5s trước khi chuyển trang
       } else if (response.status === 404) {
-        alert("StudentAssignment not found.");
+        showErrorModal("StudentAssignment not found.");
       } else if (response.status === 400) {
         const errorMessage = await response.text();
-        alert(`Failed to update StudentAssignment: ${errorMessage}`);
+        showErrorModal(`Failed to update StudentAssignment: ${errorMessage}`);
       } else {
-        alert("An unexpected error occurred. Please try again.");
+        showErrorModal("An unexpected error occurred. Please try again.");
       }
     } catch (error) {
       console.error("Error updating StudentAssignment:", error);
-      alert("An error occurred while updating the StudentAssignment. Please try again.");
+      showErrorModal("An error occurred while updating the StudentAssignment. Please try again.");
     }
+  }
+
+  // Hàm hiển thị modal thành công
+  function showSuccessModal(message) {
+    const successModalBody = document.querySelector('#success-modal .modal-body');
+    successModalBody.textContent = message;
+
+    // Tăng kích thước chữ trong modal thành công
+    successModalBody.style.fontSize = '18px';  // Cập nhật kích thước chữ
+
+    $('#success-modal').modal('show');
+  }
+
+  // Hàm hiển thị modal lỗi
+  function showErrorModal(message) {
+    const errorModalBody = document.querySelector('#long-modal .modal-body');
+    errorModalBody.textContent = message;
+
+    // Tăng kích thước chữ trong modal lỗi
+    errorModalBody.style.fontSize = '18px';  // Cập nhật kích thước chữ
+
+    $('#long-modal').modal('show');
   }
 
 
