@@ -104,7 +104,7 @@ CREATE TABLE Curriculum (
 
 -- Schedule table
 CREATE TABLE Schedule (
-                          id INT AUTO_INCREMENT PRIMARY KEY,
+                          id BIGINT AUTO_INCREMENT PRIMARY KEY,
                           date DATE NOT NULL,
                           day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
                           class_id INT DEFAULT NULL,
