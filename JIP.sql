@@ -104,7 +104,7 @@ CREATE TABLE Curriculum (
 
 -- Schedule table
 CREATE TABLE Schedule (
-                          id INT AUTO_INCREMENT PRIMARY KEY,
+                          id BIGINT AUTO_INCREMENT PRIMARY KEY,
                           date DATE NOT NULL,
                           day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
                           class_id INT DEFAULT NULL,
@@ -168,6 +168,7 @@ CREATE TABLE Student_assignment (
 CREATE TABLE mark_report (
                              Id INT AUTO_INCREMENT PRIMARY KEY,
                              student_id INT,
+                             comment TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
                              softskill DECIMAL(5,2) NULL,
                              avg_exam_mark DECIMAL(5,2) NULL,
                              middle_exam DECIMAL(5,2) NULL,
