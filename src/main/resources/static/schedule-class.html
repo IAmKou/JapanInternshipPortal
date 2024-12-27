@@ -281,8 +281,10 @@
 
                         </div>
                         <div id='wrap'>
+
                             <div id='external-events'>
                                 <h4>Draggable Events</h4>
+
                                 <div id='external-events-list'>
                                     <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'
                                          style="background-color: #136002; border-color: #136002;">
@@ -295,14 +297,6 @@
                                     <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'
                                          style="background-color: #ff5733; border-color: #ff5733;">
                                         <div class='fc-event-main'>Kotoba Test</div>
-                                    </div>
-                                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'
-                                         style="background-color: #063ec6; border-color: #063ec6;">
-                                        <div class='fc-event-main'>Midterm Test</div>
-                                    </div>
-                                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'
-                                         style="background-color: #063ec6; border-color: #063ec6;">
-                                        <div class='fc-event-main'>Final Test</div>
                                     </div>
                                 </div>
 
@@ -317,10 +311,6 @@
                                     <input type="color" id="new-event-color" class="form-control" value="#3788d8" />
                                     <button id="add-event" class="btn btn-primary btn-sm mt-2">Add Event</button>
                                 </div>
-                                <h4>Select Class</h4>
-                                <select id="class-dropdown" class="form-control">
-                                    <option value="">Select a class</option>
-                                </select>
                                 <h4>Select Room</h4>
                                 <select id="room-select" class="form-control">
                                     <option value="">Select a room</option>
@@ -331,8 +321,7 @@
                                     <option value="Room 301">Room 301</option>
                                     <option value="Room 302">Room 302</option>
                                 </select>
-                                <button id="save-draft" class="btn btn-warning btn-sm mt-3">Save as Draft</button>
-                                <button id="save-public" class="btn btn-outline-success btn-sm mt-3">Save Publish</button>
+                                <button id="save-draft" class="btn btn-warning btn-sm mt-3">Update Schedule</button>
                             </div>
                             <div id='calendar-wrap'>
                                 <div id='calendar'></div>
@@ -573,30 +562,6 @@
             .catch(error => {
                 console.error('Error initializing calendar:', error);
             });
-
-        function loadClasses() {
-            fetch('/class/get')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch classes');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    data.forEach(clasz => {
-                        const option = document.createElement('option');
-                        option.value = clasz.id;
-                        option.textContent = clasz.name;
-                        classDropdown.appendChild(option);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching classes:', error);
-                    alert("There was an error fetching the class. Please try again.");
-                });
-        }
-
-        loadClasses();
 
         // Save functions
         function saveSchedule(apiEndpoint, isPublic) {
