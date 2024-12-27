@@ -57,7 +57,50 @@
         display: inline-block;
         margin-right: 15px;  /* Đảm bảo khoảng cách giữa title và description */
     }
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .item-content {
+        color: #000;  /* Chọn màu xám đậm cho tất cả văn bản trong .item-content */
+    }
 
+    .item-content table {
+        width: 100%;
+    }
+
+    .item-content td {
+        color: #333;  /* Tạo màu chữ tương phản cao với nền trắng */
+    }
+
+    .item-content td:first-child {
+        font-weight: bold;  /* Làm đậm các nhãn (label) */
+    }
+
+    .item-content td:last-child {
+        color: #000;  /* Màu chữ đen cho các giá trị */
+    }
+    table {
+        width: 100%;  /* Đảm bảo bảng chiếm toàn bộ chiều rộng */
+        border-collapse: collapse;  /* Loại bỏ khoảng trống giữa các ô trong bảng */
+    }
+
+    td {
+        padding: 4px 8px; /* Điều chỉnh giảm khoảng cách trái/phải và trên/dưới */
+        vertical-align: middle; /* Căn chỉnh dọc cho nội dung */
+        line-height: 1.2; /* Giảm chiều cao dòng để nội dung gần nhau hơn */
+    }
+
+    td:first-child {
+        width: 12%; /* Thêm chiều rộng cho các thẻ tiêu đề */
+        font-weight: bold; /* Tiêu đề đậm */
+    }
 </style>
 
 <body>
@@ -120,7 +163,7 @@
                         <div class="item-content">
                             <ul class="settings-list">
                                 <li><a href="users-profile-teacher.html"><i class="flaticon-user"></i>My Profile</a></li>
-                                <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
+                                <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span data-i18n="change_password">Change Password</span></a></li>
                                 <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
@@ -321,14 +364,14 @@
                     <div class="heading-layout1">
                         <div class="item-title">
                             <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Title:</h3>
-                            <span id="assignment-description" style="display: inline; margin-left: 80px;"></span>
+                            <span id="assignment-description" style="display: inline; margin-left: 80px; font-weight: bold; color: #000; font-size: 18px"></span>
                         </div>
                     </div>
                     &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
                     <div class="heading-layout1">
                         <div class="item-title">
                             <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Description:</h3>
-                            <span id="assignment-content" style="display: inline; margin-left: 10px;"></span>
+                            <span id="assignment-content" style="display: inline; margin-left: 80px; font-weight: bold; color: #000; font-size: 18px"></span>
                         </div>
                     </div>
 
@@ -365,31 +408,31 @@
                         <div class="item-title">
                             <h2 class="text-dark-medium font-medium">Student Submission</h2>
 
-                            <div class="heading-layout1">
-                                <div class="item-title">
-                                    <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Title:</h3>
-                                    <span id="submitted-assignment-description" style="display: inline; margin-left: 80px;"></span>
+                            <div class="heading-layout1" style="display: flex; margin-bottom: 10px; align-items: baseline;">
+                                <div class="item-title" style="display: flex; align-items: baseline;">
+                                    <h3 class="text-dark-medium font-medium" style="margin-bottom: 5px;">Title:</h3>
+                                    <span id="submitted-assignment-description" style="margin-left: 100px; font-weight: bold; color: #000;"></span>
                                 </div>
                             </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
-                            <div class="heading-layout1">
-                                <div class="item-title">
-                                    <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Student Name:</h3>
-                                    <span id="submitted-assignment-student-name" style="display: inline; margin-left: 10px;"></span>
+
+                            <div class="heading-layout1" style="display: flex; margin-bottom: 10px; align-items: baseline;">
+                                <div class="item-title" style="display: flex; align-items: baseline;">
+                                    <h3 class="text-dark-medium font-medium" style="margin-bottom: 5px;">Student Name:</h3>
+                                    <span id="submitted-assignment-student-name" style="margin-left: 5px; font-weight: bold; color: #000;"></span>
                                 </div>
                             </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
-                            <div class="heading-layout1">
-                                <div class="item-title">
-                                    <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Date Created:</h3>
-                                    <span id="submitted-created-date" style="display: inline; margin-left: 10px;"></span>
+
+                            <div class="heading-layout1" style="display: flex; margin-bottom: 10px; align-items: baseline;">
+                                <div class="item-title" style="display: flex; align-items: baseline;">
+                                    <h3 class="text-dark-medium font-medium" style="margin-bottom: 5px;">Date Created:</h3>
+                                    <span id="submitted-created-date" style="margin-left: 15px; font-weight: bold; color: #000;"></span>
                                 </div>
                             </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
-                            <div class="heading-layout1">
-                                <div class="item-title">
-                                    <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Description:</h3>
-                                    <span id="submitted-assignment-content" style="display: inline; margin-left: 10px;"></span>
+
+                            <div class="heading-layout1" style="display: flex; margin-bottom: 10px; align-items: baseline;">
+                                <div class="item-title" style="display: flex; align-items: baseline;">
+                                    <h3 class="text-dark-medium font-medium" style="margin-bottom: 5px;">Description:</h3>
+                                    <span id="submitted-assignment-content" style="margin-left: 28px; font-weight: bold; color: #000;"></span>
                                 </div>
                             </div>
                             &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->

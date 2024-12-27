@@ -27,10 +27,9 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
 </head>
 
+
 <style>
-    #content {
-        height: 200px; /* Thay đổi chiều cao tùy ý */
-    }
+
     table td {
         font-weight: bold;
     }
@@ -134,6 +133,60 @@
         font-size: 0.9rem;
         color: #6c757d; /* Màu nhạt hơn cho mô tả */
     }
+    .item-content {
+        color: #000;  /* Chọn màu xám đậm cho tất cả văn bản trong .item-content */
+    }
+
+    .item-content table {
+        width: 100%;
+    }
+
+    .item-content td {
+        color: #333;  /* Tạo màu chữ tương phản cao với nền trắng */
+    }
+
+    .item-content td:first-child {
+        font-weight: bold;  /* Làm đậm các nhãn (label) */
+    }
+
+    .item-content td:last-child {
+        color: #000;  /* Màu chữ đen cho các giá trị */
+    }
+    /* Áp dụng cho bảng có id 'submittedAssignment_table' */
+    #submittedAssignment_table {
+        table-layout: fixed;  /* Đảm bảo các cột có chiều rộng đều */
+        width: 100%;  /* Bảng chiếm hết chiều rộng */
+        border-collapse: collapse;  /* Loại bỏ khoảng cách giữa các ô */
+    }
+
+    #submittedAssignment_table th, #submittedAssignment_table td {
+        padding: 10px;  /* Thêm khoảng cách trong mỗi ô */
+        text-align: center;  /* Căn giữa nội dung trong ô */
+        border: 1px solid #ddd;  /* Đặt đường viền mỏng cho các ô */
+        word-wrap: break-word;  /* Đảm bảo nội dung không tràn ra ngoài ô */
+    }
+
+    #submittedAssignment_table th {
+        background-color: #f8f8f8;  /* Màu nền cho tiêu đề */
+        font-weight: bold;  /* Đảm bảo tiêu đề nổi bật */
+    }
+    table {
+        width: 100%;  /* Đảm bảo bảng chiếm toàn bộ chiều rộng */
+        border-collapse: collapse;  /* Loại bỏ khoảng trống giữa các ô trong bảng */
+    }
+
+    td {
+        padding: 4px 8px; /* Điều chỉnh giảm khoảng cách trái/phải và trên/dưới */
+        vertical-align: middle; /* Căn chỉnh dọc cho nội dung */
+        line-height: 1.2; /* Giảm chiều cao dòng để nội dung gần nhau hơn */
+    }
+
+    td:first-child {
+        width: 12%; /* Thêm chiều rộng cho các thẻ tiêu đề */
+        font-weight: bold; /* Tiêu đề đậm */
+    }
+
+</style>
 
 </style>
 
@@ -196,7 +249,7 @@
                         <div class="item-content">
                             <ul class="settings-list">
                                 <li><a href="users-profile-teacher.html"><i class="flaticon-user"></i>My Profile</a></li>
-                                <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
+                                <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span data-i18n="change_password">Change Password</span></a></li>
                                 <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
@@ -347,14 +400,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
-                            </li>
-                        </ul>
-                    </li>
+
                 </ul>
             </div>
         </div>
@@ -377,14 +423,15 @@
                     <div class="heading-layout1">
                         <div class="item-title">
                             <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Title:</h3>
-                            <span id="assignment-description" style="display: inline; margin-left: 80px;"></span>
+                            <span id="assignment-description" style="display: inline; margin-left: 80px; font-weight: bold; color: #000;"></span>
                         </div>
                     </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
                     &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
                     <div class="heading-layout1">
                         <div class="item-title">
                             <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Description:</h3>
-                            <span id="assignment-content" style="display: inline; margin-left: 10px;"></span>
+                            <span id="assignment-content" style="display: inline; margin-left: 10px; font-weight: bold; color: #000;"></span>
                         </div>
                     </div>
                     &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
@@ -545,7 +592,19 @@
 
             // Populate description and content
             document.getElementById('assignment-description').textContent = assignment.description || "No description provided";
-            document.getElementById('assignment-content').textContent = assignment.content || "No content provided";
+            document.getElementById('assignment-description').style.fontSize = "18px";  // Tăng cỡ chữ cho description
+
+            if (assignment.content) {
+                // Loại bỏ thẻ block như <p>, <div>, thay thế bằng newline '\n'
+                var sanitizedContent = assignment.content.replace(/<\/?(p|div)[^>]*>/gi, '\n');
+
+                // Hiển thị nội dung trong HTML, giữ các thẻ inline như <strong>, <em>...
+                document.getElementById('assignment-content').innerHTML = sanitizedContent;
+                document.getElementById('assignment-content').style.fontSize = "18px";  // Tăng cỡ chữ cho content
+            } else {
+                document.getElementById('assignment-content').textContent = "No content provided";
+                document.getElementById('assignment-content').style.fontSize = "18px";  // Tăng cỡ chữ khi không có nội dung
+            }
             document.getElementById('created-date').textContent = createdDateFormatted  || "N/A";
             document.getElementById('end-date').textContent = endDateFormatted || "N/A";
             document.getElementById('status').value = assignment.status;
