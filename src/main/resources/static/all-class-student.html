@@ -343,29 +343,30 @@
                             <div class="item-title">
                                 <h3>All Class Student</h3>
                             </div>
-                            <div class="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                            <div class="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group d-flex gap-2">
+                                <button id="viewInfoButton" type="button" class="fw-btn-fill btn-gradient-yellow">VIEW INFO</button>
                                 <button id="viewGradesButton" type="button" class="fw-btn-fill btn-gradient-yellow">VIEW GRADES</button>
                             </div>
                         </div>
                         <div class="table-responsive">
                             <table class="table display text-nowrap">
                                 <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Photo</th>
-                                        <th>Name</th>
-                                        <th>Gender</th>
-                                        <th></th>
-                                    </tr>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Photo</th>
+                                    <th>Name</th>
+                                    <th>Gender</th>
+                                    <th></th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                    </tr>
+                                <tr></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <form id="exportForm" action="/export-csv" method="post" style="margin-top: 20px">
+                    <!-- Export Form -->
+                    <form id="exportForm" action="/export-csv" method="post" style="margin-top: 20px; display: none">
                         <input type="hidden" id="gradesData" name="gradesData" />
                         <div class="col-lg-4">
                             <button type="submit" class="btn btn-gradient-yellow btn-search">Export</button>
@@ -373,81 +374,92 @@
                     </form>
                 </div>
                 <!-- Class Table Area End Here -->
-            </div>
-        </div>
-        <!-- Page Area End Here -->
-    </div>
-    <!-- fetch student -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const tableBody = document.querySelector('.table tbody');
-            const tableHead = document.querySelector('.table thead');
-            const viewGradesButton = document.getElementById('viewGradesButton');
-            const exportForm = document.getElementById('exportForm');
-            const gradesDataInput = document.getElementById('gradesData');
-            const urlParams = new URLSearchParams(window.location.search);
-            const classId = urlParams.get('classId');
-            let gradesData = []; // To store fetched grades
 
-            let isGradesViewInitialized = false;
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const tableBody = document.querySelector('.table tbody');
+                        const tableHead = document.querySelector('.table thead');
+                        const viewInfoButton = document.getElementById('viewInfoButton');
+                        const viewGradesButton = document.getElementById('viewGradesButton');
+                        const exportForm = document.getElementById('exportForm');
+                        const gradesDataInput = document.getElementById('gradesData');
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const classId = urlParams.get('classId');
+                        let gradesData = []; // To store fetched grades
+                        let isGradesViewInitialized = false;
 
-            // Ensure classId is valid before proceeding
-            if (classId) {
-                fetch(`/student/${classId}/getAll`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok ' + response.statusText);
+                        // Ensure classId is valid before proceeding
+                        if (classId) {
+                            fetchStudentList(); // Initial fetch
+                        } else {
+                            console.error("classId is missing from the URL.");
                         }
-                        return response.json();
-                    })
-                    .then(students => {
-                        let studentNumber = 1; // Initialize student number counter
 
-                        students.forEach(student => {
-                            const row = document.createElement('tr');
+                        // Function to fetch student list
+                        function fetchStudentList() {
+                            fetch(`/student/${classId}/getAll`)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Network response was not ok ' + response.statusText);
+                                    }
+                                    return response.json();
+                                })
+                                .then(students => {
+                                    tableBody.innerHTML = ''; // Clear table body
+                                    tableHead.innerHTML = `
+                        <tr>
+                            <th>#</th>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th></th>
+                        </tr>
+                    `;
 
-                            // Number cell (numerical order)
-                            const numberCell = document.createElement('td');
-                            numberCell.textContent = studentNumber++; // Increment student number
-                            row.appendChild(numberCell);
+                                    let studentNumber = 1; // Initialize student number counter
+                                    students.forEach(student => {
+                                        const row = document.createElement('tr');
 
-                            // Image cell
-                            const imgCell = document.createElement('td');
-                            const imgElement = document.createElement('img');
-                            imgElement.src = student.img;
-                            imgElement.alt = "Student Image";
-                            imgElement.style.width = "50px";
-                            imgElement.style.height = "50px";
-                            imgElement.style.objectFit = "cover";
-                            imgCell.appendChild(imgElement);
-                            row.appendChild(imgCell);
+                                        // Number cell (numerical order)
+                                        const numberCell = document.createElement('td');
+                                        numberCell.textContent = studentNumber++; // Increment student number
+                                        row.appendChild(numberCell);
 
-                            // Name cell
-                            const nameCell = document.createElement('td');
-                            nameCell.textContent = student.fullname;
-                            row.appendChild(nameCell);
+                                        // Image cell
+                                        const imgCell = document.createElement('td');
+                                        const imgElement = document.createElement('img');
+                                        imgElement.src = student.img;
+                                        imgElement.alt = "Student Image";
+                                        imgElement.style.width = "50px";
+                                        imgElement.style.height = "50px";
+                                        imgElement.style.objectFit = "cover";
+                                        imgCell.appendChild(imgElement);
+                                        row.appendChild(imgCell);
 
-                            // Gender cell
-                            const genderCell = document.createElement('td');
-                            genderCell.textContent = student.gender;
-                            row.appendChild(genderCell);
+                                        // Name cell
+                                        const nameCell = document.createElement('td');
+                                        nameCell.textContent = student.fullname;
+                                        row.appendChild(nameCell);
 
-                            // Append the row to the table body
-                            tableBody.appendChild(row);
-                        });
-                    })
-                    .catch(error => console.error('Error fetching students:', error));
-            } else {
-                console.error("classId is missing from the URL.");
-            }
+                                        // Gender cell
+                                        const genderCell = document.createElement('td');
+                                        genderCell.textContent = student.gender;
+                                        row.appendChild(genderCell);
 
-            // Fetch and render grades
-            viewGradesButton.addEventListener('click', function () {
-                if (isGradesViewInitialized) return; // Prevent multiple fetches
-                isGradesViewInitialized = true;
+                                        // Append the row to the table body
+                                        tableBody.appendChild(row);
+                                    });
+                                })
+                                .catch(error => console.error('Error fetching students:', error));
+                        }
 
-                // Update table header
-                tableHead.innerHTML = `
+                        // Fetch and render grades
+                        viewGradesButton.addEventListener('click', function () {
+                            if (isGradesViewInitialized) return; // Prevent multiple fetches
+                            isGradesViewInitialized = true;
+
+                            // Update table header
+                            tableHead.innerHTML = `
                 <tr>
                     <th>#</th>
                     <th>Student Name</th>
@@ -461,16 +473,16 @@
                 </tr>
             `;
 
-                // Fetch grades data
-                fetch(`/student/${classId}/getAllGrades`)
-                    .then(response => response.json())
-                    .then(grades => {
-                        gradesData = grades; // Store fetched data
-                        tableBody.innerHTML = ''; // Clear table body
+                            // Fetch grades data
+                            fetch(`/student/${classId}/getAllGrades`)
+                                .then(response => response.json())
+                                .then(grades => {
+                                    gradesData = grades; // Store fetched data
+                                    tableBody.innerHTML = ''; // Clear table body
 
-                        let studentNumber = 1; // Student counter
-                        grades.forEach(grade => {
-                            const row = `
+                                    let studentNumber = 1; // Student counter
+                                    grades.forEach(grade => {
+                                        const row = `
                             <tr>
                                 <td>${studentNumber++}</td>
                                 <td>${grade.fullname || 'N/A'}</td>
@@ -483,17 +495,28 @@
                                 <td>${grade.finalMark || 'N/A'}</td>
                             </tr>
                         `;
-                            tableBody.insertAdjacentHTML('beforeend', row);
+                                        tableBody.insertAdjacentHTML('beforeend', row);
+                                    });
+
+                                    // Store data as JSON string for export
+                                    gradesDataInput.value = JSON.stringify(gradesData);
+
+                                    // Show export button
+                                    exportForm.style.display = 'block';
+                                })
+                                .catch(error => console.error('Error fetching grades:', error));
                         });
 
-                        // Store data as JSON string for export
-                        gradesDataInput.value = JSON.stringify(gradesData);
-                    })
-                    .catch(error => console.error('Error fetching grades:', error));
-            });
-        });
-    </script>
-    <!-- fetch user -->
+                        // Fetch student list again on View Info button click
+                        viewInfoButton.addEventListener('click', function () {
+                            isGradesViewInitialized = false; // Reset grades view state
+                            exportForm.style.display = 'none'; // Hide export button
+                            fetchStudentList(); // Fetch student list again
+                        });
+                    });
+                </script>
+
+                <!-- fetch user -->
     <script>
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
         if (userDetails) {
