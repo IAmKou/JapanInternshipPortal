@@ -96,6 +96,61 @@
             border-radius: 5px; /* Bo góc tương tự input */
             padding: 0 20px; /* Tăng khoảng cách trong nút */
         }
+
+        input[name="searchInput"] {
+            border: 2px solid #007bff !important;
+            border-radius: 5px;
+        }
+
+        input[name="searchInput"]:hover {
+            border-color: #28a745 !important;
+        }
+
+        input[name="searchInput"]:focus {
+            border-color: #28a745 !important;
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);
+        }
+
+        select[name="filterSelect"] {
+            border: 2px solid #007bff !important;
+            border-radius: 5px;
+        }
+
+        select[name="filterSelect"]:hover {
+            border-color: #28a745 !important;
+        }
+
+        select[name="filterSelect"]:focus {
+            border-color: #28a745 !important;
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);
+        }
+
+        .btn-secondary.dropdown-toggle {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .btn-secondary.dropdown-toggle:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        .dropdown-menu {
+            background-color: #ffffff;
+            border-radius: 5px;
+            border: 1px solid #dee2e6;
+        }
+
+        .dropdown-item {
+            color: #333;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+            color: #007bff;
+        }
     </style>
 </head>
 
@@ -159,7 +214,7 @@
                             <div class="item-content">
                                 <ul class="settings-list">
                                     <li><a href="users-profile-manager.html"><i class="flaticon-user"></i>My Profile</a></li>
-                                    <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
+                                    <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span data-i18n="change_password">Change Password</span></a></li>
                                     <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                                 </ul>
                             </div>
@@ -269,14 +324,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
-                            </li>
-                        </ul>
-                    </li>
+
                 </ul>
             </div>
         </div><!-- Sidebar Area End Here -->
@@ -300,44 +348,49 @@
                                     <label for="searchInput" class="text-primary font-weight-bold me-3 mb-0" data-i18n="search">
                                         Search
                                     </label>
-                                    <label for="filterSelect" class="text-primary font-weight-bold mb-0" style="margin-left: 630px;" data-i18n="filter">
+                                    <label for="filterSelect" class="text-primary font-weight-bold mb-0"
+                                           style="position: absolute; left: 53%; transform: translateX(-50%);" data-i18n="filter">
                                         Filter:
                                     </label>
                                 </div>
                                 <form style="padding-bottom: 20px; padding-top: 10px;" id="searchForm" onsubmit="return handleSearch(event)">
-                                    <div class="row mb-3 align-items-center">
+                                    <div class="row mb-3 align-items-center gx-3">
+                                        <!-- Search Input for category -->
                                         <div class="col-lg-6">
-                                            <input
-                                                    type="text"
-                                                    class="form-control search-input"
-                                                    id="searchInput"
-                                                    style="border: 1px solid #000; box-shadow: none;"
-                                            />
+                                            <div class="input-group shadow-sm">
+                                                <input
+                                                        type="text"
+                                                        class="form-control search-input rounded-start"
+                                                        id="searchInput"
+                                                        name="searchInput"
+                                                        style="border: 2px solid #007bff !important; border-radius: 5px; height: 45px; font-size: 1.5rem; padding-left: 10px;"
+                                                />
+                                                <button
+                                                        type="submit"
+                                                        class="btn btn-gradient-yellow btn-search rounded-end text-white fw-bold"
+                                                        data-i18n="search"
+                                                        style="background-color: #ffc107; border: none; height: 45px;">
+                                                    SEARCH
+                                                </button>
+                                            </div>
                                         </div>
 
+                                        <!-- Filter select for status -->
                                         <div class="col-lg-2">
                                             <div class="form-group">
                                                 <div class="position-relative">
-                                                    <select class="form-control filter-select" id="filterSelect" style="padding-right: 35px; font-size: 1.25rem; height: 45px; padding-left: 10px; padding-right: 10px; margin-top: 7px;">
-                                                        <option value="content">Purpose</option> <!-- Filtering based on content -->
-                                                        <option value="category">Type</option> <!-- Filtering based on category -->
-                                                        <option value="status">Status</option> <!-- Filtering based on status -->
+                                                    <select class="form-control filter-select" id="filterSelect" name="filterSelect" style="border: 2px solid #007bff !important; border-radius: 5px; height: 45px; font-size: 1.25rem; padding-left: 10px; padding-right: 10px; margin-top: 7px;">
+                                                        <option value="all">All Status</option>
+                                                        <option value="Approved">Approved</option>
+                                                        <option value="Pending">Pending</option>
+                                                        <option value="Rejected">Rejected</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-2">
-                                            <button
-                                                    type="submit"
-                                                    class="btn btn-gradient-yellow btn-search"
-                                                    data-i18n="search">
-                                                SEARCH
-                                            </button>
-                                        </div>
                                     </div>
                                 </form>
-
                             </div>
                         </div>
                     </div>
@@ -528,64 +581,42 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-        let url = '/application/list'; // URL mặc định.
+        let url = '/application/list'; // URL mặc định
 
-        // Function to handle search
+        // Hàm xử lý tìm kiếm (category)
         function handleSearch(event) {
-            event.preventDefault();  // Prevent form submission
+            event.preventDefault();  // Ngăn chặn việc gửi form
 
-            const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
-            const filterType = document.getElementById('filterSelect').value;
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();  // Lấy giá trị tìm kiếm
 
             fetch(url)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Failed to fetch applications');
+                        throw new Error('Lấy danh sách đơn không thành công');
                     }
                     return response.json();
                 })
                 .then(data => {
                     const tableBody = document.getElementById('application-table-body');
                     if (tableBody) {
-                        tableBody.innerHTML = '';  // Clear existing rows
+                        tableBody.innerHTML = '';  // Xóa các dòng cũ
 
-                        // Apply filter based on search query
+                        // Lọc dữ liệu chỉ theo category (không liên quan đến filter status)
                         const filteredData = data.filter(application => {
-                            if (filterType === 'content') {
-                                return application.content && application.content.toLowerCase().includes(searchQuery);
+                            if (searchQuery) {
+                                const categoryMatch = application.category && application.category.toLowerCase().includes(searchQuery);
+                                return categoryMatch;  // Chỉ lọc theo category
                             }
-                            if (filterType === 'category') {
-                                return application.category && application.category.toLowerCase().includes(searchQuery);
-                            }
-                            if (filterType === 'status') {
-                                return application.status && application.status.toLowerCase().includes(searchQuery);
-                            }
-                            if (filterType === 'created_date') {
-                                // Chuyển searchQuery thành đối tượng Date
-                                const queryDate = new Date(searchQuery);
-
-                                if (!queryDate.getTime()) {
-                                    return false; // Nếu ngày nhập không hợp lệ
-                                }
-
-                                // So sánh ngày (chỉ so sánh ngày, không quan tâm đến giờ)
-                                const createdDate = application.created_date ? new Date(application.created_date) : null;
-
-                                if (createdDate) {
-                                    return createdDate.toLocaleDateString() === queryDate.toLocaleDateString();
-                                }
-                                return false;
-                            }
-                            return false;
+                            return true;  // Nếu không có tìm kiếm theo category thì lấy tất cả
                         });
 
-                        // Hiển thị ứng dụng sau khi lọc
+                        // Hiển thị dữ liệu đã lọc ra bảng
                         filteredData.forEach(application => {
-                            const content = application.content || 'N/A';
-                            const formattedContent = wrapText(content, 40);
-
                             const category = application.category || 'N/A';
                             const formattedCategory = wrapText(category, 8);
+
+                            const content = application.content || 'N/A';
+                            const formattedContent = wrapText(content, 40);
 
                             const reply = application.reply || 'N/A';
                             const formattedReply = wrapText(reply, 30);
@@ -606,11 +637,9 @@
                                 ${application.replied_date ? new Date(application.replied_date).toLocaleDateString() + '<br>' + new Date(application.replied_date).toLocaleTimeString() : 'N/A'}
                             </td>
                             <td style="font-weight: bold;">
-                                ${
-                                application.reply || application.replied_date
-                                    ? '<span class="text-success">Replied</span>'
-                                    : `<button onclick="window.location.href='Reply-application.html?id=${application.id}'" class="btn btn-primary btn-lg">Reply</button>`
-                            }
+                                ${application.reply || application.replied_date
+                                ? '<span class="text-success">Replied</span>'
+                                : `<button onclick="window.location.href='Reply-application.html?id=${application.id}'" class="btn btn-primary btn-lg">Reply</button>`}
                             </td>
                         `;
                             tableBody.appendChild(row);
@@ -618,11 +647,90 @@
                     }
                 })
                 .catch(error => {
-                    console.error('Error fetching applications:', error);
+                    console.error('Lỗi khi lấy danh sách đơn:', error);
                 });
         }
 
-        // Add event listener for the form submission
+        // Hàm xử lý lọc theo status (khi chọn từ dropdown)
+        function handleFilter(event) {
+            const filterType = event.target.value;  // Lấy giá trị trạng thái từ dropdown
+
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();  // Lấy giá trị tìm kiếm
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Lấy danh sách đơn không thành công');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const tableBody = document.getElementById('application-table-body');
+                    if (tableBody) {
+                        tableBody.innerHTML = '';  // Xóa các dòng cũ
+
+                        // Lọc dữ liệu theo category
+                        const filteredData = data.filter(application => {
+                            if (searchQuery) {
+                                const categoryMatch = application.category && application.category.toLowerCase().includes(searchQuery);
+                                return categoryMatch;
+                            }
+                            return true;
+                        });
+
+                        // Lọc thêm theo status
+                        const statusFilteredData = filteredData.filter(application => {
+                            if (filterType && filterType !== 'all') {
+                                return application.status && application.status.toLowerCase() === filterType.toLowerCase();
+                            }
+                            return true;  // Nếu không chọn trạng thái nào, lấy tất cả
+                        });
+
+                        // Hiển thị kết quả
+                        statusFilteredData.forEach(application => {
+                            const category = application.category || 'N/A';
+                            const formattedCategory = wrapText(category, 8);
+
+                            const content = application.content || 'N/A';
+                            const formattedContent = wrapText(content, 40);
+
+                            const reply = application.reply || 'N/A';
+                            const formattedReply = wrapText(reply, 30);
+
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                            <td class="td-bold">${formattedCategory}</td>
+                            <td class="td-bold">${formattedContent}</td>
+                            <td class="td-bold">${application.created_date ? new Date(application.created_date).toLocaleDateString() : 'N/A'}</td>
+                            <td class="td-bold">${formattedReply}</td>
+                            <td class="td-bold">
+                                ${application.img ? `<a href="${application.img}" target="_blank">File</a>` : 'N/A'}
+                            </td>
+                            <td class="td-bold ${application.status === 'Approved' ? 'approved' : application.status === 'Rejected' ? 'rejected' : ''}">
+                                ${application.status || 'N/A'}
+                            </td>
+                            <td class="td-bold">
+                                ${application.replied_date ? new Date(application.replied_date).toLocaleDateString() + '<br>' + new Date(application.replied_date).toLocaleTimeString() : 'N/A'}
+                            </td>
+                            <td style="font-weight: bold;">
+                                ${application.reply || application.replied_date
+                                ? '<span class="text-success">Replied</span>'
+                                : `<button onclick="window.location.href='Reply-application.html?id=${application.id}'" class="btn btn-primary btn-lg">Reply</button>`}
+                            </td>
+                        `;
+                            tableBody.appendChild(row);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi lấy danh sách đơn:', error);
+                });
+        }
+
+        // Thêm sự kiện xử lý khi thay đổi giá trị trong dropdown filter
+        document.getElementById('filterSelect').addEventListener('change', handleFilter);
+
+        // Thêm sự kiện xử lý khi submit form tìm kiếm
         document.getElementById('searchForm').addEventListener('submit', handleSearch);
     });
 </script>

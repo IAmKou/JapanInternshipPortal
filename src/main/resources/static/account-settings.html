@@ -185,6 +185,62 @@
             color: #6c757d; /* Màu nhạt hơn cho mô tả */
         }
 
+        input[name="searchInput"] {
+            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="searchInput"]:hover {
+            border-color: #28a745 !important;  /* Màu border khi hover */
+        }
+
+        input[name="searchInput"]:focus {
+            border-color: #28a745 !important;   /* Giữ màu đỏ khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        }
+
+        select[name="filterSelect"] {  /* Chỉnh sửa thuộc tính cho phần tử select */
+            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;  /* Thêm góc bo tròn */
+        }
+
+        select[name="filterSelect"]:hover {  /* Khi di chuột vào select */
+            border-color: #28a745 !important;  /* Màu viền khi hover */
+        }
+
+        select[name="filterSelect"]:focus {  /* Khi focus vào select */
+            border-color: #28a745 !important;  /* Màu viền khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        }
+        /* Nút dropdown */
+        .btn-secondary.dropdown-toggle {
+            background-color: #007bff;  /* Màu nền của nút */
+            color: white;                /* Màu chữ của nút */
+            border: none;                /* Xóa đường viền nếu cần */
+            border-radius: 5px;          /* Thêm góc bo tròn */
+        }
+
+        .btn-secondary.dropdown-toggle:hover {
+            background-color: #0056b3;  /* Màu nền khi hover */
+            color: white;                /* Giữ màu chữ khi hover */
+        }
+
+        /* Phần menu dropdown */
+        .dropdown-menu {
+            background-color: #ffffff;  /* Màu nền của dropdown */
+            border-radius: 5px;         /* Thêm góc bo tròn */
+            border: 1px solid #dee2e6;  /* Đường viền sáng cho dropdown */
+        }
+
+        /* Màu chữ các mục trong dropdown */
+        .dropdown-item {
+            color: #333;                /* Màu chữ mặc định của các mục */
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;  /* Màu nền khi hover vào mục */
+            color: #007bff;             /* Màu chữ khi hover */
+        }
 
     </style>
 </head>
@@ -321,14 +377,6 @@
                         <a href="account-settings.html" class="nav-link menu-active"><i
                                 class="flaticon-settings"></i><span data-i18n="account_list">Account List</span></a>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span data-i18n="security">Security</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="change_password">Change Password</span></a>
-                            </li>
-                        </ul>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -348,55 +396,66 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="dropdown" style="margin-bottom: 20px">
-                                <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" style="font-size: 16px; padding: 10px 20px;" data-i18n="add_import_users">Add or Import Users</a>
+                                <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" style="font-size: 16px; padding: 10px 20px;" data-i18n="add_import_users">
+                                    Add or Import Users
+                                </a>
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item" href="create-account.html" data-i18n="add_new_user"><i class="fas fa-plus text-orange-red"></i> Add New User</a>
                                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#standard-modal" data-i18n="import_users"><i class="fas fa-file-import text-green"></i> Import Users</a>
                                 </div>
                             </div>
+
                             <div class="d-flex align-items-center">
                                 <label for="searchInput" class="text-primary font-weight-bold me-3 mb-0" data-i18n="search">
                                     Search
                                 </label>
-                                <label for="filterSelect" class="text-primary font-weight-bold mb-0" style="margin-left: 610px;" data-i18n="filter">
+                                <label for="filterSelect" class="text-primary font-weight-bold mb-0"
+                                       style="position: absolute; left: 54%; transform: translateX(-50%);" data-i18n="filter">
                                     Filter:
                                 </label>
+
                             </div>
 
 
 
                             <form style="padding-bottom: 20px; padding-top: 10px;" id="searchForm">
-                            <div class="row mb-3 align-items-center">
-                                <div class="col-lg-6">
-                                    <input
-                                            type="text"
-                                            class="form-control search-input"
-                                            id="searchInput"
-                                            style=" border: 1px solid #000;  box-shadow: none;"
-                                    />
-                                </div>
-                                <div class="col-lg-2">
-                                <div class="form-group">
-                                    <div class="position-relative">
-                                        <i class="fas fa-sort position-absolute" style="right: 12px; top: 50%; transform: translateY(-50%); color: #aaa;"></i>
-                                        <select class="form-control filter-select" id="filterSelect" style="padding-right: 35px; font-size: 1.25rem; height: 45px; padding-left: 10px; padding-right: 10px; margin-top: 7px;">
-                                            <option value="name">Name</option>
-                                            <option value="role">Role</option>
-                                        </select>
+                                <div class="row mb-3 align-items-center gx-3">
+                                    <!-- Search Input -->
+                                    <div class="col-lg-6">
+                                        <div class="input-group shadow-sm">
+                                            <input
+                                                    type="text"
+                                                    class="form-control search-input rounded-start"
+                                                    id="searchInput"
+                                                    name="searchInput"
+                                            style="border: 1px solid #ced4da; height: 45px;"
+                                            />
+                                            <button
+                                                    type="submit"
+                                                    class="btn btn-gradient-yellow btn-search rounded-end text-white fw-bold"
+                                                    data-i18n="search"
+                                                    style="background-color: #ffc107; border: none; height: 45px;">
+                                                SEARCH
+                                            </button>
+                                        </div>
 
                                     </div>
-                                </div>
-                            </div>
+                                    <div class="col-lg-2">
+                                        <div class="form-group">
+                                            <div class="position-relative ps-4"> <!-- Thêm padding trái bằng Bootstrap -->
+                                                <i class="fas fa-sort position-absolute" style="right: 12px; top: 50%; transform: translateY(-50%); color: #aaa;"></i>
+                                                <select class="form-control filter-select" id="filterSelect" name="filterSelect"
+                                                        style="padding-right: 35px; font-size: 1.25rem; height: 45px; padding-left: 10px; margin-top: 7px;">
+                                                    <option value="">All Role</option>
+                                                    <option value="teacher">Teacher</option>
+                                                    <option value="student">Student</option>
+                                                    <option value="manager">Manager</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                <div class="col-lg-2">
-                                    <button
-                                            type="submit"
-                                            class="btn btn-gradient-yellow btn-search"
-                                            data-i18n="search">
-                                        SEARCH
-                                    </button>
                                 </div>
-                            </div>
                         </form>
 
                         </div>
@@ -655,16 +714,18 @@
         // Fetch users
         async function fetchUsers() {
             try {
-                const response = await fetch(`/users`);
+                // Gọi API để lấy 30 người đầu tiên
+                const response = await fetch(`/users?limit=${usersPerPage}&offset=${(currentPage - 1) * usersPerPage}`);
                 if (!response.ok) throw new Error(`Failed to fetch: ${response.statusText}`);
                 users = await response.json();
-                totalUsers = users.length;
+                totalUsers = users.length; // Số lượng người đã trả về
                 renderTable();
                 renderPagination();
             } catch (error) {
                 console.error("Error fetching users:", error);
             }
         }
+
 
         // Render table
         // Render table
@@ -891,6 +952,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById("searchForm");
         const searchInput = document.getElementById("searchInput");
+        const filterSelect = document.getElementById("filterSelect");
         const tableBody = document.querySelector(".table tbody");
         let users = []; // Dữ liệu người dùng
 
@@ -906,7 +968,7 @@
             }
         }
 
-        // Hàm render table với dữ liệu lọc
+        // Hàm render table
         function renderTable(filteredUsers) {
             tableBody.innerHTML = ""; // Xóa nội dung bảng
 
@@ -932,30 +994,43 @@
             });
         }
 
-        // Xử lý khi form được submit
+        // Xử lý khi nhấn nút Search
         form.addEventListener("submit", function (e) {
             e.preventDefault();
 
             const query = searchInput.value.toLowerCase().trim();
-            const selectedFilter = document.getElementById("filterSelect").value; // "name" hoặc "role"
 
             const filteredUsers = users.filter(user => {
                 const fullName = user.fullName ? user.fullName.toLowerCase() : "";
-                const roleName = user.roleName ? user.roleName.toLowerCase() : "";
+                const jname = user.jname ? user.jname.toLowerCase() : "";
 
-                // Lọc theo tiêu chí được chọn (name hoặc role)
-                if (selectedFilter === "name") {
-                    return fullName.includes(query);
-                } else if (selectedFilter === "role") {
-                    return roleName.includes(query);
-                }
+                // Tìm kiếm theo fullname hoặc jname
+                return fullName.includes(query) || jname.includes(query);
             });
 
-            renderTable(filteredUsers); // Render dữ liệu đã lọc
+            renderTable(filteredUsers); // Render kết quả đã lọc
+        });
+
+        // Xử lý khi thay đổi filter
+        filterSelect.addEventListener("change", function () {
+            const selectedRole = filterSelect.value; // Giá trị role được chọn (teacher/student/manager)
+
+            if (!selectedRole) {
+                renderTable(users); // Hiển thị toàn bộ khi không chọn filter
+            } else {
+                const filteredUsers = users.filter(user => {
+                    const roleName = user.roleName ? user.roleName.toLowerCase() : "";
+                    return roleName === selectedRole; // Lọc theo role
+                });
+
+                renderTable(filteredUsers); // Render kết quả đã lọc
+            }
         });
 
         fetchUsers();
     });
+
+
 </script>
 
 </body>

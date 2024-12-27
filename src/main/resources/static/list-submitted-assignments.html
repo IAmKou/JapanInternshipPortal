@@ -110,6 +110,25 @@
         .cancel-btn:hover {
             background-color: #5a6268; /* Darker gray on hover */
         }
+
+        /* Áp dụng cho bảng có id 'submittedAssignment_table' */
+        #submittedAssignment_table {
+            table-layout: fixed;  /* Đảm bảo các cột có chiều rộng đều */
+            width: 100%;  /* Bảng chiếm hết chiều rộng */
+            border-collapse: collapse;  /* Loại bỏ khoảng cách giữa các ô */
+        }
+
+        #submittedAssignment_table th, #submittedAssignment_table td {
+            padding: 10px;  /* Thêm khoảng cách trong mỗi ô */
+            text-align: center;  /* Căn giữa nội dung trong ô */
+            border: 1px solid #ddd;  /* Đặt đường viền mỏng cho các ô */
+            word-wrap: break-word;  /* Đảm bảo nội dung không tràn ra ngoài ô */
+        }
+
+        #submittedAssignment_table th {
+            background-color: #f8f8f8;  /* Màu nền cho tiêu đề */
+            font-weight: bold;  /* Đảm bảo tiêu đề nổi bật */
+        }
     </style>
 </head>
 
@@ -175,7 +194,7 @@
                         <div class="item-content">
                             <ul class="settings-list">
                                 <li><a href="users-profile-student.html"><i class="flaticon-user"></i>My Profile</a></li>
-                                <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
+                                <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span data-i18n="change_password">Change Password</span></a></li>
                                 <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
@@ -322,14 +341,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
-                            </li>
-                        </ul>
-                    </li>
+
                 </ul>
             </div>
         </div>
@@ -359,14 +371,14 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table display data-table text-nowrap">
+                        <table id="submittedAssignment_table" class="table display data-table text-nowrap">
                             <thead>
                             <tr>
-                                <th>Description</th>
-                                <th>Mark</th>
-                                <th>Created Date</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <th style="font-weight: bold; color: #000;">Description</th>
+                                <th style="font-weight: bold; color: #000;">Mark</th>
+                                <th style="font-weight: bold; color: #000;">Created Date</th>
+                                <th style="font-weight: bold; color: #000;">Status</th>
+                                <th style="font-weight: bold; color: #000;">Options</th>
                             </tr>
                             </thead>
                             <tbody id="submittedAssignment_list">
@@ -471,7 +483,7 @@
                 </td>
                 <td>${submittedAssignment.mark || "N/A"}</td>
                 <td>${new Date(submittedAssignment.date).toLocaleDateString()}</td>
-                <td>${submittedAssignment.status || "N/A"}</td>
+                <td style="color:green">${submittedAssignment.status || "N/A"}</td>
                 <td>
                     <div class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -597,7 +609,18 @@
         }
     }
 </script>
-
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Đảm bảo chỉ chạy khi các th đã được tải và áp dụng.
+        setTimeout(function() {
+            // Loại bỏ các lớp "sorting" và "sorting_asc" nếu tồn tại trên th
+            const thElements = document.querySelectorAll('th.sorting, th.sorting_asc');
+            thElements.forEach(function(thElement) {
+                thElement.classList.remove('sorting', 'sorting_asc');
+            });
+        }, 100);  // Điều chỉnh thời gian đợi cho phù hợp
+    });
+</script>
 </body>
 
 

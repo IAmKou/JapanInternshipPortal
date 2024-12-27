@@ -89,7 +89,7 @@
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
-                                <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
+                                <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span data-i18n="change_password">Change Password</span></a></li>
                                 <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
@@ -160,14 +160,7 @@
                         <a href="account-settings.html" class="nav-link"><i
                                 class="flaticon-settings"></i><span>Account List</span></a>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
-                            </li>
-                        </ul>
-                    </li>
+
                 </ul>
             </div>
         </div>
@@ -365,52 +358,50 @@
 <!-- fetch notification -->
 <script>
     // Fetch notifications from the backend
+    // Fetch notifications from the backend
     fetch('/notification/getAll')
         .then(response => response.json()) // Parse the response as JSON
         .then(data => {
-            const notificationList = document.getElementById('notification-list'); // This is where we append the notifications
-            const notificationCount = document.getElementById('notification-count'); // This is where we update the count
+            const notificationList = document.getElementById('notification-list'); // Notification container
+            const notificationCount = document.getElementById('notification-count'); // Notification count
 
             // Update the notification count
             notificationCount.textContent = data.length;
 
-            // Check if the list is empty
+            // If no notifications, display a message
             if (data.length === 0) {
                 notificationList.innerHTML = '<p>No notifications available.</p>';
                 return;
             }
 
-            // Clear any previous notifications (if any)
+            // Clear previous notifications
             notificationList.innerHTML = '';
 
-            // Loop through each notification and add it to the page
+            // Add each notification to the list
             data.forEach(notification => {
-                // Create the new notice div
                 const noticeDiv = document.createElement('div');
                 noticeDiv.classList.add('notice-list');
 
-                // Create the title
                 const noticeTitle = document.createElement('h6');
                 noticeTitle.classList.add('notice-title');
 
-                // Create the anchor tag
                 const noticeLink = document.createElement('a');
                 noticeLink.href = "#"; // Add appropriate link if needed
-                noticeLink.textContent = notification.title; // Use the title from the notification
 
-                // Append the link to the title and the title to the noticeDiv
+                // Extract plain text (remove all HTML tags)
+                const plainTextTitle = notification.title.replace(/<\/?[^>]+(>|$)/g, '');
+                noticeLink.textContent = plainTextTitle;
+
                 noticeTitle.appendChild(noticeLink);
                 noticeDiv.appendChild(noticeTitle);
-
-                // Append the noticeDiv to the notification list
                 notificationList.appendChild(noticeDiv);
             });
         })
         .catch(error => {
             console.error('Error fetching notifications:', error);
-            const notificationList = document.getElementById('notification-list');
-            notificationList.innerHTML = '<p>Failed to load notifications.</p>';
+            document.getElementById('notification-list').innerHTML = '<p>Failed to load notifications.</p>';
         });
+
 
 </script>
 <!-- fetch noti -->
@@ -440,7 +431,8 @@
                 // Create the anchor tag
                 const noticeLink = document.createElement('a');
                 noticeLink.href = "#"; // Add appropriate link if needed
-                noticeLink.textContent = notification.title; // Use the title from the notification
+                const plainTextTitle = notification.title.replace(/<\/?[^>]+(>|$)/g, '');
+                noticeLink.textContent = plainTextTitle;
 
                 // Append the link to the title and the title to the noticeDiv
                 noticeTitle.appendChild(noticeLink);
