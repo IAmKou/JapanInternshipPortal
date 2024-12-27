@@ -169,12 +169,10 @@ public class MarkReportServices {
     }
 
     @Transactional
-    public void saveMarkReports(List<MarkReportImportRequest> markReports) {
+    public void importMarkReports(List<MarkReportImportRequest> markReports) {
+
         List<MarkReport> entities = markReports.stream()
                 .map(request -> {
-                    // Find the student by name and email
-                    Student student = studentRepository.findByFullnameAndEmail(request.getName(), request.getEmail());
-
 //                    Skill Calculation:
 //                    skill = (avg_exam_mark + middle_exam + final_exam) / 3.
 //
@@ -211,8 +209,10 @@ public class MarkReportServices {
 //                    BigDecimal finalMark = softSkillWeight.add(skillWeight).add(attitudeWeight);
 
                     // Create the MarkReport
-                    MarkReport markReport = new MarkReport();
-                    markReport.setStudent(student);
+                    MarkReport markReport = markReportRepository.findByEmail(request.getEmail());
+                    if(markReport == null){
+                        throw new IllegalStateException("Didn't find MarkReport with email: " + request.getEmail());
+                    }
                     markReport.setSoftskill(request.getSoftskill());
                     markReport.setAvg_exam_mark(request.getAvg_exam_mark());
                     markReport.setMiddle_exam(request.getMiddle_exam());
@@ -227,6 +227,7 @@ public class MarkReportServices {
 
         markReportRepository.saveAll(entities);
     }
+
 
 
 
