@@ -99,13 +99,13 @@ public class ScheduleController {
             }
 
             return ResponseEntity.ok(Map.of(
-                    "message", "Schedules updated successfully",
+                    "message", "Schedules saved successfully as draft.",
                     "semesterId", semesterId
             ));
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
-                    "message", "Error updating schedules",
+                    "message", "An error occurred while saving schedules.",
                     "error", e.getMessage()
             ));
         }
@@ -136,6 +136,7 @@ public class ScheduleController {
                 for (ScheduleDTO scheduleDTO : schedules) {
                     LocalDate localDate = LocalDate.parse(scheduleDTO.getDate()).plusDays(1);
                     java.sql.Date sqlDate = Date.valueOf(localDate);
+
                     boolean roomInUse = scheduleRepository.existsByRoomAndDateAndSemesterId(
                             scheduleDTO.getRoom(), sqlDate, semesterId);
                     if (roomInUse) {

@@ -296,14 +296,6 @@
                                          style="background-color: #ff5733; border-color: #ff5733;">
                                         <div class='fc-event-main'>Kotoba Test</div>
                                     </div>
-                                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'
-                                         style="background-color: #063ec6; border-color: #063ec6;">
-                                        <div class='fc-event-main'>Midterm Test</div>
-                                    </div>
-                                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'
-                                         style="background-color: #063ec6; border-color: #063ec6;">
-                                        <div class='fc-event-main'>Final Test</div>
-                                    </div>
                                 </div>
 
                                 <!-- Create Event Section -->
@@ -402,7 +394,6 @@
         </div>
     </div>
 </div>
-</div>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -455,56 +446,13 @@
 <script>
     let calendar;
     document.addEventListener('DOMContentLoaded', function () {
-        // Element references
+        // Initialize draggable events
         const containerEl = document.getElementById('external-events-list');
         const calendarEl = document.getElementById('calendar');
-        const eventSelect = document.getElementById('event-select');
-        const newEventForm = document.getElementById('new-event-form');
-        const addEventButton = document.getElementById('add-event');
-        const saveDraftButton = document.getElementById('save-draft');
-        const savePublicButton = document.getElementById('save-public');
-        const classDropdown = document.getElementById('class-dropdown');
         const urlParams = new URLSearchParams(window.location.search);
         const semesterId = urlParams.get('semesterId');
 
-        if (!containerEl || !calendarEl) {
-            console.error('Required elements not found in the DOM.');
-            return;
-        }
-
-        // Toggle the new event form
-        if (eventSelect && newEventForm) {
-            eventSelect.addEventListener('change', function () {
-                newEventForm.style.display = eventSelect.value === 'new' ? 'block' : 'none';
-            });
-        }
-
-        // Add new draggable event
-        if (addEventButton) {
-            addEventButton.addEventListener('click', function () {
-                const newEventTitle = document.getElementById('new-event-title')?.value.trim();
-                const newEventColor = document.getElementById('new-event-color')?.value || '#3788d8';
-
-                if (newEventTitle) {
-                    const newEvent = document.createElement('div');
-                    newEvent.className = 'fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event';
-                    newEvent.style.backgroundColor = newEventColor;
-                    newEvent.style.borderColor = newEventColor;
-                    newEvent.innerHTML = `<div class='fc-event-main'>${newEventTitle}</div>`;
-                    containerEl.appendChild(newEvent);
-
-                    document.getElementById('new-event-title').value = '';
-                    document.getElementById('new-event-color').value = '#3788d8';
-
-                    alert('Event added successfully!');
-                } else {
-                    alert('Please enter a title for the new event.');
-                }
-            });
-        }
-
-        // Fetch semester details and initialize calendar
-        fetch(`/semester/get/${semesterId}`)
+        fetch(`/semester/get/${semesterId}`) 
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch semester details');
@@ -514,7 +462,6 @@
             .then(data => {
                 const semesterStart = new Date(data.startTime);
                 const semesterEnd = new Date(data.endTime);
-
                 // Initialize draggable events
                 new FullCalendar.Draggable(containerEl, {
                     itemSelector: '.fc-event',
@@ -522,29 +469,32 @@
                         return {
                             title: eventEl.innerText.trim(),
                             backgroundColor: eventEl.style.backgroundColor,
-                            borderColor: eventEl.style.borderColor,
+                            borderColor: eventEl.style.borderColor
                         };
-                    },
+                    }
                 });
-
-                // Initialize calendar
+                // Initialize the calendar
+                const today = new Date().toISOString().split('T')[0];
                 calendar = new FullCalendar.Calendar(calendarEl, {
                     headerToolbar: {
                         left: 'prev,next today',
                         center: 'title',
-                        right: 'dayGridMonth',
+                        right: 'dayGridMonth'
                     },
                     editable: true,
                     timeZone: 'UTC',
                     droppable: true,
                     validRange: {
                         start: semesterStart,
-                        end: semesterEnd,
+                        end: semesterEnd
                     },
                     eventConstraint: {
-                        start: new Date().toISOString().split('T')[0],
+                        start: today
                     },
                     events: function (fetchInfo, successCallback, failureCallback) {
+                        // Fetch events from backend
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const semesterId = urlParams.get('semesterId');
                         fetch(`/schedule/get/${semesterId}`)
                             .then(response => {
                                 if (!response.ok) {
@@ -553,12 +503,18 @@
                                 return response.json();
                             })
                             .then(data => {
+                                if (!data || data.length === 0) {
+                                    console.warn('No schedules found for this semesterId');
+                                    successCallback([]); // Pass an empty array if no data
+                                    return;
+                                }
+                                console.log('Fetched data:', data);
                                 const events = data.map(schedule => ({
                                     id: schedule.id,
                                     title: schedule.activity,
-                                    start: schedule.date,
+                                    start: schedule.date, // Ensure the date format matches ISO 8601
                                     backgroundColor: schedule.color,
-                                    borderColor: schedule.color,
+                                    borderColor: schedule.color,// Optional: Add custom colors
                                 }));
                                 successCallback(events);
                             })
@@ -567,76 +523,66 @@
                                 failureCallback(error);
                             });
                     },
+                    eventClick: function (info) {
+                        // Confirm deletion
+                        if (confirm(`Are you sure you want to delete the event "${info.event.title}"?`)) {
+                            info.event.remove(); // Remove the event from the calendar
+                            alert(`Event "${info.event.title}" has been deleted.`);
+                        }
+                    }
                 });
                 calendar.render();
-            })
-            .catch(error => {
-                console.error('Error initializing calendar:', error);
-            });
-
-        function loadClasses() {
-            fetch('/class/get')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch classes');
+                // Event Dropdown and Create Event Feature
+                const eventSelect = document.getElementById('event-select');
+                const newEventForm = document.getElementById('new-event-form');
+                const addEventButton = document.getElementById('add-event');
+                // Toggle the new event form based on dropdown selection
+                eventSelect.addEventListener('change', function () {
+                    if (eventSelect.value === 'new') {
+                        newEventForm.style.display = 'block';
+                    } else {
+                        newEventForm.style.display = 'none';
                     }
-                    return response.json();
-                })
-                .then(data => {
-                    data.forEach(clasz => {
-                        const option = document.createElement('option');
-                        option.value = clasz.id;
-                        option.textContent = clasz.name;
-                        classDropdown.appendChild(option);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching classes:', error);
-                    alert("There was an error fetching the class. Please try again.");
                 });
-        }
-
-        loadClasses();
-
-        // Save functions
-        function saveSchedule(apiEndpoint, isPublic) {
+                // Add new event to the draggable list
+                addEventButton.addEventListener('click', function () {
+                    const newEventTitle = document.getElementById('new-event-title').value.trim();
+                    const newEventColor = document.getElementById('new-event-color').value;
+                    if (newEventTitle) {
+                        // Create new draggable event element
+                        const newEvent = document.createElement('div');
+                        newEvent.className = 'fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event';
+                        newEvent.style.backgroundColor = newEventColor;
+                        newEvent.style.borderColor = newEventColor;
+                        newEvent.innerHTML = `<div class='fc-event-main'>${newEventTitle}</div>`;
+                        containerEl.appendChild(newEvent);
+                        // Clear input fields
+                        document.getElementById('new-event-title').value = '';
+                        document.getElementById('new-event-color').value = '#3788d8';
+                        alert('Event added successfully!');
+                    } else {
+                        alert('Please enter a title for the new event.');
+                    }
+                });
+            });
+        document.getElementById('save-draft').addEventListener('click', function () {
             if (!calendar) {
                 console.error('Calendar instance is not available');
                 return;
             }
-
+            const urlParams = new URLSearchParams(window.location.search);
+            const semesterId = urlParams.get('semesterId');
             const events = calendar.getEvents();
             const eventsData = events.map(event => {
                 const localDate = new Date(event.start.getUTCFullYear(), event.start.getUTCMonth(), event.start.getUTCDate());
-                const eventData = {
+                return {
                     activity: event.title,
-                    date: localDate.toISOString().split('T')[0],
+                    date: localDate.toISOString().split('T')[0], // Format as YYYY-MM-DD
                     color: event.backgroundColor,
                     semesterId: semesterId,
                 };
-
-                if (isPublic) {
-                    const selectedClassId = document.getElementById('class-dropdown')?.value;
-                    const selectedRoom = document.getElementById('room-select')?.value;
-
-                    if (!selectedClassId) {
-                        alert('Please select a class before saving as public.');
-                        return null;
-                    }
-
-                    if (!selectedRoom) {
-                        alert('Please select a room before saving as public.');
-                        return null;
-                    }
-
-                    eventData.classId = selectedClassId;
-                    eventData.room = selectedRoom;
-                }
-
-                return eventData;
-            }).filter(Boolean);
-
-            fetch(apiEndpoint, {
+            });
+            fetch('/schedule/update', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -645,27 +591,29 @@
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Failed to save schedule');
+                        throw new Error('Failed to save draft');
                     }
-                    return response.json();
+                    const contentType = response.headers.get('Content-Type');
+                    if (contentType && contentType.includes('application/json')) {
+                        return response.json();
+                    } else {
+                        return response.text();
+                    }
                 })
                 .then(data => {
-                    alert(data.message || (isPublic ? 'Schedule saved as public successfully!' : 'Draft saved successfully!'));
-                    if (isPublic) {
-                        window.location.href = '/schedule-list.html'; // Redirect to schedule-list for public save
+                    if (typeof data === 'string') {
+                        alert(data); // Handle plain text message
                     } else {
-                        window.location.href = '/semester-list.html'; // Redirect to semester-list for draft save
+                        alert(data.message); // Handle JSON message
                     }
+                    console.log('Saved data:', data);
                 })
                 .catch(error => {
-                    console.error('Error saving schedule:', error);
-                    alert('Error saving schedule');
+                    console.error('Error saving draft:', error);
+                    alert('Error saving draft');
                 });
-        }
-
-        saveDraftButton?.addEventListener('click', () => saveSchedule('/schedule/saveDraft', false));
-        savePublicButton?.addEventListener('click', () => saveSchedule('/schedule/savePublic', true));
-    });
+        });
+    })
 </script>
 </body>
 </html>

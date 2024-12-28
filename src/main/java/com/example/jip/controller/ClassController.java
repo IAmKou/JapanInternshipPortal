@@ -36,8 +36,10 @@ public class ClassController {
     private NotificationServices notificationServices;
 
 
-    @PostMapping(value = "/create", consumes = "application/json", produces = "text/plain")
+    @PostMapping(value = "/create", consumes = "application/json", produces = "application/json")
     public String createClass(@RequestBody ClassDTO classDTO) {
+        int semesterId = classDTO.getSemesterId();
+        System.out.println(semesterId);
         if (classDTO.getName() == null || classDTO.getName().isEmpty()) {
             throw new IllegalArgumentException("Class name is required");
         }
@@ -55,10 +57,7 @@ public class ClassController {
         }
 
         try {
-            Class savedClass = classServices.saveClassWithStudents(classDTO, classDTO.getStudentIds());
-
-
-
+            Class savedClass = classServices.saveClassWithStudents(classDTO, classDTO.getStudentIds(), semesterId);
             return "Class " + savedClass.getName() + " created successfully";
         } catch (IllegalArgumentException e) {
             return e.getMessage(); // Return failure message if student list is empty

@@ -65,6 +65,8 @@ CREATE TABLE Class (
                        name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
                        status ENUM('Active', 'Inactive') DEFAULT 'Inactive',
                        number_of_student INT,
+                       semester_id INT NOT NULL,
+                       foreign key (semester_id) references Semester(Id),
                        FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
 );
 

@@ -25,6 +25,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 
     List<Schedule> findBySemesterIdAndStatus(int semesterId, Schedule.status status);
 
+    boolean existsBySemesterIdAndDateAndActivityContaining(int semesterId, java.sql.Date date, String activity);
+
     @Transactional
     @Modifying
     @Query("DELETE FROM Schedule s WHERE s.semester.id = :semesterId")
