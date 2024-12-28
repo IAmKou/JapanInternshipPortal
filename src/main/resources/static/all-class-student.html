@@ -29,14 +29,75 @@
 </head>
 
 <style>
-    /* Custom Modal Styling for Error Modal */
-    #error-modal .modal-dialog {
-        position: fixed !important; /* Giữ modal ở vị trí cố định */
-        top: 0; /* Đặt modal ngay đầu trang */
-        left: 50%; /* Căn giữa modal theo chiều ngang */
-        transform: translateX(-50%); /* Căn giữa modal */
-        z-index: 1050; /* Đảm bảo modal luôn hiển thị trên các phần tử khác */
-        margin-top: 10px; /* Khoảng cách phía trên của modal */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        padding: 8px 16px;
+        z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-gradient-yellow {
+        background: linear-gradient(45deg, #ffcc00, #ff9900);
+        color: #fff;
+    }
+
+    .btn-search {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .btn-search {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content button {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        width: 100%;
+        border: none;
+        background: none;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .dropdown-content button:hover {
+        background-color: #f1f1f1;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
     }
 
     #error-modal .modal-body .fas.fa-times-circle {
@@ -45,89 +106,11 @@
         margin-right: 10px;
     }
 
-    #error-modal .modal-body p {
-        font-size: 0.9rem;
-        color: #6c757d; /* Màu nhạt hơn cho mô tả */
-    }
-
-    /* Tối ưu giao diện cho bảng thông tin */
-    .info-table td {
-        padding: 12px;
-        vertical-align: middle;
-    }
-
-    /* Cải tiến hình ảnh */
-    .item-img img {
-        width: 120px;
-        height: 120px;
-        object-fit: cover;
-        border-radius: 50%;
-    }
-
-    /* Nút chỉnh sửa (Edit) */
-    .dropdown-menu .dropdown-item {
-        font-size: 14px;
-        padding: 10px 20px;
-        transition: background-color 0.3s ease;
-    }
-
     /* Định dạng thẻ tiêu đề */
     .header-inline h3 {
         font-size: 24px;
         font-weight: 600;
         color: #333;
-    }
-
-    /* Cải thiện bảng */
-    .table-borderless td, .table-borderless th {
-        border: none;
-    }
-
-    .custom-dropdown-item i {
-        font-size: 18px; /* Cải thiện kích thước biểu tượng */
-    }
-
-    .custom-dropdown-btn i {
-        color: #007bff; /* Màu của biểu tượng */
-    }
-
-    .custom-dropdown-btn:hover i {
-        color: white; /* Màu biểu tượng khi hover */
-    }
-
-    .table td {
-        padding: 10px; /* Tăng khoảng cách giữa các ô */
-        font-size: 18px; /* Thay đổi kích cỡ chữ */
-    }
-
-    /* Custom Button */
-    .btn-search {
-        height: 50px; /* Đồng bộ chiều cao với input */
-        font-size: 16px; /* Kích thước chữ to hơn */
-        font-weight: bold; /* Làm chữ đậm hơn */
-        text-transform: uppercase; /* Viết hoa chữ */
-        border-radius: 5px; /* Bo góc tương tự input */
-        padding: 0 20px; /* Tăng khoảng cách trong nút */
-    }
-
-    .pagination .page-link {
-        padding: 0.75rem 1.25rem; /* Increase padding for bigger buttons */
-        font-size: 1.25rem; /* Increase font size for larger text */
-        border-radius: 0.375rem; /* Optional: Make buttons slightly rounded */
-    }
-
-    .pagination .page-item.active .page-link {
-        background-color: #007bff; /* Active button color */
-        border-color: #007bff; /* Active button border color */
-    }
-
-    .pagination .page-item:hover .page-link {
-        background-color: #0056b3; /* Hover effect color */
-        border-color: #0056b3;
-    }
-
-    .table tr:hover {
-        background-color: #f9f9f9;
     }
 
     .table img {
@@ -159,34 +142,6 @@
     #error-modal .modal-body p {
         font-size: 0.9rem;
         color: #6c757d; /* Màu nhạt hơn cho mô tả */
-    }
-
-    input[name="searchInput"] {
-        border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
-        border-radius: 5px; /* Thêm góc bo tròn nếu cần */
-    }
-
-    input[name="searchInput"]:hover {
-        border-color: #28a745 !important; /* Màu border khi hover */
-    }
-
-    input[name="searchInput"]:focus {
-        border-color: #28a745 !important; /* Giữ màu đỏ khi focus */
-        box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
-    }
-
-    select[name="filterSelect"] { /* Chỉnh sửa thuộc tính cho phần tử select */
-        border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
-        border-radius: 5px; /* Thêm góc bo tròn */
-    }
-
-    select[name="filterSelect"]:hover { /* Khi di chuột vào select */
-        border-color: #28a745 !important; /* Màu viền khi hover */
-    }
-
-    select[name="filterSelect"]:focus { /* Khi focus vào select */
-        border-color: #28a745 !important; /* Màu viền khi focus */
-        box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
     }
 </style>
 
@@ -386,13 +341,12 @@
                         <div class="item-title">
                             <h3>All Class Student</h3>
                         </div>
-                        <div class="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group d-flex gap-2" >
-                            <button class="fw-btn-fill btn-gradient-yellow" id="viewInfoButton" type="button" style="padding-right: 20px">VIEW
-                                INFO
-                            </button>
-                            <button class="fw-btn-fill btn-gradient-yellow" id="viewGradesButton" type="button">VIEW
-                                GRADES
-                            </button>
+                        <div class="dropdown" style="margin-right: 1830px;padding-bottom:10px;padding-left:10px" >
+                            <button class="btn btn-gradient-yellow btn-search">View Options</button>
+                            <div class="dropdown-content">
+                                <button id="viewInfoButton" class="btn btn-gradient-yellow btn-search">VIEW STUDENT INFO</button>
+                                <button id="viewGradesButton" class="btn btn-gradient-yellow btn-search">VIEW STUDENT GRADES</button>
+                            </div>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -414,9 +368,9 @@
                 </div>
 
                 <!-- Export Form -->
-                <form action="/export-csv" id="exportForm" method="post" style="margin-top: 20px; display: none">
+                <form action="/export-csv" id="exportForm" method="post" style="margin-top: 20px; display: none;">
                     <input id="gradesData" name="gradesData" type="hidden"/>
-                    <div class="col-lg-4">
+                    <div>
                         <button class="btn btn-gradient-yellow btn-search" type="submit">Export</button>
                     </div>
                 </form>
@@ -463,9 +417,10 @@
         const viewGradesButton = document.getElementById('viewGradesButton');
         const exportForm = document.getElementById('exportForm');
         const gradesDataInput = document.getElementById('gradesData');
+        const viewInfoButton = document.getElementById('viewInfoButton');
+        const importXlsxButton = document.getElementById("import-xlsx");
         const urlParams = new URLSearchParams(window.location.search);
         const classId = urlParams.get('classId');
-        const viewInfoButton = document.getElementById('viewInfoButton'); // Định nghĩa viewInfoButton
         let gradesData = [];
         let isGradesViewInitialized = false;
 
@@ -486,53 +441,56 @@
                     return response.json();
                 })
                 .then(students => {
-                    tableBody.innerHTML = '';
-                    tableHead.innerHTML = `
-                    <tr>
-                        <th>#</th>
-                        <th>Photo</th>
-                        <th>Name</th>
-                        <th>Gender</th>
-                        <th></th>
-                    </tr>`;
-
-                    let studentNumber = 1;
-                    students.forEach(student => {
-                        const row = document.createElement('tr');
-
-                        const numberCell = document.createElement('td');
-                        numberCell.textContent = studentNumber++;
-                        row.appendChild(numberCell);
-
-                        const imgCell = document.createElement('td');
-                        const imgElement = document.createElement('img');
-                        imgElement.src = student.img;
-                        imgElement.alt = "Student Image";
-                        imgElement.style.width = "50px";
-                        imgElement.style.height = "50px";
-                        imgElement.style.objectFit = "cover";
-                        imgCell.appendChild(imgElement);
-                        row.appendChild(imgCell);
-
-                        const nameCell = document.createElement('td');
-                        nameCell.textContent = student.fullname;
-                        row.appendChild(nameCell);
-
-                        const genderCell = document.createElement('td');
-                        genderCell.textContent = student.gender;
-                        row.appendChild(genderCell);
-
-                        tableBody.appendChild(row);
-                    });
+                    renderStudentList(students);
                 })
                 .catch(error => console.error('Error fetching students:', error));
         }
 
+        // Render student list
+        function renderStudentList(students) {
+            tableBody.innerHTML = '';
+            tableHead.innerHTML = `
+            <tr>
+                <th>#</th>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th></th>
+            </tr>`;
+            let studentNumber = 1;
+            students.forEach(student => {
+                const row = document.createElement('tr');
+
+                const numberCell = document.createElement('td');
+                numberCell.textContent = studentNumber++;
+                row.appendChild(numberCell);
+
+                const imgCell = document.createElement('td');
+                const imgElement = document.createElement('img');
+                imgElement.src = student.img;
+                imgElement.alt = "Student Image";
+                imgElement.style.width = "50px";
+                imgElement.style.height = "50px";
+                imgElement.style.objectFit = "cover";
+                imgCell.appendChild(imgElement);
+                row.appendChild(imgCell);
+
+                const nameCell = document.createElement('td');
+                nameCell.textContent = student.fullname;
+                row.appendChild(nameCell);
+
+                const genderCell = document.createElement('td');
+                genderCell.textContent = student.gender;
+                row.appendChild(genderCell);
+
+                tableBody.appendChild(row);
+            });
+        }
+
         // Fetch and render grades
-        viewGradesButton.addEventListener('click', function () {
+        function fetchAndRenderGrades() {
             if (isGradesViewInitialized) return;
             isGradesViewInitialized = true;
-
             tableHead.innerHTML = `
             <tr>
                 <th>#</th>
@@ -546,50 +504,40 @@
                 <th>Final Test</th>
                 <th>Course Final</th>
             </tr>`;
-
             fetch(`/student/${classId}/getAllGrades`)
                 .then(response => response.json())
                 .then(grades => {
                     gradesData = grades;
-                    tableBody.innerHTML = '';
-
-                    let studentNumber = 1;
-                    grades.forEach(grade => {
-                        const row = `
-                        <tr>
-                            <td>${studentNumber++}</td>
-                            <td>${grade.fullname || 'N/A'}</td>
-                            <td>${grade.comment || 'N/A'}</td>
-                            <td>${grade.attitude || 'N/A'}</td>
-                            <td>${grade.softskill || 'N/A'}</td>
-                            <td>${grade.skill || 'N/A'}</td>
-                            <td>${grade.avgExamMark || 'N/A'}</td>
-                            <td>${grade.middleExam || 'N/A'}</td>
-                            <td>${grade.finalExam || 'N/A'}</td>
-                            <td>${grade.finalMark || 'N/A'}</td>
-                        </tr>`;
-                        tableBody.insertAdjacentHTML('beforeend', row);
-                    });
-
+                    renderGrades(grades);
                     gradesDataInput.value = JSON.stringify(gradesData);
                     exportForm.style.display = 'block';
                 })
                 .catch(error => console.error('Error fetching grades:', error));
-        });
-
-        document.getElementById("import-xlsx").addEventListener("click", showImportModal);
-
-        function showImportModal() {
-            const importModal = document.getElementById("import-modal");
-            if (importModal) {
-                const modalInstance = new bootstrap.Modal(importModal);
-                modalInstance.show();
-            } else {
-                console.error("Import modal not found in the DOM.");
-            }
         }
 
-        // Fetch student list again on View Info button click
+        // Render grades table
+        function renderGrades(grades) {
+            tableBody.innerHTML = '';
+            let studentNumber = 1;
+            grades.forEach(grade => {
+                const row = `
+                <tr>
+                    <td>${studentNumber++}</td>
+                    <td>${grade.fullname || 'N/A'}</td>
+                    <td>${grade.comment || 'N/A'}</td>
+                    <td>${grade.attitude || 'N/A'}</td>
+                    <td>${grade.softskill || 'N/A'}</td>
+                    <td>${grade.skill || 'N/A'}</td>
+                    <td>${grade.avgExamMark || 'N/A'}</td>
+                    <td>${grade.middleExam || 'N/A'}</td>
+                    <td>${grade.finalExam || 'N/A'}</td>
+                    <td>${grade.finalMark || 'N/A'}</td>
+                </tr>`;
+                tableBody.insertAdjacentHTML('beforeend', row);
+            });
+        }
+        // Event listeners
+        viewGradesButton.addEventListener('click', fetchAndRenderGrades);
         viewInfoButton.addEventListener('click', function () {
             isGradesViewInitialized = false;
             exportForm.style.display = 'none';
@@ -621,6 +569,7 @@
     } else {
         console.error("User details not found in sessionStorage");
     }
+
 </script>
 
 <!-- jquery-->
