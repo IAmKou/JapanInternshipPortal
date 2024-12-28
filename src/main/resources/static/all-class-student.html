@@ -125,6 +125,7 @@
         background-color: #0056b3; /* Hover effect color */
         border-color: #0056b3;
     }
+
     .table tr:hover {
         background-color: #f9f9f9;
     }
@@ -154,36 +155,38 @@
     #error-modal .modal-body .fas.fa-times-circle {
         color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
     }
+
     #error-modal .modal-body p {
         font-size: 0.9rem;
         color: #6c757d; /* Màu nhạt hơn cho mô tả */
     }
+
     input[name="searchInput"] {
-        border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
-        border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+        border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+        border-radius: 5px; /* Thêm góc bo tròn nếu cần */
     }
 
     input[name="searchInput"]:hover {
-        border-color: #28a745 !important;  /* Màu border khi hover */
+        border-color: #28a745 !important; /* Màu border khi hover */
     }
 
     input[name="searchInput"]:focus {
-        border-color: #28a745 !important;   /* Giữ màu đỏ khi focus */
-        box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        border-color: #28a745 !important; /* Giữ màu đỏ khi focus */
+        box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
     }
 
-    select[name="filterSelect"] {  /* Chỉnh sửa thuộc tính cho phần tử select */
-        border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
-        border-radius: 5px;  /* Thêm góc bo tròn */
+    select[name="filterSelect"] { /* Chỉnh sửa thuộc tính cho phần tử select */
+        border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+        border-radius: 5px; /* Thêm góc bo tròn */
     }
 
-    select[name="filterSelect"]:hover {  /* Khi di chuột vào select */
-        border-color: #28a745 !important;  /* Màu viền khi hover */
+    select[name="filterSelect"]:hover { /* Khi di chuột vào select */
+        border-color: #28a745 !important; /* Màu viền khi hover */
     }
 
-    select[name="filterSelect"]:focus {  /* Khi focus vào select */
-        border-color: #28a745 !important;  /* Màu viền khi focus */
-        box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+    select[name="filterSelect"]:focus { /* Khi focus vào select */
+        border-color: #28a745 !important; /* Màu viền khi focus */
+        box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
     }
 </style>
 
@@ -383,13 +386,14 @@
                         <div class="item-title">
                             <h3>All Class Student</h3>
                         </div>
-                        <div class="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group d-flex gap-2">
-                            <button class="fw-btn-fill btn-gradient-yellow" id="viewInfoButton" type="button">VIEW INFO</button>
-                            <button class="fw-btn-fill btn-gradient-yellow" id="viewGradesButton" type="button">VIEW GRADES</button>
+                        <div class="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group d-flex gap-2" >
+                            <button class="fw-btn-fill btn-gradient-yellow" id="viewInfoButton" type="button" style="padding-right: 20px">VIEW
+                                INFO
+                            </button>
+                            <button class="fw-btn-fill btn-gradient-yellow" id="viewGradesButton" type="button">VIEW
+                                GRADES
+                            </button>
                         </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <button class="btn btn-gradient-yellow btn-search" id="import-xlsx" type="button" data-bs-toggle="modal" data-bs-target="#importModal">IMPORT GRADES</button>
                     </div>
                     <div class="table-responsive">
                         <table class="table display text-nowrap">
@@ -408,6 +412,7 @@
                         </table>
                     </div>
                 </div>
+
                 <!-- Export Form -->
                 <form action="/export-csv" id="exportForm" method="post" style="margin-top: 20px; display: none">
                     <input id="gradesData" name="gradesData" type="hidden"/>
@@ -418,7 +423,8 @@
             </div>
 
             <!-- Success Modal -->
-            <div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal" tabindex="-1">
+            <div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal"
+                 tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header border-0">
@@ -447,213 +453,152 @@
                 </div>
             </div>
 
-            <!-- Import Modal -->
-            <div id="import-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Import Grades</h5>
-                        </div>
-                        <div class="modal-body">
-                            <input accept=".xlsx" id="xlsx-file" type="file" />
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" id="import-submit-button">Submit</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tableBody = document.querySelector('.table tbody');
+        const tableHead = document.querySelector('.table thead');
+        const viewGradesButton = document.getElementById('viewGradesButton');
+        const exportForm = document.getElementById('exportForm');
+        const gradesDataInput = document.getElementById('gradesData');
+        const urlParams = new URLSearchParams(window.location.search);
+        const classId = urlParams.get('classId');
+        const viewInfoButton = document.getElementById('viewInfoButton'); // Định nghĩa viewInfoButton
+        let gradesData = [];
+        let isGradesViewInitialized = false;
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const tableBody = document.querySelector('.table tbody');
-            const tableHead = document.querySelector('.table thead');
-            const viewInfoButton = document.getElementById('viewInfoButton');
-            const viewGradesButton = document.getElementById('viewGradesButton');
-            const importXlsxButton = document.getElementById('import-xlsx');
-            const confirmImportButton = document.getElementById('confirm-import');
-            const exportForm = document.getElementById('exportForm');
-            const gradesDataInput = document.getElementById('gradesData');
-            const urlParams = new URLSearchParams(window.location.search);
-            const classId = urlParams.get('classId');
-            let gradesData = [];
-            let isGradesViewInitialized = false;
+        // Ensure classId is valid before proceeding
+        if (classId) {
+            fetchStudentList();
+        } else {
+            console.error("classId is missing from the URL.");
+        }
 
-            // Ensure classId is valid before proceeding
-            if (classId) {
-                fetchStudentList();
-            } else {
-                console.error("classId is missing from the URL.");
-            }
+        // Fetch student list function
+        function fetchStudentList() {
+            fetch(`/student/${classId}/getAll`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(students => {
+                    tableBody.innerHTML = '';
+                    tableHead.innerHTML = `
+                    <tr>
+                        <th>#</th>
+                        <th>Photo</th>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th></th>
+                    </tr>`;
 
-            // Fetch student list function
-            function fetchStudentList() {
-                fetch(`/student/${classId}/getAll`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok ' + response.statusText);
-                        }
-                        return response.json();
-                    })
-                    .then(students => {
-                        tableBody.innerHTML = '';
-                        tableHead.innerHTML = `
+                    let studentNumber = 1;
+                    students.forEach(student => {
+                        const row = document.createElement('tr');
+
+                        const numberCell = document.createElement('td');
+                        numberCell.textContent = studentNumber++;
+                        row.appendChild(numberCell);
+
+                        const imgCell = document.createElement('td');
+                        const imgElement = document.createElement('img');
+                        imgElement.src = student.img;
+                        imgElement.alt = "Student Image";
+                        imgElement.style.width = "50px";
+                        imgElement.style.height = "50px";
+                        imgElement.style.objectFit = "cover";
+                        imgCell.appendChild(imgElement);
+                        row.appendChild(imgCell);
+
+                        const nameCell = document.createElement('td');
+                        nameCell.textContent = student.fullname;
+                        row.appendChild(nameCell);
+
+                        const genderCell = document.createElement('td');
+                        genderCell.textContent = student.gender;
+                        row.appendChild(genderCell);
+
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching students:', error));
+        }
+
+        // Fetch and render grades
+        viewGradesButton.addEventListener('click', function () {
+            if (isGradesViewInitialized) return;
+            isGradesViewInitialized = true;
+
+            tableHead.innerHTML = `
+            <tr>
+                <th>#</th>
+                <th>Student Name</th>
+                <th>Teacher Comment</th>
+                <th>Participation</th>
+                <th>Soft Skill</th>
+                <th>Skill</th>
+                <th>Daily Exams</th>
+                <th>Midterm Test</th>
+                <th>Final Test</th>
+                <th>Course Final</th>
+            </tr>`;
+
+            fetch(`/student/${classId}/getAllGrades`)
+                .then(response => response.json())
+                .then(grades => {
+                    gradesData = grades;
+                    tableBody.innerHTML = '';
+
+                    let studentNumber = 1;
+                    grades.forEach(grade => {
+                        const row = `
                         <tr>
-                            <th>#</th>
-                            <th>Photo</th>
-                            <th>Name</th>
-                            <th>Gender</th>
-                            <th></th>
+                            <td>${studentNumber++}</td>
+                            <td>${grade.fullname || 'N/A'}</td>
+                            <td>${grade.comment || 'N/A'}</td>
+                            <td>${grade.attitude || 'N/A'}</td>
+                            <td>${grade.softskill || 'N/A'}</td>
+                            <td>${grade.skill || 'N/A'}</td>
+                            <td>${grade.avgExamMark || 'N/A'}</td>
+                            <td>${grade.middleExam || 'N/A'}</td>
+                            <td>${grade.finalExam || 'N/A'}</td>
+                            <td>${grade.finalMark || 'N/A'}</td>
                         </tr>`;
-
-                        let studentNumber = 1;
-                        students.forEach(student => {
-                            const row = document.createElement('tr');
-
-                            const numberCell = document.createElement('td');
-                            numberCell.textContent = studentNumber++;
-                            row.appendChild(numberCell);
-
-                            const imgCell = document.createElement('td');
-                            const imgElement = document.createElement('img');
-                            imgElement.src = student.img;
-                            imgElement.alt = "Student Image";
-                            imgElement.style.width = "50px";
-                            imgElement.style.height = "50px";
-                            imgElement.style.objectFit = "cover";
-                            imgCell.appendChild(imgElement);
-                            row.appendChild(imgCell);
-
-                            const nameCell = document.createElement('td');
-                            nameCell.textContent = student.fullname;
-                            row.appendChild(nameCell);
-
-                            const genderCell = document.createElement('td');
-                            genderCell.textContent = student.gender;
-                            row.appendChild(genderCell);
-
-                            tableBody.appendChild(row);
-                        });
-                    })
-                    .catch(error => console.error('Error fetching students:', error));
-            }
-
-            // Fetch and render grades
-            viewGradesButton.addEventListener('click', function () {
-                if (isGradesViewInitialized) return;
-                isGradesViewInitialized = true;
-
-                tableHead.innerHTML = `
-                <tr>
-                    <th>#</th>
-                    <th>Student Name</th>
-                    <th>Teacher Comment</th>
-                    <th>Participation</th>
-                    <th>Soft Skill</th>
-                    <th>Skill</th>
-                    <th>Daily Exams</th>
-                    <th>Midterm Test</th>
-                    <th>Final Test</th>
-                    <th>Course Final</th>
-                </tr>`;
-
-                fetch(`/student/${classId}/getAllGrades`)
-                    .then(response => response.json())
-                    .then(grades => {
-                        gradesData = grades;
-                        tableBody.innerHTML = '';
-
-                        let studentNumber = 1;
-                        grades.forEach(grade => {
-                            const row = `
-                            <tr>
-                                <td>${studentNumber++}</td>
-                                <td>${grade.fullname || 'N/A'}</td>
-                                <td>${grade.comment || 'N/A'}</td>
-                                <td>${grade.attitude || 'N/A'}</td>
-                                <td>${grade.softskill || 'N/A'}</td>
-                                <td>${grade.skill || 'N/A'}</td>
-                                <td>${grade.avgExamMark || 'N/A'}</td>
-                                <td>${grade.middleExam || 'N/A'}</td>
-                                <td>${grade.finalExam || 'N/A'}</td>
-                                <td>${grade.finalMark || 'N/A'}</td>
-                            </tr>`;
-                            tableBody.insertAdjacentHTML('beforeend', row);
-                        });
-
-                        gradesDataInput.value = JSON.stringify(gradesData);
-                        exportForm.style.display = 'block';
-                    })
-                    .catch(error => console.error('Error fetching grades:', error));
-            });
-
-            document.getElementById("import-xlsx").addEventListener("click", showImportModal);
-            function showImportModal() {
-                const importModal = document.getElementById("import-modal");
-                if (importModal) {
-                    const modalInstance = new bootstrap.Modal(importModal);
-                    modalInstance.show();
-                } else {
-                    console.error("Import modal not found in the DOM.");
-                }
-            }
-
-            // Import logic
-            document.getElementById("import-submit-button").addEventListener("click", async () => {
-                const fileInput = document.getElementById("xlsx-file");
-                if (!fileInput.files[0]) {
-                    showErrorModal("Please select a file to import.");
-                    return;
-                }
-
-                const formData = new FormData();
-                formData.append("file", fileInput.files[0]);
-
-                try {
-                    const response = await fetch("/mark-report/import", {
-                        method: "POST",
-                        body: formData,
+                        tableBody.insertAdjacentHTML('beforeend', row);
                     });
 
-                    if (response.ok) {
-                        showSuccessModal("File imported successfully!");
-                        window.location.reload();
-                    } else {
-                        const errorText = await response.text();
-                        showErrorModal(`Import failed: ${errorText}`);
-                    }
-                } catch (error) {
-                    console.error("Error:", error);
-                    showErrorModal("An error occurred while importing the file.");
-                }
-            });
-
-            // Fetch student list again on View Info button click
-            viewInfoButton.addEventListener('click', function () {
-                isGradesViewInitialized = false;
-                exportForm.style.display = 'none';
-                fetchStudentList();
-            });
+                    gradesDataInput.value = JSON.stringify(gradesData);
+                    exportForm.style.display = 'block';
+                })
+                .catch(error => console.error('Error fetching grades:', error));
         });
-    </script>
+
+        document.getElementById("import-xlsx").addEventListener("click", showImportModal);
+
+        function showImportModal() {
+            const importModal = document.getElementById("import-modal");
+            if (importModal) {
+                const modalInstance = new bootstrap.Modal(importModal);
+                modalInstance.show();
+            } else {
+                console.error("Import modal not found in the DOM.");
+            }
+        }
+
+        // Fetch student list again on View Info button click
+        viewInfoButton.addEventListener('click', function () {
+            isGradesViewInitialized = false;
+            exportForm.style.display = 'none';
+            fetchStudentList();
+        });
+    });
+</script>
 <!-- fetch user -->
 <script>
-    // Function to show the success modal
-    function showSuccessModal(message) {
-        document.getElementById('success-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
-        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
-        successModal.show();
-    }
-    // Function to show the error modal
-    function showErrorModal(message) {
-        document.getElementById('long-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
-        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
-        errorModal.show();
-    }
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
     if (userDetails) {
         const userFullNameElements = document.querySelectorAll('.userFullName');
@@ -693,5 +638,5 @@
 <!-- Custom Js -->
 <script src="js/main.js"></script>
 
-</div>
+</body>
 </html>
