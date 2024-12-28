@@ -1,443 +1,674 @@
 <!doctype html>
-<html class="no-js" lang="" xmlns:th="http://www.w3.org/1999/xhtml">
-
-
-<!-- Mirrored from Update-student-mark-report.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
+<html class="no-js" lang="">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Mark Report</title>
-
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <title>JIP | Personal Mark Report</title>
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+    <link href="img/favicon.png" rel="shortcut icon" type="image/x-icon">
     <!-- Normalize CSS -->
-    <link rel="stylesheet" href="css/normalize.css">
+    <link href="css/normalize.css" rel="stylesheet">
     <!-- Main CSS -->
-    <link rel="stylesheet" href="css/main.css">
+    <link href="css/main.css" rel="stylesheet">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="css/all.min.css">
+    <link href="css/all.min.css" rel="stylesheet">
     <!-- Flaticon CSS -->
-    <link rel="stylesheet" href="fonts/flaticon.css">
+    <link href="fonts/flaticon.css" rel="stylesheet">
     <!-- Animate CSS -->
-    <link rel="stylesheet" href="css/animate.min.css">
-    <!-- Date Picker CSS -->
-    <link rel="stylesheet" href="css/datepicker.min.css">
-    <!-- Select 2 CSS -->
-    <link rel="stylesheet" href="css/select2.min.css">
-    <!-- Data Table CSS -->
-    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <link href="css/animate.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link href="style.css" rel="stylesheet">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <style>
+        /* Custom Modal Styling for Error Modal */
+        #error-modal .modal-dialog {
+            position: fixed !important; /* Giữ modal ở vị trí cố định */
+            top: 0; /* Đặt modal ngay đầu trang */
+            left: 50%; /* Căn giữa modal theo chiều ngang */
+            transform: translateX(-50%); /* Căn giữa modal */
+            z-index: 1050; /* Đảm bảo modal luôn hiển thị trên các phần tử khác */
+            margin-top: 10px; /* Khoảng cách phía trên của modal */
+        }
+
+        #error-modal .modal-header {
+            background-color: #dc3545; /* Màu nền đỏ cho header */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #error-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa; /* Nền sáng cho phần thân */
+            color: #333;
+        }
+
+        #error-modal .modal-body .fas.fa-times-circle {
+            color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+            font-size: 2rem; /* Tăng kích thước biểu tượng */
+            margin-right: 10px;
+        }
+
+        #error-modal .modal-title {
+            display: flex;
+            align-items: center;
+        }
+
+        #error-modal .btn-danger {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #dc3545;
+            border-color: #dc3545;
+            border-radius: 5px;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #error-modal .btn-close {
+            color: white;
+        }
+
+        #error-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+
+        /* Tối ưu giao diện cho bảng thông tin */
+        .info-table td {
+            padding: 12px;
+            vertical-align: middle;
+        }
+
+        /* Cải tiến hình ảnh */
+        .item-img img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* Nút Save */
+        .save-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .save-button:hover {
+            background-color: #218838;
+        }
+
+        /* Nút chỉnh sửa (Edit) */
+        .dropdown-menu .dropdown-item {
+            font-size: 14px;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Định dạng thẻ tiêu đề */
+        .header-inline h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Cải thiện bảng */
+        .table-borderless td, .table-borderless th {
+            border: none;
+        }
+
+        .custom-dropdown-item i {
+            font-size: 18px; /* Cải thiện kích thước biểu tượng */
+        }
+
+        /* Tạo hiệu ứng cho menu dropdown */
+        .dropdown-menu {
+            padding: 0;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 8px;
+        }
+
+        .custom-dropdown-btn i {
+            color: #007bff; /* Màu của biểu tượng */
+        }
+
+        .custom-dropdown-btn:hover i {
+            color: white; /* Màu biểu tượng khi hover */
+        }
+
+        .font-medium {
+            font-weight: 500; /* Cho chữ dày hơn */
+        }
+
+        .text-dark-medium {
+            color: #333333; /* Màu sắc chữ tối hơn để tăng độ tương phản */
+        }
+
+        .table td {
+            padding: 10px; /* Tăng khoảng cách giữa các ô */
+            font-size: 18px; /* Thay đổi kích cỡ chữ */
+        }
+        /* Custom Button */
+        .btn-search {
+            height: 50px; /* Đồng bộ chiều cao với input */
+            font-size: 16px; /* Kích thước chữ to hơn */
+            font-weight: bold; /* Làm chữ đậm hơn */
+            text-transform: uppercase; /* Viết hoa chữ */
+            border-radius: 5px; /* Bo góc tương tự input */
+            padding: 0 20px; /* Tăng khoảng cách trong nút */
+        }
+    </style>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            max-width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+    </style>
 </head>
 
 <body>
-    <!-- Preloader Start Here -->
-    <div id="preloader"></div>
-    <!-- Preloader End Here -->
-    <div id="wrapper" class="wrapper bg-ash">
-        <!-- Header Menu Area Start Here -->
-        <div class="navbar navbar-expand-md header-menu-one bg-light">
-            <div class="nav-bar-header-one">
-                <div class="header-logo">
-                    <a href="admin.html">
-                        <div style="width: 180px; height: 70px; overflow: hidden;">
-                            <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
-                        </div>
-                    </a>
-                </div>
-                  <div class="toggle-button sidebar-toggle">
-                    <button type="button" class="item-link">
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<div class="wrapper bg-ash" id="wrapper">
+    <!-- Header Menu Area Start Here -->
+    <div class="navbar navbar-expand-md header-menu-one bg-light">
+        <div class="nav-bar-header-one">
+            <div class="header-logo">
+                <a href="admin.html">
+                    <div style="width: 180px; height: 70px; overflow: hidden;">
+                        <img alt="logo" src="img/JIP%20LOGO%20n.png"
+                             style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </a>
+            </div>
+            <div class="toggle-button sidebar-toggle">
+                <button class="item-link" type="button">
                         <span class="btn-icon-wrap">
                             <span></span>
                             <span></span>
                             <span></span>
                         </span>
-                    </button>
-                </div>
-            </div>
-            <div class="d-md-none mobile-nav-bar">
-               <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse" data-target="#mobile-navbar" aria-expanded="false">
-                    <i class="far fa-arrow-alt-circle-down"></i>
                 </button>
-                <button type="button" class="navbar-toggler sidebar-toggle-mobile">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-            <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
-                <ul class="navbar-nav">
-                    <li class="navbar-item header-search-bar">
-                        <div class="input-group stylish-input-group">
-
-                        </div>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="navbar-item dropdown header-admin">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <div class="admin-title">
-                                <h5 class="item-title userFullName"></h5>
-                                <span class="userRole"></span>
-                            </div>
-                            <div class="admin-img">
-                                <img src="img/figure/admin.jpg" alt="Admin">
-                            </div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title userFullName"></h6>
-                            </div>
-                            <div class="item-content">
-                                <ul class="settings-list">
-                                    <li><a href="users-profile-student.html"><i class="flaticon-user"></i>My Profile</a></li>
-                                    <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span data-i18n="change_password">Change Password</span></a></li>
-                                    <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="navbar-item dropdown header-notification">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="far fa-bell"></i>
-                            <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
-                            <span>8</span>
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title">03 Notifiacations</h6>
-                            </div>
-                            <div class="item-content">
-                                <div class="media">
-                                    <div class="item-icon bg-skyblue">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Complete Today Task</div>
-                                        <span>1 Mins ago</span>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-icon bg-orange">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Director Metting</div>
-                                        <span>20 Mins ago</span>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-icon bg-violet-blue">
-                                        <i class="fas fa-cogs"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Update Password</div>
-                                        <span>45 Mins ago</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                     <li class="navbar-item dropdown header-language">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" 
-                        data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#">English</a>
-                            <a class="dropdown-item" href="#">Japanese</a>
-                        </div>
-                    </li>
-                </ul>
             </div>
         </div>
-        <!-- Header Menu Area End Here -->
-        <!-- Page Area Start Here -->
-        <div class="dashboard-page-one">
-            <!-- Sidebar Area Start Here -->
-            <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
-                <div class="mobile-sidebar-header d-md-none">
-                    <div class="header-logo">
-                        <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+        <div class="d-md-none mobile-nav-bar">
+            <button aria-expanded="false" class="navbar-toggler pulse-animation" data-target="#mobile-navbar"
+                    data-toggle="collapse" type="button">
+                <i class="far fa-arrow-alt-circle-down"></i>
+            </button>
+            <button class="navbar-toggler sidebar-toggle-mobile" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+            <ul class="navbar-nav">
+                <li class="navbar-item header-search-bar">
+                    <div class="input-group stylish-input-group">
+
                     </div>
-                </div>
-                <div class="sidebar-menu-content">
-                    <ul class="nav nav-sidebar-menu sidebar-toggle-view">
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                            <ul class="nav sub-group-menu sub-group-active">
-                                <li class="nav-item">
-                                    <a href="student.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Students</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="list-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All
-                                        Assignment</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
-                                        Assignment</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();">
-                                        <i class="fas fa-angle-right"></i>Personal Mark Report</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="javascript:void(0);" class="nav-link" onclick="submitForm();"><i
-                                    class="flaticon-shopping-list"></i><span>Schedule</span></a>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
-                                        Schedule</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="Update-student-mark-report.html" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Exam Grades</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item" id="teacher-view1">
-                                    <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
-                                        material</a>
-                                </li>
-                                <li class="nav-item" id="teacher-view">
-                                    <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                                        materials</a>
-                                </li>
-                                <li class="nav-item" id="student-view1">
-                                    <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                                        materials</a>
-                                </li>
-                                <li class="nav-item" id="student-view">
-                                    <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list
-                                        materials</a>
-                                </li>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="navbar-item dropdown header-admin">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
+                        <div class="admin-title">
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
+                        </div>
+                        <div class="admin-img">
+                            <img alt="Admin" src="img/figure/admin.jpg">
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title userFullName"></h6>
+                        </div>
+                        <div class="item-content">
+                            <ul class="settings-list">
 
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i><span
+                                        data-i18n="log_out">Log Out</span></a></li>
                             </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
-                                        application</a>
-                                </li>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item dropdown header-notification">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
+                        <i class="far fa-bell"></i>
+                        <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
+                        <span>8</span>
+                    </a>
 
-                                <li class="nav-item">
-                                    <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
-                                        application</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item sidebar-nav-item">
-                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
-                                        threads</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Sidebar Area End Here -->
-            <div class="dashboard-content-one">
-                <!-- Breadcubs Area Start Here -->
-                <div class="breadcrumbs-area">
-                    <h3>Mark Report</h3>
-                    <ul>
-                        <li>
-                            <a href="admin.html">Home</a>
-                        </li>
-                        <li>Mark Report</li>
-                    </ul>
-                </div>
-                <!-- Breadcubs Area End Here -->
-                <div class="row">
-                    <!-- Exam Grade Add Area Start Here -->
-                    
-                    <!-- Exam Grade Add Area End Here -->
-                    <!-- Exam Grade List Area Start Here -->
-                    <div class="col-8-xxxl col-12">
-                        <div class="card height-auto">
-                            <div class="card-body">
-                                <div class="heading-layout1">
-                                    <div class="item-title">
-                                        <h3>Mark Report for Student ID: <span th:text="${markReport.studentId}"></span></h3> <!-- Hiển thị studentId -->
-                                    </div>
-
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title">03 Notifiacations</h6>
+                        </div>
+                        <div class="item-content">
+                            <div class="media">
+                                <div class="item-icon bg-skyblue">
+                                    <i class="fas fa-check"></i>
                                 </div>
-
-                                <br>
-                                <br>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped align-middle text-center"
-                                           style="border: 1px solid #dee2e6; font-size: 14px;">
-                                        <thead style="background-color: #00203FFF; color: #ADEFD1FF;">
-                                        <tr>
-                                            <th style="padding: 12px; font-weight: bold; border-bottom: 2px solid #dee2e6;">
-                                                <label class="form-check-label">Grade Category</label>
-                                            </th>
-                                            <th style="padding: 12px; font-weight: bold; border-bottom: 2px solid #dee2e6;">Grade Item</th>
-                                            <th style="padding: 12px; font-weight: bold; border-bottom: 2px solid #dee2e6;">Weight</th>
-                                            <th style="padding: 12px; font-weight: bold; border-bottom: 2px solid #dee2e6;">Value</th>
-                                            <th style="padding: 12px; font-weight: bold; border-bottom: 2px solid #dee2e6;">Comment</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr style="background-color: #f9f9f9;">
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40">Participation</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40">Participation</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40">30%</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40" th:text="${markReport.avg_assignment_mark}"></td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6;"></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40">Skill</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40">Skill</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40">30%</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40" th:text="${markReport.avg_exam_mark}"></td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40"></td>
-                                        </tr>
-                                        <tr style="background-color: #f9f9f9;">
-                                            <td rowspan="4" style="padding: 12px; border: 1px solid #dee2e6; color: #343a40">Học phần</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40">Reading</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40">16%</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40" th:text="${markReport.reading_mark}"></td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40"></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40">Listening</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40">16%</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40" th:text="${markReport.listening_mark}"></td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40"></td>
-                                        </tr>
-                                        <tr style="background-color: #f9f9f9;">
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40">Speaking</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40">20%</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40" th:text="${markReport.speaking_mark}"></td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40"></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40">Total</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40">40%</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40" th:text="${markReport.totalSkillMarks}"></td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: #343a40"></td>
-                                        </tr>
-                                        <tr style="background-color: #e9ecef; font-weight: bold;">
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: black">COURSE TOTAL</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: black">AVERAGE STATUS</td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: black" th:text="${markReport.courseTotal}"></td>
-                                            <td style="padding: 12px; border: 1px solid #dee2e6; color: black"></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Complete Today Task</div>
+                                    <span>1 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-orange">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Director Metting</div>
+                                    <span>20 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-violet-blue">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Update Password</div>
+                                    <span>45 Mins ago</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Exam Grade List Area End Here -->
-                </div>
-                <!-- All Subjects Area End Here -->
-            </div>
+                </li>
+                <li class="navbar-item dropdown header-language">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
+                        <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
+                            <img alt="English" src="img/figure/flag-anh.webp" style="width: 20px; height: 15px;">
+                            English
+                        </a>
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
+                            <img alt="Japanese" src="img/figure/Flag_of_Japan.svg.webp"
+                                 style="width: 20px; height: 15px;"> 日本語
+                        </a>
+                    </div>
+                </li>
+            </ul>
         </div>
-        <!-- Page Area End Here -->
     </div>
-    <!-- jquery-->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <!-- Plugins js -->
-    <script src="js/plugins.js"></script>
-    <!-- Popper js -->
-    <script src="js/popper.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Select 2 Js -->
-    <script src="js/select2.min.js"></script>
-    <!-- Scroll Up Js -->
-    <script src="js/jquery.scrollUp.min.js"></script>
-    <!-- Date Picker Js -->
-    <script src="js/datepicker.min.js"></script>
-    <!-- Data Table Js -->
-    <script src="js/jquery.dataTables.min.js"></script>
-    <!-- Custom Js -->
-    <script src="js/main.js"></script>
-    <!-- fetch profile -->
-    <!-- fetch user -->
-    <script>
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-        if (userDetails) {
-            const userFullNameElements = document.querySelectorAll('.userFullName');
-            const userRoleElements = document.querySelectorAll('.userRole');
+    <!-- Header Menu Area End Here -->
+    <!-- Page Area Start Here -->
+    <div class="dashboard-page-one">
+        <!-- Sidebar Area Start Here -->
+        <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+            <div class="mobile-sidebar-header d-md-none">
+                <div class="header-logo">
+                    <a href="student.html"><img src="img/logo1.png" alt="logo"></a>
+                </div>
+            </div>
+            <div class="sidebar-menu-content">
+                <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item">
+                                <a href="student.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Students</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="list-student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="list-submitted-assignments.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Submitted Assignment</a>
+                            </li>
+                        </ul>
+                    </li>
 
-            // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-            if (userDetails.roleName === "ADMIN") {
-                // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.username;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="javascript:void(0);" class="nav-link" onclick="toSchedule();"><i
+                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Personal Mark Report</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();">
+                                    <i class="fas fa-angle-right"></i>Personal Mark Report</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                        <ul class="nav sub-group-menu ">
+                            <li class="nav-item" id="student-view1">
+                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    Materials</a>
+                            </li>
+                            <li class="nav-item" id="student-view">
+                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My List
+                                    Materials</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                    application</a>
+                            </li>
 
-                // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "none";
-            } else if (userDetails.roleName === "TEACHER") {
-                // Hiển thị đầy đủ tên và vai trò cho giáo viên
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.fullName;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
+                            <li class="nav-item">
+                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                    application</a>
+                            </li>
+                        </ul>
+                    </li>
 
-                // Chỉ hiển thị mục của giáo viên
-                document.getElementById("teacher-view").style.display = "block";
-                document.getElementById("student-view").style.display = "none";
-                document.getElementById("student-view1").style.display = "none";
-            } else if (userDetails.roleName === "STUDENT") {
-                // Hiển thị đầy đủ tên và vai trò cho học sinh
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.fullName;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="forum-student.html"><i class="fas fa-angle-right"></i>View list
+                                    threads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="create-forum-student.html"><i class="fas fa-angle-right"></i>Create Thread</a>
+                            </li>
+                        </ul>
+                    </li>
 
-                // Chỉ hiển thị mục của học sinh
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "block";
-                document.getElementById("student-view1").style.display = "block";
-            } else {
-                console.warn("Role not recognized: ", userDetails.roleName);
+                </ul>
+            </div>
+        </div>
+        <!-- Sidebar Area End Here -->
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <h3 data-i18n="users">Student Mark Report</h3>
+                <ul>
+                    <li>
+                        <a data-i18n="home" href="admin.html">Class Mark List</a>
+                    </li>
+                    <li data-i18n="user_details">Student Mark Report</li>
+                </ul>
+            </div>
+            <!-- Breadcubs Area End Here -->
+            <!-- Student Details Area Start Here -->
+            <div class="card height-auto">
+                <div class="card-body">
+                    <h3 style="padding-left: 8px; padding-top: 5px; font-weight: bold">Student Mark Report</h3>
+                    <div class="item-content">
+                        <table class="table table-borderless text-nowrap" id="userInfoTable">
+                            <tbody>
+                            <tr>
+                                <td style="color: #000">Learning Program: </td>
+                                <td class="font-medium text-dark-medium" id="semester"></td>
+                            </tr>
+                            <tr>
+                                <td  style="color: #000">Name: </td>
+                                <td id="student-name"></td>
+                            </tr>
+                            <tr>
+                                <td  style="color: #000">Class: </td>
+                                <td class="font-medium text-dark-medium" id="clas"></td>
+                            </tr>
+                            <tr>
+                                <td  style="color: #000">Teacher's Comment: </td>
+                                <td class="font-medium text-dark-medium" id="comment"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table style="margin-left: 8px">
+                            <thead style="background-color: #007bff;">
+                            <tr>
+                                <th style="font-weight: bold; color: #000; background-color: #ff9625; text-align: center">Grade Category</th>
+                                <th style="font-weight: bold; color: #000;background-color: #ff9625; text-align: center">Grade Items</th>
+                                <th style="font-weight: bold; color: #000;background-color: #ff9625; text-align: center">Weight</th>
+                                <th style="font-weight: bold; color: #000;background-color: #ff9625; text-align: center ">Value</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td rowspan="5" style=" color: #000; ">Skill</td>
+                                <td style=" color: #000;">Daily Exam</td>
+                                <td style="font-weight: bold; color: #007bff;">12%</td>
+                                <td style=" color: #000;" id="avg-exam"></td>
+                            </tr>
+                            <tr>
+
+                            </tr>
+                            <tr>
+                                <td style=" color: #000;">Middle Exam Mark</td>
+                                <td style="font-weight: bold; color: #007bff;">16%</td>
+                                <td style="color: #000;" id="middle-exam"></td>
+                            </tr>
+                            <tr>
+                                <td style=" color: #000;">Final Exam Mark</td>
+                                <td style="font-weight: bold; color: #007bff;">12%</td>
+                                <td style=" color: #000;" id="final-exam"></td>
+                            </tr>
+                            <tr>
+                                <td style=" color: #000;">Total</td>
+                                <td style="font-weight: bold; color: #007bff;">40%</td>
+                                <td style=" color: #000;" id="skill"></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2" style=" color: #000;">Soft Skill</td>
+                                <td style=" color: #000;">Presentation</td>
+                                <td style="font-weight: bold; color: #007bff;">30%</td>
+                                <td style=" color: #000;" id="soft-skill"></td>
+                            </tr>
+                            <tr>
+                                <td style=" color: #000;">Total</td>
+                                <td style="font-weight: bold; color: #007bff;">30%</td>
+                                <td style=" color: #000;" id="soft-skill2"></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3" style=" color: #000;">Attitude</td>
+                                <td style=" color: #000;">Assignment</td>
+                                <td style="font-weight: bold; color: #007bff;">15%</td>
+                                <td style=" color: #000;" id="assignment"></td>
+                            </tr>
+                            <tr>
+                                <td style=" color: #000;">Attendant</td>
+                                <td style="font-weight: bold; color: #007bff;">15%</td>
+                                <td style=" color: #000;" id="attendant"></td>
+                            </tr>
+                            <tr>
+                                <td style=" color: #000;">Total</td>
+                                <td style="font-weight: bold; color: #007bff;">30%</td>
+                                <td style=" color: #000;" id="attitude"></td>
+                            </tr>
+                            <tr class="no-border">
+                                <td style="font-weight: bold; color: #000;">Course Total</td>
+                                <td></td>
+                                <td></td>
+                                <td style="font-weight: bold; color: #000;" id="final-mark"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- Student Details Area End Here -->
+        </div>
+    </div>
+
+</div>
+<!-- Page Area End Here -->
+</div>
+<!-- jquery-->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Custom Js -->
+<script src="js/main.js"></script>
+<script>
+    async function fetchMarkRpDetails() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const studentId = urlParams.get('studentId');
+
+        try {
+            const response = await fetch(`/mark-report/personal-mark-rp?studentId=${studentId}`);
+
+            if (!response.ok) {
+                throw new Error('Error fetching mark rp details');
             }
+
+            const markRp = await response.json();
+            console.log('mark rp details:', markRp);
+
+
+            document.getElementById('student-name').textContent = markRp.studentName;
+            document.getElementById('clas').textContent = markRp.studentClass;
+            document.getElementById('comment').textContent = markRp.comment;
+            document.getElementById('avg-exam').textContent = markRp.avg_exam_mark;
+            document.getElementById('middle-exam').textContent = markRp.middle_exam;
+            document.getElementById('final-exam').textContent = markRp.final_exam;
+            document.getElementById('skill').textContent = markRp.skill;
+            document.getElementById('soft-skill').textContent = markRp.softskill;
+            document.getElementById('soft-skill2').textContent = markRp.softskill;
+            // document.getElementById('assignment').textContent = markRp.assignment;
+            // document.getElementById('attendant').textContent = markRp.attendant;
+            document.getElementById('final-mark').textContent = markRp.final_mark;
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    fetchMarkRpDetails();
+</script>
+<!-- fetch user -->
+<script>
+    (async function initializeApp() {
+        try {
+            // Fetch user details and store in sessionStorage
+            const response = await fetch('/user-detail');
+            if (response.ok) {
+                const userDetails = await response.json();
+                sessionStorage.setItem('userDetails', JSON.stringify(userDetails));
+                console.log("User data stored in sessionStorage:", userDetails);
+
+                displayUserDetails(userDetails);
+            } else {
+                console.error("Failed to fetch user details:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error initializing app:", error);
+        }
+    })();
+
+    function displayUserDetails(userDetails) {
+        if (userDetails) {
+            console.log("Setting user details:", userDetails);
+
+            document.querySelectorAll('.userFullName').forEach(element => {
+                element.textContent = userDetails.fullName || "Unknown Name";
+            });
+            document.querySelectorAll('.userRole').forEach(element => {
+                element.textContent = userDetails.roleName || "Unknown Role";
+            });
+
+            const userIdElement = document.getElementById('userId');
+            if (userIdElement) {
+                userIdElement.value = userDetails.id || "";
+            }
+
+            const imgContainers = document.querySelectorAll('.img');
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img');
+                if (imgElement) {
+                    imgElement.src = userDetails.img
+                        ? `${userDetails.img}?v=${new Date().getTime()}`
+                        : '/path/to/default-passport.jpg';
+                    console.log("Image source set to:", imgElement.src);
+                } else {
+                    console.error("Image element not found in:", container);
+                }
+            });
         } else {
             console.error("User details not found in sessionStorage");
         }
-    </script>
+    }
+
+    function toSchedule() {
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails && userDetails.studentId) {
+            window.location.href = `schedule-list-student.html?studentId=${userDetails.studentId}`;
+        } else {
+            console.error("Student ID missing or user details not found in sessionStorage");
+        }
+    }
+
+    function toMarkReport() {
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails && userDetails.studentId) {
+            window.location.href = `view-personal-mark-report.html?studentId=${userDetails.studentId}`;
+        } else {
+            console.error("Student ID missing or user details not found in sessionStorage");
+        }
+    }
+</script>
 </body>
-
-
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/JIP/JIP/Update-student-mark-report.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>

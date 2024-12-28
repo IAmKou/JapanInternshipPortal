@@ -23,7 +23,7 @@ public class CSVExportService {
     // Hàm trích xuất dữ liệu từ HTML và ghi vào file CSV
     public String extractDataFromHTMLAndGenerateCSV() {
         // Đọc HTML từ file hoặc từ URL (ở đây giả sử bạn lấy dữ liệu từ file)
-        String filePath = configProperties.getHtmlPath() + "/input.html";  // Đọc đường dẫn từ ConfigProperties
+        String filePath = configProperties.getHtmlPath() + "//input1.html";  // Đọc đường dẫn từ ConfigProperties
 
         try {
             // Đọc trang HTML
