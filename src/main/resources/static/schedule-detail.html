@@ -296,14 +296,6 @@
                                          style="background-color: #ff5733; border-color: #ff5733;">
                                         <div class='fc-event-main'>Kotoba Test</div>
                                     </div>
-                                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'
-                                         style="background-color: #063ec6; border-color: #063ec6;">
-                                        <div class='fc-event-main'>Midterm Test</div>
-                                    </div>
-                                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'
-                                         style="background-color: #063ec6; border-color: #063ec6;">
-                                        <div class='fc-event-main'>Final Test</div>
-                                    </div>
                                 </div>
 
                                 <!-- Create Event Section -->
@@ -313,8 +305,9 @@
                                     <option value="new">New Event</option>
                                 </select>
                                 <div id="new-event-form" style="margin-top: 10px; display: none;">
-                                    <input type="text" id="new-event-title" class="form-control" placeholder="Event Title" />
-                                    <input type="color" id="new-event-color" class="form-control" value="#3788d8" />
+                                    <input type="text" id="new-event-title" class="form-control"
+                                           placeholder="Event Title"/>
+                                    <input type="color" id="new-event-color" class="form-control" value="#3788d8"/>
                                     <button id="add-event" class="btn btn-primary btn-sm mt-2">Add Event</button>
                                 </div>
                                 <h4>Select Class</h4>
@@ -332,14 +325,13 @@
                                     <option value="Room 302">Room 302</option>
                                 </select>
                                 <button id="save-draft" class="btn btn-warning btn-sm mt-3">Save as Draft</button>
-                                <button id="save-public" class="btn btn-outline-success btn-sm mt-3">Save Publish</button>
+                                <button id="save-public" class="btn btn-outline-success btn-sm mt-3">Save Publish
+                                </button>
                             </div>
                             <div id='calendar-wrap'>
                                 <div id='calendar'></div>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -401,7 +393,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
@@ -503,6 +494,18 @@
             });
         }
 
+        function handleEventValidation(info) {
+            const targetDate = new Date(info.event.start.toISOString());
+            const day = targetDate.getUTCDay(); // 0 = Sunday, 6 = Saturday
+            const isTestEvent = info.event.title.toLowerCase().includes('test');
+
+            // Prevent "test" events from being dropped/received on Saturday or Sunday
+            if (isTestEvent && (day === 0 || day === 6)) {
+                alert("Test events cannot be scheduled on Saturday or Sunday.");
+                info.revert(); // Revert the event to its original position
+            }
+        }
+
         // Fetch semester details and initialize calendar
         fetch(`/semester/get/${semesterId}`)
             .then(response => {
@@ -567,6 +570,37 @@
                                 failureCallback(error);
                             });
                     },
+                    eventClick: function (info) {
+                        // Handle event click for deletion
+                        const eventTitle = info.event.title;
+                        const eventId = info.event.id;
+
+                        if (confirm(`Are you sure you want to delete the event: "${eventTitle}"?`)) {
+                            // Remove the event from the calendar
+                            info.event.remove();
+
+                            // Optionally, make an API call to delete the event from the backend
+                            fetch(`/schedule/delete/${eventId}`, {
+                                method: 'DELETE',
+                            })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Failed to delete the event from the server.');
+                                    }
+                                    alert('Event deleted successfully!');
+                                })
+                                .catch(error => {
+                                    console.error('Error deleting event:', error);
+                                    alert('Failed to delete the event from the server.');
+                                });
+                        }
+                    },
+                    eventDrop: function (info) {
+                        handleEventValidation(info);
+                    },
+                    eventReceive: function (info) {
+                        handleEventValidation(info);
+                    }
                 });
                 calendar.render();
             })
@@ -598,7 +632,35 @@
 
         loadClasses();
 
-        // Save functions
+        function validateActivities(eventsData) {
+            const testActivitiesByDate = {};
+
+            // Debugging: Log eventsData to ensure correct structure
+            console.log("Validating activities, received data:", eventsData);
+
+            for (const event of eventsData) {
+                if (!event || !event.activity || !event.date) {
+                    console.warn("Skipping invalid event:", event);
+                    continue; // Skip invalid entries
+                }
+
+                const {activity, date} = event;
+
+                if (activity.toLowerCase().includes("test")) {
+                    if (!testActivitiesByDate[date]) {
+                        testActivitiesByDate[date] = [];
+                    }
+                    testActivitiesByDate[date].push(activity);
+
+                    if (testActivitiesByDate[date].length > 1) {
+                        return `Duplicate test activities found on ${date}: ${testActivitiesByDate[date].join(", ")}`;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         function saveSchedule(apiEndpoint, isPublic) {
             if (!calendar) {
                 console.error('Calendar instance is not available');
@@ -606,35 +668,55 @@
             }
 
             const events = calendar.getEvents();
-            const eventsData = events.map(event => {
-                const localDate = new Date(event.start.getUTCFullYear(), event.start.getUTCMonth(), event.start.getUTCDate());
-                const eventData = {
-                    activity: event.title,
-                    date: localDate.toISOString().split('T')[0],
-                    color: event.backgroundColor,
-                    semesterId: semesterId,
-                };
-
-                if (isPublic) {
-                    const selectedClassId = document.getElementById('class-dropdown')?.value;
-                    const selectedRoom = document.getElementById('room-select')?.value;
-
-                    if (!selectedClassId) {
-                        alert('Please select a class before saving as public.');
+            const eventsData = events
+                .map(event => {
+                    // Skip invalid or undefined events
+                    if (!event || !event.title || !event.start) {
+                        console.warn("Skipping invalid event:", event);
                         return null;
                     }
 
-                    if (!selectedRoom) {
-                        alert('Please select a room before saving as public.');
-                        return null;
-                    }
+                    const localDate = new Date(event.start.getUTCFullYear(), event.start.getUTCMonth(), event.start.getUTCDate());
+                    return {
+                        activity: event.title,
+                        date: localDate.toISOString().split('T')[0],
+                        color: event.backgroundColor,
+                        semesterId: semesterId,
+                    };
+                })
+                .filter(event => event !== null); // Remove null entries
 
-                    eventData.classId = selectedClassId;
-                    eventData.room = selectedRoom;
+            // Check if the eventsData array is empty after filtering
+            if (eventsData.length === 0) {
+                alert("No valid events to save.");
+                return;
+            }
+
+            const validationError = validateActivities(eventsData);
+            if (validationError) {
+                alert(validationError);
+                return;
+            }
+
+            if (isPublic) {
+                const selectedClassId = document.getElementById('class-dropdown')?.value;
+                const selectedRoom = document.getElementById('room-select')?.value;
+
+                if (!selectedClassId) {
+                    alert('Please select a class before saving as public.');
+                    return;
                 }
 
-                return eventData;
-            }).filter(Boolean);
+                if (!selectedRoom) {
+                    alert('Please select a room before saving as public.');
+                    return;
+                }
+
+                eventsData.forEach(event => {
+                    event.classId = selectedClassId;
+                    event.room = selectedRoom;
+                });
+            }
 
             fetch(apiEndpoint, {
                 method: 'POST',
@@ -645,21 +727,23 @@
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Failed to save schedule');
+                        return response.json().then(errorData => {
+                            throw new Error(errorData.message || 'An error occurred while saving the schedule.');
+                        });
                     }
                     return response.json();
                 })
                 .then(data => {
                     alert(data.message || (isPublic ? 'Schedule saved as public successfully!' : 'Draft saved successfully!'));
                     if (isPublic) {
-                        window.location.href = '/schedule-list.html'; // Redirect to schedule-list for public save
+                        window.location.href = '/schedule-class.html';
                     } else {
-                        window.location.href = '/semester-list.html'; // Redirect to semester-list for draft save
+                        window.location.href = '/semester-list.html';
                     }
                 })
                 .catch(error => {
                     console.error('Error saving schedule:', error);
-                    alert('Error saving schedule');
+                    alert(error.message || 'An error occurred while saving the schedule.');
                 });
         }
 

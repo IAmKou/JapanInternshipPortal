@@ -39,6 +39,9 @@ import java.util.Set;
         @OneToMany(mappedBy = "clasz", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
         private Set<Schedule> schedules = new HashSet<>();
 
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "semester_id")
+        private Semester semester;
 
         public Class(){}
 

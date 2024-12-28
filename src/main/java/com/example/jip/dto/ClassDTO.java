@@ -22,14 +22,16 @@ public class ClassDTO {
     private List<Integer> studentIds;
     private String teacherName;
     private List<Integer> assignmentIds;
+    private int semesterId;
 
 
 
-    public ClassDTO(String name, int numberOfStudents, TeacherDTO teacher, List<Integer> studentIds) {
+    public ClassDTO(String name, int numberOfStudents, TeacherDTO teacher, List<Integer> studentIds, int semesterId) {
         this.name = name;
         this.numberOfStudents = numberOfStudents;
         this.teacher = teacher;
         this.studentIds = studentIds;
+        this.semesterId = semesterId;
     }
 
     public ClassDTO(Class clasz) {
@@ -37,6 +39,7 @@ public class ClassDTO {
         this.id = clasz.getId();
         this.numberOfStudents = clasz.getNumber_of_student();
         this.teacherName = clasz.getTeacher().getFullname();
+        this.semesterId = clasz.getSemester().getId();
     }
 
 }

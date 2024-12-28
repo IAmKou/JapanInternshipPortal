@@ -99,13 +99,13 @@ public class ScheduleController {
             }
 
             return ResponseEntity.ok(Map.of(
-                    "message", "Schedules updated successfully",
+                    "message", "Schedules saved successfully as draft.",
                     "semesterId", semesterId
             ));
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
-                    "message", "Error updating schedules",
+                    "message", "An error occurred while saving schedules.",
                     "error", e.getMessage()
             ));
         }
@@ -136,6 +136,7 @@ public class ScheduleController {
                 for (ScheduleDTO scheduleDTO : schedules) {
                     LocalDate localDate = LocalDate.parse(scheduleDTO.getDate()).plusDays(1);
                     java.sql.Date sqlDate = Date.valueOf(localDate);
+
                     boolean roomInUse = scheduleRepository.existsByRoomAndDateAndSemesterId(
                             scheduleDTO.getRoom(), sqlDate, semesterId);
                     if (roomInUse) {
@@ -169,9 +170,85 @@ public class ScheduleController {
             }
         }
 
+    @PostMapping("/update")
+    public ResponseEntity<?> updateSchedule(@RequestBody List<ScheduleDTO> schedules) {
+        try {
+            // Validate semester ID from the first schedule
+            if (schedules.isEmpty()) {
+                return ResponseEntity.badRequest().body("No schedules provided.");
+            }
+
+            int semesterId = schedules.get(0).getSemesterId();
+            Semester semester = semesterRepository.findById(semesterId)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid Semester ID: " + semesterId));
+
+            for (ScheduleDTO scheduleDTO : schedules) {
+                // Check if a schedule already exists for the semester, date, and activity
+                LocalDate localDate = LocalDate.parse(scheduleDTO.getDate()).plusDays(1);
+                java.sql.Date sqlDate = Date.valueOf(localDate);
+
+                Schedule existingSchedule = scheduleRepository.findBySemesterIdAndDateAndActivity(
+                        semesterId, sqlDate, scheduleDTO.getActivity()
+                );
+
+                boolean roomInUse = scheduleRepository.existsByRoomAndDateAndSemesterId(
+                        scheduleDTO.getRoom(), sqlDate, semesterId);
+                if (roomInUse) {
+                    return ResponseEntity.badRequest().body(Map.of(
+                            "message", "The room is already in use on " + scheduleDTO.getDate() + "."
+                    ));
+                }
+
+                Schedule schedule;
+                if (existingSchedule != null) {
+                    // Update the existing schedule
+                    schedule = existingSchedule;
+                } else {
+                    // Create a new schedule
+                    schedule = new Schedule();
+                    schedule.setSemester(semester);
+                }
+
+                schedule.setActivity(scheduleDTO.getActivity());
+                schedule.setColor(scheduleDTO.getColor());
+                schedule.setDate(sqlDate);
+                schedule.setDay_of_week(getDayOfWeekFromDate(sqlDate));
+                schedule.setRoom(scheduleDTO.getRoom());
+                schedule.setTime_slot("All day");
+                schedule.setStatus(Schedule.status.Published);
+
+                scheduleRepository.save(schedule);
+            }
+
+            return ResponseEntity.ok(Map.of(
+                    "message", "Schedules saved successfully as draft.",
+                    "semesterId", semesterId
+            ));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "message", "An error occurred while saving schedules.",
+                    "error", e.getMessage()
+            ));
+        }
+    }
+
     @GetMapping("/unique")
     public List<ClassScheduleDTO> getUniqueSchedule() {
         return scheduleServices.getUniqueClassSchedule();
+    }
+
+    @DeleteMapping("/schedule/delete/{id}")
+    public ResponseEntity<?> deleteEvent(@PathVariable int id) {
+        try {
+            if (!scheduleRepository.existsById(id)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Event not found.");
+            }
+            scheduleRepository.deleteById(id);
+            return ResponseEntity.ok("Event deleted successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete event.");
+        }
     }
 
 
