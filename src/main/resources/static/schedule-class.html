@@ -452,7 +452,7 @@
         const addEventButton = document.getElementById('add-event');
         const saveDraftButton = document.getElementById('save-draft');
         const savePublicButton = document.getElementById('save-public');
-        const classDropdown = document.getElementById('class-dropdown');
+        const selectedRoom = document.getElementById('room-select')?.value;
         const urlParams = new URLSearchParams(window.location.search);
         const semesterId = urlParams.get('semesterId');
 
@@ -578,6 +578,7 @@
                     date: localDate.toISOString().split('T')[0],
                     color: event.backgroundColor,
                     semesterId: semesterId,
+                    room :  selectedRoom,
                 };
 
                 if (isPublic) {
