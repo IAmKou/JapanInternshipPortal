@@ -585,67 +585,64 @@
         </div>
     </div>
 </div>
-<!-- Modal to Create Account for Student -->
-<div class="modal fade" id="createStudentAccountModal" tabindex="-1" aria-labelledby="createStudentAccountModalLabel" aria-hidden="true">
+
+<!-- Modal -->
+<div class="modal fade" id="createFormModal" tabindex="-1" aria-labelledby="createFormModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createStudentAccountModalLabel">Create Student Account</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="/student/save" method="post" class="login-form" enctype="multipart/form-data" id="studentForm">
-                    <input type="hidden" name="account_id" id="account_id">
-                    <!-- Fullname and Japan Name -->
-                    <div class="form-group">
-                        <label for="fullname">Fullname *</label>
-                        <input type="text" name="fullname" id="fullname" required class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="jname">Japan Name *</label>
-                        <input type="text" name="japanname" id="jname" required class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="DoB">Date of Birth *</label>
-                        <input type="date" name="dob" required class="form-control" id="DoB">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input type="email" name="email" required placeholder="ex:abc@gmail.com" id="email" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone Number *</label>
-                        <input type="text" name="phoneNumber" required placeholder="ex:012345678" id="phone" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label style="font-weight: bold; color: #464c4d; font-size:14px;">Gender *</label></br>
-                        <div class="form-check-inline">
-                            <input type="radio" name="gender" value="Male" id="male" class="form-check-input">
-                            <label for="male" class="form-check-label">Male</label>
-                        </div>
-                        <div class="form-check-inline">
-                            <input type="radio" name="gender" value="Female" id="female" class="form-check-input">
-                            <label for="female" class="form-check-label">Female</label>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <!-- Profile Image and Passport Image -->
-                        <div class="form-group col-md-6">
-                            <label for="img">Profile Image *</label>
-                            <input type="file" name="img" id="img" class="form-control">
-                        </div>
+            <form id="createForm" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createFormModalLabel">Create Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="account_id" id="account_id_form1" value="${account_id}">
+                    <input type="hidden" name="role" id="role_form1" value="${role}">
 
-                        <div class="form-group col-md-6">
-                            <label for="passport">Passport Image *</label>
-                            <input type="file" name="passport_img" id="passport" class="form-control">
+                    <div class="form-group">
+                        <label for="fullname_form1">Fullname *</label>
+                        <input type="text" name="fullname" class="form-control" id="fullname_form1" placeholder="Enter your name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="jname_form1">Japan Name *</label>
+                        <input type="text" name="jname" class="form-control" id="jname_form1" placeholder="Enter your Japan name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email_form1">Email *</label>
+                        <input type="email" name="email" class="form-control" id="email_form1" placeholder="ex: abc@gmail.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Gender *</label><br>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="gender" value="Male" id="male_form1" class="form-check-input">
+                            <label class="form-check-label" for="male_form1">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="gender" value="Female" id="female_form1" class="form-check-input">
+                            <label class="form-check-label" for="female_form1">Female</label>
                         </div>
                     </div>
-                    <!-- Add other form fields as necessary -->
-                    <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
-                </form>
-            </div>
+
+                    <div class="form-group">
+                        <label for="phone_form1">Phone Number *</label>
+                        <input type="text" name="phoneNumber" class="form-control" id="phone_form1" placeholder="ex: 012345678">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="img_form1">Profile Image *</label>
+                        <input type="file" class="form-control" name="img" id="img_form1">
+                    </div>
+
+                    <div id="message_form1" class="alert alert-danger mt-2 d-none"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="submit-btn-form1">Create</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -1137,7 +1134,13 @@
                     // Mở modal thay vì điều hướng đến trang mới
                     window.location.href = `/create-account-student.html?account_id=${accountId}`;
                 } else {
-                    window.location.href = `/create-account-tm1.html?account_id=${accountId}&role=${role}`;
+                    // Gán giá trị cho các trường trong modal
+                    document.getElementById('account_id_form1').value = accountId;
+                    document.getElementById('role_form1').value = role;
+
+                    // Hiển thị modal
+                    const createFormModal = new bootstrap.Modal(document.getElementById('createFormModal'));
+                    createFormModal.show();
                 }
             })
             .catch(error => {
@@ -1148,148 +1151,126 @@
     });
 </script>
 <script>
-    // Lắng nghe sự kiện show.bs.modal để kích hoạt validate khi mở modal
-    document.getElementById('createStudentAccountModal').addEventListener('show.bs.modal', function () {
-        const form = document.getElementById('studentForm');
+    document.getElementById('createForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Ngăn chặn hành động submit mặc định
 
-        // Khi form được submit
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Ngừng việc gửi form để kiểm tra validate
+        const formData = new FormData(this);
 
-            // Lấy giá trị của các trường trong form
-            const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const dob = document.getElementById('DoB').value.trim();
+        // Lấy giá trị từ hidden inputs
+        const account_id = document.getElementById('account_id_form1').value;
+        const role = document.getElementById('role_form1').value;
 
-            let errorMessage = '';
+        // Validate dữ liệu
+        const email = document.getElementById('email_form1').value.trim();
+        const phone = document.getElementById('phone_form1').value.trim();
+        const imgInput = document.getElementById('img_form1');
+        const allowedImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        const maxFileSizeMB = 2;
+        const gender = document.querySelector('input[name="gender"]:checked'); // Kiểm tra có chọn giới tính không
 
-            // Kiểm tra email
-            errorMessage = isValidEmail(email);
-            if (errorMessage) {
-                alert(errorMessage);
-                return;
-            }
+        // Check email hợp lệ
+        if (!isValidEmail(email)) {
+            showMessageForm1('Please enter a valid email (e.g., abc@domain.com or abc@fpt.edu.vn).');
+            return;
+        }
+        if (!gender) {
+            showMessageForm1('Please select a gender.');
+            return;
+        }
+        // Check số điện thoại hợp lệ
+        if (!isValidPhoneNumber(phone)) {
+            showMessageForm1('Please enter a valid phone number starting with 0, containing 10 digits.');
+            return;
+        }
 
-            // Kiểm tra số điện thoại
-            errorMessage = isValidPhoneNumber(phone);
-            if (errorMessage) {
-                alert(errorMessage);
-                return;
-            }
+        // Check hình ảnh hợp lệ
+        if (!validateImageFile('img_form1', allowedImageTypes, maxFileSizeMB)) {
+            showMessageForm1(`Invalid image. Allowed: JPEG/PNG up to ${maxFileSizeMB}MB.`);
+            return;
+        }
 
-            // Kiểm tra giới tính
-            errorMessage = isGenderSelected();
-            if (errorMessage) {
-                alert(errorMessage);
-                return;
-            }
+        // Gửi dữ liệu bằng fetch API
+        fetch('/tm/save', {
+            method: 'POST',
+            body: formData,
+        })
+            .then((response) => response.text())  // Sử dụng .text() nếu phản hồi là HTML hoặc thông báo dưới dạng văn bản
+            .then((data) => {
+                console.log('Server response:', data);
 
-            // Kiểm tra ngày sinh
-            errorMessage = isValidDateOfBirth(dob);
-            if (errorMessage) {
-                alert(errorMessage);
-                return;
-            }
+                if (data.includes("Error")) {
+                    showMessageForm1(data);  // Hiển thị thông báo lỗi nếu có
+                } else {
+                    alert(data);  // Hiển thị thông báo thành công
+                    location.reload();  // Reload lại trang sau khi lưu dữ liệu thành công
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                showMessageForm1(error.message || 'Failed to create the account. Please try again later.');
+            });
 
-            // Kiểm tra file ảnh hồ sơ
-            const allowedImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-            errorMessage = validateImageFile('img', allowedImageTypes, 2);
-            if (errorMessage) {
-                alert(errorMessage);
-                return;
-            }
 
-            // Kiểm tra ảnh hộ chiếu
-            errorMessage = validateImageFile('passport', allowedImageTypes, 2);
-            if (errorMessage) {
-                alert(errorMessage);
-                return;
-            }
 
-            // Nếu tất cả đều hợp lệ, thực hiện submit
-            this.submit();
-        });
     });
 
-    // Các hàm validate như bạn đã làm trước đó:
+    // Function để hiển thị lỗi trong modal
+    function showMessageForm1(message) {
+        const messageDiv = document.getElementById('message_form1');
+
+        // Chắc chắn rằng message là chuỗi hợp lệ
+        if (!message || message.trim() === '') {
+            message = 'An unknown error occurred.';  // Default message
+        }
+
+        messageDiv.classList.remove('d-none'); // Mở lại div thông báo
+        messageDiv.innerText = message;  // Hiển thị thông báo
+    }
+
+    // Validates email
     function isValidEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const eduEmailRegex = /^[^\s@]+@fpt\.edu\.vn$/;
-
-        if (!email) {
-            return "Email cannot be empty.";
-        }
-        if (!emailRegex.test(email) && !eduEmailRegex.test(email)) {
-            return "Please enter a valid email address (e.g., abc@domain.com or abc@fpt.edu.vn).";
-        }
-        return null;
+        return emailRegex.test(email) || eduEmailRegex.test(email);
     }
 
+    // Validates phone number
     function isValidPhoneNumber(phone) {
         const phoneRegex = /^0\d{9}$/;
-
-        if (!phone) {
-            return "Phone number cannot be empty.";
-        }
-        if (!phoneRegex.test(phone)) {
-            return "Phone number must start with 0 and have exactly 10 digits.";
-        }
-        return null;
+        return phoneRegex.test(phone);
     }
 
-    function isGenderSelected() {
-        const genderSelected = document.querySelector('input[name="gender"]:checked');
-        if (!genderSelected) {
-            return "Please select a gender.";
-        }
-        return null;
-    }
-
-    function isValidDateOfBirth(date) {
-        const today = new Date();
-        const dob = new Date(date);
-
-        if (!date) {
-            return "Date of birth cannot be empty.";
-        }
-        if (dob > today) {
-            return "Date of birth cannot be in the future.";
-        }
-
-        let age = today.getFullYear() - dob.getFullYear();
-        const monthDifference = today.getMonth() - dob.getMonth();
-        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < dob.getDate())) {
-            age--;
-        }
-
-        if (age < 18) {
-            return "You must be at least 18 years old.";
-        }
-
-        return null;
-    }
-
+    // Validate file upload for images
     function validateImageFile(inputId, allowedTypes, maxSizeMB) {
         const fileInput = document.getElementById(inputId);
         const file = fileInput.files[0];
 
         if (!file) {
-            return `${inputId} is required. Please select a file.`;
+            return false;
         }
 
         const fileType = file.type;
-        if (!allowedTypes.includes(fileType)) {
-            return `Invalid file type for ${inputId}. Allowed types: ${allowedTypes.join(', ')}`;
-        }
-
         const maxSizeBytes = maxSizeMB * 1024 * 1024;
-        if (file.size > maxSizeBytes) {
-            return `File size for ${inputId} exceeds the limit of ${maxSizeMB} MB.`;
+
+        if (!allowedTypes.includes(fileType) || file.size > maxSizeBytes) {
+            return false;
         }
 
-        return null;
+        return true;
     }
+
+    // Reset thông báo khi người dùng tương tác lại với form
+    document.querySelectorAll('#createForm input').forEach((input) => {
+        input.addEventListener('input', function () {
+            const messageDiv = document.getElementById('message_form1');
+            messageDiv.classList.add('d-none'); // Ẩn thông báo lỗi khi người dùng thay đổi input
+        });
+    });
+
+
 </script>
+
+
 
 </body>
 
