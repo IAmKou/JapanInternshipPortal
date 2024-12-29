@@ -310,39 +310,39 @@ public class MarkReportServices {
         BigDecimal finalExam = request.getFinal_exam().multiply(new BigDecimal("0.3"));
         BigDecimal skill = avgExamMark.add(middleExam).add(finalExam);
 
-        // Calculate attitude
-        int totalAssignments = assignmentStudentRepository.countByStudentId(student.getId());
-        // Ensure there are assignments to avoid division by zero
-        if (totalAssignments == 0) {
-             throw new IllegalArgumentException("No assignments found for the student with ID: " + student.getId());
-        }
-        // Initialize the total marks of submitted assignments
-        BigDecimal submittedAssignments = BigDecimal.ZERO;
-
-        // Iterate through all assignments of the student
-        for (StudentAssignment sa : studentAssignmentRepository.findAllByStudentId(student.getId())) {
-             BigDecimal submissionMark = sa.getMark();
-
-             // Check for null marks and handle gracefully
-             if (submissionMark != null) {
-                 submittedAssignments = submittedAssignments.add(submissionMark);
-                }
-        }
-
-        BigDecimal assignmentCompletion = submittedAssignments
-                            .divide(new BigDecimal(totalAssignments), 2, RoundingMode.HALF_UP);
-        int totalSlots = attendantRepository.findTotalSlotByStudentId(student.getId());
-        int attendedSlots = attendantRepository.countAttendedByStudentId(student);
-        BigDecimal attendance = new BigDecimal(attendedSlots)
-                            .divide(new BigDecimal(totalSlots), 2, RoundingMode.HALF_UP);
-
-        BigDecimal attitude = assignmentCompletion.add(attendance).divide(new BigDecimal(2), RoundingMode.HALF_UP);
-
-//         Calculate final mark
-        BigDecimal softSkillWeight = request.getSoftskill().multiply(new BigDecimal("0.3"));
-        BigDecimal skillWeight = skill.multiply(new BigDecimal("0.4"));
-        BigDecimal attitudeWeight = attitude.multiply(new BigDecimal("0.3"));
-        BigDecimal finalMark = softSkillWeight.add(skillWeight).add(attitudeWeight);
+//        // Calculate attitude
+//        int totalAssignments = assignmentStudentRepository.countByStudentId(student.getId());
+//        // Ensure there are assignments to avoid division by zero
+//        if (totalAssignments == 0) {
+//             throw new IllegalArgumentException("No assignments found for the student with ID: " + student.getId());
+//        }
+//        // Initialize the total marks of submitted assignments
+//        BigDecimal submittedAssignments = BigDecimal.ZERO;
+//
+//        // Iterate through all assignments of the student
+//        for (StudentAssignment sa : studentAssignmentRepository.findAllByStudentId(student.getId())) {
+//             BigDecimal submissionMark = sa.getMark();
+//
+//             // Check for null marks and handle gracefully
+//             if (submissionMark != null) {
+//                 submittedAssignments = submittedAssignments.add(submissionMark);
+//                }
+//        }
+//
+//        BigDecimal assignmentCompletion = submittedAssignments
+//                            .divide(new BigDecimal(totalAssignments), 2, RoundingMode.HALF_UP);
+//        int totalSlots = attendantRepository.findTotalSlotByStudentId(student.getId());
+//        int attendedSlots = attendantRepository.countAttendedByStudentId(student);
+//        BigDecimal attendance = new BigDecimal(attendedSlots)
+//                            .divide(new BigDecimal(totalSlots), 2, RoundingMode.HALF_UP);
+//
+//        BigDecimal attitude = assignmentCompletion.add(attendance).divide(new BigDecimal(2), RoundingMode.HALF_UP);
+//
+////         Calculate final mark
+//        BigDecimal softSkillWeight = request.getSoftskill().multiply(new BigDecimal("0.3"));
+//        BigDecimal skillWeight = skill.multiply(new BigDecimal("0.4"));
+//        BigDecimal attitudeWeight = attitude.multiply(new BigDecimal("0.3"));
+//        BigDecimal finalMark = softSkillWeight.add(skillWeight).add(attitudeWeight);
 
         markReport.setSoftskill(request.getSoftskill());
         markReport.setAvg_exam_mark(request.getAvg_exam_mark());
