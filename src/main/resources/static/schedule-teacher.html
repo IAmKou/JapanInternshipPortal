@@ -31,6 +31,51 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            margin-top: 40px;
+            font-size: 14px;
+            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+        }
+
+        #wrap {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        #external-events h4 {
+            font-size: 16px;
+            margin-top: 0;
+            padding-top: 1em;
+        }
+
+        #external-events .fc-event {
+            margin: 3px 0;
+            cursor: move;
+        }
+
+        #external-events p {
+            margin: 1.5em 0;
+            font-size: 11px;
+            color: #666;
+        }
+
+        #external-events p input {
+            margin: 0;
+            vertical-align: middle;
+        }
+
+        #calendar-wrap {
+            flex-grow: 1; /* Ensures the calendar takes up remaining space */
+        }
+
+        #calendar {
+            max-width: 80%;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 
 <body>
@@ -275,23 +320,10 @@
                                     <h3>Class Schedule</h3>
                                 </div>
                             </div>
-                            <div class="table-responsive">
-                                <table class="table display text-nowrap">
-                                    <thead>
-                                    <tr>
-                                        <th>Class</th>
-                                        <th>Location</th>
-                                        <th>Teacher</th>
-                                        <th>Start Time</th>
-                                        <th>End Time</th>
-                                        <th>Date</th>
-                                        <th>Note</th>
-                                        <th>Event</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                            <div id='wrap'>
+                                <div id='calendar-wrap'>
+                                    <div id='calendar'></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -324,6 +356,8 @@
 <script src="js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="script.js"></script>
 
 <script type="text/javascript">
@@ -422,108 +456,58 @@
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const tableBody = document.querySelector('.table tbody');
+        const calendarEl = document.getElementById('calendar');
         const urlParams = new URLSearchParams(window.location.search);
-        const teacherId = urlParams.get('teacherId');
+        const classId = urlParams.get('classId');
 
-        fetch(`/schedule/getT/${teacherId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(schedule => {
-                schedule.forEach(schedule => {
-                    const row = document.createElement('tr');
-
-                    // Class name cell
-                    const cnCell = document.createElement('td');
-                    cnCell.textContent = schedule.className;
-                    row.appendChild(cnCell);
-
-                    // Location cell
-                    const locationCell = document.createElement('td');
-                    locationCell.textContent = schedule.location;
-                    row.appendChild(locationCell);
-
-                    // Teacher name cell
-                    const tnCell = document.createElement('td');
-                    tnCell.textContent = schedule.teacherFullName;
-                    row.appendChild(tnCell);
-
-                    // Start time cell
-                    const stCell = document.createElement('td');
-                    stCell.textContent = schedule.startTime ? schedule.startTime.slice(0, 5) : '';
-                    row.appendChild(stCell);
-
-                    // End time cell
-                    const etCell = document.createElement('td');
-                    etCell.textContent = schedule.endTime ? schedule.endTime.slice(0, 5) : '';
-                    row.appendChild(etCell);
-
-                    // Date cell
-                    const dateCell = document.createElement('td');
-                    dateCell.textContent = schedule.date
-                        ? new Date(schedule.date).toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        })
-                        : '';
-                    row.appendChild(dateCell);
-
-                    // Note cell
-                    const noteCell = document.createElement('td');
-                    noteCell.textContent = schedule.description || '';
-                    row.appendChild(noteCell);
-
-                    // Event cell
-                    const eventCell = document.createElement('td');
-                    eventCell.textContent = schedule.event || '';
-                    row.appendChild(eventCell);
-
-                    tableBody.appendChild(row);
-                })
-
-                    .catch(error => console.error('Error fetching schedule:', error));
-            })
+        if (!calendarEl) {
+            console.error('The #calendar element is missing from the DOM.');
+            return;
+        }
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth',
+            },
+            timeZone: 'UTC',
+            events: function (fetchInfo, successCallback, failureCallback) {
+                fetch(`/schedule/get/class/${classId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch schedules');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const events = data.map(schedule => ({
+                            id: schedule.id,
+                            title: schedule.activity,
+                            start: schedule.date,
+                            backgroundColor: schedule.color,
+                            borderColor: schedule.color,
+                            extendedProps: {
+                                room: schedule.room
+                            }
+                        }));
+                        successCallback(events);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching schedules:', error);
+                        failureCallback(error);
+                    });
+            },
+            eventClick: function (info) {
+                const event = info.event;
+                const { room } = event.extendedProps;
+                alert(
+                    `Event: ${event.title}\n` +
+                    `Room: ${room}\n`
+                );
+            },
+        });
+        calendar.render();
     });
-    function submitForm() {
-        // Retrieve userDetails from sessionStorage
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-
-        if (userDetails && userDetails.teacherId) {
-            // Redirect to the appropriate URL with the teacherId
-            window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
-        } else {
-            console.error("Teacher ID is missing or user details not found in sessionStorage");
-        }
-    }
-
-    function toListAssigment() {
-        // Retrieve userDetails from sessionStorage
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-
-        if (userDetails && userDetails.teacherId) {
-            // Redirect to the appropriate URL with the teacherId
-            window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
-        } else {
-            console.error("Teacher ID is missing or user details not found in sessionStorage");
-        }
-    }
-
-    function redirectSchedule() {
-        // Retrieve userDetails from sessionStorage
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-
-        if (userDetails && userDetails.teacherId) {
-            // Redirect to the appropriate URL with the teacherId
-            window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
-        } else {
-            console.error("Teacher ID is missing or user details not found in sessionStorage");
-        }
-    }
 </script>
 
 
