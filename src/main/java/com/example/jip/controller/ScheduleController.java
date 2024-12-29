@@ -251,10 +251,10 @@ public class ScheduleController {
         }
     }
 
-    @GetMapping("/get/{classId}")
-    public List<ClassScheduleDTO> getClassSchedule(@PathVariable int classId) {
+    @GetMapping("/get/class/{classId}")
+    public List<ScheduleDTO> getClassSchedule(@PathVariable int classId) {
         return scheduleRepository.findByClaszId(classId).stream()
-                .map(ClassScheduleDTO :: new)
+                .map(ScheduleDTO :: new)
                 .collect(Collectors.toList());
     }
 

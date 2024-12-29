@@ -103,7 +103,9 @@ public class ClassController {
     }
 
     @GetMapping("/student/{studentId}")
-    public List<Class> getClassesByStudentId(@PathVariable int studentId) {
-        return classServices.getClassByStudentId(studentId);
+    public List<ClassDTO> getClassesByStudentId(@PathVariable int studentId) {
+        return classServices.getClassByStudentId(studentId).stream()
+                .map(ClassDTO::new)
+                .collect(Collectors.toList());
     }
 }
