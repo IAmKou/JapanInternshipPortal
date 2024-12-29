@@ -1,10 +1,8 @@
 package com.example.jip.dto;
 
-import com.example.jip.entity.Assignment;
 import com.example.jip.entity.Class;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 import java.util.List;
 
 @Setter
@@ -23,23 +21,13 @@ public class ClassDTO {
     private String teacherName;
     private List<Integer> assignmentIds;
     private int semesterId;
-
-
-
-    public ClassDTO(String name, int numberOfStudents, TeacherDTO teacher, List<Integer> studentIds, int semesterId) {
-        this.name = name;
-        this.numberOfStudents = numberOfStudents;
-        this.teacher = teacher;
-        this.studentIds = studentIds;
-        this.semesterId = semesterId;
-    }
+    private String semesterName;
 
     public ClassDTO(Class clasz) {
         this.name = clasz.getName();
         this.id = clasz.getId();
         this.numberOfStudents = clasz.getNumber_of_student();
         this.teacherName = clasz.getTeacher().getFullname();
-        this.semesterId = clasz.getSemester().getId();
+        this.semesterId = (clasz.getSemester() != null) ? clasz.getSemester().getId() : 0;
     }
-
 }

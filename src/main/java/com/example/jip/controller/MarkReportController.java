@@ -2,6 +2,7 @@ package com.example.jip.controller;
 
 
 import com.example.jip.dto.request.markReport.MarkReportImportRequest;
+import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.dto.response.markReport.MarkReportResponse;
 import com.example.jip.entity.MarkReport;
 import com.example.jip.services.MarkReportServices;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.event.RecordApplicationEvents;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,5 +56,26 @@ public class MarkReportController {
         return ResponseEntity.ok(responses);
     }
 
+    @GetMapping("/detail")
+    public ResponseEntity<MarkReportResponse> getMarkRpById(@RequestParam("markRpId") int markRpId) {
+        log.info("Received markRpId: " + markRpId);
+        MarkReportResponse response = markReportServices.getMarkReportById(markRpId);
+        if (response != null)  {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @GetMapping("/personal-mark-rp")
+    public ResponseEntity<MarkReportResponse> getMarkRpByStudentId(@RequestParam("studentId") int studentId) {
+        log.info("Received studentId: " + studentId);
+        MarkReportResponse response = markReportServices.getMarkReportByStudentId(studentId);
+        if (response != null)  {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 
 }

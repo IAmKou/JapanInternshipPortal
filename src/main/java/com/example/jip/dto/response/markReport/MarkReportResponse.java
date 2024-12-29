@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 public class MarkReportResponse {
     int id;
     String studentName;
+    String studentClass;
     BigDecimal softskill;
     BigDecimal avg_exam_mark;
     BigDecimal middle_exam;

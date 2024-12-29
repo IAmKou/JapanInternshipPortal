@@ -53,6 +53,16 @@ import java.util.Set;
             this.id = id;
         }
 
+        public Class(Class.status status, Teacher teacher, int number_of_student, String name, int id, Semester semester) {
+            this.status = status;
+            this.teacher = teacher;
+            this.number_of_student = number_of_student;
+            this.name = name;
+            this.id = id;
+            this.semester = semester;
+        }
+
+
         public enum status{
             Active, Inactive
         }

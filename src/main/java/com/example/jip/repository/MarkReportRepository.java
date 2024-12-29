@@ -11,7 +11,6 @@ import java.util.Optional;
 @Repository
 public interface MarkReportRepository extends CrudRepository<MarkReport, Integer> {
 
-
     @Query ("SELECT DISTINCT mr " +
             "FROM MarkReport mr JOIN Listt l " +
             "on mr.student.id = l.student.id " +
@@ -23,6 +22,7 @@ public interface MarkReportRepository extends CrudRepository<MarkReport, Integer
             "WHERE mr.student.email = :email")
     MarkReport findByEmail(String email);
 
-    Optional<MarkReport> findByStudentId(int studentId);
+    MarkReport findById(int id);
+    MarkReport findByStudentId(int studentId);
     List<MarkReport> findByStudentIdIn(List<Integer> studentIds);
 }

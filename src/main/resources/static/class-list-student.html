@@ -1,5 +1,8 @@
 <!doctype html>
 <html class="no-js" lang="" xmlns="http://www.w3.org/1999/html">
+
+
+<!-- Mirrored from class-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -36,8 +39,6 @@
 <!-- Preloader End Here -->
 <div id="wrapper" class="wrapper bg-ash">
     <!-- Header Menu Area Start Here -->
-    <div id="google_translate_element"></div>
-
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
@@ -217,7 +218,7 @@
                     <li>
                         <a href="manager.html">Home</a>
                     </li>
-                    <li>List</li>
+                    <li>Class List</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
@@ -252,86 +253,24 @@
             </div>
             <!-- Class Routine Area End Here -->
         </div>
-        <!-- update modal -->
-        <div class="ui-modal-box">
-            <div class="modal-box">
-                <div class="modal sign-up-modal fade" id="update-modal" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <div class="close-btn">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <form id="update-class-form">
-                                    <input type="hidden" name="classId" id="classId" value="">
-                                    <div class="form-group col-12">
-                                        <label for="teacherId">Teacher</label>
-                                        <select id="teacherId" name="teacherId" class="select2"></select>
-                                    </div>
-                                    <div class="form-group col-12">
-                                        <input type="text" id="className" name="name" class="form-control">
-                                    </div>
-                                    <div class="form-group col-12">
-                                        <button type="button" id="update-class-btn">Update Class</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- confirm modal -->
-        <div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog success-modal-content" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="success-message">
-                            <div class="item-icon">
-                                <i class="fas fa-exclamation"></i>
-                            </div>
-                            <h3 class="item-title">You want to delete this class?</h3>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <input type="hidden" name="id" id="Cid">
-                        <button type="button" id="confirm-delete" class="footer-btn bg-linkedin">Ok</button>
-                        <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-</div>
     <!-- Page Area End Here -->
+</div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const tableBody = document.querySelector('.table tbody');
-        const confirmationModal = document.querySelector('#confirmation-modal');
-        const confirmButton = confirmationModal.querySelector('.footer-btn.bg-linkedin');
-        const updateClassBtn = document.querySelector('#update-class-btn');
+        const studentId = yourStudentIdValue;
 
-        let currentClassId = null;
-
-        // Fetch classes and populate the table
-        fetch("/class/get")
+        // Fetch classes by studentId and populate the table
+        fetch(`/class/student/${studentId}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch class data');
                 }
                 return response.json();
             })
-            .then(clasz => {
-                clasz.forEach(clasz => {
+            .then(claszData => {
+                claszData.forEach(clasz => {
                     const row = document.createElement('tr');
 
                     // ID cell
@@ -341,20 +280,16 @@
 
                     // Name cell
                     const nameCell = document.createElement('td');
-                    const link = document.createElement('a'); // Create an anchor element
-                    link.textContent = clasz.name; // Set the text of the link
-                    link.href = `/all-class-student.html?classId=${clasz.id}`; // Set the href attribute to the desired HTML page
-                    nameCell.appendChild(link); // Append the anchor element to the cell
+                    const link = document.createElement('a');
+                    link.textContent = clasz.name;
+                    // Example link to a page showing all class details:
+                    link.href = `/all-class-student.html?classId=${clasz.id}`;
+                    nameCell.appendChild(link);
                     row.appendChild(nameCell);
-
-                    // //Semester Name cell
-                    // const semesterNameCell = document.createElement('td');
-                    // semesterNameCell.textContent = clasz.semestername;
-                    // row.appendChild(semesterNameCell);
 
                     // Teacher Name cell
                     const teacherNameCell = document.createElement('td');
-                    teacherNameCell.textContent = clasz.semesterId;
+                    teacherNameCell.textContent = clasz.teacherName;
                     row.appendChild(teacherNameCell);
 
                     // Number of Students cell
@@ -374,104 +309,47 @@
                     dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
                     dropdown.appendChild(dropdownToggle);
 
+                    // Create the dropdown menu
                     const dropdownMenu = document.createElement('div');
                     dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
+
+                    // Add the "View Class Detail" option
                     dropdownMenu.innerHTML = `
-                    <a class="dropdown-item delete-class" data-id="${clasz.id}">
-                        <i></i> Delete Class
-                    </a>
-                    <a class="dropdown-item update-class" data-id="${clasz.id}" data-name="${clasz.name}""
-                        <i></i> Update Class
-                    </a>
-                `;
+                        <a class="dropdown-item view-class" data-id="${clasz.id}">
+                            <i class="fas fa-info-circle text-primary"></i> View Class Detail
+                        </a>
+                        <a class="dropdown-item schedule-class" data-id="${clasz.id}">
+                            <i class="fas fa-calendar-alt text-success"></i> Schedule
+                        </a>
+                    `;
+
                     dropdown.appendChild(dropdownMenu);
                     actionsCell.appendChild(dropdown);
                     row.appendChild(actionsCell);
+
                     tableBody.appendChild(row);
                 });
 
-                // Attach event listeners for delete buttons
-                document.querySelectorAll('.delete-class').forEach(button => {
+                // Attach event listener for "View Class Detail"
+                document.querySelectorAll('.view-class').forEach(button => {
                     button.addEventListener('click', function () {
-                        currentClassId = this.getAttribute('data-id');
-                        $('#confirmation-modal').modal('show'); // Show modal
+                        const classId = this.getAttribute('data-id');
+                        window.location.href = `/all-class-student.html?classId=${classId}`;
                     });
                 });
 
-                // Attach event listeners for update buttons
-                document.querySelectorAll('.update-class').forEach(button => {
+                // Attach event listener for "Schedule"
+                document.querySelectorAll('.schedule-class').forEach(button => {
                     button.addEventListener('click', function () {
                         const classId = this.getAttribute('data-id');
-                        const className = this.getAttribute('data-name');
-
-
-                        // Populate modal fields
-                        document.getElementById('classId').value = classId;
-                        document.getElementById('className').value = className;
-
-
-                        // Show modal
-                        $('#update-modal').modal('show');
+                        window.location.href = `/schedule-student.html?classId=${classId}`;
                     });
                 });
             })
             .catch(error => console.error('Error fetching class data:', error));
-
-        // Confirm delete action
-        confirmButton.addEventListener('click', function () {
-            if (currentClassId) {
-                fetch(`/class/delete/${currentClassId}`, {
-                    method: 'DELETE',
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            alert('Class deleted successfully!');
-                            location.reload(); // Refresh the page
-                        } else {
-                            throw new Error('Failed to delete class');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error deleting class:', error);
-                        alert('Failed to delete the class. Please try again.');
-                    });
-            }
-        });
-
-        // Handle class update via JSON
-        updateClassBtn.addEventListener('click', function () {
-            const classId = document.getElementById('classId').value;
-            const className = document.getElementById('className').value;
-            const teacherId = document.getElementById('teacherId').value;
-
-            fetch('/class/update', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    id: classId,
-                    name: className,
-                    teacher: {
-                        id: teacherId
-                    }
-                }),
-            })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Class updated successfully!');
-                        location.reload(); // Refresh the page
-                    } else {
-                        throw new Error('Failed to update class');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error updating class:', error);
-                    alert('Failed to update the class. Please try again.');
-                });
-        });
     });
 </script>
+
 <!-- fetch teacher -->
 <script>
     document.addEventListener('DOMContentLoaded', loadTeachers);
@@ -504,7 +382,6 @@
             });
     }
 </script>
-
 <!-- fetch user -->
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -534,69 +411,6 @@
         console.error("User details not found in sessionStorage");
     }
 </script>
-<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<script type="text/javascript">
-    // Hàm thay đổi ngôn ngữ và lưu vào localStorage
-    function changeLanguage(language) {
-        var languageLabel = document.getElementById('languageLabel');
-
-        // Cập nhật nhãn ngôn ngữ trên dropdown
-        if (language === 'en') {
-            languageLabel.innerText = 'EN';
-        } else if (language === 'ja') {
-            languageLabel.innerText = 'JA';
-        }
-
-        // Lưu ngôn ngữ vào localStorage
-        localStorage.setItem('selectedLanguage', language);
-
-        // Kiểm tra nếu Google Translate đã được tải
-        if (window.google && google.translate) {
-            google.translate.TranslateElement.prototype.translatePage(language);
-        }
-    }
-
-    // Hàm khởi tạo Google Translate khi trang tải
-    function loadGoogleTranslate() {
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-        document.head.appendChild(script);
-    }
-
-    // Hàm khởi tạo Google Translate Element
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            includedLanguages: 'en,ja',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-            autoDisplay: false,
-        }, 'google_translate_element');
-    }
-
-    // Khi trang được tải, thiết lập ngôn ngữ từ localStorage
-    document.addEventListener('DOMContentLoaded', function () {
-        // Lấy ngôn ngữ đã lưu trong localStorage
-        var savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-
-        // Cập nhật giao diện với ngôn ngữ đã lưu
-        var languageLabel = document.getElementById('languageLabel');
-        if (savedLanguage === 'en') {
-            languageLabel.innerText = 'EN';
-        } else if (savedLanguage === 'ja') {
-            languageLabel.innerText = 'JA';
-        }
-
-        // Dịch trang ngay từ khi tải
-        if (window.google && google.translate) {
-            google.translate.TranslateElement.prototype.translatePage(savedLanguage);
-        }
-    });
-
-    // Tải Google Translate
-    loadGoogleTranslate();
-</script>
-
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -613,7 +427,66 @@
 <script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
-<script src="script.js"></script>
 
+<!-- update modal -->
+<div class="ui-modal-box">
+    <div class="modal-box">
+        <div class="modal sign-up-modal fade" id="update-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="close-btn">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="item-logo">
+                            <img src="img/logo2.png" alt="logo">
+                        </div>
+                        <form id="update-class-form">
+                            <input type="hidden" name="classId" id="classId" value="">
+                            <div class="form-group col-12">
+                                <label for="teacherId">Teacher</label>
+                                <select id="teacherId" name="teacherId" class="select2"></select>
+                            </div>
+                            <div class="form-group col-12">
+                                <input type="text" id="className" name="name" placeholder="New class name" class="form-control">
+                            </div>
+                            <div class="form-group col-12">
+                                <button type="button" class="login-btn" id="update-class-btn">Update Class</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- confirm modal -->
+<div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog success-modal-content" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="success-message">
+                    <div class="item-icon">
+                        <i class="fas fa-exclamation"></i>
+                    </div>
+                    <h3 class="item-title">You want to delete this class?</h3>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="id" id="Cid">
+                <button type="button" id="confirm-delete" class="footer-btn bg-linkedin">Ok</button>
+                <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+
 </html>
