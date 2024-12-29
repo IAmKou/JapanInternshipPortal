@@ -30,6 +30,12 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
 </head>
 
+<style>
+    .dropdown-toggle::after {
+        content: none !important;
+    }
+</style>
+
 <body>
 <!-- Preloader Start Here -->
 <div id="preloader"></div>
@@ -369,7 +375,6 @@
                     dropdown.className = 'dropdown';
 
                     const dropdownToggle = document.createElement('a');
-                    dropdownToggle.href = '#';
                     dropdownToggle.className = 'dropdown-toggle';
                     dropdownToggle.setAttribute('data-toggle', 'dropdown');
                     dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
