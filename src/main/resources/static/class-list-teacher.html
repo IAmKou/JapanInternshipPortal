@@ -503,15 +503,23 @@
                 dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
 
                 if (attendanceTaken) {
+                    // If attendance is already taken, show 'Edit' + 'Schedule'
                     dropdownMenu.innerHTML = `
                         <a class="dropdown-item" href="/edit-attendant.html?classId=${clasz.id}">
                             <i class="fas fa-edit text-dark-pastel-green"></i> Edit
                         </a>
+                        <a class="dropdown-item" href="/schedule.html?classId=${clasz.id}">
+                            <i class="fas fa-calendar-alt text-dark-pastel-green"></i> Schedule
+                        </a>
                     `;
                 } else {
+                    // If attendance is not taken, show 'Attendant' + 'Schedule'
                     dropdownMenu.innerHTML = `
                         <a class="dropdown-item" href="/attendant.html?classId=${clasz.id}">
                             <i class="fas fa-glasses text-dark-pastel-green"></i> Attendant
+                        </a>
+                        <a class="dropdown-item" href="/schedule.html?classId=${clasz.id}">
+                            <i class="fas fa-calendar-alt text-dark-pastel-green"></i> Schedule
                         </a>
                     `;
                 }

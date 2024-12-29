@@ -251,6 +251,13 @@ public class ScheduleController {
         }
     }
 
+    @GetMapping("/get/{classId}")
+    public List<ClassScheduleDTO> getClassSchedule(@PathVariable int classId) {
+        return scheduleRepository.findByClaszId(classId).stream()
+                .map(ClassScheduleDTO :: new)
+                .collect(Collectors.toList());
+    }
+
 
     private Schedule.dayOfWeek getDayOfWeekFromDate(java.sql.Date date) {
         java.time.LocalDate localDate = date.toLocalDate();

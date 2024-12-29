@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.jip.entity.Class;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -24,4 +25,7 @@ public interface ClassRepository extends JpaRepository<Class,Integer> {
     @Modifying
     @Query("UPDATE Class c SET c.status = 'Inactive' WHERE c.semester.id = :semesterId")
     void deactivateClassesBySemester(int semesterId);
+
+    @Query("SELECT c FROM Class c JOIN c.classLists l WHERE l.student.id = :studentId")
+    List<Class> findClassesByStudentId(@Param("studentId") int studentId);
 }
