@@ -32,8 +32,7 @@ public class StudentServices {
     private MarkReportRepository markReportRepository;
 
 
-    public Student createStudent(String fullname, String japanname, Date dob, String gender, String phoneNumber,
-                                 String email, MultipartFile img, MultipartFile passport, int accountId, String plainPassword) {
+    public Student createStudent(String fullname, String japanname, Date dob, String gender, String phoneNumber, String email, MultipartFile img, MultipartFile passport, int accountId) {
         Optional<Account> accountOpt = accountRepository.findById(accountId);
         if (!accountOpt.isPresent()) {
             throw new IllegalArgumentException("No account found with id: " + accountId);
@@ -74,9 +73,9 @@ public class StudentServices {
         MarkReport markReport = new MarkReport();
         markReport.setStudent(savedStudent);
         markReportRepository.save(markReport);
-
-        // Send email with plain-text password
-        String emailStatus = emailServices.sendEmail(email, accountOpt.get().getUsername(), plainPassword);
+        String account = accountOpt.get().getUsername();
+        String password = accountOpt.get().getPassword();
+        String emailStatus = emailServices.sendEmail(email, password, account);
         if (emailStatus == null) {
             System.out.println("Failed to send email to: " + email);
         } else {
