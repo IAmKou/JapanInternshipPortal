@@ -1,10 +1,12 @@
 package com.example.jip.dto;
-
-import com.example.jip.entity.Manager;
 import com.example.jip.entity.Student;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Date;
 
+@Setter
+@Getter
 public class StudentDTO {
     private int id;
     private String fullname;
@@ -12,8 +14,9 @@ public class StudentDTO {
     private Student.Gender gender;
     private String img;
     private boolean mark;
-
-
+    private String email;
+    private String phone;
+    private Date dob;
 
     public StudentDTO(Student student) {
         this.id = student.getId();
@@ -22,8 +25,10 @@ public class StudentDTO {
         this.gender = student.getGender();
         this.img = student.getImg();
         this.mark = student.isMark();
+        this.email = student.getEmail();
+        this.phone = student.getPhoneNumber();
+        this.dob = student.getDob();
     }
-
 
     public StudentDTO() {}
 
@@ -33,52 +38,5 @@ public class StudentDTO {
         this.gender = gender;
         this.img = img;
         this.mark = mark;
-    }
-
-    public boolean isMark() {
-        return mark;
-    }
-
-    public void setMark(boolean mark) {
-        this.mark = mark;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getFullname() {
-        return fullname;
-    }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
-    public String getJname() {
-        return jname;
-    }
-
-    public void setJname(String jname) {
-        this.jname = jname;
-    }
-    public Student.Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Student.Gender gender) {
-        this.gender = gender;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
     }
 }

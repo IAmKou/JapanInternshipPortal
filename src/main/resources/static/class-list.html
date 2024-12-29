@@ -235,8 +235,9 @@
                                 <table class="table display text-nowrap">
                                     <thead>
                                     <tr>
-                                        <th>Id</th>
+                                        <th>#</th>
                                         <th>Class</th>
+                                        <th>Semester</th>
                                         <th>Teacher</th>
                                         <th>Number of Student</th>
                                         <th></th>
@@ -347,10 +348,10 @@
                     nameCell.appendChild(link); // Append the anchor element to the cell
                     row.appendChild(nameCell);
 
-                    // //Semester Name cell
-                    // const semesterNameCell = document.createElement('td');
-                    // semesterNameCell.textContent = clasz.semestername;
-                    // row.appendChild(semesterNameCell);
+                    //Semester Name cell
+                    const semesterNameCell = document.createElement('td');
+                    semesterNameCell.textContent = clasz.semesterName;
+                    row.appendChild(semesterNameCell);
 
                     // Teacher Name cell
                     const teacherNameCell = document.createElement('td');

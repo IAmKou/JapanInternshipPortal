@@ -29,5 +29,6 @@ public class ClassDTO {
         this.numberOfStudents = clasz.getNumber_of_student();
         this.teacherName = clasz.getTeacher().getFullname();
         this.semesterId = (clasz.getSemester() != null) ? clasz.getSemester().getId() : 0;
+        this.semesterName = (clasz.getSemester() != null) ? clasz.getSemester().getName() : "n/a";
     }
 }

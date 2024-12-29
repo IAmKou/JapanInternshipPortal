@@ -453,6 +453,10 @@
                 <th>#</th>
                 <th>Photo</th>
                 <th>Name</th>
+                <th>JName</th>
+                <th>Dob</th>
+                <th>Email</th>
+                <th>Phone Number</th>
                 <th>Gender</th>
                 <th></th>
             </tr>`;
@@ -477,6 +481,22 @@
                 const nameCell = document.createElement('td');
                 nameCell.textContent = student.fullname;
                 row.appendChild(nameCell);
+
+                const JnameCell = document.createElement('td');
+                JnameCell.textContent = student.jname;
+                row.appendChild(JnameCell);
+
+                const DOB = document.createElement('td');
+                DOB.textContent = student.dob;
+                row.appendChild(DOB);
+
+                const Email = document.createElement('td');
+                Email.textContent = student.email;
+                row.appendChild(Email);
+
+                const Phone = document.createElement('td');
+                Phone.textContent = student.phone;
+                row.appendChild(Phone);
 
                 const genderCell = document.createElement('td');
                 genderCell.textContent = student.gender;
