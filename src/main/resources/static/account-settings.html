@@ -30,7 +30,7 @@
     <!-- Date Picker CSS -->
     <link href="css/datepicker.min.css" rel="stylesheet">
     <!-- Data Table CSS -->
-    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <link href="css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="style.css" rel="stylesheet">
     <!-- Font Awesome CDN -->
@@ -53,17 +53,20 @@
             background-color: #0056b3; /* Hover effect color */
             border-color: #0056b3;
         }
+
         .pagination-container {
             display: flex;
             justify-content: center;
             gap: 10px;
             margin-top: 20px;
         }
+
         .btn-gradient-yellow {
             background: linear-gradient(to right, #ffcc00, #ff9900);
             border: none;
             color: white;
         }
+
         .btn-gradient-yellow:hover {
             background: linear-gradient(to right, #ff9900, #ff6600);
         }
@@ -84,6 +87,7 @@
             border-left: 5px solid #28a745;
             animation: fadeIn 1s;
         }
+
         @keyframes fadeIn {
             0% {
                 opacity: 0;
@@ -104,7 +108,6 @@
             border: 1px solid #000; /* Viền màu đen */
             box-shadow: none; /* Loại bỏ bóng */
         }
-
 
 
         /* Custom Button */
@@ -186,60 +189,61 @@
         }
 
         input[name="searchInput"] {
-            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
-            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px; /* Thêm góc bo tròn nếu cần */
         }
 
         input[name="searchInput"]:hover {
-            border-color: #28a745 !important;  /* Màu border khi hover */
+            border-color: #28a745 !important; /* Màu border khi hover */
         }
 
         input[name="searchInput"]:focus {
-            border-color: #28a745 !important;   /* Giữ màu đỏ khi focus */
-            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+            border-color: #28a745 !important; /* Giữ màu đỏ khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
         }
 
-        select[name="filterSelect"] {  /* Chỉnh sửa thuộc tính cho phần tử select */
-            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
-            border-radius: 5px;  /* Thêm góc bo tròn */
+        select[name="filterSelect"] { /* Chỉnh sửa thuộc tính cho phần tử select */
+            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px; /* Thêm góc bo tròn */
         }
 
-        select[name="filterSelect"]:hover {  /* Khi di chuột vào select */
-            border-color: #28a745 !important;  /* Màu viền khi hover */
+        select[name="filterSelect"]:hover { /* Khi di chuột vào select */
+            border-color: #28a745 !important; /* Màu viền khi hover */
         }
 
-        select[name="filterSelect"]:focus {  /* Khi focus vào select */
-            border-color: #28a745 !important;  /* Màu viền khi focus */
-            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        select[name="filterSelect"]:focus { /* Khi focus vào select */
+            border-color: #28a745 !important; /* Màu viền khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
         }
+
         /* Nút dropdown */
         .btn-secondary.dropdown-toggle {
-            background-color: #007bff;  /* Màu nền của nút */
-            color: white;                /* Màu chữ của nút */
-            border: none;                /* Xóa đường viền nếu cần */
-            border-radius: 5px;          /* Thêm góc bo tròn */
+            background-color: #007bff; /* Màu nền của nút */
+            color: white; /* Màu chữ của nút */
+            border: none; /* Xóa đường viền nếu cần */
+            border-radius: 5px; /* Thêm góc bo tròn */
         }
 
         .btn-secondary.dropdown-toggle:hover {
-            background-color: #0056b3;  /* Màu nền khi hover */
-            color: white;                /* Giữ màu chữ khi hover */
+            background-color: #0056b3; /* Màu nền khi hover */
+            color: white; /* Giữ màu chữ khi hover */
         }
 
         /* Phần menu dropdown */
         .dropdown-menu {
-            background-color: #ffffff;  /* Màu nền của dropdown */
-            border-radius: 5px;         /* Thêm góc bo tròn */
-            border: 1px solid #dee2e6;  /* Đường viền sáng cho dropdown */
+            background-color: #ffffff; /* Màu nền của dropdown */
+            border-radius: 5px; /* Thêm góc bo tròn */
+            border: 1px solid #dee2e6; /* Đường viền sáng cho dropdown */
         }
 
         /* Màu chữ các mục trong dropdown */
         .dropdown-item {
-            color: #333;                /* Màu chữ mặc định của các mục */
+            color: #333; /* Màu chữ mặc định của các mục */
         }
 
         .dropdown-item:hover {
-            background-color: #f8f9fa;  /* Màu nền khi hover vào mục */
-            color: #007bff;             /* Màu chữ khi hover */
+            background-color: #f8f9fa; /* Màu nền khi hover vào mục */
+            color: #007bff; /* Màu chữ khi hover */
         }
 
     </style>
@@ -250,7 +254,7 @@
 <!-- Preloader Start Here -->
 <div id="preloader"></div>
 <!-- Preloader End Here -->
-<div id="wrapper" class="wrapper bg-ash">
+<div class="wrapper bg-ash" id="wrapper">
     <!-- Header Menu Area Start Here -->
     <div id="google_translate_element"></div>
 
@@ -259,12 +263,13 @@
             <div class="header-logo">
                 <a href="admin.html">
                     <div style="width: 180px; height: 70px; overflow: hidden;">
-                        <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+                        <img alt="logo" src="img/JIP%20LOGO%20n.png"
+                             style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                 </a>
             </div>
             <div class="toggle-button sidebar-toggle">
-                <button type="button" class="item-link">
+                <button class="item-link" type="button">
                         <span class="btn-icon-wrap">
                             <span></span>
                             <span></span>
@@ -274,11 +279,11 @@
             </div>
         </div>
         <div class="d-md-none mobile-nav-bar">
-            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse"
-                    data-target="#mobile-navbar" aria-expanded="false">
+            <button aria-expanded="false" class="navbar-toggler pulse-animation" data-target="#mobile-navbar"
+                    data-toggle="collapse" type="button">
                 <i class="far fa-arrow-alt-circle-down"></i>
             </button>
-            <button type="button" class="navbar-toggler sidebar-toggle-mobile">
+            <button class="navbar-toggler sidebar-toggle-mobile" type="button">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -291,14 +296,14 @@
             </ul>
             <ul class="navbar-nav">
                 <li class="navbar-item dropdown header-admin">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
                         <div class="admin-title">
-                            <h5 class="item-title userFullName"> </h5>
+                            <h5 class="item-title userFullName"></h5>
                             <span class="userRole"></span>
                         </div>
                         <div class="admin-img">
-                            <img src="img/figure/admin.jpg" alt="Admin">
+                            <img alt="Admin" src="img/figure/admin.jpg">
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -308,7 +313,8 @@
                         <div class="item-content">
                             <ul class="settings-list">
 
-                                <li><a href="/logout"><i class="flaticon-turn-off"></i><span data-i18n="log_out">Log Out</span></a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i><span
+                                        data-i18n="log_out">Log Out</span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -316,7 +322,8 @@
 
                 <!--Notification-->
                 <li class="navbar-item dropdown header-notification">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
                         <i class="far fa-bell"></i>
                         <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
                         <span id="notification-count">0</span>
@@ -332,15 +339,18 @@
                     </div>
                 </li>
                 <li class="navbar-item dropdown header-language">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
                         <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
-                            <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;"> English
+                            <img alt="English" src="img/figure/flag-anh.webp" style="width: 20px; height: 15px;">
+                            English
                         </a>
                         <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
-                            <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese" style="width: 20px; height: 15px;"> 日本語
+                            <img alt="Japanese" src="img/figure/Flag_of_Japan.svg.webp"
+                                 style="width: 20px; height: 15px;"> 日本語
                         </a>
                     </div>
                 </li>
@@ -354,29 +364,30 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="admin.html"><img alt="logo" src="img/logo1.png"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span data-i18n="dashboard">Dashboard</span></a>
+                        <a class="nav-link" href="#"><i class="flaticon-dashboard"></i><span data-i18n="dashboard">Dashboard</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="admin.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i><span data-i18n="admin">Admin</span></a>
+                                <a class="nav-link menu-active" href="admin.html"><i
+                                        class="fas fa-angle-right"></i><span data-i18n="admin">Admin</span></a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="report-list.html" class="nav-link"><i
+                        <a class="nav-link" href="report-list.html"><i
                                 class="flaticon-script"></i><span data-i18n="report">Report</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="notice-board.html" class="nav-link"><i
+                        <a class="nav-link" href="notice-board.html"><i
                                 class="flaticon-script"></i><span data-i18n="notification">Notification</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="account-settings.html" class="nav-link menu-active"><i
+                        <a class="nav-link menu-active" href="account-settings.html"><i
                                 class="flaticon-settings"></i><span data-i18n="account_list">Account List</span></a>
                     </li>
                 </ul>
@@ -387,7 +398,7 @@
                 <h3 data-i18n="account_setting">Account Setting</h3>
                 <ul class="breadcrumb">
                     <li>
-                        <a href="admin.html" data-i18n="home">Home</a>
+                        <a data-i18n="home" href="admin.html">Home</a>
                     </li>
                     <li data-i18n="setting">Account List</li>
                 </ul>
@@ -398,45 +409,48 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="dropdown" style="margin-bottom: 20px">
-                                <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="#" style="font-size: 16px; padding: 10px 20px;" data-i18n="add_import_users">
+                                <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-i18n="add_import_users"
+                                   href="#" style="font-size: 16px; padding: 10px 20px;">
                                     Add or Import Users
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="create-account.html" data-i18n="add_new_user"><i class="fas fa-plus text-orange-red"></i> Add New User</a>
-                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#standard-modal" data-i18n="import_users"><i class="fas fa-file-import text-green"></i> Import Users</a>
+                                    <a class="dropdown-item" data-i18n="add_new_user" href="create-account.html"><i
+                                            class="fas fa-plus text-orange-red"></i> Add New User</a>
+                                    <a class="dropdown-item" data-bs-target="#standard-modal" data-bs-toggle="modal"
+                                       data-i18n="import_users"><i class="fas fa-file-import text-green"></i> Import
+                                        Users</a>
                                 </div>
                             </div>
 
                             <div class="d-flex align-items-center">
-                                <label for="searchInput" class="text-primary font-weight-bold me-3 mb-0" data-i18n="search">
+                                <label class="text-primary font-weight-bold me-3 mb-0" data-i18n="search"
+                                       for="searchInput">
                                     Search
                                 </label>
-                                <label for="filterSelect" class="text-primary font-weight-bold mb-0"
-                                       style="position: absolute; left: 54%; transform: translateX(-50%);" data-i18n="filter">
+                                <label class="text-primary font-weight-bold mb-0" data-i18n="filter"
+                                       for="filterSelect"
+                                       style="position: absolute; left: 54%; transform: translateX(-50%);">
                                     Filter:
                                 </label>
 
                             </div>
-
-
-
-                            <form style="padding-bottom: 20px; padding-top: 10px;" id="searchForm">
+                            <form id="searchForm" style="padding-bottom: 20px; padding-top: 10px;">
                                 <div class="row mb-3 align-items-center gx-3">
                                     <!-- Search Input -->
                                     <div class="col-lg-6">
                                         <div class="input-group shadow-sm">
                                             <input
-                                                    type="text"
                                                     class="form-control search-input rounded-start"
                                                     id="searchInput"
                                                     name="searchInput"
-                                            style="border: 1px solid #ced4da; height: 45px;"
+                                                    style="border: 1px solid #ced4da; height: 45px;"
+                                                    type="text"
                                             />
                                             <button
-                                                    type="submit"
                                                     class="btn btn-gradient-yellow btn-search rounded-end text-white fw-bold"
                                                     data-i18n="search"
-                                                    style="background-color: #ffc107; border: none; height: 45px;">
+                                                    style="background-color: #ffc107; border: none; height: 45px;"
+                                                    type="submit">
                                                 SEARCH
                                             </button>
                                         </div>
@@ -444,9 +458,12 @@
                                     </div>
                                     <div class="col-lg-2">
                                         <div class="form-group">
-                                            <div class="position-relative ps-4"> <!-- Thêm padding trái bằng Bootstrap -->
-                                                <i class="fas fa-sort position-absolute" style="right: 12px; top: 50%; transform: translateY(-50%); color: #aaa;"></i>
-                                                <select class="form-control filter-select" id="filterSelect" name="filterSelect"
+                                            <div class="position-relative ps-4">
+                                                <!-- Thêm padding trái bằng Bootstrap -->
+                                                <i class="fas fa-sort position-absolute"
+                                                   style="right: 12px; top: 50%; transform: translateY(-50%); color: #aaa;"></i>
+                                                <select class="form-control filter-select" id="filterSelect"
+                                                        name="filterSelect"
                                                         style="padding-right: 35px; font-size: 1.25rem; height: 45px; padding-left: 10px; margin-top: 7px;">
                                                     <option value="">All Role</option>
                                                     <option value="teacher">Teacher</option>
@@ -458,7 +475,7 @@
                                     </div>
 
                                 </div>
-                        </form>
+                            </form>
 
                         </div>
                     </div>
@@ -486,12 +503,11 @@
                                 </table>
                                 <div class="pagination-container">
                                     <ul class="pagination justify-content-center">
-                                        <li class="page-item"><a href="#" class="page-link">Previous</a></li>
-                                        <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                                        <li class="page-item"><a href="#" class="page-link">2</a></li>
-                                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
                                     </ul>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -500,40 +516,43 @@
             </div>
         </div>
     </div>
-    <!-- Page Area End Here -->
-    <div aria-hidden="true" class="modal fade" id="standard-modal" role="dialog"
-         tabindex="-1">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" data-i18n="add_account" >Add Account</h5>
-                    <button aria-label="Close" class="close" data-dismiss="modal"
-                            type="button">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="/account/import/excel" enctype="multipart/form-data" id="import" method="post">
-                    <div class="modal-body">
-                        <label for="file" style="font-weight: bold; color: #464c4d; font-size:14px;" data-i18n="choose_file" >Choose File</label><br>
-                        <input class="form-control-file" id="file" name="file" required type="file">
-                    </div>
-                    <div class="modal-footer">
-                        <button class="footer-btn bg-dark-low" data-dismiss="modal" type="button" data-i18n="close" >Close</button>
-                        <button class="footer-btn bg-linkedin" type="submit" data-i18n="submit" >Submit</button>
-                    </div>
-                </form>
+</div>
+<!-- Page Area End Here -->
+<div aria-hidden="true" class="modal fade" id="standard-modal" role="dialog"
+     tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" data-i18n="add_account">Add Account</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal"
+                        type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <form action="/account/import/excel" enctype="multipart/form-data" id="import" method="post">
+                <div class="modal-body">
+                    <label data-i18n="choose_file" for="file"
+                           style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
+                    <input class="form-control-file" id="file" name="file" required type="file">
+                </div>
+                <div class="modal-footer">
+                    <button class="footer-btn bg-dark-low" data-dismiss="modal" data-i18n="close" type="button">Close
+                    </button>
+                    <button class="footer-btn bg-linkedin" data-i18n="submit" type="submit">Submit</button>
+                </div>
+            </form>
         </div>
     </div>
-    <!-- Success Modal -->
-<div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+</div>
+<!-- Success Modal -->
+<div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header border-0">
                 <h5 class="modal-title text-success" id="successModalLabel">
                     <i class="fas fa-check-circle"></i> Success
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body text-center">
                 <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
@@ -549,17 +568,17 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header border-0">
-                    <h5 class="modal-title text-danger" id="errorModalLabel">
-                        <i class="fas fa-times-circle"></i> Error
-                    </h5>
-                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-                </div>
-                <div class="modal-body">
+                <h5 class="modal-title text-danger" id="errorModalLabel">
+                    <i class="fas fa-times-circle"></i> Error
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
 
-                </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
@@ -844,6 +863,7 @@
                 tableBody.appendChild(row);
             }
         }
+
         const roleTranslations = {
             "en": {
                 "ADMIN": "ADMIN", // Tên tiếng Anh cho ADMIN
@@ -890,6 +910,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(param);
     }
+
     // Check if there's a success message and display it
     const message = getQueryParam("message");
     if (message) {
@@ -919,7 +940,7 @@
                 "role": "Role",
                 "actions": "Actions",
                 "view_details": "View Details",
-                "filter":"Filter:",
+                "filter": "Filter:",
                 // end main screen
                 // headbar
                 "log_out": "Log Out",
@@ -956,7 +977,7 @@
                 "role": "役割",
                 "actions": "アクション",
                 "view_details": "詳細を見る",
-                "filter":"フィルター",
+                "filter": "フィルター",
                 // end main screen
                 // headbar
                 "log_out": "ログアウト",
@@ -980,7 +1001,7 @@
 
         // Cập nhật nội dung các phần tử có thuộc tính data-i18n
         const elements = document.querySelectorAll('[data-i18n]');
-        elements.forEach(function(element) {
+        elements.forEach(function (element) {
             const translationKey = element.getAttribute('data-i18n');
             if (translations[language] && translations[language][translationKey]) {
                 element.innerHTML = translations[language][translationKey];

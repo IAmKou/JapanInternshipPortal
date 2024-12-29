@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="ie=edge" http-equiv="x-ua-compatible">
-    <title>JIP | Export Information</title>
+    <title>JIP | Student Mark Report</title>
     <meta content="" name="description">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <!-- Favicon -->
@@ -351,45 +351,90 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img alt="logo" src="img/logo1.png"></a>
+                    <a href="teacher.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-dashboard"></i><span data-i18n="dashboard">Dashboard</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link menu-active" href="admin.html"><i
-                                        class="fas fa-angle-right"></i><span data-i18n="admin">Admin</span></a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="report-list.html"><i
-                                class="flaticon-script"></i><span data-i18n="report">Report</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="notice-board.html"><i
-                                class="flaticon-script"></i><span data-i18n="notification">Notification</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="account-settings.html"><i
-                                class="flaticon-settings"></i><span data-i18n="account_list">Account List</span></a>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-chat"></i><span
-                                data-i18n="security">Security</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a class="nav-link" href="change-password.html"><i class="fas fa-angle-right"></i><span
-                                        data-i18n="change_password">Change Password</span></a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="input1.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Test Export</a>
+                                <a href="teacher.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Teachers</a>
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
+                                    Assignment</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                    Assignment</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
+                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
+                                    <i class="flaticon-menu"></i><span>Class List</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
+                                    Material</a>
+                            </li>
+                            <li class="nav-item" id="teacher-view">
+                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    Materials</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                    application</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                    application</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
+                                    threads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
+                                    Thread</a>
+                            </li>
+                        </ul>
+                    </li>
+
                 </ul>
             </div>
         </div>
@@ -397,41 +442,40 @@
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3 data-i18n="users">Users</h3>
+                <h3 data-i18n="users">Student Mark Report</h3>
                 <ul>
                     <li>
-                        <a data-i18n="home" href="admin.html">Account List</a>
+                        <a data-i18n="home" href="admin.html">Class Mark List</a>
                     </li>
-                    <li data-i18n="user_details">Export Information</li>
+                    <li data-i18n="user_details">Student Mark Report</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
             <!-- Student Details Area Start Here -->
             <div class="card height-auto">
                 <div class="card-body">
-                    <h3 style="padding-left: 8px; padding-top: 5px; font-weight: bold">Student Information Export Form</h3>
+                    <h3 style="padding-left: 8px; padding-top: 5px; font-weight: bold">Student Mark Report</h3>
                     <div class="item-content">
                         <table class="table table-borderless text-nowrap" id="userInfoTable">
                             <tbody>
                             <tr>
-                                <td style="color: #000">Learning Program : Japan Internship Program</td>
-                                <td class="font-medium text-dark-medium" id="user-id"></td>
+                                <td style="color: #000">Learning Program: </td>
+                                <td class="font-medium text-dark-medium" id="semester"></td>
                             </tr>
                             <tr>
-                                <td  style="color: #000">Name: Anh Long Dep Zai</td>
-                                <td class="font-medium text-dark-medium" id="user-name"></td>
+                                <td  style="color: #000">Name: </td>
+                                <td id="student-name"></td>
                             </tr>
                             <tr>
-                                <td  style="color: #000">Class: Black</td>
-                                <td class="font-medium text-dark-medium" id="what"></td>
+                                <td  style="color: #000">Class: </td>
+                                <td class="font-medium text-dark-medium" id="clas"></td>
                             </tr>
                             <tr>
-                                <td  style="color: #000">Teacher's Commentation: Sample123</td>
-                                <td class="font-medium text-dark-medium" id="user-jname"></td>
+                                <td  style="color: #000">Teacher's Comment: </td>
+                                <td class="font-medium text-dark-medium" id="comment"></td>
                             </tr>
                             </tbody>
                         </table>
-                        <h4 style="padding-left: 8px; padding-top: 5px; color: #007bff">Score Board</h4>
                         <table style="margin-left: 8px">
                             <thead style="background-color: #007bff;">
                             <tr>
@@ -443,75 +487,73 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td rowspan="2" style=" color: #000; ">Participation</td>
-                                <td style=" color: #000;">Attendance Rate</td>
-                                <td style="font-weight: bold; color: #007bff;">10%</td>
-                                <td style=" color: #000;">8</td>
+                                <td rowspan="5" style=" color: #000; ">Skill</td>
+                                <td style=" color: #000;">Daily Exam</td>
+                                <td style="font-weight: bold; color: #007bff;">12%</td>
+                                <td style=" color: #000;" id="avg-exam"></td>
                             </tr>
                             <tr>
 
                             </tr>
                             <tr>
+                                <td style=" color: #000;">Middle Exam Mark</td>
+                                <td style="font-weight: bold; color: #007bff;">16%</td>
+                                <td style="color: #000;" id="middle-exam"></td>
+                            </tr>
+                            <tr>
+                                <td style=" color: #000;">Final Exam Mark</td>
+                                <td style="font-weight: bold; color: #007bff;">12%</td>
+                                <td style=" color: #000;" id="final-exam"></td>
+                            </tr>
+                            <tr>
+                                <td style=" color: #000;">Total</td>
+                                <td style="font-weight: bold; color: #007bff;">40%</td>
+                                <td style=" color: #000;" id="skill"></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2" style=" color: #000;">Soft Skill</td>
                                 <td style=" color: #000;">Presentation</td>
-                                <td style=" color: #000;">Final Presentation</td>
-                                <td style="font-weight: bold; color: #007bff;">40%</td>
-                                <td style="color: #000;">1</td>
+                                <td style="font-weight: bold; color: #007bff;">30%</td>
+                                <td style=" color: #000;" id="soft-skill"></td>
                             </tr>
                             <tr>
-                                <td style=" color: #000;">Daily Exams</td>
-                                <td style=" color: #000;">Avg Exams Mark</td>
-                                <td style="font-weight: bold; color: #007bff;">40%</td>
-                                <td style=" color: #000;">9</td>
+                                <td style=" color: #000;">Total</td>
+                                <td style="font-weight: bold; color: #007bff;">30%</td>
+                                <td style=" color: #000;" id="soft-skill2"></td>
                             </tr>
                             <tr>
-                                <td style=" color: #000;">Midterm Test</td>
-                                <td style=" color: #000;">Mid-term Exam</td>
-                                <td style="font-weight: bold; color: #007bff;">25%</td>
-                                <td style=" color: #000;">8</td>
+                                <td rowspan="3" style=" color: #000;">Attitude</td>
+                                <td style=" color: #000;">Assignment</td>
+                                <td style="font-weight: bold; color: #007bff;">15%</td>
+                                <td style=" color: #000;" id="assignment"></td>
                             </tr>
                             <tr>
-                                <td style=" color: #000;">Final Exam Test</td>
-                                <td style=" color: #000;">End-term Exam</td>
-                                <td style="font-weight: bold; color: #007bff;">25%</td>
-                                <td style=" color: #000;">8</td>
+                                <td style=" color: #000;">Attendant</td>
+                                <td style="font-weight: bold; color: #007bff;">15%</td>
+                                <td style=" color: #000;" id="attendant"></td>
+                            </tr>
+                            <tr>
+                                <td style=" color: #000;">Total</td>
+                                <td style="font-weight: bold; color: #007bff;">30%</td>
+                                <td style=" color: #000;" id="attitude"></td>
                             </tr>
                             <tr class="no-border">
                                 <td style="font-weight: bold; color: #000;">Course Total</td>
                                 <td></td>
                                 <td></td>
-                                <td style="font-weight: bold; color: #000;">7.5</td>
+                                <td style="font-weight: bold; color: #000;" id="final-mark"></td>
                             </tr>
                             </tbody>
                         </table>
-                        <form action="/export-csv" method="post" style="margin-top: 20px">
-                            <div class="col-lg-4">
-                                <button type="submit" class="btn btn-gradient-yellow btn-search">Export</button>
-                            </div>
-                        </form>
+
                     </div>
                 </div>
-                <button class="save-button btn btn-success mt-3" style="display: none;">Save</button>
+
             </div>
             <!-- Student Details Area End Here -->
         </div>
     </div>
-    <!-- Modal -->
-    <!-- Modal Lỗi -->
-    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
-        <div class="modal-dialog"> <!-- Không dùng lớp "modal-dialog-centered" nữa -->
-            <div class="modal-content">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title text-danger" id="errorModalLabel">
-                        <i class="fas fa-times-circle"></i> Error
-                    </h5>
-                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-                </div>
-                <div class="modal-body" id="modalMessage">
-                    <!-- Message will go here -->
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
 <!-- Page Area End Here -->
 </div>
@@ -527,6 +569,139 @@
 <script src="js/jquery.scrollUp.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
+<script>
+    async function fetchMarkRpDetails() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const markRpId = urlParams.get('id');
+
+        try {
+            const response = await fetch(`/mark-report/detail?markRpId=${markRpId}`);
+
+            if (!response.ok) {
+                throw new Error('Error fetching mark rp details');
+            }
+
+            const markRp = await response.json();
+            console.log('mark rp details:', markRp);
+
+
+            document.getElementById('student-name').textContent = markRp.studentName;
+            document.getElementById('clas').textContent = markRp.studentClass;
+            document.getElementById('comment').textContent = markRp.comment;
+            document.getElementById('avg-exam').textContent = markRp.avg_exam_mark;
+            document.getElementById('middle-exam').textContent = markRp.middle_exam;
+            document.getElementById('final-exam').textContent = markRp.final_exam;
+            document.getElementById('skill').textContent = markRp.skill;
+            document.getElementById('soft-skill').textContent = markRp.softskill;
+            document.getElementById('soft-skill2').textContent = markRp.softskill;
+            // document.getElementById('assignment').textContent = markRp.assignment;
+            // document.getElementById('attendant').textContent = markRp.attendant;
+            document.getElementById('final-mark').textContent = markRp.final_mark;
+            } catch (error) {
+                    console.error('Error:', error);
+            }
+  }
+
+    fetchMarkRpDetails();
+</script>
 <!-- fetch user -->
+<script>
+    (async function fetchUserData() {
+        try {
+            const response = await fetch('/user-detail');
+            if (response.ok) {
+                const userData = await response.json();
+                sessionStorage.setItem('userDetails', JSON.stringify(userData));
+                console.log("User data stored in sessionStorage:", userData);
+                getUserDetails(userData);
+                // Ensure that the fetch functions are called after userDetails are set
+
+            } else {
+                console.error("Failed to fetch user details:", response.statusText);
+                showErrorModal("Failed to fetch user details: " + response.statusText);
+            }
+        } catch (error) {
+            console.error("Error fetching user details:", error);
+            showErrorModal("An error occurred while fetching user details.");
+        }
+    })();
+
+    // Function to set user details in the UI
+    function getUserDetails(userDetails) {
+        if (userDetails) {
+            console.log("Setting user details:", userDetails);
+
+            document.querySelectorAll('.userFullName').forEach(element => {
+                element.textContent = userDetails.fullName || "Unknown Name";
+            });
+            document.querySelectorAll('.userRole').forEach(element => {
+                element.textContent = userDetails.roleName || "Unknown Role";
+            });
+            const userIdElement = document.getElementById('userId');
+            if (userIdElement) {
+                userIdElement.value = userDetails.id || "";
+            }
+
+            const imgContainers = document.querySelectorAll('.img');
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img');
+                if (imgElement) {
+                    imgElement.src = userDetails.img
+                        ? `${userDetails.img}?v=${new Date().getTime()}`
+                        : '/path/to/default-passport.jpg';
+                    console.log("Image source set to:", imgElement.src);
+                } else {
+                    console.error("Image element not found in:", container);
+                    showErrorModal("Image element not found.");
+                }
+            });
+        } else {
+            console.error("User details not found in sessionStorage");
+            showErrorModal("User details not found in sessionStorage.");
+        }
+    }
+
+    function submitForm() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
+            showSuccessModal("Redirecting to class list...");
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+            showErrorModal("Teacher ID is missing or user details not found in sessionStorage.");
+        }
+    }
+
+    function toListAssigment() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
+            showSuccessModal("Redirecting to assignment list...");
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+            showErrorModal("Teacher ID is missing or user details not found in sessionStorage.");
+        }
+    }
+
+    function redirectSchedule() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
+            showSuccessModal("Redirecting to schedule list...");
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+            showErrorModal("Teacher ID is missing or user details not found in sessionStorage.");
+        }
+    }
+</script>
 </body>
 </html>

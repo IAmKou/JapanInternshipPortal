@@ -543,7 +543,10 @@
 
                     // Name cell
                     const nameCell = document.createElement('td');
-                    nameCell.textContent = clasz.name;
+                    const link = document.createElement('a');
+                    link.textContent = clasz.name;
+                    link.href = `/list-mark-teacher.html?classId=${clasz.id}`;
+                    nameCell.appendChild(link);
                     row.appendChild(nameCell);
 
                     // Teacher Name cell

@@ -277,6 +277,11 @@
                                 </select>
                             </div>
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                <label for="semester">Semester</label>
+                                <select id="semester" name="teacherId" class="select2">
+                                </select>
+                            </div>
+                            <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label>Add student</label>
                                 <button type="button" id="fetchStudentsButton" class="btn-fill-lg text-light bg-dodger-blue">
                                     Get Students
@@ -528,9 +533,10 @@
 
         const className = document.getElementById("className").value;
         const teacherId = parseInt(document.getElementById("teacher").value);
+        const semesterId = parseInt(document.getElementById("semester").value);
 
-        if (!className.trim() || !teacherId) {
-            alert("Please provide both class name and teacher.");
+        if (!className.trim() || !teacherId || !semesterId) {
+            alert("Please provide class name, teacher and semester.");
             return;
         }
 
@@ -545,6 +551,7 @@
             teacher: {
                 id: teacherId
             },
+            semesterId : semesterId,
             studentIds: selectedStudentIds
         };
 
@@ -594,13 +601,18 @@
             })
             .then(data => {
                 const teacherSelect = document.getElementById('teacher');
-                console.log(document.getElementById('teacher'));
+
+                // Clear any existing options before appending new ones
+                teacherSelect.innerHTML = '';
+
                 data.forEach(teacher => {
                     const option = document.createElement('option');
                     option.value = teacher.id;
                     option.textContent = teacher.fullname;
                     teacherSelect.appendChild(option);
                 });
+
+                // Re-initialize select2 to ensure it applies styles and functionality
                 $('#teacher').select2({
                     placeholder: "Select a teacher",
                     allowClear: true
@@ -612,6 +624,43 @@
             });
     }
 
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', loadSemesters);
+
+    function loadSemesters() {
+        fetch('/semester/get') // Replace with your actual API endpoint
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load semesters');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const semesterSelect = document.getElementById('semester');
+
+                // Clear existing options
+                semesterSelect.innerHTML = '';
+
+                // Populate the dropdown with data
+                data.forEach(semester => {
+                    const option = document.createElement('option');
+                    option.value = semester.semesterId; // Assuming the semester object has an `id` field
+                    option.textContent = semester.semesterName; // Assuming the semester object has a `name` field
+                    semesterSelect.appendChild(option);
+                });
+
+                // Initialize or re-initialize Select2
+                $('#semester').select2({
+                    placeholder: "Select a semester",
+                    allowClear: true
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching semesters:', error);
+                alert("There was an error fetching the semesters. Please try again.");
+            });
+    }
 </script>
 <!-- fetch user -->
 <script>

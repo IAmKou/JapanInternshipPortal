@@ -167,7 +167,7 @@
                                 class="flaticon-shopping-list"></i><span>Schedule</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Personal Mark Report</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
                                 <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();">
@@ -497,43 +497,13 @@
     function toMarkReport() {
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
         if (userDetails && userDetails.studentId) {
-            window.location.href = `personal-mark-report.html?studentId=${userDetails.studentId}`;
+            window.location.href = `view-personal-mark-report.html?studentId=${userDetails.studentId}`;
         } else {
             console.error("Student ID missing or user details not found in sessionStorage");
         }
     }
 
-    async function fetchAndDisplayExamResults(studentId) {
-        try {
-            const response = await fetch(`/examResult/list-exam-results-student?studentId=${studentId}`);
-            if (!response.ok) {
-                throw new Error(`Error fetching exam results: ${response.statusText}`);
-            }
 
-            const examResults = await response.json();
-            const tableBody = document.getElementById("examResult_list");
-            tableBody.innerHTML = "";
-
-            if (examResults.length === 0) {
-                const noDataRow = document.createElement("tr");
-                noDataRow.innerHTML = `<td colspan="2" class="text-center">No exam results available.</td>`;
-                tableBody.appendChild(noDataRow);
-                return;
-            }
-
-            examResults.forEach(result => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                <td>${result.examName}</td>
-                <td>${result.mark !== null ? result.mark : "N/A"}</td>
-            `;
-                tableBody.appendChild(row);
-            });
-        } catch (error) {
-            console.error("Error fetching exam results:", error);
-            alert("Failed to load exam results. Please try again later.");
-        }
-    }
 </script>
 
 </body>

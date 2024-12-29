@@ -32,6 +32,9 @@ public class Semester {
     @OneToMany(mappedBy = "semester", fetch = FetchType.LAZY)
     private List<Schedule> schedules;
 
+    @OneToMany(mappedBy = "semester", fetch = FetchType.LAZY)
+    private List<Class> classes;
+
     public enum status{
         Active, Inactive
     }

@@ -2,110 +2,108 @@
 <html class="no-js" lang="">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
     <title>JIP | All Classes</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+    <link href="img/favicon.png" rel="shortcut icon" type="image/x-icon">
     <!-- Normalize CSS -->
-    <link rel="stylesheet" href="css/normalize.css">
+    <link href="css/normalize.css" rel="stylesheet">
     <!-- Main CSS -->
-    <link rel="stylesheet" href="css/main.css">
+    <link href="css/main.css" rel="stylesheet">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="css/all.min.css">
+    <link href="css/all.min.css" rel="stylesheet">
     <!-- Flaticon CSS -->
-    <link rel="stylesheet" href="fonts/flaticon.css">
+    <link href="fonts/flaticon.css" rel="stylesheet">
     <!-- Animate CSS -->
-    <link rel="stylesheet" href="css/animate.min.css">
+    <link href="css/animate.min.css" rel="stylesheet">
     <!-- Data Table CSS -->
-    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <link href="css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link href="style.css" rel="stylesheet">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
 </head>
 
 <style>
-    /* Custom Modal Styling for Error Modal */
-    #error-modal .modal-dialog {
-        position: fixed !important; /* Giữ modal ở vị trí cố định */
-        top: 0; /* Đặt modal ngay đầu trang */
-        left: 50%; /* Căn giữa modal theo chiều ngang */
-        transform: translateX(-50%); /* Căn giữa modal */
-        z-index: 1050; /* Đảm bảo modal luôn hiển thị trên các phần tử khác */
-        margin-top: 10px; /* Khoảng cách phía trên của modal */
+    .dropdown {
+        position: relative;
+        display: inline-block;
     }
 
-    #error-modal .modal-header {
-        background-color: #dc3545; /* Màu nền đỏ cho header */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        padding: 8px 16px;
+        z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-gradient-yellow {
+        background: linear-gradient(45deg, #ffcc00, #ff9900);
         color: #fff;
-        font-size: 1.25rem;
     }
 
-    #error-modal .modal-body {
-        font-size: 1.1rem;
-        padding: 30px;
-        background-color: #f8f9fa; /* Nền sáng cho phần thân */
-        color: #333;
+    .btn-search {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .btn-search {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content button {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        width: 100%;
+        border: none;
+        background: none;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .dropdown-content button:hover {
+        background-color: #f1f1f1;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
     }
 
     #error-modal .modal-body .fas.fa-times-circle {
         color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
         font-size: 2rem; /* Tăng kích thước biểu tượng */
         margin-right: 10px;
-    }
-
-    #error-modal .modal-title {
-        display: flex;
-        align-items: center;
-    }
-
-    #error-modal .btn-danger {
-        font-size: 1rem;
-        padding: 10px 20px;
-        background-color: #dc3545;
-        border-color: #dc3545;
-        border-radius: 5px;
-        color: white;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    #error-modal .btn-close {
-        color: white;
-    }
-
-    #error-modal .modal-body p {
-        font-size: 0.9rem;
-        color: #6c757d; /* Màu nhạt hơn cho mô tả */
-    }
-
-    /* Tối ưu giao diện cho bảng thông tin */
-    .info-table td {
-        padding: 12px;
-        vertical-align: middle;
-    }
-
-    /* Cải tiến hình ảnh */
-    .item-img img {
-        width: 120px;
-        height: 120px;
-        object-fit: cover;
-        border-radius: 50%;
-    }
-
-
-    /* Nút chỉnh sửa (Edit) */
-    .dropdown-menu .dropdown-item {
-        font-size: 14px;
-        padding: 10px 20px;
-        transition: background-color 0.3s ease;
-    }
-
-    .dropdown-menu .dropdown-item:hover {
-        background-color: #f8f9fa;
     }
 
     /* Định dạng thẻ tiêu đề */
@@ -115,451 +113,479 @@
         color: #333;
     }
 
-    /* Cải thiện bảng */
-    .table-borderless td, .table-borderless th {
-        border: none;
+    .table img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
     }
 
-    .custom-dropdown-item i {
-        font-size: 18px; /* Cải thiện kích thước biểu tượng */
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
-    .custom-dropdown-btn i {
-        color: #007bff; /* Màu của biểu tượng */
+    #success-modal .modal-body p {
+        font-size: 0.9rem;
+        color: #6c757d; /* Màu nhạt hơn cho mô tả */
     }
 
-    .custom-dropdown-btn:hover i {
-        color: white; /* Màu biểu tượng khi hover */
+    #error-modal .modal-body .fas.fa-times-circle {
+        color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
     }
 
-    .table td {
-        padding: 10px; /* Tăng khoảng cách giữa các ô */
-        font-size: 18px; /* Thay đổi kích cỡ chữ */
-    }
-    /* Custom Button */
-    .btn-search {
-        height: 50px; /* Đồng bộ chiều cao với input */
-        font-size: 16px; /* Kích thước chữ to hơn */
-        font-weight: bold; /* Làm chữ đậm hơn */
-        text-transform: uppercase; /* Viết hoa chữ */
-        border-radius: 5px; /* Bo góc tương tự input */
-        padding: 0 20px; /* Tăng khoảng cách trong nút */
+    #error-modal .modal-body p {
+        font-size: 0.9rem;
+        color: #6c757d; /* Màu nhạt hơn cho mô tả */
     }
 </style>
 
 <body>
-    <!-- Preloader Start Here -->
-    <div id="preloader"></div>
-    <!-- Preloader End Here -->
-    <div id="wrapper" class="wrapper bg-ash">
-         <!-- Header Menu Area Start Here -->
-        <div class="navbar navbar-expand-md header-menu-one bg-light">
-            <div class="nav-bar-header-one">
-                <div class="header-logo">
-                    <a href="manager.html">
-                        <div style="width: 180px; height: 70px; overflow: hidden;">
-                            <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
-                        </div>
-                    </a>
-                </div>
-                  <div class="toggle-button sidebar-toggle">
-                    <button type="button" class="item-link">
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<div class="wrapper bg-ash" id="wrapper">
+    <!-- Header Menu Area Start Here -->
+    <div class="navbar navbar-expand-md header-menu-one bg-light">
+        <div class="nav-bar-header-one">
+            <div class="header-logo">
+                <a href="manager.html">
+                    <div style="width: 180px; height: 70px; overflow: hidden;">
+                        <img alt="logo" src="img/JIP%20LOGO%20n.png"
+                             style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </a>
+            </div>
+            <div class="toggle-button sidebar-toggle">
+                <button class="item-link" type="button">
                         <span class="btn-icon-wrap">
                             <span></span>
                             <span></span>
                             <span></span>
                         </span>
-                    </button>
+                </button>
+            </div>
+        </div>
+        <div class="d-md-none mobile-nav-bar">
+            <button aria-expanded="false" class="navbar-toggler pulse-animation" data-target="#mobile-navbar"
+                    data-toggle="collapse" type="button">
+                <i class="far fa-arrow-alt-circle-down"></i>
+            </button>
+            <button class="navbar-toggler sidebar-toggle-mobile" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+            <ul class="navbar-nav">
+                <li class="navbar-item header-search-bar">
+                    <div class="input-group stylish-input-group">
+
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="navbar-item dropdown header-admin">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
+                        <div class="admin-title">
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
+                        </div>
+                        <div class="admin-img img">
+                            <img alt="Admin" src="" style="width: 50px; height: 50px">
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title userFullName"></h6>
+                        </div>
+                        <div class="item-content">
+                            <ul class="settings-list">
+                                <li><a href="users-profile-manager.html"><i class="flaticon-user"></i>My Profile</a>
+                                </li>
+                                <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span
+                                        data-i18n="change_password">Change Password</span></a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item dropdown header-notification">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
+                        <i class="far fa-bell"></i>
+                        <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
+                        <span>8</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title">03 Notifiacations</h6>
+                        </div>
+                        <div class="item-content">
+                            <div class="media">
+                                <div class="item-icon bg-skyblue">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Complete Today Task</div>
+                                    <span>1 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-orange">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Director Metting</div>
+                                    <span>20 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-violet-blue">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Update Password</div>
+                                    <span>45 Mins ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item dropdown header-language">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown"
+                       href="#" role="button"><i class="fas fa-globe-americas"></i>EN</a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#">English</a>
+                        <a class="dropdown-item" href="#">Japanese</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Header Menu Area End Here -->
+    <!-- Page Area Start Here -->
+    <div class="dashboard-page-one">
+        <!-- Sidebar Area Start Here -->
+        <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+            <div class="mobile-sidebar-header d-md-none">
+                <div class="header-logo">
+                    <a href="manager.html"><img alt="logo" src="img/logo1.png"></a>
                 </div>
             </div>
-            <div class="d-md-none mobile-nav-bar">
-               <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse" data-target="#mobile-navbar" aria-expanded="false">
-                    <i class="far fa-arrow-alt-circle-down"></i>
-                </button>
-                <button type="button" class="navbar-toggler sidebar-toggle-mobile">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-            <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
-                <ul class="navbar-nav">
-                    <li class="navbar-item header-search-bar">
-                        <div class="input-group stylish-input-group">
-
-                        </div>
+            <div class="sidebar-menu-content">
+                <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item">
+                                <a class="nav-link menu-active" href="manager.html"><i class="fas fa-angle-right"></i>Manager</a>
+                            </li>
+                        </ul>
                     </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="navbar-item dropdown header-admin">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <div class="admin-title">
-                                <h5 class="item-title userFullName"></h5>
-                                <span class="userRole"></span>
-                            </div>
-                            <div class="admin-img img">
-                                <img src="" style="width: 50px; height: 50px" alt="Admin">
-                            </div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title userFullName"></h6>
-                            </div>
-                            <div class="item-content">
-                                <ul class="settings-list">
-                                    <li><a href="users-profile-manager.html"><i class="flaticon-user"></i>My Profile</a></li>
-                                    <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span data-i18n="change_password">Change Password</span></a></li>
-                                    <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
-                                </ul>
-                            </div>
-                        </div>
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="all-student.html"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>All Student</span></a>
                     </li>
-                    <li class="navbar-item dropdown header-notification">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="far fa-bell"></i>
-                            <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
-                            <span>8</span>
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title">03 Notifiacations</h6>
-                            </div>
-                            <div class="item-content">
-                                <div class="media">
-                                    <div class="item-icon bg-skyblue">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Complete Today Task</div>
-                                        <span>1 Mins ago</span>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-icon bg-orange">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Director Metting</div>
-                                        <span>20 Mins ago</span>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-icon bg-violet-blue">
-                                        <i class="fas fa-cogs"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Update Password</div>
-                                        <span>45 Mins ago</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item">
+                                <a class="nav-link" href="add-class.html"><i
+                                        class="flaticon-multiple-users-silhouette"></i>Add New Class</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="class-list.html"><i
+                                        class="flaticon-menu"></i><span>All Class</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="semester-list.html"><i class="flaticon-calendar"></i><span>Schedule List</span></a>
+                            </li>
+                        </ul>
                     </li>
-                     <li class="navbar-item dropdown header-language">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" 
-                        data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#">English</a>
-                            <a class="dropdown-item" href="#">Spanish</a>
-                            <a class="dropdown-item" href="#">Franchis</a>
-                            <a class="dropdown-item" href="#">Chiness</a>
-                        </div>
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-chat"></i><span>Application</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="View-list-application.html"><i class="fas fa-angle-right"></i>List
+                                    application</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
         </div>
-        <!-- Header Menu Area End Here -->
-        <!-- Page Area Start Here -->
-        <div class="dashboard-page-one">
-            <!-- Sidebar Area Start Here -->
-            <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
-                <div class="mobile-sidebar-header d-md-none">
-                    <div class="header-logo">
-                        <a href="manager.html"><img src="img/logo1.png" alt="logo"></a>
+        <!-- Sidebar Area End Here -->
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <h3>Student</h3>
+                <ul>
+                    <li>
+                        <a href="manager.html">Home</a>
+                    </li>
+                    <li>All Student</li>
+                </ul>
+            </div>
+            <!-- Breadcubs Area End Here -->
+            <!-- Class Table Area Start Here -->
+            <div class="card height-auto">
+                <div class="card-body">
+                    <div class="heading-layout1">
+                        <div class="item-title">
+                            <h3>All Class Student</h3>
+                        </div>
+                        <div class="dropdown" style="margin-right: 1830px;padding-bottom:10px;padding-left:10px" >
+                            <button class="btn btn-gradient-yellow btn-search">View Options</button>
+                            <div class="dropdown-content">
+                                <button id="viewInfoButton" class="btn btn-gradient-yellow btn-search">VIEW STUDENT INFO</button>
+                                <button id="viewGradesButton" class="btn btn-gradient-yellow btn-search">VIEW STUDENT GRADES</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table display text-nowrap">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Photo</th>
+                                <th>Name</th>
+                                <th>Gender</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="sidebar-menu-content">
-                    <ul class="nav nav-sidebar-menu sidebar-toggle-view">
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                            <ul class="nav sub-group-menu sub-group-active">
-                                <li class="nav-item">
-                                    <a href="manager.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Manager</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="all-student.html" class="nav-link"><i
-                                    class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>All Student</span></a>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i
-                                    class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                            <ul class="nav sub-group-menu sub-group-active">
-                                <li class="nav-item">
-                                    <a href="add-class.html" class="nav-link"><i
-                                            class="flaticon-multiple-users-silhouette"></i>Add New Class</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="class-list.html" class="nav-link"><i
-                                            class="flaticon-menu"></i><span>All Class</span></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="semester-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Schedule List</span></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="View-list-application.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                                        application</a>
-                                </li>
-                            </ul>
-                        </li>
 
-                    </ul>
+                <!-- Export Form -->
+                <form action="/export-csv" id="exportForm" method="post" style="margin-top: 20px; display: none;">
+                    <input id="gradesData" name="gradesData" type="hidden"/>
+                    <div>
+                        <button class="btn btn-gradient-yellow btn-search" type="submit">Export</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Success Modal -->
+            <div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal"
+                 tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <h5 class="modal-title text-success" id="successModalLabel">
+                                <i class="fas fa-check-circle"></i> Success
+                            </h5>
+                        </div>
+                        <div class="modal-body text-center">
+                            <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- Sidebar Area End Here -->
-            <div class="dashboard-content-one">
-                <!-- Breadcubs Area Start Here -->
-                <div class="breadcrumbs-area">
-                    <h3>Student</h3>
-                    <ul>
-                        <li>
-                            <a href="manager.html">Home</a>
-                        </li>
-                        <li>All Student</li>
-                    </ul>
-                </div>
-                <!-- Breadcubs Area End Here -->
-                <!-- Class Table Area Start Here -->
-                <div class="card height-auto">
-                    <div class="card-body">
-                        <div class="heading-layout1">
-                            <div class="item-title">
-                                <h3>All Class Student</h3>
-                            </div>
-                            <div class="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group d-flex gap-2">
-                                <button id="viewInfoButton" type="button" class="fw-btn-fill btn-gradient-yellow">VIEW INFO</button>
-                                <button id="viewGradesButton" type="button" class="fw-btn-fill btn-gradient-yellow">VIEW GRADES</button>
-                            </div>
+
+            <!-- Error Modal -->
+            <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <h5 class="modal-title text-danger" id="errorModalLabel">
+                                <i class="fas fa-times-circle"></i> Error
+                            </h5>
                         </div>
-                        <div class="table-responsive">
-                            <table class="table display text-nowrap">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Photo</th>
-                                    <th>Name</th>
-                                    <th>Gender</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <div class="modal-body"></div>
                     </div>
-                    <!-- Export Form -->
-                    <form id="exportForm" action="/export-csv" method="post" style="margin-top: 20px; display: none">
-                        <input type="hidden" id="gradesData" name="gradesData" />
-                        <div class="col-lg-4">
-                            <button type="submit" class="btn btn-gradient-yellow btn-search">Export</button>
-                        </div>
-                    </form>
                 </div>
-                <!-- Class Table Area End Here -->
+            </div>
 
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        const tableBody = document.querySelector('.table tbody');
-                        const tableHead = document.querySelector('.table thead');
-                        const viewInfoButton = document.getElementById('viewInfoButton');
-                        const viewGradesButton = document.getElementById('viewGradesButton');
-                        const exportForm = document.getElementById('exportForm');
-                        const gradesDataInput = document.getElementById('gradesData');
-                        const urlParams = new URLSearchParams(window.location.search);
-                        const classId = urlParams.get('classId');
-                        let gradesData = []; // To store fetched grades
-                        let isGradesViewInitialized = false;
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tableBody = document.querySelector('.table tbody');
+        const tableHead = document.querySelector('.table thead');
+        const viewGradesButton = document.getElementById('viewGradesButton');
+        const exportForm = document.getElementById('exportForm');
+        const gradesDataInput = document.getElementById('gradesData');
+        const viewInfoButton = document.getElementById('viewInfoButton');
+        const importXlsxButton = document.getElementById("import-xlsx");
+        const urlParams = new URLSearchParams(window.location.search);
+        const classId = urlParams.get('classId');
+        let gradesData = [];
+        let isGradesViewInitialized = false;
 
-                        // Ensure classId is valid before proceeding
-                        if (classId) {
-                            fetchStudentList(); // Initial fetch
-                        } else {
-                            console.error("classId is missing from the URL.");
-                        }
-
-                        // Function to fetch student list
-                        function fetchStudentList() {
-                            fetch(`/student/${classId}/getAll`)
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('Network response was not ok ' + response.statusText);
-                                    }
-                                    return response.json();
-                                })
-                                .then(students => {
-                                    tableBody.innerHTML = ''; // Clear table body
-                                    tableHead.innerHTML = `
-                        <tr>
-                            <th>#</th>
-                            <th>Photo</th>
-                            <th>Name</th>
-                            <th>Gender</th>
-                            <th></th>
-                        </tr>
-                    `;
-
-                                    let studentNumber = 1; // Initialize student number counter
-                                    students.forEach(student => {
-                                        const row = document.createElement('tr');
-
-                                        // Number cell (numerical order)
-                                        const numberCell = document.createElement('td');
-                                        numberCell.textContent = studentNumber++; // Increment student number
-                                        row.appendChild(numberCell);
-
-                                        // Image cell
-                                        const imgCell = document.createElement('td');
-                                        const imgElement = document.createElement('img');
-                                        imgElement.src = student.img;
-                                        imgElement.alt = "Student Image";
-                                        imgElement.style.width = "50px";
-                                        imgElement.style.height = "50px";
-                                        imgElement.style.objectFit = "cover";
-                                        imgCell.appendChild(imgElement);
-                                        row.appendChild(imgCell);
-
-                                        // Name cell
-                                        const nameCell = document.createElement('td');
-                                        nameCell.textContent = student.fullname;
-                                        row.appendChild(nameCell);
-
-                                        // Gender cell
-                                        const genderCell = document.createElement('td');
-                                        genderCell.textContent = student.gender;
-                                        row.appendChild(genderCell);
-
-                                        // Append the row to the table body
-                                        tableBody.appendChild(row);
-                                    });
-                                })
-                                .catch(error => console.error('Error fetching students:', error));
-                        }
-
-                        // Fetch and render grades
-                        viewGradesButton.addEventListener('click', function () {
-                            if (isGradesViewInitialized) return; // Prevent multiple fetches
-                            isGradesViewInitialized = true;
-
-                            // Update table header
-                            tableHead.innerHTML = `
-                <tr>
-                    <th>#</th>
-                    <th>Student Name</th>
-                    <th>Teacher Comment</th>
-                    <th>Participation</th>
-                    <th>Soft Skill</th>
-                    <th>Skill</th>
-                    <th>Daily Exams</th>
-                    <th>Midterm Test</th>
-                    <th>Final Test</th>
-                    <th>Course Final</th>
-                </tr>
-            `;
-
-                            // Fetch grades data
-                            fetch(`/student/${classId}/getAllGrades`)
-                                .then(response => response.json())
-                                .then(grades => {
-                                    gradesData = grades; // Store fetched data
-                                    tableBody.innerHTML = ''; // Clear table body
-
-                                    let studentNumber = 1; // Student counter
-                                    grades.forEach(grade => {
-                                        const row = `
-                            <tr>
-                                <td>${studentNumber++}</td>
-                                <td>${grade.fullname || 'N/A'}</td>
-                                <td>${grade.comment || 'N/A'}</td>
-                                <td>${grade.attitude || 'N/A'}</td>
-                                <td>${grade.softskill || 'N/A'}</td>
-                                <td>${grade.skill || 'N/A'}</td>
-                                <td>${grade.avgExamMark || 'N/A'}</td>
-                                <td>${grade.middleExam || 'N/A'}</td>
-                                <td>${grade.finalExam || 'N/A'}</td>
-                                <td>${grade.finalMark || 'N/A'}</td>
-                            </tr>
-                        `;
-                                        tableBody.insertAdjacentHTML('beforeend', row);
-                                    });
-
-                                    // Store data as JSON string for export
-                                    gradesDataInput.value = JSON.stringify(gradesData);
-
-                                    // Show export button
-                                    exportForm.style.display = 'block';
-                                })
-                                .catch(error => console.error('Error fetching grades:', error));
-                        });
-
-                        // Fetch student list again on View Info button click
-                        viewInfoButton.addEventListener('click', function () {
-                            isGradesViewInitialized = false; // Reset grades view state
-                            exportForm.style.display = 'none'; // Hide export button
-                            fetchStudentList(); // Fetch student list again
-                        });
-                    });
-                </script>
-
-                <!-- fetch user -->
-    <script>
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-        if (userDetails) {
-            const userFullNameElements = document.querySelectorAll('.userFullName');
-            const userRoleElements = document.querySelectorAll('.userRole');
-
-            // Populate Name
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
-            });
-
-            // Populate Role
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
-
-            imgContainers.forEach(container => {
-                const imgElement = container.querySelector('img'); // Select the <img> inside the div
-                if (imgElement) {
-                    imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
-                }
-            });
+        // Ensure classId is valid before proceeding
+        if (classId) {
+            fetchStudentList();
         } else {
-            console.error("User details not found in sessionStorage");
+            console.error("classId is missing from the URL.");
         }
-    </script>
-    <!-- jquery-->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <!-- Plugins js -->
-    <script src="js/plugins.js"></script>
-    <!-- Popper js -->
-    <script src="js/popper.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Scroll Up Js -->
-    <script src="js/jquery.scrollUp.min.js"></script>
-    <!-- Data Table Js -->
-    <script src="js/jquery.dataTables.min.js"></script>
-    <!-- Custom Js -->
-    <script src="js/main.js"></script>
+
+        // Fetch student list function
+        function fetchStudentList() {
+            fetch(`/student/${classId}/getAll`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(students => {
+                    renderStudentList(students);
+                })
+                .catch(error => console.error('Error fetching students:', error));
+        }
+
+        // Render student list
+        function renderStudentList(students) {
+            tableBody.innerHTML = '';
+            tableHead.innerHTML = `
+            <tr>
+                <th>#</th>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th></th>
+            </tr>`;
+            let studentNumber = 1;
+            students.forEach(student => {
+                const row = document.createElement('tr');
+
+                const numberCell = document.createElement('td');
+                numberCell.textContent = studentNumber++;
+                row.appendChild(numberCell);
+
+                const imgCell = document.createElement('td');
+                const imgElement = document.createElement('img');
+                imgElement.src = student.img;
+                imgElement.alt = "Student Image";
+                imgElement.style.width = "50px";
+                imgElement.style.height = "50px";
+                imgElement.style.objectFit = "cover";
+                imgCell.appendChild(imgElement);
+                row.appendChild(imgCell);
+
+                const nameCell = document.createElement('td');
+                nameCell.textContent = student.fullname;
+                row.appendChild(nameCell);
+
+                const genderCell = document.createElement('td');
+                genderCell.textContent = student.gender;
+                row.appendChild(genderCell);
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Fetch and render grades
+        function fetchAndRenderGrades() {
+            if (isGradesViewInitialized) return;
+            isGradesViewInitialized = true;
+            tableHead.innerHTML = `
+            <tr>
+                <th>#</th>
+                <th>Student Name</th>
+                <th>Teacher Comment</th>
+                <th>Participation</th>
+                <th>Soft Skill</th>
+                <th>Skill</th>
+                <th>Daily Exams</th>
+                <th>Midterm Test</th>
+                <th>Final Test</th>
+                <th>Course Final</th>
+            </tr>`;
+            fetch(`/student/${classId}/getAllGrades`)
+                .then(response => response.json())
+                .then(grades => {
+                    gradesData = grades;
+                    renderGrades(grades);
+                    gradesDataInput.value = JSON.stringify(gradesData);
+                    exportForm.style.display = 'block';
+                })
+                .catch(error => console.error('Error fetching grades:', error));
+        }
+
+        // Render grades table
+        function renderGrades(grades) {
+            tableBody.innerHTML = '';
+            let studentNumber = 1;
+            grades.forEach(grade => {
+                const row = `
+                <tr>
+                    <td>${studentNumber++}</td>
+                    <td>${grade.fullname || 'N/A'}</td>
+                    <td>${grade.comment || 'N/A'}</td>
+                    <td>${grade.attitude || 'N/A'}</td>
+                    <td>${grade.softskill || 'N/A'}</td>
+                    <td>${grade.skill || 'N/A'}</td>
+                    <td>${grade.avgExamMark || 'N/A'}</td>
+                    <td>${grade.middleExam || 'N/A'}</td>
+                    <td>${grade.finalExam || 'N/A'}</td>
+                    <td>${grade.finalMark || 'N/A'}</td>
+                </tr>`;
+                tableBody.insertAdjacentHTML('beforeend', row);
+            });
+        }
+        // Event listeners
+        viewGradesButton.addEventListener('click', fetchAndRenderGrades);
+        viewInfoButton.addEventListener('click', function () {
+            isGradesViewInitialized = false;
+            exportForm.style.display = 'none';
+            fetchStudentList();
+        });
+    });
+</script>
+<!-- fetch user -->
+<script>
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    if (userDetails) {
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        const userRoleElements = document.querySelectorAll('.userRole');
+        // Populate Name
+        userFullNameElements.forEach(element => {
+            element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
+        });
+        // Populate Role
+        userRoleElements.forEach(element => {
+            element.textContent = userDetails.roleName;
+        });
+        const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+        imgContainers.forEach(container => {
+            const imgElement = container.querySelector('img'); // Select the <img> inside the div
+            if (imgElement) {
+                imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
+            }
+        });
+    } else {
+        console.error("User details not found in sessionStorage");
+    }
+
+</script>
+
+<!-- jquery-->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Data Table Js -->
+<script src="js/jquery.dataTables.min.js"></script>
+<!-- Custom Js -->
+<script src="js/main.js"></script>
+
 </body>
 </html>

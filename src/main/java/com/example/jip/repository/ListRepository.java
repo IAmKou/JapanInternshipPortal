@@ -5,6 +5,7 @@ import com.example.jip.dto.StudentWithClassDTO;
 import com.example.jip.entity.ListId;
 import com.example.jip.entity.Listt;
 import com.example.jip.entity.Student;
+import com.example.jip.entity.Class;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -44,4 +45,7 @@ public interface ListRepository extends JpaRepository<Listt, ListId> {
             "JOIN Listt l ON s.id = l.student.id " +
             "WHERE l.clas.id = :classId")
     List<MarkReportDTO> getStudentsWithMarkReportsByClassId(@Param("classId") Integer classId);
+
+    @Query("SELECT l.clas.name FROM Listt l WHERE l.student.id = :studentId")
+    String getClassByStudentId(int studentId);
 }

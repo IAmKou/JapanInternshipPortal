@@ -157,9 +157,9 @@ public class AccountImportServices {
                 errors.add("Missing email at row " + (row.getRowNum() + 1));
                 return;
             }
-            String passportUrl = row.getCell(6).getStringCellValue();
+            String passportUrl = row.getCell(9).getStringCellValue();
             String passport = uploadImageToCloudinary(passportUrl, workbook);
-            String imgPath = row.getCell(9).getStringCellValue();
+            String imgPath = row.getCell(6).getStringCellValue();
             String imgUrl = uploadImageToCloudinary(imgPath, workbook);
 
 
