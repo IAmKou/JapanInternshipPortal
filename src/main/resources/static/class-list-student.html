@@ -259,7 +259,8 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const tableBody = document.querySelector('.table tbody');
-        const studentId = yourStudentIdValue;
+        const urlParams = new URLSearchParams(window.location.search);
+        const studentId = urlParams.get('studentId');
 
         // Fetch classes by studentId and populate the table
         fetch(`/class/student/${studentId}`)

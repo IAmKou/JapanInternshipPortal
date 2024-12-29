@@ -367,10 +367,6 @@
     // Tải Google Translate
     loadGoogleTranslate();
 </script>
-
-
-
-
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -502,6 +498,63 @@
             console.error("Teacher ID is missing or user details not found in sessionStorage");
         }
     }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const calendarEl = document.getElementById('calendar');
+        const urlParams = new URLSearchParams(window.location.search);
+        const classId = urlParams.get('classId');
+
+        if (!calendarEl) {
+            console.error('The #calendar element is missing from the DOM.');
+            return;
+        }
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth',
+            },
+            timeZone: 'UTC',
+            events: function (fetchInfo, successCallback, failureCallback) {
+                fetch(`/schedule/get/${classId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch schedules');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const events = data.map(schedule => ({
+                            id: schedule.id,
+                            title: schedule.activity,
+                            start: schedule.date,
+                            backgroundColor: schedule.color,
+                            borderColor: schedule.color,
+                            extendedProps: {
+                                room: schedule.room,
+                                attendantStatus: schedule.attendantStatus
+                            }
+                        }));
+                        successCallback(events);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching schedules:', error);
+                        failureCallback(error);
+                    });
+            },
+            eventClick: function (info) {
+                const event = info.event;
+                const { room, attendantStatus } = event.extendedProps;
+                alert(
+                    `Event: ${event.title}\n` +
+                    `Room: ${room}\n` +
+                    `Attendant Status: ${attendantStatus}`
+                );
+            },
+        });
+        calendar.render();
+    });
 </script>
 
 
