@@ -85,4 +85,8 @@ public class ClassServices {
 
         return new ClassDTO(newClass);
     }
+
+    public List<Class> getClassByStudentId(int studentId) {
+        return classRepository.findClassesByStudentId(studentId);
+    }
 }

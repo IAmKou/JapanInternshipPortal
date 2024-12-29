@@ -38,4 +38,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
             "JOIN s.semester sem " +
             "GROUP BY c.id, c.name, s.room, sem.name")
     List<ClassScheduleDTO> findUniqueClassSchedule();
+
+    List<Schedule> findByClaszId(int classId);
 }

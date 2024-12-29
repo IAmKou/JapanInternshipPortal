@@ -101,4 +101,9 @@ public class ClassController {
         }
         return false;
     }
+
+    @GetMapping("/student/{studentId}")
+    public List<Class> getClassesByStudentId(@PathVariable int studentId) {
+        return classServices.getClassByStudentId(studentId);
+    }
 }
