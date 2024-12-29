@@ -17,6 +17,7 @@ public class MarkReportResponse {
     int id;
     String studentName;
     String studentClass;
+    String studentEmail;
     BigDecimal softskill;
     BigDecimal avg_exam_mark;
     BigDecimal middle_exam;

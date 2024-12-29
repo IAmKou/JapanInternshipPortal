@@ -106,4 +106,9 @@ public class ClassController {
     public List<Class> getClassesByStudentId(@PathVariable int studentId) {
         return classServices.getClassByStudentId(studentId);
     }
+
+    @GetMapping("/getCById")
+    public ClassDTO getClassById(@RequestParam("classId") int id) {
+        return classRepository.findById(id).map(ClassDTO::new).orElseThrow(() -> new IllegalArgumentException("Class not found"));
+    }
 }

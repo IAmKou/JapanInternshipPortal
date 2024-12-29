@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
 
         /* Overlay */
@@ -534,12 +534,11 @@
                         <div class="item-title">
                             <h2>List Mark</h2>
                         </div>
-
+                        <h3>Class: <span id="className"></span></h3>
                     </div>
-
+                    <!-- Main Button to Open Modal -->
+                    <button class="btn btn-gradient-yellow btn-search" id="open-modal-btn">Open Import Modal</button>
                     <div class="table-responsive">
-                        <!-- Main Button to Open Modal -->
-                        <button class="btn btn-gradient-yellow btn-search" id="open-modal-btn">Open Import Modal</button>
 
                         <table class="table display data-table text-nowrap">
                             <thead>
@@ -559,10 +558,10 @@
 
                             </tbody>
 
-                            <button class="btn btn-gradient-yellow btn-search" id="export-by-excel">Export excel</button>
+
                         </table>
                     </div>
-
+                    <button class="btn btn-gradient-yellow btn-search" id="export-by-excel">Export excel</button>
                 </div>
 
             </div>
@@ -574,15 +573,22 @@
                 <div class="popup-content">
                     <span class="close" onclick="closePopup()">&times;</span>
                     <h2>Update Mark</h2>
-                    <form class="new-added-form" action="javascript:void(0);" onsubmit="updateExam(event)">
-                        <label for="markrp_name">Exam Name:</label>
-                        <input type="text" id="markrp_name" name="markrp_name" required/>
+                    <form class="new-added-form" action="javascript:void(0);" onsubmit="updateMark(event)">
+                        <label for="soft_skill">Soft skill: </label>
+                        <input type="number" id="soft_skill" name="soft_skill" min="0" max="10" step="0.1" required/>
 
-                        <label for="markrp_date">Date:</label>
-                        <input type="date" id="markrp_date" name="markrp_date" required/>
+                        <label for="avg_mark">Average Exam Mark: </label>
+                        <input type="number" id="avg_mark" name="avg_mark" min="0" max="10" step="0.1" required/>
 
-                        <label for="content">Content:</label>
-                        <textarea id="content" name="content" rows="4" required></textarea>
+
+                        <label for="middle_exam_mark">Average Exam Mark: </label>
+                        <input type="number" id="middle_exam_mark" name="middle_exam_mark" min="0" max="10" step="0.1" required/>
+
+                        <label for="final_exam_mark">Final Exam Mark: </label>
+                        <input type="number" id="final_exam_mark" name="final_exam_mark" min="0" max="10" step="0.1" required/>
+
+                        <label for="comment"> Comment:</label>
+                        <textarea id="comment" name="comment" rows="4" required></textarea>
 
                         <button type="submit" class="btn">Update</button>
                     </form>
@@ -647,7 +653,6 @@
 <script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
-<script src="script.js"></script>
 
 <script type="text/javascript">
     // Hàm thay đổi ngôn ngữ và lưu vào localStorage
@@ -711,9 +716,6 @@
     loadGoogleTranslate();
 </script>
 
-
-
-
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
 
@@ -733,15 +735,20 @@
 
     const API_BASE_URL = '/mark-report';
 
-
     async function fetchAndDisplayMarks() {
         const urlParams = new URLSearchParams(window.location.search);
         const classId = urlParams.get('classId');
         try {
             console.log('Fetching mark reports...');
             const response = await fetch(`${API_BASE_URL}/list?classId=${classId}`);
-            console.log('Class Id; ',classId)
+            console.log('Class Id: ', classId)
             console.log('Response received:', response);
+
+            const clasRp = await fetch(`/class/getCById?classId=${classId}`);
+            const clas = await clasRp.json();
+            console.log('Class: ', clas)
+            document.getElementById('className').textContent = clas.name;
+
             if (!response.ok) {
                 throw new Error('Error fetching mark reports: ' + response.statusText);
             }
@@ -784,26 +791,28 @@
     // Initialize the table with mark_reports on page load
     document.addEventListener('DOMContentLoaded', fetchAndDisplayMarks);
 
-    let currentExamId = null;
+    let currentMarkId = null;
+
     // Function to open the update popup async
     async function openUpdatePopup(markrpId) {
         try {
-            const response = await fetch(`${API_BASE_URL}/detail/${markrpId}`);
+            const response = await fetch(`${API_BASE_URL}/detail?markRpId=${markrpId}`);
             if (!response.ok) {
                 throw new Error('Error fetching markrp for update: ' + response.statusText);
             }
 
             const markrp = await response.json();
 
-
             // Fill the form with the markrp data
-            document.getElementById('markrp_name').value = markrp.markrp_name;
-            document.getElementById('markrp_date').value = markrp.markrp_date;
-            document.getElementById('content').value = markrp.content;
+            document.getElementById('soft_skill').value = markrp.softskill;
+            document.getElementById('avg_mark').value = markrp.avg_exam_mark;
+            document.getElementById('middle_exam_mark').value = markrp.middle_exam;
+            document.getElementById('final_exam_mark').value = markrp.final_exam;
+            document.getElementById('comment').value = markrp.comment;
 
 
             // Show the update popup
-            currentExamId = markrp.id;
+            currentMarkId = markrp.id;
             document.getElementById('markrpPopup').style.display = 'flex';
             document.getElementById('overlay').style.display = 'flex';
         } catch (error) {
@@ -811,38 +820,46 @@
         }
     }
 
-    async function updateExam(event) {
+    async function updateMark(event) {
         event.preventDefault();
 
-
-        const markrp_name = document.getElementById('markrp_name').value;
-        const date = document.getElementById('markrp_date').value;
-        const content = document.getElementById('content').value;
-
-        if (!markrp_name.trim() || !content.trim()) {
-            alert('Please fill in all the required fields!');
+        const softskill = document.getElementById('soft_skill').value;
+        const avg_mark = document.getElementById('avg_mark').value;
+        const middle_exam_mark = document.getElementById('middle_exam_mark').value;
+        const final_exam_mark = document.getElementById('final_exam_mark').value;
+        const comment = document.getElementById('comment').value
+        if (!comment.trim()) {
+            showErrorModal('Please fill in all the required fields!');
             return; // Exit the function if validation fails
         }
 
-        const formData = new FormData();
-        formData.append('markrp_name', markrp_name);
-        formData.append('markrp_date', date);
-        formData.append('content', content);
+        const inputs = [softskill, avg_mark, middle_exam_mark, final_exam_mark];
+        if (inputs.some(value => value < 0 || value > 10)) {
+            showErrorModal('Please ensure all numeric values are between 0 and 10.');
+            return;
+        }
 
+        const formData = new FormData();
+        formData.append('softskill', softskill);
+        formData.append('avg_exam_mark', avg_mark);
+        formData.append('middle_exam', middle_exam_mark);
+        formData.append('final_exam', final_exam_mark);
+        formData.append('comment', comment);
 
         try {
-            const response = await fetch(`${API_BASE_URL}/update/${currentExamId}`, {
+            const response = await fetch(`${API_BASE_URL}/update?markRpId=${currentMarkId}`, {
                 method: 'PUT',
                 body: formData,
             });
 
             if (response.ok) {
-                alert('Exam updated successfully!');
-                closePopup();
-                fetchAndDisplayExams();
+                showSuccessModal('Mark updated successfully!');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+
             } else if (response.status === 404) {
-                alert('Exam not found!');
-                closePopup();
+                showErrorModal('Mark Rp not found!');
             } else {
                 console.error('Error updating markrp:', response.statusText);
             }
@@ -856,7 +873,6 @@
         document.getElementById('markrpPopup').style.display = 'none';
         document.getElementById('overlay').style.display = 'none';
     }
-
 
 
     // Open and Close Modal Logic
@@ -907,7 +923,39 @@
         }
     });
 
+    // Function to export the data as an Excel file
+    document.getElementById('export-by-excel').addEventListener('click', async () => {
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const classId = urlParams.get('classId');
+            // Fetch the data from the database
+            const response = await fetch(`${API_BASE_URL}/list?classId=${classId}`); // Update the endpoint as needed
+            const data = await response.json();
 
+            // Transform data into the desired format
+            const excelData = data.map((item) => ({
+                Name: item.studentName,
+                Email: item.studentEmail,
+                "Soft Skill": "",
+                "Avg Exam Mark": "",
+                "Middle Exam": "",
+                "Final Exam": "",
+                Comment: ""
+            }));
+
+            // Convert data to a worksheet
+            const ws = XLSX.utils.json_to_sheet(excelData);
+
+            // Create a new workbook and append the worksheet
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Marks");
+
+            // Export the workbook to an Excel file
+            XLSX.writeFile(wb, "Marks_Report.xlsx");
+        } catch (error) {
+            console.error("Error exporting Excel file:", error);
+        }
+    });
 
 </script>
 <!-- fetch user -->
@@ -921,9 +969,7 @@
                 sessionStorage.setItem('userDetails', JSON.stringify(userData));
                 console.log("User data stored in sessionStorage:", userData);
                 getUserDetails(userData);
-                // Ensure that the fetch functions are called after userDetails are set
-                fetchTotalStudents(userData.teacherId);
-                fetchClasses(userData.teacherId);
+
             } else {
                 console.error("Failed to fetch user details:", response.statusText);
             }
@@ -965,7 +1011,7 @@
         }
     }
 
-    const API_BASE_URL = '/assignment';
+
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
     function submitForm() {
