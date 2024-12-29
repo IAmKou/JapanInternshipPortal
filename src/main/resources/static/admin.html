@@ -308,16 +308,70 @@
 <script src="script.js"></script>
 
 <script type="text/javascript">
-    // This function will initialize Google Translate
+    // Hàm thay đổi ngôn ngữ và lưu vào localStorage
+    function changeLanguage(language) {
+        var languageLabel = document.getElementById('languageLabel');
+
+        // Cập nhật nhãn ngôn ngữ trên dropdown
+        if (language === 'en') {
+            languageLabel.innerText = 'EN';
+        } else if (language === 'ja') {
+            languageLabel.innerText = 'JA';
+        }
+
+        // Lưu ngôn ngữ vào localStorage
+        localStorage.setItem('selectedLanguage', language);
+
+        // Kiểm tra nếu Google Translate đã được tải
+        if (window.google && google.translate) {
+            google.translate.TranslateElement.prototype.translatePage(language);
+        }
+    }
+
+    // Hàm khởi tạo Google Translate khi trang tải
+    function loadGoogleTranslate() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+        document.head.appendChild(script);
+    }
+
+    // Hàm khởi tạo Google Translate Element
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({
-            pageLanguage: 'en', // Set the default language of the page
-            includedLanguages: 'en,es,fr,de,ja', // Add the languages you want to support
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            pageLanguage: 'en',
+            includedLanguages: 'en,ja',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false,
         }, 'google_translate_element');
     }
 
+    // Khi trang được tải, thiết lập ngôn ngữ từ localStorage
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lấy ngôn ngữ đã lưu trong localStorage
+        var savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+        // Cập nhật giao diện với ngôn ngữ đã lưu
+        var languageLabel = document.getElementById('languageLabel');
+        if (savedLanguage === 'en') {
+            languageLabel.innerText = 'EN';
+        } else if (savedLanguage === 'ja') {
+            languageLabel.innerText = 'JA';
+        }
+
+        // Dịch trang ngay từ khi tải
+        if (window.google && google.translate) {
+            google.translate.TranslateElement.prototype.translatePage(savedLanguage);
+        }
+    });
+
+    // Tải Google Translate
+    loadGoogleTranslate();
 </script>
+
+
+
+
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -514,27 +568,7 @@
             noticeBoardWrap.innerHTML = '<p>Failed to load notifications.</p>';
         });
 </script>
-<script>
-    function changeLanguage(languageCode) {
-        const apiUrl = "https://script.google.com/macros/s/AKfycbz153PaKjWBPU-Tro4jsmhI28FxWewGNxmpBKUmPOGmF4-QITnRiiBgx2SN5mP_FVKU/exec"; // Thay bằng URL API của bạn
 
-        // Văn bản cần dịch
-        const textToTranslate = document.body.innerHTML;
-
-        console.log("Đang gửi yêu cầu API...");
-        fetch(`${apiUrl}?text=${encodeURIComponent(textToTranslate)}&source=en&target=${languageCode}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log("Kết quả API:", data);
-                document.body.innerHTML = data.translatedText;
-                document.getElementById("languageLabel").textContent = languageCode.toUpperCase();
-            })
-            .catch(error => {
-                console.error("Có lỗi khi gọi API:", error);
-            });
-    }
-
-</script>
 </body>
 
 

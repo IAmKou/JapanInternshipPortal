@@ -39,6 +39,8 @@
 <!-- Preloader End Here -->
 <div id="wrapper" class="wrapper bg-ash">
     <!-- Header Menu Area Start Here -->
+    <div id="google_translate_element"></div>
+
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
@@ -218,7 +220,7 @@
                     <li>
                         <a href="manager.html">Home</a>
                     </li>
-                    <li>Class List</li>
+                    <li>List</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
@@ -255,13 +257,162 @@
         </div>
     </div>
     <!-- Page Area End Here -->
+    <!-- update modal -->
+    <div class="ui-modal-box">
+        <div class="modal-box">
+            <div class="modal sign-up-modal fade" id="update-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="close-btn">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="item-logo">
+                                <img src="img/logo2.png" alt="logo">
+                            </div>
+                            <form id="update-class-form">
+                                <input type="hidden" name="classId" id="classId" value="">
+                                <div class="form-group col-12">
+                                    <label for="teacherId">Teacher</label>
+                                    <select id="teacherId" name="teacherId" class="select2"></select>
+                                </div>
+                                <div class="form-group col-12">
+                                    <input type="text" id="className" name="name" placeholder="New class name" class="form-control">
+                                </div>
+                                <div class="form-group col-12">
+                                    <button type="button" class="login-btn" id="update-class-btn">Update Class</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- confirm modal -->
+    <div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog success-modal-content" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="success-message">
+                        <div class="item-icon">
+                            <i class="fas fa-exclamation"></i>
+                        </div>
+                        <h3 class="item-title">You want to delete this class?</h3>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <input type="hidden" name="id" id="Cid">
+                    <button type="button" id="confirm-delete" class="footer-btn bg-linkedin">Ok</button>
+                    <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<!-- jquery-->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Select 2 Js -->
+<script src="js/select2.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Data Table Js -->
+<script src="js/jquery.dataTables.min.js"></script>
+<!-- Custom Js -->
+<script src="js/main.js"></script>
+<script src="script.js"></script>
+
+<script type="text/javascript">
+    // Hàm thay đổi ngôn ngữ và lưu vào localStorage
+    function changeLanguage(language) {
+        var languageLabel = document.getElementById('languageLabel');
+
+        // Cập nhật nhãn ngôn ngữ trên dropdown
+        if (language === 'en') {
+            languageLabel.innerText = 'EN';
+        } else if (language === 'ja') {
+            languageLabel.innerText = 'JA';
+        }
+
+        // Lưu ngôn ngữ vào localStorage
+        localStorage.setItem('selectedLanguage', language);
+
+        // Kiểm tra nếu Google Translate đã được tải
+        if (window.google && google.translate) {
+            google.translate.TranslateElement.prototype.translatePage(language);
+        }
+    }
+
+    // Hàm khởi tạo Google Translate khi trang tải
+    function loadGoogleTranslate() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+        document.head.appendChild(script);
+    }
+
+    // Hàm khởi tạo Google Translate Element
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,ja',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false,
+        }, 'google_translate_element');
+    }
+
+    // Khi trang được tải, thiết lập ngôn ngữ từ localStorage
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lấy ngôn ngữ đã lưu trong localStorage
+        var savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+        // Cập nhật giao diện với ngôn ngữ đã lưu
+        var languageLabel = document.getElementById('languageLabel');
+        if (savedLanguage === 'en') {
+            languageLabel.innerText = 'EN';
+        } else if (savedLanguage === 'ja') {
+            languageLabel.innerText = 'JA';
+        }
+
+        // Dịch trang ngay từ khi tải
+        if (window.google && google.translate) {
+            google.translate.TranslateElement.prototype.translatePage(savedLanguage);
+        }
+    });
+
+    // Tải Google Translate
+    loadGoogleTranslate();
+</script>
+
+
+
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const tableBody = document.querySelector('.table tbody');
         const confirmationModal = document.querySelector('#confirmation-modal');
         const confirmButton = confirmationModal.querySelector('.footer-btn.bg-linkedin');
+        const updateModal = document.querySelector('#update-modal');
+        const updateClassForm = document.querySelector('#update-class-form');
         const updateClassBtn = document.querySelector('#update-class-btn');
+
         let currentClassId = null;
 
         // Fetch classes and populate the table
@@ -283,10 +434,10 @@
 
                     // Name cell
                     const nameCell = document.createElement('td');
-                    const link = document.createElement('a');
-                    link.textContent = clasz.name;
-                    link.href = `/all-class-student.html?classId=${clasz.id}`;
-                    nameCell.appendChild(link);
+                    const link = document.createElement('a'); // Create an anchor element
+                    link.textContent = clasz.name; // Set the text of the link
+                    link.href = `/list-mark-manager.html?classId=${clasz.id}`; // Set the href attribute to the desired HTML page
+                    nameCell.appendChild(link); // Append the anchor element to the cell
                     row.appendChild(nameCell);
 
                     // Teacher Name cell
@@ -315,10 +466,13 @@
                     dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
                     dropdownMenu.innerHTML = `
                     <a class="dropdown-item delete-class" data-id="${clasz.id}">
-                        <i class="fas fa-trash-alt text-danger"></i> Delete Class
+                        <i class="fas fa-trash-alt text-danger"></i> Delete
+                    </a>
+                    <a class="dropdown-item" href="/all-class-student.html?classId=${clasz.id}">
+                        <i class="fas fa-glasses text-dark-pastel-green"></i> View Students
                     </a>
                     <a class="dropdown-item update-class" data-id="${clasz.id}" data-name="${clasz.name}""
-                        <i class="fas fa-cogs"></i> Change Name or Teacher
+                        <i class="fas fa-cogs"></i> Update
                     </a>
                 `;
                     dropdown.appendChild(dropdownMenu);
@@ -409,6 +563,7 @@
                 });
         });
     });
+
 </script>
 <!-- fetch teacher -->
 <script>
@@ -442,6 +597,7 @@
             });
     }
 </script>
+
 <!-- fetch user -->
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -471,82 +627,8 @@
         console.error("User details not found in sessionStorage");
     }
 </script>
-<!-- jquery-->
-<script src="js/jquery-3.3.1.min.js"></script>
-<!-- Plugins js -->
-<script src="js/plugins.js"></script>
-<!-- Popper js -->
-<script src="js/popper.min.js"></script>
-<!-- Bootstrap js -->
-<script src="js/bootstrap.min.js"></script>
-<!-- Select 2 Js -->
-<script src="js/select2.min.js"></script>
-<!-- Scroll Up Js -->
-<script src="js/jquery.scrollUp.min.js"></script>
-<!-- Data Table Js -->
-<script src="js/jquery.dataTables.min.js"></script>
-<!-- Custom Js -->
-<script src="js/main.js"></script>
-
-<!-- update modal -->
-<div class="ui-modal-box">
-    <div class="modal-box">
-        <div class="modal sign-up-modal fade" id="update-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="close-btn">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="item-logo">
-                            <img src="img/logo2.png" alt="logo">
-                        </div>
-                        <form id="update-class-form">
-                            <input type="hidden" name="classId" id="classId" value="">
-                            <div class="form-group col-12">
-                                <label for="teacherId">Teacher</label>
-                                <select id="teacherId" name="teacherId" class="select2"></select>
-                            </div>
-                            <div class="form-group col-12">
-                                <input type="text" id="className" name="name" placeholder="New class name" class="form-control">
-                            </div>
-                            <div class="form-group col-12">
-                                <button type="button" class="login-btn" id="update-class-btn">Update Class</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- confirm modal -->
-<div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog success-modal-content" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="success-message">
-                    <div class="item-icon">
-                        <i class="fas fa-exclamation"></i>
-                    </div>
-                    <h3 class="item-title">You want to delete this class?</h3>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <input type="hidden" name="id" id="Cid">
-                <button type="button" id="confirm-delete" class="footer-btn bg-linkedin">Ok</button>
-                <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
 </body>
 
+
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/JIP/JIP/class-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>
