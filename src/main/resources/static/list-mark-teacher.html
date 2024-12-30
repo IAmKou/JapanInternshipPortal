@@ -30,7 +30,23 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            text-align: center;
+            padding: 8px;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .average-header {
+            text-align: center;
+            font-weight: bold;
+            background-color: #d4ebf2;
+        }
         /* Overlay */
         .overlay {
             display: none; /* Hidden by default */
@@ -119,20 +135,6 @@
             background-color: #45a049;
         }
 
-        /* Modal Background (Overlay) */
-        .modal-background {
-            display: none; /* Hidden by default */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Black with transparency */
-            justify-content: center;
-            align-items: center;
-            z-index: 2000; /* High z-index to stay above other content */
-        }
-
         /* Modal Content Box */
         .modal-content {
             background-color: white;
@@ -141,45 +143,6 @@
             width: 350px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             text-align: center;
-        }
-
-        /* Buttons inside the modal */
-        .modal-buttons {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-
-        /* Confirm Button Style */
-        .confirm-btn {
-            background-color: #dc3545; /* Red background for delete */
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        /* Confirm Button Hover Effect */
-        .confirm-btn:hover {
-            background-color: #c82333; /* Darker red on hover */
-        }
-
-        /* Cancel Button Style */
-        .cancel-btn {
-            background-color: #6c757d; /* Gray background for cancel */
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        /* Cancel Button Hover Effect */
-        .cancel-btn:hover {
-            background-color: #5a6268; /* Darker gray on hover */
         }
 
         /* Basic modal overlay */
@@ -537,36 +500,36 @@
                         <h3>Class: <span id="className"></span></h3>
                     </div>
                     <!-- Main Button to Open Modal -->
-                    <button class="btn btn-gradient-yellow btn-search" id="open-modal-btn">Open Import Modal</button>
+                    <button class="btn btn-gradient-yellow btn-search" id="open-modal-btn" style="margin-bottom: 15px">Open Import Modal</button>
                     <div class="table-responsive">
-
-                        <table class="table display data-table text-nowrap">
+                        <table class="table display text-nowrap">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Soft Skill</th>
-                                <th>Average Exam Mark</th>
-                                <th>Middle Exam Mark</th>
-                                <th>Final Exam Mark</th>
-                                <th>Skill</th>
-                                <th>Attitude</th>
-                                <th>Final Mark</th>
-                                <th>Action</th>
+                                <th colspan="3">Skill</th>
+                                <th colspan="2">Soft Skill</th>
+                                <th colspan="3">Attitude</th>
+                                <th rowspan="2">Final Mark</th>
+                                <th rowspan="2">Action</th>
+                            </tr>
+                            <tr>
+                                <th>Avg Exam Mark</th>
+                                <th>Middle Exam</th>
+                                <th>Final Exam</th>
+                                <th>Script</th>
+                                <th>Presentation</th>
+                                <th>Assigment</th>
+                                <th>Attendant</th>
                             </tr>
                             </thead>
                             <tbody id="mark_list">
-
+                            <!-- Rows will be dynamically generated here -->
                             </tbody>
-
-
                         </table>
                     </div>
+
                     <button class="btn btn-gradient-yellow btn-search" id="export-by-excel">Export excel</button>
                 </div>
-
             </div>
-
-
         </div>
         <div id="overlay" class="overlay">
             <div id="markrpPopup" class="popup">
