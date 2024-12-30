@@ -361,7 +361,7 @@
 
                     // Teacher Name cell
                     const teacherNameCell = document.createElement('td');
-                    teacherNameCell.textContent = clasz.semesterId;
+                    teacherNameCell.textContent = clasz.teacherName;
                     row.appendChild(teacherNameCell);
 
                     // Number of Students cell
@@ -486,7 +486,6 @@
 <!-- fetch teacher -->
 <script>
     document.addEventListener('DOMContentLoaded', loadTeachers);
-
     function loadTeachers() {
         fetch('/teachers')
             .then(response => {
