@@ -385,6 +385,8 @@
         const gradesDataInput = document.getElementById('gradesData');
         const viewInfoButton = document.getElementById('viewInfoButton');
         const saveChangesButton = document.getElementById('saveChangesButton');
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
         const urlParams = new URLSearchParams(window.location.search);
         const classId = urlParams.get('classId');
         let gradesData = [];
@@ -457,9 +459,6 @@
                     return response.json();
                 })
                 .then(grades => {
-                    if (!grades || grades.length === 0) {
-                        grades = createDefaultGrades();
-                    }
                     gradesData = grades || [];
                     renderGrades(gradesData);
                     gradesDataInput.value = JSON.stringify(gradesData);
@@ -471,37 +470,40 @@
                 });
         };
 
-        const createDefaultGrades = () => {
-            // Create default grade objects with 0s for all fields
-            return gradesData.map(grade => ({
-                studentId: grade.studentId,
-                fullname: grade.fullname,
-                comment: '',
-                attitude: 0,
-                softskill: 0,
-                skill: 0,
-                avgExamMark: 0,
-                middleExam: 0,
-                finalExam: 0,
-                finalMark: 0
-            }));
-        };
-
         const renderGrades = (grades) => {
             tableBody.innerHTML = grades.map((grade, index) => `
             <tr data-index="${index}">
                 <td>${index + 1}</td>
                 <td>${grade.fullname || 'N/A'}</td>
-                <td contenteditable="true">${grade.comment || '0'}</td>
-                <td contenteditable="true">${grade.attitude || '0'}</td>
-                <td contenteditable="true">${grade.softskill || '0'}</td>
-                <td contenteditable="true">${grade.skill || '0'}</td>
-                <td contenteditable="true">${grade.avgExamMark || '0'}</td>
-                <td contenteditable="true">${grade.middleExam || '0'}</td>
-                <td contenteditable="true">${grade.finalExam || '0'}</td>
-                <td contenteditable="true">${grade.finalMark || '0'}</td>
+                <td contenteditable="true">${grade.comment || ''}</td>
+                <td contenteditable="true" class="grade-input">${grade.attitude || ''}</td>
+                <td contenteditable="true" class="grade-input">${grade.softskill || ''}</td>
+                <td contenteditable="true" class="grade-input">${grade.skill || ''}</td>
+                <td contenteditable="true" class="grade-input">${grade.avgExamMark || ''}</td>
+                <td contenteditable="true" class="grade-input">${grade.middleExam || ''}</td>
+                <td contenteditable="true" class="grade-input">${grade.finalExam || ''}</td>
+                <td contenteditable="true" class="grade-input">${grade.finalMark || ''}</td>
             </tr>`).join('');
         };
+
+        // Validate the input grade to be between 0 and 100
+        const validateGradeInput = (event) => {
+            const value = event.target.textContent.trim();
+            const numericValue = parseFloat(value);
+
+            if (isNaN(numericValue) || numericValue < 0 || numericValue > 100) {
+                errorModal.show();
+                document.querySelector('#long-modal .modal-body').innerHTML = 'Please enter a valid grade between 0 and 100.';
+                event.target.textContent = ''; // Clear the invalid input
+            }
+        };
+
+        // Attach validation to the grade inputs
+        tableBody.addEventListener('input', (event) => {
+            if (event.target.classList.contains('grade-input')) {
+                validateGradeInput(event);
+            }
+        });
 
         saveChangesButton.addEventListener('click', () => {
             const updatedGrades = [];
@@ -535,12 +537,16 @@
                             throw new Error(errorText || 'Failed to save grades.');
                         });
                     }
-                    alert('Grades saved successfully!');
-                    fetchAndRenderGrades();  // Re-fetch the grades after saving
+                    successModal.show(); // Show the success modal
+                    sessionStorage.setItem('viewGrades', 'true'); // Save the state that the user is on the View Grades page
+                    setTimeout(() => {
+                        location.reload(); // Refresh the page after 3 seconds
+                    }, 3000); // Wait for 3 seconds before reloading
                 })
                 .catch(error => {
                     console.error('Error saving grades:', error);
-                    alert('Failed to save grades: ' + error.message);
+                    errorModal.show();
+                    document.querySelector('#long-modal .modal-body').innerHTML = error.message;
                 });
         });
 
@@ -551,10 +557,17 @@
             fetchStudentList();
         });
 
+        // Wait for page reload and auto click "View Student Grades" if the state is set
+        if (sessionStorage.getItem('viewGrades')) {
+            sessionStorage.removeItem('viewGrades');
+            setTimeout(() => {
+                viewGradesButton.click(); // Automatically click the "View Student Grades" button after the page reloads
+            }, 1500); // Wait 1.5 second after the page reloads (increased delay)
+        }
+
         // Initial load
         fetchStudentList();
     });
-
 </script>
 
 <!-- fetch user -->

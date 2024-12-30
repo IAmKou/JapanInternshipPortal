@@ -124,4 +124,47 @@ public class StudentController {
         List<MarkReportDTO> markReports = listRepository.getStudentsWithMarkReportsByClassId(classId);
         return markReports;
     }
+
+    // Save grades for a class
+    @PostMapping("/{classId}/saveGrades")
+    public ResponseEntity<String> saveGrades(@PathVariable Integer classId, @RequestBody List<MarkReportDTO> grades) {
+        if (classId == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("classId must not be null");
+        }
+
+        try {
+            // Update grades for each student
+            updateGrades(grades);
+            return ResponseEntity.ok("Grades updated successfully!");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to update grades: " + e.getMessage());
+        }
+    }
+
+    // Update grades for each student
+    private void updateGrades(List<MarkReportDTO> grades) {
+        for (MarkReportDTO grade : grades) {
+            // Fetch existing grade report
+            MarkReport markReport = markReportRepository.findByStudentId(grade.getStudentId());
+            if (markReport == null) {
+                throw new IllegalArgumentException("MarkReport not found for studentId: " + grade.getStudentId());
+            }
+
+            // Update grade fields
+            markReport.setAttitude(grade.getAttitude());
+            markReport.setSoftskill(grade.getSoftskill());
+            markReport.setSkill(grade.getSkill());
+            markReport.setAvg_exam_mark(grade.getAvgExamMark());
+            markReport.setMiddle_exam(grade.getMiddleExam());
+            markReport.setFinal_exam(grade.getFinalExam());
+            markReport.setFinal_mark(grade.getFinalMark());
+            markReport.setComment(grade.getComment());
+
+            // Save updated mark report
+            markReportRepository.save(markReport);
+        }
+    }
 }
