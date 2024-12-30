@@ -1,8 +1,6 @@
 package com.example.jip.dto;
-
 import lombok.Getter;
 import lombok.Setter;
-
 import java.math.BigDecimal;
 
 @Setter
@@ -34,5 +32,4 @@ public class MarkReportDTO {
         this.comment = comment;
         this.skill = skill;
     }
-
 }

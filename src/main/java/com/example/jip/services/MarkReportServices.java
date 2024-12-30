@@ -1,6 +1,7 @@
 package com.example.jip.services;
 
 import com.example.jip.dto.ClassDTO;
+import com.example.jip.dto.MarkReportDTO;
 import com.example.jip.dto.request.markReport.MarkReportImportRequest;
 import com.example.jip.dto.request.markReport.MarkReportUpdateRequest;
 import com.example.jip.dto.response.markReport.MarkReportResponse;
@@ -36,9 +37,6 @@ public class MarkReportServices {
 
     MarkReportRepository markReportRepository;
     StudentRepository studentRepository;
-    AssignmentStudentRepository assignmentStudentRepository;
-    StudentAssignmentRepository studentAssignmentRepository;
-    AttendantRepository attendantRepository;
     ListRepository listRepository;
 
 
@@ -356,5 +354,29 @@ public class MarkReportServices {
         markReportRepository.save(markReport);
     }
 
+    public void updateGrades(List<MarkReportDTO> gradeDTOs) {
+        for (MarkReportDTO dto : gradeDTOs) {
+            // We need to find the MarkReport for the student
+            MarkReport markReport = markReportRepository.findByStudentId(dto.getStudentId());
+
+            if (markReport != null) {
+                // If the MarkReport exists, update the grade data
+                markReportRepository.updateGrade(
+                        dto.getStudentId(),
+                        dto.getComment(),
+                        dto.getAttitude(),
+                        dto.getSoftskill(),
+                        dto.getSkill(),
+                        dto.getAvgExamMark(),
+                        dto.getMiddleExam(),
+                        dto.getFinalExam(),
+                        dto.getFinalMark());
+            } else {
+                // Optionally, handle the case where the MarkReport doesn't exist
+                // (for example, throw an exception or log a message)
+                System.out.println("MarkReport not found for student ID: " + dto.getStudentId());
+            }
+        }
+    }
 
 }
