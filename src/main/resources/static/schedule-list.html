@@ -456,7 +456,7 @@
                     const dropdownMenu = document.createElement('div');
                     dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
                     dropdownMenu.innerHTML = `
-                        <a class="dropdown-item" href="/schedule-detail.html?semesterId=${item.classId}">
+                        <a class="dropdown-item" href="/schedule-class.html?classId=${item.classId}&semesterId=${item.semesterId}">
                             <i class="fas fa-glasses text-dark-pastel-green"></i> View Schedule
                         </a>
                     `;

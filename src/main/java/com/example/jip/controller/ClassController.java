@@ -3,11 +3,14 @@ package com.example.jip.controller;
 import com.example.jip.dto.ClassDTO;
 import com.example.jip.dto.NotificationDTO;
 import com.example.jip.entity.Notification;
+import com.example.jip.entity.Semester;
 import com.example.jip.repository.AssignmentRepository;
 import com.example.jip.repository.ClassRepository;
 import com.example.jip.repository.ListRepository;
+import com.example.jip.repository.SemesterRepository;
 import com.example.jip.services.AssignmentServices;
 import com.example.jip.services.NotificationServices;
+import com.example.jip.services.SemesterServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import com.example.jip.services.ClassServices;
 import com.example.jip.entity.Class;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -33,27 +38,42 @@ public class ClassController {
     private ListRepository listRepository;
 
     @Autowired
-    private NotificationServices notificationServices;
+    private SemesterRepository semesterRepository;
 
 
     @PostMapping(value = "/create", consumes = "application/json", produces = "application/json")
     public String createClass(@RequestBody ClassDTO classDTO) {
         int semesterId = classDTO.getSemesterId();
         System.out.println(semesterId);
+        Semester semester = semesterRepository.findById(semesterId).
+                orElseThrow(() -> new NoSuchElementException("semester not found"));
+        Date st = semester.getStart_time();
+        Date ed = semester.getEnd_time();
+        LocalDate semesterStart = st.toLocalDate();
+        LocalDate semesterEnd = ed.toLocalDate();
+        LocalDate currentDate = LocalDate.now();
+
+        if (!currentDate.isBefore(semesterStart) && !currentDate.isAfter(semesterEnd)) {
+            return "Cannot create a class as the semester has already started.";
+        }
+
         if (classDTO.getName() == null || classDTO.getName().isEmpty()) {
             throw new IllegalArgumentException("Class name is required");
         }
+
         boolean classExists = classRepository.existsByName(classDTO.getName());
         if (classExists) {
             return "A class with the name [" + classDTO.getName() + "] already exists.";
         }
+
         if (classDTO.getTeacher() == null || classDTO.getTeacher().getId() == 0) {
             throw new IllegalArgumentException("Teacher ID is required");
         }
 
-        int classCount = classRepository.countByTeacherId(classDTO.getTeacher().getId());
+
+        int classCount = classRepository.countClassesByTeacherAndSemester(classDTO.getTeacher().getId(), semesterId);
         if (classCount >= 3) {
-            return "This teacher already has the maximum number of classes (3).";
+            return "This teacher is already assigned to the maximum number of classes (3) for this semester.";
         }
 
         try {

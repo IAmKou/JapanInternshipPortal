@@ -1,10 +1,12 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.SemesterDTO;
+import com.example.jip.dto.SemesterDateDTO;
 import com.example.jip.entity.Holiday;
 import com.example.jip.entity.Semester;
 import com.example.jip.repository.ScheduleRepository;
 import com.example.jip.repository.SemesterRepository;
+import com.example.jip.services.ClassServices;
 import com.example.jip.services.HolidayServices;
 import com.example.jip.services.SemesterServices;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +34,7 @@ public class SemesterController {
     private SemesterRepository semesterRepository;
 
     @Autowired
-    private ScheduleRepository scheduleRepository;
+    private ClassServices classServices;
 
     @PostMapping("/create")
     public ResponseEntity<String> createSemester(@RequestBody Semester semester) {
@@ -88,5 +91,14 @@ public class SemesterController {
         return semesterRepository.findById(semesterId)
                 .map(SemesterDTO::new)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Semester not found"));
+    }
+
+    @GetMapping("/class/{classId}")
+    public ResponseEntity<SemesterDateDTO> getSemesterDates(@PathVariable int classId) {
+        SemesterDateDTO semesterDates = classServices.getSemesterDatesByClassId(classId);
+        if (semesterDates == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(semesterDates);
     }
 }
