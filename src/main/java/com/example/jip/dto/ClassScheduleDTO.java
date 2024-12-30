@@ -1,5 +1,6 @@
 package com.example.jip.dto;
 
+import com.example.jip.entity.Schedule;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,13 @@ public class ClassScheduleDTO {
     private String className;
     private String room;
     private String semesterName;
+    private int semesterId;
+
+    public ClassScheduleDTO(Schedule schedule) {
+        this.classId = schedule.getClasz().getId();
+        this.className = schedule.getClasz().getName();
+        this.room = schedule.getRoom();
+        this.semesterName = schedule.getSemester().getName();
+        this.semesterId = schedule.getSemester().getId();
+    }
 }

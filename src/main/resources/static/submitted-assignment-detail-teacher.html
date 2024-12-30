@@ -437,6 +437,12 @@
                                     <span id="submitted-assignment-content" style="margin-left: 28px; font-weight: bold; color: #000;"></span>
                                 </div>
                             </div>
+                            <div class="heading-layout1" style="display: flex; margin-bottom: 10px; align-items: baseline;">
+                                <div class="item-title" style="display: flex; align-items: baseline;">
+                                    <h3 class="text-dark-medium font-medium" style="margin-bottom: 5px;">File:</h3>
+                                    <span id="submitted-assignment-file" style="margin-left: 28px; font-weight: bold; color: #000;"></span>
+                                </div>
+                            </div>
                             &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
                         </div>
 
@@ -467,8 +473,8 @@
                 <div class="modal-body">
                     <form id="gradeForm">
                         <div class="form-group">
-                            <label for="markInput">Enter Mark (0-100):</label>
-                            <input type="number" id="markInput" class="form-control" min="0" max="100" required>
+                            <label for="markInput">Enter Mark (0-10):</label>
+                            <input type="number" id="markInput" class="form-control" min="0" max="10" step="0.1" required>
                         </div>
                     </form>
                 </div>
@@ -563,6 +569,7 @@
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <!-- fetch user -->
 <script>
+
 
     let currentAssignmentId = null;
 
@@ -672,6 +679,22 @@
             const formattedDate = new Date(studentAssignment.date).toISOString().split("T")[0];
             document.getElementById('submitted-created-date').textContent = formattedDate;
 
+            const files = studentAssignment.files || [];
+            const filesContainer = document.getElementById('submitted-assignment-file');
+            filesContainer.innerHTML = ""; // Clear any existing content
+            if (files.length > 0) {
+                files.forEach(fileUrl => {
+                    const link = document.createElement('a');
+                    link.href = fileUrl;
+                    link.textContent = fileUrl.split('/').pop(); // Display the file name
+                    link.target = '_blank';
+                    link.style.display = 'block'; // Show each file on a new line
+                    filesContainer.appendChild(link);
+                });
+            } else {
+                filesContainer.textContent = "No files uploaded";
+            }
+
         } catch (error) {
             console.error("Error loading StudentAssignment details:", error);
             alert("Failed to load StudentAssignment details. Please try again.");
@@ -681,7 +704,7 @@
     fetchStudentAssignmentDetails()
 
     async function submitGrade() {
-        const mark = document.getElementById('markInput').value;
+        const mark = parseFloat(document.getElementById('markInput').value); // Parse as float
         const status = "MARKED";
 
 
@@ -694,8 +717,8 @@
         }
 
         // Validate the input
-        if (mark === "" || isNaN(mark) || mark < 0 || mark > 100) {
-            alert("Please enter a valid mark between 0 and 100.");
+        if (mark === "" || isNaN(mark) || mark < 0 || mark > 10) {
+            alert("Please enter a valid mark between 0 and 10.");
             return;
         }
 
@@ -707,14 +730,17 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    mark: parseInt(mark),
+                    mark: mark,
                     status: status
                 })
             });
 
             if (response.ok) {
                 alert('Grade submitted successfully!');
-                window.location.href = `view-assignment-details.html?id=${currentAssignmentId}`;
+                setTimeout(() => {
+                    window.location.href = `view-assignment-details.html?id=${currentAssignmentId}`;
+                }, 2000);
+
             } else {
                 const errorData = await response.json();
                 alert(`Failed to submit grade: ${errorData.message || response.statusText}`);

@@ -3708,7 +3708,6 @@ ul {
   padding-right: 24px;
 }
 .dashboard-card-one .card-body .earning-report .dropdown .date-dropdown-toggle:after {
-  content: "\f108";
   font-family: Flaticon;
   position: absolute;
   font-size: 12px;

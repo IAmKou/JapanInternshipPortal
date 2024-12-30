@@ -31,6 +31,51 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            margin-top: 40px;
+            font-size: 14px;
+            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+        }
+
+        #wrap {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        #external-events h4 {
+            font-size: 16px;
+            margin-top: 0;
+            padding-top: 1em;
+        }
+
+        #external-events .fc-event {
+            margin: 3px 0;
+            cursor: move;
+        }
+
+        #external-events p {
+            margin: 1.5em 0;
+            font-size: 11px;
+            color: #666;
+        }
+
+        #external-events p input {
+            margin: 0;
+            vertical-align: middle;
+        }
+
+        #calendar-wrap {
+            flex-grow: 1; /* Ensures the calendar takes up remaining space */
+        }
+
+        #calendar {
+            max-width: 80%;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 
 <body>
@@ -46,7 +91,8 @@
             <div class="header-logo">
                 <a href="student.html">
                     <div style="width: 180px; height: 70px; overflow: hidden;">
-                        <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+                        <img src="img/JIP%20LOGO%20n.png" alt="logo"
+                             style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                 </a>
             </div>
@@ -95,8 +141,10 @@
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
-                                <li><a href="users-profile-student.html"><i class="flaticon-user"></i>My Profile</a></li>
-                                <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span data-i18n="change_password">Change Password</span></a></li>
+                                <li><a href="users-profile-student.html"><i class="flaticon-user"></i>My Profile</a>
+                                </li>
+                                <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span
+                                        data-i18n="change_password">Change Password</span></a></li>
                                 <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
@@ -169,10 +217,12 @@
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="list-student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
+                                <a href="list-student-assignment.html" class="nav-link menu-active"><i
+                                        class="fas fa-angle-right"></i>All Assignment</a>
                             </li>
                             <li class="nav-item">
-                                <a href="list-submitted-assignments.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Submitted Assignment</a>
+                                <a href="list-submitted-assignments.html" class="nav-link menu-active"><i
+                                        class="fas fa-angle-right"></i>All Submitted Assignment</a>
                             </li>
                         </ul>
                     </li>
@@ -198,7 +248,8 @@
                                     Materials</a>
                             </li>
                             <li class="nav-item" id="student-view">
-                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My List
+                                <a href="View-list-personal-materials.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>My List
                                     Materials</a>
                             </li>
                         </ul>
@@ -207,12 +258,14 @@
                         <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="Send-application-student.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                <a href="Send-application-student.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>Send
                                     application</a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="View-my-application-student.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                <a href="View-my-application-student.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>My
                                     application</a>
                             </li>
                         </ul>
@@ -222,11 +275,13 @@
                         <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="forum-student.html"><i class="fas fa-angle-right"></i>View list
+                                <a class="nav-link" href="forum-student.html"><i class="fas fa-angle-right"></i>View
+                                    list
                                     threads</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="create-forum-student.html"><i class="fas fa-angle-right"></i>Create Thread</a>
+                                <a class="nav-link" href="create-forum-student.html"><i class="fas fa-angle-right"></i>Create
+                                    Thread</a>
                             </li>
                         </ul>
                     </li>
@@ -257,25 +312,10 @@
                                     <h3>Class Schedule</h3>
                                 </div>
                             </div>
-                            <div class="table-responsive">
-                                <table class="table display text-nowrap">
-                                    <thead>
-                                    <tr>
-                                        <th>Class</th>
-                                        <th>Location</th>
-                                        <th>Teacher</th>
-                                        <th>Day</th>
-                                        <th>Start Time</th>
-                                        <th>End Time</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
-                                        <th>Note</th>
-                                        <th>Event</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                            <div id='wrap'>
+                                <div id='calendar-wrap'>
+                                    <div id='calendar'></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -304,6 +344,8 @@
 <script src="js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="script.js"></script>
 
 <script type="text/javascript">
@@ -367,91 +409,8 @@
     // Tải Google Translate
     loadGoogleTranslate();
 </script>
-
-
-
-
-<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const tableBody = document.querySelector('.table tbody');
-        const urlParams = new URLSearchParams(window.location.search);
-        const studentId = urlParams.get('studentId');
-
-        fetch(`/schedule/getS/${studentId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(schedule => {
-                schedule.forEach(schedule => {
-                    const row = document.createElement('tr');
-
-                    // Class name cell
-                    const cnCell = document.createElement('td');
-                    cnCell.textContent = schedule.className;
-                    row.appendChild(cnCell);
-
-                    // Location cell
-                    const locationCell = document.createElement('td');
-                    locationCell.textContent = schedule.location;
-                    row.appendChild(locationCell);
-
-                    // Day Of Week cell
-                    const dayOfWeekCell = document.createElement('td');
-                    dayOfWeekCell.textContent = schedule.dayOfWeek;
-                    row.appendChild(dayOfWeekCell);
-
-                    // Teacher name cell
-                    const tnCell = document.createElement('td');
-                    tnCell.textContent = schedule.teacherName;
-                    row.appendChild(tnCell);
-
-                    // Start time cell
-                    const stCell = document.createElement('td');
-                    stCell.textContent = schedule.startTime ? schedule.startTime.slice(0, 5) : '';
-                    row.appendChild(stCell);
-
-                    // End time cell
-                    const etCell = document.createElement('td');
-                    etCell.textContent = schedule.endTime ? schedule.endTime.slice(0, 5) : '';
-                    row.appendChild(etCell);
-
-                    // Date cell
-                    const dateCell = document.createElement('td');
-                    dateCell.textContent = schedule.date
-                        ? new Date(schedule.date).toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        })
-                        : '';
-                    row.appendChild(dateCell);
-
-                    // Status cell
-                    const statusCell = document.createElement('td');
-                    statusCell.textContent = schedule.attendanceStatus;
-                    row.appendChild(statusCell);
-
-                    // Note cell
-                    const noteCell = document.createElement('td');
-                    noteCell.textContent = schedule.description || '';
-                    row.appendChild(noteCell);
-
-                    // Event cell
-                    const eventCell = document.createElement('td');
-                    eventCell.textContent = schedule.event || '';
-                    row.appendChild(eventCell);
-
-                    tableBody.appendChild(row);
-                })
-
-                    .catch(error => console.error('Error fetching schedule:', error));
-            })
-    });
-</script>
+<script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
     if (userDetails) {
@@ -479,6 +438,7 @@
     } else {
         console.error("User details not found in sessionStorage");
     }
+
     function submitForm() {
         // Retrieve userDetails from sessionStorage
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -502,6 +462,63 @@
             console.error("Teacher ID is missing or user details not found in sessionStorage");
         }
     }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const calendarEl = document.getElementById('calendar');
+        const urlParams = new URLSearchParams(window.location.search);
+        const classId = urlParams.get('classId');
+
+        if (!calendarEl) {
+            console.error('The #calendar element is missing from the DOM.');
+            return;
+        }
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth',
+            },
+            timeZone: 'UTC',
+            events: function (fetchInfo, successCallback, failureCallback) {
+                fetch(`/schedule/get/class/${classId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch schedules');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const events = data.map(schedule => ({
+                            id: schedule.id,
+                            title: schedule.activity,
+                            start: schedule.date,
+                            backgroundColor: schedule.color,
+                            borderColor: schedule.color,
+                            extendedProps: {
+                                room: schedule.room,
+                                attendantStatus: schedule.attendantStatus
+                            }
+                        }));
+                        successCallback(events);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching schedules:', error);
+                        failureCallback(error);
+                    });
+            },
+            eventClick: function (info) {
+                const event = info.event;
+                const {room, attendantStatus} = event.extendedProps;
+                alert(
+                    `Event: ${event.title}\n` +
+                    `Room: ${room}\n` +
+                    `Attendant Status: ${attendantStatus}`
+                );
+            },
+        });
+        calendar.render();
+    });
 </script>
 
 

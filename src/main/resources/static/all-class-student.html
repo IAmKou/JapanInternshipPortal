@@ -323,17 +323,14 @@
         </div>
         <!-- Sidebar Area End Here -->
         <div class="dashboard-content-one">
-            <!-- Breadcubs Area Start Here -->
+            <!-- Breadcrumbs Area Start Here -->
             <div class="breadcrumbs-area">
                 <h3>Student</h3>
                 <ul>
-                    <li>
-                        <a href="manager.html">Home</a>
-                    </li>
+                    <li><a href="manager.html">Home</a></li>
                     <li>All Student</li>
                 </ul>
             </div>
-            <!-- Breadcubs Area End Here -->
             <!-- Class Table Area Start Here -->
             <div class="card height-auto">
                 <div class="card-body">
@@ -341,154 +338,104 @@
                         <div class="item-title">
                             <h3>All Class Student</h3>
                         </div>
-                        <div class="dropdown" style="margin-right: 1830px;padding-bottom:10px;padding-left:10px" >
-                            <button class="btn btn-gradient-yellow btn-search">View Options</button>
+                        <div class="dropdown" style="margin-right: 99px;padding-bottom:10px;padding-left:10px">
+                            <button class="btn btn-gradient-yellow btn-search">Class Info</button>
                             <div class="dropdown-content">
                                 <button id="viewInfoButton" class="btn btn-gradient-yellow btn-search">VIEW STUDENT INFO</button>
                                 <button id="viewGradesButton" class="btn btn-gradient-yellow btn-search">VIEW STUDENT GRADES</button>
                             </div>
                         </div>
                     </div>
-                    <div class="table-responsive">
+                    <div class="table-responsive" id="viewGrades">
                         <table class="table display text-nowrap">
                             <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Photo</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th></th>
+                                <!-- Columns headers will be added dynamically by JavaScript -->
                             </tr>
                             </thead>
                             <tbody>
-                            <tr></tr>
+                            <tr>
+                                <!-- Data rows will be added dynamically by JavaScript -->
+                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-
                 <!-- Export Form -->
                 <form action="/export-csv" id="exportForm" method="post" style="margin-top: 20px; display: none;">
-                    <input id="gradesData" name="gradesData" type="hidden"/>
+                    <input id="gradesData" name="gradesData" type="hidden" />
                     <div>
                         <button class="btn btn-gradient-yellow btn-search" type="submit">Export</button>
+                        <button id="saveChangesButton" class="btn btn-gradient-green btn-search" type="button">Save Changes</button>
                     </div>
                 </form>
             </div>
-
-            <!-- Success Modal -->
-            <div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal"
-                 tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header border-0">
-                            <h5 class="modal-title text-success" id="successModalLabel">
-                                <i class="fas fa-check-circle"></i> Success
-                            </h5>
-                        </div>
-                        <div class="modal-body text-center">
-                            <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Error Modal -->
-            <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header border-0">
-                            <h5 class="modal-title text-danger" id="errorModalLabel">
-                                <i class="fas fa-times-circle"></i> Error
-                            </h5>
-                        </div>
-                        <div class="modal-body"></div>
-                    </div>
-                </div>
-            </div>
-
+            <!-- Class Table Area Ends Here -->
         </div>
+        <!-- Breadcrumbs Area End Here -->
     </div>
 </div>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', () => {
         const tableBody = document.querySelector('.table tbody');
         const tableHead = document.querySelector('.table thead');
         const viewGradesButton = document.getElementById('viewGradesButton');
         const exportForm = document.getElementById('exportForm');
         const gradesDataInput = document.getElementById('gradesData');
         const viewInfoButton = document.getElementById('viewInfoButton');
-        const importXlsxButton = document.getElementById("import-xlsx");
+        const saveChangesButton = document.getElementById('saveChangesButton');
         const urlParams = new URLSearchParams(window.location.search);
         const classId = urlParams.get('classId');
         let gradesData = [];
         let isGradesViewInitialized = false;
 
-        // Ensure classId is valid before proceeding
-        if (classId) {
-            fetchStudentList();
-        } else {
-            console.error("classId is missing from the URL.");
+        if (!classId) {
+            console.error("Error: classId is missing from the URL.");
+            alert("Class ID is missing. Please check the URL.");
+            return;
         }
 
-        // Fetch student list function
-        function fetchStudentList() {
+        // Fetch and display the student list
+        const fetchStudentList = () => {
             fetch(`/student/${classId}/getAll`)
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
+                    if (!response.ok) throw new Error(`Failed to fetch students: ${response.statusText}`);
                     return response.json();
                 })
-                .then(students => {
-                    renderStudentList(students);
-                })
-                .catch(error => console.error('Error fetching students:', error));
-        }
+                .then(renderStudentList)
+                .catch(error => {
+                    console.error('Error fetching students:', error);
+                    alert('Failed to fetch student list. Please try again later.');
+                });
+        };
 
-        // Render student list
-        function renderStudentList(students) {
-            tableBody.innerHTML = '';
+        const renderStudentList = (students) => {
             tableHead.innerHTML = `
             <tr>
                 <th>#</th>
                 <th>Photo</th>
                 <th>Name</th>
+                <th>Japanese Name</th>
+                <th>Date of Birth</th>
+                <th>Email</th>
+                <th>Phone Number</th>
                 <th>Gender</th>
-                <th></th>
             </tr>`;
-            let studentNumber = 1;
-            students.forEach(student => {
-                const row = document.createElement('tr');
+            tableBody.innerHTML = students.map((student, index) => `
+            <tr>
+                <td>${index + 1}</td>
+                <td><img src="${student.img}" alt="Student Image" style="width: 50px; height: 50px; object-fit: cover;"></td>
+                <td>${student.fullname}</td>
+                <td>${student.jname}</td>
+                <td>${student.dob}</td>
+                <td>${student.email}</td>
+                <td>${student.phone}</td>
+                <td>${student.gender}</td>
+            </tr>`).join('');
+        };
 
-                const numberCell = document.createElement('td');
-                numberCell.textContent = studentNumber++;
-                row.appendChild(numberCell);
-
-                const imgCell = document.createElement('td');
-                const imgElement = document.createElement('img');
-                imgElement.src = student.img;
-                imgElement.alt = "Student Image";
-                imgElement.style.width = "50px";
-                imgElement.style.height = "50px";
-                imgElement.style.objectFit = "cover";
-                imgCell.appendChild(imgElement);
-                row.appendChild(imgCell);
-
-                const nameCell = document.createElement('td');
-                nameCell.textContent = student.fullname;
-                row.appendChild(nameCell);
-
-                const genderCell = document.createElement('td');
-                genderCell.textContent = student.gender;
-                row.appendChild(genderCell);
-
-                tableBody.appendChild(row);
-            });
-        }
-
-        // Fetch and render grades
-        function fetchAndRenderGrades() {
+        const fetchAndRenderGrades = () => {
             if (isGradesViewInitialized) return;
             isGradesViewInitialized = true;
             tableHead.innerHTML = `
@@ -505,46 +452,111 @@
                 <th>Course Final</th>
             </tr>`;
             fetch(`/student/${classId}/getAllGrades`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) throw new Error(`Failed to fetch grades: ${response.statusText}`);
+                    return response.json();
+                })
                 .then(grades => {
-                    gradesData = grades;
-                    renderGrades(grades);
+                    if (!grades || grades.length === 0) {
+                        grades = createDefaultGrades();
+                    }
+                    gradesData = grades || [];
+                    renderGrades(gradesData);
                     gradesDataInput.value = JSON.stringify(gradesData);
                     exportForm.style.display = 'block';
                 })
-                .catch(error => console.error('Error fetching grades:', error));
-        }
+                .catch(error => {
+                    console.error('Error fetching grades:', error);
+                    alert('Failed to fetch grades. Please try again later.');
+                });
+        };
 
-        // Render grades table
-        function renderGrades(grades) {
-            tableBody.innerHTML = '';
-            let studentNumber = 1;
-            grades.forEach(grade => {
-                const row = `
-                <tr>
-                    <td>${studentNumber++}</td>
-                    <td>${grade.fullname || 'N/A'}</td>
-                    <td>${grade.comment || 'N/A'}</td>
-                    <td>${grade.attitude || 'N/A'}</td>
-                    <td>${grade.softskill || 'N/A'}</td>
-                    <td>${grade.skill || 'N/A'}</td>
-                    <td>${grade.avgExamMark || 'N/A'}</td>
-                    <td>${grade.middleExam || 'N/A'}</td>
-                    <td>${grade.finalExam || 'N/A'}</td>
-                    <td>${grade.finalMark || 'N/A'}</td>
-                </tr>`;
-                tableBody.insertAdjacentHTML('beforeend', row);
+        const createDefaultGrades = () => {
+            // Create default grade objects with 0s for all fields
+            return gradesData.map(grade => ({
+                studentId: grade.studentId,
+                fullname: grade.fullname,
+                comment: '',
+                attitude: 0,
+                softskill: 0,
+                skill: 0,
+                avgExamMark: 0,
+                middleExam: 0,
+                finalExam: 0,
+                finalMark: 0
+            }));
+        };
+
+        const renderGrades = (grades) => {
+            tableBody.innerHTML = grades.map((grade, index) => `
+            <tr data-index="${index}">
+                <td>${index + 1}</td>
+                <td>${grade.fullname || 'N/A'}</td>
+                <td contenteditable="true">${grade.comment || '0'}</td>
+                <td contenteditable="true">${grade.attitude || '0'}</td>
+                <td contenteditable="true">${grade.softskill || '0'}</td>
+                <td contenteditable="true">${grade.skill || '0'}</td>
+                <td contenteditable="true">${grade.avgExamMark || '0'}</td>
+                <td contenteditable="true">${grade.middleExam || '0'}</td>
+                <td contenteditable="true">${grade.finalExam || '0'}</td>
+                <td contenteditable="true">${grade.finalMark || '0'}</td>
+            </tr>`).join('');
+        };
+
+        saveChangesButton.addEventListener('click', () => {
+            const updatedGrades = [];
+            tableBody.querySelectorAll('tr').forEach(row => {
+                const index = row.dataset.index;
+                const cells = row.querySelectorAll('td[contenteditable="true"]');
+                if (index !== undefined) {
+                    const grade = gradesData[index];
+                    updatedGrades.push({
+                        studentId: grade.studentId,
+                        comment: cells[0].textContent.trim(),
+                        attitude: parseFloat(cells[1].textContent.trim()) || 0,
+                        softskill: parseFloat(cells[2].textContent.trim()) || 0,
+                        skill: parseFloat(cells[3].textContent.trim()) || 0,
+                        avgExamMark: parseFloat(cells[4].textContent.trim()) || 0,
+                        middleExam: parseFloat(cells[5].textContent.trim()) || 0,
+                        finalExam: parseFloat(cells[6].textContent.trim()) || 0,
+                        finalMark: parseFloat(cells[7].textContent.trim()) || 0,
+                    });
+                }
             });
-        }
-        // Event listeners
+
+            fetch(`/student/${classId}/saveGrades`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedGrades),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(errorText => {
+                            throw new Error(errorText || 'Failed to save grades.');
+                        });
+                    }
+                    alert('Grades saved successfully!');
+                    fetchAndRenderGrades();  // Re-fetch the grades after saving
+                })
+                .catch(error => {
+                    console.error('Error saving grades:', error);
+                    alert('Failed to save grades: ' + error.message);
+                });
+        });
+
         viewGradesButton.addEventListener('click', fetchAndRenderGrades);
-        viewInfoButton.addEventListener('click', function () {
+        viewInfoButton.addEventListener('click', () => {
             isGradesViewInitialized = false;
             exportForm.style.display = 'none';
             fetchStudentList();
         });
+
+        // Initial load
+        fetchStudentList();
     });
+
 </script>
+
 <!-- fetch user -->
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -569,8 +581,100 @@
     } else {
         console.error("User details not found in sessionStorage");
     }
-
 </script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script type="text/javascript">
+    // Hàm thay đổi ngôn ngữ và lưu vào localStorage
+    function changeLanguage(language) {
+        var languageLabel = document.getElementById('languageLabel');
+
+        // Cập nhật nhãn ngôn ngữ trên dropdown
+        if (language === 'en') {
+            languageLabel.innerText = 'EN';
+        } else if (language === 'ja') {
+            languageLabel.innerText = 'JA';
+        }
+
+        // Lưu ngôn ngữ vào localStorage
+        localStorage.setItem('selectedLanguage', language);
+
+        // Kiểm tra nếu Google Translate đã được tải
+        if (window.google && google.translate) {
+            google.translate.TranslateElement.prototype.translatePage(language);
+        }
+    }
+
+    // Hàm khởi tạo Google Translate khi trang tải
+    function loadGoogleTranslate() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+        document.head.appendChild(script);
+    }
+
+    // Hàm khởi tạo Google Translate Element
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,ja',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false,
+        }, 'google_translate_element');
+    }
+
+    // Khi trang được tải, thiết lập ngôn ngữ từ localStorage
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lấy ngôn ngữ đã lưu trong localStorage
+        var savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+        // Cập nhật giao diện với ngôn ngữ đã lưu
+        var languageLabel = document.getElementById('languageLabel');
+        if (savedLanguage === 'en') {
+            languageLabel.innerText = 'EN';
+        } else if (savedLanguage === 'ja') {
+            languageLabel.innerText = 'JA';
+        }
+
+        // Dịch trang ngay từ khi tải
+        if (window.google && google.translate) {
+            google.translate.TranslateElement.prototype.translatePage(savedLanguage);
+        }
+    });
+
+    // Tải Google Translate
+    loadGoogleTranslate();
+</script>
+
+<!-- Success Modal -->
+<div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal"
+     tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-success" id="successModalLabel">
+                    <i class="fas fa-check-circle"></i> Successfully Update Grades
+                </h5>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-danger" id="errorModalLabel">
+                    <i class="fas fa-times-circle"></i> Error Input Grades
+                </h5>
+            </div>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+</div>
 
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>

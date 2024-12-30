@@ -503,15 +503,23 @@
                 dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
 
                 if (attendanceTaken) {
+                    // If attendance is already taken, show 'Edit' + 'Schedule'
                     dropdownMenu.innerHTML = `
                         <a class="dropdown-item" href="/edit-attendant.html?classId=${clasz.id}">
                             <i class="fas fa-edit text-dark-pastel-green"></i> Edit
                         </a>
+                        <a class="dropdown-item" href="/schedule-teacher.html?classId=${clasz.id}">
+                            <i class="fas fa-calendar-alt text-dark-pastel-green"></i> Schedule
+                        </a>
                     `;
                 } else {
+                    // If attendance is not taken, show 'Attendant' + 'Schedule'
                     dropdownMenu.innerHTML = `
                         <a class="dropdown-item" href="/attendant.html?classId=${clasz.id}">
                             <i class="fas fa-glasses text-dark-pastel-green"></i> Attendant
+                        </a>
+                        <a class="dropdown-item" href="/schedule-teacher.html?classId=${clasz.id}">
+                            <i class="fas fa-calendar-alt text-dark-pastel-green"></i> Schedule
                         </a>
                     `;
                 }
@@ -638,18 +646,6 @@
         if (userDetails && userDetails.teacherId) {
             // Redirect to the appropriate URL with the teacherId
             window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
-        } else {
-            console.error("Teacher ID is missing or user details not found in sessionStorage");
-        }
-    }
-
-    function redirectSchedule() {
-        // Retrieve userDetails from sessionStorage
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-
-        if (userDetails && userDetails.teacherId) {
-            // Redirect to the appropriate URL with the teacherId
-            window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
         } else {
             console.error("Teacher ID is missing or user details not found in sessionStorage");
         }

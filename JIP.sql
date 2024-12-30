@@ -125,7 +125,7 @@ CREATE TABLE Schedule (
 CREATE TABLE Attendant (
                            Id INT AUTO_INCREMENT PRIMARY KEY,
                            student_id INT,
-                           schedule_id INT,
+                           schedule_id BIGINT,
                            status ENUM('Present', 'Absent', 'Late', 'Permitted') NOT NULL,
                            date DATE NOT NULL,
                            total_slot INT,
