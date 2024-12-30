@@ -10,6 +10,8 @@ import com.example.jip.repository.MarkReportRepository;
 import com.example.jip.repository.StudentRepository;
 import com.example.jip.services.StudentServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -41,7 +43,7 @@ public class StudentController {
 
 
     @PostMapping("/save")
-    public RedirectView saveStudent(
+    public ResponseEntity<String> saveStudent(
             @RequestParam String fullname,
             @RequestParam String japanname,
             @RequestParam String dob,
@@ -50,8 +52,7 @@ public class StudentController {
             @RequestParam String phoneNumber,
             @RequestParam(required = false) MultipartFile img,
             @RequestParam(required = false) MultipartFile passport_img,
-            @RequestParam int account_id,
-            RedirectAttributes redirectAttributes) {
+            @RequestParam int account_id) {
 
         try {
             // Parse the date
@@ -62,29 +63,21 @@ public class StudentController {
                 localDate = LocalDate.parse(dob, formatter);
                 date = Date.valueOf(localDate);
             } catch (DateTimeParseException e) {
-                redirectAttributes.addFlashAttribute("errorMessage", "Invalid date format. Use yyyy-MM-dd.");
-                return new RedirectView("/account-settings.html");
+                return ResponseEntity.badRequest().body("Invalid date format. Please use 'yyyy-MM-dd'.");
             }
 
             // Call the service to create the student
             studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, passport_img, account_id);
-            redirectAttributes.addFlashAttribute("successMessage", "Student saved successfully!");
+
+            // Return success response
+            return ResponseEntity.ok("Student saved successfully!");
 
         } catch (IllegalArgumentException e) {
-            // Handle custom errors from the service
-            redirectAttributes.addAttribute("errorMessage", e.getMessage());
-            return new RedirectView("/create-account-student.html");
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            // Handle any unexpected errors
-            redirectAttributes.addAttribute("errorMessage", "An unexpected error occurred. Please try again.");
-            return new RedirectView("/create-account-student.html");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred. Please try again.");
         }
-
-        // Redirect back to the account settings page
-        return new RedirectView("/account-settings.html");
     }
-
-
 
     @GetMapping("/get")
     public List<StudentDTO> getTopStudents() {
