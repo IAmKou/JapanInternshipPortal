@@ -1,10 +1,8 @@
 package com.example.jip.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -59,8 +57,22 @@ public class Student {
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private Account account;
 
-
     public enum Gender {
         Male, Female
     }
+
+    // Custom constructor
+    public Student(String fullname, String japanname, Date dob, Gender gender, String phoneNumber,
+                   String email, String img, String passport, Account account) {
+        this.fullname = fullname;
+        this.japanname = japanname;
+        this.dob = dob;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.img = img;
+        this.passport = passport;
+        this.account = account;
+    }
 }
+

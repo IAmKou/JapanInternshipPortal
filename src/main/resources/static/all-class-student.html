@@ -323,17 +323,14 @@
         </div>
         <!-- Sidebar Area End Here -->
         <div class="dashboard-content-one">
-            <!-- Breadcubs Area Start Here -->
+            <!-- Breadcrumbs Area Start Here -->
             <div class="breadcrumbs-area">
                 <h3>Student</h3>
                 <ul>
-                    <li>
-                        <a href="manager.html">Home</a>
-                    </li>
+                    <li><a href="manager.html">Home</a></li>
                     <li>All Student</li>
                 </ul>
             </div>
-            <!-- Breadcubs Area End Here -->
             <!-- Class Table Area Start Here -->
             <div class="card height-auto">
                 <div class="card-body">
@@ -341,7 +338,7 @@
                         <div class="item-title">
                             <h3>All Class Student</h3>
                         </div>
-                        <div class="dropdown" style="margin-right: 99px;padding-bottom:10px;padding-left:10px" >
+                        <div class="dropdown" style="margin-right: 99px;padding-bottom:10px;padding-left:10px">
                             <button class="btn btn-gradient-yellow btn-search">Class Info</button>
                             <div class="dropdown-content">
                                 <button id="viewInfoButton" class="btn btn-gradient-yellow btn-search">VIEW STUDENT INFO</button>
@@ -349,249 +346,217 @@
                             </div>
                         </div>
                     </div>
-                    <div class="table-responsive">
+                    <div class="table-responsive" id="viewGrades">
                         <table class="table display text-nowrap">
                             <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Photo</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th></th>
+                                <!-- Columns headers will be added dynamically by JavaScript -->
                             </tr>
                             </thead>
                             <tbody>
-                            <tr></tr>
+                            <tr>
+                                <!-- Data rows will be added dynamically by JavaScript -->
+                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-
                 <!-- Export Form -->
                 <form action="/export-csv" id="exportForm" method="post" style="margin-top: 20px; display: none;">
-                    <input id="gradesData" name="gradesData" type="hidden"/>
+                    <input id="gradesData" name="gradesData" type="hidden" />
                     <div>
                         <button class="btn btn-gradient-yellow btn-search" type="submit">Export</button>
+                        <button id="saveChangesButton" class="btn btn-gradient-green btn-search" type="button">Save Changes</button>
                     </div>
                 </form>
             </div>
-
-            <!-- Success Modal -->
-            <div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal"
-                 tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header border-0">
-                            <h5 class="modal-title text-success" id="successModalLabel">
-                                <i class="fas fa-check-circle"></i> Success
-                            </h5>
-                        </div>
-                        <div class="modal-body text-center">
-                            <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Error Modal -->
-            <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header border-0">
-                            <h5 class="modal-title text-danger" id="errorModalLabel">
-                                <i class="fas fa-times-circle"></i> Error
-                            </h5>
-                        </div>
-                        <div class="modal-body"></div>
-                    </div>
-                </div>
-            </div>
-
+            <!-- Class Table Area Ends Here -->
         </div>
+        <!-- Breadcrumbs Area End Here -->
     </div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', () => {
         const tableBody = document.querySelector('.table tbody');
         const tableHead = document.querySelector('.table thead');
         const viewGradesButton = document.getElementById('viewGradesButton');
         const exportForm = document.getElementById('exportForm');
         const gradesDataInput = document.getElementById('gradesData');
         const viewInfoButton = document.getElementById('viewInfoButton');
+        const saveChangesButton = document.getElementById('saveChangesButton');
         const urlParams = new URLSearchParams(window.location.search);
         const classId = urlParams.get('classId');
         let gradesData = [];
         let isGradesViewInitialized = false;
 
-        // Ensure classId is valid before proceeding
-        if (classId) {
-            fetchStudentList();
-        } else {
-            console.error("classId is missing from the URL.");
+        if (!classId) {
+            console.error("Error: classId is missing from the URL.");
+            alert("Class ID is missing. Please check the URL.");
+            return;
         }
 
-        // Fetch student list function
-        function fetchStudentList() {
+        // Fetch and display the student list
+        const fetchStudentList = () => {
             fetch(`/student/${classId}/getAll`)
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
+                    if (!response.ok) throw new Error(`Failed to fetch students: ${response.statusText}`);
                     return response.json();
                 })
-                .then(students => {
-                    renderStudentList(students);
-                })
-                .catch(error => console.error('Error fetching students:', error));
-        }
+                .then(renderStudentList)
+                .catch(error => {
+                    console.error('Error fetching students:', error);
+                    alert('Failed to fetch student list. Please try again later.');
+                });
+        };
 
-        // Render student list
-        function renderStudentList(students) {
-            tableBody.innerHTML = '';
+        const renderStudentList = (students) => {
             tableHead.innerHTML = `
             <tr>
                 <th>#</th>
                 <th>Photo</th>
                 <th>Name</th>
-                <th>JName</th>
-                <th>Dob</th>
+                <th>Japanese Name</th>
+                <th>Date of Birth</th>
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Gender</th>
-                <th></th>
             </tr>`;
-            let studentNumber = 1;
-            students.forEach(student => {
-                const row = document.createElement('tr');
+            tableBody.innerHTML = students.map((student, index) => `
+            <tr>
+                <td>${index + 1}</td>
+                <td><img src="${student.img}" alt="Student Image" style="width: 50px; height: 50px; object-fit: cover;"></td>
+                <td>${student.fullname}</td>
+                <td>${student.jname}</td>
+                <td>${student.dob}</td>
+                <td>${student.email}</td>
+                <td>${student.phone}</td>
+                <td>${student.gender}</td>
+            </tr>`).join('');
+        };
 
-                const numberCell = document.createElement('td');
-                numberCell.textContent = studentNumber++;
-                row.appendChild(numberCell);
-
-                const imgCell = document.createElement('td');
-                const imgElement = document.createElement('img');
-                imgElement.src = student.img;
-                imgElement.alt = "Student Image";
-                imgElement.style.width = "50px";
-                imgElement.style.height = "50px";
-                imgElement.style.objectFit = "cover";
-                imgCell.appendChild(imgElement);
-                row.appendChild(imgCell);
-
-                const nameCell = document.createElement('td');
-                nameCell.textContent = student.fullname;
-                row.appendChild(nameCell);
-
-                const JnameCell = document.createElement('td');
-                JnameCell.textContent = student.jname;
-                row.appendChild(JnameCell);
-
-                const DOB = document.createElement('td');
-                DOB.textContent = student.dob;
-                row.appendChild(DOB);
-
-                const Email = document.createElement('td');
-                Email.textContent = student.email;
-                row.appendChild(Email);
-
-                const Phone = document.createElement('td');
-                Phone.textContent = student.phone;
-                row.appendChild(Phone);
-
-                const genderCell = document.createElement('td');
-                genderCell.textContent = student.gender;
-                row.appendChild(genderCell);
-
-                tableBody.appendChild(row);
-            });
-        }
-
-        // Fetch and render grades
-        function fetchAndRenderGrades() {
+        const fetchAndRenderGrades = () => {
             if (isGradesViewInitialized) return;
             isGradesViewInitialized = true;
             tableHead.innerHTML = `
-    <tr>
-        <th>#</th>
-        <th>Student Name</th>
-        <th>Teacher Comment</th>
-        <th>Participation</th>
-        <th>Soft Skill</th>
-        <th>Skill</th>
-        <th>Daily Exams</th>
-        <th>Midterm Test</th>
-        <th>Final Test</th>
-        <th>Course Final</th>
-    </tr>`;
+            <tr>
+                <th>#</th>
+                <th>Student Name</th>
+                <th>Teacher Comment</th>
+                <th>Participation</th>
+                <th>Soft Skill</th>
+                <th>Skill</th>
+                <th>Daily Exams</th>
+                <th>Midterm Test</th>
+                <th>Final Test</th>
+                <th>Course Final</th>
+            </tr>`;
             fetch(`/student/${classId}/getAllGrades`)
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
+                    if (!response.ok) throw new Error(`Failed to fetch grades: ${response.statusText}`);
                     return response.json();
                 })
                 .then(grades => {
-                    gradesData = grades || []; // Đảm bảo gradesData là một mảng
-                    if (gradesData.length === 0) {
-                        return fetch(`/student/${classId}/getAll`) // Fetch danh sách học sinh
-                            .then(response => response.json())
-                            .then(students => {
-                                // Tạo danh sách điểm mặc định là "N/A" cho mỗi học sinh
-                                gradesData = students.map(student => ({
-                                    fullname: student.fullname || '0',
-                                    comment: '0',
-                                    attitude: '0',
-                                    softskill: '0',
-                                    skill: '0',
-                                    avgExamMark: '0',
-                                    middleExam: '0',
-                                    finalExam: '0',
-                                    finalMark: '0',
-                                }));
-                                renderGrades(gradesData);
-                                gradesDataInput.value = JSON.stringify(gradesData);
-                                exportForm.style.display = 'block';
-                            });
-                    } else {
-                        renderGrades(gradesData);
-                        gradesDataInput.value = JSON.stringify(gradesData);
-                        exportForm.style.display = 'block';
+                    if (!grades || grades.length === 0) {
+                        grades = createDefaultGrades();
                     }
+                    gradesData = grades || [];
+                    renderGrades(gradesData);
+                    gradesDataInput.value = JSON.stringify(gradesData);
+                    exportForm.style.display = 'block';
                 })
-                .catch(error => console.error('Error fetching grades:', error));
-        }
+                .catch(error => {
+                    console.error('Error fetching grades:', error);
+                    alert('Failed to fetch grades. Please try again later.');
+                });
+        };
 
-        // Render grades table
-        function renderGrades(grades) {
-            tableBody.innerHTML = '';
-            let studentNumber = 1;
-            grades.forEach(grade => {
-                const row = `
-                <tr>
-                    <td>${studentNumber++}</td>
-                    <td>${grade.fullname || '0'}</td>
-                    <td>${grade.comment || '0'}</td>
-                    <td>${grade.attitude || '0'}</td>
-                    <td>${grade.softskill || '0'}</td>
-                    <td>${grade.skill || '0'}</td>
-                    <td>${grade.avgExamMark || '0'}</td>
-                    <td>${grade.middleExam || '0'}</td>
-                    <td>${grade.finalExam || '0'}</td>
-                    <td>${grade.finalMark || '0'}</td>
-                </tr>`;
-                tableBody.insertAdjacentHTML('beforeend', row);
+        const createDefaultGrades = () => {
+            // Create default grade objects with 0s for all fields
+            return gradesData.map(grade => ({
+                studentId: grade.studentId,
+                fullname: grade.fullname,
+                comment: '',
+                attitude: 0,
+                softskill: 0,
+                skill: 0,
+                avgExamMark: 0,
+                middleExam: 0,
+                finalExam: 0,
+                finalMark: 0
+            }));
+        };
+
+        const renderGrades = (grades) => {
+            tableBody.innerHTML = grades.map((grade, index) => `
+            <tr data-index="${index}">
+                <td>${index + 1}</td>
+                <td>${grade.fullname || 'N/A'}</td>
+                <td contenteditable="true">${grade.comment || '0'}</td>
+                <td contenteditable="true">${grade.attitude || '0'}</td>
+                <td contenteditable="true">${grade.softskill || '0'}</td>
+                <td contenteditable="true">${grade.skill || '0'}</td>
+                <td contenteditable="true">${grade.avgExamMark || '0'}</td>
+                <td contenteditable="true">${grade.middleExam || '0'}</td>
+                <td contenteditable="true">${grade.finalExam || '0'}</td>
+                <td contenteditable="true">${grade.finalMark || '0'}</td>
+            </tr>`).join('');
+        };
+
+        saveChangesButton.addEventListener('click', () => {
+            const updatedGrades = [];
+            tableBody.querySelectorAll('tr').forEach(row => {
+                const index = row.dataset.index;
+                const cells = row.querySelectorAll('td[contenteditable="true"]');
+                if (index !== undefined) {
+                    const grade = gradesData[index];
+                    updatedGrades.push({
+                        studentId: grade.studentId,
+                        comment: cells[0].textContent.trim(),
+                        attitude: parseFloat(cells[1].textContent.trim()) || 0,
+                        softskill: parseFloat(cells[2].textContent.trim()) || 0,
+                        skill: parseFloat(cells[3].textContent.trim()) || 0,
+                        avgExamMark: parseFloat(cells[4].textContent.trim()) || 0,
+                        middleExam: parseFloat(cells[5].textContent.trim()) || 0,
+                        finalExam: parseFloat(cells[6].textContent.trim()) || 0,
+                        finalMark: parseFloat(cells[7].textContent.trim()) || 0,
+                    });
+                }
             });
-        }
-        // Event listeners
+
+            fetch(`/student/${classId}/saveGrades`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedGrades),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(errorText => {
+                            throw new Error(errorText || 'Failed to save grades.');
+                        });
+                    }
+                    alert('Grades saved successfully!');
+                    fetchAndRenderGrades();  // Re-fetch the grades after saving
+                })
+                .catch(error => {
+                    console.error('Error saving grades:', error);
+                    alert('Failed to save grades: ' + error.message);
+                });
+        });
+
         viewGradesButton.addEventListener('click', fetchAndRenderGrades);
-        viewInfoButton.addEventListener('click', function () {
+        viewInfoButton.addEventListener('click', () => {
             isGradesViewInitialized = false;
             exportForm.style.display = 'none';
             fetchStudentList();
         });
+
+        // Initial load
+        fetchStudentList();
     });
+
 </script>
+
 <!-- fetch user -->
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -679,6 +644,37 @@
     // Tải Google Translate
     loadGoogleTranslate();
 </script>
+
+<!-- Success Modal -->
+<div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal"
+     tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-success" id="successModalLabel">
+                    <i class="fas fa-check-circle"></i> Successfully Update Grades
+                </h5>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-danger" id="errorModalLabel">
+                    <i class="fas fa-times-circle"></i> Error Input Grades
+                </h5>
+            </div>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+</div>
 
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>

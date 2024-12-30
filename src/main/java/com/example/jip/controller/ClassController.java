@@ -128,4 +128,9 @@ public class ClassController {
                 .map(ClassDTO::new)
                 .collect(Collectors.toList());
     }
+
+    @GetMapping("/getCById")
+    public ClassDTO getClassById(@RequestParam("classId") int id) {
+        return classRepository.findById(id).map(ClassDTO::new).orElseThrow(() -> new IllegalArgumentException("Class not found"));
+    }
 }

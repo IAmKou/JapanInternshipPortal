@@ -1,11 +1,16 @@
 package com.example.jip.controller;
 
 
+import com.example.jip.dto.request.assignment.AssignmentUpdateRequest;
 import com.example.jip.dto.request.markReport.MarkReportImportRequest;
+import com.example.jip.dto.request.markReport.MarkReportUpdateRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.dto.response.markReport.MarkReportResponse;
 import com.example.jip.entity.MarkReport;
 import com.example.jip.services.MarkReportServices;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -19,9 +24,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.io.PrintWriter;
+import java.util.*;
+
 @Slf4j
 @RestController
 @RequestMapping("/mark-report")
@@ -77,5 +82,21 @@ public class MarkReportController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateAssignment(@RequestParam("markRpId") int markRp_id,
+                                              @ModelAttribute MarkReportUpdateRequest request) {
+        try {
+            log.info("Received request: " + request);  // Log the incoming request for debugging
+
+            markReportServices.updateMarkRp(markRp_id, request);
+            return ResponseEntity.noContent().build(); // Return 204 No Content on successful update
+        } catch (NoSuchElementException e) {
+            log.error("Assignment not found", e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 Not Found if assignment doesn't exist
+        }
+    }
+
+
 
 }
