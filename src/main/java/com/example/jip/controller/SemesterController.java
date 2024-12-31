@@ -89,10 +89,10 @@ public class SemesterController {
     }
 
     @GetMapping("/get")
-    public Page<SemesterDTO> getSemester(@RequestParam(defaultValue = "0") int page,
-                                         @RequestParam(defaultValue = "5") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return semesterRepository.findAll(pageable).map(SemesterDTO::new);
+    public List<SemesterDTO> getSemester() {
+        return semesterRepository.findAll().stream()
+                .map(SemesterDTO::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/get/{semesterId}")
