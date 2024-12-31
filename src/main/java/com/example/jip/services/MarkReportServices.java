@@ -7,7 +7,6 @@ import com.example.jip.dto.request.markReport.MarkReportUpdateRequest;
 import com.example.jip.dto.response.markReport.MarkReportResponse;
 import com.example.jip.entity.MarkReport;
 import com.example.jip.entity.Student;
-import com.example.jip.entity.StudentAssignment;
 import com.example.jip.repository.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
