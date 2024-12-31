@@ -3,6 +3,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "mark_report")
@@ -18,8 +20,14 @@ public class MarkReport {
     @OneToOne
     @JoinColumn(name = "student_id", referencedColumnName = "id", nullable = false)
     Student student;
+    @Column(name = "presentation")
+    BigDecimal presentation;
+    @Column(name = "script_presentation")
+    BigDecimal script_presentation;
     @Column(name = "softskill")
     BigDecimal softskill;
+    @OneToMany(mappedBy = "markReport", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<MarkReportExam> markReportExams = new ArrayList<>();
     @Column(name = "avg_exam_mark")
     BigDecimal avg_exam_mark;
     @Column(name = "middle_exam")

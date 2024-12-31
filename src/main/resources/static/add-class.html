@@ -60,36 +60,6 @@
             padding-right: 30px;
             font-size: 15px;
         }
-        /* Kiểu cho mũi tên dropdown trong select2 */
-        .select2-selection__arrow {
-            display: none;                            /* Ẩn mũi tên dropdown */
-        }
-
-        /* Kiểu cho phần rendered (hiển thị lựa chọn đã chọn) */
-        .select2-selection__rendered {
-            text-align: center !important;            /* Căn giữa text trong rendered selection */
-            line-height: 30px;                        /* Căn giữa văn bản theo chiều dọc */
-        }
-
-        /* Kiểu dáng cho phần tìm kiếm của select2 (khi mở dropdown) */
-        .select2-dropdown {
-            text-align: center !important;            /* Căn giữa text trong dropdown */
-        }
-
-        /* Kiểu cho các phần tử option trong dropdown */
-        .select2-results__option {
-            font-weight: bold !important;             /* Làm đậm chữ trong các option */
-            text-align: center;                       /* Căn giữa chữ trong các option */
-            font-size: 16px;                          /* Cân chỉnh kích thước chữ */
-        }
-
-        /* Kiểu cho input search trong dropdown */
-        .select2-search__field {
-            font-size: 16px;                          /* Kích thước chữ trong ô tìm kiếm */
-            font-weight: bold;                        /* Làm đậm chữ trong ô tìm kiếm */
-            text-align: center;                       /* Căn giữa chữ trong ô tìm kiếm */
-        }
-
 
         .pagination-container {
             display: flex;
@@ -97,23 +67,6 @@
             margin-top: 10px;
         }
 
-        .page-btn {
-            padding: 5px 10px;
-            margin: 0 5px;
-            border: 1px solid #ccc;
-            background-color: #f8f8f8;
-            cursor: pointer;
-        }
-
-        .page-btn.active {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-
-        .page-btn:hover {
-            background-color: #ddd;
-        }
         input[name="className"] {
             border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
             border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
@@ -348,18 +301,8 @@
             <div class="card height-auto">
                 <div class="card-body">
                     <div class="heading-layout1">
-                        <div class="item-title">
+                        <div class="item-title" style="padding-bottom: 10px">
                             <h3>Add New Class</h3>
-                        </div>
-                        <div class="dropdown">
-                            <a class="dropdown-toggle" href="#" role="button"
-                               data-toggle="dropdown" aria-expanded="false">...</a>
-
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                            </div>
                         </div>
                     </div>
                     <form action="class/create" class="new-added-form" method="post" id="createClassForm">
@@ -395,9 +338,9 @@
                             <div id="studentCount"></div>
                             <div class="col-md-6 form-group"></div>
                             <div class="col-12 form-group mg-t-8">
-                                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save
+                                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Create Class
                                 </button>
-                                <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
+                                <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Clear Form</button>
                             </div>
                         </div>
                     </form>

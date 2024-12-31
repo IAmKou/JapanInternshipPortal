@@ -771,6 +771,7 @@
             return;  // Dừng hàm nếu có trường không hợp lệ
         }
 
+
         // Kiểm tra ID của học sinh và bài tập có hợp lệ không
         const studentId = formData.get('student_id');
         const assignmentId = formData.get('assignment_id');
@@ -782,6 +783,17 @@
         // Log dữ liệu để kiểm tra
         for (const [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
+        }
+
+        // Kiểm tra dung lượng file
+        const fileInput = document.querySelector('input[type="file"]'); // Find the file input
+        if (fileInput && fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const fileSizeInMB = file.size / (1024 * 1024); // Convert bytes to MB
+            if (fileSizeInMB > 125) {
+                showErrorModal('File size must not exceed 125MB.');
+                return;
+            }
         }
 
         // Gửi formData (bao gồm nội dung Quill) đến backend
