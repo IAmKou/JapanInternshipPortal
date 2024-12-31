@@ -92,7 +92,6 @@ public class ScheduleController {
                 schedule.setColor(scheduleDTO.getColor());
                 schedule.setDate(sqlDate);
                 schedule.setDay_of_week(getDayOfWeekFromDate(sqlDate));
-                schedule.setTime_slot("All day");
                 schedule.setStatus(Schedule.status.Draft);
 
                 scheduleRepository.save(schedule);
@@ -153,7 +152,6 @@ public class ScheduleController {
                     schedule.setSemester(semester);
                     schedule.setClasz(clasz);
                     schedule.setRoom(scheduleDTO.getRoom());
-                    schedule.setTime_slot("All day");
                     schedule.setStatus(Schedule.status.Published);
 
                     scheduleRepository.save(schedule);
@@ -222,7 +220,6 @@ public class ScheduleController {
                 schedule.setDay_of_week(getDayOfWeekFromDate(sqlDate));
                 schedule.setClasz(clasz);
                 schedule.setRoom(scheduleDTO.getRoom());
-                schedule.setTime_slot("All day");
                 schedule.setStatus(Schedule.status.Published);
 
                 scheduleRepository.save(schedule);
@@ -259,19 +256,19 @@ public class ScheduleController {
         }
     }
 
-    @GetMapping("/get/class/{classId}")
-    public List<ScheduleDTO> getClassSchedule(@PathVariable int classId) {
-        return scheduleRepository.findByClaszId(classId).stream()
-                .map(ScheduleDTO :: new)
-                .collect(Collectors.toList());
-    }
-
-    @GetMapping("/getRoomForClass/{classId}")
-    public List<ScheduleDTO> getRoomClassSchedule(@PathVariable int classId) {
-        return scheduleRepository.findByClaszId(classId).stream()
-                .map(ScheduleDTO :: new)
-                .collect(Collectors.toList());
-    }
+//    @GetMapping("/get/class/{classId}")
+//    public List<ScheduleDTO> getClassSchedule(@PathVariable int classId) {
+//        return scheduleRepository.findByClaszId(classId).stream()
+//                .map(ScheduleDTO :: new)
+//                .collect(Collectors.toList());
+//    }
+//
+//    @GetMapping("/getRoomForClass/{classId}")
+//    public List<ScheduleDTO> getRoomClassSchedule(@PathVariable int classId) {
+//        return scheduleRepository.findByClaszId(classId).stream()
+//                .map(ScheduleDTO :: new)
+//                .collect(Collectors.toList());
+//    }
 
 
     private Schedule.dayOfWeek getDayOfWeekFromDate(java.sql.Date date) {

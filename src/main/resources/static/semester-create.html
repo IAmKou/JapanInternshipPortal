@@ -31,19 +31,20 @@
 </head>
 
 <body>
-    <!-- Preloader Start Here -->
-    <div id="preloader"></div>
-    <!-- Preloader End Here -->
-    <div id="wrapper" class="wrapper bg-ash">
-       <!-- Header Menu Area Start Here -->
-        <div id="google_translate_element"></div>
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<div id="wrapper" class="wrapper bg-ash">
+    <!-- Header Menu Area Start Here -->
+    <div id="google_translate_element"></div>
 
-        <div class="navbar navbar-expand-md header-menu-one bg-light">
+    <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
                 <a href="admin.html">
                     <div style="width: 180px; height: 70px; overflow: hidden;">
-                        <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+                        <img src="img/JIP%20LOGO%20n.png" alt="logo"
+                             style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                 </a>
             </div>
@@ -102,7 +103,8 @@
 
                 <!--Notification-->
                 <li class="navbar-item dropdown header-notification">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
                         <i class="far fa-bell"></i>
                         <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
                         <span id="notification-count">0</span>
@@ -129,375 +131,561 @@
             </ul>
         </div>
     </div>
-        <!-- Header Menu Area End Here -->
-        <!-- Page Area Start Here -->
-        <div class="dashboard-page-one">
-            <!-- Sidebar Area Start Here -->
-            <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
-                <div class="mobile-sidebar-header d-md-none">
-                    <div class="header-logo">
-                        <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
-                    </div>
-                </div>
-                <div class="sidebar-menu-content">
-                    <ul class="nav nav-sidebar-menu sidebar-toggle-view">
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="semester-create.html" class="nav-link"><i
-                                    class="flaticon-settings"></i><span>Semester</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="report-list.html" class="nav-link"><i
-                                    class="flaticon-script"></i><span>Report</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="notice-board.html" class="nav-link"><i
-                                    class="flaticon-script"></i><span>Notification</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="account-settings.html" class="nav-link"><i
-                                    class="flaticon-settings"></i><span>Account List</span></a>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change Password</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+    <!-- Header Menu Area End Here -->
+    <!-- Page Area Start Here -->
+    <div class="dashboard-page-one">
+        <!-- Sidebar Area Start Here -->
+        <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+            <div class="mobile-sidebar-header d-md-none">
+                <div class="header-logo">
+                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
-            <!-- Sidebar Area End Here -->
-            <div class="dashboard-content-one">
-                <!-- Breadcubs Area Start Here -->
-                <div class="breadcrumbs-area">
-                    <h3>Semester Board</h3>
-                    <ul>
-                        <li>
-                            <a href="admin.html">Home</a>
-                        </li>
-                        <li>Semester</li>
-                    </ul>
-                </div>
-                <!-- Breadcubs Area End Here -->
-                <div class="row">
-                    <!-- Add Notice Area Start Here -->
-                    <div class="col-4-xxxl col-12">
-                        <div class="card height-auto">
-                            <div class="card-body">
-                                <div class="heading-layout1">
-                                    <div class="item-title">
-                                        <h3>Create New Semester</h3>
-                                    </div>
-                                </div>
-                                <form class="new-added-form" action="notification/create" method="post">
-                                    <input type="hidden" name="userId" id="hiddenUserId">
-                                    <div class="row">
-                                        <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                            <label>Title</label>
-                                            <input type="text" placeholder="" class="form-control" name="name" required>
-                                        </div>
-                                        <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                            <label>Start Time</label>
-                                            <input type="date" placeholder="" class="form-control" name="st" required>
-                                        </div>
-                                        <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                            <label>End Time</label>
-                                            <input type="date" placeholder="" class="form-control" name="et" required>
-                                        </div>
-                                        <div class="col-12 form-group mg-t-8">
-                                            <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Create</button>
-                                            <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Clear Form</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Add Notice Area End Here -->
-                    <!-- All Notice Area Start Here -->
-                    <div class="col-8-xxxl col-12">
-                        <div class="card height-auto">
-                            <div class="card-body">
-                                <div class="heading-layout1">
-                                    <div class="item-title">
-                                        <h3>Semester Board</h3>
-                                    </div>
-                                </div>
-
-                                <div class="notice-board-wrap" id="notice-board-wrap">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- All Notice Area End Here -->
-                </div>
+            <div class="sidebar-menu-content">
+                <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="semester-create.html" class="nav-link"><i
+                                class="flaticon-settings"></i><span>Semester</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="report-list.html" class="nav-link"><i
+                                class="flaticon-script"></i><span>Report</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="notice-board.html" class="nav-link"><i
+                                class="flaticon-script"></i><span>Notification</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="account-settings.html" class="nav-link"><i
+                                class="flaticon-settings"></i><span>Account List</span></a>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change
+                                    Password</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
-        <!-- Page Area End Here -->
+        <!-- Sidebar Area End Here -->
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <h3>Semester Board</h3>
+                <ul>
+                    <li>
+                        <a href="admin.html">Home</a>
+                    </li>
+                    <li>Semester</li>
+                </ul>
+            </div>
+            <!-- Breadcubs Area End Here -->
+            <div class="row">
+                <!-- Add Notice Area Start Here -->
+                <div class="col-4-xxxl col-12">
+                    <div class="card height-auto">
+                        <div class="card-body">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3>Create New Semester</h3>
+                                </div>
+                            </div>
+                            <form class="new-added-form" action="notification/create" method="post">
+                                <input type="hidden" name="userId" id="hiddenUserId">
+                                <div class="row">
+                                    <div class="col-12-xxxl col-lg-6 col-12 form-group">
+                                        <label>Title</label>
+                                        <input type="text" placeholder="" class="form-control" name="name" required>
+                                    </div>
+                                    <div class="col-12-xxxl col-lg-6 col-12 form-group">
+                                        <label>Start Time</label>
+                                        <input type="date" placeholder="" class="form-control" name="st" required>
+                                    </div>
+                                    <div class="col-12-xxxl col-lg-6 col-12 form-group">
+                                        <label>End Time</label>
+                                        <input type="date" placeholder="" class="form-control" name="et" required>
+                                    </div>
+                                    <div class="col-12 form-group mg-t-8">
+                                        <button type="submit"
+                                                class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Create
+                                        </button>
+                                        <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Clear
+                                            Form
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add Notice Area End Here -->
+                <!-- All Notice Area Start Here -->
+                <div class="col-8-xxxl col-12">
+                    <div class="card height-auto">
+                        <div class="card-body">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3>Semester Board</h3>
+                                </div>
+                            </div>
+                            <div class="notice-board-wrap" id="notice-board-wrap">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- All Notice Area End Here -->
+            </div>
+        </div>
     </div>
-    <!-- jquery-->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <!-- Plugins js -->
-    <script src="js/plugins.js"></script>
-    <!-- Popper js -->
-    <script src="js/popper.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Select 2 Js -->
-    <script src="js/select2.min.js"></script>
-    <!-- Scroll Up Js -->
-    <script src="js/jquery.scrollUp.min.js"></script>
-    <!-- Date Picker Js -->
-    <script src="js/datepicker.min.js"></script>
-    <!-- Custom Js -->
-    <script src="js/main.js"></script>
-    <script src="script.js"></script>
+    <div class="modal-dialog" id="updateModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" data-i18n="add_account">Update Semester</h5>
+                <form id="updateSemesterForm">
+                    <label for="semesterName">Name:</label>
+                    <input type="text" id="semesterName" required>
 
-    <script type="text/javascript">
-        // Hàm thay đổi ngôn ngữ và lưu vào localStorage
-        function changeLanguage(language) {
-            var languageLabel = document.getElementById('languageLabel');
+                    <label for="semesterStart">Start Date:</label>
+                    <input type="date" id="semesterStart" required>
 
-            // Cập nhật nhãn ngôn ngữ trên dropdown
-            if (language === 'en') {
-                languageLabel.innerText = 'EN';
-            } else if (language === 'ja') {
-                languageLabel.innerText = 'JA';
-            }
+                    <label for="semesterEnd">End Date:</label>
+                    <input type="date" id="semesterEnd" required>
+                    <div class="modal-footer">
+                        <button type="submit">Update</button>
+                        <button type="button" id="cancelButton">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- jquery-->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Select 2 Js -->
+<script src="js/select2.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Date Picker Js -->
+<script src="js/datepicker.min.js"></script>
+<!-- Custom Js -->
+<script src="js/main.js"></script>
+<script src="script.js"></script>
 
-            // Lưu ngôn ngữ vào localStorage
-            localStorage.setItem('selectedLanguage', language);
+<script type="text/javascript">
+    // Hàm thay đổi ngôn ngữ và lưu vào localStorage
+    function changeLanguage(language) {
+        var languageLabel = document.getElementById('languageLabel');
 
-            // Kiểm tra nếu Google Translate đã được tải
-            if (window.google && google.translate) {
-                google.translate.TranslateElement.prototype.translatePage(language);
-            }
+        // Cập nhật nhãn ngôn ngữ trên dropdown
+        if (language === 'en') {
+            languageLabel.innerText = 'EN';
+        } else if (language === 'ja') {
+            languageLabel.innerText = 'JA';
         }
 
-        // Hàm khởi tạo Google Translate khi trang tải
-        function loadGoogleTranslate() {
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-            document.head.appendChild(script);
+        // Lưu ngôn ngữ vào localStorage
+        localStorage.setItem('selectedLanguage', language);
+
+        // Kiểm tra nếu Google Translate đã được tải
+        if (window.google && google.translate) {
+            google.translate.TranslateElement.prototype.translatePage(language);
+        }
+    }
+
+    // Hàm khởi tạo Google Translate khi trang tải
+    function loadGoogleTranslate() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+        document.head.appendChild(script);
+    }
+
+    // Hàm khởi tạo Google Translate Element
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,ja',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false,
+        }, 'google_translate_element');
+    }
+
+    // Khi trang được tải, thiết lập ngôn ngữ từ localStorage
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lấy ngôn ngữ đã lưu trong localStorage
+        var savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+        // Cập nhật giao diện với ngôn ngữ đã lưu
+        var languageLabel = document.getElementById('languageLabel');
+        if (savedLanguage === 'en') {
+            languageLabel.innerText = 'EN';
+        } else if (savedLanguage === 'ja') {
+            languageLabel.innerText = 'JA';
         }
 
-        // Hàm khởi tạo Google Translate Element
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,ja',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false,
-            }, 'google_translate_element');
+        // Dịch trang ngay từ khi tải
+        if (window.google && google.translate) {
+            google.translate.TranslateElement.prototype.translatePage(savedLanguage);
         }
+    });
 
-        // Khi trang được tải, thiết lập ngôn ngữ từ localStorage
-        document.addEventListener('DOMContentLoaded', function () {
-            // Lấy ngôn ngữ đã lưu trong localStorage
-            var savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-
-            // Cập nhật giao diện với ngôn ngữ đã lưu
-            var languageLabel = document.getElementById('languageLabel');
-            if (savedLanguage === 'en') {
-                languageLabel.innerText = 'EN';
-            } else if (savedLanguage === 'ja') {
-                languageLabel.innerText = 'JA';
-            }
-
-            // Dịch trang ngay từ khi tải
-            if (window.google && google.translate) {
-                google.translate.TranslateElement.prototype.translatePage(savedLanguage);
-            }
-        });
-
-        // Tải Google Translate
-        loadGoogleTranslate();
-    </script>
+    // Tải Google Translate
+    loadGoogleTranslate();
+</script>
 
 
+<script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script>
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    if (userDetails) {
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        const userRoleElements = document.querySelectorAll('.userRole');
+        const userId = userDetails.id;
+        document.getElementById("hiddenUserId").value = userId;
 
+        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
+        if (userDetails.roleName === "ADMIN") {
+            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.username;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
 
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <script>
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-        if (userDetails) {
-            const userFullNameElements = document.querySelectorAll('.userFullName');
-            const userRoleElements = document.querySelectorAll('.userRole');
-            const userId = userDetails.id;
-            document.getElementById("hiddenUserId").value = userId;
+            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
+            document.getElementById("teacher-view").style.display = "none";
+            document.getElementById("student-view").style.display = "none";
+        } else if (userDetails.roleName === "TEACHER") {
+            // Hiển thị đầy đủ tên và vai trò cho giáo viên
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
 
-            // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-            if (userDetails.roleName === "ADMIN") {
-                // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.username;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
+            // Chỉ hiển thị mục của giáo viên
+            document.getElementById("teacher-view").style.display = "block";
+            document.getElementById("student-view").style.display = "none";
+            document.getElementById("student-view1").style.display = "none";
+        } else if (userDetails.roleName === "STUDENT") {
+            // Hiển thị đầy đủ tên và vai trò cho học sinh
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
 
-                // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "none";
-            } else if (userDetails.roleName === "TEACHER") {
-                // Hiển thị đầy đủ tên và vai trò cho giáo viên
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.fullName;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
-
-                // Chỉ hiển thị mục của giáo viên
-                document.getElementById("teacher-view").style.display = "block";
-                document.getElementById("student-view").style.display = "none";
-                document.getElementById("student-view1").style.display = "none";
-            } else if (userDetails.roleName === "STUDENT") {
-                // Hiển thị đầy đủ tên và vai trò cho học sinh
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.fullName;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
-
-                // Chỉ hiển thị mục của học sinh
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "block";
-                document.getElementById("student-view1").style.display = "block";
-            } else {
-                console.warn("Role not recognized: ", userDetails.roleName);
-            }
+            // Chỉ hiển thị mục của học sinh
+            document.getElementById("teacher-view").style.display = "none";
+            document.getElementById("student-view").style.display = "block";
+            document.getElementById("student-view1").style.display = "block";
         } else {
-            console.error("User details not found in sessionStorage");
+            console.warn("Role not recognized: ", userDetails.roleName);
+        }
+    } else {
+        console.error("User details not found in sessionStorage");
+    }
+
+</script>
+<script>
+    // Handling form submission for creating a semester
+    document.querySelector('form.new-added-form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Get the values from the form
+        const semesterName = document.querySelector('input[name="name"]').value;
+        const startTime = document.querySelector('input[name="st"]').value;
+        const endTime = document.querySelector('input[name="et"]').value;
+
+        // Convert the values to Date objects for validation
+        const startDate = new Date(startTime);
+        const endDate = new Date(endTime);
+        const currentDate = new Date();
+
+        // Validate start time: it should not be in the past
+        if (startDate < currentDate) {
+            alert('Start time cannot be in the past.');
+            return; // Stop the form submission
         }
 
-    </script>
-    <script>
-        // Handling form submission for creating a semester
-        document.querySelector('form.new-added-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
+        // Validate end time: it should not be before the start time
+        if (endDate < startDate) {
+            alert('End time cannot be before the start time.');
+            return; // Stop the form submission
+        }
 
-            // Get the values from the form
-            const semesterName = document.querySelector('input[name="name"]').value;
-            const startTime = document.querySelector('input[name="st"]').value;
-            const endTime = document.querySelector('input[name="et"]').value;
+        // Set status based on the difference between current date and start time
+        let status = 'Inactive';  // Default status
 
-            // Convert the values to Date objects for validation
-            const startDate = new Date(startTime);
-            const endDate = new Date(endTime);
-            const currentDate = new Date();
+        const timeDiff = startDate - currentDate;
+        const daysToStart = timeDiff / (1000 * 3600 * 24);  // Convert milliseconds to days
 
-            // Validate start time: it should not be in the past
-            if (startDate < currentDate) {
-                alert('Start time cannot be in the past.');
-                return; // Stop the form submission
-            }
+        // If current date is within 7 days of start date, set status to 'Active'
+        if (daysToStart <= 7 && daysToStart >= 0) {
+            status = 'Active';
+        }
 
-            // Validate end time: it should not be before the start time
-            if (endDate < startDate) {
-                alert('End time cannot be before the start time.');
-                return; // Stop the form submission
-            }
+        // Prepare the semester data with the calculated status
+        const semesterData = {
+            name: semesterName,
+            start_time: startTime,
+            end_time: endTime,
+            status: status  // Include the status in the data sent to the backend
+        };
 
-            // Set status based on the difference between current date and start time
-            let status = 'Inactive';  // Default status
-
-            const timeDiff = startDate - currentDate;
-            const daysToStart = timeDiff / (1000 * 3600 * 24);  // Convert milliseconds to days
-
-            // If current date is within 7 days of start date, set status to 'Active'
-            if (daysToStart <= 7 && daysToStart >= 0) {
-                status = 'Active';
-            }
-
-            // Prepare the semester data with the calculated status
-            const semesterData = {
-                name: semesterName,
-                start_time: startTime,
-                end_time: endTime,
-                status: status  // Include the status in the data sent to the backend
-            };
-
-            // Send the data via AJAX
-            fetch('/semester/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(semesterData)
-            })
-                .then(response => {
-                    // Check if the response is OK (status 200-299)
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();  // Parse the response body as JSON (this already converts it to an object)
-                })
-                .then(data => {
-                    // Display success message
-                    alert(data.message);
-                    window.location.reload();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while creating the semester.');
-                });
-        });
-    </script>
-    <script>
-        // Fetch notifications from the backend
-        fetch('/semester/get')
-            .then(response => response.json()) // Parse the response as JSON
-            .then(data => {
-                const noticeBoardWrap = document.getElementById('notice-board-wrap');
-
-                // Check if the list is empty
-                if (data.length === 0) {
-                    noticeBoardWrap.innerHTML = '<p>No semester available.</p>';
-                    return;
+        // Send the data via AJAX
+        fetch('/semester/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(semesterData)
+        })
+            .then(response => {
+                // Check if the response is OK (status 200-299)
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
-
-                // Loop through each semester and add it to the page
-                data.forEach(semester => {
-                    // Create the new semester div
-                    const semesterDiv = document.createElement('div');
-                    semesterDiv.classList.add('semester-item');
-
-                    // Create the semester name
-                    const semesterName = document.createElement('h6');
-                    semesterName.classList.add('semester-name');
-                    semesterName.textContent = semester.semesterName;
-
-                    // Create the semester start and end date
-                    const semesterDetails = document.createElement('p');
-                    semesterDetails.classList.add('semester-details');
-                    semesterDetails.textContent = `Start Date: ${semester.semesterStart}, End Date: ${semester.semesterEnd}`;
-
-                    // Append the details to the semester div
-                    semesterDiv.appendChild(semesterName);
-                    semesterDiv.appendChild(semesterDetails);
-
-                    // Append the semester div to the noticeBoardWrap
-                    noticeBoardWrap.appendChild(semesterDiv);
-                });
+                return response.json();  // Parse the response body as JSON (this already converts it to an object)
+            })
+            .then(data => {
+                // Display success message
+                alert(data.message);
+                window.location.reload();
             })
             .catch(error => {
-                console.error('Error fetching semesters:', error);
-                const noticeBoardWrap = document.getElementById('notice-board-wrap');
-                noticeBoardWrap.innerHTML = '<p>Failed to load semesters.</p>';
+                console.error('Error:', error);
+                alert('An error occurred while creating the semester.');
             });
-    </script>
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let currentPage = 0; // Start from the first page
+        const pageSize = 5; // Number of items per page
+
+        function fetchSemesters(page) {
+            fetch(`/semester/get?page=${page}&size=${pageSize}`)
+                .then(response => response.json()) // Parse the response as JSON
+                .then(data => {
+                    const noticeBoardWrap = document.getElementById('notice-board-wrap');
+                    if (!noticeBoardWrap) {
+                        console.error('Element with ID "notice-board-wrap" not found.');
+                        return;
+                    }
+                    noticeBoardWrap.innerHTML = ''; // Clear previous content
+
+                    // Check if the list is empty
+                    if (data.content.length === 0) {
+                        noticeBoardWrap.innerHTML = '<p>No semester available.</p>';
+                        return;
+                    }
+
+                    // Loop through each semester and add it to the page
+                    data.content.forEach(semester => {
+                        const semesterDiv = document.createElement('div');
+                        semesterDiv.classList.add('semester-item');
+
+                        const semesterName = document.createElement('h6');
+                        semesterName.classList.add('semester-name');
+                        semesterName.textContent = semester.semesterName;
+
+                        const semesterDetails = document.createElement('p');
+                        semesterDetails.classList.add('semester-details');
+                        semesterDetails.textContent = `Start Date: ${semester.semesterStart}, End Date: ${semester.semesterEnd}`;
+
+                        const actionsDropdown = document.createElement('select');
+                        actionsDropdown.classList.add('semester-actions');
+                        actionsDropdown.innerHTML = `
+                        <option value="">Select Action</option>
+                        <option value="update">Update</option>
+                        <option value="delete">Delete</option>
+                    `;
+
+                        actionsDropdown.addEventListener('change', (event) => {
+                            const selectedAction = event.target.value;
+                            if (selectedAction === 'update') {
+                                updateSemester(semester);
+                            } else if (selectedAction === 'delete') {
+                                deleteSemester(semester);
+                            }
+                            event.target.value = "";
+                        });
+
+                        semesterDiv.appendChild(semesterName);
+                        semesterDiv.appendChild(semesterDetails);
+                        semesterDiv.appendChild(actionsDropdown);
+
+                        noticeBoardWrap.appendChild(semesterDiv);
+                    });
+
+                    // Handle pagination controls
+                    renderPaginationControls(data.currentPage, data.totalPages);
+                })
+                .catch(error => {
+                    console.error('Error fetching semesters:', error);
+                    const noticeBoardWrap = document.getElementById('notice-board-wrap');
+                    if (noticeBoardWrap) {
+                        noticeBoardWrap.innerHTML = '<p>Failed to load semesters.</p>';
+                    }
+                });
+        }
+
+        function renderPaginationControls(currentPage, totalPages) {
+            const paginationContainer = document.getElementById('pagination-controls');
+            if (!paginationContainer) {
+                console.error('Element with ID "pagination-controls" not found.');
+                return;
+            }
+            paginationContainer.innerHTML = ''; // Clear previous pagination controls
+
+            const prevButton = document.createElement('button');
+            prevButton.textContent = 'Previous';
+            prevButton.disabled = currentPage === 0; // Disable if on the first page
+            prevButton.addEventListener('click', () => {
+                if (currentPage > 0) {
+                    fetchSemesters(currentPage - 1);
+                }
+            });
+            paginationContainer.appendChild(prevButton);
+
+            for (let i = 0; i < totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i + 1;
+                pageButton.classList.toggle('active', i === currentPage); // Highlight current page
+                pageButton.addEventListener('click', () => fetchSemesters(i));
+                paginationContainer.appendChild(pageButton);
+            }
+
+            const nextButton = document.createElement('button');
+            nextButton.textContent = 'Next';
+            nextButton.disabled = currentPage === totalPages - 1; // Disable if on the last page
+            nextButton.addEventListener('click', () => {
+                if (currentPage < totalPages - 1) {
+                    fetchSemesters(currentPage + 1);
+                }
+            });
+            paginationContainer.appendChild(nextButton);
+        }
+
+        fetchSemesters(currentPage);
+    });
+    // Placeholder for updateSemester function
+    function updateSemester(semester) {
+        // Populate the modal form with the current semester data
+        document.getElementById('semesterName').value = semester.semesterName;
+        document.getElementById('semesterStart').value = semester.semesterStart;
+        document.getElementById('semesterEnd').value = semester.semesterEnd;
+
+        // Display the modal
+        const modal = document.getElementById('updateModal');
+        modal.style.display = 'block';
+
+        // Attach event listeners for buttons
+        const cancelButton = document.getElementById('cancelButton');
+        cancelButton.addEventListener('click', () => {
+            modal.style.display = 'none'; // Hide the modal
+        });
+
+        const form = document.getElementById('updateSemesterForm');
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            // Retrieve updated values from the form
+            const updatedSemesterName = document.getElementById('semesterName').value;
+            const updatedSemesterStart = document.getElementById('semesterStart').value;
+            const updatedSemesterEnd = document.getElementById('semesterEnd').value;
+
+            // Validation
+            if (!updatedSemesterName || !updatedSemesterStart || !updatedSemesterEnd) {
+                alert("All fields are required.");
+                return;
+            }
+
+            if (new Date(updatedSemesterStart) < new Date()) {
+                alert("Start date cannot be in the past.");
+                return;
+            }
+
+            if (new Date(updatedSemesterEnd) < new Date(updatedSemesterStart)) {
+                alert("End date cannot be before the start date.");
+                return;
+            }
+
+            // Send updated data to the backend
+            fetch('semester/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: semester.semesterId,
+                    name: updatedSemesterName,
+                    start_time: updatedSemesterStart,
+                    end_time: updatedSemesterEnd
+                })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Semester updated successfully");
+                        modal.style.display = 'none'; // Hide the modal
+                        location.reload(); // Reload the page to fetch updated data
+                    } else {
+                        response.text().then(text => alert(`Error: ${text}`));
+                    }
+                })
+                .catch(error => {
+                    console.error("Error updating semester:", error);
+                    alert("Failed to update semester.");
+                });
+        });
+    }
+
+    // Placeholder for deleteSemester function
+    function deleteSemester(semester) {
+        if (confirm(`Are you sure you want to delete the semester: ${semester.name}?`)) {
+            fetch('semester/delete', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(semester.id)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Semester deleted successfully");
+                    } else {
+                        response.text().then(text => alert(`Error: ${text}`));
+                    }
+                })
+                .catch(error => {
+                    console.error("Error deleting semester:", error);
+                    alert("Failed to delete semester.");
+                });
+        }
+    }
+</script>
 </body>
 </html>
