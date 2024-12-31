@@ -1284,7 +1284,19 @@
 
         for (let i = 0; i < imgFiles.length; i++) {
             formData.append('imgFile', imgFiles[i]); // Match the backend field
+            // Kiểm tra dung lượng file
+            const fileInput = document.querySelector('input[type="file"]'); // Find the file input
+            if (fileInput && fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const fileSizeInMB = file.size / (1024 * 1024); // Convert bytes to MB
+                if (fileSizeInMB > 125) {
+                    showErrorModal('File size must not exceed 125MB.');
+                    return;
+                }
+            }
         }
+
+
 
         try {
             const response = await fetch(`${API_BASE_URL}/update/${currentAssignmentId}`, {

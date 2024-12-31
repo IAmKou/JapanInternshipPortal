@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>JIP | Teacher Details</title>
+  <title>JIP | Submitted Assignment Details</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Favicon -->
@@ -915,6 +915,15 @@
 
       for (let i = 0; i < imgFiles.length; i++) {
         formData.append('imgFile', imgFiles[i]); // Kết nối trường ảnh với backend
+        const fileInput = document.querySelector('input[type="file"]'); // Find the file input
+        if (fileInput && fileInput.files.length > 0) {
+          const file = fileInput.files[0];
+          const fileSizeInMB = file.size / (1024 * 1024); // Convert bytes to MB
+          if (fileSizeInMB > 125) {
+            showErrorModal('File size must not exceed 125MB.');
+            return;
+          }
+        }
       }
 
       // Thực hiện PUT request để cập nhật StudentAssignment

@@ -2,11 +2,11 @@
 <html class="no-js" lang="">
 
 
-<!-- Mirrored from student.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:31 GMT -->
+<!-- Mirrored from teacher.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:33 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>JIP | Student</title>
+    <title>JIP | Teacher</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -21,8 +21,6 @@
     <link rel="stylesheet" href="css/all.min.css">
     <!-- Flaticon CSS -->
     <link rel="stylesheet" href="fonts/flaticon.css">
-    <!-- Full Calender CSS -->
-    <link rel="stylesheet" href="css/fullcalendar.min.css">
     <!-- Animate CSS -->
     <link rel="stylesheet" href="css/animate.min.css">
     <!-- Data Table CSS -->
@@ -32,36 +30,22 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
-        /* Đảm bảo trang bao phủ toàn bộ chiều cao */
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
-
-        /* Container chính */
-        .wrapper {
-            display: flex;
-            flex-direction: column;
-            min-height: 100%; /* Bao phủ toàn bộ trang */
-        }
-
-        /* Nội dung bên trên */
-        .content {
-            flex: 1; /* Đẩy footer xuống */
-        }
-
-        /* Footer nằm ở cuối */
-        .footer-wrap-layout1 {
-            background-color: #ec9006;
-            color: white;
-            padding: 15px 0;
+        th, td {
+            border: 1px solid #ccc;
             text-align: center;
+            padding: 8px;
         }
-
-        .footer-wrap-layout1 a {
-            color: #ffcc00;
-            text-decoration: none;
+        th {
+            background-color: #f4f4f4;
+        }
+        .average-header {
+            text-align: center;
+            font-weight: bold;
+            background-color: #d4ebf2;
         }
     </style>
 </head>
@@ -73,11 +57,10 @@
 <div id="wrapper" class="wrapper bg-ash">
     <!-- Header Menu Area Start Here -->
     <div id="google_translate_element"></div>
-
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
-                <a href="student.html">
+                <a href="teacher.html">
                     <div style="width: 180px; height: 70px; overflow: hidden;">
                         <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
@@ -106,7 +89,6 @@
             <ul class="navbar-nav">
                 <li class="navbar-item header-search-bar">
                     <div class="input-group stylish-input-group">
-
                     </div>
                 </li>
             </ul>
@@ -119,7 +101,7 @@
                             <span class="userRole"></span>
                         </div>
                         <div class="admin-img img">
-                            <img src="" style="width: 50px;height: 50px" alt="Admin">
+                            <img src="" style="width: 50px; height: 50px" alt="Admin">
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -128,27 +110,52 @@
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
-                                <li><a href="users-profile-student.html"><i class="flaticon-user"></i>My Profile</a></li>
+                                <li><a href="users-profile-teacher.html"><i class="flaticon-user"></i>My Profile</a></li>
                                 <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span data-i18n="change_password">Change Password</span></a></li>
                                 <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
                     </div>
                 </li>
-
                 <li class="navbar-item dropdown header-notification">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
                         <i class="far fa-bell"></i>
                         <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
-                        <span id="notification-count">0</span>
+                        <span>8</span>
                     </a>
-
-                    <div class="dropdown-menu dropdown-menu-right" id="notification-dropdown">
+                    <div class="dropdown-menu dropdown-menu-right">
                         <div class="item-header">
-                            <h6 class="item-title" id="notification-title">Notifications</h6>
+                            <h6 class="item-title">03 Notifiacations</h6>
                         </div>
-                        <div class="item-content" id="notification-list">
-                            <!-- Notifications will be dynamically inserted here -->
+                        <div class="item-content">
+                            <div class="media">
+                                <div class="item-icon bg-skyblue">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Complete Today Task</div>
+                                    <span>1 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-orange">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Director Metting</div>
+                                    <span>20 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-violet-blue">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Update Password</div>
+                                    <span>45 Mins ago</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </li>
@@ -170,7 +177,7 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="student.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="teacher.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
@@ -179,7 +186,7 @@
                         <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="student.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Students</a>
+                                <a href="teacher.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Teachers</a>
                             </li>
                         </ul>
                     </li>
@@ -187,38 +194,42 @@
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="list-student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
+                                <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
+                                    Assignment</a>
                             </li>
                             <li class="nav-item">
-                                <a href="list-submitted-assignments.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Submitted Assignment</a>
+                                <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                    Assignment</a>
                             </li>
                         </ul>
                     </li>
-
                     <li class="nav-item sidebar-nav-item">
-                        <a href="javascript:void(0);" class="nav-link" onclick="toSchedule();"><i
-                                class="flaticon-shopping-list"></i><span>Class</span></a>
+                        <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
+                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Personal Mark Report</span></a>
+                        <a href="#" class="nav-link"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();">
-                                    <i class="fas fa-angle-right"></i>Personal Mark Report</a>
+                                <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
+                                    <i class="flaticon-menu"></i><span>Class List</span>
+                                </a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-                        <ul class="nav sub-group-menu ">
-                            <li class="nav-item" id="student-view1">
-                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
+                                    Material</a>
+                            </li>
+                            <li class="nav-item" id="teacher-view">
+                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
                                     Materials</a>
                             </li>
-                            <li class="nav-item" id="student-view">
-                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My List
-                                    Materials</a>
-                            </li>
+
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
@@ -240,11 +251,12 @@
                         <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="forum-student.html"><i class="fas fa-angle-right"></i>View list
+                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
                                     threads</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="create-forum-student.html"><i class="fas fa-angle-right"></i>Create Thread</a>
+                                <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
+                                    Thread</a>
                             </li>
                         </ul>
                     </li>
@@ -256,78 +268,120 @@
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3>Student Dashboard</h3>
+                <h3>View List Students Mark Report</h3>
                 <ul>
                     <li>
-                        <a href="student.html">Home</a>
+                        <a href="admin.html">Home</a>
                     </li>
-                    <li>Student</li>
+                    <li>View List Students Mark Report</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
-            <div class="row">
-                <!-- Student Info Area Start Here -->
-                <div class="col-4-xxxl col-12">
-                    <div class="card dashboard-card-six">
-                        <div class="card-body">
-                            <div class="item-title">
-                                <h3>Notifications</h3>
-                            </div>
-                            <div class="notice-board-wrap">
-                                <div class="notice-list">
-                                    <div class="post-date bg-skyblue">16 June, 2019</div>
-                                    <h6 class="notice-title"><a href="#">Great School manag mene esom tus eleifend
-                                        lectus
-                                        sed maximus mi faucibusnting.</a></h6>
-                                    <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Student Info Area End Here -->
-                <div class="col-8-xxxl col-12">
-                    <div class="row">
-                        <!-- Summery Area End Here -->
-                        <!-- Exam Result Area Start Here -->
-                        <div class="col-lg-12">
-                            <div class="card dashboard-card-eleven">
-                                <div class="card-body">
-                                    <div class="heading-layout1">
-                                        <div class="item-title">
-                                            <h3>All Exam Results</h3>
-                                        </div>
-                                        <div class="dropdown">
-
-                                        </div>
-                                    </div>
-                                    <div class="table-box-wrap">
-
-                                        <div class="table-responsive result-table-box">
-                                            <table class="table display data-table text-nowrap">
-                                                <thead>
-                                                <tr>
-                                                    <th>Exam Name</th>
-                                                    <th>Grade</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="examResult_list">
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Exam Result Area End Here -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- modal -->
-            <!-- Footer Area Start Here -->
-            <!-- Footer Area End Here -->
+            <table style="margin-bottom: 20px">
+                <thead>
+                <tr>
+                    <th class="average-header" colspan="16">Average Exam Mark</th>
+                </tr>
+                <tr>
+                    <th>Test Number</th>
+                    <th>Kanji</th>
+                    <th>Grammar</th>
+                    <th>Vocabulary</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Test 1</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                </tr>
+                <tr>
+                    <td>Test 2</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                </tr>
+                <tr>
+                    <td>Test 3</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                </tr>
+                <tr>
+                    <td>Test 4</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                </tr>
+                <tr>
+                    <td>Test 5</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                </tr>
+                <tr>
+                    <td>Test 6</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                </tr>
+                <tr>
+                    <td>Test 7</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                </tr>
+                <tr>
+                    <td>Test 8</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                </tr>
+                <tr>
+                    <td>Test 9</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                </tr>
+                <tr>
+                    <td>Test 10</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                </tr>
+                <tr>
+                    <td>Test 11</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                </tr>
+                <tr>
+                    <td>Test 12</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                </tr>
+                <tr>
+                    <td>Test 13</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                </tr>
+                <tr>
+                    <td>Test 14</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                </tr>
+                <tr>
+                    <td>Test 15</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                    <td>Score</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <!-- Page Area End Here -->
@@ -354,18 +408,14 @@
 <script src="js/bootstrap.min.js"></script>
 <!-- Counterup Js -->
 <script src="js/jquery.counterup.min.js"></script>
-<!-- Moment Js -->
-<script src="js/moment.min.js"></script>
 <!-- Waypoints Js -->
 <script src="js/jquery.waypoints.min.js"></script>
 <!-- Scroll Up Js -->
 <script src="js/jquery.scrollUp.min.js"></script>
-<!-- Full Calender Js -->
-<script src="js/fullcalendar.min.js"></script>
-<!-- Chart Js -->
-<script src="js/Chart.min.js"></script>
 <!-- Data Table Js -->
 <script src="js/jquery.dataTables.min.js"></script>
+<!-- Chart Js -->
+<script src="js/Chart.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
 <script src="script.js"></script>
@@ -431,128 +481,58 @@
     // Tải Google Translate
     loadGoogleTranslate();
 </script>
-
-
-
-
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<!-- fetch profile -->
+
+<!-- fetch notification -->
 <script>
-    (async function initializeApp() {
-        try {
-            // Fetch user details and store in sessionStorage
-            const response = await fetch('/user-detail');
-            if (response.ok) {
-                const userDetails = await response.json();
-                sessionStorage.setItem('userDetails', JSON.stringify(userDetails));
-                console.log("User data stored in sessionStorage:", userDetails);
+    // Fetch notifications from the backend
+    fetch('/notification/list')
+        .then(response => response.json()) // Parse the response as JSON
+        .then(data => {
+            const notificationList = document.getElementById('notification-list'); // This is where we append the notifications
+            const notificationCount = document.getElementById('notification-count'); // This is where we update the count
 
-                displayUserDetails(userDetails);
-                fetchNotifications(userDetails.id);
-                fetchAndDisplayExamResults(userDetails.studentId);
-            } else {
-                console.error("Failed to fetch user details:", response.statusText);
-            }
-        } catch (error) {
-            console.error("Error initializing app:", error);
-        }
-    })();
+            // Update the notification count
+            notificationCount.textContent = data.length;
 
-    function displayUserDetails(userDetails) {
-        if (userDetails) {
-            console.log("Setting user details:", userDetails);
-
-            document.querySelectorAll('.userFullName').forEach(element => {
-                element.textContent = userDetails.fullName || "Unknown Name";
-            });
-            document.querySelectorAll('.userRole').forEach(element => {
-                element.textContent = userDetails.roleName || "Unknown Role";
-            });
-
-            const userIdElement = document.getElementById('userId');
-            if (userIdElement) {
-                userIdElement.value = userDetails.id || "";
+            // Check if the list is empty
+            if (data.length === 0) {
+                notificationList.innerHTML = '<p>No notifications available.</p>';
+                return;
             }
 
-            const imgContainers = document.querySelectorAll('.img');
-            imgContainers.forEach(container => {
-                const imgElement = container.querySelector('img');
-                if (imgElement) {
-                    imgElement.src = userDetails.img
-                        ? `${userDetails.img}?v=${new Date().getTime()}`
-                        : '/path/to/default-passport.jpg';
-                    console.log("Image source set to:", imgElement.src);
-                } else {
-                    console.error("Image element not found in:", container);
-                }
+            // Clear any previous notifications (if any)
+            notificationList.innerHTML = '';
+
+            // Loop through each notification and add it to the page
+            data.forEach(notification => {
+                // Create the new notice div
+                const noticeDiv = document.createElement('div');
+                noticeDiv.classList.add('notice-list');
+
+                // Create the title
+                const noticeTitle = document.createElement('h6');
+                noticeTitle.classList.add('notice-title');
+
+                // Create the anchor tag
+                const noticeLink = document.createElement('a');
+                noticeLink.href = "#"; // Add appropriate link if needed
+                noticeLink.textContent = notification.title; // Use the title from the notification
+
+                // Append the link to the title and the title to the noticeDiv
+                noticeTitle.appendChild(noticeLink);
+                noticeDiv.appendChild(noticeTitle);
+
+                // Append the noticeDiv to the notification list
+                notificationList.appendChild(noticeDiv);
             });
-        } else {
-            console.error("User details not found in sessionStorage");
-        }
-    }
-
-    function fetchNotifications(studentId) {
-        fetch(`/notification/get/${studentId}`)
-            .then(response => response.json())
-            .then(data => {
-                const notificationList = document.getElementById('notification-list');
-                const notificationCount = document.getElementById('notification-count');
-
-                notificationCount.textContent = data.length;
-
-                if (data.length === 0) {
-                    notificationList.innerHTML = '<p>No notifications available.</p>';
-                    return;
-                }
-
-                notificationList.innerHTML = '';
-                data.forEach(notification => {
-                    const noticeDiv = document.createElement('div');
-                    noticeDiv.classList.add('notice-list');
-
-                    const noticeTitle = document.createElement('h6');
-                    noticeTitle.classList.add('notice-title');
-
-                    const noticeLink = document.createElement('a');
-                    noticeLink.href = "#";
-                    const plainTextTitle = notification.title.replace(/<\/?[^>]+(>|$)/g, '');
-                    noticeLink.textContent = plainTextTitle;
-
-                    noticeTitle.appendChild(noticeLink);
-                    noticeDiv.appendChild(noticeTitle);
-                    notificationList.appendChild(noticeDiv);
-                });
-            })
-            .catch(error => {
-                console.error("Error fetching notifications:", error);
-                const notificationList = document.getElementById('notification-list');
-                notificationList.innerHTML = '<p>Failed to load notifications.</p>';
-            });
-    }
-
-    function toSchedule() {
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-        if (userDetails && userDetails.studentId) {
-            window.location.href = `class-list-student.html?studentId=${userDetails.studentId}`;
-        } else {
-            console.error("Student ID missing or user details not found in sessionStorage");
-        }
-    }
-
-    function toMarkReport() {
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-        if (userDetails && userDetails.studentId) {
-            window.location.href = `view-personal-mark-report.html?studentId=${userDetails.studentId}`;
-        } else {
-            console.error("Student ID missing or user details not found in sessionStorage");
-        }
-    }
-
+        })
+        .catch(error => {
+            console.error('Error fetching notifications:', error);
+            const notificationList = document.getElementById('notification-list');
+            notificationList.innerHTML = '<p>Failed to load notifications.</p>';
+        });
 
 </script>
-
 </body>
-
-
-<!-- Mirrored from student.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:32 GMT -->
 </html>

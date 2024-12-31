@@ -540,8 +540,10 @@
             const description = document.getElementById('description').value.trim();
             const endDate = document.getElementById('end_date').value;
             const createdDate = document.getElementById('created_date').value;
+            // Get the current date and time
+            const currentDate = new Date();
 
-            // Kiểm tra các giá trị rỗng và hiển thị lỗi nếu cần
+            // Check for empty values and show errors if necessary
             if (!description) {
                 showErrorModal('Title is required.');
                 return;
@@ -558,9 +560,45 @@
                 return;
             }
 
-            if (!endDate || !createdDate) {
-                showErrorModal('Dates are required.');
+            // Check if the start date and end date are valid
+            if (!createdDate) {
+                showErrorModal('Start date is required.');
                 return;
+            }
+
+            if (!endDate) {
+                showErrorModal('End date is required.');
+                return;
+            }
+
+            // Convert createdDate and endDate to Date objects
+            const startDate = new Date(createdDate);
+            const finishDate = new Date(endDate);
+
+            if (startDate < currentDate) {
+                showErrorModal('Start date must be greater than or equal to the current date.');
+                return;
+            }
+
+            if (finishDate < currentDate) {
+                showErrorModal('End date must be greater than or equal to the current date.');
+                return;
+            }
+
+            if (startDate > finishDate) {
+                showErrorModal('End date must be greater than or equal to the start date.');
+                return;
+            }
+
+            // Kiểm tra dung lượng file
+            const fileInput = document.querySelector('input[type="file"]'); // Find the file input
+            if (fileInput && fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const fileSizeInMB = file.size / (1024 * 1024); // Convert bytes to MB
+                if (fileSizeInMB > 125) {
+                    showErrorModal('File size must not exceed 125MB.');
+                    return;
+                }
             }
 
             // Gửi form qua Fetch API

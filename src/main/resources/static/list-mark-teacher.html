@@ -30,6 +30,135 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            text-align: center;
+            padding: 8px;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .average-header {
+            text-align: center;
+            font-weight: bold;
+            background-color: #d4ebf2;
+        }
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Popup container */
+        .popup {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            padding: 20px;
+            position: relative;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Popup content */
+        .popup-content {
+            text-align: center;
+        }
+
+        /* Close button */
+        .popup .close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* Form styling */
+        form.new-added-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        form.new-added-form label {
+            text-align: left;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        form.new-added-form input,
+        form.new-added-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        form.new-added-form textarea {
+            resize: none;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .button-group .btn {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-group .submit-btn {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .button-group .submit-btn:hover {
+            background-color: #45a049;
+        }
+
+        .button-group .cancel-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .button-group .cancel-btn:hover {
+            background-color: #e53935;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
 
         /* Overlay */
         .overlay {
@@ -119,20 +248,6 @@
             background-color: #45a049;
         }
 
-        /* Modal Background (Overlay) */
-        .modal-background {
-            display: none; /* Hidden by default */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Black with transparency */
-            justify-content: center;
-            align-items: center;
-            z-index: 2000; /* High z-index to stay above other content */
-        }
-
         /* Modal Content Box */
         .modal-content {
             background-color: white;
@@ -141,45 +256,6 @@
             width: 350px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             text-align: center;
-        }
-
-        /* Buttons inside the modal */
-        .modal-buttons {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-
-        /* Confirm Button Style */
-        .confirm-btn {
-            background-color: #dc3545; /* Red background for delete */
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        /* Confirm Button Hover Effect */
-        .confirm-btn:hover {
-            background-color: #c82333; /* Darker red on hover */
-        }
-
-        /* Cancel Button Style */
-        .cancel-btn {
-            background-color: #6c757d; /* Gray background for cancel */
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        /* Cancel Button Hover Effect */
-        .cancel-btn:hover {
-            background-color: #5a6268; /* Darker gray on hover */
         }
 
         /* Basic modal overlay */
@@ -537,36 +613,37 @@
                         <h3>Class: <span id="className"></span></h3>
                     </div>
                     <!-- Main Button to Open Modal -->
-                    <button class="btn btn-gradient-yellow btn-search" id="open-modal-btn">Open Import Modal</button>
+                    <button class="btn btn-gradient-yellow btn-search" id="open-modal-btn" style="margin-bottom: 15px">Open Import Modal</button>
+                    <!-- Table -->
                     <div class="table-responsive">
-
-                        <table class="table display data-table text-nowrap">
+                        <table class="table display text-nowrap">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Soft Skill</th>
-                                <th>Average Exam Mark</th>
-                                <th>Middle Exam Mark</th>
-                                <th>Final Exam Mark</th>
-                                <th>Skill</th>
-                                <th>Attitude</th>
-                                <th>Final Mark</th>
-                                <th>Action</th>
+                                <th colspan="3">Skill</th>
+                                <th colspan="2">Soft Skill</th>
+                                <th colspan="3">Attitude</th>
+                                <th rowspan="2">Final Mark</th>
+                                <th rowspan="2">Action</th>
+                            </tr>
+                            <tr>
+                                <th>Avg Exam Mark</th>
+                                <th>Middle Exam</th>
+                                <th>Final Exam</th>
+                                <th>Script</th>
+                                <th>Presentation</th>
+                                <th>Assigment</th>
+                                <th>Attendant</th>
                             </tr>
                             </thead>
                             <tbody id="mark_list">
-
+                            <!-- Rows will be dynamically generated here -->
                             </tbody>
-
-
                         </table>
                     </div>
+                    <!-- Table Ends-->
                     <button class="btn btn-gradient-yellow btn-search" id="export-by-excel">Export excel</button>
                 </div>
-
             </div>
-
-
         </div>
         <div id="overlay" class="overlay">
             <div id="markrpPopup" class="popup">
@@ -574,23 +651,22 @@
                     <span class="close" onclick="closePopup()">&times;</span>
                     <h2>Update Mark</h2>
                     <form class="new-added-form" action="javascript:void(0);" onsubmit="updateMark(event)">
-                        <label for="soft_skill">Soft skill: </label>
-                        <input type="number" id="soft_skill" name="soft_skill" min="0" max="10" step="0.1" required/>
-
-                        <label for="avg_mark">Average Exam Mark: </label>
-                        <input type="number" id="avg_mark" name="avg_mark" min="0" max="10" step="0.1" required/>
-
-
-                        <label for="middle_exam_mark">Average Exam Mark: </label>
+                        <label for="middle_exam_mark">Middle Exam Mark:</label>
                         <input type="number" id="middle_exam_mark" name="middle_exam_mark" min="0" max="10" step="0.1" required/>
 
-                        <label for="final_exam_mark">Final Exam Mark: </label>
+                        <label for="final_exam_mark">Final Exam Mark:</label>
                         <input type="number" id="final_exam_mark" name="final_exam_mark" min="0" max="10" step="0.1" required/>
 
-                        <label for="comment"> Comment:</label>
-                        <textarea id="comment" name="comment" rows="4" required></textarea>
+                        <label for="script_mark">Script Mark:</label>
+                        <input type="number" id="script_mark" name="script_mark" min="0" max="10" step="0.1" required/>
 
-                        <button type="submit" class="btn">Update</button>
+                        <label for="presentation_mark">Presentation Mark:</label>
+                        <input type="number" id="presentation_mark" name="presentation_mark" min="0" max="10" step="0.1" required/>
+
+                        <div class="button-group">
+                            <button type="submit" class="btn submit-btn">Update</button>
+                            <button type="button" class="btn cancel-btn" onclick="closePopup()">Cancel</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -639,86 +715,8 @@
     </div>
     <!-- Page Area End Here -->
 </div>
-<!-- jquery-->
-<script src="js/jquery-3.3.1.min.js"></script>
-<!-- Plugins js -->
-<script src="js/plugins.js"></script>
-<!-- Popper js -->
-<script src="js/popper.min.js"></script>
-<!-- Bootstrap js -->
-<script src="js/bootstrap.min.js"></script>
-<!-- Scroll Up Js -->
-<script src="js/jquery.scrollUp.min.js"></script>
-<!-- Data Table Js -->
-<script src="js/jquery.dataTables.min.js"></script>
-<!-- Custom Js -->
-<script src="js/main.js"></script>
 
-<script type="text/javascript">
-    // Hàm thay đổi ngôn ngữ và lưu vào localStorage
-    function changeLanguage(language) {
-        var languageLabel = document.getElementById('languageLabel');
-
-        // Cập nhật nhãn ngôn ngữ trên dropdown
-        if (language === 'en') {
-            languageLabel.innerText = 'EN';
-        } else if (language === 'ja') {
-            languageLabel.innerText = 'JA';
-        }
-
-        // Lưu ngôn ngữ vào localStorage
-        localStorage.setItem('selectedLanguage', language);
-
-        // Kiểm tra nếu Google Translate đã được tải
-        if (window.google && google.translate) {
-            google.translate.TranslateElement.prototype.translatePage(language);
-        }
-    }
-
-    // Hàm khởi tạo Google Translate khi trang tải
-    function loadGoogleTranslate() {
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-        document.head.appendChild(script);
-    }
-
-    // Hàm khởi tạo Google Translate Element
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            includedLanguages: 'en,ja',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-            autoDisplay: false,
-        }, 'google_translate_element');
-    }
-
-    // Khi trang được tải, thiết lập ngôn ngữ từ localStorage
-    document.addEventListener('DOMContentLoaded', function () {
-        // Lấy ngôn ngữ đã lưu trong localStorage
-        var savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-
-        // Cập nhật giao diện với ngôn ngữ đã lưu
-        var languageLabel = document.getElementById('languageLabel');
-        if (savedLanguage === 'en') {
-            languageLabel.innerText = 'EN';
-        } else if (savedLanguage === 'ja') {
-            languageLabel.innerText = 'JA';
-        }
-
-        // Dịch trang ngay từ khi tải
-        if (window.google && google.translate) {
-            google.translate.TranslateElement.prototype.translatePage(savedLanguage);
-        }
-    });
-
-    // Tải Google Translate
-    loadGoogleTranslate();
-</script>
-
-<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
-
     // Function to show the success modal
     function showSuccessModal(message) {
         document.getElementById('success-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
@@ -741,12 +739,12 @@
         try {
             console.log('Fetching mark reports...');
             const response = await fetch(`${API_BASE_URL}/list?classId=${classId}`);
-            console.log('Class Id: ', classId)
+            console.log('Class Id: ', classId);
             console.log('Response received:', response);
 
             const clasRp = await fetch(`/class/getCById?classId=${classId}`);
             const clas = await clasRp.json();
-            console.log('Class: ', clas)
+            console.log('Class: ', clas);
             document.getElementById('className').textContent = clas.name;
 
             if (!response.ok) {
@@ -761,26 +759,27 @@
             mark_reports.forEach(markrp => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                <td><a href="/view-student-mark-report.html?id=${markrp.id}" target="_blank">${markrp.studentName}</a></td>
-                <td>${markrp.softskill}</td>
-                <td>${markrp.avg_exam_mark}</td>
-                <td>${markrp.middle_exam}</td>
-                <td>${markrp.final_exam}</td>
-                <td>${markrp.skill}</td>
-                <td>${markrp.attitude}</td>
-                <td>${markrp.final_mark}</td>
+                <td>${markrp.avgExamMark ?? '-'}</td>
+                <td>${markrp.middleExam ?? '-'}</td>
+                <td>${markrp.finalExam ?? '-'}</td>
+                <td>${markrp.scriptPresentation ?? '-'}</td>
+                <td>${markrp.presentation ?? '-'}</td>
+                <td>${markrp.assignment ?? '-'}</td>
+                <td>${markrp.attendant ?? '-'}</td>
+                <td>${markrp.finalMark ?? '-'}</td>
                 <td>
                     <div class="dropdown">
-                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                           <span class="flaticon-more-button-of-three-dots"></span>
-                       </a>
-                           <div class="dropdown-menu dropdown-menu-right">
-                               <a class="dropdown-item" onclick="openUpdatePopup(${markrp.id})">
-                                     <i class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
-                           </div>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="flaticon-more-button-of-three-dots"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" onclick="openUpdatePopup(${markrp.studentId})">
+                                <i class="fas fa-cogs text-dark-pastel-green"></i> Update
+                            </a>
+                        </div>
                     </div>
-    </td>
-`;
+                </td>
+            `;
                 tableBody.appendChild(row);
             });
         } catch (error) {
@@ -790,7 +789,6 @@
 
     // Initialize the table with mark_reports on page load
     document.addEventListener('DOMContentLoaded', fetchAndDisplayMarks);
-
     let currentMarkId = null;
 
     // Function to open the update popup async
@@ -804,12 +802,10 @@
             const markrp = await response.json();
 
             // Fill the form with the markrp data
-            document.getElementById('soft_skill').value = markrp.softskill;
-            document.getElementById('avg_mark').value = markrp.avg_exam_mark;
             document.getElementById('middle_exam_mark').value = markrp.middle_exam;
             document.getElementById('final_exam_mark').value = markrp.final_exam;
-            document.getElementById('comment').value = markrp.comment;
-
+            document.getElementById('script_mark').value = markrp.scriptPresentation;
+            document.getElementById('presentation_mark').value = markrp.presentation;
 
             // Show the update popup
             currentMarkId = markrp.id;
@@ -823,28 +819,25 @@
     async function updateMark(event) {
         event.preventDefault();
 
-        const softskill = document.getElementById('soft_skill').value;
-        const avg_mark = document.getElementById('avg_mark').value;
+        // Get values from the form
         const middle_exam_mark = document.getElementById('middle_exam_mark').value;
         const final_exam_mark = document.getElementById('final_exam_mark').value;
-        const comment = document.getElementById('comment').value
-        if (!comment.trim()) {
-            showErrorModal('Please fill in all the required fields!');
-            return; // Exit the function if validation fails
-        }
+        const script_mark = document.getElementById('script_mark').value;
+        const presentation_mark = document.getElementById('presentation_mark').value;
 
-        const inputs = [softskill, avg_mark, middle_exam_mark, final_exam_mark];
+        // Validation for required fields
+        const inputs = [middle_exam_mark, final_exam_mark, script_mark, presentation_mark];
         if (inputs.some(value => value < 0 || value > 10)) {
             showErrorModal('Please ensure all numeric values are between 0 and 10.');
             return;
         }
 
+        // Prepare form data for submission
         const formData = new FormData();
-        formData.append('softskill', softskill);
-        formData.append('avg_exam_mark', avg_mark);
         formData.append('middle_exam', middle_exam_mark);
         formData.append('final_exam', final_exam_mark);
-        formData.append('comment', comment);
+        formData.append('scriptPresentation', script_mark);
+        formData.append('presentation', presentation_mark);
 
         try {
             const response = await fetch(`${API_BASE_URL}/update?markRpId=${currentMarkId}`, {
@@ -857,7 +850,6 @@
                 setTimeout(() => {
                     window.location.reload();
                 }, 2000);
-
             } else if (response.status === 404) {
                 showErrorModal('Mark Rp not found!');
             } else {
@@ -1051,7 +1043,83 @@
     }
 
 </script>
+<!-- jquery-->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Data Table Js -->
+<script src="js/jquery.dataTables.min.js"></script>
+<!-- Custom Js -->
+<script src="js/main.js"></script>
 
+<script type="text/javascript">
+    // Hàm thay đổi ngôn ngữ và lưu vào localStorage
+    function changeLanguage(language) {
+        var languageLabel = document.getElementById('languageLabel');
+
+        // Cập nhật nhãn ngôn ngữ trên dropdown
+        if (language === 'en') {
+            languageLabel.innerText = 'EN';
+        } else if (language === 'ja') {
+            languageLabel.innerText = 'JA';
+        }
+
+        // Lưu ngôn ngữ vào localStorage
+        localStorage.setItem('selectedLanguage', language);
+
+        // Kiểm tra nếu Google Translate đã được tải
+        if (window.google && google.translate) {
+            google.translate.TranslateElement.prototype.translatePage(language);
+        }
+    }
+
+    // Hàm khởi tạo Google Translate khi trang tải
+    function loadGoogleTranslate() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+        document.head.appendChild(script);
+    }
+
+    // Hàm khởi tạo Google Translate Element
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,ja',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false,
+        }, 'google_translate_element');
+    }
+
+    // Khi trang được tải, thiết lập ngôn ngữ từ localStorage
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lấy ngôn ngữ đã lưu trong localStorage
+        var savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+        // Cập nhật giao diện với ngôn ngữ đã lưu
+        var languageLabel = document.getElementById('languageLabel');
+        if (savedLanguage === 'en') {
+            languageLabel.innerText = 'EN';
+        } else if (savedLanguage === 'ja') {
+            languageLabel.innerText = 'JA';
+        }
+
+        // Dịch trang ngay từ khi tải
+        if (window.google && google.translate) {
+            google.translate.TranslateElement.prototype.translatePage(savedLanguage);
+        }
+    });
+
+    // Tải Google Translate
+    loadGoogleTranslate();
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
-
 </html>
