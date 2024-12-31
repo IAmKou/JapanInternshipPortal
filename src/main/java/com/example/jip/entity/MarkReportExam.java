@@ -18,13 +18,14 @@ public class MarkReportExam {
 
     @ManyToOne
     @MapsId("markReportId") // Maps the markReportId field of the composite key
-    @JoinColumn(name = "mark_rp_id")
+    @JoinColumn(name = "mark_report_id", nullable = false) // Corrected column name
     private MarkReport markReport;
 
     @ManyToOne
     @MapsId("examId") // Maps the examId field of the composite key
-    @JoinColumn(name = "exam_id")
+    @JoinColumn(name = "exam_id", nullable = false) // Corrected column name
     private Exam exam;
+
     public MarkReportExam(MarkReport markReport, Exam exam) {
         this.id = new MarkReportExamId(markReport.getId(), exam.getId());
         this.markReport = markReport;

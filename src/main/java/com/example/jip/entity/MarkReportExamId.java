@@ -13,9 +13,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Embeddable
 public class MarkReportExamId implements Serializable {
-    @Column(name = "mark_rp_id")
-    private int mark_rp_id;
 
-    @Column(name = "exam_id")
-    private int exam_id;
+    @Column(name = "mark_report_id") // Matches the database schema
+    private int markReportId;
+
+    @Column(name = "exam_id") // Matches the database schema
+    private int examId;
 }
