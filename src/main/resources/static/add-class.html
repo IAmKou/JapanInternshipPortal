@@ -30,30 +30,80 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        select[name="teacherId"], select[name="semester"] {
+            border: 2px solid #007bff !important;  /* Giữ kiểu dáng bo viền màu xanh */
+            border-radius: 5px;                    /* Bo tròn góc */
+            padding: 10px 15px;                    /* Thêm padding để nâng cao thẩm mỹ */
+            font-size: 18px;
+            /* Đảm bảo font phù hợp */
+        }
+
+        /* Tùy chỉnh cho thẻ select2 */
+        .select2-container {
+            width: 100% !important;  /* Đảm bảo width của select2 chiếm toàn bộ không gian */
+        }
+
+        /* Kiểu dáng cho thanh chọn của select2 */
+        .select2-selection {
+            padding: 10px 15px;                       /* Thêm khoảng cách padding cho thanh chọn */
+            border: 2px solid #007bff !important;     /* Màu viền */
+            border-radius: 5px;                       /* Bo tròn các góc của ô chọn */
+            text-align: center;                       /* Căn giữa văn bản */
+            font-weight: bold !important;             /* Đậm chữ */
+            font-size: 16px;                          /* Tăng kích thước chữ */
+            line-height: 30px;                        /* Đảm bảo văn bản căn giữa theo chiều dọc */
+        }
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            line-height: 30px;
+            color: #b4b4b4;
+            padding-left: 20px;
+            padding-right: 30px;
+            font-size: 15px;
+        }
+
         .pagination-container {
             display: flex;
             justify-content: center;
             margin-top: 10px;
         }
 
-        .page-btn {
-            padding: 5px 10px;
-            margin: 0 5px;
-            border: 1px solid #ccc;
-            background-color: #f8f8f8;
-            cursor: pointer;
+        input[name="className"] {
+            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
         }
 
-        .page-btn.active {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
+        input[name="className"]:hover {
+            border-color: #28a745 !important;
+        }
+        /* Khi người dùng focus vào input */
+        input[name="className"]:focus {
+            border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        }
+        /* Kiểu dáng mặc định cho thẻ <select> */
+        select[name="teacher"] {
+            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+            padding: 10px 15px;
+            text-align: center; /* Căn giữa chữ trong select khi chọn */
+            font-weight: bold;  /* Đậm chữ *//* Thêm một chút padding để nâng cao thẩm mỹ */
         }
 
-        .page-btn:hover {
-            background-color: #ddd;
+        /* Khi người dùng hover lên thẻ <select> */
+        select[name="teacher"]:hover {
+            border-color: #28a745 !important;
         }
 
+        /* Khi người dùng focus vào thẻ <select> */
+        select[name="teacher"]:focus {
+            border-color: #ff6347 !important;     /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+        }
+
+        select[name="teacher"] option {
+            text-align: center;  /* Căn giữa chữ */
+            font-weight: bold;   /* Đậm chữ */
+        }
     </style>
 </head>
 
@@ -251,38 +301,30 @@
             <div class="card height-auto">
                 <div class="card-body">
                     <div class="heading-layout1">
-                        <div class="item-title">
+                        <div class="item-title" style="padding-bottom: 10px">
                             <h3>Add New Class</h3>
-                        </div>
-                        <div class="dropdown">
-                            <a class="dropdown-toggle" href="#" role="button"
-                               data-toggle="dropdown" aria-expanded="false">...</a>
-
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                            </div>
                         </div>
                     </div>
                     <form action="class/create" class="new-added-form" method="post" id="createClassForm">
                         <div class="row">
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label for="className">Class Name</label>
+                                <label for="className" style="color: #007bff; font-weight: bold;">Class Name</label>
                                 <input type="text" id="className" placeholder="" name="className" class="form-control">
                             </div>
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label for="teacher">Teacher</label>
+                                <label for="teacher" style="color: #007bff; font-weight: bold;">Teacher</label>
                                 <select id="teacher" name="teacherId" class="select2">
+                                    <!-- Các option sẽ được thêm vào đây -->
                                 </select>
                             </div>
+
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label for="semester">Semester</label>
+                                <label for="semester" style="color: #007bff; font-weight: bold;">Semester</label>
                                 <select id="semester" name="teacherId" class="select2">
                                 </select>
                             </div>
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label>Add student</label>
+                                <label style="color: #007bff; font-weight: bold;">Add student</label>
                                 <button type="button" id="fetchStudentsButton" class="btn-fill-lg text-light bg-dodger-blue">
                                     Get Students
                                 </button>
@@ -296,9 +338,9 @@
                             <div id="studentCount"></div>
                             <div class="col-md-6 form-group"></div>
                             <div class="col-12 form-group mg-t-8">
-                                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save
+                                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Create Class
                                 </button>
-                                <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
+                                <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Clear Form</button>
                             </div>
                         </div>
                     </form>
@@ -612,8 +654,8 @@
                     teacherSelect.appendChild(option);
                 });
 
-                // Re-initialize select2 to ensure it applies styles and functionality
-                $('#teacher').select2({
+                // Re-initialize select2
+                $(teacherSelect).select2({
                     placeholder: "Select a teacher",
                     allowClear: true
                 });
@@ -623,7 +665,6 @@
                 alert("There was an error fetching the teachers. Please try again.");
             });
     }
-
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', loadSemesters);

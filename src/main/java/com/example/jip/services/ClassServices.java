@@ -1,6 +1,7 @@
 package com.example.jip.services;
 
 import com.example.jip.dto.ClassDTO;
+import com.example.jip.dto.SemesterDateDTO;
 import com.example.jip.dto.StudentDTO;
 import com.example.jip.entity.*;
 import com.example.jip.entity.Class;
@@ -8,6 +9,7 @@ import com.example.jip.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -88,5 +90,15 @@ public class ClassServices {
 
     public List<Class> getClassByStudentId(int studentId) {
         return classRepository.findClassesByStudentId(studentId);
+    }
+
+    public SemesterDateDTO getSemesterDatesByClassId(int classId) {
+        Object[] result = classRepository.findSemesterStartAndEndByClassId(classId);
+        if (result != null && result.length == 2) {
+            Date startTime = (Date) result[0];
+            Date endTime = (Date) result[1];
+            return new SemesterDateDTO(startTime, endTime);
+        }
+        return null; // Handle case where the class or semester does not exist
     }
 }

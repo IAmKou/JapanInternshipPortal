@@ -585,8 +585,19 @@
                 return response.json();
             })
             .then(data => {
-                const semesterStart = new Date(data.startTime);
-                const semesterEnd = new Date(data.endTime);
+                console.log("Server Response:", data);
+
+                // Use the correct property names from the response
+                const semesterStart = new Date(`${data.semesterStart}T00:00:00`);
+                const semesterEnd = new Date(`${data.semesterEnd}T23:59:59`);
+
+                // Validate parsed dates
+                if (isNaN(semesterStart.getTime()) || isNaN(semesterEnd.getTime())) {
+                    console.error("Invalid Date format:", data.semesterStart, data.semesterEnd);
+                    return;
+                }
+
+                console.log("Parsed Dates:", semesterStart, semesterEnd);
 
                 // Initialize draggable events
                 new FullCalendar.Draggable(containerEl, {
@@ -615,7 +626,8 @@
                         end: semesterEnd,
                     },
                     eventConstraint: {
-                        start: new Date().toISOString().split('T')[0],
+                        start: semesterStart,
+                        end: semesterEnd,
                     },
                     events: function (fetchInfo, successCallback, failureCallback) {
                         fetch(`/schedule/get/${semesterId}`)
@@ -667,9 +679,23 @@
                     },
                     eventDrop: function (info) {
                         handleEventValidation(info);
+                        if (
+                            new Date(info.event.start) < semesterStart ||
+                            new Date(info.event.start) > semesterEnd
+                        ) {
+                            alert("Event can't be dropped outside the valid range.");
+                            info.revert(); // Revert the event back to its original position
+                        }
                     },
                     eventReceive: function (info) {
                         handleEventValidation(info);
+                        if (
+                            new Date(info.event.start) < semesterStart ||
+                            new Date(info.event.start) > semesterEnd
+                        ) {
+                            alert("Event can't be dropped outside the valid range.");
+                            info.revert(); // Revert the event back to its original position
+                        }
                     }
                 });
                 calendar.render();

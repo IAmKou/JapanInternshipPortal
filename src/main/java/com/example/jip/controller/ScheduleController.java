@@ -137,11 +137,12 @@ public class ScheduleController {
                     LocalDate localDate = LocalDate.parse(scheduleDTO.getDate()).plusDays(1);
                     java.sql.Date sqlDate = Date.valueOf(localDate);
 
-                    boolean roomInUse = scheduleRepository.existsByRoomAndDateAndSemesterId(
-                            scheduleDTO.getRoom(), sqlDate, semesterId);
+                    boolean roomInUse = scheduleRepository.existsByRoomAndSemesterIdAndClassNot(
+                            scheduleDTO.getRoom(), semesterId, classId);
+
                     if (roomInUse) {
                         return ResponseEntity.badRequest().body(Map.of(
-                                "message", "The room is already in use on " + scheduleDTO.getDate() + "."
+                                "message", "The room is already in use by another class."
                         ));
                     }
                     Schedule schedule = new Schedule();
@@ -182,22 +183,28 @@ public class ScheduleController {
             Semester semester = semesterRepository.findById(semesterId)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid Semester ID: " + semesterId));
 
+            int classId = schedules.get(0).getClassId();
+            Class clasz = classRepository.findById(classId)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid Class ID: " + classId));
+
             for (ScheduleDTO scheduleDTO : schedules) {
                 // Check if a schedule already exists for the semester, date, and activity
                 LocalDate localDate = LocalDate.parse(scheduleDTO.getDate()).plusDays(1);
                 java.sql.Date sqlDate = Date.valueOf(localDate);
 
-                Schedule existingSchedule = scheduleRepository.findBySemesterIdAndDateAndActivity(
-                        semesterId, sqlDate, scheduleDTO.getActivity()
+                Schedule existingSchedule = scheduleRepository.findBySemesterIdAndDateAndActivityAndClasz(
+                        semesterId, sqlDate, scheduleDTO.getActivity(), classId
                 );
 
-                boolean roomInUse = scheduleRepository.existsByRoomAndDateAndSemesterId(
-                        scheduleDTO.getRoom(), sqlDate, semesterId);
+                boolean roomInUse = scheduleRepository.existsByRoomAndSemesterIdAndClassNot(
+                        scheduleDTO.getRoom(), semesterId, classId);
+
                 if (roomInUse) {
                     return ResponseEntity.badRequest().body(Map.of(
-                            "message", "The room is already in use on " + scheduleDTO.getDate() + "."
+                            "message", "The room is already in use by another class."
                     ));
                 }
+
 
                 Schedule schedule;
                 if (existingSchedule != null) {
@@ -213,6 +220,7 @@ public class ScheduleController {
                 schedule.setColor(scheduleDTO.getColor());
                 schedule.setDate(sqlDate);
                 schedule.setDay_of_week(getDayOfWeekFromDate(sqlDate));
+                schedule.setClasz(clasz);
                 schedule.setRoom(scheduleDTO.getRoom());
                 schedule.setTime_slot("All day");
                 schedule.setStatus(Schedule.status.Published);
@@ -221,13 +229,13 @@ public class ScheduleController {
             }
 
             return ResponseEntity.ok(Map.of(
-                    "message", "Schedules saved successfully as draft.",
+                    "message", "Schedules saved successfully updated.",
                     "semesterId", semesterId
             ));
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
-                    "message", "An error occurred while saving schedules.",
+                    "message", "An error occurred while updating schedules.",
                     "error", e.getMessage()
             ));
         }
@@ -253,6 +261,13 @@ public class ScheduleController {
 
     @GetMapping("/get/class/{classId}")
     public List<ScheduleDTO> getClassSchedule(@PathVariable int classId) {
+        return scheduleRepository.findByClaszId(classId).stream()
+                .map(ScheduleDTO :: new)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/getRoomForClass/{classId}")
+    public List<ScheduleDTO> getRoomClassSchedule(@PathVariable int classId) {
         return scheduleRepository.findByClaszId(classId).stream()
                 .map(ScheduleDTO :: new)
                 .collect(Collectors.toList());

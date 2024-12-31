@@ -232,7 +232,7 @@
                 <div class="col-12-xxxl col-12">
                     <div class="card height-auto">
                         <div class="card-body">
-                            <div class="heading-layout1">
+                            <div class="heading-layout1" style="padding-bottom: 10px">
                                 <div class="item-title">
                                     <h3>Class List</h3>
                                 </div>
@@ -361,7 +361,7 @@
 
                     // Teacher Name cell
                     const teacherNameCell = document.createElement('td');
-                    teacherNameCell.textContent = clasz.semesterId;
+                    teacherNameCell.textContent = clasz.teacherName;
                     row.appendChild(teacherNameCell);
 
                     // Number of Students cell
@@ -389,6 +389,9 @@
                     <a class="dropdown-item update-class" data-id="${clasz.id}" data-name="${clasz.name}""
                         <i></i> Update Class
                     </a>
+                    <a class="dropdown-item" href="/schedule-class.html?classId=${clasz.id}">
+                            <i></i> Class Schedule
+                        </a>
                 `;
                     dropdown.appendChild(dropdownMenu);
                     actionsCell.appendChild(dropdown);
@@ -483,7 +486,6 @@
 <!-- fetch teacher -->
 <script>
     document.addEventListener('DOMContentLoaded', loadTeachers);
-
     function loadTeachers() {
         fetch('/teachers')
             .then(response => {

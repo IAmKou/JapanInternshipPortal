@@ -24,25 +24,26 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @RestController
 @RequestMapping("/student")
-public class StudentController {
 
+public class StudentController {
     @Autowired
-    private StudentServices studentServices;
+    StudentServices studentServices;
 
     @Autowired
     private StudentRepository studentRepository;
 
     @Autowired
-    private ListRepository listRepository;
+    ListRepository listRepository;
 
     @Autowired
     private MarkReportRepository markReportRepository;
 
-    // Save student endpoint
+
     @PostMapping("/save")
-    public RedirectView saveStudent(
+    public ResponseEntity<String> saveStudent(
             @RequestParam String fullname,
             @RequestParam String japanname,
             @RequestParam String dob,
@@ -51,63 +52,50 @@ public class StudentController {
             @RequestParam String phoneNumber,
             @RequestParam(required = false) MultipartFile img,
             @RequestParam(required = false) MultipartFile passport_img,
-            @RequestParam String plainPassword,
-            @RequestParam int account_id,
-            RedirectAttributes redirectAttributes) {
+            @RequestParam int account_id) {
 
         try {
             // Parse the date
-            LocalDate localDate = parseDate(dob);
-            Date date = Date.valueOf(localDate);
+            LocalDate localDate;
+            Date date;
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                localDate = LocalDate.parse(dob, formatter);
+                date = Date.valueOf(localDate);
+            } catch (DateTimeParseException e) {
+                return ResponseEntity.badRequest().body("Invalid date format. Please use 'yyyy-MM-dd'.");
+            }
 
             // Call the service to create the student
-            studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, passport_img, account_id, plainPassword);
-            redirectAttributes.addFlashAttribute("successMessage", "Student saved successfully!");
+            studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, passport_img, account_id);
+
+            // Return success response
+            return ResponseEntity.ok("Student saved successfully!");
 
         } catch (IllegalArgumentException e) {
-            // Handle custom errors from the service
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return new RedirectView("/create-account-student.html");
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            // Handle any unexpected errors
-            redirectAttributes.addFlashAttribute("errorMessage", "An unexpected error occurred. Please try again.");
-            return new RedirectView("/create-account-student.html");
-        }
-
-        // Redirect to account settings page
-        return new RedirectView("/account-settings.html");
-    }
-
-    // Parse the date
-    private LocalDate parseDate(String dob) {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            return LocalDate.parse(dob, formatter);
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid date format. Use yyyy-MM-dd.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred. Please try again.");
         }
     }
 
-    // Fetch top students
     @GetMapping("/get")
     public List<StudentDTO> getTopStudents() {
         return studentRepository.findTopUnassignedStudents();
     }
 
-    // Fetch all students with class info
     @GetMapping("/getAllStudent")
     public List<StudentWithClassDTO> getAllStudents() {
         List<StudentWithClassDTO> students = listRepository.findAllStudentsWithClassInfo();
+        System.out.println(students);
         return students;
     }
 
-    // Fetch students without class
     @GetMapping("/getAllWithoutClass")
     public List<StudentWithClassDTO> getStudentsWithoutClass() {
         return listRepository.getStudentsWithoutClass();
     }
 
-    // Fetch students by class ID
     @GetMapping("/{classId}/getAll")
     public List<StudentDTO> getStudentByClassId(@PathVariable Integer classId) {
         if (classId == null) {
@@ -119,7 +107,6 @@ public class StudentController {
                 .collect(Collectors.toList());
     }
 
-    // Fetch student by ID
     @GetMapping("/getStudent")
     public StudentDTO getStudentById(@RequestParam("studentId") Integer studentId) {
         if (studentId == null) {
@@ -129,13 +116,13 @@ public class StudentController {
         return new StudentDTO(student);
     }
 
-    // Fetch all grades by class ID
     @GetMapping("/{classId}/getAllGrades")
     public List<MarkReportDTO> getAllGrades(@PathVariable Integer classId) {
         if (classId == null) {
             throw new IllegalArgumentException("classId must not be null");
         }
-        return listRepository.getStudentsWithMarkReportsByClassId(classId);
+        List<MarkReportDTO> markReports = listRepository.getStudentsWithMarkReportsByClassId(classId);
+        return markReports;
     }
 
     // Save grades for a class

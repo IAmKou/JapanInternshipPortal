@@ -28,4 +28,13 @@ public interface ClassRepository extends JpaRepository<Class,Integer> {
 
     @Query("SELECT c FROM Class c JOIN c.classLists l WHERE l.student.id = :studentId")
     List<Class> findClassesByStudentId(@Param("studentId") int studentId);
+
+    @Query("SELECT c.semester.start_time, c.semester.end_time FROM Class c WHERE c.id = :classId")
+    Object[] findSemesterStartAndEndByClassId(@Param("classId") int classId);
+
+    @Query("SELECT COUNT(c) FROM Class c " +
+            "WHERE c.teacher.id = :teacherId " +
+            "AND c.semester.id = :semesterId")
+    int countClassesByTeacherAndSemester(@Param("teacherId") int teacherId,
+                                         @Param("semesterId") int semesterId);
 }
