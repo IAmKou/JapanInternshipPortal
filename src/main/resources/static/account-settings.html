@@ -38,6 +38,37 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        /* Đảm bảo trang bao phủ toàn bộ chiều cao */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* Container chính */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%; /* Bao phủ toàn bộ trang */
+        }
+
+        /* Nội dung bên trên */
+        .content {
+            flex: 1; /* Đẩy footer xuống */
+        }
+
+        /* Footer nằm ở cuối */
+        .footer-wrap-layout1 {
+            background-color: #ec9006;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .footer-wrap-layout1 a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
         .modal-content {
             padding: 15px;
         }
@@ -512,13 +543,14 @@
                                 </table>
                                 <div class="pagination-container">
                                     <ul class="pagination justify-content-center">
-                                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                        <li class="page-item previous"><a class="page-link" href="#">Previous</a></li>
                                         <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                        <li class="page-item next"><a class="page-link" href="#">Next</a></li>
                                     </ul>
                                 </div>
                             </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -766,6 +798,18 @@
     </div>
 </div>
 </div>
+<footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+    <div style="background-color: #ec9006; padding: 15px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+                        rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -978,114 +1022,115 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const tableBody = document.querySelector(".table tbody");
-        const paginationContainer = document.querySelector(".pagination-container");
-        const language = localStorage.getItem('language') || 'en'; // Mặc định là 'en'
-        getTranslation(language); // Gọi hàm dịch ngôn ngữ
-        const usersPerPage = 30;
-        let currentPage = 1;
-        let totalUsers = 0;
-        let users = [];
+        const paginationContainer = document.querySelector(".pagination");
+        const language = localStorage.getItem('language') || 'en';
+        getTranslation(language);
 
-        // Fetch users
+        const usersPerPage = 30;  // Số người dùng mỗi trang
+        let currentPage = 1;  // Trang hiện tại
+        let users = [];  // Mảng chứa tất cả người dùng
+
+        // Fetch all users (không thay đổi backend)
         async function fetchUsers() {
             try {
-                // Gọi API để lấy 30 người đầu tiên
-                const response = await fetch(`/users?limit=${usersPerPage}&offset=${(currentPage - 1) * usersPerPage}`);
+                const response = await fetch('/users');  // Lấy tất cả người dùng
                 if (!response.ok) throw new Error(`Failed to fetch: ${response.statusText}`);
-                users = await response.json();
-                totalUsers = users.length; // Số lượng người đã trả về
-                renderTable();
-                renderPagination();
+
+                const data = await response.json();
+                users = data;  // Lấy tất cả người dùng từ API
+
+                renderTable();  // Gọi render lại bảng với dữ liệu tất cả người dùng
+                renderPagination(); // Render phân trang
             } catch (error) {
                 console.error("Error fetching users:", error);
             }
         }
 
-
-        // Render table
-        // Render table
+        // Render bảng với tất cả người dùng (chỉ hiển thị trong phạm vi trang hiện tại)
         function renderTable() {
-            tableBody.innerHTML = "";
-            const startIndex = (currentPage - 1) * usersPerPage;
-            const endIndex = Math.min(startIndex + usersPerPage, totalUsers);
+            tableBody.innerHTML = "";  // Xoá bảng cũ trước khi render lại
+            const startIndex = (currentPage - 1) * usersPerPage; // Tính chỉ số bắt đầu của người dùng
+            const endIndex = currentPage * usersPerPage; // Tính chỉ số kết thúc của người dùng
 
-            const currentLanguage = localStorage.getItem('language') || 'en'; // Lấy ngôn ngữ từ localStorage
+            const usersToDisplay = users.slice(startIndex, endIndex);  // Cắt mảng người dùng theo trang
 
-            // Vòng lặp qua danh sách người dùng để render
-            for (let i = startIndex; i < endIndex; i++) {
-                const user = users[i];
-
-                // Bỏ qua người dùng có user.id === 1
-                if (user.id === 1) {
-                    continue;
-                }
+            usersToDisplay.forEach((user, i) => {
+                if (user.id === 1) return; // Skip user with id === 1
 
                 const row = document.createElement("tr");
-
-                // Dịch tên vai trò người dùng theo ngôn ngữ đã chọn
-                const translatedRoleName = roleTranslations[currentLanguage] && roleTranslations[currentLanguage][user.roleName]
-                    ? roleTranslations[currentLanguage][user.roleName]
-                    : user.roleName;  // Nếu không có bản dịch thì giữ nguyên tên
-
-                // Dịch tên của liên kết "View Details"
-                const translatedViewDetails = currentLanguage === 'ja' ? '詳細を見る' : 'View Details';
-
                 row.innerHTML = `
-            <td>${i + 1}</td>
-            <td>
-                <img src="${user.img ? user.img : 'img/figure/admin.jpg'}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-            </td>
-            <td>${user.roleName === "ADMIN" ? user.username : user.fullName}</td>
-            <td>${user.roleName === "ADMIN" ? user.username : user.jname}</td>
-            <td>${translatedRoleName}</td>
-            <td>
-                <a href="users-details.html?userId=${user.id}" class="text-decoration-none text-primary" title="View User Details" data-i18n="view_details">
-                    <i class="fas fa-eye" style="font-size: 16px; margin-right: 8px;"></i>
-                    ${translatedViewDetails}
-                </a>
-            </td>
-        `;
-
+                <td>${startIndex + i + 1}</td>
+                <td>
+                    <img src="${user.img ? user.img : 'img/figure/admin.jpg'}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                </td>
+                <td>${user.roleName === "ADMIN" ? user.username : user.fullName}</td>
+                <td>${user.roleName === "ADMIN" ? user.username : user.jname}</td>
+                <td>${user.roleName}</td>
+                <td>
+                    <a href="users-details.html?userId=${user.id}" class="text-decoration-none text-primary" title="View User Details">
+                        <i class="fas fa-eye" style="font-size: 16px; margin-right: 8px;"></i>
+                        View Details
+                    </a>
+                </td>
+            `;
                 tableBody.appendChild(row);
-            }
+            });
         }
 
-        const roleTranslations = {
-            "en": {
-                "ADMIN": "ADMIN", // Tên tiếng Anh cho ADMIN
-                "TEACHER": "TEACHER", // Tên tiếng Anh cho TEACHER
-                "STUDENT": "STUDENT",  // Tên tiếng Anh cho STUDENT
-                "MANAGER": "MANAGER"  // Tên tiếng Anh cho MANAGER
-            },
-            "ja": {
-                "ADMIN": "管理者", // Tên tiếng Nhật cho ADMIN
-                "TEACHER": "教師", // Tên tiếng Nhật cho TEACHER
-                "STUDENT": "学生", // Tên tiếng Nhật cho STUDENT
-                "MANAGER": "管理者"  // Tên tiếng Nhật cho MANAGER
-            }
-        };
-
-
-        // Render pagination
+        // Render phân trang
         function renderPagination() {
-            paginationContainer.innerHTML = "";
-            const totalPages = Math.ceil(totalUsers / usersPerPage);
+            paginationContainer.innerHTML = "";  // Xoá các mục phân trang cũ
 
+            const totalPages = Math.ceil(users.length / usersPerPage); // Tổng số trang
             for (let i = 1; i <= totalPages; i++) {
-                const pageButton = document.createElement("button");
-                pageButton.textContent = i;
-                pageButton.className = "page-btn";
-                if (i === currentPage) pageButton.classList.add("active");
-                pageButton.addEventListener("click", () => {
-                    currentPage = i;
-                    renderTable();
-                    renderPagination();
+                const pageItem = document.createElement("li");
+                pageItem.classList.add("page-item");
+                if (i === currentPage) pageItem.classList.add("active");
+
+                const pageLink = document.createElement("a");
+                pageLink.classList.add("page-link");
+                pageLink.href = "#";
+                pageLink.textContent = i;
+
+                pageLink.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    currentPage = i;  // Cập nhật trang hiện tại
+                    renderTable();  // Render lại bảng
+                    renderPagination(); // Render lại phân trang
                 });
-                paginationContainer.appendChild(pageButton);
+
+                pageItem.appendChild(pageLink);
+                paginationContainer.appendChild(pageItem);
             }
+
+            // Disable 'Previous' button if on the first page
+            const prevButton = document.querySelector(".page-item.previous");
+            prevButton.classList.toggle("disabled", currentPage === 1);
+
+            // Disable 'Next' button if on the last page
+            const nextButton = document.querySelector(".page-item.next");
+            nextButton.classList.toggle("disabled", currentPage === totalPages);
         }
 
-        fetchUsers();
+        // Điều khiển phân trang (Trước và Sau)
+        paginationContainer.querySelector(".previous").addEventListener("click", function (e) {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+                renderPagination();
+            }
+        });
+
+        paginationContainer.querySelector(".next").addEventListener("click", function (e) {
+            const totalPages = Math.ceil(users.length / usersPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable();
+                renderPagination();
+            }
+        });
+
+        fetchUsers();  // Lấy người dùng khi trang được tải
     });
 
 </script>

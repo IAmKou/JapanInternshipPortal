@@ -31,9 +31,42 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <style>
+        /* Đảm bảo trang bao phủ toàn bộ chiều cao */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* Container chính */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%; /* Bao phủ toàn bộ trang */
+        }
+
+        /* Nội dung bên trên */
+        .content {
+            flex: 1; /* Đẩy footer xuống */
+        }
+
+        /* Footer nằm ở cuối */
+        .footer-wrap-layout1 {
+            background-color: #ec9006;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .footer-wrap-layout1 a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
         #titleEditor {
             border: 2px solid #007bff;  /* Đặt màu border là màu xanh dương */
-            border-radius: 5px;         /* Thêm góc bo tròn nếu cần */
+            border-radius: 5px;
+            width: 100%; /* Đảm bảo Quill editor chiếm toàn bộ chiều rộng */
+            max-width: 100%; /*/* Thêm góc bo tròn nếu cần */
         }
 
         /* Tạo hiệu ứng khi người dùng hover vào Quill editor */
@@ -46,6 +79,50 @@
             border-color: #ff6347;      /* Chuyển màu border thành màu cam khi có focus */
             box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm bóng để nổi bật hơn */
         }
+
+        .pagination-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .pagination-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;  /* Giảm padding để nút nhỏ lại */
+            cursor: pointer;
+            font-size: 14px; /* Giảm kích thước font chữ */
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination-button:hover {
+            background-color: #0056b3;
+        }
+
+        .pagination-button:disabled {
+            background-color: #d3d3d3;
+            cursor: not-allowed;
+        }
+
+        .pagination-info {
+            font-size: 16px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        #notice-board-wrap {
+            /* Xóa thuộc tính overflow để không có thanh cuộn */
+            overflow: visible;
+
+            /* Hoặc bạn có thể đảm bảo chiều cao tự động thay đổi */
+            max-height: none; /* Đảm bảo không giới hạn chiều cao */
+        }
+
     </style>
 </head>
 
@@ -168,10 +245,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="report-list.html" class="nav-link"><i
-                                    class="flaticon-script"></i><span>Report</span></a>
-                        </li>
+
                         <li class="nav-item">
                             <a href="notice-board.html" class="nav-link"><i
                                     class="flaticon-script"></i><span>Notification</span></a>
@@ -204,19 +278,19 @@
                             <div class="card-body">
                                 <div class="heading-layout1">
                                     <div class="item-title">
-                                        <h3>Create New Notification</h3>
+                                        <h3 style="padding-bottom: 20px">Create New Notification</h3>
                                     </div>
                                 </div>
                                 <form class="new-added-form" action="notification/create" method="post">
                                     <input type="hidden" name="userId" id="hiddenUserId">
                                     <div class="row">
                                         <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                            <label style="color: #007bff; font-weight: bold;">Title</label>
                                             <!-- Quill editor được thay thế vào đây -->
-                                            <div id="titleEditor" class="form-control" style="height: 300px; "></div>
+                                            <div id="titleEditor" class="form-control" style="height: 300px;"></div>
                                             <!-- Thêm một textarea ẩn để lưu giá trị và gửi trong form -->
                                             <textarea name="title" style="display: none;" required></textarea>
                                         </div>
+
 
                                         <div class="col-12 form-group mg-t-8">
                                             <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Create</button>
@@ -238,8 +312,13 @@
                                     </div>
                                 </div>
 
-                                <div class="notice-board-wrap" id="notice-board-wrap">
-                                    <!-- Notifications will be populated here dynamically -->
+                                <div id="notice-board-wrap" class="notice-board-wrap">
+                                    <!-- Các thông báo sẽ được thêm vào đây bởi script -->
+                                </div>
+                                <div id="pagination-controls" class="pagination-controls">
+                                    <button id="prev-page" class="pagination-button">❮ Previous</button>
+                                    <span id="current-page" class="pagination-info">Page 1</span>
+                                    <button id="next-page" class="pagination-button">Next ❯</button>
                                 </div>
                             </div>
                         </div>
@@ -250,6 +329,18 @@
         </div>
         <!-- Page Area End Here -->
     </div>
+    <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+        <div style="background-color: #ec9006; padding: 15px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+                            rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
     <!-- jquery-->
     <script src="js/jquery-3.3.1.min.js"></script>
     <!-- Plugins js -->
@@ -510,6 +601,167 @@
             }
         } else {
             console.error("User details not found in sessionStorage");
+        }
+    </script>
+    <script>
+        fetch('/notification/getAll')
+            .then(response => response.json()) // Parse the response as JSON
+            .then(data => {
+                const notificationList = document.getElementById('notification-list'); // Notification container
+                const notificationCount = document.getElementById('notification-count'); // Notification count
+
+                // Update the notification count
+                notificationCount.textContent = data.length;
+
+                // If no notifications, display a message
+                if (data.length === 0) {
+                    notificationList.innerHTML = '<p>No notifications available.</p>';
+                    return;
+                }
+
+                // Clear previous notifications
+                notificationList.innerHTML = '';
+
+                // Add each notification to the list
+                data.forEach(notification => {
+                    const noticeDiv = document.createElement('div');
+                    noticeDiv.classList.add('notice-list');
+
+                    const noticeTitle = document.createElement('h6');
+                    noticeTitle.classList.add('notice-title');
+
+
+                    // Extract plain text (remove all HTML tags)
+                    const plainTextTitle = notification.title.replace(/<\/?[^>]+(>|$)/g, '');
+                    noticeLink.textContent = plainTextTitle;
+
+                    noticeTitle.appendChild(noticeLink);
+                    noticeDiv.appendChild(noticeTitle);
+                    notificationList.appendChild(noticeDiv);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching notifications:', error);
+                document.getElementById('notification-list').innerHTML = '<p>Failed to load notifications.</p>';
+            });
+
+
+    </script>
+    <!-- fetch noti -->
+    <script>
+        let currentPage = 1; // Trang hiện tại
+        const itemsPerPage = 5; // Số thông báo trên mỗi trang
+
+        // Hàm fetch và hiển thị thông báo
+        function fetchNotifications() {
+            fetch('/notification/getAll')
+                .then(response => response.json()) // Parse the response as JSON
+                .then(data => {
+                    const noticeBoardWrap = document.getElementById('notice-board-wrap');
+
+                    // Nếu không có thông báo
+                    if (data.length === 0) {
+                        noticeBoardWrap.innerHTML = '<p>No notifications available.</p>';
+                        return;
+                    }
+
+                    // Loại bỏ thông báo mặc định có tiêu đề "Notification"
+                    data = data.filter(notification => notification.title !== 'Notification' && notification.title.trim() !== '');
+
+                    // Sắp xếp dữ liệu từ mới nhất đến cũ nhất (sử dụng trường 'date')
+                    data.sort((a, b) => {
+                        const dateA = new Date(a.date);
+                        const dateB = new Date(b.date);
+                        return dateB - dateA; // Sắp xếp theo thứ tự giảm dần (mới nhất lên đầu)
+                    });
+
+                    // Phân trang thông báo
+                    const startIndex = (currentPage - 1) * itemsPerPage;
+                    const endIndex = startIndex + itemsPerPage;
+                    const currentNotifications = data.slice(startIndex, endIndex);
+
+                    // Xóa nội dung cũ
+                    noticeBoardWrap.innerHTML = '';
+
+                    // Hiển thị thông báo cho trang hiện tại
+                    const formatDate = () => {
+                        const now = new Date();
+                        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                        return now.toLocaleDateString('en-US', options); // Ensure English locale
+                    };
+
+                    currentNotifications.forEach(notification => {
+                        const noticeDiv = document.createElement('div');
+                        noticeDiv.classList.add('notice-list');
+
+                        const postDateDiv = document.createElement('div');
+                        postDateDiv.classList.add('post-date', 'bg-light-sea-green');
+                        postDateDiv.textContent = notification.date || formatDate();
+
+                        const noticeTitle = document.createElement('h6');
+                        noticeTitle.classList.add('notice-title');
+
+                        const noticeLink = document.createElement('a');
+                        noticeLink.href = notification.link || '#';
+                        const plainTextTitle = notification.title.replace(/<\/?[^>]+(>|$)/g, ''); // Strip HTML tags
+                        noticeLink.textContent = plainTextTitle;
+
+                        noticeTitle.appendChild(noticeLink);
+                        noticeDiv.appendChild(postDateDiv);
+                        noticeDiv.appendChild(noticeTitle);
+                        noticeBoardWrap.appendChild(noticeDiv);
+                    });
+
+                    // Cập nhật nút phân trang
+                    updatePagination(data.length);
+                })
+                .catch(error => {
+                    console.error('Error fetching notifications:', error);
+                    const noticeBoardWrap = document.getElementById('notice-board-wrap');
+                    noticeBoardWrap.innerHTML = '<p>Failed to load notifications.</p>';
+                });
+        }
+
+        // Hàm cập nhật trạng thái phân trang
+        function updatePagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const currentPageElement = document.getElementById('current-page');
+            const prevButton = document.getElementById('prev-page');
+            const nextButton = document.getElementById('next-page');
+
+            currentPageElement.textContent = `Page ${currentPage} of ${totalPages}`;
+
+            // Cập nhật trạng thái nút
+            prevButton.disabled = currentPage === 1;
+            nextButton.disabled = currentPage === totalPages;
+
+            prevButton.classList.toggle('disabled', currentPage === 1);
+            nextButton.classList.toggle('disabled', currentPage === totalPages);
+        }
+
+        // Xử lý khi nhấn nút "Previous" hoặc "Next"
+        document.getElementById('prev-page').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchNotifications();
+            }
+        });
+
+        document.getElementById('next-page').addEventListener('click', () => {
+            currentPage++;
+            fetchNotifications();
+        });
+
+        // Gọi lần đầu khi tải trang
+        fetchNotifications();
+
+    </script>
+
+
+    <script>
+        if (window.location.href.includes('?logout=true')) {
+            sessionStorage.clear();
+            console.log("Session storage cleared after logout");
         }
     </script>
 </body>

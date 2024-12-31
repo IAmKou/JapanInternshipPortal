@@ -28,6 +28,181 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <style>
+        /* Đảm bảo trang bao phủ toàn bộ chiều cao */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* Container chính */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%; /* Bao phủ toàn bộ trang */
+        }
+
+        /* Nội dung bên trên */
+        .content {
+            flex: 1; /* Đẩy footer xuống */
+        }
+
+        /* Footer nằm ở cuối */
+        .footer-wrap-layout1 {
+            background-color: #ec9006;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .footer-wrap-layout1 a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+        .pagination button:disabled {
+            background-color: #eaeaea;
+            cursor: not-allowed;
+        }
+
+        .semester-item {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .semester-dates {
+            display: flex;              /* Sử dụng Flexbox để căn chỉnh các phần tử con */
+            align-items: center;        /* Căn giữa theo chiều dọc */
+            justify-content: space-between; /* Đảm bảo khoảng cách giữa các phần tử */
+            width: 100%;                /* Chiếm toàn bộ chiều rộng có sẵn */
+        }
+
+        .semester-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            margin-left: 20px; /* Giảm khoảng cách bên trái */
+        }
+
+
+        .date-item {
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .calendar-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 100px;
+            background-color: #f7f9fc;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            position: relative;
+            font-family: Arial, sans-serif;
+        }
+
+        .date-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .date-month-year {
+            font-size: 12px;
+            color: #555;
+        }
+
+        .calendar-icon::before {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 10px;
+            background-color: #4caf50;
+            border-radius: 5px 5px 0 0;
+            position: absolute;
+            top: 0;
+        }
+
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+
+        .pagination button:disabled {
+            background-color: #eaeaea;
+            cursor: not-allowed;
+        }
+        input[name="name"] {
+            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="name"]:hover {
+            border-color: #28a745 !important;
+        }
+        /* Khi người dùng focus vào input */
+        input[name="name"]:focus {
+            border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        }
+
+        input[name="st"] {
+            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="st"]:hover {
+            border-color: #28a745 !important;
+        }
+        /* Khi người dùng focus vào input */
+        input[name="st"]:focus {
+            border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        }
+
+        input[name="et"] {
+            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="et"]:hover {
+            border-color: #28a745 !important;
+        }
+        /* Khi người dùng focus vào input */
+        input[name="et"]:focus {
+            border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        }
+    </style>
 </head>
 
 <body>
@@ -153,10 +328,7 @@
                             <a href="semester-create.html" class="nav-link"><i
                                     class="flaticon-settings"></i><span>Semester</span></a>
                         </li>
-                        <li class="nav-item">
-                            <a href="report-list.html" class="nav-link"><i
-                                    class="flaticon-script"></i><span>Report</span></a>
-                        </li>
+
                         <li class="nav-item">
                             <a href="notice-board.html" class="nav-link"><i
                                     class="flaticon-script"></i><span>Notification</span></a>
@@ -196,22 +368,22 @@
                             <div class="card-body">
                                 <div class="heading-layout1">
                                     <div class="item-title">
-                                        <h3>Create New Semester</h3>
+                                        <h3 style="padding-bottom: 10px">Create New Semester</h3>
                                     </div>
                                 </div>
                                 <form class="new-added-form" action="notification/create" method="post">
                                     <input type="hidden" name="userId" id="hiddenUserId">
                                     <div class="row">
-                                        <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                            <label>Title</label>
+                                              <div class="col-12-xxxl col-lg-6 col-12 form-group">
+                                            <label style="color: #007bff; font-weight: bold;">Semester Name <span style="color: red;">*</span>  </label>
                                             <input type="text" placeholder="" class="form-control" name="name" required>
                                         </div>
                                         <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                            <label>Start Time</label>
+                                            <label style="color: #007bff; font-weight: bold;">Start Time <span style="color: red;">*</span></label>
                                             <input type="date" placeholder="" class="form-control" name="st" required>
                                         </div>
                                         <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                            <label>End Time</label>
+                                            <label style="color: #007bff; font-weight: bold;">End Time <span style="color: red;">*</span></label>
                                             <input type="date" placeholder="" class="form-control" name="et" required>
                                         </div>
                                         <div class="col-12 form-group mg-t-8">
@@ -234,8 +406,11 @@
                                     </div>
                                 </div>
 
-                                <div class="notice-board-wrap" id="notice-board-wrap">
+                                <div id="notice-board-wrap">
+
                                 </div>
+                                <div id="pagination" class="pagination"></div>
+
                             </div>
                         </div>
                     </div>
@@ -245,6 +420,18 @@
         </div>
         <!-- Page Area End Here -->
     </div>
+    <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+        <div style="background-color: #ec9006; padding: 15px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+                            rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
     <!-- jquery-->
     <script src="js/jquery-3.3.1.min.js"></script>
     <!-- Plugins js -->
@@ -457,47 +644,128 @@
         });
     </script>
     <script>
-        // Fetch notifications from the backend
         fetch('/semester/get')
-            .then(response => response.json()) // Parse the response as JSON
+            .then(response => response.json())
             .then(data => {
                 const noticeBoardWrap = document.getElementById('notice-board-wrap');
+                const pagination = document.getElementById('pagination');
+                const itemsPerPage = 3;
+                let currentPage = 1;
 
-                // Check if the list is empty
-                if (data.length === 0) {
-                    noticeBoardWrap.innerHTML = '<p>No semester available.</p>';
-                    return;
+                function renderSemesters() {
+                    noticeBoardWrap.innerHTML = '';
+
+                    const startIndex = (currentPage - 1) * itemsPerPage;
+                    const endIndex = Math.min(startIndex + itemsPerPage, data.length);
+
+                    for (let i = startIndex; i < endIndex; i++) {
+                        const semester = data[i];
+                        const startDate = new Date(semester.semesterStart);
+                        const endDate = new Date(semester.semesterEnd);
+
+                        const semesterDiv = document.createElement('div');
+                        semesterDiv.classList.add('semester-item');
+
+                        const semesterName = document.createElement('h6');
+                        semesterName.classList.add('semester-name');
+                        semesterName.textContent = semester.semesterName;
+
+                        const semesterDates = document.createElement('div');
+                        semesterDates.classList.add('semester-dates');
+
+                        // Start Date
+                        // Start Date
+                        const startDateDiv = document.createElement('div');
+                        startDateDiv.classList.add('date-item');
+                        startDateDiv.innerHTML = `
+    <div class="calendar-icon" style="margin-right: 10px;">
+        <div class="date-number">${startDate.getDate()}</div>
+        <div class="date-month-year">${startDate.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</div>
+    </div>
+    <p><i class="fas fa-calendar-alt" ></i><span style="font-weight: bold">Start Date</span></p>
+`;
+
+// End Date
+                        const endDateDiv = document.createElement('div');
+                        endDateDiv.classList.add('date-item');
+                        endDateDiv.innerHTML = `
+    <div class="calendar-icon" style="margin-right: 20px;">
+        <div class="date-number">${endDate.getDate()}</div>
+        <div class="date-month-year">${endDate.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</div>
+    </div>
+    <p><i class="fas fa-calendar-alt"></i><span style="font-weight: bold">End Date</span></p>
+`;
+
+
+                        // Append to container
+                        semesterDates.appendChild(startDateDiv);
+                        semesterDates.appendChild(endDateDiv);
+
+                        semesterDiv.appendChild(semesterName);
+                        semesterDiv.appendChild(semesterDates);
+
+                        noticeBoardWrap.appendChild(semesterDiv);
+                    }
                 }
 
-                // Loop through each semester and add it to the page
-                data.forEach(semester => {
-                    // Create the new semester div
-                    const semesterDiv = document.createElement('div');
-                    semesterDiv.classList.add('semester-item');
+                function renderPagination() {
+                    pagination.innerHTML = '';
 
-                    // Create the semester name
-                    const semesterName = document.createElement('h6');
-                    semesterName.classList.add('semester-name');
-                    semesterName.textContent = semester.semesterName;
+                    const totalPages = Math.ceil(data.length / itemsPerPage);
 
-                    // Create the semester start and end date
-                    const semesterDetails = document.createElement('p');
-                    semesterDetails.classList.add('semester-details');
-                    semesterDetails.textContent = `Start Date: ${semester.semesterStart}, End Date: ${semester.semesterEnd}`;
+                    // Previous Button
+                    const prevButton = document.createElement('button');
+                    prevButton.textContent = 'Previous';
+                    prevButton.disabled = currentPage === 1;
+                    prevButton.addEventListener('click', () => {
+                        if (currentPage > 1) {
+                            currentPage--;
+                            renderSemesters();
+                            renderPagination();
+                        }
+                    });
+                    pagination.appendChild(prevButton);
 
-                    // Append the details to the semester div
-                    semesterDiv.appendChild(semesterName);
-                    semesterDiv.appendChild(semesterDetails);
+                    // Page Numbers
+                    for (let i = 1; i <= totalPages; i++) {
+                        const pageButton = document.createElement('button');
+                        pageButton.textContent = i;
+                        pageButton.disabled = i === currentPage;
+                        pageButton.addEventListener('click', () => {
+                            currentPage = i;
+                            renderSemesters();
+                            renderPagination();
+                        });
+                        pagination.appendChild(pageButton);
+                    }
 
-                    // Append the semester div to the noticeBoardWrap
-                    noticeBoardWrap.appendChild(semesterDiv);
-                });
+                    // Next Button
+                    const nextButton = document.createElement('button');
+                    nextButton.textContent = 'Next';
+                    nextButton.disabled = currentPage === totalPages;
+                    nextButton.addEventListener('click', () => {
+                        if (currentPage < totalPages) {
+                            currentPage++;
+                            renderSemesters();
+                            renderPagination();
+                        }
+                    });
+                    pagination.appendChild(nextButton);
+                }
+
+                if (data.length === 0) {
+                    noticeBoardWrap.innerHTML = '<p>No semester available.</p>';
+                } else {
+                    renderSemesters();
+                    renderPagination();
+                }
             })
             .catch(error => {
                 console.error('Error fetching semesters:', error);
                 const noticeBoardWrap = document.getElementById('notice-board-wrap');
                 noticeBoardWrap.innerHTML = '<p>Failed to load semesters.</p>';
             });
+
     </script>
 </body>
 </html>
