@@ -57,6 +57,19 @@ CREATE TABLE Manager (
                          account_id INT,
                          FOREIGN KEY (account_id) REFERENCES Account(Id)
 );
+CREATE TABLE Room (
+                      id INT AUTO_INCREMENT PRIMARY KEY,
+                      name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE
+
+);
+
+CREATE TABLE Semester (
+                          id INT AUTO_INCREMENT PRIMARY KEY,
+                          name VARCHAR(100) NOT NULL,
+                          start_time DATE NOT NULL,
+                          end_time DATE NOT NULL,
+                          status ENUM('Active', 'Inactive') DEFAULT 'Inactive'
+);
 
 -- Class table (linked with Teacher)
 CREATE TABLE Class (
@@ -77,15 +90,6 @@ CREATE TABLE List (
                       PRIMARY KEY (class_id, student_id),
                       FOREIGN KEY (class_id) REFERENCES Class(Id),
                       FOREIGN KEY (student_id) REFERENCES Student(Id)
-);
-
--- Semester table
-CREATE TABLE Semester (
-                          id INT AUTO_INCREMENT PRIMARY KEY,
-                          name VARCHAR(100) NOT NULL,
-                          start_time DATE NOT NULL,
-                          end_time DATE NOT NULL,
-                          status ENUM('Active', 'Inactive') DEFAULT 'Inactive'
 );
 
 -- Holiday table
@@ -112,13 +116,21 @@ CREATE TABLE Schedule (
                           class_id INT DEFAULT NULL,
                           room VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                           activity VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-                          curriculum_id INT,
                           semester_id INT,
-                          time_slot VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
                           status ENUM('Draft', 'Published') DEFAULT 'Draft',
                           FOREIGN KEY (class_id) REFERENCES Class(id) ON DELETE SET NULL,
-                          FOREIGN KEY (curriculum_id) REFERENCES Curriculum(id) ON DELETE CASCADE,
                           FOREIGN KEY (semester_id) REFERENCES Semester(id) ON DELETE CASCADE
+);
+
+CREATE TABLE room_availability (
+                                  id INT AUTO_INCREMENT PRIMARY KEY,
+                                  room_id INT NOT NULL,
+                                  date DATE NOT NULL,
+                                  status ENUM('Available', 'Occupied') DEFAULT 'Available',
+                                  schedule_id BIGINT DEFAULT NULL,
+                                  FOREIGN KEY (room_id) REFERENCES Room(id) ON DELETE CASCADE,
+                                  FOREIGN KEY (schedule_id) REFERENCES Schedule(id) ON DELETE SET NULL,
+                                  UNIQUE (room_id, date)
 );
 
 -- Attendant table
