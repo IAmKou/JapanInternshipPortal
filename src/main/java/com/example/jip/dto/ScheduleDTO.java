@@ -17,6 +17,7 @@ public class ScheduleDTO {
     private String room;
     private String activity;
     private String semesterName;
+    private String time_slot;
     private Schedule.status status;
     private int semesterId;
     private Date startTime;
@@ -26,7 +27,7 @@ public class ScheduleDTO {
     public ScheduleDTO() {
     }
 
-    public ScheduleDTO(int id, String date, Schedule.dayOfWeek dayOfWeek, String class_name, String color, String room, String activity, String semesterName, Schedule.status status, int semesterId, Date startTime, Date endTime) {
+    public ScheduleDTO(int id, String date, Schedule.dayOfWeek dayOfWeek, String class_name, String color, String room, String activity, String semesterName, String time_slot, Schedule.status status, int semesterId, Date startTime, Date endTime) {
         this.id = id;
         this.date = date;
         this.dayOfWeek = dayOfWeek;
@@ -35,6 +36,7 @@ public class ScheduleDTO {
         this.room = room;
         this.activity = activity;
         this.semesterName = semesterName;
+        this.time_slot = time_slot;
         this.status = status;
         this.semesterId = semesterId;
         this.startTime = startTime;
@@ -50,6 +52,7 @@ public class ScheduleDTO {
         this.color = (schedule.getColor() != null) ? schedule.getColor() : "No Color";
         this.activity = schedule.getActivity();
         this.semesterName = (schedule.getSemester() != null) ? schedule.getSemester().getName() : "No Semester Assigned";
+        this.time_slot = schedule.getTime_slot();
         this.status = schedule.getStatus();
         this.semesterId = schedule.getSemester().getId();
         this.startTime = schedule.getSemester().getStart_time();
@@ -151,6 +154,14 @@ public class ScheduleDTO {
 
     public void setSemesterName(String semesterName) {
         this.semesterName = semesterName;
+    }
+
+    public String getTime_slot() {
+        return time_slot;
+    }
+
+    public void setTime_slot(String time_slot) {
+        this.time_slot = time_slot;
     }
 
     public Schedule.status getStatus() {

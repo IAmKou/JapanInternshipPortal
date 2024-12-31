@@ -1,13 +1,11 @@
 package com.example.jip.repository;
 
 import com.example.jip.entity.Semester;
-import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import org.springframework.data.domain.Pageable;
 import java.sql.Date;
-
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +20,4 @@ public interface SemesterRepository extends JpaRepository<Semester, Integer> {
     // Find semesters ending on a specific date
     @Query("SELECT s FROM Semester s WHERE s.end_time = :endDate")
     List<Semester> findByEndDate(Date endDate);
-
-    Page<Semester> findAll(Pageable pageable);
 }

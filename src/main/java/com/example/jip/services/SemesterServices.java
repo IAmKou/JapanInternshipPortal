@@ -62,7 +62,7 @@ public class SemesterServices {
 
                 // Optionally set the day_of_week based on the date
                 schedule.setDay_of_week(getDayOfWeekFromDate(holiday.getDate()));
-
+                schedule.setTime_slot("All day");
 
                 // Save the schedule to the database
                 scheduleRepository.save(schedule);

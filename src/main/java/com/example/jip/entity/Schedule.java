@@ -35,6 +35,9 @@ public class Schedule {
     @Column(name = "activity")
     private String activity;
 
+    @Column(name = "time_slot")
+    private String time_slot;
+
     @Column(name="status")
     @Enumerated(EnumType.STRING)
     private status status;
@@ -46,7 +49,7 @@ public class Schedule {
 
     public Schedule() {}
 
-    public Schedule(int id, Date date, dayOfWeek day_of_week, String room, String color, Class clasz, String activity, Schedule.status status, Semester semester) {
+    public Schedule(int id, Date date, dayOfWeek day_of_week, String room, String color, Class clasz, String activity, String time_slot, Schedule.status status, Semester semester) {
         this.id = id;
         this.date = date;
         this.day_of_week = day_of_week;
@@ -54,6 +57,7 @@ public class Schedule {
         this.color = color;
         this.clasz = clasz;
         this.activity = activity;
+        this.time_slot = time_slot;
         this.status = status;
         this.semester = semester;
     }

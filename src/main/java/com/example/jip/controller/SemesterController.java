@@ -8,13 +8,9 @@ import com.example.jip.repository.ScheduleRepository;
 import com.example.jip.repository.SemesterRepository;
 import com.example.jip.services.ClassServices;
 import com.example.jip.services.HolidayServices;
-import com.example.jip.services.RoomAvailabilityServices;
 import com.example.jip.services.SemesterServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +36,6 @@ public class SemesterController {
     @Autowired
     private ClassServices classServices;
 
-    @Autowired
-    private RoomAvailabilityServices roomAvailabilityServices;
-
     @PostMapping("/create")
     public ResponseEntity<String> createSemester(@RequestBody Semester semester) {
         try {
@@ -64,7 +57,6 @@ public class SemesterController {
             semesterService.saveSemester(semester);
 
             // Fetch holidays and other processing
-            int id = semester.getId();
             String startDate = semester.getStart_time().toString();
             String endDate = semester.getEnd_time().toString();
             String year = String.valueOf(semester.getStart_time().toLocalDate().getYear());
@@ -74,7 +66,6 @@ public class SemesterController {
             // Add holidays to semester and schedule
             semesterService.addHolidaysToSemester(holidays);
             semesterService.addHolidaysToSchedule(semester, holidays);
-            roomAvailabilityServices.initializeRoomAvailabilityForSemester(id);
 
             // Return a success message with a proper JSON response
             return ResponseEntity.status(HttpStatus.CREATED)
@@ -89,10 +80,10 @@ public class SemesterController {
     }
 
     @GetMapping("/get")
-    public Page<SemesterDTO> getSemester(@RequestParam(defaultValue = "0") int page,
-                                         @RequestParam(defaultValue = "5") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return semesterRepository.findAll(pageable).map(SemesterDTO::new);
+    public List<SemesterDTO> getSemester() {
+        return semesterRepository.findAll().stream()
+                .map(SemesterDTO::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/get/{semesterId}")
@@ -110,40 +101,4 @@ public class SemesterController {
         }
         return ResponseEntity.ok(semesterDates);
     }
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteSemester(@RequestBody int sid) {
-        Semester semester = semesterRepository.findById(sid).orElse(null);
-
-        if (semester == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Semester not found");
-        }
-
-        if (!semester.getSchedules().isEmpty() || !semester.getClasses().isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot delete semester. It is associated with schedules or classes.");
-        }
-
-        semesterRepository.delete(semester);
-        return ResponseEntity.ok("Semester deleted successfully");
-    }
-
-    @PostMapping("/update")
-    public ResponseEntity<String> updateSemester(@RequestBody Semester updatedSemester) {
-        Semester existingSemester = semesterRepository.findById(updatedSemester.getId()).orElse(null);
-
-        if (existingSemester == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Semester not found");
-        }
-
-        if (existingSemester.getStart_time().before(new java.util.Date())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot update semester. It has already started.");
-        }
-
-        existingSemester.setName(updatedSemester.getName());
-        existingSemester.setStart_time(updatedSemester.getStart_time());
-        existingSemester.setEnd_time(updatedSemester.getEnd_time());
-
-        semesterRepository.save(existingSemester);
-        return ResponseEntity.ok("Semester updated successfully");
-    }
-
 }
