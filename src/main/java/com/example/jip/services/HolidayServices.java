@@ -1,19 +1,25 @@
 package com.example.jip.services;
 
 import com.example.jip.entity.Holiday;
+import com.example.jip.repository.HolidayRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
 public class HolidayServices {
+
+    @Autowired
+    private HolidayRepository holidayRepository;
 
     private final String API_KEY = "YB3MpA2Ac8Md4T6nXREAjv7bd8i0G3Pg";
     private final String API_URL = "https://calendarific.com/api/v2/holidays";
@@ -52,5 +58,7 @@ public class HolidayServices {
         }
         return holidays;
     }
-
+    public List<Holiday> getHolidaysInRange(Date startDate, Date endDate) {
+        return holidayRepository.findByDateBetween(startDate, endDate);
+    }
 }

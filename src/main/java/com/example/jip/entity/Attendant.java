@@ -10,47 +10,46 @@ import java.sql.Date;
 @Setter
 @Getter
 public class Attendant {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="student_id")
+    @ManyToOne
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
     private Student student;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="schedule_id")
+    @ManyToOne
+    @JoinColumn(name = "schedule_id", referencedColumnName = "id")
     private Schedule schedule;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private Status status;
-
-    @Column(name="Date")
-    private Date date;
-
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "curriculum_id", referencedColumnName = "id", nullable = false)
     private Curriculum curriculum;
 
-    public Attendant(){}
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status;
 
-    public Attendant(int id, Student student, Schedule schedule, Status status, Date date) {
+    @Column(nullable = false)
+    private Date date;
+
+    public enum Status {
+        PRESENT,
+        ABSENT,
+        LATE,
+        PERMITTED
+    }
+
+    public Attendant(Integer id, Student student, Schedule schedule, Curriculum curriculum, Status status, Date date) {
         this.id = id;
         this.student = student;
         this.schedule = schedule;
+        this.curriculum = curriculum;
         this.status = status;
         this.date = date;
     }
 
-    public enum Status {
-        Present, Late, Absent, Permitted, NoRecord;
-
-        @Override
-        public String toString() {
-            // Replace underscores with spaces
-            return this.name().replace("_", " ");
-        }
+    public Attendant() {
     }
-
 }
