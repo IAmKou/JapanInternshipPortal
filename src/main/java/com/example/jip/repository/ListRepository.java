@@ -39,7 +39,7 @@ public interface ListRepository extends JpaRepository<Listt, ListId> {
     List<StudentWithClassDTO> findAllStudentsWithClassInfo();
 
     @Query("SELECT new com.example.jip.dto.MarkReportDTO(s.id, s.fullname, mr.softskill,mr.avg_exam_mark, " +
-            "mr.middle_exam, mr.final_exam, mr.attitude, mr.final_mark, mr.comment,mr.skill) " +
+            "mr.middle_exam, mr.final_exam, mr.attitude, mr.final_mark, mr.comment,mr.skill,mr.presentation,mr.script_presentation) " +
             "FROM Student s " +
             "JOIN MarkReport mr ON s.id = mr.student.id " +
             "JOIN Listt l ON s.id = l.student.id " +

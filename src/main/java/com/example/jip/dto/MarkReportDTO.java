@@ -45,9 +45,9 @@ public class MarkReportDTO {
 
     // Constructor for manager list
     public MarkReportDTO(Integer studentId, String fullname, BigDecimal softskill, BigDecimal avgExamMark,
-                         BigDecimal middleExam, BigDecimal finalExam, BigDecimal attitude, BigDecimal finalMark, String comment,BigDecimal skill ) {
+                         BigDecimal middleExam, BigDecimal finalExam, BigDecimal attitude, BigDecimal finalMark, String comment,BigDecimal skill,BigDecimal presentation,BigDecimal scriptPresentation ) {
         this.studentId = studentId;
-        this.fullname = fullname; // Initialize fullname
+        this.fullname = fullname;
         this.softskill = softskill;
         this.avgExamMark = avgExamMark;
         this.middleExam = middleExam;
@@ -56,5 +56,7 @@ public class MarkReportDTO {
         this.finalMark = finalMark;
         this.comment = comment;
         this.skill = skill;
+        this.presentation = presentation;
+        this.scriptPresentation = scriptPresentation;
     }
 }
