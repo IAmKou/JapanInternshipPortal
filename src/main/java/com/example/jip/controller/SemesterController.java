@@ -22,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -111,7 +112,13 @@ public class SemesterController {
         return ResponseEntity.ok(semesterDates);
     }
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteSemester(@RequestBody int sid) {
+    public ResponseEntity<String> deleteSemester(@RequestBody Map<String, Integer> payload) {
+        Integer sid = payload.get("sid");
+
+        if (sid == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Semester ID is missing");
+        }
+
         Semester semester = semesterRepository.findById(sid).orElse(null);
 
         if (semester == null) {
