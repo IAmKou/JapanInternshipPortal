@@ -199,8 +199,6 @@
                     </div>
                 </li>
 
-
-
             </ul>
         </div>
     </div>
@@ -334,7 +332,7 @@
                         </div>
                     </div>
                 </div>
-
+                
             </div>
             <div class="row gutters-20">
 
@@ -394,36 +392,28 @@
         // Lưu ngôn ngữ vào localStorage
         localStorage.setItem('selectedLanguage', language);
 
-        // Gọi Google Translate API để dịch trang
-        translatePage(language);
+        // Kiểm tra nếu Google Translate đã được tải
+        if (window.google && google.translate) {
+            google.translate.TranslateElement.prototype.translatePage(language);
+        }
     }
 
-    // Hàm gọi Google Translate API
-    function translatePage(language) {
-        // Cập nhật API endpoint nếu bạn sử dụng API Cloud
-        const apiKey = 'AIzaSyA0HjYusVnEAwDuNqEph4GDBI_Lea6vCAQ';
-        const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
+    // Hàm khởi tạo Google Translate khi trang tải
+    function loadGoogleTranslate() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+        document.head.appendChild(script);
+    }
 
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                q: document.documentElement.innerHTML,
-                target: language,
-                key: apiKey
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data && data.data && data.data.translations) {
-                    document.documentElement.innerHTML = data.data.translations[0].translatedText;
-                }
-            })
-            .catch(error => {
-                console.error('Error translating page:', error);
-            });
+    // Hàm khởi tạo Google Translate Element
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,ja',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false,
+        }, 'google_translate_element');
     }
 
     // Khi trang được tải, thiết lập ngôn ngữ từ localStorage
@@ -440,8 +430,13 @@
         }
 
         // Dịch trang ngay từ khi tải
-        translatePage(savedLanguage);
+        if (window.google && google.translate) {
+            google.translate.TranslateElement.prototype.translatePage(savedLanguage);
+        }
     });
+
+    // Tải Google Translate
+    loadGoogleTranslate();
 </script>
 
 
