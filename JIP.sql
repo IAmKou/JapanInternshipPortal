@@ -199,7 +199,7 @@ Create table exam (
                       title VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
                       kanji Decimal(5,2) null,
                       bunpou Decimal(5,2) null ,
-                      kotoba Decimal(5,2) null,
+                      kotoba Decimal(5,2) null
 );
 
 CREATE TABLE mark_report_exam (
