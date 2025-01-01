@@ -6,10 +6,7 @@ import com.example.jip.entity.Holiday;
 import com.example.jip.entity.Semester;
 import com.example.jip.repository.ScheduleRepository;
 import com.example.jip.repository.SemesterRepository;
-import com.example.jip.services.ClassServices;
-import com.example.jip.services.HolidayServices;
-import com.example.jip.services.RoomAvailabilityServices;
-import com.example.jip.services.SemesterServices;
+import com.example.jip.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,6 +41,8 @@ public class SemesterController {
     @Autowired
     private RoomAvailabilityServices roomAvailabilityServices;
 
+    @Autowired
+    private ExamService examService;
     @PostMapping("/create")
     public ResponseEntity<String> createSemester(@RequestBody Semester semester) {
         try {
@@ -76,7 +75,7 @@ public class SemesterController {
             semesterService.addHolidaysToSemester(holidays);
             semesterService.addHolidaysToSchedule(semester, holidays);
             roomAvailabilityServices.initializeRoomAvailabilityForSemester(id);
-
+            examService.createExams(43);
             // Return a success message with a proper JSON response
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body("{\"message\":\"Semester created successfully with holidays in the schedule!\"}");

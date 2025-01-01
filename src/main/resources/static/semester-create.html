@@ -66,7 +66,6 @@
             justify-content: center;
             margin-top: 10px;
         }
-
         .pagination button {
             margin: 0 5px;
             padding: 5px 10px;
@@ -74,7 +73,6 @@
             background-color: #f9f9f9;
             cursor: pointer;
         }
-
         .pagination button:disabled {
             background-color: #eaeaea;
             cursor: not-allowed;
@@ -181,55 +179,47 @@
             background-color: #eaeaea;
             cursor: not-allowed;
         }
-
         input[name="name"] {
-            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
-            border-radius: 5px; /* Thêm góc bo tròn nếu cần */
+            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
         }
 
         input[name="name"]:hover {
             border-color: #28a745 !important;
         }
-
         /* Khi người dùng focus vào input */
         input[name="name"]:focus {
-            border-color: #ff6347;
-        !important; /* Giữ màu xanh khi focus */
-            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+            border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
         }
 
         input[name="st"] {
-            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
-            border-radius: 5px; /* Thêm góc bo tròn nếu cần */
+            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
         }
 
         input[name="st"]:hover {
             border-color: #28a745 !important;
         }
-
         /* Khi người dùng focus vào input */
         input[name="st"]:focus {
-            border-color: #ff6347;
-        !important; /* Giữ màu xanh khi focus */
-            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+            border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
         }
 
         input[name="et"] {
-            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
-            border-radius: 5px; /* Thêm góc bo tròn nếu cần */
+            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
         }
 
         input[name="et"]:hover {
             border-color: #28a745 !important;
         }
-
         /* Khi người dùng focus vào input */
         input[name="et"]:focus {
-            border-color: #ff6347;
-        !important; /* Giữ màu xanh khi focus */
-            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+            border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
         }
-
         .semester-actions {
             font-family: "Arial, sans-serif";
             color: #333;
@@ -599,18 +589,15 @@
                                 <input type="hidden" name="userId" id="hiddenUserId">
                                 <div class="row">
                                     <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                        <label style="color: #007bff; font-weight: bold;">Semester Name <span
-                                                style="color: red;">*</span></label>
+                                        <label style="color: #007bff; font-weight: bold;">Semester Name <span style="color: red;">*</span></label>
                                         <input type="text" placeholder="" class="form-control" name="name" required>
                                     </div>
                                     <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                        <label style="color: #007bff; font-weight: bold;">Start Time <span
-                                                style="color: red;">*</span></label>
+                                        <label style="color: #007bff; font-weight: bold;">Start Time <span style="color: red;">*</span></label>
                                         <input type="date" placeholder="" class="form-control" name="st" required>
                                     </div>
                                     <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                        <label style="color: #007bff; font-weight: bold;">End Time <span
-                                                style="color: red;">*</span></label>
+                                        <label style="color: #007bff; font-weight: bold;">End Time <span style="color: red;">*</span></label>
                                         <input type="date" placeholder="" class="form-control" name="et" required>
                                     </div>
                                     <div class="col-12 form-group mg-t-8">
@@ -720,6 +707,7 @@
             </div>
         </div>
     </div>
+
 
 
 </div>
@@ -935,327 +923,309 @@
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const noticeBoardWrap = document.getElementById('notice-board-wrap');
-        const pagination = document.getElementById('pagination');
-        const itemsPerPage = 3;
-        let currentPage = 1;
-        let totalData = []; // Store all semesters data
+        let currentPage = 0; // Start from the first page
+        const pageSize = 3; // Number of items per page
 
-        if (!noticeBoardWrap || !pagination) {
-            console.error('Required elements (noticeBoardWrap or pagination) not found.');
-            return;
-        }
-
-        function fetchSemesters() {
-            fetch('/semester/get')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json();
-                })
+        function fetchSemesters(page) {
+            fetch(`/semester/get?page=${page}&size=${pageSize}`)
+                .then(response => response.json())
                 .then(data => {
-                    if (!Array.isArray(data)) {
-                        throw new Error('Invalid data format. Expected an array.');
-                    }
-                    totalData = data; // Save all fetched data
-                    if (totalData.length === 0) {
-                        noticeBoardWrap.innerHTML = '<p>No semester available.</p>';
-                        pagination.innerHTML = '';
+                    const noticeBoardWrap = document.getElementById('notice-board-wrap');
+                    if (!noticeBoardWrap) {
+                        console.error('Element with ID "notice-board-wrap" not found.');
                         return;
                     }
-                    renderSemesters();
-                    renderPagination();
+                    noticeBoardWrap.innerHTML = ''; // Clear previous content
+
+                    // Check if the list is empty
+                    if (data.content.length === 0) {
+                        noticeBoardWrap.innerHTML = '<p>No semester available.</p>';
+                        return;
+                    }
+
+                    // Loop through each semester and add it to the page
+                    data.content.forEach(semester => {
+                        const startDate = new Date(semester.semesterStart);
+                        const endDate = new Date(semester.semesterEnd);
+
+                        // Create semester item
+                        const semesterDiv = document.createElement('div');
+                        semesterDiv.classList.add('semester-item');
+
+                        // Semester name
+                        const semesterName = document.createElement('h6');
+                        semesterName.classList.add('semester-name');
+                        semesterName.textContent = semester.semesterName;
+
+                        // Semester dates container
+                        const semesterDates = document.createElement('div');
+                        semesterDates.classList.add('semester-dates');
+
+                        // Start date
+                        const startDateDiv = document.createElement('div');
+                        startDateDiv.classList.add('date-item');
+                        startDateDiv.innerHTML = `
+                        <div class="calendar-icon" style="margin-right: 5px;">
+                            <div class="date-number">${startDate.getDate()}</div>
+                            <div class="date-month-year">${startDate.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</div>
+                        </div>
+                        <p><i class="fas fa-calendar-alt"></i><span style="font-weight: bold"> Start Date</span></p>
+                    `;
+
+                        // End date
+                        const endDateDiv = document.createElement('div');
+                        endDateDiv.classList.add('date-item');
+                        endDateDiv.innerHTML = `
+                        <div class="calendar-icon" style="margin-right: 5px;">
+                            <div class="date-number">${endDate.getDate()}</div>
+                            <div class="date-month-year">${endDate.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</div>
+                        </div>
+                        <p><i class="fas fa-calendar-alt"></i><span style="font-weight: bold"> End Date</span></p>
+                    `;
+
+                        // Append date items
+                        semesterDates.appendChild(startDateDiv);
+                        semesterDates.appendChild(endDateDiv);
+
+                        // Actions dropdown
+                        const actionsDropdown = document.createElement('select');
+                        actionsDropdown.classList.add('semester-actions');
+                        actionsDropdown.innerHTML = `
+                        <option value="">Select Action</option>
+                        <option value="update">Update</option>
+                        <option value="delete">Delete</option>
+                    `;
+
+                        // Handle dropdown actions
+                        actionsDropdown.addEventListener('change', (event) => {
+                            const selectedAction = event.target.value;
+                            if (selectedAction === 'update') {
+                                updateSemester(semester);
+                            } else if (selectedAction === 'delete') {
+                                deleteSemester(semester);
+                            }
+                            event.target.value = ""; // Reset dropdown value
+                        });
+
+                        // Append elements to semester item
+                        semesterDiv.appendChild(semesterName);
+                        semesterDiv.appendChild(semesterDates);
+                        semesterDiv.appendChild(actionsDropdown);
+
+                        // Append semester item to notice board
+                        noticeBoardWrap.appendChild(semesterDiv);
+                    });
+
+                    // Render pagination
+                    renderPaginationControls(data.currentPage, data.totalPages);
                 })
                 .catch(error => {
                     console.error('Error fetching semesters:', error);
-                    noticeBoardWrap.innerHTML = '<p>Failed to load semesters.</p>';
-                });
-        }
-
-        function renderSemesters() {
-            noticeBoardWrap.innerHTML = ''; // Clear previous content
-
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = Math.min(startIndex + itemsPerPage, totalData.length);
-
-            for (let i = startIndex; i < endIndex; i++) {
-                const semester = totalData[i];
-                const startDate = new Date(semester.semesterStart);
-                const endDate = new Date(semester.semesterEnd);
-
-                const semesterDiv = document.createElement('div');
-                semesterDiv.classList.add('semester-item');
-
-                const semesterName = document.createElement('h6');
-                semesterName.classList.add('semester-name');
-                semesterName.textContent = semester.semesterName;
-
-                const semesterDates = document.createElement('div');
-                semesterDates.classList.add('semester-dates');
-
-                const startDateDiv = document.createElement('div');
-                startDateDiv.classList.add('date-item');
-                startDateDiv.innerHTML = `
-                <div class="calendar-icon" style="margin-right: 5px;">
-                    <div class="date-number">${startDate.getDate()}</div>
-                    <div class="date-month-year">${startDate.toLocaleDateString('en-GB', {
-                    month: 'short',
-                    year: 'numeric'
-                })}</div>
-                </div>
-                <p><i class="fas fa-calendar-alt"></i><span style="font-weight: bold"> Start Date</span></p>
-            `;
-
-                const endDateDiv = document.createElement('div');
-                endDateDiv.classList.add('date-item');
-                endDateDiv.innerHTML = `
-                <div class="calendar-icon" style="margin-right: 5px;">
-                    <div class="date-number">${endDate.getDate()}</div>
-                    <div class="date-month-year">${endDate.toLocaleDateString('en-GB', {
-                    month: 'short',
-                    year: 'numeric'
-                })}</div>
-                </div>
-                <p><i class="fas fa-calendar-alt"></i><span style="font-weight: bold"> End Date</span></p>
-            `;
-
-                semesterDates.appendChild(startDateDiv);
-                semesterDates.appendChild(endDateDiv);
-
-                const actionsDropdown = document.createElement('select');
-                actionsDropdown.classList.add('semester-actions');
-                actionsDropdown.innerHTML = `
-                <option value="">Select Action</option>
-                <option value="update">Update</option>
-                <option value="delete">Delete</option>
-            `;
-
-                actionsDropdown.addEventListener('change', event => {
-                    const selectedAction = event.target.value;
-                    if (selectedAction === 'update') {
-                        updateSemester(semester);
-                    } else if (selectedAction === 'delete') {
-                        deleteSemester(semester);
+                    const noticeBoardWrap = document.getElementById('notice-board-wrap');
+                    if (noticeBoardWrap) {
+                        noticeBoardWrap.innerHTML = '<p>Failed to load semesters.</p>';
                     }
-                    event.target.value = ""; // Reset dropdown
                 });
-
-                semesterDiv.appendChild(semesterName);
-                semesterDiv.appendChild(semesterDates);
-                semesterDiv.appendChild(actionsDropdown);
-
-                noticeBoardWrap.appendChild(semesterDiv);
-            }
         }
 
-        function renderPagination() {
-            pagination.innerHTML = ''; // Clear previous pagination
-
-            const totalPages = Math.ceil(totalData.length / itemsPerPage);
+        function renderPaginationControls(currentPage, totalPages) {
+            const paginationContainer = document.getElementById('pagination');
+            if (!paginationContainer) {
+                console.error('Element with ID "pagination" not found.');
+                return;
+            }
+            paginationContainer.innerHTML = ''; // Clear previous pagination controls
 
             const prevButton = document.createElement('button');
             prevButton.textContent = 'Previous';
-            prevButton.disabled = currentPage === 1;
+            prevButton.disabled = currentPage === 0; // Disable if on the first page
             prevButton.addEventListener('click', () => {
-                if (currentPage > 1) {
-                    currentPage--;
-                    renderSemesters();
-                    renderPagination();
+                if (currentPage > 0) {
+                    fetchSemesters(currentPage - 1);
                 }
             });
-            pagination.appendChild(prevButton);
+            paginationContainer.appendChild(prevButton);
 
-            for (let i = 1; i <= totalPages; i++) {
+            for (let i = 0; i < totalPages; i++) {
                 const pageButton = document.createElement('button');
-                pageButton.textContent = i;
-                pageButton.disabled = i === currentPage;
-                pageButton.addEventListener('click', () => {
-                    currentPage = i;
-                    renderSemesters();
-                    renderPagination();
-                });
-                pagination.appendChild(pageButton);
+                pageButton.textContent = i + 1;
+                pageButton.classList.toggle('active', i === currentPage); // Highlight current page
+                pageButton.addEventListener('click', () => fetchSemesters(i));
+                paginationContainer.appendChild(pageButton);
             }
 
             const nextButton = document.createElement('button');
             nextButton.textContent = 'Next';
-            nextButton.disabled = currentPage === totalPages;
+            nextButton.disabled = currentPage === totalPages - 1; // Disable if on the last page
             nextButton.addEventListener('click', () => {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    renderSemesters();
-                    renderPagination();
+                if (currentPage < totalPages - 1) {
+                    fetchSemesters(currentPage + 1);
                 }
             });
-            pagination.appendChild(nextButton);
+            paginationContainer.appendChild(nextButton);
         }
 
-        function updateSemester(semester) {
-            // Populate the modal form with the current semester data
-            document.getElementById('semesterName').value = semester.semesterName;
-            document.getElementById('semesterStart').value = semester.semesterStart;
-            document.getElementById('semesterEnd').value = semester.semesterEnd;
-
-            // Display the modal
-            const modal = document.getElementById('updateModal');
-            const updateModalInstance = new bootstrap.Modal(modal);
-            updateModalInstance.show();
-
-            // Attach event listeners for buttons
-            const cancelButton = document.getElementById('cancelButton');
-            cancelButton.addEventListener('click', () => {
-                updateModalInstance.hide(); // Hide the update modal
-            });
-
-            const form = document.getElementById('updateSemesterForm');
-            form.addEventListener('submit', (event) => {
-                event.preventDefault();
-
-                // Retrieve updated values from the form
-                const updatedSemesterName = document.getElementById('semesterName').value;
-                const updatedSemesterStart = document.getElementById('semesterStart').value;
-                const updatedSemesterEnd = document.getElementById('semesterEnd').value;
-
-                // Validation
-                if (!updatedSemesterName || !updatedSemesterStart || !updatedSemesterEnd) {
-                    showErrorModal("All fields are required.");
-                    return;
-                }
-
-                const today = new Date();
-                today.setHours(0, 0, 0, 0); // Normalize today's date to 00:00:00
-
-                const startDate = new Date(updatedSemesterStart);
-                startDate.setHours(0, 0, 0, 0); // Normalize the start date to 00:00:00
-
-                if (startDate < today) {
-                    showErrorModal("Start date cannot be in the past.");
-                    return;
-                }
-
-                if (new Date(updatedSemesterEnd) < new Date(updatedSemesterStart)) {
-                    showErrorModal("End date cannot be before the start date.");
-                    return;
-                }
-
-                // Send updated data to the backend
-                fetch('semester/update', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        id: semester.semesterId,
-                        name: updatedSemesterName,
-                        start_time: updatedSemesterStart,
-                        end_time: updatedSemesterEnd
-                    })
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            // Hide the update modal before showing the success modal
-                            updateModalInstance.hide();
-                            showSuccessModal("Semester updated successfully.");
-                        } else {
-                            response.text().then(text => showErrorModal(`Error: ${text}`));
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error updating semester:", error);
-                        showErrorModal("Failed to update semester.");
-                    });
-            });
-        }
-
-        // Function to show success modal
-        function showSuccessModal(message) {
-            const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
-            const successModalBody = document.querySelector('#success-modal .modal-body');
-            successModalBody.innerHTML = `<h4 class="text-success">${message}</h4>`;
-
-            // Show the success modal
-            successModal.show();
-
-            setTimeout(() => {
-                // After success, close the success modal
-                const successModalInstance = bootstrap.Modal.getInstance(document.getElementById('success-modal'));
-                if (successModalInstance) {
-                    successModalInstance.hide();
-                }
-
-                // Reload the page after hiding the success modal
-                location.reload();
-            }, 2000); // Wait 2 seconds before hiding success modal
-        }
-
-        // Function to show error modal
-        function showErrorModal(message) {
-            const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
-            const errorModalBody = document.querySelector('#long-modal .modal-body');
-            errorModalBody.innerHTML = `<p class="text-danger">${message}</p>`;
-
-            // Show the error modal
-            errorModal.show();
-
-            setTimeout(() => {
-                // Hide error modal after 2 seconds
-                const errorModalInstance = bootstrap.Modal.getInstance(document.getElementById('long-modal'));
-                if (errorModalInstance) {
-                    errorModalInstance.hide();
-                }
-            }, 2000); // Wait 2 seconds before hiding error modal
-        }
-
-
-        // Placeholder for deleteSemester function
-        function deleteSemester(semester) {
-            // Show confirmation modal
-            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-            const confirmDeleteButton = document.getElementById('confirmDeleteButton');
-
-            // Update modal with the semester name to delete
-            const modalBody = document.querySelector('#deleteModal .modal-body');
-            modalBody.innerHTML = `Are you sure you want to delete the semester: <strong>${semester.semesterName}</strong>?`;
-
-            // Show the modal
-            deleteModal.show();
-
-            // Handle Delete button click
-            confirmDeleteButton.addEventListener('click', function () {
-                fetch('semester/delete', {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ sid: semester.semesterId }) // Send sid as JSON
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            showSuccessModal("Semester deleted successfully.");
-                            setTimeout(() => {
-                                const successModal = bootstrap.Modal.getInstance(document.getElementById('success-modal'));
-                                successModal.hide();
-                                location.reload(); // Reload the page
-                            }, 2000);
-                        } else {
-                            response.text().then(text => showErrorModal(`Error: ${text}`));
-                        }
-
-                        // Hide the modal
-                        deleteModal.hide();
-                    })
-                    .catch(error => {
-                        console.error("Error deleting semester:", error);
-                        showErrorModal("Failed to delete semester.");
-                        deleteModal.hide();
-                    });
-            });
-        }
-
-
-        fetchSemesters();
+        fetchSemesters(currentPage);
     });
+
+    // Placeholder for updateSemester function
+    function updateSemester(semester) {
+        // Populate the modal form with the current semester data
+        document.getElementById('semesterName').value = semester.semesterName;
+        document.getElementById('semesterStart').value = semester.semesterStart;
+        document.getElementById('semesterEnd').value = semester.semesterEnd;
+
+        // Display the modal
+        const modal = document.getElementById('updateModal');
+        const updateModalInstance = new bootstrap.Modal(modal);
+        updateModalInstance.show();
+
+        // Attach event listeners for buttons
+        const cancelButton = document.getElementById('cancelButton');
+        cancelButton.addEventListener('click', () => {
+            updateModalInstance.hide(); // Hide the update modal
+        });
+
+        const form = document.getElementById('updateSemesterForm');
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            // Retrieve updated values from the form
+            const updatedSemesterName = document.getElementById('semesterName').value;
+            const updatedSemesterStart = document.getElementById('semesterStart').value;
+            const updatedSemesterEnd = document.getElementById('semesterEnd').value;
+
+            // Validation
+            if (!updatedSemesterName || !updatedSemesterStart || !updatedSemesterEnd) {
+                showErrorModal("All fields are required.");
+                return;
+            }
+
+            if (new Date(updatedSemesterStart) < new Date()) {
+                showErrorModal("Start date cannot be in the past.");
+                return;
+            }
+
+            if (new Date(updatedSemesterEnd) < new Date(updatedSemesterStart)) {
+                showErrorModal("End date cannot be before the start date.");
+                return;
+            }
+
+            // Send updated data to the backend
+            fetch('semester/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: semester.semesterId,
+                    name: updatedSemesterName,
+                    start_time: updatedSemesterStart,
+                    end_time: updatedSemesterEnd
+                })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Hide the update modal before showing the success modal
+                        updateModalInstance.hide();
+                        showSuccessModal("Semester updated successfully.");
+                    } else {
+                        response.text().then(text => showErrorModal(`Error: ${text}`));
+                    }
+                })
+                .catch(error => {
+                    console.error("Error updating semester:", error);
+                    showErrorModal("Failed to update semester.");
+                });
+        });
+    }
+
+    // Function to show success modal
+    function showSuccessModal(message) {
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        const successModalBody = document.querySelector('#success-modal .modal-body');
+        successModalBody.innerHTML = `<h4 class="text-success">${message}</h4>`;
+
+        // Show the success modal
+        successModal.show();
+
+        setTimeout(() => {
+            // After success, close the success modal
+            const successModalInstance = bootstrap.Modal.getInstance(document.getElementById('success-modal'));
+            if (successModalInstance) {
+                successModalInstance.hide();
+            }
+
+            // Reload the page after hiding the success modal
+            location.reload();
+        }, 2000); // Wait 2 seconds before hiding success modal
+    }
+
+    // Function to show error modal
+    function showErrorModal(message) {
+        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+        const errorModalBody = document.querySelector('#long-modal .modal-body');
+        errorModalBody.innerHTML = `<p class="text-danger">${message}</p>`;
+
+        // Show the error modal
+        errorModal.show();
+
+        setTimeout(() => {
+            // Hide error modal after 2 seconds
+            const errorModalInstance = bootstrap.Modal.getInstance(document.getElementById('long-modal'));
+            if (errorModalInstance) {
+                errorModalInstance.hide();
+            }
+        }, 2000); // Wait 2 seconds before hiding error modal
+    }
+
+
+    // Placeholder for deleteSemester function
+    function deleteSemester(semester) {
+        // Hiển thị modal xác nhận
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+
+        // Cập nhật thông tin modal với tên học kỳ cần xóa
+        const modalBody = document.querySelector('#deleteModal .modal-body');
+        modalBody.innerHTML = `Are you sure you want to delete the semester: <strong>${semester.name}</strong>?`;
+
+        // Mở modal
+        deleteModal.show();
+
+        // Xử lý sự kiện khi người dùng nhấn nút Delete trong modal
+        confirmDeleteButton.addEventListener('click', function() {
+            // Gửi yêu cầu xóa học kỳ
+            fetch('semester/delete', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: semester.id })  // Gửi id của học kỳ dưới dạng đối tượng
+            })
+                .then(response => {
+                    if (response.ok) {
+                        showSuccessModal("Semester deleted successfully.");
+                        setTimeout(() => {
+                            // Tắt modal sau 1-2 giây
+                            const successModal = bootstrap.Modal.getInstance(document.getElementById('success-modal'));
+                            successModal.hide();
+                            location.reload(); // Reload the page to fetch updated data
+                        }, 2000); // Đợi 2 giây trước khi ẩn modal
+                    } else {
+                        response.text().then(text => showErrorModal(`Error: ${text}`));
+                    }
+
+                    // Đóng modal xác nhận sau khi xử lý xong
+                    deleteModal.hide();
+                })
+                .catch(error => {
+                    console.error("Error deleting semester:", error);
+                    showErrorModal("Failed to delete semester.");
+                    deleteModal.hide();  // Đóng modal nếu có lỗi
+                });
+        });
+    }
 
     // Function to show success modal
 

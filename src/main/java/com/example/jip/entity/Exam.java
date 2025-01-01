@@ -23,10 +23,6 @@ public class Exam {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "student_id", referencedColumnName = "id", nullable = false)
-    Student student;
-
     @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL, orphanRemoval = true)
     List<MarkReportExam> markReportExams = new ArrayList<>();
 
