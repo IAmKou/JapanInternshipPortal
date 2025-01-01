@@ -1123,7 +1123,13 @@
                     return;
                 }
 
-                if (new Date(updatedSemesterStart) < new Date()) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0); // Normalize today's date to 00:00:00
+
+                const startDate = new Date(updatedSemesterStart);
+                startDate.setHours(0, 0, 0, 0); // Normalize the start date to 00:00:00
+
+                if (startDate < today) {
                     showErrorModal("Start date cannot be in the past.");
                     return;
                 }
