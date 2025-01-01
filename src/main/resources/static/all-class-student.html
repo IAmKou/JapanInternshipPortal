@@ -353,10 +353,6 @@
                         <table class="table display text-nowrap">
                             <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Photo</th>
-                                <th>Name</th>
-                                <th>Gender</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -403,6 +399,22 @@
                             </h5>
                         </div>
                         <div class="modal-body"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comment Detail Modal -->
+            <div aria-hidden="true" aria-labelledby="commentModalLabel" class="modal fade" id="comment-modal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <h5 class="modal-title text-primary" id="commentModalLabel">
+                                <i class="fas fa-comments"></i> Comment Detail
+                            </h5>
+                        </div>
+                        <div class="modal-body text-wrap">
+                            <!-- Full comment content will be injected here -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -512,18 +524,20 @@
             if (isGradesViewInitialized) return;
             isGradesViewInitialized = true;
             tableHead.innerHTML = `
-    <tr>
-        <th>#</th>
-        <th>Student Name</th>
-        <th>Teacher Comment</th>
-        <th>Participation</th>
-        <th>Soft Skill</th>
-        <th>Skill</th>
-        <th>Daily Exams</th>
-        <th>Midterm Test</th>
-        <th>Final Test</th>
-        <th>Course Final</th>
-    </tr>`;
+        <tr>
+            <th>#</th>
+            <th>Student Name</th>
+            <th>Teacher Comment</th>
+            <th>Attitude</th>
+            <th>Script</th>
+            <th>Presentation</th>
+            <th>Soft Skill</th>
+            <th>Midterm Test</th>
+            <th>Final Test</th>
+            <th>Skill</th>
+            <th>Course Final</th>
+        </tr>`;
+
             fetch(`/student/${classId}/getAllGrades`)
                 .then(response => {
                     if (!response.ok) {
@@ -532,21 +546,21 @@
                     return response.json();
                 })
                 .then(grades => {
-                    gradesData = grades || []; // Đảm bảo gradesData là một mảng
+                    gradesData = grades || [];
                     if (gradesData.length === 0) {
-                        return fetch(`/student/${classId}/getAll`) // Fetch danh sách học sinh
+                        return fetch(`/student/${classId}/getAll`)
                             .then(response => response.json())
                             .then(students => {
-                                // Tạo danh sách điểm mặc định là "N/A" cho mỗi học sinh
                                 gradesData = students.map(student => ({
                                     fullname: student.fullname || '0',
-                                    comment: '0',
+                                    comment: 'none',
                                     attitude: '0',
+                                    scriptPresentation: '0',
+                                    presentation: '0',
                                     softskill: '0',
-                                    skill: '0',
-                                    avgExamMark: '0',
                                     middleExam: '0',
                                     finalExam: '0',
+                                    skill: '0',
                                     finalMark: '0',
                                 }));
                                 renderGrades(gradesData);
@@ -567,23 +581,52 @@
             tableBody.innerHTML = '';
             let studentNumber = 1;
             grades.forEach(grade => {
+                const truncatedComment = truncateText(grade.comment || 'none', 15); // Truncate comment
                 const row = `
-                <tr>
-                    <td>${studentNumber++}</td>
-                    <td>${grade.fullname || '0'}</td>
-                    <td>${grade.comment || '0'}</td>
-                    <td>${grade.attitude || '0'}</td>
-                    <td>${grade.softskill || '0'}</td>
-                    <td>${grade.skill || '0'}</td>
-                    <td>${grade.avgExamMark || '0'}</td>
-                    <td>${grade.middleExam || '0'}</td>
-                    <td>${grade.finalExam || '0'}</td>
-                    <td>${grade.finalMark || '0'}</td>
-                </tr>`;
+            <tr>
+                <td>${studentNumber++}</td>
+                <td>${grade.fullname || '0'}</td>
+                <td class="comment-cell" data-full-comment="${grade.comment || 'none'}">
+                    ${truncatedComment}
+                </td>
+                <td>${grade.attitude || '0'}</td>
+                <td>${grade.scriptPresentation || '0'}</td>
+                <td>${grade.presentation || '0'}</td>
+                <td>${grade.softskill || '0'}</td>
+                <td>${grade.middleExam || '0'}</td>
+                <td>${grade.finalExam || '0'}</td>
+                <td>${grade.skill || '0'}</td>
+                <td>${grade.finalMark || '0'}</td>
+            </tr>`;
                 tableBody.insertAdjacentHTML('beforeend', row);
             });
+
+            attachCommentClickHandlers();
         }
-        // Event listeners
+        // Helper function to truncate text
+        function truncateText(text, maxLength) {
+            return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+        }
+
+        // Attach click handlers to comments
+        function attachCommentClickHandlers() {
+            document.querySelectorAll('.comment-cell').forEach(cell => {
+                cell.addEventListener('click', () => {
+                    const fullComment = cell.getAttribute('data-full-comment');
+                    showModalWithComment(fullComment);
+                });
+            });
+        }
+
+        // Show modal with full comment
+        function showModalWithComment(comment) {
+            const modalBody = document.querySelector('#comment-modal .modal-body');
+            modalBody.innerHTML = `<p style="word-wrap: break-word; white-space: pre-wrap;">${comment}</p>`;
+            const commentModal = new bootstrap.Modal(document.getElementById('comment-modal'));
+            commentModal.show();
+        }
+
+        // Event listeners to fetch list grade
         viewGradesButton.addEventListener('click', fetchAndRenderGrades);
         viewInfoButton.addEventListener('click', function () {
             isGradesViewInitialized = false;

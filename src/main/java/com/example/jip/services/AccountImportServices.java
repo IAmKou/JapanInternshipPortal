@@ -1,15 +1,9 @@
 package com.example.jip.services;
 
 import com.example.jip.dto.response.CloudinaryResponse;
-import com.example.jip.entity.Account;
-import com.example.jip.entity.MarkReport;
-import com.example.jip.entity.Role;
-import com.example.jip.entity.Student;
+import com.example.jip.entity.*;
 import com.example.jip.entity.Student.Gender;
-import com.example.jip.repository.AccountRepository;
-import com.example.jip.repository.MarkReportRepository;
-import com.example.jip.repository.RoleRepository;
-import com.example.jip.repository.StudentRepository;
+import com.example.jip.repository.*;
 import org.apache.poi.ooxml.POIXMLDocumentPart;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
@@ -40,6 +34,10 @@ public class AccountImportServices {
     private CloudinaryService cloudinaryService;
     @Autowired
     private MarkReportRepository markReportRepository;
+    @Autowired
+    private ExamRepository examRepository;
+    @Autowired
+    private MarkRpExamRepository markRpExamRepository;
 
     public List<String> importAccounts(MultipartFile file) {
         List<String> errors = new ArrayList<>();
@@ -199,10 +197,21 @@ public class AccountImportServices {
             student.setMark(false);
             studentRepository.save(student);
 
+
             //Create Mark rp for student
             MarkReport markReport = new MarkReport();
             markReport.setStudent(student);
             markReportRepository.save(markReport);
+
+            List<Exam> examList = examRepository.findAll();
+            if (examList.isEmpty()) {
+                throw new IllegalStateException("No exams exist in the database.");
+            }
+
+            for (Exam exam : examList) {
+                MarkReportExam markRpExam = new MarkReportExam(markReport, exam);
+                markRpExamRepository.save(markRpExam);
+            }
 
         } catch (Exception e) {
             errors.add("Failed to process row: " + (row.getRowNum() + 1) + " due to: " + e.getMessage());

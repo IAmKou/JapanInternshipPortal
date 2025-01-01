@@ -47,8 +47,8 @@
         }
 
         #external-events {
-            width: 200px;
-            padding: 10px;
+            width: 250px; /* Increased width */
+            padding: 15px; /* Increased padding */
             border: 1px solid #ccc;
             background: #eee;
             text-align: left;
@@ -56,25 +56,39 @@
         }
 
         #external-events h4 {
-            font-size: 16px;
+            font-size: 20px; /* Increased font size */
             margin-top: 0;
             padding-top: 1em;
         }
 
         #external-events .fc-event {
-            margin: 3px 0;
+            margin: 5px 0; /* Increased margin */
             cursor: move;
         }
 
         #external-events p {
             margin: 1.5em 0;
-            font-size: 11px;
+            font-size: 16px;
             color: #666;
         }
 
         #external-events p input {
             margin: 0;
             vertical-align: middle;
+        }
+
+        #class-dropdown {
+            font-size: 16px; /* Increased font size */
+            padding: 10px; /* Increased padding */
+            width: 100%; /* Set width to fill container */
+            margin-bottom: 15px; /* Added spacing below dropdown */
+        }
+
+        .btn {
+            font-size: 16px; /* Increased font size */
+            padding: 10px 20px; /* Increased padding */
+            width: 100%; /* Set buttons to full width */
+            margin-bottom: 10px; /* Added spacing between buttons */
         }
 
         #calendar-wrap {
@@ -86,6 +100,7 @@
             margin: 0 auto;
         }
     </style>
+
 </head>
 
 <body>
@@ -283,6 +298,16 @@
 
                         </div>
                         <div id='wrap'>
+                            <div id='external-events'>
+                                <div id='external-events-list'>
+                                    <h4>Select Class</h4>
+                                    <select id="class-dropdown" class="form-control">
+                                        <option value="">Select a class</option>
+                                    </select>
+                                    <button id="save-draft" class="btn btn-warning btn-sm mt-3">Save as Draft</button>
+                                    <button id="save-public" class="btn btn-outline-success btn-sm mt-3">Save Publish</button>
+                                </div>
+                            </div>
                             <div id='calendar-wrap'>
                                 <div id='calendar'></div>
                             </div>
@@ -307,7 +332,7 @@
                 <form id="addEventForm">
                     <div class="form-group">
                         <label for="eventTitle">Title</label>
-                        <input type="text" class="form-control" id="eventTitle" required />
+                        <input type="text" class="form-control" id="eventTitle" required/>
                     </div>
                     <div class="form-group">
                         <label for="roomDropdown">Room</label>
@@ -317,7 +342,7 @@
                     </div>
                     <div class="form-group">
                         <label for="eventColor">Event Color</label>
-                        <input type="color" class="form-control" id="eventColor" value="#3788d8" />
+                        <input type="color" class="form-control" id="eventColor" value="#3788d8"/>
                     </div>
                 </form>
             </div>
@@ -450,7 +475,8 @@
         const calendarEl = document.getElementById('calendar');
         let eventsToSave = [];
         let holidays = [];
-        const semesterId = 1; // Replace with the actual semester ID
+        const urlParams = new URLSearchParams(window.location.search);
+        const semesterId = urlParams.get('semesterId');
 
         // Fetch room availability
         function fetchRoomAvailability(date) {
@@ -552,64 +578,111 @@
                         // Fetch room availability for the selected date
                         fetchRoomAvailability(clickedDate).then(rooms => {
                             roomDropdown.innerHTML = ''; // Clear existing options
+
+                            // Add a default "Select a Room" option
+                            const defaultOption = document.createElement('option');
+                            defaultOption.value = '';
+                            defaultOption.textContent = 'Select a Room';
+                            defaultOption.disabled = true;
+                            defaultOption.selected = true;
+                            roomDropdown.appendChild(defaultOption);
+
+                            // Populate dropdown with room data
                             rooms.forEach(room => {
                                 const option = document.createElement('option');
-                                option.value = room.id;
-                                option.textContent = room.name;
+                                option.value = room.roomId;
+                                option.textContent = room.roomName;
+
+                                // Set style and disable if room is OCCUPIED
                                 if (room.status === 'OCCUPIED') {
                                     option.style.color = 'red';
                                     option.disabled = true;
                                 }
+
                                 roomDropdown.appendChild(option);
                             });
 
                             // Show modal
                             $('#addEventModal').modal('show');
-
-                            // Save event on modal button click
-                            document.getElementById('saveEventButton').onclick = function () {
-                                const title = document.getElementById('eventTitle').value.trim();
-                                const room = roomDropdown.value;
-                                const color = document.getElementById('eventColor').value;
-
-                                // Validation
-                                if (!title) {
-                                    alert('Please provide a title.');
-                                    return;
-                                }
-                                if (title.toLowerCase().includes('test') &&
-                                    (new Date(clickedDate).getDay() === 0 || new Date(clickedDate).getDay() === 6)) {
-                                    alert('Test events cannot be scheduled on weekends.');
-                                    return;
-                                }
-
-                                // Add event to calendar and eventsToSave array
-                                const newEvent = {
-                                    title,
-                                    start: clickedDate,
-                                    backgroundColor: color,
-                                    extendedProps: { room },
-                                };
-                                calendar.addEvent(newEvent);
-                                eventsToSave.push(newEvent);
-
-                                $('#addEventModal').modal('hide');
-                            };
                         });
                     },
                 });
 
                 calendar.render();
 
+                function loadClasses() {
+                    fetch('/class/get')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to fetch classes');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            const classDropdown = document.getElementById('class-dropdown');
+                            data.forEach(clasz => {
+                                const option = document.createElement('option');
+                                option.value = clasz.id;
+                                option.textContent = clasz.name;
+                                classDropdown.appendChild(option);
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error fetching classes:', error);
+                            alert("There was an error fetching the class. Please try again.");
+                        });
+                }
+
+                loadClasses();
+
+                // Save event on modal button click
+                document.getElementById('saveEventButton').onclick = function () {
+                    const title = document.getElementById('eventTitle').value.trim();
+                    const roomDropdown = document.getElementById('roomDropdown');
+                    const room = roomDropdown.value;
+                    const color = document.getElementById('eventColor').value;
+
+                    // Validation
+                    if (!title) {
+                        alert('Please provide a title.');
+                        return;
+                    }
+                    if (title.toLowerCase().includes('test') &&
+                        (new Date(roomDropdown.dateStr).getDay() === 0 || new Date(roomDropdown.dateStr).getDay() === 6)) {
+                        alert('Test events cannot be scheduled on weekends.');
+                        return;
+                    }
+
+                    // Add event to calendar and eventsToSave array
+                    const newEvent = {
+                        title,
+                        start: roomDropdown.dateStr,
+                        backgroundColor: color,
+                        extendedProps: { room },
+                    };
+                    calendar.addEvent(newEvent);
+                    eventsToSave.push(newEvent);
+
+                    $('#addEventModal').modal('hide');
+                };
+
                 // Save Draft or Save Public
                 document.getElementById('save-draft').onclick = function () {
                     saveEvents('/schedule/saveDraft', false);
                 };
                 document.getElementById('save-public').onclick = function () {
-                    saveEvents('/schedule/savePublic', true);
+                    const classDropdown = document.getElementById('class-dropdown');
+                    const selectedClass = classDropdown.value;
+
+                    if (!selectedClass) {
+                        alert('Please select a class before publishing the schedule.');
+                        return;
+                    }
+
+                    saveEvents('/schedule/savePublic', true, selectedClass);
                 };
 
-                function saveEvents(endpoint, isPublic) {
+                function saveEvents(endpoint, isPublic, selectedClass = null) {
                     if (eventsToSave.length === 0) {
                         alert('No events to save.');
                         return;
@@ -620,6 +693,7 @@
                         date: event.start,
                         room: event.extendedProps.room,
                         color: event.backgroundColor,
+                        classId: isPublic ? selectedClass : null, // Add classId for published schedules
                     }));
 
                     fetch(endpoint, {
@@ -647,8 +721,8 @@
                 console.error('Error initializing calendar:', error);
             });
     });
-
 </script>
+
 
 </body>
 </html>

@@ -27,6 +27,12 @@ public class MarkReportExam {
     private Exam exam;
 
     public MarkReportExam(MarkReport markReport, Exam exam) {
+        if (markReport == null || markReport.getId() == 0) {
+            throw new IllegalArgumentException("MarkReport must be saved and have a valid ID before creating a MarkReportExam.");
+        }
+        if (exam == null || exam.getId() == 0) {
+            throw new IllegalArgumentException("Exam must be saved and have a valid ID before creating a MarkReportExam.");
+        }
         this.id = new MarkReportExamId(markReport.getId(), exam.getId());
         this.markReport = markReport;
         this.exam = exam;

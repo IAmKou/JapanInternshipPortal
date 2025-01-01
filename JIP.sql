@@ -182,15 +182,32 @@ CREATE TABLE Student_assignment (
 CREATE TABLE mark_report (
                              Id INT AUTO_INCREMENT PRIMARY KEY,
                              student_id INT,
-                             comment TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
                              softskill DECIMAL(5,2) NULL,
-                             avg_exam_mark DECIMAL(5,2) NULL,
-                             middle_exam DECIMAL(5,2) NULL,
+                             presentation DECIMAL(5,2) NULL,
+                             script_presentation DECIMAL (5,2) NULL,
+                             avg_exam_mark DECIMAL (5,2) NULL,
+                             midterm_exam DECIMAL(5,2) NULL,
                              final_exam DECIMAL(5,2) NULL,
                              skill DECIMAL(5,2) NULL,
                              attitude DECIMAL(5,2) NULL,
                              final_mark DECIMAL(5,2) NULL,
+                             comment  VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
                              FOREIGN KEY (student_id) REFERENCES student(Id)
+);
+Create table exam (
+                      id int auto_increment primary key,
+                      title VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+                      kanji Decimal(5,2) null,
+                      bunpou Decimal(5,2) null ,
+                      kotoba Decimal(5,2) null
+);
+
+CREATE TABLE mark_report_exam (
+                                  mark_report_id INT,
+                                  exam_id INT,
+                                  PRIMARY KEY (mark_report_id, exam_id),
+                                  FOREIGN KEY (mark_report_id) REFERENCES mark_report(Id) ON DELETE CASCADE,
+                                  FOREIGN KEY (exam_id) REFERENCES exam(Id) ON DELETE CASCADE
 );
 -- Material table (linked with Teacher)
 CREATE TABLE Material (

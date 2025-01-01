@@ -23,5 +23,4 @@ public interface SemesterRepository extends JpaRepository<Semester, Integer> {
     @Query("SELECT s FROM Semester s WHERE s.end_time = :endDate")
     List<Semester> findByEndDate(Date endDate);
 
-    Page<Semester> findAll(Pageable pageable);
 }

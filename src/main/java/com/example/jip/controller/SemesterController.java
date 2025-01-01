@@ -6,10 +6,7 @@ import com.example.jip.entity.Holiday;
 import com.example.jip.entity.Semester;
 import com.example.jip.repository.ScheduleRepository;
 import com.example.jip.repository.SemesterRepository;
-import com.example.jip.services.ClassServices;
-import com.example.jip.services.HolidayServices;
-import com.example.jip.services.RoomAvailabilityServices;
-import com.example.jip.services.SemesterServices;
+import com.example.jip.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -43,6 +41,8 @@ public class SemesterController {
     @Autowired
     private RoomAvailabilityServices roomAvailabilityServices;
 
+    @Autowired
+    private ExamService examService;
     @PostMapping("/create")
     public ResponseEntity<String> createSemester(@RequestBody Semester semester) {
         try {
@@ -75,7 +75,7 @@ public class SemesterController {
             semesterService.addHolidaysToSemester(holidays);
             semesterService.addHolidaysToSchedule(semester, holidays);
             roomAvailabilityServices.initializeRoomAvailabilityForSemester(id);
-
+            examService.createExams(43);
             // Return a success message with a proper JSON response
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body("{\"message\":\"Semester created successfully with holidays in the schedule!\"}");
@@ -89,10 +89,10 @@ public class SemesterController {
     }
 
     @GetMapping("/get")
-    public Page<SemesterDTO> getSemester(@RequestParam(defaultValue = "0") int page,
-                                         @RequestParam(defaultValue = "5") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return semesterRepository.findAll(pageable).map(SemesterDTO::new);
+    public List<SemesterDTO> getSemester() {
+        return semesterRepository.findAll().stream()
+                .map(SemesterDTO::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/get/{semesterId}")
@@ -111,7 +111,13 @@ public class SemesterController {
         return ResponseEntity.ok(semesterDates);
     }
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteSemester(@RequestBody int sid) {
+    public ResponseEntity<String> deleteSemester(@RequestBody Map<String, Integer> payload) {
+        Integer sid = payload.get("sid");
+
+        if (sid == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Semester ID is missing");
+        }
+
         Semester semester = semesterRepository.findById(sid).orElse(null);
 
         if (semester == null) {
