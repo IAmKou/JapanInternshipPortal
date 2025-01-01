@@ -676,8 +676,6 @@
                     const semesterDates = document.createElement('div');
                     semesterDates.classList.add('semester-dates');
 
-                    // Start Date
-                    // Start Date
                     const startDateDiv = document.createElement('div');
                     startDateDiv.classList.add('date-item');
                     startDateDiv.innerHTML = `
@@ -761,6 +759,98 @@
             } else {
                 renderSemesters();
                 renderPagination();
+            }
+            function updateSemester(semester) {
+                // Populate the modal form with the current semester data
+                document.getElementById('semesterName').value = semester.semesterName;
+                document.getElementById('semesterStart').value = semester.semesterStart;
+                document.getElementById('semesterEnd').value = semester.semesterEnd;
+
+                // Display the modal
+                const modal = document.getElementById('updateModal');
+                modal.style.display = 'block';
+
+                // Attach event listeners for buttons
+                const cancelButton = document.getElementById('cancelButton');
+                cancelButton.addEventListener('click', () => {
+                    modal.style.display = 'none'; // Hide the modal
+                });
+
+                const form = document.getElementById('updateSemesterForm');
+                form.addEventListener('submit', (event) => {
+                    event.preventDefault();
+
+                    // Retrieve updated values from the form
+                    const updatedSemesterName = document.getElementById('semesterName').value;
+                    const updatedSemesterStart = document.getElementById('semesterStart').value;
+                    const updatedSemesterEnd = document.getElementById('semesterEnd').value;
+
+                    // Validation
+                    if (!updatedSemesterName || !updatedSemesterStart || !updatedSemesterEnd) {
+                        alert("All fields are required.");
+                        return;
+                    }
+
+                    if (new Date(updatedSemesterStart) < new Date()) {
+                        alert("Start date cannot be in the past.");
+                        return;
+                    }
+
+                    if (new Date(updatedSemesterEnd) < new Date(updatedSemesterStart)) {
+                        alert("End date cannot be before the start date.");
+                        return;
+                    }
+
+                    // Send updated data to the backend
+                    fetch('semester/update', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id: semester.semesterId,
+                            name: updatedSemesterName,
+                            start_time: updatedSemesterStart,
+                            end_time: updatedSemesterEnd
+                        })
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                alert("Semester updated successfully");
+                                modal.style.display = 'none'; // Hide the modal
+                                location.reload(); // Reload the page to fetch updated data
+                            } else {
+                                response.text().then(text => alert(`Error: ${text}`));
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error updating semester:", error);
+                            alert("Failed to update semester.");
+                        });
+                });
+            }
+
+            function deleteSemester(semester) {
+                if (confirm(`Are you sure you want to delete the semester: ${semester.name}?`)) {
+                    fetch('semester/delete', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(semester.id)
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                alert("Semester deleted successfully");
+                            } else {
+                                response.text().then(text => alert(`Error: ${text}`));
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error deleting semester:", error);
+                            alert("Failed to delete semester.");
+                        });
+                }
             }
         })
         .catch(error => {
