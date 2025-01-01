@@ -43,6 +43,37 @@
     <!-- Thêm JavaScript của Select2 -->
 
     <style>
+        /* Đảm bảo trang bao phủ toàn bộ chiều cao */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* Container chính */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%; /* Bao phủ toàn bộ trang */
+        }
+
+        /* Nội dung bên trên */
+        .content {
+            flex: 1; /* Đẩy footer xuống */
+        }
+
+        /* Footer nằm ở cuối */
+        .footer-wrap-layout1 {
+            background-color: #ec9006;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .footer-wrap-layout1 a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
         .select2 {
             font-weight: 900; /* Đặt giá trị font-weight cao nhất */
         }
@@ -180,6 +211,7 @@
         input[name="name"] {
             border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
             border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+            width: 150%;
         }
 
         input[name="name"]:hover {
@@ -195,9 +227,11 @@
         .select2-container {
             border: none !important; /* Đảm bảo không có border đen ở bên ngoài */
         }
+
         .select2 {
             border: 2px solid #007bff !important;  /* Đặt màu xanh dương cho border */
             border-radius: 5px;                    /* Bo góc nếu cần */
+            width: 100% !important;                 /* Tăng độ rộng đến 100% của container */
         }
 
         /* Khi người dùng focus vào select */
@@ -213,11 +247,11 @@
 
         /* Cải thiện màu cho phần option bên trong select2 nếu cần */
 
-
         /* Tùy chỉnh cho khi người dùng mở menu select2 */
         .select2-container--open .select2-selection {
             border-color: #28a745 !important;     /* Màu của border khi mở menu */
         }
+
         /* Đảm bảo không có màu nền đen hoặc không mong muốn */
         .select2-selection__clear {
             color: #007bff;   /* Xử lý màu cho button clear nếu có */
@@ -229,10 +263,17 @@
             box-shadow: none !important;
         }
 
+        /* Tăng độ rộng cho select2 khi cần */
+        .select2-container {
+            width: 150% !important;   /* Đảm bảo rằng select2 chiếm toàn bộ chiều rộng có sẵn */
+        }
+
+
 
         #reasonEditor {
             border: 2px solid #007bff;  /* Đặt màu border là màu xanh dương */
             border-radius: 5px;         /* Thêm góc bo tròn nếu cần */
+            width: 150%;
         }
 
         /* Tạo hiệu ứng khi người dùng hover vào Quill editor */
@@ -522,13 +563,13 @@
 
                                 <!-- Tên người -->
                                 <div class="col-12 form-group">
-                                    <label style="color: #007bff; font-weight: bold;" data-i18n="app-name">Name *</label>
+                                    <label style="color: #007bff; font-weight: bold;" data-i18n="app-name">Name <span style="color: red !important;">*</span></label>
                                     <input class="form-control" name="name" required type="text">
                                 </div>
 
                                 <!-- Loại đơn -->
                                     <div class="col-12 form-group">
-                                        <label style="color: #007bff; font-weight: bold;" data-i18n="app-type">Application type *</label>
+                                        <label style="color: #007bff; font-weight: bold;" data-i18n="app-type">Application type <span style="color: red !important;">*</span></label>
                                         <select class="select2" name="category" required>
                                             <!-- Các option có thể được thêm vào ở đây -->
                                         </select>
@@ -536,7 +577,7 @@
 
                                 <!-- Lý do -->
                                 <div class="col-12 form-group">
-                                    <label style="color: #007bff; font-weight: bold;" data-i18n="reason">Reason *</label>
+                                    <label style="color: #007bff; font-weight: bold;" data-i18n="reason">Reason <span style="color: red !important;">*</span></label>
                                     <!-- Div dùng cho Quill editor -->
                                     <div id="reasonEditor" class="form-control" style="height: 200px;"></div>
                                     <!-- Textarea ẩn để lưu nội dung Quill -->
@@ -546,18 +587,24 @@
 
                                 <!-- Tệp đính kèm -->
                                 <div class="col-12 form-group">
-                                    <label style="color: #007bff; font-weight: bold;" data-i18n="attach_a_file">Attach a File:</label>
-                                    <input class="form-control-file" name="imgFile" type="file">
+                                    <label style="color: #007bff; font-weight: bold;" data-i18n="attach_a_file">File Attach <span style="color: red !important;">*</span></label>
+                                    <input class="form-control-file" name="imgFile" type="file" onchange="previewFile(this)">
+
+                                    <!-- Hiển thị ảnh khi chọn -->
+                                    <img id="previewImage" class="mt-3 d-none" style="width: 100px; height: auto; border-radius: 10px;">
                                 </div>
+
 
                                 <!-- Các nút -->
                                 <div class="col-12 form-group mg-t-8 text-end">
-                                    <button class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" type="submit" data-i18n="save">
-                                        Save
-                                    </button>
-                                    <button class="btn-fill-lg bg-blue-dark btn-hover-yellow" type="reset" data-i18n="reset">Reset
+                                    <button class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark"
+                                            type="submit"
+                                            data-i18n="save"
+                                            style="padding: 15px 30px; font-size: 18px; width: 200px; height: 50px; display: flex; justify-content: center; align-items: center;">
+                                        Create
                                     </button>
                                 </div>
+
                             </div>
                         </form>
 
@@ -622,6 +669,18 @@
     </div>
     <!-- Page Area End Here -->
 </div>
+<footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+    <div style="background-color: #ec9006; padding: 15px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+                        rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -1103,7 +1162,29 @@
         }
     });
 </script>
+<script>
+    // Hàm preview ảnh
+    function previewFile(input) {
+        const file = input.files[0]; // Lấy file đầu tiên từ input
+        const preview = document.getElementById('previewImage'); // Thẻ img để hiển thị ảnh
 
+        // Kiểm tra loại file
+        const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (file && validImageTypes.includes(file.type)) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result; // Đặt URL của ảnh đã tải
+                preview.classList.remove('d-none'); // Hiển thị ảnh
+            };
+
+            reader.readAsDataURL(file); // Đọc file ảnh
+        } else {
+            // Ẩn ảnh nếu không phải là file ảnh hợp lệ
+            preview.classList.add('d-none');
+        }
+    }
+</script>
 
 </body>
 </html>

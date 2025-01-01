@@ -276,6 +276,65 @@
                     <li>List</li>
                 </ul>
             </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="d-flex align-items-center">
+                                <label for="searchInput" class="text-primary font-weight-bold me-3 mb-0" data-i18n="search">
+                                    Search
+                                </label>
+                                <label for="filterSelect" class="text-primary font-weight-bold mb-0"
+                                       style="position: absolute; left: 53%; transform: translateX(-50%);" data-i18n="filter">
+                                    Filter:
+                                </label>
+                            </div>
+                            <form style="padding-bottom: 20px; padding-top: 10px;" id="searchForm">
+                                <div class="row mb-3 align-items-center gx-3">
+                                    <!-- Search Input -->
+                                    <div class="col-lg-6">
+                                        <div class="input-group shadow-sm">
+                                            <input
+                                                    type="text"
+                                                    class="form-control search-input rounded-start"
+                                                    id="searchInput"
+                                                    name="searchInput"
+                                                    style="border: 1px solid #ced4da; height: 45px; font-size: 1.5rem; padding-left: 10px;"
+                                            />
+                                            <button
+                                                    type="submit"
+                                                    class="btn btn-gradient-yellow btn-search rounded-end text-white fw-bold"
+                                                    data-i18n="search"
+                                                    style="background-color: #ffc107; border: none; height: 45px;"><span data-i18n="search1">
+                                                SEARCH</span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Dropdown để chọn status -->
+                                    <div class="col-lg-2">
+                                        <div class="form-group">
+                                            <div class="position-relative ps-4"> <!-- Thêm padding trái bằng Bootstrap -->
+                                                <i class="fas fa-sort position-absolute" style="right: 12px; top: 50%; transform: translateY(-50%); color: #aaa;"></i>
+                                                <select class="form-control filter-select" id="filterSelect" name="filterSelect"
+                                                        style="padding-right: 35px; font-size: 1.25rem; height: 45px; padding-left: 10px; margin-top: 7px;">
+                                                    <option value="">All Semester</option>
+                                                    <option value="open">2024</option>
+                                                    <option value="close">Close</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Breadcubs Area End Here -->
             <!-- Class Routine Area Start Here -->
             <div class="row">
@@ -286,42 +345,16 @@
                                 <div class="item-title">
                                     <h3>Class List</h3>
                                 </div>
-                                <div class="dropdown">
-                                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                                       aria-expanded="false">...</a>
 
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#"><i
-                                                class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                        <a class="dropdown-item" href="#"><i
-                                                class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                                    </div>
-                                </div>
                             </div>
-                            <form class="mg-b-20">
-                                <div class="row gutters-8">
-                                    <div class="col-lg-4 col-12 form-group">
-                                        <input type="text" placeholder="Search by Day ..." class="form-control">
-                                    </div>
-                                    <div class="col-lg-3 col-12 form-group">
-                                        <input type="text" placeholder="Search by Class ..." class="form-control">
-                                    </div>
-                                    <div class="col-lg-3 col-12 form-group">
-                                        <input type="text" placeholder="Search by Section ..." class="form-control">
-                                    </div>
-                                    <div class="col-lg-2 col-12 form-group">
-                                        <button type="submit"
-                                                class="fw-btn-fill btn-gradient-yellow">SEARCH
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
+
                             <div class="table-responsive">
                                 <table class="table display text-nowrap">
                                     <thead>
                                     <tr>
-                                        <th>Class</th>
-                                        <th>Name</th>
+                                        <th>#</th>
+                                        <th>Class Name</th>
+                                        <th>Semester</th>
                                         <th>Teacher</th>
                                         <th>Number of Student</th>
                                         <th></th>
@@ -556,6 +589,12 @@
                     link.href = `/list-mark-teacher.html?classId=${clasz.id}`;
                     nameCell.appendChild(link);
                     row.appendChild(nameCell);
+
+
+                    //Semester Name cell
+                    const semesterNameCell = document.createElement('td');
+                    semesterNameCell.textContent = clasz.semesterName;
+                    row.appendChild(semesterNameCell);
 
                     // Teacher Name cell
                     const teacherNameCell = document.createElement('td');

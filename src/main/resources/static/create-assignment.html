@@ -82,6 +82,7 @@
     #content {
         border: 2px solid #007bff;  /* Đặt màu border là màu xanh dương */
         border-radius: 5px;         /* Thêm góc bo tròn nếu cần */
+        width: 150%;
     }
 
     /* Tạo hiệu ứng khi người dùng hover vào Quill editor */
@@ -405,19 +406,19 @@
                             <input type="hidden" name="teacher_id" id="userId">
 
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label for="description" style="color: #007bff; font-weight: bold;">Assignment Title *</label>
+                                <label for="description" style="color: #007bff; font-weight: bold;">Assignment Title <span style="color: red !important;">*</span></label>
                                 <input type="text"  class="form-control" name="description" id="description" >
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label for="created_date" style="color: #007bff; font-weight: bold;">Start Date *</label>
+                                <label for="created_date" style="color: #007bff; font-weight: bold;">Start Date <span style="color: red !important;">*</span></label>
                                 <input type="datetime-local" class="form-control" name="created_date" id="created_date" >
                             </div>
                             <div class="col-xl-4 col-lg-12 col-12 form-group">
-                                <label for="end_date" style="color: #007bff; font-weight: bold;">End Date *</label>
+                                <label for="end_date" style="color: #007bff; font-weight: bold;">End Date <span style="color: red !important;">*</span></label>
                                 <input type="datetime-local" class="form-control" name="end_date" id="end_date" >
                             </div>
                             <div class="col-xl-6 col-lg-12 col-12 form-group">
-                                <label for="content" style="color: #007bff; font-weight: bold;">Description *</label>
+                                <label for="content" style="color: #007bff; font-weight: bold;">Description <span style="color: red !important;">*</span></label>
                                 <div id="content" class="form-control" style="height: 200px;"></div>
                             </div>
                             <div class="col-xl-12 col-lg-24 col-12 form-group">
@@ -594,12 +595,22 @@
             const fileInput = document.querySelector('input[type="file"]'); // Find the file input
             if (fileInput && fileInput.files.length > 0) {
                 const file = fileInput.files[0];
+
+                // Check file size (max 125MB)
                 const fileSizeInMB = file.size / (1024 * 1024); // Convert bytes to MB
                 if (fileSizeInMB > 125) {
                     showErrorModal('File size must not exceed 125MB.');
                     return;
                 }
+
+                // Check file type (pdf, doc, png, jpg)
+                const allowedTypes = ['application/pdf', 'application/msword', 'image/png', 'image/jpeg'];
+                if (!allowedTypes.includes(file.type)) {
+                    showErrorModal('File type must be pdf, doc, png, or jpg.');
+                    return;
+                }
             }
+
 
             // Gửi form qua Fetch API
             try {
