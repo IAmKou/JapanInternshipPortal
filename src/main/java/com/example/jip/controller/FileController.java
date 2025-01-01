@@ -35,7 +35,7 @@ public class FileController {
                     writer.println("\"" + grade.get("fullname") + "\",\""
                             + grade.getOrDefault("comment", "N/A") + "\",\""
                             + grade.getOrDefault("attitude", "N/A") + "\",\""
-                            + grade.getOrDefault("script", "N/A") + "\",\""
+                            + grade.getOrDefault("scriptPresentation", "N/A") + "\",\""
                             + grade.getOrDefault("presentation", "N/A") + "\",\""
                             + grade.getOrDefault("softskill", "N/A") + "\",\""
                             + grade.getOrDefault("middleExam", "N/A") + "\",\""
