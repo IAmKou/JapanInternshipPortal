@@ -16,7 +16,7 @@ public class SemesterStatusScheduler {
     @Autowired
     private SemesterRepository semesterRepository;
 
-    @Scheduled(cron = "0 0 * * * ?") // Runs daily at midnight
+    @Scheduled(cron = "0 0 * * * ?")
     @Transactional
     public void updateSemesterStatus() {
         LocalDate today = LocalDate.now();

@@ -21,7 +21,7 @@ public class ClassStatusScheduler {
     @Autowired
     private ClassRepository classRepository;
 
-    @Scheduled(cron = "0 0 * * * ?") // Runs daily at midnight
+    @Scheduled(cron = "0 0 * * * ?")
     @Transactional
     public void updateClassStatus() {
         // Fetch semesters with start or end date matching today

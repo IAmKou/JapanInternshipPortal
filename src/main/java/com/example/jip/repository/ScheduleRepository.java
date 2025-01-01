@@ -43,11 +43,11 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
                                                          @Param("activity") String activity,
                                                          @Param("classId") int classId);
 
-    @Query("SELECT new com.example.jip.dto.ClassScheduleDTO(c.id, c.name, s.room, sem.name,sem.id) " +
+    @Query("SELECT new com.example.jip.dto.ClassScheduleDTO(c.id, c.name, MAX(s.room), MAX(sem.name), MAX(sem.id)) " +
             "FROM Schedule s " +
             "JOIN s.clasz c " +
             "JOIN s.semester sem " +
-            "GROUP BY c.id, c.name, s.room, sem.name,sem.id")
+            "GROUP BY c.id, c.name")
     List<ClassScheduleDTO> findUniqueClassSchedule();
 
     @Query("SELECT s FROM Schedule s WHERE s.clasz.id = :classId")
