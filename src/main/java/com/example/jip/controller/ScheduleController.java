@@ -60,7 +60,6 @@ public class ScheduleController {
     @PostMapping("/saveDraft")
     public ResponseEntity<?> saveDraft(@RequestBody List<ScheduleDTO> schedules) {
         try {
-            // Validate semester ID from the first schedule
             if (schedules.isEmpty()) {
                 return ResponseEntity.badRequest().body("No schedules provided.");
             }
@@ -70,29 +69,37 @@ public class ScheduleController {
                     .orElseThrow(() -> new IllegalArgumentException("Invalid Semester ID: " + semesterId));
 
             for (ScheduleDTO scheduleDTO : schedules) {
-                // Check if a schedule already exists for the semester, date, and activity
-                LocalDate localDate = LocalDate.parse(scheduleDTO.getDate()).plusDays(1);
+                // Parse date from DTO
+                LocalDate localDate = LocalDate.parse(scheduleDTO.getDate());
                 java.sql.Date sqlDate = Date.valueOf(localDate);
 
+                // Check for existing schedule
                 Schedule existingSchedule = scheduleRepository.findBySemesterIdAndDateAndActivity(
                         semesterId, sqlDate, scheduleDTO.getActivity()
                 );
 
                 Schedule schedule;
                 if (existingSchedule != null) {
-                    // Update the existing schedule
-                    schedule = existingSchedule;
+                    schedule = existingSchedule; // Update existing schedule
                 } else {
-                    // Create a new schedule
-                    schedule = new Schedule();
+                    schedule = new Schedule(); // Create new schedule
                     schedule.setSemester(semester);
                 }
 
+                // Map all fields from DTO to entity
                 schedule.setActivity(scheduleDTO.getActivity());
+                schedule.setRoom(scheduleDTO.getRoom());
                 schedule.setColor(scheduleDTO.getColor());
                 schedule.setDate(sqlDate);
                 schedule.setDay_of_week(getDayOfWeekFromDate(sqlDate));
                 schedule.setStatus(Schedule.status.Draft);
+
+                // If classId is provided, associate with the Class entity
+                if (scheduleDTO.getClassId() != 0) {
+                    Class clasz = classRepository.findById(scheduleDTO.getClassId())
+                            .orElseThrow(() -> new IllegalArgumentException("Invalid Class ID: " + scheduleDTO.getClassId()));
+                    schedule.setClasz(clasz);
+                }
 
                 scheduleRepository.save(schedule);
             }
@@ -114,6 +121,7 @@ public class ScheduleController {
     public ResponseEntity<?> savePublic(@RequestBody List<ScheduleDTO> schedules) {
             try {
                 // Validate semester ID from the first schedule
+                System.out.println("Received schedules: " + schedules);
                 if (schedules.isEmpty()) {
                     return ResponseEntity.badRequest().body("No schedules provided.");
                 }
@@ -133,7 +141,7 @@ public class ScheduleController {
 
                 // Save new schedules
                 for (ScheduleDTO scheduleDTO : schedules) {
-                    LocalDate localDate = LocalDate.parse(scheduleDTO.getDate()).plusDays(1);
+                    LocalDate localDate = LocalDate.parse(scheduleDTO.getDate());
                     java.sql.Date sqlDate = Date.valueOf(localDate);
 
                     boolean roomInUse = scheduleRepository.existsByRoomAndSemesterIdAndClassNot(
@@ -256,19 +264,38 @@ public class ScheduleController {
         }
     }
 
-//    @GetMapping("/get/class/{classId}")
-//    public List<ScheduleDTO> getClassSchedule(@PathVariable int classId) {
-//        return scheduleRepository.findByClaszId(classId).stream()
-//                .map(ScheduleDTO :: new)
-//                .collect(Collectors.toList());
-//    }
-//
-//    @GetMapping("/getRoomForClass/{classId}")
-//    public List<ScheduleDTO> getRoomClassSchedule(@PathVariable int classId) {
-//        return scheduleRepository.findByClaszId(classId).stream()
-//                .map(ScheduleDTO :: new)
-//                .collect(Collectors.toList());
-//    }
+    @GetMapping("/get/class/{classId}")
+    public List<ScheduleDTO> getClassSchedule(@PathVariable int classId) {
+        return scheduleRepository.findByClaszId(classId).stream()
+                .map(ScheduleDTO :: new)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/getRoomForClass/{classId}")
+    public List<ScheduleDTO> getRoomClassSchedule(@PathVariable int classId) {
+        return scheduleRepository.findByClaszId(classId).stream()
+                .map(ScheduleDTO :: new)
+                .collect(Collectors.toList());
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateEvent(@PathVariable int id, @RequestBody ScheduleDTO scheduleDTO) {
+        try {
+            Schedule existingSchedule = scheduleRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Event not found: " + id));
+
+            existingSchedule.setActivity(scheduleDTO.getActivity());
+            existingSchedule.setRoom(scheduleDTO.getRoom());
+            existingSchedule.setColor(scheduleDTO.getColor());
+            scheduleRepository.save(existingSchedule);
+
+            return ResponseEntity.ok(Map.of("message", "Event updated successfully!"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Error updating event", "error", e.getMessage()));
+        }
+    }
+
 
 
     private Schedule.dayOfWeek getDayOfWeekFromDate(java.sql.Date date) {
