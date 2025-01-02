@@ -414,8 +414,8 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="report-list.html"><i
-                                class="flaticon-script"></i><span data-i18n="report">Report</span></a>
+                        <a href="semester-create.html" class="nav-link"><i
+                                class="flaticon-settings"></i><span>Semester</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="notice-board.html"><i
@@ -455,7 +455,6 @@
                                        style="position: absolute; left: 54%; transform: translateX(-50%);">
                                     Filter:
                                 </label>
-
                             </div>
                             <form id="searchForm" style="padding-bottom: 20px; padding-top: 10px;">
                                 <div class="row mb-3 align-items-center gx-3">
@@ -572,16 +571,22 @@
             </div>
             <form action="/account/import/excel" enctype="multipart/form-data" id="import" method="post">
                 <div class="modal-body">
+                    <a href="/template/Import%20Account%201.xlsx" download
+                       style="font-size: 16px; color: #007bff; text-decoration: underline; margin-top: 10px; display: inline-block;">
+                        Download Excel Template
+                    </a>
                     <label data-i18n="choose_file" for="file"
                            style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
+                    <!-- Thêm liên kết tải xuống -->
+
                     <input class="form-control-file" id="file" name="file" required type="file">
                 </div>
                 <div class="modal-footer">
-                    <button class="footer-btn bg-dark-low" data-dismiss="modal" data-i18n="close" type="button">Close
-                    </button>
+                    <button class="footer-btn bg-dark-low" data-dismiss="modal" data-i18n="close" type="button">Close</button>
                     <button class="footer-btn bg-linkedin" data-i18n="submit" type="submit">Submit</button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>

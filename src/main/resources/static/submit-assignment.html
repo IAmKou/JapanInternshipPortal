@@ -29,7 +29,38 @@
 
 
 <style>
+    input[name="description"] {
+        border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+        border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+        width: 150%;                           /* Thiết lập chiều rộng cho input, có thể điều chỉnh theo nhu cầu */
+    }
 
+    input[name="description"]:hover {
+        border-color: #28a745 !important;
+    }
+
+    /* Khi người dùng focus vào input */
+    input[name="description"]:focus {
+        border-color: #ff6347 !important;       /* Giữ màu đỏ khi focus */
+        box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+    }
+
+    #contentEditor {
+        border: 2px solid #007bff;  /* Đặt màu border là màu xanh dương */
+        border-radius: 5px;         /* Thêm góc bo tròn nếu cần */
+        width: 150%;
+    }
+
+    /* Tạo hiệu ứng khi người dùng hover vào Quill editor */
+    #contentEditor:hover {
+        border-color: #28a745;      /* Chuyển màu border thành màu xanh lá khi hover */
+    }
+
+    /* Tạo hiệu ứng khi Quill editor có focus (khi người dùng click vào) */
+    #contentEditor:focus {
+        border-color: #ff6347;      /* Chuyển màu border thành màu cam khi có focus */
+        box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm bóng để nổi bật hơn */
+    }
     table td {
         font-weight: bold;
     }
@@ -478,12 +509,12 @@
                                 <input type="hidden" name="assignment_id" id="assignmentid" />
                                 <input type="hidden" name="status" id="status" />
                                 <div class="col-xl-8 col-lg-6 col-12 form-group">
-                                    <label for="description" style="color: #007bff; font-weight: bold;">Title *</label>
+                                    <label for="description" style="color: #007bff; font-weight: bold;">Title <span style="color: red !important;">*</span></label>
                                     <input type="text"  class="form-control" name="description" id="description" required>
                                 </div>
 
                                 <div class="col-xl-12 col-lg-12 col-12 form-group">
-                                    <label for="content" style="color: #007bff; font-weight: bold;">Description *</label>
+                                    <label for="content" style="color: #007bff; font-weight: bold;">Description <span style="color: red !important;">*</span></label>
                                     <div id="content" class="form-control" style="height: 200px;"></div>
                                     <!-- Thêm input ẩn để gửi nội dung của Quill -->
                                     <input type="hidden" name="content">
@@ -740,10 +771,10 @@
         placeholder: 'Enter your description here...',  // Văn bản placeholder
         modules: {
             toolbar: [
-                ['bold', 'italic', 'underline'],
-                [{'list': 'ordered'}, {'list': 'bullet'}],
-                [{'header': [1, 2, 3, false]}],
-                ['clean']
+                ['bold', 'italic', 'underline'],    // Các nút định dạng văn bản
+                ['link'],  // Chèn link
+                ['blockquote'],  // Blockquote
+                [{ 'list': 'ordered'}, { 'list': 'bullet'}], // Các kiểu danh sách
             ]
         }
     });

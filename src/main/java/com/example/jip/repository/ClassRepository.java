@@ -12,10 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ClassRepository extends JpaRepository<Class,Integer> {
-    int countByTeacherId(Integer teacherId);
-
     List<Class> findByTeacher_Id(Integer teacherId);
-    Optional<Class> findByName(String name);
     Optional<Class> findById(Integer id);
     boolean existsByName(String name);
     @Modifying
@@ -37,4 +34,6 @@ public interface ClassRepository extends JpaRepository<Class,Integer> {
             "AND c.semester.id = :semesterId")
     int countClassesByTeacherAndSemester(@Param("teacherId") int teacherId,
                                          @Param("semesterId") int semesterId);
+
+
 }

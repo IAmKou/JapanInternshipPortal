@@ -36,6 +36,38 @@
 
 
     <style>
+        /* Đảm bảo trang bao phủ toàn bộ chiều cao */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* Container chính */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%; /* Bao phủ toàn bộ trang */
+        }
+
+        /* Nội dung bên trên */
+        .content {
+            flex: 1; /* Đẩy footer xuống */
+        }
+
+        /* Footer nằm ở cuối */
+        .footer-wrap-layout1 {
+            background-color: #ec9006;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .footer-wrap-layout1 a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+
         /* Custom Modal Styling */
         #success-modal .modal-header {
             background-color: #28a745; /* Màu nền của header */
@@ -77,6 +109,7 @@
         #contentEditor {
             border: 2px solid #007bff;  /* Đặt màu border là màu xanh dương */
             border-radius: 5px;         /* Thêm góc bo tròn nếu cần */
+            width: 150%;
         }
 
         /* Tạo hiệu ứng khi người dùng hover vào Quill editor */
@@ -95,16 +128,19 @@
         input[name="title"] {
             border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
             border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+            width: 150%;                           /* Thiết lập chiều rộng cho input, có thể điều chỉnh theo nhu cầu */
         }
 
         input[name="title"]:hover {
             border-color: #28a745 !important;
         }
+
         /* Khi người dùng focus vào input */
         input[name="title"]:focus {
-            border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+            border-color: #ff6347 !important;       /* Giữ màu đỏ khi focus */
             box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
         }
+
 
 
 
@@ -375,12 +411,17 @@
                                 <input type="hidden" name="teacher_id" id="userId" value="">
 
                                 <div class="col-7 form-group">
-                                    <label style="color: #007bff; font-weight: bold;" data-i18n="title">Title *</label>
+                                    <label style="color: #007bff; font-weight: bold;" data-i18n="title">Material Title <span style="color: red !important;">*</span>
+
+                                    </label>
                                     <input type="text" name="title" class="form-control" required>
                                 </div>
 
                                 <div class="col-7 form-group">
-                                    <label style="color: #007bff; font-weight: bold;" data-i18n="content">Content *</label>
+                                    <label style="color: #007bff; font-weight: bold;" data-i18n="content">Material Content <span style="color: red !important;">*</span>
+
+
+                                    </label>
                                     <!-- Quill editor được thay thế vào đây -->
                                     <div id="contentEditor" class="form-control" style="height: 200px;"></div>
                                     <!-- Thêm một textarea ẩn để lưu giá trị và gửi trong form -->
@@ -391,15 +432,17 @@
 
 
                                 <div class="col-12 form-group">
-                                    <label style="color: #007bff; font-weight: bold;" data-i18n="file_attach">File Attach:</label>
+                                    <label style="color: #007bff; font-weight: bold;" data-i18n="file_attach">File Attach <span style="color: red !important;">*</span>
+
+
+                                    </label>
                                     <input type="file" name="imgFile" class="form-control-file" onchange="previewFile(this)">
                                     <img id="previewImage" class="mt-3 d-none" style="width: 100px; height: auto; border-radius: 10px;"/>
 
                                 </div>
 
                                 <div class="col-lg-6 col-12 form-group">
-                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" data-i18n="save">Save</button>
-                                    <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow" data-i18n="reset">Reset</button>
+                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" data-i18n="save" style="padding: 15px 30px; font-size: 18px; width: 200px; height: 50px; display: flex; justify-content: center; align-items: center;">Create</button>
                                 </div>
                             </div>
                         </form>
@@ -444,6 +487,53 @@
             </div>
             <!-- Page Area End Here -->
         </div>
+    <!-- Success Modal -->
+    <div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-success" id="successModalLabel">
+                        <i class="fas fa-check-circle"></i> Success
+                    </h5>
+
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                    <h4 class="text-success">Account import was successful!</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Error Modal -->
+    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-danger" id="errorModalLabel">
+                        <i class="fas fa-times-circle"></i> Error
+                    </h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+        <div style="background-color: #ec9006; padding: 15px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+                            rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
         <!-- jquery-->
         <script src="js/jquery-3.3.1.min.js"></script>
         <!-- Plugins js -->
@@ -553,27 +643,69 @@
     });
 
     function createForm() {
-        $('#confirmationModal').modal('hide'); // Đóng modal
+        const fileInput = document.querySelector('input[name="imgFile"]');
+        const file = fileInput.files[0];
 
-        // Lấy dữ liệu từ Quill editor dưới dạng HTML (chứ không phải văn bản thuần)
-        const contentHTML = quill.root.innerHTML.trim();  // Sử dụng innerHTML để giữ lại định dạng HTML
+        // Kiểm tra nếu có file
+        if (file) {
+            const validFileTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/jpeg', 'image/png', 'image/gif'];
+            const maxFileSize = 5 * 1024 * 1024; // 5 MB
 
-        // Kiểm tra nếu không có nội dung
-        if (!contentHTML) {
-            alert("Content is required.");
-            return; // Ngừng việc gửi form nếu không có nội dung
-        }
+            // Kiểm tra loại file
+            if (!validFileTypes.includes(file.type)) {
+                showError('Only PDF, DOCX, or image files are allowed.');
+                return;
+            }
 
-        // Gán lại HTML vào textarea ẩn
-        const textarea = document.querySelector('textarea[name="content"]');
-        if (textarea) {
-            textarea.value = contentHTML;  // Gán giá trị HTML vào textarea
+            // Kiểm tra dung lượng file
+            if (file.size > maxFileSize) {
+                showError('File size must be less than 5MB.');
+                return;
+            }
+
+            // Tạo form khi file hợp lệ
+            $('#confirmationModal').modal('hide'); // Đóng modal xác nhận
+            const contentHTML = quill.root.innerHTML.trim();  // Lấy nội dung từ Quill
+
+            if (!contentHTML) {
+                showError('Content is required.');  // Hiển thị thông báo lỗi thông qua Error Modal
+                return;  // Dừng việc gửi form nếu không có nội dung
+            }
+
+            const textarea = document.querySelector('textarea[name="content"]');
+            if (textarea) {
+                textarea.value = contentHTML;  // Gán HTML vào textarea
+            } else {
+                console.error('Textarea with name="content" not found!');
+            }
+
+            document.getElementById("materialForm").submit(); // Gửi form
+
+            // Gọi thông báo thành công
+            showSuccess('Material created successfully!');
         } else {
-            console.error('Textarea with name="content" not found!');
+            showError('Please choose a file to upload.');
         }
+    }
 
-        // Gửi form
-        document.getElementById("materialForm").submit();
+    function showError(message) {
+        const errorModal = new bootstrap.Modal(document.getElementById('long-modal')); // Tạo modal
+        const errorMessageBody = document.getElementById('error-message-body');
+        errorMessageBody.textContent = message;  // Hiển thị thông báo lỗi
+        errorModal.show();  // Hiển thị Modal lỗi
+    }
+
+    function showSuccess(message) {
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal')); // Tạo modal
+        const successMessageBody = document.querySelector('#success-modal .modal-body');  // Tùy chỉnh thông điệp thành công nếu cần
+        successMessageBody.innerHTML = '<h4>' + message + '</h4>';
+
+        successModal.show();  // Hiển thị Modal thành công
+
+        // Ẩn modal sau 2 giây (2000ms)
+        setTimeout(() => {
+            successModal.hide();
+        }, 2000);
     }
 </script>
 
@@ -662,163 +794,7 @@
         }
     }
 </script>
-<script>
-    // Hàm thay đổi ngôn ngữ
-    function getTranslation(language) {
-        const translations = {
-            "en": {
-                //Main screen
-                "create_material": "Create Material",
-                "material_details": "Material Details",
-                "title": "Title *",
-                "content": "Content *",
-                "file_attach": "File Attach *:",
-                "save": "Save",
-                "reset": "Reset",
-                "home": "Home",
-                "user_list": "Account List",
-                "id": "ID",
-                "image": "Image",
-                "name": "Name",
-                "role": "Role",
-                "actions": "Actions",
-                "do_you": "Do you want to create this material?",
-                "confirm_save": "Confirm Save",
-                "cancel": "Cancel",
-                // end main screen
-                // headbar
-                "log_out": "Log Out",
-                "my_profile": "My Profile",
-                // end headbar
-                "add_account": "Add Account",
-                "choose_file": "Choose File",
-                "close": "Close",
-                "submit": "Submit",
-                "j_name": "Japan Name",
-                // sidebar teacher
-                "dashboard": "Dashboard",
-                "teacher": "Teacher",
-                "assignment": "Assignment",
-                "all_assignment": "All Assignment",
-                "add_new_assignment": "Add New Assignment",
-                "schedule": "Schedule",
-                "class": "Class",
-                "class_list": "Class List",
-                "exam": "Exam",
-                "list_exam": "List Exam",
-                "create_exam": "Create Exam",
-                "material": "Material",
-                "list_materials": "List Materials",
-                "application": "Application",
-                "send_application": "Send Application",
-                "my_application": "My Application",
-                "thread": "Thread",
-                "view_list_threads": "View List Threads",
-                "create_thread": "Create Thread",
-                "security": "Security",
-                "change_password": "Change Password",
-                // end sidebar admin
-            },
-            "ja": {
-                //Main screen
-                "create_material": "教材を作成",
-                "material_details": "教材の詳細",
-                "title": "タイトル *",
-                "content": "内容 *",
-                "file_attach": "添付ファイル *:",
-                "save": "保存",
-                "reset": "リセット",
-                "home": "ホーム",
-                "user_list": "ユーザーリスト",
-                "id": "ID",
-                "image": "写真",
-                "name": "名前",
-                "role": "役割",
-                "actions": "アクション",
-                "do_you": "この資料を作成しますか？",
-                "confirm_save": "保存を確認",
-                "cancel": "キャンセル",
-                // end main screen
-                // headbar
-                "log_out": "ログアウト",
-                "my_profile": "私のプロフィール",
-                // end headbar
-                "add_account": "アカウントを追加",
-                "choose_file": "ファイルを選択",
-                "submit": "送信",
-                "close": "閉じる",
-                "j_name": "日本の名前",
-                // sidebar teacher
-                "dashboard": "ダッシュボード",
-                "teacher": "教師",
-                "assignment": "課題",
-                "all_assignment": "すべての課題",
-                "add_new_assignment": "新しい課題を追加",
-                "schedule": "スケジュール",
-                "class": "クラス",
-                "class_list": "クラス一覧",
-                "exam": "試験",
-                "list_exam": "試験一覧",
-                "create_exam": "試験を作成",
-                "material": "教材",
-                "list_materials": "教材一覧",
-                "application": "申請",
-                "send_application": "申請を送信",
-                "my_application": "私の申請",
-                "thread": "スレッド",
-                "view_list_threads": "スレッド一覧を表示",
-                "create_thread": "スレッドを作成",
-                "security": "セキュリティ",
-                "change_password": "パスワード変更"
-                // end sidebar admin
-            }
-        };
 
-        // Cập nhật nội dung các phần tử có thuộc tính data-i18n
-        const elements = document.querySelectorAll('[data-i18n]');
-        elements.forEach(function(element) {
-            const translationKey = element.getAttribute('data-i18n');
-            if (translations[language] && translations[language][translationKey]) {
-                element.innerHTML = translations[language][translationKey];
-            }
-        });
-    }
-
-    // Hàm thay đổi ngôn ngữ và cập nhật ngôn ngữ hiển thị trong thanh điều hướng
-    function changeLanguage(language) {
-        // Lưu ngôn ngữ vào localStorage
-        localStorage.setItem('language', language);
-
-        // Cập nhật lại nhãn ngôn ngữ trong phần tử (nút hiển thị ngôn ngữ)
-        const languageLabel = document.getElementById('languageLabel');
-        if (languageLabel) {
-            languageLabel.innerHTML = language === 'en' ? 'EN' : (language === 'ja' ? 'JA' : 'EN');
-        }
-
-        // Áp dụng ngôn ngữ cho toàn bộ trang
-        getTranslation(language);  // Gọi lại hàm dịch ngôn ngữ ngay lập tức
-
-        // Reload lại trang sau khi thay đổi ngôn ngữ
-        location.reload();  // Tải lại trang
-    }
-
-    // Kiểm tra ngôn ngữ khi trang được tải
-    window.addEventListener('load', function () {
-        const language = localStorage.getItem('language') || 'en'; // Mặc định là 'en' nếu không có ngôn ngữ lưu trữ
-        // Gọi hàm dịch ngôn ngữ
-        getTranslation(language);
-        // Đặt lại nhãn ngôn ngữ trong phần tử (tiếng Anh là EN nếu không có ngôn ngữ)
-        const languageLabel = document.getElementById('languageLabel');
-        if (languageLabel) {
-            languageLabel.innerHTML = language === 'en' ? 'EN' : (language === 'ja' ? 'JA' : 'EN');
-        }
-    });
-
-
-
-
-
-</script>
 <script>
     function previewFile(input) {
         const file = input.files[0];
