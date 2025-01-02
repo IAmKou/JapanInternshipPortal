@@ -77,19 +77,6 @@
             vertical-align: middle;
         }
 
-        /*#class-dropdown {*/
-        /*    font-size: 10px; !* Standard font size *!*/
-        /*    padding: 8px; !* Balanced padding *!*/
-        /*    width: 100%; !* Ensure it spans the full container width *!*/
-        /*    margin-bottom: 15px; !* Space below dropdown *!*/
-        /*    border: 1px solid #ccc; !* Add a border for clarity *!*/
-        /*    border-radius: 4px; !* Rounded corners *!*/
-        /*    overflow: visible; !* Ensure text and options are not clipped *!*/
-        /*    white-space: nowrap; !* Prevent text wrapping *!*/
-        /*    text-overflow: ellipsis; !* Add ellipsis for overflow text *!*/
-        /*    box-sizing: border-box; !* Include padding in width calculation *!*/
-        /*}*/
-
         .btn {
             font-size: 16px; /* Increased font size */
             padding: 10px 20px; /* Increased padding */
@@ -307,7 +294,7 @@
                             <div id='external-events'>
                                 <div id='external-events-list'>
                                     <h4>Select Class</h4>
-                                    <select id="class-dropdown" class="form-control">
+                                    <select id="class-dropdown" class="form-control select2">
                                         <option value="">Select a class</option>
                                     </select>
                                     <button id="save-draft" class="btn btn-warning btn-sm mt-3">Save as Draft</button>
@@ -528,6 +515,7 @@
 
         // Fetch room availability
         function fetchRoomAvailability(date) {
+            console.log(date);
             return fetch(`/room/room-availability?date=${date}`)
                 .then(response => {
                     if (!response.ok) {
@@ -556,6 +544,17 @@
                 .catch(error => {
                     console.error('Error fetching holidays:', error);
                 });
+        }
+        function handleEventValidation(info) {
+            const targetDate = new Date(info.event.start.toISOString());
+            const day = targetDate.getUTCDay(); // 0 = Sunday, 6 = Saturday
+            const isTestEvent = info.event.title.toLowerCase().includes('test');
+
+            // Prevent "test" events from being dropped/received on Saturday or Sunday
+            if (isTestEvent && (day === 0 || day === 6)) {
+                alert("Test events cannot be scheduled on Saturday or Sunday.");
+                info.revert(); // Revert the event to its original position
+            }
         }
 
         // Fetch semester details and initialize the calendar
@@ -587,6 +586,9 @@
                     validRange: {
                         start: semesterStart,
                         end: semesterEnd,
+                    },
+                    eventConstrain: {
+                        start: new Date().toISOString().split('T')[0],
                     },
                     events: function (fetchInfo, successCallback, failureCallback) {
                         fetch(`/schedule/get/${semesterId}`)
@@ -651,43 +653,85 @@
                         }
 
                         // Fetch room availability for the selected date
-                        fetchRoomAvailability(clickedDate).then(rooms => {
-                            roomDropdown.innerHTML = ''; // Clear existing options
+                        fetchRoomAvailability(clickedDate)
+                            .then(rooms => {
+                                roomDropdown.innerHTML = ''; // Clear existing options
 
-                            // Add a default "Select a Room" option
-                            const defaultOption = document.createElement('option');
-                            defaultOption.value = '';
-                            defaultOption.textContent = 'Select a Room';
-                            defaultOption.disabled = true;
-                            defaultOption.selected = true;
-                            roomDropdown.appendChild(defaultOption);
+                                // Add a default "Select a Room" option
+                                const defaultOption = document.createElement('option');
+                                defaultOption.value = '';
+                                defaultOption.textContent = 'Select a Room';
+                                defaultOption.disabled = true;
+                                defaultOption.selected = true;
+                                roomDropdown.appendChild(defaultOption);
 
-                            // Populate dropdown with room data
-                            rooms.forEach(room => {
-                                const option = document.createElement('option');
-                                option.value = room.roomName;
-                                option.textContent = room.roomName;
+                                // Populate dropdown with room data
+                                rooms.forEach(room => {
+                                    const option = document.createElement('option');
+                                    option.value = room.roomName;
+                                    option.textContent = room.roomName;
 
-                                // Set style and disable if room is OCCUPIED
-                                if (room.status === 'OCCUPIED') {
-                                    option.style.color = 'red';
-                                    option.disabled = true;
-                                }
+                                    // Set style and disable if room is OCCUPIED
+                                    if (room.status === 'OCCUPIED') {
+                                        option.style.color = 'red'; // Set text color to red
+                                        option.disabled = true; // Disable the option
+                                    }
 
-                                roomDropdown.appendChild(option);
+                                    roomDropdown.appendChild(option);
+                                });
+
+                                document.getElementById('clicked-date').value = clickedDate;
+
+                                // Reset the event title and color fields
+                                document.getElementById('eventTitle').value = '';
+                                document.getElementById('eventColor').value = '#3788d8';
+
+                                // Show modal
+                                $('#addEventModal').modal('show');
+                            })
+                            .catch(error => {
+                                console.error('Error fetching room availability:', error);
+                                alert('Failed to fetch room availability.');
                             });
-                            document.getElementById('clicked-date').value = clickedDate;
-                            // Reset the event title and color fields
-                            document.getElementById('eventTitle').value = '';
-                            document.getElementById('eventColor').value = '#3788d8';
-                            // Show modal
-                            $('#addEventModal').modal('show');
-                        });
                     },
-                });
+                    eventDrop: function (info) {
+                        handleEventValidation(info);
 
+                    },
+                    eventReceive: function (info) {
+                        handleEventValidation(info);
+                    }
+                });
                 calendar.render();
 
+                function validateActivities(eventsData) {
+                    const testActivitiesByDate = {};
+
+                    // Debugging: Log eventsData to ensure correct structure
+                    console.log("Validating activities, received data:", eventsData);
+
+                    for (const event of eventsData) {
+                        if (!event || !event.activity || !event.date) {
+                            console.warn("Skipping invalid event:", event);
+                            continue; // Skip invalid entries
+                        }
+
+                        const {activity, date} = event;
+
+                        if (activity.toLowerCase().includes("test")) {
+                            if (!testActivitiesByDate[date]) {
+                                testActivitiesByDate[date] = [];
+                            }
+                            testActivitiesByDate[date].push(activity);
+
+                            if (testActivitiesByDate[date].length > 1) {
+                                return `Duplicate test activities found on ${date}: ${testActivitiesByDate[date].join(", ")}`;
+                            }
+                        }
+                    }
+
+                    return null;
+                }
                 function loadClasses() {
                     fetch('/class/get')
                         .then(response => {
@@ -731,15 +775,6 @@
                         return;
                     }
 
-                    const testEventsOnDate = calendar.getEvents().filter(event =>
-                        event.start.toISOString().split('T')[0] === clickedDate &&
-                        event.title.toLowerCase().includes('test')
-                    );
-
-                    if (title.toLowerCase().includes('test') && testEventsOnDate.length > 0) {
-                        alert('You cannot schedule more than one test on the same day.');
-                        return;
-                    }
 
 
                     if (title.toLowerCase().includes('test') &&
@@ -755,6 +790,12 @@
                         backgroundColor: color,
                         extendedProps: {room},
                     };
+
+                    const validationError = validateActivities(newEvent);
+                    if (validationError) {
+                        alert(validationError);
+                        return;
+                    }
                     calendar.addEvent(newEvent);
                     eventsToSave.push(newEvent);
 
@@ -799,7 +840,7 @@
                     // Make the POST request
                     fetch(endpoint, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify(data),
                     })
                         .then(response => {

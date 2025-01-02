@@ -32,6 +32,10 @@ public class RoomAvailability {
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_id")
+    private Class clasz;
+
     public enum Status {
         AVAILABLE,
         OCCUPIED
