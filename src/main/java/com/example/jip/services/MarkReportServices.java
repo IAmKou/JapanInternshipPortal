@@ -60,21 +60,25 @@ public class MarkReportServices {
     }
 
     public MarkReportResponse getMarkReportById(int markRpId) {
-        MarkReport markReport =  markReportRepository.findById(markRpId);
-        if(markReport != null){
+        MarkReport markReport = markReportRepository.findById(markRpId);
+        if (markReport != null) {
             String className = listRepository.getClassByStudentId(markReport.getStudent().getId());
+
             MarkReportResponse response = new MarkReportResponse();
             response.setId(markReport.getId());
             response.setStudentName(markReport.getStudent().getFullname());
-            response.setComment(markReport.getComment());
             response.setStudentClass(className);
+            response.setComment(markReport.getComment());
             response.setSoftskill(markReport.getSoftskill());
             response.setAvg_exam_mark(markReport.getAvg_exam_mark());
             response.setMiddle_exam(markReport.getMiddle_exam());
             response.setFinal_exam(markReport.getFinal_exam());
+            response.setScriptPresentation(markReport.getScript_presentation()); // Thêm
+            response.setPresentation(markReport.getPresentation()); // Thêm
             response.setSkill(markReport.getSkill());
             response.setAttitude(markReport.getAttitude());
             response.setFinal_mark(markReport.getFinal_mark());
+
             return response;
         } else {
             throw new NoSuchElementException("Mark report not found");

@@ -30,7 +30,7 @@ public class MarkReport {
     List<MarkReportExam> markReportExams = new ArrayList<>();
     @Column(name = "avg_exam_mark")
     BigDecimal avg_exam_mark;
-    @Column(name = "middle_exam")
+    @Column(name = "midterm_exam")
     BigDecimal middle_exam;
     @Column(name = "final_exam")
     BigDecimal final_exam;

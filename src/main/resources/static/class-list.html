@@ -31,6 +31,37 @@
 </head>
 
 <style>
+    /* Đảm bảo trang bao phủ toàn bộ chiều cao */
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    /* Container chính */
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 100%; /* Bao phủ toàn bộ trang */
+    }
+
+    /* Nội dung bên trên */
+    .content {
+        flex: 1; /* Đẩy footer xuống */
+    }
+
+    /* Footer nằm ở cuối */
+    .footer-wrap-layout1 {
+        background-color: #ec9006;
+        color: white;
+        padding: 15px 0;
+        text-align: center;
+    }
+
+    .footer-wrap-layout1 a {
+        color: #ffcc00;
+        text-decoration: none;
+    }
     .dropdown-toggle::after {
         content: none !important;
     }
@@ -181,10 +212,6 @@
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="all-student.html" class="nav-link"><i
-                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>All Student</span></a>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
@@ -197,9 +224,12 @@
                                         class="flaticon-menu"></i><span>All Class</span></a>
                             </li>
                             <li class="nav-item">
-                                <a href="semester-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Schedule List</span></a>
+                                <a href="schedule-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Schedule List</span></a>
                             </li>
                         </ul>
+                    <li class="nav-item">
+                        <a href="semester-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Semester List</span></a>
+                    </li>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
@@ -319,6 +349,18 @@
         </div>
     </div>
 </div>
+<footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+    <div style="background-color: #ec9006; padding: 15px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+                        rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
     <!-- Page Area End Here -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {

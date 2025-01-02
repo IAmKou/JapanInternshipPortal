@@ -34,6 +34,37 @@
     <script src='/dist/index.global.js'></script>
 
     <style>
+        /* Đảm bảo trang bao phủ toàn bộ chiều cao */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* Container chính */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%; /* Bao phủ toàn bộ trang */
+        }
+
+        /* Nội dung bên trên */
+        .content {
+            flex: 1; /* Đẩy footer xuống */
+        }
+
+        /* Footer nằm ở cuối */
+        .footer-wrap-layout1 {
+            background-color: #ec9006;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .footer-wrap-layout1 a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
         body {
             margin-top: 40px;
             font-size: 14px;
@@ -75,13 +106,6 @@
         #external-events p input {
             margin: 0;
             vertical-align: middle;
-        }
-
-        #class-dropdown {
-            font-size: 16px; /* Increased font size */
-            padding: 10px; /* Increased padding */
-            width: 100%; /* Set width to fill container */
-            margin-bottom: 15px; /* Added spacing below dropdown */
         }
 
         .btn {
@@ -301,11 +325,12 @@
                             <div id='external-events'>
                                 <div id='external-events-list'>
                                     <h4>Select Class</h4>
-                                    <select id="class-dropdown" class="form-control">
+                                    <select id="class-dropdown" class="form-control select2">
                                         <option value="">Select a class</option>
                                     </select>
                                     <button id="save-draft" class="btn btn-warning btn-sm mt-3">Save as Draft</button>
-                                    <button id="save-public" class="btn btn-outline-success btn-sm mt-3">Save Publish</button>
+                                    <button id="save-public" class="btn btn-outline-success btn-sm mt-3">Save Publish
+                                    </button>
                                 </div>
                             </div>
                             <div id='calendar-wrap'>
@@ -344,6 +369,7 @@
                         <label for="eventColor">Event Color</label>
                         <input type="color" class="form-control" id="eventColor" value="#3788d8"/>
                     </div>
+                    <input type="hidden" id="clicked-date" value="">
                 </form>
             </div>
             <div class="modal-footer">
@@ -352,8 +378,56 @@
             </div>
         </div>
     </div>
-</div>
 
+    <div class="modal fade" id="updateEventModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Event</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateEventForm">
+                        <input type="hidden" id="updateEventId">
+                        <div class="form-group">
+                            <label for="updateEventTitle">Title</label>
+                            <input type="text" class="form-control" id="updateEventTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateEventColor">Color</label>
+                            <input type="color" class="form-control" id="updateEventColor" value="#3788d8">
+                        </div>
+                        <div class="form-group">
+                            <label for="updateRoomDropdown">Room</label>
+                            <select class="form-control" id="updateRoomDropdown" required>
+                                <option value="">Select a room</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="deleteEventButton">Delete</button>
+                    <button type="button" class="btn btn-primary" id="updateEventButton">Save Changes</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+    <div style="background-color: #ec9006; padding: 15px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+                        rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -373,6 +447,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="script.js"></script>
 
@@ -470,6 +545,8 @@
     }
 </script>
 
+<!-- Ensure you have the required HTML elements as described above -->
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const calendarEl = document.getElementById('calendar');
@@ -480,6 +557,7 @@
 
         // Fetch room availability
         function fetchRoomAvailability(date) {
+            console.log(date);
             return fetch(`/room/room-availability?date=${date}`)
                 .then(response => {
                     if (!response.ok) {
@@ -509,6 +587,17 @@
                     console.error('Error fetching holidays:', error);
                 });
         }
+        function handleEventValidation(info) {
+            const targetDate = new Date(info.event.start.toISOString());
+            const day = targetDate.getUTCDay(); // 0 = Sunday, 6 = Saturday
+            const isTestEvent = info.event.title.toLowerCase().includes('test');
+
+            // Prevent "test" events from being dropped/received on Saturday or Sunday
+            if (isTestEvent && (day === 0 || day === 6)) {
+                alert("Test events cannot be scheduled on Saturday or Sunday.");
+                info.revert(); // Revert the event to its original position
+            }
+        }
 
         // Fetch semester details and initialize the calendar
         fetch(`/semester/get/${semesterId}`)
@@ -524,9 +613,9 @@
 
                 // Fetch holidays
                 return fetchHolidays(semesterStart.toISOString().split('T')[0], semesterEnd.toISOString().split('T')[0])
-                    .then(() => ({ semesterStart, semesterEnd }));
+                    .then(() => ({semesterStart, semesterEnd}));
             })
-            .then(({ semesterStart, semesterEnd }) => {
+            .then(({semesterStart, semesterEnd}) => {
                 // Initialize FullCalendar
                 const calendar = new FullCalendar.Calendar(calendarEl, {
                     headerToolbar: {
@@ -535,10 +624,13 @@
                         right: 'dayGridMonth',
                     },
                     editable: true,
-                    droppable: true,
+                    droppable: false,
                     validRange: {
                         start: semesterStart,
                         end: semesterEnd,
+                    },
+                    eventConstrain: {
+                        start: new Date().toISOString().split('T')[0],
                     },
                     events: function (fetchInfo, successCallback, failureCallback) {
                         fetch(`/schedule/get/${semesterId}`)
@@ -555,8 +647,10 @@
                                     start: schedule.date,
                                     backgroundColor: schedule.color,
                                     borderColor: schedule.color,
+                                    editable: !holidays.includes(schedule.date), // Make holiday events non-editable
                                     extendedProps: {
                                         room: schedule.room,
+                                        isHoliday: holidays.includes(schedule.date), // Mark as holiday
                                     },
                                 }));
                                 successCallback(events);
@@ -565,6 +659,31 @@
                                 console.error('Error fetching events:', error);
                                 failureCallback(error);
                             });
+                    },
+                    eventClick: function (info) {
+                        // Handle event click for deletion
+                        const eventTitle = info.event.title;
+                        const eventId = info.event.id;
+
+                        if (confirm(`Are you sure you want to delete the event: "${eventTitle}"?`)) {
+                            // Remove the event from the calendar
+                            info.event.remove();
+
+                            // Optionally, make an API call to delete the event from the backend
+                            fetch(`/schedule/delete/${eventId}`, {
+                                method: 'DELETE',
+                            })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Failed to delete the event from the server.');
+                                    }
+                                    alert('Event deleted successfully!');
+                                })
+                                .catch(error => {
+                                    console.error('Error deleting event:', error);
+                                    alert('Failed to delete the event from the server.');
+                                });
+                        }
                     },
                     dateClick: function (info) {
                         const clickedDate = info.dateStr;
@@ -576,40 +695,85 @@
                         }
 
                         // Fetch room availability for the selected date
-                        fetchRoomAvailability(clickedDate).then(rooms => {
-                            roomDropdown.innerHTML = ''; // Clear existing options
+                        fetchRoomAvailability(clickedDate)
+                            .then(rooms => {
+                                roomDropdown.innerHTML = ''; // Clear existing options
 
-                            // Add a default "Select a Room" option
-                            const defaultOption = document.createElement('option');
-                            defaultOption.value = '';
-                            defaultOption.textContent = 'Select a Room';
-                            defaultOption.disabled = true;
-                            defaultOption.selected = true;
-                            roomDropdown.appendChild(defaultOption);
+                                // Add a default "Select a Room" option
+                                const defaultOption = document.createElement('option');
+                                defaultOption.value = '';
+                                defaultOption.textContent = 'Select a Room';
+                                defaultOption.disabled = true;
+                                defaultOption.selected = true;
+                                roomDropdown.appendChild(defaultOption);
 
-                            // Populate dropdown with room data
-                            rooms.forEach(room => {
-                                const option = document.createElement('option');
-                                option.value = room.roomId;
-                                option.textContent = room.roomName;
+                                // Populate dropdown with room data
+                                rooms.forEach(room => {
+                                    const option = document.createElement('option');
+                                    option.value = room.roomName;
+                                    option.textContent = room.roomName;
 
-                                // Set style and disable if room is OCCUPIED
-                                if (room.status === 'OCCUPIED') {
-                                    option.style.color = 'red';
-                                    option.disabled = true;
-                                }
+                                    // Set style and disable if room is OCCUPIED
+                                    if (room.status === 'OCCUPIED') {
+                                        option.style.color = 'red'; // Set text color to red
+                                        option.disabled = true; // Disable the option
+                                    }
 
-                                roomDropdown.appendChild(option);
+                                    roomDropdown.appendChild(option);
+                                });
+
+                                document.getElementById('clicked-date').value = clickedDate;
+
+                                // Reset the event title and color fields
+                                document.getElementById('eventTitle').value = '';
+                                document.getElementById('eventColor').value = '#3788d8';
+
+                                // Show modal
+                                $('#addEventModal').modal('show');
+                            })
+                            .catch(error => {
+                                console.error('Error fetching room availability:', error);
+                                alert('Failed to fetch room availability.');
                             });
-
-                            // Show modal
-                            $('#addEventModal').modal('show');
-                        });
                     },
-                });
+                    eventDrop: function (info) {
+                        handleEventValidation(info);
 
+                    },
+                    eventReceive: function (info) {
+                        handleEventValidation(info);
+                    }
+                });
                 calendar.render();
 
+                function validateActivities(eventsData) {
+                    const testActivitiesByDate = {};
+
+                    // Debugging: Log eventsData to ensure correct structure
+                    console.log("Validating activities, received data:", eventsData);
+
+                    for (const event of eventsData) {
+                        if (!event || !event.activity || !event.date) {
+                            console.warn("Skipping invalid event:", event);
+                            continue; // Skip invalid entries
+                        }
+
+                        const {activity, date} = event;
+
+                        if (activity.toLowerCase().includes("test")) {
+                            if (!testActivitiesByDate[date]) {
+                                testActivitiesByDate[date] = [];
+                            }
+                            testActivitiesByDate[date].push(activity);
+
+                            if (testActivitiesByDate[date].length > 1) {
+                                return `Duplicate test activities found on ${date}: ${testActivitiesByDate[date].join(", ")}`;
+                            }
+                        }
+                    }
+
+                    return null;
+                }
                 function loadClasses() {
                     fetch('/class/get')
                         .then(response => {
@@ -620,6 +784,10 @@
                         })
                         .then(data => {
                             const classDropdown = document.getElementById('class-dropdown');
+                            // Clear existing options
+                            classDropdown.innerHTML = '<option value="">Select a class</option>';
+
+                            // Populate the dropdown
                             data.forEach(clasz => {
                                 const option = document.createElement('option');
                                 option.value = clasz.id;
@@ -641,14 +809,18 @@
                     const roomDropdown = document.getElementById('roomDropdown');
                     const room = roomDropdown.value;
                     const color = document.getElementById('eventColor').value;
+                    const clickedDate = document.getElementById('clicked-date').value; // Get the clicked date
 
                     // Validation
                     if (!title) {
                         alert('Please provide a title.');
                         return;
                     }
+
+
+
                     if (title.toLowerCase().includes('test') &&
-                        (new Date(roomDropdown.dateStr).getDay() === 0 || new Date(roomDropdown.dateStr).getDay() === 6)) {
+                        (new Date(clickedDate).getDay() === 0 || new Date(clickedDate).getDay() === 6)) {
                         alert('Test events cannot be scheduled on weekends.');
                         return;
                     }
@@ -656,20 +828,26 @@
                     // Add event to calendar and eventsToSave array
                     const newEvent = {
                         title,
-                        start: roomDropdown.dateStr,
+                        start: clickedDate,
                         backgroundColor: color,
-                        extendedProps: { room },
+                        extendedProps: {room},
                     };
+
+                    const validationError = validateActivities(newEvent);
+                    if (validationError) {
+                        alert(validationError);
+                        return;
+                    }
                     calendar.addEvent(newEvent);
                     eventsToSave.push(newEvent);
 
                     $('#addEventModal').modal('hide');
                 };
 
-                // Save Draft or Save Public
                 document.getElementById('save-draft').onclick = function () {
                     saveEvents('/schedule/saveDraft', false);
                 };
+
                 document.getElementById('save-public').onclick = function () {
                     const classDropdown = document.getElementById('class-dropdown');
                     const selectedClass = classDropdown.value;
@@ -683,22 +861,28 @@
                 };
 
                 function saveEvents(endpoint, isPublic, selectedClass = null) {
-                    if (eventsToSave.length === 0) {
+                    // Get all events from the calendar
+                    const allEvents = calendar.getEvents(); // Retrieve all events from the calendar
+                    if (allEvents.length === 0) {
                         alert('No events to save.');
                         return;
                     }
 
-                    const data = eventsToSave.map(event => ({
-                        title: event.title,
-                        date: event.start,
-                        room: event.extendedProps.room,
+                    // Prepare the data for the payload
+                    const data = allEvents.map(event => ({
+                        activity: event.title,
+                        date: event.start.toISOString().split('T')[0], // Convert to YYYY-MM-DD format
+                        room: event.extendedProps.room || null, // Include room if available
                         color: event.backgroundColor,
+                        semesterId: semesterId,
                         classId: isPublic ? selectedClass : null, // Add classId for published schedules
+                        isHoliday: event.extendedProps.isHoliday || false // Include if the event is a holiday
                     }));
 
+                    // Make the POST request
                     fetch(endpoint, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify(data),
                     })
                         .then(response => {
