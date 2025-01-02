@@ -1,17 +1,14 @@
 package com.example.jip.services;
 
-import com.example.jip.entity.Account;
-import com.example.jip.entity.MarkReport;
-import com.example.jip.entity.Student;
-import com.example.jip.repository.AccountRepository;
-import com.example.jip.repository.MarkReportRepository;
-import com.example.jip.repository.StudentRepository;
+import com.example.jip.entity.*;
+import com.example.jip.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,6 +28,11 @@ public class StudentServices {
     @Autowired
     private MarkReportRepository markReportRepository;
 
+    @Autowired
+    private ExamRepository examRepository;
+
+    @Autowired
+    private MarkRpExamRepository markRpExamRepository;
 
     public Student createStudent(String fullname, String japanname, Date dob, String gender, String phoneNumber, String email, MultipartFile img, MultipartFile passport, int accountId) {
         Optional<Account> accountOpt = accountRepository.findById(accountId);
@@ -73,6 +75,17 @@ public class StudentServices {
         MarkReport markReport = new MarkReport();
         markReport.setStudent(savedStudent);
         markReportRepository.save(markReport);
+
+        List<Exam> examList = examRepository.findAll();
+        if (examList.isEmpty()) {
+            throw new IllegalStateException("No exams exist in the database.");
+        }
+
+        for (Exam exam : examList) {
+            MarkReportExam markRpExam = new MarkReportExam(markReport, exam);
+            markRpExamRepository.save(markRpExam);
+        }
+
         String account = accountOpt.get().getUsername();
         String password = accountOpt.get().getPassword();
         String emailStatus = emailServices.sendEmail(email, password, account);

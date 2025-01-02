@@ -75,7 +75,7 @@ public class SemesterController {
             semesterService.addHolidaysToSemester(holidays);
             semesterService.addHolidaysToSchedule(semester, holidays);
             roomAvailabilityServices.initializeRoomAvailabilityForSemester(id);
-            examService.createExams(43);
+            examService.createExams(44, semester.getName());
             // Return a success message with a proper JSON response
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body("{\"message\":\"Semester created successfully with holidays in the schedule!\"}");
