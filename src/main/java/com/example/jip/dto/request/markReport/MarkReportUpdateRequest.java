@@ -10,13 +10,13 @@ import java.math.BigDecimal;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MarkReportUpdateRequest {
     @NonNull
-    BigDecimal softskill;
-    @NonNull
-    BigDecimal avg_exam_mark;
-    @NonNull
     BigDecimal middle_exam;
     @NonNull
     BigDecimal final_exam;
     @NonNull
     String comment;
+    @NonNull
+    BigDecimal presentation;
+    @NonNull
+    BigDecimal scriptPresentation;
 }
