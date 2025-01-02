@@ -17,10 +17,10 @@ import org.springframework.stereotype.Service;
 public class ExamService {
 
     ExamRepository examRepository;
-    public void createExams(int n) {
+    public void createExams(int n, String semesterName) {
         for (int i = 0; i < n; i++) {
             Exam exam = new Exam();
-            exam.setTitle("Exam " + (i + 1));
+            exam.setTitle("Exam " + (i + 1) + " " + semesterName);
             log.info("Created Exam: {}", exam.getTitle());
             examRepository.save(exam); // Save each exam
         }
