@@ -22,6 +22,8 @@ public class MarkReportResponse {
     BigDecimal avg_exam_mark;
     BigDecimal middle_exam;
     BigDecimal final_exam;
+    BigDecimal scriptPresentation; // Thêm trường này
+    BigDecimal presentation;
     BigDecimal skill;
     BigDecimal attitude;
     BigDecimal final_mark;

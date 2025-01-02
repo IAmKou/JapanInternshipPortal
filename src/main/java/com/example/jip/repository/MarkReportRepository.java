@@ -1,5 +1,6 @@
 package com.example.jip.repository;
 
+import com.example.jip.dto.MarkReportDTO;
 import com.example.jip.entity.MarkReport;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

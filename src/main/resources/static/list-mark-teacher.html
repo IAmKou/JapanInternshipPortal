@@ -30,6 +30,9 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
+        .dropdown-toggle::after {
+            content: none !important;
+        }
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -650,9 +653,10 @@
                         <table class="table display text-nowrap">
                             <thead>
                             <tr>
+                                <th rowspan="2">Student Name</th>
                                 <th colspan="3">Skill</th>
                                 <th colspan="2">Soft Skill</th>
-                                <th colspan="3">Attitude</th>
+                                <th rowspan="2">Attitude</th>
                                 <th rowspan="2">Final Mark</th>
                                 <th rowspan="2">Action</th>
                             </tr>
@@ -662,8 +666,6 @@
                                 <th>Final Exam</th>
                                 <th>Script</th>
                                 <th>Presentation</th>
-                                <th>Assigment</th>
-                                <th>Attendant</th>
                             </tr>
                             </thead>
                             <tbody id="mark_list">
@@ -683,16 +685,21 @@
                     <h2>Update Mark</h2>
                     <form class="new-added-form" action="javascript:void(0);" onsubmit="updateMark(event)">
                         <label for="middle_exam_mark">Middle Exam Mark:</label>
-                        <input type="number" id="middle_exam_mark" name="middle_exam_mark" min="0" max="10" step="0.1" required/>
+                        <input type="number" id="middle_exam_mark" name="middle_exam_mark" min="0" max="100" step="1" required/>
 
                         <label for="final_exam_mark">Final Exam Mark:</label>
-                        <input type="number" id="final_exam_mark" name="final_exam_mark" min="0" max="10" step="0.1" required/>
+                        <input type="number" id="final_exam_mark" name="final_exam_mark" min="0" max="100" step="1" required/>
 
                         <label for="script_mark">Script Mark:</label>
-                        <input type="number" id="script_mark" name="script_mark" min="0" max="10" step="0.1" required/>
+                        <input type="number" id="script_mark" name="script_mark" min="0" max="100" step="1" required/>
 
                         <label for="presentation_mark">Presentation Mark:</label>
-                        <input type="number" id="presentation_mark" name="presentation_mark" min="0" max="10" step="0.1" required/>
+                        <input type="number" id="presentation_mark" name="presentation_mark" min="0" max="100" step="1" required/>
+
+                        <!-- Hidden fields -->
+                        <input type="hidden" id="avg_exam_mark" name="avg_exam_mark" />
+                        <input type="hidden" id="attitude_mark" name="attitude_mark" />
+                        <input type="hidden" id="final_mark" name="final_mark" />
 
                         <div class="button-group">
                             <button type="submit" class="btn submit-btn">Update</button>
@@ -700,6 +707,7 @@
                         </div>
                     </form>
                 </div>
+
             </div>
         </div>
 
@@ -775,58 +783,60 @@
 
     const API_BASE_URL = '/mark-report';
 
-    async function fetchAndDisplayMarks() {
+    function fetchAndDisplayMarks() {
         const urlParams = new URLSearchParams(window.location.search);
         const classId = urlParams.get('classId');
-        try {
-            console.log('Fetching mark reports...');
-            const response = await fetch(`${API_BASE_URL}/list?classId=${classId}`);
-            console.log('Class Id: ', classId);
-            console.log('Response received:', response);
 
-            const clasRp = await fetch(`/class/getCById?classId=${classId}`);
-            const clas = await clasRp.json();
-            console.log('Class: ', clas);
-            document.getElementById('className').textContent = clas.name;
-
-            if (!response.ok) {
-                throw new Error('Error fetching mark reports: ' + response.statusText);
-            }
-            const mark_reports = await response.json();
-            console.log('mark reports data:', mark_reports);
-
-            // Clear existing rows in the table
-            const tableBody = document.getElementById('mark_list');
-            tableBody.innerHTML = '';
-            mark_reports.forEach(markrp => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                <td>${markrp.avgExamMark ?? '-'}</td>
-                <td>${markrp.middleExam ?? '-'}</td>
-                <td>${markrp.finalExam ?? '-'}</td>
-                <td>${markrp.scriptPresentation ?? '-'}</td>
-                <td>${markrp.presentation ?? '-'}</td>
-                <td>${markrp.assignment ?? '-'}</td>
-                <td>${markrp.attendant ?? '-'}</td>
-                <td>${markrp.finalMark ?? '-'}</td>
-                <td>
-                    <div class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <span class="flaticon-more-button-of-three-dots"></span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" onclick="openUpdatePopup(${markrp.studentId})">
-                                <i class="fas fa-cogs text-dark-pastel-green"></i> Update
-                            </a>
-                        </div>
-                    </div>
-                </td>
-            `;
-                tableBody.appendChild(row);
-            });
-        } catch (error) {
-            console.error('Error:', error);
+        if (!classId) {
+            console.error('Class ID is missing from the URL.');
+            return;
         }
+
+        fetch(`/class/${classId}/getAllGrades`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error fetching mark reports: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(markReports => {
+                console.log('Mark reports data:', markReports);
+
+                // Clear existing rows in the table
+                const tableBody = document.getElementById('mark_list');
+                tableBody.innerHTML = '';
+
+                // Populate the table with fetched data
+                markReports.forEach(mark => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                    <td>${mark.fullname ?? '-'}</td>
+                    <td>${mark.avgExamMark ?? '-'}</td>
+                    <td>${mark.middleExam ?? '-'}</td>
+                    <td>${mark.finalExam ?? '-'}</td>
+                    <td>${mark.scriptPresentation ?? '-'}</td>
+                    <td>${mark.presentation ?? '-'}</td>
+                    <td>${mark.attitude ?? '-'}</td>
+                    <td>${mark.finalMark ?? '-'}</td>
+                    <td>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="flaticon-more-button-of-three-dots"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" onclick="openUpdatePopup(${mark.studentId})">
+                                    <i class="fas fa-cogs text-dark-pastel-green"></i> Update
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 
     // Initialize the table with mark_reports on page load
@@ -843,13 +853,18 @@
 
             const markrp = await response.json();
 
-            // Fill the form with the markrp data
-            document.getElementById('middle_exam_mark').value = markrp.middle_exam;
-            document.getElementById('final_exam_mark').value = markrp.final_exam;
-            document.getElementById('script_mark').value = markrp.scriptPresentation;
-            document.getElementById('presentation_mark').value = markrp.presentation;
+            // Điền dữ liệu vào form
+            document.getElementById('middle_exam_mark').value = markrp.middle_exam ?? '';
+            document.getElementById('final_exam_mark').value = markrp.final_exam ?? '';
+            document.getElementById('script_mark').value = markrp.scriptPresentation ?? '';
+            document.getElementById('presentation_mark').value = markrp.presentation ?? '';
 
-            // Show the update popup
+            // Điền dữ liệu vào các trường hidden
+            document.getElementById('avg_exam_mark').value = markrp.avg_exam_mark ?? '';
+            document.getElementById('attitude_mark').value = markrp.attitude ?? '';
+            document.getElementById('final_mark').value = markrp.final_mark ?? '';
+
+            // Hiển thị popup chỉnh sửa
             currentMarkId = markrp.id;
             document.getElementById('markrpPopup').style.display = 'flex';
             document.getElementById('overlay').style.display = 'flex';
@@ -867,10 +882,15 @@
         const script_mark = document.getElementById('script_mark').value;
         const presentation_mark = document.getElementById('presentation_mark').value;
 
-        // Validation for required fields
+        // Get values from hidden fields
+        const avg_exam_mark = document.getElementById('avg_exam_mark').value;
+        const attitude_mark = document.getElementById('attitude_mark').value;
+        const final_mark = document.getElementById('final_mark').value;
+
+        // Validation for numeric fields
         const inputs = [middle_exam_mark, final_exam_mark, script_mark, presentation_mark];
-        if (inputs.some(value => value < 0 || value > 10)) {
-            showErrorModal('Please ensure all numeric values are between 0 and 10.');
+        if (inputs.some(value => value < 0 || value > 100)) {
+            showErrorModal('Please ensure all numeric values are between 0 and 100.');
             return;
         }
 
@@ -880,6 +900,9 @@
         formData.append('final_exam', final_exam_mark);
         formData.append('scriptPresentation', script_mark);
         formData.append('presentation', presentation_mark);
+        formData.append('avg_exam_mark', avg_exam_mark); // Hidden field
+        formData.append('attitude', attitude_mark); // Hidden field
+        formData.append('final_mark', final_mark); // Hidden field
 
         try {
             const response = await fetch(`${API_BASE_URL}/update?markRpId=${currentMarkId}`, {
@@ -901,6 +924,7 @@
             console.error('Error:', error);
         }
     }
+
 
     // Function to close the update popup
     function closePopup() {

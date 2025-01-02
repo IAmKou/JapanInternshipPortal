@@ -1,12 +1,15 @@
 package com.example.jip.controller;
 
 
+import com.example.jip.dto.MarkReportDTO;
 import com.example.jip.dto.request.assignment.AssignmentUpdateRequest;
 import com.example.jip.dto.request.markReport.MarkReportImportRequest;
 import com.example.jip.dto.request.markReport.MarkReportUpdateRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.dto.response.markReport.MarkReportResponse;
 import com.example.jip.entity.MarkReport;
+import com.example.jip.repository.ListRepository;
+import com.example.jip.repository.MarkReportRepository;
 import com.example.jip.services.MarkReportServices;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,6 +36,9 @@ import java.util.*;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class MarkReportController {
+
+    @Autowired
+    private ListRepository listRepository;
 
     MarkReportServices markReportServices;
     @PostMapping("/import")
@@ -65,7 +71,7 @@ public class MarkReportController {
     public ResponseEntity<MarkReportResponse> getMarkRpById(@RequestParam("markRpId") int markRpId) {
         log.info("Received markRpId: " + markRpId);
         MarkReportResponse response = markReportServices.getMarkReportById(markRpId);
-        if (response != null)  {
+        if (response != null) {
             return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -96,7 +102,4 @@ public class MarkReportController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 Not Found if assignment doesn't exist
         }
     }
-
-
-
 }

@@ -48,4 +48,5 @@ public interface ListRepository extends JpaRepository<Listt, ListId> {
 
     @Query("SELECT l.clas.name FROM Listt l WHERE l.student.id = :studentId")
     String getClassByStudentId(int studentId);
+
 }
