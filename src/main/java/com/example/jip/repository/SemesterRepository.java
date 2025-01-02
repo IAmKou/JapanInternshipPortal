@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
+
 import java.sql.Date;
 
 import java.util.List;
@@ -22,5 +24,6 @@ public interface SemesterRepository extends JpaRepository<Semester, Integer> {
     // Find semesters ending on a specific date
     @Query("SELECT s FROM Semester s WHERE s.end_time = :endDate")
     List<Semester> findByEndDate(Date endDate);
-
+    @Query("SELECT s FROM Semester s WHERE s.end_time > :creationDate")
+    List<Semester> findSemestersEndingAfter(@Param("creationDate") Date creationDate);
 }

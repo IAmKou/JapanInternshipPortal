@@ -747,6 +747,12 @@
                 calendar.render();
 
                 function validateActivities(eventsData) {
+                    // Ensure eventsData is an array
+                    if (!Array.isArray(eventsData)) {
+                        console.error("Expected an array but received:", eventsData);
+                        return "Invalid event data provided.";
+                    }
+
                     const testActivitiesByDate = {};
 
                     // Debugging: Log eventsData to ensure correct structure
@@ -774,6 +780,7 @@
 
                     return null;
                 }
+
                 function loadClasses() {
                     fetch('/class/get')
                         .then(response => {
@@ -817,32 +824,40 @@
                         return;
                     }
 
-
-
                     if (title.toLowerCase().includes('test') &&
                         (new Date(clickedDate).getDay() === 0 || new Date(clickedDate).getDay() === 6)) {
                         alert('Test events cannot be scheduled on weekends.');
                         return;
                     }
 
-                    // Add event to calendar and eventsToSave array
+                    // Prepare the new event
                     const newEvent = {
-                        title,
-                        start: clickedDate,
-                        backgroundColor: color,
-                        extendedProps: {room},
+                        activity: title,
+                        date: clickedDate,
+                        room,
+                        color,
                     };
 
-                    const validationError = validateActivities(newEvent);
+                    // Validate the activities (Pass an array)
+                    const validationError = validateActivities([newEvent]);
                     if (validationError) {
                         alert(validationError);
                         return;
                     }
-                    calendar.addEvent(newEvent);
+
+                    // Add event to calendar and eventsToSave array
+                    calendar.addEvent({
+                        title,
+                        start: clickedDate,
+                        backgroundColor: color,
+                        extendedProps: {room},
+                    });
+
                     eventsToSave.push(newEvent);
 
                     $('#addEventModal').modal('hide');
                 };
+
 
                 document.getElementById('save-draft').onclick = function () {
                     saveEvents('/schedule/saveDraft', false);
@@ -861,25 +876,23 @@
                 };
 
                 function saveEvents(endpoint, isPublic, selectedClass = null) {
-                    // Get all events from the calendar
                     const allEvents = calendar.getEvents(); // Retrieve all events from the calendar
                     if (allEvents.length === 0) {
                         alert('No events to save.');
                         return;
                     }
 
-                    // Prepare the data for the payload
                     const data = allEvents.map(event => ({
+                        id: event.id || null, // Include the event ID if it exists
                         activity: event.title,
                         date: event.start.toISOString().split('T')[0], // Convert to YYYY-MM-DD format
                         room: event.extendedProps.room || null, // Include room if available
                         color: event.backgroundColor,
                         semesterId: semesterId,
                         classId: isPublic ? selectedClass : null, // Add classId for published schedules
-                        isHoliday: event.extendedProps.isHoliday || false // Include if the event is a holiday
+                        isHoliday: event.extendedProps.isHoliday || false, // Include if the event is a holiday
                     }));
 
-                    // Make the POST request
                     fetch(endpoint, {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
@@ -894,6 +907,7 @@
                         .then(result => {
                             alert(result.message || 'Events saved successfully!');
                             eventsToSave = []; // Clear temporary events
+                            calendar.refetchEvents(); // Optionally refresh the calendar
                         })
                         .catch(error => {
                             console.error('Error saving events:', error);
