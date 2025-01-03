@@ -647,7 +647,8 @@
                         <h3>Class: <span id="className"></span></h3>
                     </div>
                     <!-- Main Button to Open Modal -->
-                    <button class="btn btn-gradient-yellow btn-search" id="open-modal-btn" style="margin-bottom: 15px">Open Import Modal</button>
+                    <button class="btn btn-gradient-yellow btn-search" id="open-modal-btn" style="margin-bottom: 15px">Import</button>
+                    <button class="btn btn-gradient-yellow btn-search" id="export-by-excel" style="margin-bottom: 15px">Export</button>
                     <!-- Table -->
                     <div class="table-responsive">
                         <table class="table display text-nowrap">
@@ -674,7 +675,6 @@
                         </table>
                     </div>
                     <!-- Table Ends-->
-                    <button class="btn btn-gradient-yellow btn-search" id="export-by-excel">Export excel</button>
                 </div>
             </div>
         </div>
@@ -912,13 +912,13 @@
 
             if (response.ok) {
                 showSuccessModal('Mark updated successfully!');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
+                // setTimeout(() => {
+                //     window.location.reload();
+                // }, 2000);
             } else if (response.status === 404) {
                 showErrorModal('Mark Rp not found!');
             } else {
-                console.error('Error updating markrp:', response.statusText);
+                console.error('Error updating Mark:', response.statusText);
             }
         } catch (error) {
             console.error('Error:', error);
