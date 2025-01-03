@@ -33,6 +33,19 @@
         .dropdown-toggle::after {
             content: none !important;
         }
+        .btn.update-btn {
+            background-color: #4CAF50; /* Màu xanh lá cây */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn.update-btn:hover {
+            background-color: #45a049; /* Màu khi hover */
+        }
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -655,18 +668,18 @@
                             <thead>
                             <tr>
                                 <th rowspan="2">Student Name</th>
-                                <th colspan="3">Skill (33%)</th>
-                                <th colspan="2">Soft Skill (33%)</th>
-                                <th rowspan="2">Attitude (33%)</th>
+                                <th colspan="3">Skill (40%)</th>
+                                <th colspan="2">Soft Skill (30%)</th>
+                                <th rowspan="2">Attitude (30%)</th>
                                 <th rowspan="2">Course Total</th>
                                 <th rowspan="2"></th>
                             </tr>
                             <tr>
-                                <th>Avg Exam Mark (33%)</th>
-                                <th>Middle Exam (33%)</th>
-                                <th>Final Exam (33%)</th>
-                                <th>Script (50%)</th>
-                                <th>Presentation (50%)</th>
+                                <th>Avg Exam Mark (12%)</th>
+                                <th>Middle Exam (16%)</th>
+                                <th>Final Exam (12%)</th>
+                                <th>Script (15%)</th>
+                                <th>Presentation (15%)</th>
                             </tr>
                             </thead>
                             <tbody id="mark_list">
@@ -812,20 +825,14 @@
     <td>${markrp.attitude ?? '-'}</td>
     <td>${markrp.finalMark ?? '-'}</td>
     <td>
-        <div class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <span class="flaticon-more-button-of-three-dots"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" onclick="openUpdatePopup(${markrp.id})">
-                    <i class="fas fa-cogs text-dark-pastel-green"></i> Update
-                </a>
-            </div>
-        </div>
+        <button class="btn update-btn" onclick="openUpdatePopup(${markrp.id})">
+            Update
+        </button>
     </td>
-`;
+    `;
                 tableBody.appendChild(row);
             });
+
         } catch (error) {
             console.error('Error:', error);
         }
