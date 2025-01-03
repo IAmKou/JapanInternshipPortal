@@ -1,5 +1,6 @@
 package com.example.jip.dto.request.markReport;
 
+import com.example.jip.entity.MarkReportExam;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,6 +21,6 @@ public class MarkReportImportRequest {
     BigDecimal middle_exam;
     BigDecimal final_exam;
     String comment;
-    Map<String, BigDecimal> scores; // Dynamic fields for Kanji, Bunpou, Kotoba
+
 
 }
