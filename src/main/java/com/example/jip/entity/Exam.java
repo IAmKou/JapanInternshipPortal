@@ -28,11 +28,5 @@ public class Exam {
 
     @Column(name = "title")
     String title;
-    @Column(name = "kanji")
-    BigDecimal kanji;
-    @Column(name = "bunpou")
-    BigDecimal bunpou;
-    @Column(name = "kotoba")
-    BigDecimal kotoba;
 
 }

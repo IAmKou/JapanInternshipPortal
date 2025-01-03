@@ -14,12 +14,6 @@ public class MarkReportUpdateRequest {
     @NonNull
     BigDecimal final_exam;
     @NonNull
-    BigDecimal attitude;
-    @NonNull
-    BigDecimal final_mark;
-    @NonNull
-    String comment;
-    @NonNull
     BigDecimal presentation;
     @NonNull
     BigDecimal scriptPresentation;

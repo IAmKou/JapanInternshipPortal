@@ -5,6 +5,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "mark_report_exam")
 @Setter
@@ -25,6 +27,13 @@ public class MarkReportExam {
     @MapsId("examId") // Maps the examId field of the composite key
     @JoinColumn(name = "exam_id", nullable = false) // Corrected column name
     private Exam exam;
+
+    @Column(name = "kanji")
+    BigDecimal kanji;
+    @Column(name = "bunpou")
+    BigDecimal bunpou;
+    @Column(name = "kotoba")
+    BigDecimal kotoba;
 
     public MarkReportExam(MarkReport markReport, Exam exam) {
         if (markReport == null || markReport.getId() == 0) {
