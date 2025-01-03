@@ -196,15 +196,15 @@ CREATE TABLE mark_report (
 );
 Create table exam (
                       id int auto_increment primary key,
-                      title VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-                      kanji Decimal(5,2) null,
-                      bunpou Decimal(5,2) null ,
-                      kotoba Decimal(5,2) null
+                      title VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 );
 
 CREATE TABLE mark_report_exam (
                                   mark_report_id INT,
                                   exam_id INT,
+                                  kanji Decimal(5,2) null,
+                                  bunpou Decimal(5,2) null,
+                                  kotoba Decimal(5,2) null,
                                   PRIMARY KEY (mark_report_id, exam_id),
                                   FOREIGN KEY (mark_report_id) REFERENCES mark_report(Id) ON DELETE CASCADE,
                                   FOREIGN KEY (exam_id) REFERENCES exam(Id) ON DELETE CASCADE
