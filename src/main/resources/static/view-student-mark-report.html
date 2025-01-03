@@ -520,7 +520,7 @@
                             </script>
                             <tr class="no-border">
                                 <td style="font-weight: bold; color: #000;">Daily Exam Total</td>
-                                <td colspan="3" style="font-weight: bold; color: #000;" id="total-mark"></td>
+                                <td colspan="3" style="font-weight: bold; color: #000;" id="avg-exam2"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -632,7 +632,8 @@
 
             const markRp = await response.json();
             console.log('mark rp details:', markRp);
-
+            //for the upper table
+            document.getElementById('avg-exam2').textContent = markRp.avg_exam_mark;
 
             document.getElementById('student-name').textContent = markRp.studentName;
             document.getElementById('clas').textContent = markRp.studentClass;
