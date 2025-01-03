@@ -104,8 +104,14 @@ CREATE TABLE Curriculum (
                             id INT AUTO_INCREMENT PRIMARY KEY,
                             subject VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
                             total_slot INT DEFAULT 52,
-                            subject_description LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
                             total_time INT DEFAULT 536 -- Total time in hours
+);
+
+Create table Curriculum_information (
+                                        id Int auto_increment primary key,
+                                        curriculum_id int,
+                                        description LONGTEXT character set utf8mb4 COLLATE utf8mb4_unicode_ci,
+                                        foreign key (curriculum_id) references Curriculum(id) ON DELETE CASCADE
 );
 
 -- Schedule table
@@ -140,15 +146,13 @@ CREATE TABLE Attendant (
                            schedule_id BIGINT,
                            status ENUM('Present', 'Absent', 'Late', 'Permitted') NOT NULL,
                            date DATE NOT NULL,
-                           total_slot INT,
+                           curriculum_id INT NUll,
                            FOREIGN KEY (student_id) REFERENCES Student(Id),
-                           FOREIGN KEY (schedule_id) REFERENCES Schedule(Id)
+                           FOREIGN KEY (schedule_id) REFERENCES Schedule(Id),
+                           FOREIGN KEY (curriculum_id) REFERENCES curriculum(id)
 );
 
-ALTER TABLE attendant
-    add column curriculum_id int NOT NULL,
-    ADD CONSTRAINT fk_attendance_curriculum
-        FOREIGN KEY (curriculum_id) REFERENCES curriculum(id);
+
 
 -- Assignment table
 CREATE TABLE Assignment (
