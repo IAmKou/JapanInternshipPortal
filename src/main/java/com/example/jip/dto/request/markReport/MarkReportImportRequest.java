@@ -4,24 +4,22 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MarkReportImportRequest {
-    @NonNull
     String name;
     @NonNull
     String email;
-    @NonNull
-    BigDecimal softskill;
-    @NonNull
-    BigDecimal avg_exam_mark;
-    @NonNull
+    BigDecimal presentation;
+    BigDecimal scriptPresentation;
     BigDecimal middle_exam;
-    @NonNull
     BigDecimal final_exam;
-    @NonNull
     String comment;
+    Map<String, BigDecimal> scores; // Dynamic fields for Kanji, Bunpou, Kotoba
+
 }

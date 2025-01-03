@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -22,10 +23,11 @@ public class MarkReportResponse {
     BigDecimal avg_exam_mark;
     BigDecimal middle_exam;
     BigDecimal final_exam;
-    BigDecimal scriptPresentation; // Thêm trường này
+    BigDecimal scriptPresentation;
     BigDecimal presentation;
     BigDecimal skill;
     BigDecimal attitude;
     BigDecimal final_mark;
     String comment;
+    List<Integer> examIds;
 }
