@@ -25,6 +25,24 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-left: 8px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            font-weight: bold;
+            color: #000;
+            background-color: #ff9625;
+        }
+        thead {
+            background-color: #007bff;
+        }
         /* Custom Modal Styling for Error Modal */
         #error-modal .modal-dialog {
             position: fixed !important; /* Giữ modal ở vị trí cố định */
@@ -476,10 +494,41 @@
                             </tr>
                             </tbody>
                         </table>
+
+                        <table style="margin-bottom: 20px; margin-top: 20px">
+                            <thead>
+                            <tr>
+                                <th style="text-align: center;background-color: #ff9625"></th>
+                                <th style="text-align: center;background-color: #ff9625">Grammar</th>
+                                <th style="text-align: center;background-color: #ff9625">Vocabulary</th>
+                                <th style="text-align: center;background-color: #ff9625">Kanji</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- Generate 15 rows dynamically -->
+                            <script>
+                                for (let i = 1; i <= 15; i++) {
+                                    document.write(`
+                        <tr>
+                            <td style="color: #000;">Test ${i}</td>
+                            <td style="color: #000;"></td>
+                            <td style="color: #000;"></td>
+                            <td style="color: #000;"></td>
+                        </tr>
+                    `);
+                                }
+                            </script>
+                            <tr class="no-border">
+                                <td style="font-weight: bold; color: #000;">Daily Exam Total</td>
+                                <td colspan="3" style="font-weight: bold; color: #000;" id="total-mark"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
                         <table style="margin-left: 8px">
                             <thead style="background-color: #007bff;">
                             <tr>
-                                <th style="font-weight: bold; color: #000; background-color: #ff9625; text-align: center">Grade Category</th>
+                                <th style="font-weight: bold; color: #000;background-color: #ff9625; text-align: center">Grade Category</th>
                                 <th style="font-weight: bold; color: #000;background-color: #ff9625; text-align: center">Grade Items</th>
                                 <th style="font-weight: bold; color: #000;background-color: #ff9625; text-align: center">Weight</th>
                                 <th style="font-weight: bold; color: #000;background-color: #ff9625; text-align: center ">Value</th>

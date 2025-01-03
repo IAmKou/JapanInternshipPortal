@@ -655,18 +655,18 @@
                             <thead>
                             <tr>
                                 <th rowspan="2">Student Name</th>
-                                <th colspan="3">Skill</th>
-                                <th colspan="2">Soft Skill</th>
-                                <th rowspan="2">Attitude</th>
-                                <th rowspan="2">Final Mark</th>
-                                <th rowspan="2">Action</th>
+                                <th colspan="3">Skill (33%)</th>
+                                <th colspan="2">Soft Skill (33%)</th>
+                                <th rowspan="2">Attitude (33%)</th>
+                                <th rowspan="2">Course Total</th>
+                                <th rowspan="2"></th>
                             </tr>
                             <tr>
-                                <th>Avg Exam Mark</th>
-                                <th>Middle Exam</th>
-                                <th>Final Exam</th>
-                                <th>Script</th>
-                                <th>Presentation</th>
+                                <th>Avg Exam Mark (33%)</th>
+                                <th>Middle Exam (33%)</th>
+                                <th>Final Exam (33%)</th>
+                                <th>Script (50%)</th>
+                                <th>Presentation (50%)</th>
                             </tr>
                             </thead>
                             <tbody id="mark_list">
@@ -809,27 +809,27 @@
             mark_reports.forEach(markrp => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                <td><a href="/view-student-mark-report.html?id=${markrp.id}" target="_blank">${markrp.studentName}</a></td>
-                <td>${markrp.avg_exam_mark ?? '-'}</td>
-                <td>${markrp.middle_exam ?? '-'}</td>
-                <td>${markrp.final_exam ?? '-'}</td>
-                <td>${markrp.scriptPresentation ?? '-'}</td>
-                <td>${markrp.presentation ?? '-'}</td>
-                <td>${markrp.attitude ?? '-'}</td>
-                <td>${markrp.finalMark ?? '-'}</td>
-                <td>
-                    <div class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <span class="flaticon-more-button-of-three-dots"></span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" onclick="openUpdatePopup(${markrp.studentId})">
-                                <i class="fas fa-cogs text-dark-pastel-green"></i> Update
-                            </a>
-                        </div>
-                    </div>
-                </td>
-            `;
+    <td><a href="/view-student-mark-report.html?id=${markrp.id}">${markrp.studentName}</a></td>
+    <td>${markrp.avg_exam_mark ?? '-'}</td>
+    <td>${markrp.middle_exam ?? '-'}</td>
+    <td>${markrp.final_exam ?? '-'}</td>
+    <td>${markrp.scriptPresentation ?? '-'}</td>
+    <td>${markrp.presentation ?? '-'}</td>
+    <td>${markrp.attitude ?? '-'}</td>
+    <td>${markrp.finalMark ?? '-'}</td>
+    <td>
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="flaticon-more-button-of-three-dots"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" onclick="openUpdatePopup(${markrp.studentId})">
+                    <i class="fas fa-cogs text-dark-pastel-green"></i> Update
+                </a>
+            </div>
+        </div>
+    </td>
+`;
                 tableBody.appendChild(row);
             });
         } catch (error) {
