@@ -34,37 +34,6 @@
     <script src='/dist/index.global.js'></script>
 
     <style>
-        /* Đảm bảo trang bao phủ toàn bộ chiều cao */
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
-
-        /* Container chính */
-        .wrapper {
-            display: flex;
-            flex-direction: column;
-            min-height: 100%; /* Bao phủ toàn bộ trang */
-        }
-
-        /* Nội dung bên trên */
-        .content {
-            flex: 1; /* Đẩy footer xuống */
-        }
-
-        /* Footer nằm ở cuối */
-        .footer-wrap-layout1 {
-            background-color: #ec9006;
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-        }
-
-        .footer-wrap-layout1 a {
-            color: #ffcc00;
-            text-decoration: none;
-        }
         body {
             margin-top: 40px;
             font-size: 14px;
@@ -312,46 +281,7 @@
 
                         </div>
                         <div id='wrap'>
-
                             <div id='external-events'>
-                                <h4>Draggable Events</h4>
-
-                                <div id='external-events-list'>
-                                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'
-                                         style="background-color: #136002; border-color: #136002;">
-                                        <div class='fc-event-main'>Kanji Test</div>
-                                    </div>
-                                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'
-                                         style="background-color: #33cfff; border-color: #33cfff;">
-                                        <div class='fc-event-main'>Bunpou Test</div>
-                                    </div>
-                                    <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'
-                                         style="background-color: #ff5733; border-color: #ff5733;">
-                                        <div class='fc-event-main'>Kotoba Test</div>
-                                    </div>
-                                </div>
-
-                                <!-- Create Event Section -->
-                                <h4>Create Event</h4>
-                                <select id="event-select" class="form-control">
-                                    <option value="default">Default Event</option>
-                                    <option value="new">New Event</option>
-                                </select>
-                                <div id="new-event-form" style="margin-top: 10px; display: none;">
-                                    <input type="text" id="new-event-title" class="form-control" placeholder="Event Title" />
-                                    <input type="color" id="new-event-color" class="form-control" value="#3788d8" />
-                                    <button id="add-event" class="btn btn-primary btn-sm mt-2">Add Event</button>
-                                </div>
-                                <h4>Select Room</h4>
-                                <select id="room-select" class="form-control">
-                                    <option value="">Select a room</option>
-                                    <option value="Room 101">Room 101</option>
-                                    <option value="Room 102">Room 102</option>
-                                    <option value="Room 201">Room 201</option>
-                                    <option value="Room 202">Room 201</option>
-                                    <option value="Room 301">Room 301</option>
-                                    <option value="Room 302">Room 302</option>
-                                </select>
                                 <button id="save-draft" class="btn btn-warning btn-sm mt-3">Update Schedule</button>
                             </div>
                             <div id='calendar-wrap'>
@@ -368,73 +298,82 @@
     </div>
 </div>
 <!-- Success Modal -->
-<div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal" tabindex="-1">
-    <div class="modal-dialog">
+<div id="eventDetailModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="eventDetailModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="successModalLabel">Success</h5>
-                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
-            <div class="modal-body">
-                Schedule import was successful!
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Error Modal -->
-<div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="errorModalLabel">Errors</h5>
-                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
-            <div class="modal-body">
-
-            </div>
-        </div>
-    </div>
-</div>
-<!-- confirm modal -->
-<div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog success-modal-content" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
+                <h5 class="modal-title" id="eventDetailModalLabel">Event Details</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
             <div class="modal-body">
-                <div class="success-message">
-                    <div class="item-icon">
-                        <i class="fas fa-exclamation"></i>
-                    </div>
-                    <h3 class="item-title">You want to delete this schedule?</h3>
-                </div>
-            </div>
+                <form>
+                    <input id="event-id" type="hidden">
 
+                    <div class="form-group">
+                        <label for="event-title">Title</label>
+                        <input id="event-title" type="text" class="form-control" placeholder="Enter event title">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="event-color">Event Color</label>
+                        <input id="event-color" type="color" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="roomDropdownEdit">Select Room</label>
+                        <select id="roomDropdownEdit" class="form-control">
+                            <!-- Options will be populated dynamically -->
+                        </select>
+                    </div>
+                </form>
+            </div>
             <div class="modal-footer">
-                <input type="hidden" name="id" id="Cid">
-                <button type="button" id="confirm-delete" class="footer-btn bg-linkedin">Ok</button>
-                <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Cancel</button>
+                <button id="update-event" type="button" class="btn btn-primary">Update Event</button>
+                <button id="delete-event" type="button" class="btn btn-danger">Delete Event</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
-</div>
-<footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
-    <div style="background-color: #ec9006; padding: 15px;">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
-                        rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
-                </div>
+
+
+<!-- confirm modal -->
+<div class="modal fade" id="addEventModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Event</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addEventForm">
+                    <div class="form-group">
+                        <label for="eventTitle">Title</label>
+                        <input type="text" class="form-control" id="eventTitle" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="roomDropdown">Room</label>
+                        <select class="form-control" id="roomDropdown" required>
+                            <option value="">Select a room</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventColor">Event Color</label>
+                        <input type="color" class="form-control" id="eventColor" value="#3788d8"/>
+                    </div>
+                    <input type="hidden" id="clicked-date" value="">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveEventButton">Save Event</button>
             </div>
         </div>
     </div>
-</footer>
+</div>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -486,85 +425,44 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        let calendar;
-        let selectedRoom = "Unknown";
-        // Element references
-        const containerEl = document.getElementById('external-events-list');
+        let holidays = [];
+
         const calendarEl = document.getElementById('calendar');
-        const eventSelect = document.getElementById('event-select');
-        const newEventForm = document.getElementById('new-event-form');
-        const addEventButton = document.getElementById('add-event');
-        const roomSelect = document.getElementById('room-select');
+
         const urlParams = new URLSearchParams(window.location.search);
         const classId = urlParams.get('classId');
         const semesterId = urlParams.get('semesterId');
 
-        if (!containerEl || !calendarEl) {
+        if (!calendarEl) {
             console.error('Required elements not found in the DOM.');
             return;
         }
 
-        fetch(`/schedule/getRoomForClass/${classId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch assigned room');
-                }
-                return response.json();
-            })
-            .then(data => {
-                selectedRoom = data.room || "Unknown";
-                if (roomSelect) {
-                    roomSelect.value = selectedRoom;
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching assigned room:', error);
-            });
-
-        // Toggle the new event form
-        if (eventSelect && newEventForm) {
-            eventSelect.addEventListener('change', function () {
-                newEventForm.style.display = eventSelect.value === 'new' ? 'block' : 'none';
-            });
+        function fetchRoomAvailability(date) {
+            return fetch(`/room/room-availability?date=${date}`)
+                .then(response => response.json())
+                .catch(error => {
+                    console.error('Error fetching room availability:', error);
+                    return [];
+                });
         }
 
-        // Add new draggable event
-        if (addEventButton) {
-            addEventButton.addEventListener('click', function () {
-                const newEventTitle = document.getElementById('new-event-title')?.value.trim();
-                const newEventColor = document.getElementById('new-event-color')?.value || '#3788d8';
-
-                if (newEventTitle) {
-                    const newEvent = document.createElement('div');
-                    newEvent.className = 'fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event';
-                    newEvent.style.backgroundColor = newEventColor;
-                    newEvent.style.borderColor = newEventColor;
-                    newEvent.innerHTML = `<div class='fc-event-main'>${newEventTitle}</div>`;
-                    containerEl.appendChild(newEvent);
-
-                    document.getElementById('new-event-title').value = '';
-                    document.getElementById('new-event-color').value = '#3788d8';
-
-                    alert('Event added successfully!');
-                } else {
-                    alert('Please enter a title for the new event.');
-                }
-            });
+        function fetchHolidays(startDate, endDate) {
+            return fetch(`/holiday/get?startDate=${startDate}&endDate=${endDate}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch holidays');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    holidays = data.map(holiday => holiday.date); // Save holidays as an array of dates
+                })
+                .catch(error => {
+                    console.error('Error fetching holidays:', error);
+                });
         }
 
-        function handleEventValidation(info) {
-            const targetDate = new Date(info.event.start.toISOString());
-            const day = targetDate.getUTCDay(); // 0 = Sunday, 6 = Saturday
-            const isTestEvent = info.event.title.toLowerCase().includes('test');
-
-            // Prevent "test" events from being dropped/received on Saturday or Sunday
-            if (isTestEvent && (day === 0 || day === 6)) {
-                alert("Test events cannot be scheduled on Saturday or Sunday.");
-                info.revert(); // Revert the event to its original position
-            }
-        }
-
-        // Fetch semester details and initialize calendar
         fetch(`/semester/get/${semesterId}`)
             .then(response => {
                 if (!response.ok) {
@@ -576,38 +474,26 @@
                 const semesterStart = new Date(`${data.semesterStart}T00:00:00`);
                 const semesterEnd = new Date(`${data.semesterEnd}T23:59:59`);
 
-                if (isNaN(semesterStart.getTime()) || isNaN(semesterEnd.getTime())) {
-                    console.error("Invalid Date format:", data.semesterStart, data.semesterEnd);
-                    return;
-                }
-
-                new FullCalendar.Draggable(containerEl, {
-                    itemSelector: '.fc-event',
-                    eventData: function (eventEl) {
-                        return {
-                            title: eventEl.innerText.trim(),
-                            backgroundColor: eventEl.style.backgroundColor,
-                            borderColor: eventEl.style.borderColor,
-                        };
-                    },
-                });
-
-                calendar = new FullCalendar.Calendar(calendarEl, {
+                // Fetch holidays
+                return fetchHolidays(semesterStart.toISOString().split('T')[0], semesterEnd.toISOString().split('T')[0])
+                    .then(() => ({semesterStart, semesterEnd}));
+            })
+            .then(({semesterStart, semesterEnd}) => {
+                // Initialize FullCalendar
+                const calendar = new FullCalendar.Calendar(calendarEl, {
                     headerToolbar: {
                         left: 'prev,next today',
                         center: 'title',
                         right: 'dayGridMonth',
                     },
                     editable: true,
-                    timeZone: 'UTC',
-                    droppable: true,
+                    droppable: false,
                     validRange: {
                         start: semesterStart,
                         end: semesterEnd,
                     },
-                    eventConstraint: {
-                        start: semesterStart,
-                        end: semesterEnd,
+                    eventConstrain: {
+                        start: new Date().toISOString().split('T')[0],
                     },
                     events: function (fetchInfo, successCallback, failureCallback) {
                         fetch(`/schedule/get/class/${classId}`)
@@ -624,6 +510,11 @@
                                     start: schedule.date,
                                     backgroundColor: schedule.color,
                                     borderColor: schedule.color,
+                                    editable: !holidays.includes(schedule.date), // Make holiday events non-editable
+                                    extendedProps: {
+                                        room: schedule.room,
+                                        isHoliday: holidays.includes(schedule.date), // Mark as holiday
+                                    },
                                 }));
                                 successCallback(events);
                             })
@@ -632,149 +523,298 @@
                                 failureCallback(error);
                             });
                     },
+                    dateClick: function (info) {
+                        if (holidays.includes(info.dateStr)) {
+                            alert('You cannot create events on holidays.');
+                            return;
+                        }
+
+                        const roomDropdown = document.getElementById('roomDropdown');
+
+                        fetchRoomAvailability(info.dateStr)
+                            .then(rooms => {
+                                roomDropdown.innerHTML = '';
+
+                                const defaultOption = document.createElement('option');
+                                defaultOption.value = '';
+                                defaultOption.textContent = 'Select a Room';
+                                defaultOption.disabled = true;
+                                defaultOption.selected = true;
+                                roomDropdown.appendChild(defaultOption);
+
+                                rooms.forEach(room => {
+                                    const option = document.createElement('option');
+                                    option.value = room.roomName;
+                                    option.textContent = room.roomName;
+
+                                    if (room.status === 'Occupied') {
+                                        option.style.color = 'red';
+                                        option.disabled = true;
+                                    }
+
+                                    roomDropdown.appendChild(option);
+                                });
+
+                                // Populate the clicked date and reset other fields
+                                document.getElementById('clicked-date').value = info.dateStr;
+                                document.getElementById('eventTitle').value = '';
+                                document.getElementById('eventColor').value = '#3788d8';
+
+                                // Show the modal
+                                $('#addEventModal').modal('show');
+                            })
+                            .catch(error => {
+                                console.error('Error fetching room availability:', error);
+                                alert('Failed to fetch room availability.');
+                            });
+                    },
                     eventClick: function (info) {
-                        // Handle event click for deletion
-                        const eventTitle = info.event.title;
-                        const eventId = info.event.id;
+                        const event = info.event;
+                        const eventModal = document.getElementById('eventDetailModal');
 
-                        if (confirm(`Are you sure you want to delete the event: "${eventTitle}"?`)) {
-                            // Remove the event from the calendar
-                            info.event.remove();
+                        // Populate event details
+                        document.getElementById('event-title').value = event.title;
+                        document.getElementById('event-color').value = event.backgroundColor;
+                        document.getElementById('event-id').value = event.id;
 
-                            // Optionally, make an API call to delete the event from the backend
-                            fetch(`/schedule/delete/${eventId}`, {
-                                method: 'DELETE',
+                        const roomDropdown = document.getElementById('roomDropdownEdit');
+
+                        // Fetch available rooms and populate dropdown
+                        fetchRoomAvailability(event.startStr)
+                            .then(rooms => {
+                                roomDropdown.innerHTML = '';
+
+                                // Add default option
+                                const defaultOption = document.createElement('option');
+                                defaultOption.value = '';
+                                defaultOption.textContent = 'Select a Room';
+                                defaultOption.disabled = true;
+                                defaultOption.selected = true;
+                                roomDropdown.appendChild(defaultOption);
+
+                                // Add room options
+                                rooms.forEach(room => {
+                                    const option = document.createElement('option');
+                                    option.value = room.roomName;
+                                    option.textContent = room.roomName;
+
+                                    // Mark occupied rooms
+                                    if (room.status === 'Occupied') {
+                                        option.style.color = 'red';
+                                        option.disabled = true;
+                                    }
+
+                                    // Pre-select the current room
+                                    if (room.roomName === event.extendedProps.room) {
+                                        option.selected = true;
+                                    }
+
+                                    roomDropdown.appendChild(option);
+                                });
+                            });
+
+                        // Update event functionality
+                        document.getElementById('update-event').onclick = function () {
+                            const updatedTitle = document.getElementById('event-title').value;
+                            const updatedColor = document.getElementById('event-color').value;
+                            const updatedRoom = roomDropdown.value;
+
+                            event.setProp('title', updatedTitle);
+                            event.setProp('backgroundColor', updatedColor);
+                            event.setProp('borderColor', updatedColor);
+                            event.setExtendedProp('room', updatedRoom);
+
+                            fetch(`/schedule/update/${event.id}`, {
+                                method: 'PUT',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify({
+                                    activity: updatedTitle,
+                                    color: updatedColor,
+                                    room: updatedRoom,
+                                }),
                             })
                                 .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('Event deleted successfully!');
-                                    }
-                                    alert('Event deleted successfully!');
+                                    if (!response.ok) throw new Error('Failed to update event');
+                                    alert('Event updated successfully!');
+                                    $('#eventDetailModal').modal('hide');
                                 })
-                                .catch(error => {
-                                    console.error('Error deleting event:', error);
-                                    alert('Event deleted successfully!');
-                                });
+                                .catch(error => console.error('Error updating event:', error));
+                        };
+
+                        // Delete event functionality
+                        document.getElementById('delete-event').onclick = function () {
+                            if (confirm('Are you sure you want to delete this event?')) {
+                                fetch(`/schedule/delete/${event.id}`, {
+                                    method: 'DELETE',
+                                })
+                                    .then(response => {
+                                        if (!response.ok) throw new Error('Failed to delete event');
+                                        event.remove();
+                                        alert('Event deleted successfully!');
+                                        $('#eventDetailModal').modal('hide');
+                                    })
+                                    .catch(error => console.error('Error deleting event:', error));
+                            }
+                        };
+
+                        // Show the modal
+                        $('#eventDetailModal').modal('show');
+                    },
+                    eventReceive: function (info) {
+                        if (holidays.includes(info.event.startStr)) {
+                            alert('Events cannot be dropped on holidays.');
+                            info.revert();
                         }
                     },
                     eventDrop: function (info) {
-                        handleEventValidation(info);
-                        if (
-                            new Date(info.event.start) < semesterStart ||
-                            new Date(info.event.start) > semesterEnd
-                        ) {
-                            alert("Event can't be dropped outside the valid range.");
-                            info.revert(); // Revert the event back to its original position
+                        if (holidays.includes(info.event.startStr)) {
+                            alert('Events cannot be dropped on holidays.');
+                            info.revert();
                         }
                     },
-                    eventReceive: function (info) {
-                        handleEventValidation(info);
-                        if (
-                            new Date(info.event.start) < semesterStart ||
-                            new Date(info.event.start) > semesterEnd
-                        ) {
-                            alert("Event can't be dropped outside the valid range.");
-                            info.revert(); // Revert the event back to its original position
-                        }
-                    }
                 });
                 calendar.render();
             })
-            .catch(error => {
-                console.error('Error initializing calendar:', error);
-            });
+            .catch(error => console.error('Error initializing calendar:', error));
+    });
 
-        function validateActivities(eventsData) {
-            const testActivitiesByDate = {};
 
-            // Debugging: Log eventsData to ensure correct structure
-            console.log("Validating activities, received data:", eventsData);
+    function validateActivities(eventsData) {
+        const testActivitiesByDate = {};
 
-            for (const event of eventsData) {
-                if (!event || !event.activity || !event.date) {
-                    console.warn("Skipping invalid event:", event);
-                    continue; // Skip invalid entries
-                }
+        // Debugging: Log eventsData to ensure correct structure
+        console.log("Validating activities, received data:", eventsData);
 
-                const {activity, date} = event;
-
-                if (activity.toLowerCase().includes("test")) {
-                    if (!testActivitiesByDate[date]) {
-                        testActivitiesByDate[date] = [];
-                    }
-                    testActivitiesByDate[date].push(activity);
-
-                    if (testActivitiesByDate[date].length > 1) {
-                        return `Duplicate test activities found on ${date}: ${testActivitiesByDate[date].join(", ")}`;
-                    }
-                }
+        for (const event of eventsData) {
+            if (!event || !event.activity || !event.date) {
+                console.warn("Skipping invalid event:", event);
+                continue; // Skip invalid entries
             }
 
-            return null;
+            const {activity, date} = event;
+
+            if (activity.toLowerCase().includes("test")) {
+                if (!testActivitiesByDate[date]) {
+                    testActivitiesByDate[date] = [];
+                }
+                testActivitiesByDate[date].push(activity);
+
+                if (testActivitiesByDate[date].length > 1) {
+                    return `Duplicate test activities found on ${date}: ${testActivitiesByDate[date].join(", ")}`;
+                }
+            }
         }
 
+        return null;
+    }
 
-        document.getElementById('save-draft').addEventListener('click', function () {
-            if (!calendar) {
-                console.error('Calendar instance is not available');
-                return;
-            }
+    document.getElementById('saveEventButton').onclick = function () {
+        const title = document.getElementById('eventTitle').value.trim();
+        const roomDropdown = document.getElementById('roomDropdown');
+        const room = roomDropdown.value;
+        const color = document.getElementById('eventColor').value;
+        const clickedDate = document.getElementById('clicked-date').value; // Get the clicked date
 
-            const events = calendar.getEvents();
-            const selectedRoom = roomSelect?.value || "Unknown";
+        // Validation
+        if (!title) {
+            alert('Please provide a title.');
+            return;
+        }
 
-            const eventsData = events.map(event => {
-                const localDate = new Date(event.start.getUTCFullYear(), event.start.getUTCMonth(), event.start.getUTCDate());
-                return {
-                    activity: event.title,
-                    date: localDate.toISOString().split('T')[0],
-                    color: event.backgroundColor,
-                    semesterId: semesterId,
-                    classId: classId,
-                    room: selectedRoom,
-                };
-            });
+        if (title.toLowerCase().includes('test') &&
+            (new Date(clickedDate).getDay() === 0 || new Date(clickedDate).getDay() === 6)) {
+            alert('Test events cannot be scheduled on weekends.');
+            return;
+        }
 
-            if (eventsData.length === 0) {
-                alert("No valid events to save.");
-                return;
-            }
+        // Prepare the new event
+        const newEvent = {
+            activity: title,
+            date: clickedDate,
+            room,
+            color,
+        };
 
-            const validationError = validateActivities(eventsData);
-            if (validationError) {
-                alert(validationError);
-                return;
-            }
+        // Validate the activities (Pass an array)
+        const validationError = validateActivities([newEvent]);
+        if (validationError) {
+            alert(validationError);
+            return;
+        }
 
-            fetch('/schedule/update', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(eventsData),
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        // Parse error response and throw an error with the message
-                        return response.json().then(errorData => {
-                            throw new Error(errorData.message || 'An error occurred while updating the schedule.');
-                        });
-                    }
-
-                    return response.json(); // Parse successful response
-
-                })
-                .then(data => {
-                    alert(data.message); // Display success message from backend
-                    console.log('Updated data:', data);
-                    window.location.href = '/schedule-list.html';
-                })
-                .catch(error => {
-                    console.error('Error updating schedule:', error);
-                    alert(error.message); // Display error message from backend
-                });
+        // Add event to calendar and eventsToSave array
+        calendar.addEvent({
+            title,
+            start: clickedDate,
+            backgroundColor: color,
+            extendedProps: {room},
         });
-    })
+
+        eventsToSave.push(newEvent);
+
+        $('#addEventModal').modal('hide');
+    };
+
+    document.getElementById('save-draft').addEventListener('click', function () {
+        if (!calendar) {
+            console.error('Calendar instance is not available');
+            return;
+        }
+
+        const events = calendar.getEvents();
+        const selectedRoom = roomSelect?.value || "Unknown";
+
+        const eventsData = events.map(event => {
+            const localDate = new Date(event.start.getUTCFullYear(), event.start.getUTCMonth(), event.start.getUTCDate());
+            return {
+                activity: event.title,
+                date: localDate.toISOString().split('T')[0],
+                color: event.backgroundColor,
+                semesterId: semesterId,
+                classId: classId,
+                room: selectedRoom,
+            };
+        });
+
+        if (eventsData.length === 0) {
+            alert("No valid events to save.");
+            return;
+        }
+
+        const validationError = validateActivities(eventsData);
+        if (validationError) {
+            alert(validationError);
+            return;
+        }
+
+        fetch('/schedule/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(eventsData),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    // Parse error response and throw an error with the message
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || 'An error occurred while updating the schedule.');
+                    });
+                }
+
+                return response.json(); // Parse successful response
+
+            })
+            .then(data => {
+                alert(data.message); // Display success message from backend
+                console.log('Updated data:', data);
+                window.location.href = '/schedule-list.html';
+            })
+            .catch(error => {
+                console.error('Error updating schedule:', error);
+                alert(error.message); // Display error message from backend
+            });
+    });
 </script>
 </body>
 </html>

@@ -108,19 +108,6 @@
             vertical-align: middle;
         }
 
-        /*#class-dropdown {*/
-        /*    font-size: 10px; !* Standard font size *!*/
-        /*    padding: 8px; !* Balanced padding *!*/
-        /*    width: 100%; !* Ensure it spans the full container width *!*/
-        /*    margin-bottom: 15px; !* Space below dropdown *!*/
-        /*    border: 1px solid #ccc; !* Add a border for clarity *!*/
-        /*    border-radius: 4px; !* Rounded corners *!*/
-        /*    overflow: visible; !* Ensure text and options are not clipped *!*/
-        /*    white-space: nowrap; !* Prevent text wrapping *!*/
-        /*    text-overflow: ellipsis; !* Add ellipsis for overflow text *!*/
-        /*    box-sizing: border-box; !* Include padding in width calculation *!*/
-        /*}*/
-
         .btn {
             font-size: 16px; /* Increased font size */
             padding: 10px 20px; /* Increased padding */
@@ -338,7 +325,7 @@
                             <div id='external-events'>
                                 <div id='external-events-list'>
                                     <h4>Select Class</h4>
-                                    <select id="class-dropdown" class="form-control">
+                                    <select id="class-dropdown" class="form-control select2">
                                         <option value="">Select a class</option>
                                     </select>
                                     <button id="save-draft" class="btn btn-warning btn-sm mt-3">Save as Draft</button>
@@ -392,37 +379,43 @@
         </div>
     </div>
 
-    <div class="modal fade" id="updateEventModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div id="eventDetailModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="eventDetailModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Update Event</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="eventDetailModalLabel">Event Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
-                    <form id="updateEventForm">
-                        <input type="hidden" id="updateEventId">
+                    <form>
+                        <input id="event-id" type="hidden">
+
                         <div class="form-group">
-                            <label for="updateEventTitle">Title</label>
-                            <input type="text" class="form-control" id="updateEventTitle" required>
+                            <label for="event-title">Title</label>
+                            <input id="event-title" type="text" class="form-control" placeholder="Enter event title">
                         </div>
+
                         <div class="form-group">
-                            <label for="updateEventColor">Color</label>
-                            <input type="color" class="form-control" id="updateEventColor" value="#3788d8">
+                            <label for="event-color">Event Color</label>
+                            <input id="event-color" type="color" class="form-control">
                         </div>
+
                         <div class="form-group">
-                            <label for="updateRoomDropdown">Room</label>
-                            <select class="form-control" id="updateRoomDropdown" required>
-                                <option value="">Select a room</option>
+                            <label for="roomDropdownEdit">Select Room</label>
+                            <select id="roomDropdownEdit" class="form-control">
+                                <!-- Options will be populated dynamically -->
                             </select>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" id="deleteEventButton">Delete</button>
-                    <button type="button" class="btn btn-primary" id="updateEventButton">Save Changes</button>
+                    <button id="update-event" type="button" class="btn btn-primary">Update Event</button>
+                    <button id="delete-event" type="button" class="btn btn-danger">Delete Event</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
-
             </div>
         </div>
     </div>
@@ -570,6 +563,7 @@
 
         // Fetch room availability
         function fetchRoomAvailability(date) {
+            console.log(date);
             return fetch(`/room/room-availability?date=${date}`)
                 .then(response => {
                     if (!response.ok) {
@@ -598,6 +592,17 @@
                 .catch(error => {
                     console.error('Error fetching holidays:', error);
                 });
+        }
+        function handleEventValidation(info) {
+            const targetDate = new Date(info.event.start.toISOString());
+            const day = targetDate.getUTCDay(); // 0 = Sunday, 6 = Saturday
+            const isTestEvent = info.event.title.toLowerCase().includes('test');
+
+            // Prevent "test" events from being dropped/received on Saturday or Sunday
+            if (isTestEvent && (day === 0 || day === 6)) {
+                alert("Test events cannot be scheduled on Saturday or Sunday.");
+                info.revert(); // Revert the event to its original position
+            }
         }
 
         // Fetch semester details and initialize the calendar
@@ -630,6 +635,9 @@
                         start: semesterStart,
                         end: semesterEnd,
                     },
+                    eventConstrain: {
+                        start: new Date().toISOString().split('T')[0],
+                    },
                     events: function (fetchInfo, successCallback, failureCallback) {
                         fetch(`/schedule/get/${semesterId}`)
                             .then(response => {
@@ -659,76 +667,186 @@
                             });
                     },
                     eventClick: function (info) {
-                        // Handle event click for deletion
-                        const eventTitle = info.event.title;
-                        const eventId = info.event.id;
+                        const event = info.event;
+                        const eventModal = document.getElementById('eventDetailModal');
 
-                        if (confirm(`Are you sure you want to delete the event: "${eventTitle}"?`)) {
-                            // Remove the event from the calendar
-                            info.event.remove();
+                        // Populate event details
+                        document.getElementById('event-title').value = event.title;
+                        document.getElementById('event-color').value = event.backgroundColor;
+                        document.getElementById('event-id').value = event.id;
 
-                            // Optionally, make an API call to delete the event from the backend
-                            fetch(`/schedule/delete/${eventId}`, {
-                                method: 'DELETE',
+                        const roomDropdown = document.getElementById('roomDropdownEdit');
+
+                        // Fetch available rooms and populate dropdown
+                        fetchRoomAvailability(event.startStr)
+                            .then(rooms => {
+                                roomDropdown.innerHTML = '';
+
+                                // Add default option
+                                const defaultOption = document.createElement('option');
+                                defaultOption.value = '';
+                                defaultOption.textContent = 'Select a Room';
+                                defaultOption.disabled = true;
+                                defaultOption.selected = true;
+                                roomDropdown.appendChild(defaultOption);
+
+                                // Add room options
+                                rooms.forEach(room => {
+                                    const option = document.createElement('option');
+                                    option.value = room.roomName;
+                                    option.textContent = room.roomName;
+
+                                    // Mark occupied rooms
+                                    if (room.status === 'Occupied') {
+                                        option.style.color = 'red';
+                                        option.disabled = true;
+                                    }
+
+                                    // Pre-select the current room
+                                    if (room.roomName === event.extendedProps.room) {
+                                        option.selected = true;
+                                    }
+
+                                    roomDropdown.appendChild(option);
+                                });
+                            });
+
+                        // Update event functionality
+                        document.getElementById('update-event').onclick = function () {
+                            const updatedTitle = document.getElementById('event-title').value;
+                            const updatedColor = document.getElementById('event-color').value;
+                            const updatedRoom = roomDropdown.value;
+
+                            event.setProp('title', updatedTitle);
+                            event.setProp('backgroundColor', updatedColor);
+                            event.setProp('borderColor', updatedColor);
+                            event.setExtendedProp('room', updatedRoom);
+
+                            fetch(`/schedule/update/${event.id}`, {
+                                method: 'PUT',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify({
+                                    activity: updatedTitle,
+                                    color: updatedColor,
+                                    room: updatedRoom,
+                                }),
                             })
                                 .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('Failed to delete the event from the server.');
-                                    }
-                                    alert('Event deleted successfully!');
+                                    if (!response.ok) throw new Error('Failed to update event');
+                                    alert('Event updated successfully!');
+                                    $('#eventDetailModal').modal('hide');
                                 })
-                                .catch(error => {
-                                    console.error('Error deleting event:', error);
-                                    alert('Failed to delete the event from the server.');
-                                });
-                        }
+                                .catch(error => console.error('Error updating event:', error));
+                        };
+
+                        // Delete event functionality
+                        document.getElementById('delete-event').onclick = function () {
+                            if (confirm('Are you sure you want to delete this event?')) {
+                                fetch(`/schedule/delete/${event.id}`, {
+                                    method: 'DELETE',
+                                })
+                                    .then(response => {
+                                        if (!response.ok) throw new Error('Failed to delete event');
+                                        event.remove();
+                                        alert('Event deleted successfully!');
+                                        $('#eventDetailModal').modal('hide');
+                                    })
+                                    .catch(error => console.error('Error deleting event:', error));
+                            }
+                        };
+
+                        // Show the modal
+                        $('#eventDetailModal').modal('show');
                     },
                     dateClick: function (info) {
-                        const clickedDate = info.dateStr;
-                        const roomDropdown = document.getElementById('roomDropdown');
-
-                        if (holidays.includes(clickedDate)) {
+                        if (holidays.includes(info.dateStr)) {
                             alert('You cannot create events on holidays.');
                             return;
                         }
 
-                        // Fetch room availability for the selected date
-                        fetchRoomAvailability(clickedDate).then(rooms => {
-                            roomDropdown.innerHTML = ''; // Clear existing options
+                        const roomDropdown = document.getElementById('roomDropdown');
 
-                            // Add a default "Select a Room" option
-                            const defaultOption = document.createElement('option');
-                            defaultOption.value = '';
-                            defaultOption.textContent = 'Select a Room';
-                            defaultOption.disabled = true;
-                            defaultOption.selected = true;
-                            roomDropdown.appendChild(defaultOption);
+                        fetchRoomAvailability(info.dateStr)
+                            .then(rooms => {
+                                roomDropdown.innerHTML = '';
 
-                            // Populate dropdown with room data
-                            rooms.forEach(room => {
-                                const option = document.createElement('option');
-                                option.value = room.roomName;
-                                option.textContent = room.roomName;
+                                const defaultOption = document.createElement('option');
+                                defaultOption.value = '';
+                                defaultOption.textContent = 'Select a Room';
+                                defaultOption.disabled = true;
+                                defaultOption.selected = true;
+                                roomDropdown.appendChild(defaultOption);
 
-                                // Set style and disable if room is OCCUPIED
-                                if (room.status === 'OCCUPIED') {
-                                    option.style.color = 'red';
-                                    option.disabled = true;
-                                }
+                                rooms.forEach(room => {
+                                    const option = document.createElement('option');
+                                    option.value = room.roomName;
+                                    option.textContent = room.roomName;
 
-                                roomDropdown.appendChild(option);
+                                    if (room.status === 'Occupied') {
+                                        option.style.color = 'red';
+                                        option.disabled = true;
+                                    }
+
+                                    roomDropdown.appendChild(option);
+                                });
+
+                                // Populate the clicked date and reset other fields
+                                document.getElementById('clicked-date').value = info.dateStr;
+                                document.getElementById('eventTitle').value = '';
+                                document.getElementById('eventColor').value = '#3788d8';
+
+                                // Show the modal
+                                $('#addEventModal').modal('show');
+                            })
+                            .catch(error => {
+                                console.error('Error fetching room availability:', error);
+                                alert('Failed to fetch room availability.');
                             });
-                            document.getElementById('clicked-date').value = clickedDate;
-                            // Reset the event title and color fields
-                            document.getElementById('eventTitle').value = '';
-                            document.getElementById('eventColor').value = '#3788d8';
-                            // Show modal
-                            $('#addEventModal').modal('show');
-                        });
                     },
-                });
+                    eventDrop: function (info) {
+                        handleEventValidation(info);
 
+                    },
+                    eventReceive: function (info) {
+                        handleEventValidation(info);
+                    }
+                });
                 calendar.render();
+
+                function validateActivities(eventsData) {
+                    // Ensure eventsData is an array
+                    if (!Array.isArray(eventsData)) {
+                        console.error("Expected an array but received:", eventsData);
+                        return "Invalid event data provided.";
+                    }
+
+                    const testActivitiesByDate = {};
+
+                    // Debugging: Log eventsData to ensure correct structure
+                    console.log("Validating activities, received data:", eventsData);
+
+                    for (const event of eventsData) {
+                        if (!event || !event.activity || !event.date) {
+                            console.warn("Skipping invalid event:", event);
+                            continue; // Skip invalid entries
+                        }
+
+                        const {activity, date} = event;
+
+                        if (activity.toLowerCase().includes("test")) {
+                            if (!testActivitiesByDate[date]) {
+                                testActivitiesByDate[date] = [];
+                            }
+                            testActivitiesByDate[date].push(activity);
+
+                            if (testActivitiesByDate[date].length > 1) {
+                                return `Duplicate test activities found on ${date}: ${testActivitiesByDate[date].join(", ")}`;
+                            }
+                        }
+                    }
+
+                    return null;
+                }
 
                 function loadClasses() {
                     fetch('/class/get')
@@ -773,35 +891,40 @@
                         return;
                     }
 
-                    const testEventsOnDate = calendar.getEvents().filter(event =>
-                        event.start.toISOString().split('T')[0] === clickedDate &&
-                        event.title.toLowerCase().includes('test')
-                    );
-
-                    if (title.toLowerCase().includes('test') && testEventsOnDate.length > 0) {
-                        alert('You cannot schedule more than one test on the same day.');
-                        return;
-                    }
-
-
                     if (title.toLowerCase().includes('test') &&
                         (new Date(clickedDate).getDay() === 0 || new Date(clickedDate).getDay() === 6)) {
                         alert('Test events cannot be scheduled on weekends.');
                         return;
                     }
 
-                    // Add event to calendar and eventsToSave array
+                    // Prepare the new event
                     const newEvent = {
+                        activity: title,
+                        date: clickedDate,
+                        room,
+                        color,
+                    };
+
+                    // Validate the activities (Pass an array)
+                    const validationError = validateActivities([newEvent]);
+                    if (validationError) {
+                        alert(validationError);
+                        return;
+                    }
+
+                    // Add event to calendar and eventsToSave array
+                    calendar.addEvent({
                         title,
                         start: clickedDate,
                         backgroundColor: color,
                         extendedProps: {room},
-                    };
-                    calendar.addEvent(newEvent);
+                    });
+
                     eventsToSave.push(newEvent);
 
                     $('#addEventModal').modal('hide');
                 };
+
 
                 document.getElementById('save-draft').onclick = function () {
                     saveEvents('/schedule/saveDraft', false);
@@ -820,28 +943,26 @@
                 };
 
                 function saveEvents(endpoint, isPublic, selectedClass = null) {
-                    // Get all events from the calendar
                     const allEvents = calendar.getEvents(); // Retrieve all events from the calendar
                     if (allEvents.length === 0) {
                         alert('No events to save.');
                         return;
                     }
 
-                    // Prepare the data for the payload
                     const data = allEvents.map(event => ({
+                        id: event.id || null,
                         activity: event.title,
-                        date: event.start.toISOString().split('T')[0], // Convert to YYYY-MM-DD format
-                        room: event.extendedProps.room || null, // Include room if available
+                        date: event.start.toISOString().split('T')[0],
+                        room: isPublic ? event.extendedProps.room : null,
                         color: event.backgroundColor,
                         semesterId: semesterId,
-                        classId: isPublic ? selectedClass : null, // Add classId for published schedules
-                        isHoliday: event.extendedProps.isHoliday || false // Include if the event is a holiday
+                        classId: isPublic ? selectedClass : null,
+                        isHoliday: event.extendedProps.isHoliday || false,
                     }));
 
-                    // Make the POST request
                     fetch(endpoint, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify(data),
                     })
                         .then(response => {
@@ -852,7 +973,8 @@
                         })
                         .then(result => {
                             alert(result.message || 'Events saved successfully!');
-                            eventsToSave = []; // Clear temporary events
+                            eventsToSave = [];
+                            calendar.refetchEvents();
                         })
                         .catch(error => {
                             console.error('Error saving events:', error);

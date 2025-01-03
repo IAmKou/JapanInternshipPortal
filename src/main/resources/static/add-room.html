@@ -1,12 +1,10 @@
 <!doctype html>
 <html class="no-js" lang="">
 
-
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/JIP/JIP/semester-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>JIP | Class Schedule</title>
+    <title>JIP | Add Class</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -25,8 +23,8 @@
     <link rel="stylesheet" href="css/animate.min.css">
     <!-- Select 2 CSS -->
     <link rel="stylesheet" href="css/select2.min.css">
-    <!-- Data Table CSS -->
-    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <!-- Date Picker CSS -->
+    <link rel="stylesheet" href="css/datepicker.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
@@ -62,6 +60,80 @@
         .footer-wrap-layout1 a {
             color: #ffcc00;
             text-decoration: none;
+        }
+        select[name="teacherId"], select[name="semester"] {
+            border: 2px solid #007bff !important;  /* Giữ kiểu dáng bo viền màu xanh */
+            border-radius: 5px;                    /* Bo tròn góc */
+            padding: 10px 15px;                    /* Thêm padding để nâng cao thẩm mỹ */
+            font-size: 18px;
+            /* Đảm bảo font phù hợp */
+        }
+
+        /* Tùy chỉnh cho thẻ select2 */
+        .select2-container {
+            width: 100% !important;  /* Đảm bảo width của select2 chiếm toàn bộ không gian */
+        }
+
+        /* Kiểu dáng cho thanh chọn của select2 */
+        .select2-selection {
+            padding: 10px 15px;                       /* Thêm khoảng cách padding cho thanh chọn */
+            border: 2px solid #007bff !important;     /* Màu viền */
+            border-radius: 5px;                       /* Bo tròn các góc của ô chọn */
+            text-align: center;                       /* Căn giữa văn bản */
+            font-weight: bold !important;             /* Đậm chữ */
+            font-size: 16px;                          /* Tăng kích thước chữ */
+            line-height: 30px;                        /* Đảm bảo văn bản căn giữa theo chiều dọc */
+        }
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            line-height: 30px;
+            color: #b4b4b4;
+            padding-left: 20px;
+            padding-right: 30px;
+            font-size: 15px;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        input[name="className"] {
+            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="className"]:hover {
+            border-color: #28a745 !important;
+        }
+        /* Khi người dùng focus vào input */
+        input[name="className"]:focus {
+            border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
+        }
+        /* Kiểu dáng mặc định cho thẻ <select> */
+        select[name="teacher"] {
+            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
+            padding: 10px 15px;
+            text-align: center; /* Căn giữa chữ trong select khi chọn */
+            font-weight: bold;  /* Đậm chữ *//* Thêm một chút padding để nâng cao thẩm mỹ */
+        }
+
+        /* Khi người dùng hover lên thẻ <select> */
+        select[name="teacher"]:hover {
+            border-color: #28a745 !important;
+        }
+
+        /* Khi người dùng focus vào thẻ <select> */
+        select[name="teacher"]:focus {
+            border-color: #ff6347 !important;     /* Giữ màu xanh khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+        }
+
+        select[name="teacher"] option {
+            text-align: center;  /* Căn giữa chữ */
+            font-weight: bold;   /* Đậm chữ */
         }
     </style>
 </head>
@@ -119,7 +191,7 @@
                             <span class="userRole"></span>
                         </div>
                         <div class="admin-img img">
-                            <img src="" alt="Admin" style="width: 50px; height: 50px">
+                            <img src="" style="height: 50px; width: 50px" alt="Admin">
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -143,7 +215,6 @@
                         <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
                         <span>8</span>
                     </a>
-
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="item-header">
                             <h6 class="item-title">03 Notifiacations</h6>
@@ -153,20 +224,32 @@
                                 <div class="item-icon bg-skyblue">
                                     <i class="fas fa-check"></i>
                                 </div>
-                                <div class="media">
-                                    <div class="item-icon bg-violet-blue">
-                                        <i class="fas fa-cogs"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Update Password</div>
-                                        <span>45 Mins ago</span>
-                                    </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Complete Today Task</div>
+                                    <span>1 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-orange">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Director Metting</div>
+                                    <span>20 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-violet-blue">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Update Password</div>
+                                    <span>45 Mins ago</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </li>
-
                 <li class="navbar-item dropdown header-language">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
                        data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
@@ -203,7 +286,7 @@
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="add-class.html" class="nav-link"><i
+                                <a href="add-class.html" class="nav-link menu-active"><i
                                         class="flaticon-multiple-users-silhouette"></i>Add New Class</a>
                             </li>
                             <li class="nav-item">
@@ -211,7 +294,7 @@
                                         class="flaticon-menu"></i><span>All Class</span></a>
                             </li>
                             <li class="nav-item">
-                                <a href="schedule-list.html" class="nav-link menu-active"><i class="flaticon-calendar"></i><span>Schedule List</span></a>
+                                <a href="schedule-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Schedule List</span></a>
                             </li>
                         </ul>
                     </li>
@@ -230,114 +313,51 @@
 
                 </ul>
             </div>
-        </div>        <!-- Sidebar Area End Here -->
+        </div>
+        <!-- Sidebar Area End Here -->
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3>Schedule List</h3>
+                <h3>Room</h3>
                 <ul>
                     <li>
                         <a href="manager.html">Home</a>
                     </li>
-                    <li>Schedule</li>
+                    <li>Add New Room</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
-            <!-- Class Routine Area Start Here -->
-            <div class="row">
-                <div class="col-12-xxxl col-12">
-                    <div class="card height-auto">
-                        <div class="card-body">
-                            <div class="heading-layout1">
-                                <div class="item-title">
-                                    <h3>Class Schedule</h3>
-                                </div>
-                                <div class="dropdown">
-                                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                                       aria-expanded="false">...</a>
-
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" data-target="#standard-modal" data-toggle="modal"><i
-                                                class="fas fa-file-import text-green"></i>Import</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table display text-nowrap">
-                                    <thead>
-                                    <tr>
-                                        <th>Class</th>
-                                        <th>Semester</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
+            <!-- Add Class Area Start Here -->
+            <div class="card height-auto">
+                <div class="card-body">
+                    <div class="heading-layout1">
+                        <div class="item-title" style="padding-bottom: 10px">
+                            <h3>Add New Room</h3>
                         </div>
                     </div>
+                    <form id="createRoomForm" class="new-added-form">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                <label for="roomName" style="color: #007bff; font-weight: bold;">Room Name</label>
+                                <input type="text" id="roomName" placeholder="Enter room name" required minlength="6" maxlength="50" name="roomName" class="form-control">
+                            </div>
+                            <div class="col-md-6 form-group"></div>
+                            <div class="col-12 form-group mg-t-8">
+                                <button type="button" id="submitRoomButton" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">
+                                    Add Room
+                                </button>
+                                <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Clear Form</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="messageBox" style="margin-top: 20px; font-weight: bold;"></div>
+
                 </div>
             </div>
-            <!-- Class Routine Area End Here -->
+            <!-- Add Class Area End Here -->
         </div>
     </div>
     <!-- Page Area End Here -->
-    <!-- Success Modal -->
-    <div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="successModalLabel">Success</h5>
-                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-                </div>
-                <div class="modal-body">
-                    Schedule import was successful!
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Error Modal -->
-    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="errorModalLabel">Errors</h5>
-                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-                </div>
-                <div class="modal-body">
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- confirm modal -->
-    <div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog success-modal-content" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="success-message">
-                        <div class="item-icon">
-                            <i class="fas fa-exclamation"></i>
-                        </div>
-                        <h3 class="item-title">You want to delete this schedule?</h3>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <input type="hidden" name="id" id="Cid">
-                    <button type="button" id="confirm-delete" class="footer-btn bg-linkedin">Ok</button>
-                    <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
     <div style="background-color: #ec9006; padding: 15px;">
@@ -361,14 +381,12 @@
 <script src="js/bootstrap.min.js"></script>
 <!-- Select 2 Js -->
 <script src="js/select2.min.js"></script>
+<!-- Date Picker Js -->
+<script src="js/datepicker.min.js"></script>
 <!-- Scroll Up Js -->
 <script src="js/jquery.scrollUp.min.js"></script>
-<!-- Data Table Js -->
-<script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="script.js"></script>
 
 <script type="text/javascript">
@@ -437,6 +455,7 @@
 
 
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
     if (userDetails) {
@@ -465,55 +484,50 @@
         console.error("User details not found in sessionStorage");
     }
 </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        fetch("/schedule/unique")
-            .then(response => response.json())
-            .then(data => {
-                const tableBody = document.querySelector("table tbody");
-                tableBody.innerHTML = ""; // Clear existing rows
+<script>
+    document.getElementById('submitRoomButton').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent the default form submission
 
-                data.forEach(item => {
-                    const row = document.createElement("tr");
+        // Get the input value
+        const roomName = document.getElementById('roomName').value;
+        const messageBox = document.getElementById('messageBox');
 
-                    // Add columns for semester name and schedule status
-                    row.innerHTML = `
-                        <td>${item.className}</td>
+        // Clear any previous message
+        messageBox.innerHTML = '';
 
-                        <td>${item.semesterName}</td>
+        if (!roomName.trim()) {
+            messageBox.innerHTML = '<span style="color: red;">Room name is required!</span>';
+            return;
+        }
 
-                    `;
-
-                    // Create actions cell with dropdown
-                    const actionsCell = document.createElement('td');
-                    const dropdown = document.createElement('div');
-                    dropdown.className = 'dropdown';
-
-                    const dropdownToggle = document.createElement('a');
-                    dropdownToggle.href = '#';
-                    dropdownToggle.className = 'dropdown-toggle';
-                    dropdownToggle.setAttribute('data-toggle', 'dropdown');
-                    dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
-                    dropdown.appendChild(dropdownToggle);
-
-                    const dropdownMenu = document.createElement('div');
-                    dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
-                    dropdownMenu.innerHTML = `
-                        <a class="dropdown-item" href="/schedule-class.html?classId=${item.classId}&semesterId=${item.semesterId}">
-                            <i class="fas fa-glasses text-dark-pastel-green"></i> View Schedule
-                        </a>
-                    `;
-                    dropdown.appendChild(dropdownMenu);
-                    actionsCell.appendChild(dropdown);
-                    row.appendChild(actionsCell);
-
-                    // Append the row to the table body
-                    tableBody.appendChild(row);
-                });
+        // Fetch request
+        fetch('/room/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name: roomName }),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json(); // Parse JSON response if successful
+                } else {
+                    return response.text().then((text) => {
+                        throw new Error(text || 'Failed to create room');
+                    });
+                }
             })
-            .catch(error => console.error("Error fetching data:", error));
+            .then((data) => {
+                messageBox.innerHTML = `<span style="color: green;">${data.name} was created successfully!</span>`;
+            })
+            .catch((error) => {
+                messageBox.innerHTML = `<span style="color: red;">Error: ${error.message}</span>`;
+            });
     });
-</script>
 
+</script>
 </body>
+
+
+<!-- Mirrored from add-class.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>

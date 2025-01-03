@@ -9,7 +9,7 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class ScheduleDTO {
-    private int id;
+    private Integer id;
     private String date;
     private Schedule.dayOfWeek dayOfWeek;
     private String class_name;
@@ -81,8 +81,12 @@ public class ScheduleDTO {
         this.endTime = endTime;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getSemesterId() {
@@ -93,9 +97,7 @@ public class ScheduleDTO {
         this.semesterId = semesterId;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 
     public String getDate() {
         return date;

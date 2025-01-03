@@ -26,14 +26,18 @@ public class RoomAvailability {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Status status = Status.AVAILABLE;
+    private Status status = Status.Available;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_id")
+    private Class clasz;
+
     public enum Status {
-        AVAILABLE,
-        OCCUPIED
+        Available,
+        Occupied
     }
 }

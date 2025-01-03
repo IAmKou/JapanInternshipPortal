@@ -1,13 +1,11 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.ClassDTO;
+import com.example.jip.dto.MarkReportDTO;
 import com.example.jip.dto.NotificationDTO;
 import com.example.jip.entity.Notification;
 import com.example.jip.entity.Semester;
-import com.example.jip.repository.AssignmentRepository;
-import com.example.jip.repository.ClassRepository;
-import com.example.jip.repository.ListRepository;
-import com.example.jip.repository.SemesterRepository;
+import com.example.jip.repository.*;
 import com.example.jip.services.AssignmentServices;
 import com.example.jip.services.NotificationServices;
 import com.example.jip.services.SemesterServices;
@@ -39,6 +37,9 @@ public class ClassController {
 
     @Autowired
     private SemesterRepository semesterRepository;
+
+    @Autowired
+    private MarkReportRepository markReportRepository;
 
 
     @PostMapping(value = "/create", consumes = "application/json", produces = "application/json")
@@ -133,4 +134,14 @@ public class ClassController {
     public ClassDTO getClassById(@RequestParam("classId") int id) {
         return classRepository.findById(id).map(ClassDTO::new).orElseThrow(() -> new IllegalArgumentException("Class not found"));
     }
+
+    @GetMapping("/{classId}/getAllGrades")
+    public List<MarkReportDTO> getAllGrades(@PathVariable Integer classId) {
+        if (classId == null) {
+            throw new IllegalArgumentException("classId must not be null");
+        }
+        List<MarkReportDTO> markReports = listRepository.getStudentsWithMarkReportsByClassId(classId);
+        return markReports;
+    }
+
 }

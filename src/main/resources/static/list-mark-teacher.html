@@ -30,6 +30,9 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
+        .dropdown-toggle::after {
+            content: none !important;
+        }
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -644,15 +647,17 @@
                         <h3>Class: <span id="className"></span></h3>
                     </div>
                     <!-- Main Button to Open Modal -->
-                    <button class="btn btn-gradient-yellow btn-search" id="open-modal-btn" style="margin-bottom: 15px">Open Import Modal</button>
+                    <button class="btn btn-gradient-yellow btn-search" id="open-modal-btn" style="margin-bottom: 15px">Import</button>
+                    <button class="btn btn-gradient-yellow btn-search" id="export-by-excel" style="margin-bottom: 15px">Export</button>
                     <!-- Table -->
                     <div class="table-responsive">
                         <table class="table display text-nowrap">
                             <thead>
                             <tr>
+                                <th rowspan="2">Student Name</th>
                                 <th colspan="3">Skill</th>
                                 <th colspan="2">Soft Skill</th>
-                                <th colspan="3">Attitude</th>
+                                <th rowspan="2">Attitude</th>
                                 <th rowspan="2">Final Mark</th>
                                 <th rowspan="2">Action</th>
                             </tr>
@@ -662,8 +667,6 @@
                                 <th>Final Exam</th>
                                 <th>Script</th>
                                 <th>Presentation</th>
-                                <th>Assigment</th>
-                                <th>Attendant</th>
                             </tr>
                             </thead>
                             <tbody id="mark_list">
@@ -672,7 +675,6 @@
                         </table>
                     </div>
                     <!-- Table Ends-->
-                    <button class="btn btn-gradient-yellow btn-search" id="export-by-excel">Export excel</button>
                 </div>
             </div>
         </div>
@@ -683,16 +685,21 @@
                     <h2>Update Mark</h2>
                     <form class="new-added-form" action="javascript:void(0);" onsubmit="updateMark(event)">
                         <label for="middle_exam_mark">Middle Exam Mark:</label>
-                        <input type="number" id="middle_exam_mark" name="middle_exam_mark" min="0" max="10" step="0.1" required/>
+                        <input type="number" id="middle_exam_mark" name="middle_exam_mark" min="0" max="100" step="1" required/>
 
                         <label for="final_exam_mark">Final Exam Mark:</label>
-                        <input type="number" id="final_exam_mark" name="final_exam_mark" min="0" max="10" step="0.1" required/>
+                        <input type="number" id="final_exam_mark" name="final_exam_mark" min="0" max="100" step="1" required/>
 
                         <label for="script_mark">Script Mark:</label>
-                        <input type="number" id="script_mark" name="script_mark" min="0" max="10" step="0.1" required/>
+                        <input type="number" id="script_mark" name="script_mark" min="0" max="100" step="1" required/>
 
                         <label for="presentation_mark">Presentation Mark:</label>
-                        <input type="number" id="presentation_mark" name="presentation_mark" min="0" max="10" step="0.1" required/>
+                        <input type="number" id="presentation_mark" name="presentation_mark" min="0" max="100" step="1" required/>
+
+                        <!-- Hidden fields -->
+                        <input type="hidden" id="avg_exam_mark" name="avg_exam_mark" />
+                        <input type="hidden" id="attitude_mark" name="attitude_mark" />
+                        <input type="hidden" id="final_mark" name="final_mark" />
 
                         <div class="button-group">
                             <button type="submit" class="btn submit-btn">Update</button>
@@ -700,6 +707,7 @@
                         </div>
                     </form>
                 </div>
+
             </div>
         </div>
 
@@ -801,13 +809,13 @@
             mark_reports.forEach(markrp => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                <td>${markrp.avgExamMark ?? '-'}</td>
-                <td>${markrp.middleExam ?? '-'}</td>
-                <td>${markrp.finalExam ?? '-'}</td>
+                <td><a href="/view-student-mark-report.html?id=${markrp.id}" target="_blank">${markrp.studentName}</a></td>
+                <td>${markrp.avg_exam_mark ?? '-'}</td>
+                <td>${markrp.middle_exam ?? '-'}</td>
+                <td>${markrp.final_exam ?? '-'}</td>
                 <td>${markrp.scriptPresentation ?? '-'}</td>
                 <td>${markrp.presentation ?? '-'}</td>
-                <td>${markrp.assignment ?? '-'}</td>
-                <td>${markrp.attendant ?? '-'}</td>
+                <td>${markrp.attitude ?? '-'}</td>
                 <td>${markrp.finalMark ?? '-'}</td>
                 <td>
                     <div class="dropdown">
@@ -843,13 +851,18 @@
 
             const markrp = await response.json();
 
-            // Fill the form with the markrp data
-            document.getElementById('middle_exam_mark').value = markrp.middle_exam;
-            document.getElementById('final_exam_mark').value = markrp.final_exam;
-            document.getElementById('script_mark').value = markrp.scriptPresentation;
-            document.getElementById('presentation_mark').value = markrp.presentation;
+            // Điền dữ liệu vào form
+            document.getElementById('middle_exam_mark').value = markrp.middle_exam ?? '';
+            document.getElementById('final_exam_mark').value = markrp.final_exam ?? '';
+            document.getElementById('script_mark').value = markrp.scriptPresentation ?? '';
+            document.getElementById('presentation_mark').value = markrp.presentation ?? '';
 
-            // Show the update popup
+            // Điền dữ liệu vào các trường hidden
+            document.getElementById('avg_exam_mark').value = markrp.avg_exam_mark ?? '';
+            document.getElementById('attitude_mark').value = markrp.attitude ?? '';
+            document.getElementById('final_mark').value = markrp.final_mark ?? '';
+
+            // Hiển thị popup chỉnh sửa
             currentMarkId = markrp.id;
             document.getElementById('markrpPopup').style.display = 'flex';
             document.getElementById('overlay').style.display = 'flex';
@@ -867,10 +880,15 @@
         const script_mark = document.getElementById('script_mark').value;
         const presentation_mark = document.getElementById('presentation_mark').value;
 
-        // Validation for required fields
+        // Get values from hidden fields
+        const avg_exam_mark = document.getElementById('avg_exam_mark').value;
+        const attitude_mark = document.getElementById('attitude_mark').value;
+        const final_mark = document.getElementById('final_mark').value;
+
+        // Validation for numeric fields
         const inputs = [middle_exam_mark, final_exam_mark, script_mark, presentation_mark];
-        if (inputs.some(value => value < 0 || value > 10)) {
-            showErrorModal('Please ensure all numeric values are between 0 and 10.');
+        if (inputs.some(value => value < 0 || value > 100)) {
+            showErrorModal('Please ensure all numeric values are between 0 and 100.');
             return;
         }
 
@@ -880,6 +898,9 @@
         formData.append('final_exam', final_exam_mark);
         formData.append('scriptPresentation', script_mark);
         formData.append('presentation', presentation_mark);
+        formData.append('avg_exam_mark', avg_exam_mark); // Hidden field
+        formData.append('attitude', attitude_mark); // Hidden field
+        formData.append('final_mark', final_mark); // Hidden field
 
         try {
             const response = await fetch(`${API_BASE_URL}/update?markRpId=${currentMarkId}`, {
@@ -889,18 +910,19 @@
 
             if (response.ok) {
                 showSuccessModal('Mark updated successfully!');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
+                // setTimeout(() => {
+                //     window.location.reload();
+                // }, 2000);
             } else if (response.status === 404) {
                 showErrorModal('Mark Rp not found!');
             } else {
-                console.error('Error updating markrp:', response.statusText);
+                console.error('Error updating Mark:', response.statusText);
             }
         } catch (error) {
             console.error('Error:', error);
         }
     }
+
 
     // Function to close the update popup
     function closePopup() {
@@ -967,15 +989,27 @@
             const data = await response.json();
 
             // Transform data into the desired format
-            const excelData = data.map((item) => ({
-                Name: item.studentName,
-                Email: item.studentEmail,
-                "Soft Skill": "",
-                "Avg Exam Mark": "",
-                "Middle Exam": "",
-                "Final Exam": "",
-                Comment: ""
-            }));
+            const excelData = data.map((item) => {
+                // Base information
+                const row = {
+                    Name: item.studentName,
+                    Email: item.studentEmail,
+                    Presentation: item.studentPresentation || '',
+                    Script: item.scriptPresentation || '',
+                    "Middle Exam": item.middle_exam || '',
+                    "Final Exam": item.final_exam || '',
+                    Comment: item.comment || ''
+                };
+
+                // Dynamically add Kanji, Bunpou, and Kotoba scores
+                for (let i = 1; i <= 44; i++) {
+                    row[`Kanji ${i}`] = item[`kanji${i}`] || '';
+                    row[`Bunpou ${i}`] = item[`bunpou${i}`] || '';
+                    row[`Kotoba ${i}`] = item[`kotoba${i}`] || '';
+                }
+
+                return row;
+            });
 
             // Convert data to a worksheet
             const ws = XLSX.utils.json_to_sheet(excelData);
@@ -985,7 +1019,7 @@
             XLSX.utils.book_append_sheet(wb, ws, "Marks");
 
             // Export the workbook to an Excel file
-            XLSX.writeFile(wb, "Marks_Report.xlsx");
+            XLSX.writeFile(wb, "Mark_Report.xlsx");
         } catch (error) {
             console.error("Error exporting Excel file:", error);
         }

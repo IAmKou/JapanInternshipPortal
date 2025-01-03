@@ -20,7 +20,7 @@ public class MarkReportDTO {
     private BigDecimal finalMark;
     private String comment;
     private BigDecimal assignment; // New field
-    private Integer attendant;
+    private BigDecimal attendant;
 
     // Constructor for manager list
     public MarkReportDTO(Integer studentId, String fullname, BigDecimal softskill, BigDecimal avgExamMark,
@@ -38,4 +38,6 @@ public class MarkReportDTO {
         this.presentation = presentation;
         this.scriptPresentation = scriptPresentation;
     }
+
+
 }
