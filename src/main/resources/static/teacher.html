@@ -30,6 +30,179 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        /* Cải thiện giao diện bảng và các phần tử hiển thị */
+        .dashboard-card-eleven {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .item-title h3 {
+            font-size: 1.75rem;
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* Sửa lại màu sắc bảng */
+        .table {
+            width: 100%;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .table th {
+            background-color: #f1f1f1;
+            color: #333;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .table td {
+            color: #555;
+            font-size: 14px;
+            padding: 10px;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        /* Các phần ngăn cách rõ ràng giữa các lớp */
+        .table tbody tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        .table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        /* Bảng bài tập sẽ có màu nền khác để phân biệt */
+        .assignments-table {
+            background-color: #fafafa;
+            margin-top: 10px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .assignments-table th, .assignments-table td {
+            font-size: 14px;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .assignments-table th {
+            background-color: #eaeaea;
+        }
+
+        .assignments-table tbody tr:hover {
+            background-color: #f7f7f7;
+        }
+
+        /* Hiển thị bài tập khi không có thông tin */
+        .no-assignments {
+            font-style: italic;
+            color: #aaa;
+        }
+
+        /* Thiết kế hiệu ứng hover */
+        .table tbody tr:hover {
+            background-color: #eef2f9;
+            cursor: pointer;
+        }
+
+        .table td, .table th {
+            padding: 12px 15px;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        /* Cải tiến giao diện cho các lớp học và bài tập */
+        .card-body {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .item-title h3 {
+            font-size: 1.75rem;
+            color: #333;
+        }
+
+        .class-box {
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            transition: 0.3s ease;
+        }
+
+        .class-box:hover {
+            background-color: #eef2f9;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .class-box .class-name {
+            font-size: 2.0rem;
+            font-weight: bold;
+        }
+
+        .class-box .students-count {
+            margin: 10px 0;
+            color: #555;
+            font-size: 2.0rem;
+        }
+
+        .assignments-container {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .assignments-container.show {
+            display: block;
+        }
+
+        .assignment-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .assignment-table td {
+            text-align: left;
+            padding: 10px;
+        }
+
+        .assignment-table tr:hover {
+            background-color: #fafafa;
+        }
+
+        .show-assignments-btn {
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 2.0rem;
+        }
+
+        .show-assignments-btn:hover {
+            background-color: #45a049;
+        }
+
+        .no-assignments {
+            color: #aaa;
+            font-style: italic;
+        }
+
+        .class-box .assignments-container {
+            margin-top: 20px;
+        }
+
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -219,10 +392,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
-                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
-                    </li>
+
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
@@ -294,29 +464,27 @@
             </div>
             <!-- Breadcubs Area End Here -->
             <div class="row">
-                <!-- Dashboard summery Start Here -->
-                <div class="col-12 col-4-xxxl">
-                    <div class="row">
-                        <div class="col-6-xxxl col-lg-6 col-sm-6 col-12">
-                            <div class="dashboard-summery-two">
-                                <div class="item-icon bg-light-magenta">
-                                    <i class="flaticon-classmates text-magenta"></i>
+                <!-- Card hiển thị lớp học (chiếm 60% chiều rộng) -->
+                <div class="col-lg-8 col-md-8 col-sm-12">
+                    <div class="card shadow-lg rounded border-0">
+                        <div class="card-body">
+                            <div class="heading-layout1 d-flex justify-content-between align-items-center mb-4">
+                                <div class="item-title">
+                                    <h3 class="mb-0">My Classes</h3>
                                 </div>
-                                <div class="item-content">
-                                    <div class="item-number">
-                                        <p id="tS"></p>
-                                    </div>
-                                    <div class="item-title">Total Students</div>
+                            </div>
+                            <!-- Bảng lớp học -->
+                            <div class="table-box-wrap">
+                                <div id="class_list">
+                                    <!-- Các lớp học được chèn ở đây từ script -->
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
 
-                <!-- Notice Board Start Here -->
-                <div class="col-lg-12 col-12-xxxl col-xl-12">
+                <!-- Thông báo (chiếm 40% chiều rộng) -->
+                <div class="col-lg-4 col-md-4 col-sm-12">
                     <div class="card dashboard-card-six">
                         <div class="card-body">
                             <div class="heading-layout1 mg-b-17">
@@ -324,90 +492,57 @@
                                     <h3>Notifications</h3>
                                 </div>
                                 <div class="dropdown">
-                                    <a class="dropdown-toggle" href="#" role="button"
-                                       data-toggle="dropdown" aria-expanded="false">...</a>
-
+                                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                        <a class="dropdown-item" href="#"><i
-                                                class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                        <a class="dropdown-item" href="#"><i
-                                                class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="notice-box-wrap">
                                 <div class="notice-list">
                                     <div class="post-date bg-skyblue">16 June, 2019</div>
-                                    <h6 class="notice-title"><a href="#">Great School manag mene esom tus eleifend
-                                        lectus
-                                        sed maximus mi faucibusnting.</a></h6>
-                                    <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
+                                    <h6 class="notice-title"><a href="#">Great School manag mene esom tus eleifend lectus sed maximus mi faucibusnting.</a></h6>
+                                    <div class="entry-meta">Jennyfar Lopez / <span>5 min ago</span></div>
                                 </div>
                                 <div class="notice-list">
                                     <div class="post-date bg-yellow">16 June, 2019</div>
                                     <h6 class="notice-title"><a href="#">Great School manag printing.</a></h6>
-                                    <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
+                                    <div class="entry-meta">Jennyfar Lopez / <span>5 min ago</span></div>
                                 </div>
                                 <div class="notice-list">
                                     <div class="post-date bg-pink">16 June, 2019</div>
-                                    <h6 class="notice-title"><a href="#">Great School manag Nulla rhoncus eleifensed mim
-                                        us mi faucibus id. Mauris vestibulum non purus lobortismenearea</a></h6>
-                                    <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                                </div>
-                                <div class="notice-list">
-                                    <div class="post-date bg-skyblue">16 June, 2019</div>
-                                    <h6 class="notice-title"><a href="#">Great School manag mene esom text of the
-                                        printing.</a></h6>
-                                    <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                                </div>
-                                <div class="notice-list">
-                                    <div class="post-date bg-yellow">16 June, 2019</div>
-                                    <h6 class="notice-title"><a href="#">Great School manag printing.</a></h6>
-                                    <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                                </div>
-                                <div class="notice-list">
-                                    <div class="post-date bg-pink">16 June, 2019</div>
-                                    <h6 class="notice-title"><a href="#">Great School manag meneesom.</a></h6>
-                                    <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Notice Board End Here -->
-            </div>
-            <!-- Student Table Area Start Here -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card dashboard-card-eleven">
-                        <div class="card-body">
-                            <div class="heading-layout1">
-                                <div class="item-title">
-                                    <h3>My Classes</h3>
-                                </div>
-
-                            </div>
-                            <div class="table-box-wrap">
-                                <div class="table-responsive student-table-box">
-                                    <table class="table display data-table text-nowrap">
-                                        <thead>
-                                        <tr>
-                                            <th class="col-lg-2">Name</th>
-                                            <th class="col-lg-2">Number of students</th>
-                                            <th class="col-lg-8">Assignments</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="class_list">
-
-                                        </tbody>
-                                    </table>
+                                    <h6 class="notice-title"><a href="#">Great School manag Nulla rhoncus eleifensed mim us mi faucibus id. Mauris vestibulum non purus lobortismenearea</a></h6>
+                                    <div class="entry-meta">Jennyfar Lopez / <span>5 min ago</span></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+
+
+            <!-- Tổng số học sinh -->
+            <!--                <div class="col-lg-4 col-md-6 col-sm-12"> &lt;!&ndash; Chỉnh lại kích thước cột tương tự &ndash;&gt;-->
+            <!--                    <div class="dashboard-summery-two">-->
+            <!--                        <div class="item-icon bg-light-magenta">-->
+            <!--                            <i class="flaticon-classmates text-magenta"></i>-->
+            <!--                        </div>-->
+            <!--                        <div class="item-content">-->
+            <!--                            <div class="item-number">-->
+            <!--                                <p id="tS"></p>-->
+            <!--                            </div>-->
+            <!--                            <div class="item-title">Total Students</div>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+
+
+
+
             <!-- Student Table Area End Here -->
 
 
@@ -517,9 +652,6 @@
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <!-- fetch class -->
 <script>
-
-
-    // Function to fetch and display total number of exams
     async function fetchTotalExams() {
         try {
             const response = await fetch('/exam/list');
@@ -529,12 +661,18 @@
             }
             const exams = await response.json();
             const totalExams = exams.length;
+            // Hiển thị tổng số bài kiểm tra
             document.getElementById('tE').textContent = totalExams.toLocaleString();
         } catch (error) {
             console.error('Error fetching total exams:', error);
+            // Cập nhật trong trường hợp gặp lỗi
+            document.getElementById('tE').textContent = 'Error!';
         }
     }
+
+    // Gọi hàm khi load trang
     fetchTotalExams();
+
 
 </script>
 <!-- fetch profile -->
@@ -621,11 +759,13 @@
             console.log('Classes data:', classes);
 
             // Clear existing rows in the table
-            const tableBody = document.getElementById('class_list');
-            tableBody.innerHTML = ''; // Clear previous data
+            const classListContainer = document.getElementById('class_list');
+            classListContainer.innerHTML = ''; // Clear previous data
+
+            // Loop through the classes and create cards for each
             for (const clas of classes) {
                 // Fetch assignments for the current class
-                const assignmentsResponse = await fetch(`${API_BASE_URL}/detailByC/${clas.id}`);
+                const assignmentsResponse = await fetch(`/assignment/detailByC/${clas.id}`);
                 let assignments = [];
 
                 if (assignmentsResponse.ok) {
@@ -634,46 +774,51 @@
                     console.warn(`No assignments found for class ID ${clas.id}`);
                 }
 
-                // Create a row for the class
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                <td>${clas.name}</td>
-                <td>${clas.numberOfStudents}</td>
-                <td>
-                   ${
-                    assignments.length > 0
-                        ? `
-                                <table class="table table-sm">
-                                    <thead>
-                                        <tr>
-                                            <th>Description</th>
-                                            <th>End Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${assignments
-                            .map(
-                                (a) => `
-                                                    <tr>
-                                                        <td>${a.description}</td>
-                                                        <td>${new Date(a.end_date).toLocaleDateString()}</td>
-                                                    </tr>
-                                                `
-                            )
-                            .join('')}
-                                    </tbody>
-                                </table>
-                            `
-                        : 'This class have no assignments'
+                // Create the HTML for each class card
+                const classCard = document.createElement('div');
+                classCard.classList.add('class-box');
+                classCard.innerHTML = `
+                <div class="class-name">${clas.name}</div>
+                <div class="students-count">Number of students: ${clas.numberOfStudents}</div>
+                <button class="show-assignments-btn" onclick="toggleAssignments('${clas.id}')">Show Assignments</button>
+                <div class="assignments-container" id="assignments-${clas.id}">
+                    ${assignments.length > 0
+                    ? `
+                            <table class="table assignment-table table-sm">
+    <thead>
+        <tr>
+            <th style="font-size: 1.8rem; padding: 12px; background-color: #f0f0f0;">Description</th>
+            <th style="font-size: 1.8rem; padding: 12px; background-color: #f0f0f0;">End Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        ${assignments.map(a => `
+            <tr>
+                <td style="font-size: 1.8rem; padding: 12px;">${a.description}</td>
+                <td style="font-size: 1.8rem; padding: 12px;text-align: center;">${new Date(a.end_date).toLocaleDateString()}</td>
+            </tr>
+        `).join('')}
+    </tbody>
+</table>
+
+                        `
+                    : '<p class="no-assignments">This class has no assignments</p>'
                 }
-                </td>
+                </div>
             `;
-                tableBody.appendChild(row);
+
+                classListContainer.appendChild(classCard);
             }
         } catch (error) {
             console.error('Error fetching classes:', error);
         }
     }
+
+    function toggleAssignments(classId) {
+        const assignmentsContainer = document.getElementById(`assignments-${classId}`);
+        assignmentsContainer.classList.toggle('show');
+    }
+
 
     const API_BASE_URL = '/assignment';
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));

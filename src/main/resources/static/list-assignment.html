@@ -33,13 +33,102 @@
     <script type="text/javascript"
             src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <style>
-        .status-open {
-            color: green;  /* Màu xanh khi status là 'OPEN' */
+        /* Các style cho nhóm input và button */
+        .input-group {
+            display: flex;                   /* Sắp xếp phần tử con theo chiều ngang */
+            align-items: center;             /* Căn giữa theo chiều dọc */
         }
 
-        .status-close {
-            color: red;  /* Màu đỏ khi status là 'CLOSE' */
+        .shadow-lg {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Áp dụng bóng đổ với độ lớn lớn */
         }
+
+        .rounded {
+            border-radius: 0.375rem;        /* Bo góc nhẹ */
+        }
+
+        /* Dành cho phần tử input */
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .search-input {
+            font-size: 1.5rem;               /* Kích thước chữ lớn cho ô tìm kiếm */
+            padding: 10px 15px;              /* Lề trong của input */
+            border: 1px solid #ced4da;       /* Đường viền input */
+        }
+
+        .rounded-start {
+            border-top-left-radius: 0.375rem;
+            border-bottom-left-radius: 0.375rem;  /* Bo góc bên trái của input */
+        }
+
+        /* Dành cho nút button */
+        .btn {
+            display: inline-block;
+            font-weight: 400;
+            text-align: center;
+            white-space: nowrap;
+            background-color: #007bff;
+            border: 1px solid transparent;
+            border-radius: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+        }
+
+        .btn-gradient-yellow {
+            background: linear-gradient(90deg, rgba(255, 221, 51, 1) 0%, rgba(255, 160, 0, 1) 100%); /* Gradient màu vàng cho nút */
+        }
+
+        .rounded-end {
+            border-top-right-radius: 0.375rem;
+            border-bottom-right-radius: 0.375rem; /* Bo góc bên phải của button */
+        }
+
+        .text-white {
+            color: white !important; /* Màu chữ của nút thành trắng */
+        }
+
+        .fw-bold {
+            font-weight: bold; /* Làm chữ đậm trong button */
+        }
+
+        /* Icon trong button */
+        .fas {
+            font-size: 1.2rem; /* Kích thước của icon */
+        }
+
+        /* Thêm phần style inline đã được định nghĩa */
+        #searchInput {
+            font-size: 1.5rem;        /* Kích thước chữ lớn cho ô tìm kiếm */
+            padding: 10px 15px;       /* Lề trong của input */
+        }
+        button.btn {
+            background: linear-gradient(45deg, #6a11cb, #2575fc); /* Gradient màu cho button */
+            border: none;
+            color: white; /* Màu chữ trắng */
+            border-radius: 3px; /* Bo góc của button */
+            padding: 14px 15px;
+            font-size: 1.5rem; /* Giữ nguyên kích thước chữ */
+            transition: background 0.3s ease; /* Hiệu ứng chuyển màu nền khi di chuột qua */
+            margin-top: 3px; /* Dịch nút xuống một chút */
+        }
+
+
+
+        button.btn:hover {
+            background: linear-gradient(45deg, #2575fc, #6a11cb);
+        }
+
 
         /* Overlay */
         .overlay {
@@ -115,7 +204,7 @@
 
         /* Button styling */
         .btn {
-            margin-top: 20px;
+
             padding: 10px;
             background-color: #4CAF50;
             color: white;
@@ -199,17 +288,46 @@
             border-radius: 5px; /* Bo góc mềm mại */
             border: 1px solid #000; /* Viền màu đen */
             box-shadow: none; /* Loại bỏ bóng */
-
         }
 
+
+        /* Custom Button */
         .btn-search {
-            height: 50px;
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            border-radius: 5px;
-            padding: 0 20px;
-            margin-top: 4px; /* Dịch chuyển nút xuống một chút */
+            height: 50px; /* Đồng bộ chiều cao với input */
+            font-size: 16px; /* Kích thước chữ to hơn */
+            font-weight: bold; /* Làm chữ đậm hơn */
+            text-transform: uppercase; /* Viết hoa chữ */
+            border-radius: 5px; /* Bo góc tương tự input */
+            padding: 0 20px; /* Tăng khoảng cách trong nút */
+        }
+        /* Nút dropdown */
+        .btn-secondary.dropdown-toggle {
+            background-color: #007bff; /* Màu nền của nút */
+            color: white; /* Màu chữ của nút */
+            border: none; /* Xóa đường viền nếu cần */
+            border-radius: 5px; /* Thêm góc bo tròn */
+        }
+
+        .btn-secondary.dropdown-toggle:hover {
+            background-color: #0056b3; /* Màu nền khi hover */
+            color: white; /* Giữ màu chữ khi hover */
+        }
+
+        /* Phần menu dropdown */
+        .dropdown-menu {
+            background-color: #ffffff; /* Màu nền của dropdown */
+            border-radius: 5px; /* Thêm góc bo tròn */
+            border: 1px solid #dee2e6; /* Đường viền sáng cho dropdown */
+        }
+
+        /* Màu chữ các mục trong dropdown */
+        .dropdown-item {
+            color: #333; /* Màu chữ mặc định của các mục */
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa; /* Màu nền khi hover vào mục */
+            color: #007bff; /* Màu chữ khi hover */
         }
 
 
@@ -644,10 +762,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
-                                class="flaticon-shopping-list"></i><span data-i18n="schedule">Schedule</span></a>
-                    </li>
+
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span data-i18n="class">Class</span></a>
@@ -748,20 +863,19 @@
                                 <div class="row mb-3 align-items-center gx-3">
                                     <!-- Search Input -->
                                     <div class="col-lg-6">
-                                        <div class="input-group shadow-sm">
+                                        <div class="input-group shadow-lg rounded">
                                             <input
-                                                    type="text"
                                                     class="form-control search-input rounded-start"
                                                     id="searchInput"
                                                     name="searchInput"
-                                                    style="border: 1px solid #ced4da; height: 45px; font-size: 1.5rem; padding-left: 10px;"
+                                                    type="text"
+
+                                                    style="font-size: 1.5rem; padding: 10px 15px;"
                                             />
                                             <button
-                                                    type="submit"
-                                                    class="btn btn-gradient-yellow btn-search rounded-end text-white fw-bold"
-                                                    data-i18n="search"
-                                                    style="background-color: #ffc107; border: none; height: 45px;"><span data-i18n="search1">
-                                                SEARCH</span>
+                                                    class="btn btn-gradient-yellow rounded-end text-white fw-bold"
+                                                    type="submit">
+                                                <i class="fas fa-search me-2"></i> SEARCH
                                             </button>
                                         </div>
                                     </div>

@@ -40,6 +40,87 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .custom-filter-select {
+            padding-right: 2.5rem; /* Thêm khoảng cách cho icon bên phải */
+            font-size: 1rem; /* Kích thước chữ vừa phải */
+            height: 50px; /* Tăng chiều cao */
+            border: 1px solid #ddd; /* Đường viền nhẹ */
+            border-radius: 8px; /* Làm mềm góc */
+            transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Hiệu ứng hover */
+        }
+
+        .custom-filter-select:focus {
+            outline: none;
+            border-color: #2575fc; /* Viền xanh khi focus */
+            box-shadow: 0 0 5px rgba(37, 117, 252, 0.5); /* Hiệu ứng shadow */
+        }
+
+        .custom-filter-select:hover {
+            border-color: #007bff; /* Viền nổi bật khi hover */
+        }
+
+        .fas.fa-filter {
+            font-size: 1.2rem; /* Kích thước icon vừa phải */
+            color: #6c757d; /* Màu icon nhấn nhá */
+        }
+
+
+        .gradient-header {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            padding: 15px 20px;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .table {
+            border-collapse: separate;
+            border-spacing: 0 8px; /* Khoảng cách giữa các dòng */
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f5f8fa;
+        }
+
+        .table-primary th {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            color: white;
+            text-align: center;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .pagination .page-link {
+            color: #2575fc;
+            border-radius: 50%;
+            padding: 5px 15px;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #2575fc;
+            color: white;
+        }
+
+        .btn-outline-primary {
+            color: #2575fc;
+            border: 1px solid #2575fc;
+        }
+
+        .btn-outline-primary:hover {
+            background: #2575fc;
+            color: white;
+        }
+
+        .btn-outline-danger {
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+
+        .btn-outline-danger:hover {
+            background: #dc3545;
+            color: white;
+        }
+
         .gradient-header {
             background: linear-gradient(45deg, #6a11cb, #2575fc);
             color: white;
@@ -146,6 +227,9 @@
         }
 
         #accountForm {
+            gap: 1.5rem; /* Tăng khoảng cách giữa các trường */
+        }
+        #importForm {
             gap: 1.5rem; /* Tăng khoảng cách giữa các trường */
         }
 
@@ -594,8 +678,8 @@
                                 </label>
                                 <label class="text-primary font-weight-bold mb-0" data-i18n="filter"
                                        for="filterSelect"
-                                       style="position: absolute; left: 54%; transform: translateX(-50%);">
-                                    Filter:
+                                       style="position: absolute; left: 53%; transform: translateX(-50%);">
+                                    Filter
                                 </label>
 
                             </div>
@@ -603,40 +687,39 @@
                                 <div class="row mb-3 align-items-center gx-3">
                                     <!-- Search Input -->
                                     <div class="col-lg-6">
-                                        <div class="input-group shadow-sm">
+                                        <div class="input-group shadow-lg rounded">
                                             <input
                                                     class="form-control search-input rounded-start"
                                                     id="searchInput"
                                                     name="searchInput"
-                                                    style="border: 1px solid #ced4da; height: 45px;"
                                                     type="text"
+
+                                                    style="font-size: 1.5rem; padding: 10px 15px;"
                                             />
                                             <button
-                                                    class="btn btn-gradient-yellow btn-search rounded-end text-white fw-bold"
-                                                    data-i18n="search"
-                                                    style="background-color: #ffc107; border: none; height: 45px;"
+                                                    class="btn btn-gradient-yellow rounded-end text-white fw-bold"
                                                     type="submit">
-                                                SEARCH
+                                                <i class="fas fa-search me-2"></i> SEARCH
                                             </button>
                                         </div>
+
                                     </div>
 
                                     <!-- Filter Option và Dropdown -->
                                     <div class="col-lg-4 d-flex align-items-center">
                                         <!-- Filter Select -->
-                                        <div class="form-group flex-grow-1">
-                                            <div class="position-relative ps-4">
-                                                <i class="fas fa-sort position-absolute"
-                                                   style="right: 12px; top: 50%; transform: translateY(-50%); color: #aaa;"></i>
-                                                <select class="form-control filter-select" id="filterSelect" name="filterSelect"
-                                                        style="padding-right: 35px; font-size: 1.25rem; height: 45px; padding-left: 10px; margin-top: 7px;">
-                                                    <option value="">All Role</option>
+                                        <div class="form-group d-flex flex-grow-1 align-items-center" style="padding-top: 8px">
+                                            <div class="position-relative w-100">
+
+                                                <select class="form-select custom-filter-select" id="filterSelect" name="filterSelect">
+                                                    <option value="" selected>All Roles</option>
                                                     <option value="teacher">Teacher</option>
                                                     <option value="student">Student</option>
                                                     <option value="manager">Manager</option>
                                                 </select>
                                             </div>
                                         </div>
+
 
                                         <!-- Dropdown -->
                                         <div class="dropdown ms-3" >
@@ -667,22 +750,27 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card shadow-lg rounded-4 border-0 overflow-hidden">
+                        <!-- Card Header -->
+                        <div class="card-header text-white text-center py-4 bg-gradient-to-right">
+                            <h2 class="mb-0 fw-bold" data-i18n="user_list">Account List</h2>
+                        </div>
 
-                        <div class="card-body">
-                            <h3 data-i18n="user_list">Account List</h3>
+                        <!-- Card Body -->
+                        <div class="card-body px-4 py-5 bg-light">
                             <div class="table-responsive">
-                                <table class="table table-hover text-nowrap">
-                                    <thead>
+                                <table class="table align-middle table-hover text-center table-borderless">
+                                    <thead class="bg-primary text-white">
                                     <tr>
-                                        <th data-i18n="id">ID</th>
-                                        <th data-i18n="image">Image</th>
-                                        <th data-i18n="name">Name</th>
-                                        <th data-i18n="j_name">Japan Name</th>
-                                        <th data-i18n="role">Role</th>
-                                        <th data-i18n="actions">Actions</th>
+                                        <th class="text-center" data-i18n="id">ID</th>
+                                        <th class="text-center" data-i18n="image">Image</th>
+                                        <th class="text-center" data-i18n="name">Name</th>
+                                        <th class="text-center" data-i18n="j_name">Japan Name</th>
+                                        <th class="text-center" data-i18n="role">Role</th>
+                                        <th class="text-center" data-i18n="actions">Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -705,35 +793,40 @@
     </div>
 </div>
 <!-- Page Area End Here -->
-<div aria-hidden="true" class="modal fade" id="standard-modal" role="dialog"
-     tabindex="-1">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" data-i18n="add_account">Add Account</h5>
-                <button aria-label="Close" class="close" data-dismiss="modal"
-                        type="button">
+<div class="modal fade" id="example-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content shadow-lg rounded">
+            <!-- Tiêu đề Modal -->
+            <div class="modal-header gradient-header">
+                <h5 class="modal-title">Upload File</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="/account/import/excel" enctype="multipart/form-data" id="import" method="post">
+            <!-- Nội dung Modal -->
+            <form id="importForm" action="/account/import/excel" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
-
-                    <label data-i18n="choose_file" for="file"
-                           style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
-                    <!-- Thêm liên kết tải xuống -->
-
-                    <input class="form-control-file" id="file" name="file" required type="file">
+                    <div class="form-group">
+                        <label class="label" for="file">Choose File</label>
+                        <div class="input-icon">
+                            <i class="fas fa-file-upload"></i>
+                            <input type="file" class="form-control" id="file" name="file" required>
+                        </div>
+                    </div>
+                    <div class="alert alert-info mt-3">
+                        Please upload an Excel file.
+                    </div>
                 </div>
+                <!-- Footer Modal -->
                 <div class="modal-footer">
-                    <button class="footer-btn bg-dark-low" data-dismiss="modal" data-i18n="close" type="button">Close</button>
-                    <button class="footer-btn bg-linkedin" data-i18n="submit" type="submit">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>
-
         </div>
     </div>
 </div>
+
 <!-- Modal Structure -->
 <div class="modal fade" id="createAccountModal" tabindex="-1" aria-labelledby="createAccountModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -784,64 +877,73 @@
 
 <!-- Modal -->
 <div class="modal fade" id="createFormModal" tabindex="-1" aria-labelledby="createFormModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="createForm" enctype="multipart/form-data">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createFormModalLabel">Create Account</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content shadow-lg rounded">
+            <div class="modal-header gradient-header">
+                <h5 class="modal-title text-white font-weight-bold" id="createFormModalLabel">Create Account</h5>
+                <button type="button" class="close text-white" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body px-4">
+                <form id="createForm" enctype="multipart/form-data">
                     <input type="hidden" name="account_id" id="account_id_form1" value="${account_id}">
                     <input type="hidden" name="role" id="role_form1" value="${role}">
 
-                    <div class="form-group">
-                        <label for="fullname_form1">Fullname *</label>
-                        <input type="text" name="fullname" class="form-control" id="fullname_form1" placeholder="Enter your name">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="jname_form1">Japan Name *</label>
-                        <input type="text" name="jname" class="form-control" id="jname_form1" placeholder="Enter your Japan name">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email_form1">Email *</label>
-                        <input type="email" name="email" class="form-control" id="email_form1" placeholder="ex: abc@gmail.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Gender *</label><br>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" name="gender" value="Male" id="male_form1" class="form-check-input">
-                            <label class="form-check-label" for="male_form1">Male</label>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="fullname_form1" class="font-weight-bold">Fullname <span class="text-danger">*</span></label>
+                            <div class="input-icon">
+                                <input type="text" name="fullname" id="fullname_form1" class="form-control shadow-sm rounded" placeholder="Enter your name">
+                            </div>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" name="gender" value="Female" id="female_form1" class="form-check-input">
-                            <label class="form-check-label" for="female_form1">Female</label>
+                        <div class="form-group col-md-6">
+                            <label for="jname_form1" class="font-weight-bold">Japan Name <span class="text-danger">*</span></label>
+                            <div class="input-icon">
+                                <input type="text" name="jname" id="jname_form1" class="form-control shadow-sm rounded" placeholder="Enter your Japan name">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="phone_form1">Phone Number *</label>
-                        <input type="text" name="phoneNumber" class="form-control" id="phone_form1" placeholder="ex: 012345678">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="email_form1" class="font-weight-bold">Email <span class="text-danger">*</span></label>
+                            <input type="email" name="email" id="email_form1" class="form-control shadow-sm rounded" placeholder="ex: abc@gmail.com">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="phone_form1" class="font-weight-bold">Phone Number <span class="text-danger">*</span></label>
+                            <input type="text" name="phoneNumber" id="phone_form1" class="form-control shadow-sm rounded" placeholder="ex: 012345678">
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="img_form1">Profile Image *</label>
-                        <input type="file" class="form-control" name="img" id="img_form1">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-bold d-inline-block">Gender <span class="text-danger">*</span></label>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" name="gender" value="Male" id="male_form1" class="form-check-input">
+                                <label class="form-check-label" for="male_form1">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" name="gender" value="Female" id="female_form1" class="form-check-input">
+                                <label class="form-check-label" for="female_form1">Female</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="img_form1" class="font-weight-bold">Profile Image <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control-file shadow-sm" name="img" id="img_form1">
+                        </div>
                     </div>
 
-                    <div id="message_form1" class="alert alert-danger mt-2 d-none"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="submit-btn-form1">Create</button>
-                </div>
-            </form>
+                    <div class="text-center mt-4">
+                        <button type="submit" id="submit-btn-form1" class="btn btn-primary btn-lg shadow px-5">Create Account</button>
+                    </div>
+                    <div id="message_form1" class="alert alert-danger mt-3 d-none"></div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
 <!-- Modal student-->
 <div class="modal fade" id="create-account-student" tabindex="-1" role="dialog" aria-labelledby="createAccountStudentLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">

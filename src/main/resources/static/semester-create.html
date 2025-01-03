@@ -1172,7 +1172,8 @@
 
                 // Validation
                 if (!updatedSemesterName || !updatedSemesterStart || !updatedSemesterEnd) {
-                    showErrorModal("All fields are required.");
+                    updateModalInstance.hide(); // Hide the modal first
+                    setTimeout(() => showErrorModal("All fields are required."), 300);
                     return;
                 }
 
@@ -1183,12 +1184,14 @@
                 startDate.setHours(0, 0, 0, 0); // Normalize the start date to 00:00:00
 
                 if (startDate < today) {
-                    showErrorModal("Start date cannot be in the past.");
+                    updateModalInstance.hide(); // Hide the modal first
+                    setTimeout(() => showErrorModal("Start date cannot be in the past."), 300);
                     return;
                 }
 
                 if (new Date(updatedSemesterEnd) < new Date(updatedSemesterStart)) {
-                    showErrorModal("End date cannot be before the start date.");
+                    updateModalInstance.hide(); // Hide the modal first
+                    setTimeout(() => showErrorModal("End date cannot be before the start date."), 300);
                     return;
                 }
 
@@ -1207,19 +1210,23 @@
                 })
                     .then(response => {
                         if (response.ok) {
-                            // Hide the update modal before showing the success modal
-                            updateModalInstance.hide();
-                            showSuccessModal("Semester updated successfully.");
+                            updateModalInstance.hide(); // Hide the modal first
+                            setTimeout(() => showSuccessModal("Semester updated successfully."), 300);
                         } else {
-                            response.text().then(text => showErrorModal(`Error: ${text}`));
+                            response.text().then(text => {
+                                updateModalInstance.hide(); // Hide the modal first
+                                setTimeout(() => showErrorModal(`Error: ${text}`), 300);
+                            });
                         }
                     })
                     .catch(error => {
                         console.error("Error updating semester:", error);
-                        showErrorModal("Failed to update semester.");
+                        updateModalInstance.hide(); // Hide the modal first
+                        setTimeout(() => showErrorModal("Failed to update semester."), 300);
                     });
             });
         }
+
 
         // Function to show success modal
         function showSuccessModal(message) {
