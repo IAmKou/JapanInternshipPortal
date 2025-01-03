@@ -696,18 +696,12 @@
                         <label for="presentation_mark">Presentation Mark:</label>
                         <input type="number" id="presentation_mark" name="presentation_mark" min="0" max="100" step="1" required/>
 
-                        <!-- Hidden fields -->
-                        <input type="hidden" id="avg_exam_mark" name="avg_exam_mark" />
-                        <input type="hidden" id="attitude_mark" name="attitude_mark" />
-                        <input type="hidden" id="final_mark" name="final_mark" />
-
                         <div class="button-group">
                             <button type="submit" class="btn submit-btn">Update</button>
                             <button type="button" class="btn cancel-btn" onclick="closePopup()">Cancel</button>
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
 
@@ -823,7 +817,7 @@
                 <span class="flaticon-more-button-of-three-dots"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" onclick="openUpdatePopup(${markrp.studentId})">
+                <a class="dropdown-item" onclick="openUpdatePopup(${markrp.id})">
                     <i class="fas fa-cogs text-dark-pastel-green"></i> Update
                 </a>
             </div>
@@ -857,11 +851,6 @@
             document.getElementById('script_mark').value = markrp.scriptPresentation ?? '';
             document.getElementById('presentation_mark').value = markrp.presentation ?? '';
 
-            // Điền dữ liệu vào các trường hidden
-            document.getElementById('avg_exam_mark').value = markrp.avg_exam_mark ?? '';
-            document.getElementById('attitude_mark').value = markrp.attitude ?? '';
-            document.getElementById('final_mark').value = markrp.final_mark ?? '';
-
             // Hiển thị popup chỉnh sửa
             currentMarkId = markrp.id;
             document.getElementById('markrpPopup').style.display = 'flex';
@@ -880,12 +869,7 @@
         const script_mark = document.getElementById('script_mark').value;
         const presentation_mark = document.getElementById('presentation_mark').value;
 
-        // Get values from hidden fields
-        const avg_exam_mark = document.getElementById('avg_exam_mark').value;
-        const attitude_mark = document.getElementById('attitude_mark').value;
-        const final_mark = document.getElementById('final_mark').value;
-
-        // Validation for numeric fields
+        // Validation for required fields
         const inputs = [middle_exam_mark, final_exam_mark, script_mark, presentation_mark];
         if (inputs.some(value => value < 0 || value > 100)) {
             showErrorModal('Please ensure all numeric values are between 0 and 100.');
@@ -898,9 +882,6 @@
         formData.append('final_exam', final_exam_mark);
         formData.append('scriptPresentation', script_mark);
         formData.append('presentation', presentation_mark);
-        formData.append('avg_exam_mark', avg_exam_mark); // Hidden field
-        formData.append('attitude', attitude_mark); // Hidden field
-        formData.append('final_mark', final_mark); // Hidden field
 
         try {
             const response = await fetch(`${API_BASE_URL}/update?markRpId=${currentMarkId}`, {
@@ -910,9 +891,9 @@
 
             if (response.ok) {
                 showSuccessModal('Mark updated successfully!');
-                // setTimeout(() => {
-                //     window.location.reload();
-                // }, 2000);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             } else if (response.status === 404) {
                 showErrorModal('Mark Rp not found!');
             } else {

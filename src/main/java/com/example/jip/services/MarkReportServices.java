@@ -309,7 +309,8 @@ public class MarkReportServices {
 
                     // Calculate Avg Exam Mark
                     List<MarkReportExam> exams = markRpExamRepository.findAllByStudentId(student.getId());
-                    BigDecimal avgExamMark = BigDecimal.ZERO;
+
+                    BigDecimal avgExamMark = markReport.getAvg_exam_mark();
                     BigDecimal totalExamMark = BigDecimal.ZERO;
 
                     for (MarkReportExam exam : exams) {
@@ -322,13 +323,23 @@ public class MarkReportServices {
                             BigDecimal examMark = kanji.add(bunpou).add(kotoba)
                                     .divide(new BigDecimal("3"), 2, RoundingMode.HALF_UP);
                             totalExamMark = totalExamMark.add(examMark);
-                            avgExamMark = totalExamMark.divide(new BigDecimal(exams.size()), 2, RoundingMode.HALF_UP);
-                            markReport.setAvg_exam_mark(avgExamMark);
-                        } else {
-                            markReport.setAvg_exam_mark(null);
                         }
                     }
 
+                    boolean hasNullValues = false; // Flag to track if any null values exist
+
+                    for (MarkReportExam exam : exams) {
+                        if (exam.getBunpou() == null || exam.getKanji() == null || exam.getKotoba() == null) {
+                            hasNullValues = true;
+                            break; // Exit the loop as soon as a null value is found
+                        }
+                    }
+                    if(hasNullValues == false) {
+                        avgExamMark = totalExamMark.divide(new BigDecimal(exams.size()), 2, RoundingMode.HALF_UP);
+                        markReport.setAvg_exam_mark(avgExamMark);
+                    } else {
+                        markReport.setAvg_exam_mark(null);
+                    }
                     //Calculate Skill
                     if (request.getMiddle_exam() != null) {
                         markReport.setMiddle_exam(request.getMiddle_exam());
@@ -342,14 +353,14 @@ public class MarkReportServices {
                         markReport.setFinal_exam(null);
                     }
 
-                    if(request.getMiddle_exam() != null && request.getFinal_exam() != null) {
+                    if(avgExamMark == null || request.getMiddle_exam() == null || request.getFinal_exam() == null) {
+                        markReport.setSkill(null);
+                    } else {
                         avgExamMark.multiply(new BigDecimal("0.3"));
                         BigDecimal middleExam = request.getMiddle_exam().multiply(new BigDecimal("0.4"));
                         BigDecimal finalExam = request.getFinal_exam().multiply(new BigDecimal("0.3"));
                         BigDecimal skill = avgExamMark.add(middleExam).add(finalExam);
                         markReport.setSkill(skill);
-                    } else {
-                        markReport.setSkill(null);
                     }
 
                     //Calculate soft skill
@@ -407,33 +418,7 @@ public class MarkReportServices {
 //                    Final Mark Calculation:
 //                    final_mark = (soft_skill * 0.3) + (skill * 0.4) + (attitude * 0.3).
 
-        // Calculate skill
-        // Calculate Avg Exam Mark
-        List<MarkReportExam> exams = markRpExamRepository.findAllByStudentId(student.getId());
-        BigDecimal totalExamMark = BigDecimal.ZERO;
-
-        for (MarkReportExam exam : exams) {
-            BigDecimal kanji = exam.getKanji() != null ? exam.getKanji() : BigDecimal.ZERO;
-            BigDecimal bunpou = exam.getBunpou() != null ? exam.getBunpou() : BigDecimal.ZERO;
-            BigDecimal kotoba = exam.getKotoba() != null ? exam.getKotoba() : BigDecimal.ZERO;
-
-            BigDecimal examMark = kanji.add(bunpou).add(kotoba)
-                    .divide(new BigDecimal("3"), 2, RoundingMode.HALF_UP);
-            totalExamMark = totalExamMark.add(examMark);
-        }
-
-        BigDecimal avgExamMark = BigDecimal.ZERO;
-        if (!exams.isEmpty()) {
-            avgExamMark = totalExamMark.divide(new BigDecimal(exams.size()), 2, RoundingMode.HALF_UP);
-        }
-
-        BigDecimal middleExam = request.getMiddle_exam().multiply(new BigDecimal("0.4"));
-        BigDecimal finalExam = request.getFinal_exam().multiply(new BigDecimal("0.3"));
-        BigDecimal skill = avgExamMark.add(middleExam).add(finalExam);
-
-
-
-        // Calculate attitude
+        /// Calculate attitude
 //                    int totalAssignments = assignmentStudentRepository.countByStudentId(student.getId());
 
 //                    // Calculate attitude
@@ -470,19 +455,85 @@ public class MarkReportServices {
 //                    BigDecimal attitudeWeight = attitude.multiply(new BigDecimal("0.3"));
 //                    BigDecimal finalMark = softSkillWeight.add(skillWeight).add(attitudeWeight);
 
+        // Calculate Avg Exam Mark
+        List<MarkReportExam> exams = markRpExamRepository.findAllByStudentId(student.getId());
+        BigDecimal avgExamMark = markReport.getAvg_exam_mark();
+        BigDecimal totalExamMark = BigDecimal.ZERO;
 
-        markReport.setSoftskill(request.getPresentation() != null && request.getScriptPresentation() != null
-                ? request.getPresentation().add(request.getScriptPresentation()).multiply(new BigDecimal("0.5"))
-                : BigDecimal.ZERO);
+        for (MarkReportExam exam : exams) {
+            BigDecimal kanji = exam.getKanji() != null ? exam.getKanji() : null;
+            BigDecimal bunpou = exam.getBunpou() != null ? exam.getBunpou() : null;
+            BigDecimal kotoba = exam.getKotoba() != null ? exam.getKotoba() : null;
 
-        markReport.setAvg_exam_mark(avgExamMark);
-        markReport.setMiddle_exam(request.getMiddle_exam());
-        markReport.setFinal_exam(request.getFinal_exam());
-        markReport.setSkill(skill);
+            // Check for null marks and handle gracefully
+            if (kanji != null && bunpou != null && kotoba != null) {
+                BigDecimal examMark = kanji.add(bunpou).add(kotoba)
+                        .divide(new BigDecimal("3"), 2, RoundingMode.HALF_UP);
+                totalExamMark = totalExamMark.add(examMark);
+
+            } else {
+                markReport.setAvg_exam_mark(null);
+            }
+        }
+
+        boolean hasNullValues = false; // Flag to track if any null values exist
+
+        for (MarkReportExam exam : exams) {
+            if (exam.getBunpou() == null || exam.getKanji() == null || exam.getKotoba() == null) {
+                hasNullValues = true;
+                break; // Exit the loop as soon as a null value is found
+            }
+        }
+        if(hasNullValues == false) {
+            avgExamMark = totalExamMark.divide(new BigDecimal(exams.size()), 2, RoundingMode.HALF_UP);
+            markReport.setAvg_exam_mark(avgExamMark);
+        } else {
+            markReport.setAvg_exam_mark(null);
+        }
+
+        //Calculate Skill
+        if (request.getMiddle_exam() != null) {
+            markReport.setMiddle_exam(request.getMiddle_exam());
+        } else {
+            markReport.setMiddle_exam(null);
+        }
+
+        if (request.getFinal_exam() != null) {
+            markReport.setFinal_exam(request.getFinal_exam());
+        } else {
+            markReport.setFinal_exam(null);
+        }
+
+        if(markReport.getAvg_exam_mark() == null || request.getMiddle_exam() == null || request.getFinal_exam() == null) {
+            markReport.setSkill(null);
+        } else {
+            markReport.getAvg_exam_mark().multiply(new BigDecimal("0.3"));
+            BigDecimal middleExam = request.getMiddle_exam().multiply(new BigDecimal("0.4"));
+            BigDecimal finalExam = request.getFinal_exam().multiply(new BigDecimal("0.3"));
+            BigDecimal skill = avgExamMark.add(middleExam).add(finalExam);
+            markReport.setSkill(skill);
+        }
+
+        //Calculate soft skill
+        if(request.getPresentation() != null){
+            markReport.setPresentation(request.getPresentation());
+        } else {
+            markReport.setPresentation(null);
+        }
+        if(request.getScriptPresentation() != null){
+            markReport.setScript_presentation(request.getScriptPresentation());
+        } else {
+            markReport.setScript_presentation(null);
+        }
+
+        if(request.getPresentation() != null && request.getScriptPresentation() != null){
+            markReport.setSoftskill(request.getPresentation().multiply(new BigDecimal("0.5")).add(request.getScriptPresentation().multiply(new BigDecimal("0.5"))));
+        } else {
+            markReport.setSoftskill(null);
+        }
+
         markReport.setAttitude(null);
         markReport.setFinal_mark(null);
-        markReport.setComment(request.getComment());
-
         markReportRepository.save(markReport);
     }
 

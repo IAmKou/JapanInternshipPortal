@@ -560,15 +560,21 @@
                                 <td style=" color: #000;" id="skill"></td>
                             </tr>
                             <tr>
-                                <td rowspan="2" style=" color: #000;">Soft Skill</td>
+                                <td rowspan="3" style=" color: #000;">Soft Skill</td>
                                 <td style=" color: #000;">Presentation</td>
-                                <td style="font-weight: bold; color: #007bff;">30%</td>
-                                <td style=" color: #000;" id="soft-skill"></td>
+                                <td style="font-weight: bold; color: #007bff;">15%</td>
+                                <td style=" color: #000;" id="presentation"></td>
+                            </tr>
+                            <tr>
+
+                                <td style=" color: #000;">Presentation Script</td>
+                                <td style="font-weight: bold; color: #007bff;">15%</td>
+                                <td style=" color: #000;" id="script"></td>
                             </tr>
                             <tr>
                                 <td style=" color: #000;">Total</td>
                                 <td style="font-weight: bold; color: #007bff;">30%</td>
-                                <td style=" color: #000;" id="soft-skill2"></td>
+                                <td style=" color: #000;" id="soft-skill"></td>
                             </tr>
                             <tr>
                                 <td rowspan="3" style=" color: #000;">Attitude</td>
@@ -642,8 +648,9 @@
             document.getElementById('middle-exam').textContent = markRp.middle_exam;
             document.getElementById('final-exam').textContent = markRp.final_exam;
             document.getElementById('skill').textContent = markRp.skill;
+            document.getElementById('presentation').textContent = markRp.presentation;
+            document.getElementById('script').textContent = markRp.scriptPresentation;
             document.getElementById('soft-skill').textContent = markRp.softskill;
-            document.getElementById('soft-skill2').textContent = markRp.softskill;
             // document.getElementById('assignment').textContent = markRp.assignment;
             // document.getElementById('attendant').textContent = markRp.attendant;
             document.getElementById('final-mark').textContent = markRp.final_mark;
