@@ -783,60 +783,58 @@
 
     const API_BASE_URL = '/mark-report';
 
-    function fetchAndDisplayMarks() {
+    async function fetchAndDisplayMarks() {
         const urlParams = new URLSearchParams(window.location.search);
         const classId = urlParams.get('classId');
+        try {
+            console.log('Fetching mark reports...');
+            const response = await fetch(`${API_BASE_URL}/list?classId=${classId}`);
+            console.log('Class Id: ', classId);
+            console.log('Response received:', response);
 
-        if (!classId) {
-            console.error('Class ID is missing from the URL.');
-            return;
-        }
+            const clasRp = await fetch(`/class/getCById?classId=${classId}`);
+            const clas = await clasRp.json();
+            console.log('Class: ', clas);
+            document.getElementById('className').textContent = clas.name;
 
-        fetch(`/class/${classId}/getAllGrades`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error fetching mark reports: ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(markReports => {
-                console.log('Mark reports data:', markReports);
+            if (!response.ok) {
+                throw new Error('Error fetching mark reports: ' + response.statusText);
+            }
+            const mark_reports = await response.json();
+            console.log('mark reports data:', mark_reports);
 
-                // Clear existing rows in the table
-                const tableBody = document.getElementById('mark_list');
-                tableBody.innerHTML = '';
-
-                // Populate the table with fetched data
-                markReports.forEach(mark => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                    <td>${mark.fullname ?? '-'}</td>
-                    <td>${mark.avgExamMark ?? '-'}</td>
-                    <td>${mark.middleExam ?? '-'}</td>
-                    <td>${mark.finalExam ?? '-'}</td>
-                    <td>${mark.scriptPresentation ?? '-'}</td>
-                    <td>${mark.presentation ?? '-'}</td>
-                    <td>${mark.attitude ?? '-'}</td>
-                    <td>${mark.finalMark ?? '-'}</td>
-                    <td>
-                        <div class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="flaticon-more-button-of-three-dots"></span>
+            // Clear existing rows in the table
+            const tableBody = document.getElementById('mark_list');
+            tableBody.innerHTML = '';
+            mark_reports.forEach(markrp => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td><a href="/view-student-mark-report.html?id=${markrp.id}" target="_blank">${markrp.studentName}</a></td>
+                <td>${markrp.avg_exam_mark ?? '-'}</td>
+                <td>${markrp.middle_exam ?? '-'}</td>
+                <td>${markrp.final_exam ?? '-'}</td>
+                <td>${markrp.scriptPresentation ?? '-'}</td>
+                <td>${markrp.presentation ?? '-'}</td>
+                <td>${markrp.attitude ?? '-'}</td>
+                <td>${markrp.finalMark ?? '-'}</td>
+                <td>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="flaticon-more-button-of-three-dots"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" onclick="openUpdatePopup(${markrp.studentId})">
+                                <i class="fas fa-cogs text-dark-pastel-green"></i> Update
                             </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" onclick="openUpdatePopup(${mark.studentId})">
-                                    <i class="fas fa-cogs text-dark-pastel-green"></i> Update
-                                </a>
-                            </div>
                         </div>
-                    </td>
-                `;
-                    tableBody.appendChild(row);
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
+                    </div>
+                </td>
+            `;
+                tableBody.appendChild(row);
             });
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 
     // Initialize the table with mark_reports on page load
@@ -991,15 +989,27 @@
             const data = await response.json();
 
             // Transform data into the desired format
-            const excelData = data.map((item) => ({
-                Name: item.studentName,
-                Email: item.studentEmail,
-                "Soft Skill": "",
-                "Avg Exam Mark": "",
-                "Middle Exam": "",
-                "Final Exam": "",
-                Comment: ""
-            }));
+            const excelData = data.map((item) => {
+                // Base information
+                const row = {
+                    Name: item.studentName,
+                    Email: item.studentEmail,
+                    Presentation: item.studentPresentation || '',
+                    Script: item.scriptPresentation || '',
+                    "Middle Exam": item.middle_exam || '',
+                    "Final Exam": item.final_exam || '',
+                    Comment: item.comment || ''
+                };
+
+                // Dynamically add Kanji, Bunpou, and Kotoba scores
+                for (let i = 1; i <= 44; i++) {
+                    row[`Kanji ${i}`] = item[`kanji${i}`] || '';
+                    row[`Bunpou ${i}`] = item[`bunpou${i}`] || '';
+                    row[`Kotoba ${i}`] = item[`kotoba${i}`] || '';
+                }
+
+                return row;
+            });
 
             // Convert data to a worksheet
             const ws = XLSX.utils.json_to_sheet(excelData);
@@ -1009,7 +1019,7 @@
             XLSX.utils.book_append_sheet(wb, ws, "Marks");
 
             // Export the workbook to an Excel file
-            XLSX.writeFile(wb, "Marks_Report.xlsx");
+            XLSX.writeFile(wb, "Mark_Report.xlsx");
         } catch (error) {
             console.error("Error exporting Excel file:", error);
         }

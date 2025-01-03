@@ -13,9 +13,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ExamResponse {
+    int markId;
+    int examId;
     String title;
     BigDecimal kanji;
     BigDecimal bunpou;
     BigDecimal kotoba;
-
 }

@@ -33,7 +33,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 
 
     @Query("SELECT s FROM Schedule s WHERE s.semester.id = :semesterId AND s.date = :date AND s.activity = :activity AND s.clasz.id = null")
-    Schedule findBySemesterIdAndDateAndActivity(@Param("semesterId") int semesterId,
+   Schedule findBySemesterIdAndDateAndActivity(@Param("semesterId") int semesterId,
                                                 @Param("date") java.sql.Date date,
                                                 @Param("activity") String activity);
 
@@ -52,4 +52,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 
     @Query("SELECT s FROM Schedule s WHERE s.clasz.id = :classId")
     List<Schedule> findByClaszId(@Param("classId") int classId);
+
+
+    boolean existsBySemesterIdAndDateAndRoom(int semesterId, java.sql.Date date, String room);
+
 }

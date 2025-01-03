@@ -71,9 +71,46 @@ public class RoomAvailabilityServices {
                     RoomAvailability availability = new RoomAvailability();
                     availability.setRoom(room);
                     availability.setDate(currentDate);
-                    availability.setStatus(RoomAvailability.Status.AVAILABLE);
+                    availability.setStatus(RoomAvailability.Status.Available);
                     availabilityList.add(availability);
                 }
+            }
+
+            // Increment the date by one day
+            currentDate = Date.valueOf(localDate.plusDays(1));
+        }
+
+        roomAvailabilityRepository.saveAll(availabilityList);
+    }
+
+    public void initializeRoomAvailabilityForSemesterAndRoom(int semesterId, Room room) {
+        Semester semester = semesterRepository.findById(semesterId)
+                .orElseThrow(() -> new IllegalArgumentException("Semester not found with ID: " + semesterId));
+
+        List<Date> holidays = holidayRepository.findByDateBetween(
+                semester.getStart_time(), semester.getEnd_time()
+        ).stream().map(Holiday::getDate).toList();
+
+        List<RoomAvailability> availabilityList = new ArrayList<>();
+
+        Date currentDate = semester.getStart_time();
+        while (!currentDate.after(semester.getEnd_time())) {
+            LocalDate localDate = currentDate.toLocalDate();
+            DayOfWeek dayOfWeek = localDate.getDayOfWeek();
+
+            // Skip Saturdays, Sundays, and holidays
+            if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY || holidays.contains(currentDate)) {
+                currentDate = Date.valueOf(localDate.plusDays(1));
+                continue;
+            }
+
+            // Check if an entry already exists
+            if (!roomAvailabilityRepository.existsByRoomAndDate(room, currentDate)) {
+                RoomAvailability availability = new RoomAvailability();
+                availability.setRoom(room);
+                availability.setDate(currentDate);
+                availability.setStatus(RoomAvailability.Status.Available);
+                availabilityList.add(availability);
             }
 
             // Increment the date by one day

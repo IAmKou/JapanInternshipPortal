@@ -77,19 +77,16 @@ public class ScheduleController {
                 java.sql.Date sqlDate = Date.valueOf(localDate);
 
                 // Check for existing schedule
-                Schedule existingSchedule = scheduleRepository.findBySemesterIdAndDateAndActivity(
-                        semesterId, sqlDate, scheduleDTO.getActivity()
-                );
-
                 Schedule schedule;
-                if (existingSchedule != null) {
-                    schedule = existingSchedule; // Update existing schedule
+                if (scheduleDTO.getId() != null) {
+                    schedule = scheduleRepository.findById(scheduleDTO.getId())
+                            .orElseThrow(() -> new IllegalArgumentException("Invalid Schedule ID: " + scheduleDTO.getId()));
                 } else {
-                    schedule = new Schedule(); // Create new schedule
+                    schedule = new Schedule();
                     schedule.setSemester(semester);
                 }
 
-                // Map all fields from DTO to entity
+                // Update or set fields
                 schedule.setActivity(scheduleDTO.getActivity());
                 schedule.setRoom(scheduleDTO.getRoom());
                 schedule.setColor(scheduleDTO.getColor());
@@ -97,12 +94,6 @@ public class ScheduleController {
                 schedule.setDay_of_week(getDayOfWeekFromDate(sqlDate));
                 schedule.setStatus(Schedule.status.Draft);
 
-                // If classId is provided, associate with the Class entity
-                if (scheduleDTO.getClassId() != 0) {
-                    Class clasz = classRepository.findById(scheduleDTO.getClassId())
-                            .orElseThrow(() -> new IllegalArgumentException("Invalid Class ID: " + scheduleDTO.getClassId()));
-                    schedule.setClasz(clasz);
-                }
 
                 scheduleRepository.save(schedule);
 
@@ -185,7 +176,7 @@ public class ScheduleController {
                             roomAvailabilityRepository.findByRoomAndDate(room, sqlDate).ifPresent(roomAvailability -> {
                                 roomAvailability.setSchedule(schedule);
                                 roomAvailability.setClasz(clasz);
-                                roomAvailability.setStatus(RoomAvailability.Status.OCCUPIED);
+                                roomAvailability.setStatus(RoomAvailability.Status.Occupied);
                                 roomAvailabilityRepository.save(roomAvailability);
                             });
                         });
@@ -302,7 +293,7 @@ public class ScheduleController {
                     roomAvailabilityRepository.findByRoomAndDate(room, sqlDate).ifPresent(roomAvailability -> {
                         roomAvailability.setSchedule(null);
                         roomAvailability.setClasz(null);
-                        roomAvailability.setStatus(RoomAvailability.Status.AVAILABLE);
+                        roomAvailability.setStatus(RoomAvailability.Status.Available);
                         roomAvailabilityRepository.save(roomAvailability);
                     });
                 });
