@@ -8,6 +8,7 @@ import com.example.jip.dto.response.exam.ExamResponse;
 import com.example.jip.dto.response.markReport.MarkReportResponse;
 import com.example.jip.entity.Exam;
 import com.example.jip.entity.MarkReport;
+import com.example.jip.entity.MarkReportExam;
 import com.example.jip.entity.Student;
 import com.example.jip.repository.*;
 import lombok.AccessLevel;
@@ -38,6 +39,7 @@ public class MarkReportServices {
     StudentRepository studentRepository;
     ListRepository listRepository;
     ExamRepository examRepository;
+    MarkRpExamRepository markRpExamRepository;
 
     public List<MarkReportResponse> getListMarkReport(int classId) {
         List<MarkReport> results =  markReportRepository.findAllByClassId(classId);
@@ -150,16 +152,30 @@ public class MarkReportServices {
                     }
 
                     // Parse dynamic fields for Kanji, Bunpou, and Kotoba
-                    Map<String, BigDecimal> scores = new HashMap<>();
+                    List<MarkReportExam> scores = markRpExamRepository.findAllByStudentId(studentExisted.getId());
+                    log.info("List Exam of student has id {} is:" + scores, studentExisted.getId());
                     int colIndex = 7; // Start after the fixed columns
-                    for (int i = 1; i <= 44; i++) {
+                    for (int i = 0; i < 44; i++) {
                         BigDecimal kanji = getNumericCellValue(row.getCell(colIndex++), rowNumber, "Kanji " + i);
                         BigDecimal bunpou = getNumericCellValue(row.getCell(colIndex++), rowNumber, "Bunpou " + i);
                         BigDecimal kotoba = getNumericCellValue(row.getCell(colIndex++), rowNumber, "Kotoba " + i);
 
-                        scores.put("Kanji " + i, kanji);
-                        scores.put("Bunpou " + i, bunpou);
-                        scores.put("Kotoba " + i, kotoba);
+                        MarkReportExam exam = scores.get(i);
+                        if (kanji != null){
+                            exam.setKanji(kanji);
+                        } else {
+                            exam.setKanji(null);
+                        }
+                        if (bunpou != null){
+                            exam.setBunpou(bunpou);
+                        } else {
+                            exam.setBunpou(null);
+                        }
+                        if (kotoba != null){
+                            exam.setKotoba(kotoba);
+                        } else {
+                            exam.setKotoba(null);
+                        }
 
 
                     }
@@ -172,9 +188,7 @@ public class MarkReportServices {
                             script,
                             middleExam,
                             finalExam,
-                            comment,
-                            scores
-
+                            comment
                     );
                     log.info("Mark Report {}", markReport);
                     markReports.add(markReport);
@@ -294,11 +308,11 @@ public class MarkReportServices {
                     }
 
                     // Calculate Avg Exam Mark
-                    List<ExamResponse> exams = examRepository.findAllByStudentId(student.getId());
+                    List<MarkReportExam> exams = markRpExamRepository.findAllByStudentId(student.getId());
                     BigDecimal avgExamMark = BigDecimal.ZERO;
                     BigDecimal totalExamMark = BigDecimal.ZERO;
 
-                    for (ExamResponse exam : exams) {
+                    for (MarkReportExam exam : exams) {
                         BigDecimal kanji = exam.getKanji() != null ? exam.getKanji() : null;
                         BigDecimal bunpou = exam.getBunpou() != null ? exam.getBunpou() : null;
                         BigDecimal kotoba = exam.getKotoba() != null ? exam.getKotoba() : null;
@@ -355,7 +369,7 @@ public class MarkReportServices {
                         markReport.setSoftskill(null);
                     }
 
-                    if (request.getComment() != null && request.getComment().isEmpty()) {
+                    if (request.getComment() != null || !request.getComment().isEmpty()) {
                         markReport.setComment(request.getComment());
                     } else {
                         markReport.setComment(null);
@@ -395,10 +409,10 @@ public class MarkReportServices {
 
         // Calculate skill
         // Calculate Avg Exam Mark
-        List<ExamResponse> exams = examRepository.findAllByStudentId(student.getId());
+        List<MarkReportExam> exams = markRpExamRepository.findAllByStudentId(student.getId());
         BigDecimal totalExamMark = BigDecimal.ZERO;
 
-        for (ExamResponse exam : exams) {
+        for (MarkReportExam exam : exams) {
             BigDecimal kanji = exam.getKanji() != null ? exam.getKanji() : BigDecimal.ZERO;
             BigDecimal bunpou = exam.getBunpou() != null ? exam.getBunpou() : BigDecimal.ZERO;
             BigDecimal kotoba = exam.getKotoba() != null ? exam.getKotoba() : BigDecimal.ZERO;

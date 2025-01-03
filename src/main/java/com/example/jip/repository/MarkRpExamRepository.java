@@ -10,8 +10,8 @@ import java.util.List;
 
 @Repository
 public interface MarkRpExamRepository extends JpaRepository<MarkReportExam, MarkReportExamId> {
-    @Query("SELECT DISTINCT mre FROM Exam e " +
-            "JOIN e.markReportExams mre " +
+    @Query("SELECT DISTINCT mre FROM MarkReportExam mre  " +
+            "JOIN mre.exam e " +
             "JOIN mre.markReport mr Where mr.student.id  = :studentId")
     List<MarkReportExam> findAllByStudentId(int studentId);
 }

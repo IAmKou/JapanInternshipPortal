@@ -11,8 +11,5 @@ import java.util.List;
 
 @Repository
 public interface ExamRepository extends JpaRepository<Exam, Integer> {
-    @Query("SELECT new com.example.jip.dto.response.exam.ExamResponse(mr.id, e.id, e.title, e.kanji, e.kotoba, e.bunpou) FROM Exam e " +
-            "JOIN MarkReportExam mre On e.id = mre.exam.id " +
-            "JOIN MarkReport mr on mr.id = mre.markReport.id  Where mr.student.id  = :studentId")
-    List<ExamResponse> findAllByStudentId(int studentId);
+
 }
