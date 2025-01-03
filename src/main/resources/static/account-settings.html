@@ -35,9 +35,121 @@
     <link href="style.css" rel="stylesheet">
     <!-- Font Awesome CDN -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .gradient-header {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            color: white;
+            padding: 15px 20px;
+            border-bottom: 0;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .label {
+            font-size: 15px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ccc;
+        }
+
+        .input-icon input {
+            padding-left: 35px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"] {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            padding: 10px;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="date"]:focus {
+            outline: none;
+            border-color: #2575fc;
+            box-shadow: 0 0 8px rgba(37, 117, 252, 0.3);
+        }
+
+        button.btn {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            border: none;
+            color: white;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        button.btn:hover {
+            background: linear-gradient(45deg, #2575fc, #6a11cb);
+        }
+
+
+        .input-group-text {
+            background-color: #f8f9fa; /* Nhẹ nhàng hơn với nền sáng */
+            border: 1px solid #ced4da; /* Đồng bộ viền */
+            border-right: none; /* Tránh trùng viền với field */
+        }
+
+        .form-control, .form-select {
+            border: 1px solid #ced4da;
+            border-left: none; /* Tránh trùng với input-group-text */
+            box-shadow: none; /* Xóa hiệu ứng shadow */
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Hiệu ứng focus nhẹ */
+        }
+
+        .input-group {
+            border-radius: 0.375rem; /* Làm mềm góc cạnh */
+            overflow: hidden; /* Tránh viền bị lệch */
+        }
+
+        .input-group-text i {
+            font-size: 2rem; /* Icon lớn hơn */
+        }
+
+        .form-control,
+        .form-select {
+            font-size: 1.5rem; /* Phông chữ lớn hơn cho input và dropdown */
+            padding: 1rem 1.25rem; /* Khoảng cách bên trong lớn hơn */
+        }
+
+        .btn {
+            font-size: 1.5rem; /* Phông chữ lớn hơn cho nút */
+            padding: 1rem 1.5rem; /* Nút lớn hơn */
+        }
+
+        .modal-title {
+            font-size: 2rem; /* Tiêu đề lớn hơn */
+        }
+
+        #accountForm {
+            gap: 1.5rem; /* Tăng khoảng cách giữa các trường */
+        }
+
+
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -237,6 +349,33 @@
             box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
         }
 
+        input[name="username"] {
+            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px; /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="username"]:hover {
+            border-color: #28a745 !important; /* Màu border khi hover */
+        }
+
+        input[name="username"]:focus {
+            border-color: #28a745 !important; /* Giữ màu đỏ khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+        }
+        select[name="role"] { /* Chỉnh sửa thuộc tính cho phần tử select */
+            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px; /* Thêm góc bo tròn */
+        }
+
+        select[name="role"]:hover { /* Khi di chuột vào select */
+            border-color: #28a745 !important; /* Màu viền khi hover */
+        }
+
+        select[name="role"]:focus { /* Khi focus vào select */
+            border-color: #28a745 !important; /* Màu viền khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+        }
+
         select[name="filterSelect"] { /* Chỉnh sửa thuộc tính cho phần tử select */
             border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
             border-radius: 5px; /* Thêm góc bo tròn */
@@ -399,32 +538,35 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img alt="logo" src="img/logo1.png"></a>
+                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-dashboard"></i><span data-i18n="dashboard">Dashboard</span></a>
-                        <ul class="nav sub-group-menu">
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a class="nav-link menu-active" href="admin.html"><i
-                                        class="fas fa-angle-right"></i><span data-i18n="admin">Admin</span></a>
+                                <a href="admin.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Admin</a>
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item ">
+                        <a href="semester-create.html" class="nav-link"><i class="fas fa-calendar"></i><span>Semester</span></a>
+                    </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" href="report-list.html"><i
-                                class="flaticon-script"></i><span data-i18n="report">Report</span></a>
+                        <a href="notice-board.html" class="nav-link">
+                            <i class="fas fa-bell"></i><span>Notification</span>
+                        </a>
+
+
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="notice-board.html"><i
-                                class="flaticon-script"></i><span data-i18n="notification">Notification</span></a>
+                        <a href="account-settings.html" class="nav-link"><i
+                                class="flaticon-settings"></i><span>Account List</span></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link menu-active" href="account-settings.html"><i
-                                class="flaticon-settings"></i><span data-i18n="account_list">Account List</span></a>
-                    </li>
+
                 </ul>
             </div>
         </div>
@@ -509,6 +651,10 @@
 
                                                 <a class="dropdown-item" data-bs-target="#standard-modal" data-bs-toggle="modal"
                                                    data-i18n="import_users"><i class="fas fa-file-import text-green"></i> Import Users</a>
+                                                <a href="/template/Import%20Account%201.xlsx" download
+                                                   style="font-size: 16px; color: #007bff; text-decoration: underline; margin-top: 10px; display: inline-block;">
+                                                     Import Account Template
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -572,10 +718,7 @@
             </div>
             <form action="/account/import/excel" enctype="multipart/form-data" id="import" method="post">
                 <div class="modal-body">
-                    <a href="/template/Import%20Account%201.xlsx" download
-                       style="font-size: 16px; color: #007bff; text-decoration: underline; margin-top: 10px; display: inline-block;">
-                        Download Excel Template
-                    </a>
+
                     <label data-i18n="choose_file" for="file"
                            style="font-weight: bold; color: #464c4d; font-size:14px;">Choose File</label><br>
                     <!-- Thêm liên kết tải xuống -->
@@ -593,36 +736,51 @@
 </div>
 <!-- Modal Structure -->
 <div class="modal fade" id="createAccountModal" tabindex="-1" aria-labelledby="createAccountModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createAccountModalLabel">Create Account</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content shadow-lg border-0">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fs-2" id="createAccountModalLabel">Create A New Account</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-5">
                 <form id="accountForm" class="login-form">
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" required placeholder="Enter username" maxlength="100" name="username" class="form-control" id="username">
+
+                    <!-- Username Field -->
+                    <div class="form-group input-group mb-5">
+                        <span class="input-group-text bg-light text-primary fs-3"><i class="bi bi-person-fill"></i></span>
+                        <input type="text" required placeholder="Enter your username"
+                               maxlength="100" name="username" class="form-control fs-4 p-3" id="username">
                     </div>
-                    <div class="form-group mt-3">
-                        <label for="role">Role</label>
-                        <select name="role" id="role" class="form-control">
+
+                    <!-- Role Dropdown -->
+                    <div class="form-group input-group mb-5">
+                        <span class="input-group-text bg-light text-primary fs-3"><i class="bi bi-person-badge-fill"></i></span>
+                        <select name="role" id="role" class="form-select fs-4 p-3">
                             <option value="4">Manager</option>
                             <option value="3">Teacher</option>
                             <option value="2">Student</option>
                             <option value="1">Admin</option>
                         </select>
                     </div>
-                    <div id="error-message" style="display: none; color: red; margin-top: 10px;"></div>
-                    <div class="form-group mt-4">
-                        <button type="submit" class="btn btn-primary" id="submit-btn">Next</button>
+
+                    <!-- Error Message -->
+                    <div id="error-message" class="text-danger mt-4 fs-4" style="display: none;"></div>
+
+                    <!-- Submit Button -->
+                    <div class="form-group d-grid">
+                        <button type="submit" class="btn btn-success fs-3 py-3" id="submit-btn">Next</button>
                     </div>
+
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+
+
+
+
 
 <!-- Modal -->
 <div class="modal fade" id="createFormModal" tabindex="-1" aria-labelledby="createFormModalLabel" aria-hidden="true">
@@ -687,86 +845,87 @@
 <!-- Modal student-->
 <div class="modal fade" id="create-account-student" tabindex="-1" role="dialog" aria-labelledby="createAccountStudentLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createAccountStudentLabel">Create Account Student</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal-content shadow-lg rounded">
+            <div class="modal-header gradient-header">
+                <h5 class="modal-title text-white font-weight-bold" id="createAccountStudentLabel"> Create Account - Student</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <!-- Form -->
+            <div class="modal-body px-4">
                 <form id="createFormStudent" action="/student/save" method="post" class="login-form" enctype="multipart/form-data">
+                    <input type="hidden" name="account_id" id="account_id" value="${account_id}">
+
                     <div class="form-row">
-                        <input type="hidden" name="account_id" id="account_id" value="${account_id}">
-                        <!-- Fullname and Japan Name -->
                         <div class="form-group col-md-6">
-                            <label for="fullname">Fullname *</label>
-                            <input type="text" placeholder="Enter your name" name="fullname" required class="form-control" id="fullname">
+                            <label for="fullname" class="font-weight-bold">Fullname <span class="text-danger">*</span></label>
+                            <div class="input-icon">
+
+                                <input type="text" placeholder="Enter your name" name="fullname" required class="form-control shadow-sm rounded" id="fullname">
+                            </div>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="jname">Japan Name *</label>
-                            <input type="text" placeholder="Enter your Japan name" name="japanname" required class="form-control" id="jname">
+                            <label for="jname" class="font-weight-bold">Japan Name <span class="text-danger">*</span></label>
+                            <div class="input-icon">
+
+                                <input type="text" placeholder="Enter your Japan name" name="japanname" required class="form-control shadow-sm rounded" id="jname">
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-row">
-                        <!-- Date of Birth and Email -->
                         <div class="form-group col-md-6">
-                            <label for="DoB">Date of Birth *</label>
-                            <input type="date" name="dob" required class="form-control" id="DoB">
+                            <label for="DoB" class="font-weight-bold">Date of Birth <span class="text-danger">*</span></label>
+                            <input type="date" name="dob" required class="form-control shadow-sm rounded" id="DoB">
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="email">Email *</label>
-                            <input type="email" name="email" required placeholder="ex:abc@gmail.com" id="email" class="form-control">
+                            <label for="email" class="font-weight-bold">Email <span class="text-danger">*</span></label>
+                            <input type="email" name="email" required placeholder="ex: abc@gmail.com" id="email" class="form-control shadow-sm rounded">
                         </div>
                     </div>
 
                     <div class="form-row">
-                        <!-- Phone Number and Gender -->
                         <div class="form-group col-md-6">
-                            <label for="phone">Phone Number *</label>
-                            <input type="text" name="phoneNumber" required placeholder="ex:012345678" id="phone" class="form-control">
+                            <label for="phone" class="font-weight-bold">Phone Number <span class="text-danger">*</span></label>
+                            <input type="text" name="phoneNumber" required placeholder="ex: 012345678" id="phone" class="form-control shadow-sm rounded">
                         </div>
                         <div class="form-group col-md-6">
-                            <label style="font-weight: bold; color: #464c4d; font-size:14px;">Gender *</label></br>
-                            <div class="form-check-inline">
+                            <label class="font-weight-bold d-inline-block">Gender <span class="text-danger">*</span></label>
+                            <div class="form-check form-check-inline">
                                 <input type="radio" name="gender" value="Male" id="male" class="form-check-input">
                                 <label for="male" class="form-check-label">Male</label>
                             </div>
-                            <div class="form-check-inline">
+                            <div class="form-check form-check-inline">
                                 <input type="radio" name="gender" value="Female" id="female" class="form-check-input">
                                 <label for="female" class="form-check-label">Female</label>
                             </div>
                         </div>
                     </div>
 
+
+
                     <div class="form-row">
-                        <!-- Profile Image and Passport Image -->
                         <div class="form-group col-md-6">
-                            <label for="img">Profile Image *</label>
-                            <input type="file" name="img" id="img" class="form-control">
+                            <label for="img" class="font-weight-bold">Profile Image <span class="text-danger">*</span></label>
+                            <input type="file" name="img" id="img" class="form-control-file shadow-sm">
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="passport">Passport Image *</label>
-                            <input type="file" name="passport_img" id="passport" class="form-control">
+                            <label for="passport" class="font-weight-bold">Passport Image <span class="text-danger">*</span></label>
+                            <input type="file" name="passport_img" id="passport" class="form-control-file shadow-sm">
                         </div>
                     </div>
 
-                    <!-- Submit Button -->
-                    <div class="form-row">
-                        <div class="form-group col-md-12 text-center">
-                            <div class="col-md-4 mx-auto">
-                                <button type="submit" id="submit-btn1" class="login-btn btn btn-primary btn-block" style="font-size: 20px;">Create</button>
-                            </div>
-                        </div>
-                        <div id="message" style="display: none;" class="alert alert-danger"></div>
+                    <div class="text-center mt-4">
+                        <button type="submit" id="submit-btn1" class="btn btn-primary btn-lg shadow px-5"> Create Account</button>
                     </div>
+                    <div id="message" class="alert alert-danger mt-3 d-none"></div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+
 
 <!-- Success Modal -->
 <div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal" tabindex="-1">

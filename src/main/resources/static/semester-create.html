@@ -81,40 +81,45 @@
         }
 
         .semester-item {
-            border: 1px solid #ddd; /* Viền màu xám */
-            border-radius: 5px; /* Bo tròn các góc */
-            margin: 20px 0; /* Tăng khoảng cách trên và dưới */
-            padding: 10px; /* Khoảng cách nội dung */
-            text-align: center; /* Căn giữa nội dung */
-            position: relative; /* Định vị tương đối */
-            margin-top: 40px; /* Thêm khoảng cách phía trên để cách xa thẻ h3 */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 20px 0;
+            padding: 10px;
+            position: relative;
+            margin-top: 40px;
+            display: flex; /* Hiển thị theo kiểu flex */
+            justify-content: space-between; /* Căn đều giữa các phần tử */
+            align-items: center; /* Căn giữa theo chiều dọc */
         }
 
         .semester-name {
-            font-size: 18px; /* Kích thước chữ */
-            font-weight: bold; /* Chữ in đậm */
-            margin-bottom: 10px; /* Khoảng cách dưới tên */
-            text-align: center; /* Căn giữa */
-            position: absolute; /* Vị trí tuyệt đối */
-            top: -20px; /* Dịch lên trên */
-            left: 50%; /* Đặt giữa chiều ngang */
-            transform: translateX(-50%); /* Căn chỉnh giữa tuyệt đối */
-            background-color: white; /* Nền trắng */
-            padding: 0 10px; /* Khoảng cách trong */
-            z-index: 1; /* Đảm bảo nằm trên các phần tử khác */
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 50px;
+            position: absolute;
+            top: 10px; /* Cách trên */
+            left: 20px; /* Đặt vào góc bên trái */
+            background-color: white;
+            padding: 0 10px;
+            z-index: 1;
         }
 
         .semester-dates {
-            display: flex; /* Hiển thị linh hoạt */
-            align-items: center; /* Căn giữa theo chiều dọc */
-            justify-content: center; /* Căn giữa theo chiều ngang */
-            gap: 10px; /* Khoảng cách giữa các mục */
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Đưa các phần tử về bên trái */
+            gap: 10px;
+            width: 100%; /* Chiếm hết chiều rộng */
+            padding-left: 350px; /* Dịch sang trái một chút */
         }
 
+
+
         .date-item {
-            text-align: center; /* Căn giữa */
-            font-size: 14px; /* Kích thước chữ */
+            text-align: center;
+            font-size: 14px;
         }
+
 
 
         .calendar-icon {
@@ -166,6 +171,7 @@
             display: flex; /* Đặt phân trang nằm ngang */
             justify-content: center; /* Căn giữa */
             margin-top: 10px; /* Khoảng cách từ nội dung */
+            margin-right: 80px;
         }
 
 
@@ -232,14 +238,15 @@
 
         .semester-actions {
             display: flex; /* Sắp xếp linh hoạt cho các nút */
-            justify-content: center; /* Căn giữa các nút theo chiều ngang */
+            flex-direction: column; /* Đặt các nút theo chiều dọc */
+            align-items: center; /* Căn giữa các nút theo chiều ngang */
             gap: 10px; /* Khoảng cách giữa các nút */
-            margin-top: 3px; /* Khoảng cách phía trên các ngày tháng */
-            padding: 10px; /* Khoảng cách trong để trông rõ ràng */
-            background-color: white; /* Nền trắng để nổi bật */
-            border: 1px solid #ddd; /* Đường viền mờ */
-            border-radius: 5px; /* Bo góc cho khung nút */
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+            margin-top: 3px;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
 
@@ -585,37 +592,28 @@
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
+                                <a href="admin.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Admin</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a href="semester-create.html" class="nav-link"><i
-                                class="flaticon-settings"></i><span>Semester</span></a>
+                    <li class="nav-item ">
+                        <a href="semester-create.html" class="nav-link"><i class="fas fa-calendar"></i><span>Semester</span></a>
                     </li>
+
                     <li class="nav-item">
-                        <a href="report-list.html" class="nav-link"><i
-                                class="flaticon-script"></i><span>Report</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="notice-board.html" class="nav-link"><i
-                                class="flaticon-script"></i><span>Notification</span></a>
+                        <a href="notice-board.html" class="nav-link">
+                            <i class="fas fa-bell"></i><span>Notification</span>
+                        </a>
+
+
                     </li>
                     <li class="nav-item">
                         <a href="account-settings.html" class="nav-link"><i
                                 class="flaticon-settings"></i><span>Account List</span></a>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Security</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="change-password.html" class="nav-link"><i class="fas fa-angle-right"></i>Change
-                                    Password</a>
-                            </li>
-                        </ul>
-                    </li>
+
                 </ul>
             </div>
         </div>

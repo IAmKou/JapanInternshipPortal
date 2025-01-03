@@ -50,3 +50,7 @@ cloudinary:
   api-key: 151443119214651
   api-secret: LRXCKQiCmQNqx-GP4RFnOdf_xwY
 
+google:
+  cloud:
+    api:
+      key: AIzaSyA0HjYusVnEAwDuNqEph4GDBI_Lea6vCAQ

@@ -122,6 +122,27 @@
             /* Hoặc bạn có thể đảm bảo chiều cao tự động thay đổi */
             max-height: none; /* Đảm bảo không giới hạn chiều cao */
         }
+        .pagination-numbers {
+            display: inline-flex;
+            gap: 5px;
+        }
+
+        .page-number {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .page-number.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .page-number:hover {
+            background-color: #007bff;
+            color: white;
+        }
 
     </style>
 </head>
@@ -215,11 +236,16 @@
                 </li>
 
                 <li class="navbar-item dropdown header-language">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
-                       data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
+                    </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#">English</a>
-                        <a class="dropdown-item" href="#">Japanese</a>
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
+                            <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;"> English
+                        </a>
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
+                            <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese" style="width: 20px; height: 15px;"> 日本語
+                        </a>
                     </div>
                 </li>
             </ul>
@@ -239,16 +265,22 @@
                     <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-                            <ul class="nav sub-group-menu">
+                            <ul class="nav sub-group-menu sub-group-active">
                                 <li class="nav-item">
                                     <a href="admin.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item">
+                            <a href="semester-create.html" class="nav-link"><i class="fas fa-calendar"></i><span>Semester</span></a>
+                        </li>
 
                         <li class="nav-item">
-                            <a href="notice-board.html" class="nav-link"><i
-                                    class="flaticon-script"></i><span>Notification</span></a>
+                            <a href="notice-board.html" class="nav-link menu-active">
+                                <i class="fas fa-bell"></i><span>Notification</span>
+                            </a>
+
+
                         </li>
                         <li class="nav-item">
                             <a href="account-settings.html" class="nav-link"><i
@@ -316,10 +348,11 @@
                                     <!-- Các thông báo sẽ được thêm vào đây bởi script -->
                                 </div>
                                 <div id="pagination-controls" class="pagination-controls">
-                                    <button id="prev-page" class="pagination-button">❮ Previous</button>
-                                    <span id="current-page" class="pagination-info">Page 1</span>
-                                    <button id="next-page" class="pagination-button">Next ❯</button>
+                                    <button id="prev-page" class="pagination-button">❮</button>
+                                    <div id="page-numbers" class="pagination-numbers"></div> <!-- Khu vực hiển thị các số trang -->
+                                    <button id="next-page" class="pagination-button">❯</button>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -357,74 +390,79 @@
     <script src="js/datepicker.min.js"></script>
     <!-- Custom Js -->
     <script src="js/main.js"></script>
-    <script src="script.js"></script>
-
-    <script type="text/javascript">
-        // Hàm thay đổi ngôn ngữ và lưu vào localStorage
+    <script>
         function changeLanguage(language) {
-            var languageLabel = document.getElementById('languageLabel');
+            const languageLabel = document.getElementById('languageLabel');
+            languageLabel.innerText = language === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
 
-            // Cập nhật nhãn ngôn ngữ trên dropdown
+            if (language === 'ja') {
+                // Lưu ngôn ngữ tiếng Nhật vào localStorage
+                localStorage.setItem('language', 'ja');
+            } else {
+                // Nếu không phải tiếng Nhật, xóa ngôn ngữ khỏi localStorage
+                localStorage.removeItem('language');
+            }
+
             if (language === 'en') {
-                languageLabel.innerText = 'EN';
-            } else if (language === 'ja') {
-                languageLabel.innerText = 'JA';
+                // Nếu chọn tiếng Anh, quay về nội dung ban đầu mà không cần dịch
+                window.location.reload(); // Tải lại trang gốc
+                return;
             }
 
-            // Lưu ngôn ngữ vào localStorage
-            localStorage.setItem('selectedLanguage', language);
+            const pageContent = document.body.innerHTML;
 
-            // Kiểm tra nếu Google Translate đã được tải
-            if (window.google && google.translate) {
-                google.translate.TranslateElement.prototype.translatePage(language);
-            }
+            const userFullName = document.querySelector('.userFullName') ? document.querySelector('.userFullName').innerText : '';
+            const userRole = document.querySelector('.userRole') ? document.querySelector('.userRole').innerText : '';
+
+            // Gửi yêu cầu dịch trang khi ngôn ngữ không phải là tiếng Anh
+            fetch('/api/translate/whole-page', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    text: pageContent,
+                    targetLanguage: language,
+                    extraText: {
+                        userFullName: userFullName,
+                        userRole: userRole,
+                    },
+                }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.translatedText) {
+                        document.body.innerHTML = data.translatedText;
+
+                        // Cập nhật nhãn ngôn ngữ sau khi nội dung được dịch
+                        const updatedLanguageLabel = document.getElementById('languageLabel');
+                        updatedLanguageLabel.innerText = language === 'en' ? 'EN' : 'JA';
+
+                        if (data.extraTranslations) {
+                            if (data.extraTranslations.userFullName) {
+                                document.querySelector('.userFullName').innerText = data.extraTranslations.userFullName;
+                            }
+                            if (data.extraTranslations.userRole) {
+                                document.querySelector('.userRole').innerText = data.extraTranslations.userRole;
+                            }
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error during translation:', error);
+                    alert('Có lỗi xảy ra khi dịch trang. Vui lòng thử lại sau.');
+                });
         }
 
-        // Hàm khởi tạo Google Translate khi trang tải
-        function loadGoogleTranslate() {
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-            document.head.appendChild(script);
-        }
-
-        // Hàm khởi tạo Google Translate Element
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,ja',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false,
-            }, 'google_translate_element');
-        }
-
-        // Khi trang được tải, thiết lập ngôn ngữ từ localStorage
-        document.addEventListener('DOMContentLoaded', function () {
-            // Lấy ngôn ngữ đã lưu trong localStorage
-            var savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-
-            // Cập nhật giao diện với ngôn ngữ đã lưu
-            var languageLabel = document.getElementById('languageLabel');
-            if (savedLanguage === 'en') {
-                languageLabel.innerText = 'EN';
-            } else if (savedLanguage === 'ja') {
-                languageLabel.innerText = 'JA';
-            }
-
-            // Dịch trang ngay từ khi tải
-            if (window.google && google.translate) {
-                google.translate.TranslateElement.prototype.translatePage(savedLanguage);
-            }
-        });
-
-        // Tải Google Translate
-        loadGoogleTranslate();
     </script>
 
 
-
-
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script>
         var quill = new Quill('#titleEditor', {
             theme: 'snow',  // Chọn theme của Quill (có thể chọn giữa 'snow' và 'bubble')
@@ -725,11 +763,9 @@
         // Hàm cập nhật trạng thái phân trang
         function updatePagination(totalItems) {
             const totalPages = Math.ceil(totalItems / itemsPerPage);
-            const currentPageElement = document.getElementById('current-page');
+            const pageNumbersElement = document.getElementById('page-numbers');
             const prevButton = document.getElementById('prev-page');
             const nextButton = document.getElementById('next-page');
-
-            currentPageElement.textContent = `Page ${currentPage} of ${totalPages}`;
 
             // Cập nhật trạng thái nút
             prevButton.disabled = currentPage === 1;
@@ -737,6 +773,25 @@
 
             prevButton.classList.toggle('disabled', currentPage === 1);
             nextButton.classList.toggle('disabled', currentPage === totalPages);
+
+            // Tạo các nút số trang
+            pageNumbersElement.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.classList.add('page-number');
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    fetchNotifications();
+                });
+
+                // Làm nổi bật nút của trang hiện tại
+                if (i === currentPage) {
+                    pageButton.classList.add('active');
+                }
+
+                pageNumbersElement.appendChild(pageButton);
+            }
         }
 
         // Xử lý khi nhấn nút "Previous" hoặc "Next"
@@ -754,6 +809,7 @@
 
         // Gọi lần đầu khi tải trang
         fetchNotifications();
+
 
     </script>
 
