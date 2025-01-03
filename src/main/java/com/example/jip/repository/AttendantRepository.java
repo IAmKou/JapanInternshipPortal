@@ -19,7 +19,10 @@ public interface AttendantRepository extends JpaRepository<Attendant, Integer> {
     Optional<Schedule> findByClassAndDate(@Param("classId")int classId, @Param("date")Date date);
 
     @Query("SELECT a FROM Attendant a WHERE a.student.id = :studentId AND a.schedule.id = :scheduleId AND a.date = :date")
-    Optional<Attendant> findByStudentIdAndScheduleIdAndDate(int studentId, int scheduleId, Date date);
+    List<Attendant> findByStudentIdAndScheduleIdAndDate(int studentId, int scheduleId, Date date);
+
+    @Query("SELECT a FROM Attendant a WHERE a.student.id = :studentId AND a.schedule.id = :scheduleId AND a.date = :date")
+    Optional<Attendant> findByStudentIdAndScheduleIdAndDates(int studentId, int scheduleId, Date date);
 
     @Query("SELECT new com.example.jip.dto.AttendantDTO( " +
             "   a.id ,a.status,a.date,s.id,sch.id, s.fullname , s.mark ,s.img )" +
@@ -51,4 +54,5 @@ public interface AttendantRepository extends JpaRepository<Attendant, Integer> {
             "JOIN a.curriculum c " +
             "WHERE a.student.id = :studentId")
     Integer findTotalSlotByStudentId(@Param("studentId") Integer studentId);
+
 }

@@ -611,6 +611,19 @@
             const urlParams = new URLSearchParams(window.location.search);
             const classId = urlParams.get('classId');
 
+            // Restrict Attendance Time
+            const now = new Date();
+            const currentTime = now.getHours() * 60 + now.getMinutes(); // Current time in minutes
+            const attendanceStartTime = 13 * 60 + 30; // 13:30 in minutes
+            const attendanceEndTime = 17 * 60; // 17:00 in minutes
+
+            if (currentTime < attendanceStartTime || currentTime > attendanceEndTime) {
+                alert("Attendance can only be taken between 13:30 PM and 17:00 PM.");
+                document.querySelector('#submitButton').disabled = true; // Disable the submit button
+                return;
+            }
+
+
             if (classId) {
                 fetch(`/student/${classId}/getAll`)
                     .then(response => {
@@ -731,79 +744,60 @@
 
             // Validation for checking if at least one checkbox is selected in each row
             document.querySelector('#submitButton').addEventListener('click', function (event) {
+                // Validate and submit attendance
                 let isValid = true;
-
-                const rows = tableBody.querySelectorAll('tr');
-                rows.forEach(row => {
-                    const checkboxes = row.querySelectorAll('.form-check-input');
-                    const isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
-
-                    if (!isChecked) {
-                        row.classList.add('highlight'); // Add a class to highlight the row if no checkbox is checked
-                        isValid = false;
-                    } else {
-                        row.classList.remove('highlight');
-                    }
-                });
-
-                if (!isValid) {
-                    event.preventDefault(); // Prevent form submission if validation fails
-                    alert("Please check at least one checkbox for each student.");
-                } else {
-                    submitAttendance();
-                }
-            });
-
-            // Submit the attendance data
-            function submitAttendance() {
-                const tableBody = document.querySelector('.table tbody');
                 const attendanceData = [];
 
-
-                // Iterate through each row in the table
                 tableBody.querySelectorAll('tr').forEach(row => {
-                    const studentId = row.querySelector('td:first-child').textContent.trim(); // Get student ID
+                    const studentId = row.querySelector('td:first-child').textContent.trim();
                     let status = null;
 
-                    // Check the selected attendance status
                     row.querySelectorAll('.form-check-input').forEach(checkbox => {
                         if (checkbox.checked) {
-                            status = checkbox.value; // Get the selected value (Present, Late, Absent, etc.)
+                            status = checkbox.value;
                         }
                     });
 
-                    if (status) {
+                    if (!status) {
+                        row.classList.add('highlight');
+                        isValid = false;
+                    } else {
+                        row.classList.remove('highlight');
                         attendanceData.push({
                             studentId: parseInt(studentId, 10),
                             status: status,
-                            date: new Date().toLocaleDateString('en-CA'), // Current date in YYYY-MM-DD format
+                            date: new Date().toLocaleDateString('en-CA'),
                         });
                     }
                 });
 
-                fetch(`/attendant/save/${classId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(attendanceData),
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.text(); // Use .text() if the response is plain text
-                        } else {
-                            throw new Error('Failed to save attendance: ' + response.statusText);
-                        }
+                if (!isValid) {
+                    event.preventDefault();
+                    alert("Please check at least one checkbox for each student.");
+                } else {
+                    fetch(`/attendant/save/${classId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(attendanceData),
                     })
-                    .then(data => {
-                        console.log('Attendance saved successfully:', data);
-                        alert(data); // Display the plain text response
-                    })
-                    .catch(error => {
-                        console.error('Error saving attendance:', error);
-                        alert('Failed to save attendance.');
-                    });
-            }
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to save attendance: ' + response.statusText);
+                            }
+                            return response.text();
+                        })
+                        .then(data => {
+                            console.log('Attendance saved successfully:', data);
+                            alert(data);
+                        })
+                        .catch(error => {
+                            console.error('Error saving attendance:', error);
+                            alert('Failed to save attendance.');
+                        });
+                }
+            });
         });
     </script>
 </body>

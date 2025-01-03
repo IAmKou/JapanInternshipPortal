@@ -7,6 +7,7 @@ import com.example.jip.entity.Student;
 import com.example.jip.repository.AttendantRepository;
 import com.example.jip.repository.ScheduleRepository;
 import com.example.jip.repository.StudentRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -31,40 +33,53 @@ public class AttendantServices {
     @Autowired
     private StudentRepository studentRepository;
 
-//    public Attendant createAttendant(int student_id, int schedule_id, String status, Date date, int class_id) {
-//        List<Schedule> schedules = scheduleRepository.findByClassIdAndDate(class_id, date);
-//        if (schedules.isEmpty()) {
-//            throw new IllegalArgumentException("No schedule found for class_id: " + class_id + " and date: " + date);
-//        }
-//
-//        // Find the schedule that matches the time range
-//        LocalTime currentLocalTime = LocalTime.now();
-//        Time currentTime = Time.valueOf(currentLocalTime);
-//
-//        Schedule matchingSchedule = schedules.stream()
-//                .filter(schedule -> !currentTime.before(schedule.getStart_time()) && !currentTime.after(schedule.getEnd_time()))
-//                .findFirst()
-//                .orElseThrow(() -> new IllegalArgumentException("No matching schedule slot found for the current time"));
-//
-//        // Fetch the student
-//        Optional<Student> studentOpt = studentRepository.findById(student_id);
-//        if (!studentOpt.isPresent()) {
-//            throw new IllegalArgumentException("No student found with id: " + student_id);
-//        }
-//
-//
-//        // Create and save the attendance record
-//        Attendant attendant = new Attendant();
-//        attendant.setStudent(studentOpt.get());
-//        attendant.setSchedule(matchingSchedule);
-//        attendant.setStatus(Attendant.Status.valueOf(status));
-//        attendant.setDate(date);
-//
-//        return attendantRepository.save(attendant);
-//    }
+    public Attendant createAttendant(int studentId, int scheduleId, String status, Date date, int classId) {
+        // Fetch the schedule
+        Optional<Schedule> scheduleOpt = scheduleRepository.findById(scheduleId);
+        if (!scheduleOpt.isPresent()) {
+            throw new IllegalArgumentException("No schedule found with id: " + scheduleId);
+        }
 
+        Schedule matchingSchedule = scheduleOpt.get();
+
+        // Validate that the schedule belongs to the correct class
+        if (matchingSchedule.getClasz() == null || matchingSchedule.getClasz().getId() != classId) {
+            throw new IllegalArgumentException("Schedule does not belong to the specified class.");
+        }
+
+        // Fetch the student
+        Optional<Student> studentOpt = studentRepository.findById(studentId);
+        if (!studentOpt.isPresent()) {
+            throw new IllegalArgumentException("No student found with id: " + studentId);
+        }
+
+        // Check if attendance already exists for the student, schedule, and date
+        List<Attendant> existingAttendants = attendantRepository.findByStudentIdAndScheduleIdAndDate(studentId, scheduleId, date);
+        if (!existingAttendants.isEmpty()) {
+            throw new IllegalArgumentException("Attendance already exists for this student, schedule, and date.");
+        }
+
+        // Create and save the attendance record
+        Attendant attendant = new Attendant();
+        attendant.setStudent(studentOpt.get());
+        attendant.setSchedule(matchingSchedule);
+        attendant.setStatus(Attendant.Status.valueOf(status));
+        attendant.setDate(date);
+
+        return attendantRepository.save(attendant);
+    }
+
+
+    @Transactional
     public void updateAttendance(int classId, List<AttendantDTO> attendanceData) {
         LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+
+        // Prevent updates after midnight
+        if (now.isAfter(LocalTime.MIDNIGHT)) {
+            throw new IllegalStateException("Attendance updates are not allowed after midnight.");
+        }
+
         Date date = Date.valueOf(today);
 
         // Fetch schedules for the class and date
@@ -78,9 +93,14 @@ public class AttendantServices {
         Schedule schedule = schedules.get(0);
 
         for (AttendantDTO dto : attendanceData) {
+            // Validate DTO
+            if (dto.getDate() == null || !dto.getDate().toLocalDate().equals(today)) {
+                throw new IllegalArgumentException("Invalid or mismatched date in attendance record.");
+            }
+
             // Fetch existing attendance record or create a new one
             Attendant attendant = attendantRepository
-                    .findByStudentIdAndScheduleIdAndDate(dto.getStudentId(), schedule.getId(), dto.getDate())
+                    .findByStudentIdAndScheduleIdAndDates(dto.getStudentId(), schedule.getId(), dto.getDate())
                     .orElseGet(Attendant::new);
 
             // Fetch the student
@@ -92,10 +112,20 @@ public class AttendantServices {
             attendant.setSchedule(schedule);
             attendant.setStatus(dto.getStatus());
             attendant.setDate(dto.getDate());
-
-            // Save the updated attendance
-            attendantRepository.save(attendant);
         }
+
+        // Batch save all attendants
+        attendantRepository.saveAll(attendanceData.stream()
+                .map(dto -> {
+                    Attendant attendant = new Attendant();
+                    attendant.setStudent(studentRepository.findById(dto.getStudentId())
+                            .orElseThrow(() -> new IllegalArgumentException("Student not found: " + dto.getStudentId())));
+                    attendant.setSchedule(schedule);
+                    attendant.setStatus(dto.getStatus());
+                    attendant.setDate(dto.getDate());
+                    return attendant;
+                })
+                .collect(Collectors.toList()));
     }
 
 }
