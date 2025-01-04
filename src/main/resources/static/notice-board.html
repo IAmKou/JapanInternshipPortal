@@ -515,6 +515,7 @@
                 ]
             }
         });
+        quill.root.style.fontSize = '18px';  // Đặt kích thước chữ của Quill Editor thành 18px
 
         // Đồng bộ nội dung ban đầu của Quill vào textarea ẩn
         const hiddenTextarea = document.querySelector('textarea[name="title"]');
@@ -541,15 +542,24 @@
         }
 
         // Lắng nghe sự kiện submit của form
+        // Lắng nghe sự kiện submit của form
+        // Lắng nghe sự kiện submit của form
         document.getElementById("createNotificationForm").addEventListener("submit", function (e) {
             e.preventDefault();
 
             // Lấy nội dung hiện tại của Quill Editor
             const quillContent = quill.root.innerHTML.trim();
+            const strippedContent = quill.root.innerText.trim(); // Lấy text từ Quill (không HTML)
 
-            // Kiểm tra nếu nội dung rỗng hoặc chỉ chứa HTML trống
-            if (!quillContent || quillContent === '<p><br></p>') {
-                showError('Notification is required!'); // Hiển thị lỗi
+            // Kiểm tra nếu nội dung rỗng, chỉ chứa thẻ HTML trống, chỉ chứa dấu cách
+            if (!strippedContent) {
+                showError('Notification is required and cannot contain only spaces!'); // Hiển thị lỗi
+                return; // Ngừng việc submit form
+            }
+
+            // Kiểm tra độ dài của nội dung (255 ký tự)
+            if (strippedContent.length > 255) {
+                showError('Notification cannot exceed 255 characters!'); // Hiển thị lỗi
                 return; // Ngừng việc submit form
             }
 
