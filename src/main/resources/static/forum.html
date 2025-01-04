@@ -27,6 +27,9 @@
   <!-- Modernize js -->
   <script src="js/modernizr-3.6.0.min.js"></script>
   <style>
+    .thread-box{
+
+    }
     .item-title {
       display: flex;
       align-items: center;
@@ -322,9 +325,12 @@
             <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
             <ul class="nav sub-group-menu sub-group-active">
               <li class="nav-item">
-                <a class="nav-link menu-active" href="forum.html"><i class="fas fa-angle-right"></i>View list
-                  threads</a>
+                <a class="nav-link menu-active" href="forum.html"><i class="fas fa-angle-right"></i>View List
+                  Threads</a>
               </li>
+              <li class="nav-item">
+              <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create Thread</a>
+            </li>
             </ul>
           </li>
         </ul>
@@ -370,6 +376,18 @@
     </div>
     <!-- Main Body Content End Here -->
   </div>
+  <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+    <div style="background-color: #ec9006; padding: 15px;">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+              rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
 </div>
 <!-- Page Area End Here -->
 <!-- jquery-->
@@ -413,10 +431,10 @@
         }
       });
       // Update Dashboard link based on role
-      const dashboardLink = document.getElementById('dashboardLink');
-      if (userDetails.roleName === 'TEACHER') {
-        dashboardLink.href = 'teacher.html';  // Change the link to 'teacher.html' for teachers
-      }
+      // const dashboardLink = document.getElementById('dashboardLink');
+      // if (userDetails.roleName === 'TEACHER') {
+      //   dashboardLink.href = 'teacher.html';  // Change the link to 'teacher.html' for teachers
+      // }
     }
     const currentUserId = userDetails.id;
     const prevPageButton = document.getElementById("prevPage");

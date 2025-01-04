@@ -7,19 +7,16 @@ import com.example.jip.services.AccountServices;
 import com.example.jip.services.EmailServices;
 import com.example.jip.services.VerificationCodeServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
     @Autowired
     private AccountServices accountServices;
 
@@ -36,6 +33,7 @@ public class UserController {
     public List<AccountDTO> getAllUsers() {
         return accountServices.getAllAccountDTOs();
     }
+
     @GetMapping("/count")
     public long getTotalAccounts() {
         return accountRepository.count(); // Sử dụng long thay vì int
@@ -66,7 +64,6 @@ public class UserController {
         }
 
         String verifyCode = emailServices.sendVerificationCode(email);
-        System.out.println("verifyCode: " + verifyCode);
         if ("ERROR_EMPTY_EMAIL".equals(verifyCode)) {
             return new ModelAndView("redirect:/forgot-password.html?message=Email address is empty.");
         } else if ("ERROR_SENDING_EMAIL".equals(verifyCode)) {
@@ -100,7 +97,9 @@ public class UserController {
     }
 
     @PostMapping("/reset-password")
-    public ModelAndView resetPassword(@RequestParam String newPassword, @RequestParam String confirmPassword) {
+    public ModelAndView resetPassword(@RequestParam String oldPassword,
+                                      @RequestParam String newPassword,
+                                      @RequestParam String confirmPassword) {
         String currentUsername = verificationCodeService.getCurrentUsername();
 
         if (currentUsername == null) {
@@ -108,70 +107,39 @@ public class UserController {
         }
 
         Optional<Account> accountOpt = accountRepository.findByUsername(currentUsername);
-        if (accountOpt.isPresent()) {
-            if (!newPassword.equals(confirmPassword)) {
-                return new ModelAndView("redirect:/reset-password.html?message=Confirm password does not match new password.");
-            }
-
-            Account account = accountOpt.get();
-            // Hash the new password
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String hashedPassword = passwordEncoder.encode(newPassword);
-            account.setPassword(hashedPassword);
-
-            // Save the updated account
-            accountRepository.save(account);
-        }
-
-        return new ModelAndView("redirect:/login.html?message=Password reset successfully.");
-    }
-
-    @PostMapping("/change-password")
-    public ModelAndView changePassword(@RequestParam String oldPassword,
-                                       @RequestParam String newPassword,
-                                       @RequestParam String confirmPassword,
-                                       @RequestParam int uid,
-                                       RedirectAttributes redirectAttributes) {
-        Optional<Account> accountOpt = accountRepository.findById(uid);
-
         if (accountOpt.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "Account not found.");
-            return new ModelAndView("redirect:/change-password.html");
+            return new ModelAndView("redirect:/reset-password.html?message=Account not found.");
         }
 
         Account account = accountOpt.get();
+
+        // Verify current password
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-        // Validate confirm password
-        if (!newPassword.equals(confirmPassword)) {
-            redirectAttributes.addFlashAttribute("message", "Re-enter Password does not match new password.");
-            return new ModelAndView("redirect:/change-password.html");
-        }
-
-        // Validate old password
         if (!passwordEncoder.matches(oldPassword, account.getPassword())) {
-            redirectAttributes.addFlashAttribute("message", "Old Password does not match current password.");
-            return new ModelAndView("redirect:/change-password.html");
+            return new ModelAndView("redirect:/reset-password.html?message=Current password does not match.");
         }
 
-        // Update password
+        // Check if new password matches confirm password
+        if (!newPassword.equals(confirmPassword)) {
+            return new ModelAndView("redirect:/reset-password.html?message=Confirm password does not match new password.");
+        }
+
+        // Validate new password length and other criteria (optional)
+        if (newPassword.length() < 6) {
+            return new ModelAndView("redirect:/reset-password.html?message=New password must be at least 6 characters.");
+        }
+
+        // Hash the new password and update the account
         String hashedPassword = passwordEncoder.encode(newPassword);
         account.setPassword(hashedPassword);
+
+        // Save the updated account
         accountRepository.save(account);
 
-        // Determine redirect based on role
-        String roleName = account.getRole().getName();
-        String redirectUrl = switch (roleName) {
-            case "STUDENT" -> "redirect:/users-profile-student.html";
-            case "TEACHER" -> "redirect:/users-profile-teacher.html";
-            default -> "redirect:/users-profile-manager.html";
-        };
-
-        redirectAttributes.addFlashAttribute("message", "Password changed successfully.");
-        return new ModelAndView(redirectUrl);
+        return new ModelAndView("redirect:/login.html?message=Password reset successfully.");
     }
-
 }
+
 
 
 

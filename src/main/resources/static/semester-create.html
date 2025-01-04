@@ -29,6 +29,39 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        /* Custom Modal Styling for Error Modal */
+        #error-modal .modal-header {
+            background-color: #dc3545; /* Màu nền của header (Đỏ cho lỗi) */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #error-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #error-modal .modal-body .fas.fa-times-circle {
+            color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+        }
+
+        #error-modal .btn-danger {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #dc3545; /* Màu đỏ cho nút lỗi */
+            border-color: #dc3545;
+        }
+
+        #error-modal .btn-close {
+            color: white;
+        }
+
+        #error-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -725,11 +758,13 @@
                 </div>
                 <div class="modal-body text-center">
                     <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
-                    <h4 class="text-success">Account import was successful!</h4>
+                    <!-- Thông báo thành công sẽ hiển thị ở đây -->
+                    <h4 id="successMessage" class="text-success"></h4>
                 </div>
             </div>
         </div>
     </div>
+
 
 
     <!-- Error Modal -->
@@ -740,6 +775,7 @@
                     <h5 class="modal-title text-danger" id="errorModalLabel">
                         <i class="fas fa-times-circle"></i> Error
                     </h5>
+
                 </div>
                 <div class="modal-body">
 
@@ -747,7 +783,6 @@
             </div>
         </div>
     </div>
-
     <!-- Modal Xác Nhận Xóa -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -909,12 +944,11 @@
 
 </script>
 <script>
-    // Handling form submission for creating a semester
     document.querySelector('form.new-added-form').addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent default form submission
 
-        // Get the values from the form
-        const semesterName = document.querySelector('input[name="name"]').value;
+        // Get the values from the form, using trim() to clean up the name field
+        const semesterName = document.querySelector('input[name="name"]').value.trim();
         const startTime = document.querySelector('input[name="st"]').value;
         const endTime = document.querySelector('input[name="et"]').value;
 
@@ -925,60 +959,110 @@
 
         // Validate start time: it should not be in the past
         if (startDate < currentDate) {
-            alert('Start time cannot be in the past.');
+            showErrorModal('Start time cannot be in the past.');
             return; // Stop the form submission
         }
 
         // Validate end time: it should not be before the start time
         if (endDate < startDate) {
-            alert('End time cannot be before the start time.');
+            showErrorModal('End time cannot be before the start time.');
             return; // Stop the form submission
         }
 
-        // Set status based on the difference between current date and start time
-        let status = 'Inactive';  // Default status
+        // Show loading state (for user feedback during request)
+        showLoadingState();
 
-        const timeDiff = startDate - currentDate;
-        const daysToStart = timeDiff / (1000 * 3600 * 24);  // Convert milliseconds to days
-
-        // If current date is within 7 days of start date, set status to 'Active'
-        if (daysToStart <= 7 && daysToStart >= 0) {
-            status = 'Active';
-        }
-
-        // Prepare the semester data with the calculated status
-        const semesterData = {
-            name: semesterName,
-            start_time: startTime,
-            end_time: endTime,
-            status: status  // Include the status in the data sent to the backend
-        };
-
-        // Send the data via AJAX
-        fetch('/semester/create', {
+        // Check if the semester name already exists (AJAX request)
+        fetch('/semester/check-name', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(semesterData)
+            body: JSON.stringify({ name: semesterName })
         })
-            .then(response => {
-                // Check if the response is OK (status 200-299)
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();  // Parse the response body as JSON (this already converts it to an object)
-            })
+            .then(response => response.json())
             .then(data => {
-                // Display success message
-                alert(data.message);
-                window.location.reload();
+                if (data.exists) {
+                    showErrorModal('Semester name already exists. Please choose another name.');
+                    hideLoadingState();
+                    return; // Stop the form submission
+                }
+
+                // Set status based on the difference between current date and start time
+                let status = 'Inactive';  // Default status
+                const timeDiff = startDate - currentDate;
+                const daysToStart = timeDiff / (1000 * 3600 * 24);  // Convert milliseconds to days
+
+                // If current date is within 7 days of start date, set status to 'Active'
+                if (daysToStart <= 7 && daysToStart >= 0) {
+                    status = 'Active';
+                }
+
+                // Prepare the semester data with the calculated status
+                const semesterData = {
+                    name: semesterName,
+                    start_time: startTime,
+                    end_time: endTime,
+                    status: status  // Include the status in the data sent to the backend
+                };
+
+                // Send the data via AJAX to create the semester
+                fetch('/semester/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(semesterData)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to create semester');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        showSuccessModal(data.message);  // Show success message
+                        window.location.reload();  // Reload the page after successful creation
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showErrorModal('An error occurred while creating the semester. Please try again.');
+                        hideLoadingState();  // Hide the loading state
+                    });
             })
             .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while creating the semester.');
+                console.error('Error checking semester name:', error);
+                showErrorModal('An error occurred while checking the semester name.');
+                hideLoadingState();  // Hide the loading state
             });
     });
+
+    // Function to show loading state (while waiting for server response)
+    function showLoadingState() {
+        // Display a loading message or animation to let the user know that something is happening
+        document.getElementById('loadingMessage').style.display = 'block';
+    }
+
+    // Function to hide loading state
+    function hideLoadingState() {
+        // Hide the loading message or animation
+        document.getElementById('loadingMessage').style.display = 'none';
+    }
+
+    // Function to show the success modal
+    function showSuccessModal(message) {
+        document.getElementById('successMessage').textContent = message;
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        successModal.show();
+    }
+
+    // Function to show the error modal (with custom error message)
+    function showErrorModal(message) {
+        document.getElementById('long-modal').querySelector('.modal-body').textContent = message; // Set error message
+        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+        errorModal.show();  // Show the error modal
+    }
+
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
