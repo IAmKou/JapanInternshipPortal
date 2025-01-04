@@ -37,6 +37,11 @@ public class AttendantController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Attendance request list cannot be null or empty.");
         }
 
+        LocalTime now = LocalTime.now();
+        if (now.isBefore(LocalTime.of(13, 30))) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Attendance cannot be taken before 13:30.");
+        }
+
         for (AttendantDTO request : attendanceRequests) {
             int studentId = request.getStudentId();
             Attendant.Status status = request.getStatus();
@@ -56,6 +61,12 @@ public class AttendantController {
             // Ensure only one schedule is used (for example, the first match)
             Schedule matchingSchedule = schedules.get(0);
 
+            // Check if attendance is finalized
+            boolean isFinalized = attendantRepository.existsByScheduleIdAndIsFinalizedTrue(matchingSchedule.getId());
+            if (isFinalized) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Attendance is finalized and cannot be updated.");
+            }
+
             // Save attendance
             try {
                 attendantServices.createAttendant(studentId, matchingSchedule.getId(), status.toString(), date, classId);
@@ -66,6 +77,7 @@ public class AttendantController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Attendance saved successfully.");
     }
+
 
 
 

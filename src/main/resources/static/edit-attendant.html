@@ -529,7 +529,7 @@
                 fetch(`/attendant/${classId}/get`)
                     .then(response => {
                         if (!response.ok) {
-                            throw new Error('Network response was not ok ' + response.statusText);
+                            throw new Error('Failed to fetch students: ' + response.statusText);
                         }
                         return response.json();
                     })
@@ -569,9 +569,7 @@
                                 checkbox.classList.add('form-check-input');
                                 checkbox.value = status;
                                 checkbox.checked = student.status === status; // Check if the current status matches
-                                if (status === 'Permitted' ) {
-                                    checkbox.disabled = true; // Only enable "Permitted" for marked students
-                                }
+                                checkbox.disabled = (status === 'Permitted') || student.mark; // Disable "Permitted" or marked students
                                 const label = document.createElement('label');
                                 label.classList.add('form-check-label');
                                 label.textContent = status;
@@ -596,9 +594,13 @@
                             tableBody.appendChild(row);
                         });
                     })
-                    .catch(error => console.error('Error fetching students:', error));
+                    .catch(error => {
+                        console.error('Error fetching students:', error);
+                        alert('Failed to load students. Please try again.');
+                    });
             } else {
-                console.error("classId is missing from the URL.");
+                console.error("Class ID is missing from the URL.");
+                alert("Class ID is missing. Please check the URL and try again.");
             }
 
             // Validation for ensuring at least one checkbox is checked in each row
@@ -660,11 +662,10 @@
                     body: JSON.stringify(attendanceData),
                 })
                     .then(response => {
-                        if (response.ok) {
-                            return response.text();
-                        } else {
+                        if (!response.ok) {
                             throw new Error('Failed to save attendance: ' + response.statusText);
                         }
+                        return response.text();
                     })
                     .then(data => {
                         console.log('Attendance saved successfully:', data);
@@ -675,9 +676,7 @@
                         alert('Failed to save attendance.');
                     });
             }
-
         });
-
     </script>
 
 </body>

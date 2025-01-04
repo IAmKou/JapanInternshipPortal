@@ -114,7 +114,7 @@ public class EmailServices {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(senderEmail));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
-            message.setSubject("Your Account Details");
+            message.setSubject("New Assignment");
 
             // Email body
             String emailBody = String.format(

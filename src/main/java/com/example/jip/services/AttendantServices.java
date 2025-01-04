@@ -59,6 +59,12 @@ public class AttendantServices {
             throw new IllegalArgumentException("Attendance already exists for this student, schedule, and date.");
         }
 
+        // Check time constraints
+        LocalTime now = LocalTime.now();
+        if (now.isBefore(LocalTime.of(13, 30)) || now.isAfter(LocalTime.of(17, 0))) {
+            throw new IllegalArgumentException("Attendance can only be taken between 13:30 and 17:00.");
+        }
+
         // Create and save the attendance record
         Attendant attendant = new Attendant();
         attendant.setStudent(studentOpt.get());
@@ -68,6 +74,10 @@ public class AttendantServices {
 
         return attendantRepository.save(attendant);
     }
+
+
+
+
 
 
     @Transactional
