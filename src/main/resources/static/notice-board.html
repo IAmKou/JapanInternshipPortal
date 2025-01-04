@@ -516,8 +516,11 @@
             }
         });
 
-        // Đồng bộ nội dung từ Quill vào textarea ẩn
+        // Đồng bộ nội dung ban đầu của Quill vào textarea ẩn
         const hiddenTextarea = document.querySelector('textarea[name="title"]');
+        hiddenTextarea.value = quill.root.innerHTML.trim();
+
+        // Cập nhật textarea mỗi khi Quill Editor thay đổi
         quill.on('text-change', () => {
             hiddenTextarea.value = quill.root.innerHTML.trim();
         });
@@ -541,18 +544,18 @@
         document.getElementById("createNotificationForm").addEventListener("submit", function (e) {
             e.preventDefault();
 
-            // Lấy nội dung từ textarea ẩn
-            const titleContent = hiddenTextarea.value.trim();
+            // Lấy nội dung hiện tại của Quill Editor
+            const quillContent = quill.root.innerHTML.trim();
 
-            // Kiểm tra nội dung rỗng hoặc chỉ chứa các ký tự HTML rỗng
-            if (!titleContent || titleContent === '<p><br></p>') {
-                showError('Notification is required !');
-                return; // Ngăn submit form
+            // Kiểm tra nếu nội dung rỗng hoặc chỉ chứa HTML trống
+            if (!quillContent || quillContent === '<p><br></p>') {
+                showError('Notification is required!'); // Hiển thị lỗi
+                return; // Ngừng việc submit form
             }
 
-            clearError(); // Ẩn lỗi nếu không còn lỗi
+            clearError(); // Ẩn lỗi nếu nội dung hợp lệ
 
-            // Xử lý dữ liệu form và gửi yêu cầu AJAX
+            // Tiếp tục xử lý dữ liệu
             const formData = new FormData(this);
 
             fetch('/notification/create', {
