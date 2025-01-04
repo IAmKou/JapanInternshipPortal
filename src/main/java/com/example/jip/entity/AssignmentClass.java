@@ -30,4 +30,6 @@ public class AssignmentClass {
         this.assignment = assignment;
         this.clas = clas;
     }
+
+
 }

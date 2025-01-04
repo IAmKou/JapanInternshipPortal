@@ -52,7 +52,6 @@ public class AssignmentServices {
     S3Service s3Service;
 
 
-
     @PreAuthorize("hasAuthority('TEACHER')")
     public List<AssignmentResponse> getAllAssignmentByTeacherId(int teacherId) {
         return assignmentRepository.findAssignmentsByTeacherId(teacherId).stream()
@@ -155,11 +154,8 @@ public class AssignmentServices {
                 if (clasOpt.isPresent()) {
                     Class clas = clasOpt.get();
                     log.info("Number of students in the class list: {}", clas.getClassLists() != null ? clas.getClassLists().size() : "null");
-
-                    // Link assignment to class
                     assignmentClassRepository.save(new AssignmentClass(savedAssignment, clas));
 
-                    // Link assignment to all students in the class
                     clas.getClassLists().forEach(listEntry -> CompletableFuture.runAsync(() -> {
                         try {
                             Student student = listEntry.getStudent();
@@ -173,9 +169,7 @@ public class AssignmentServices {
                                     student.getAccount().getId()
                             );
 
-                            log.info("Attempting to send email to: {}", student.getEmail());
                             emailServices.sendEmailCreateAssignment(student.getEmail(), clas.getName());
-                            log.info("Email method executed for: {}", student.getEmail());
                         } catch (Exception e) {
                             log.error("Error processing student: {}", e.getMessage());
                         }
