@@ -282,7 +282,7 @@ CREATE TABLE Application (
 -- Notification table (linked with Account)
 CREATE TABLE Notification (
                               Id INT AUTO_INCREMENT PRIMARY KEY,
-                              Title VARCHAR(100) NOT NULL,
+                              Title TEXT NOT NULL,
                               Created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                               account_id INT,
                               recipient_account_id INT DEFAULT NULL,
