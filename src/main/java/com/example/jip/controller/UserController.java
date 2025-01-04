@@ -7,6 +7,8 @@ import com.example.jip.services.AccountServices;
 import com.example.jip.services.EmailServices;
 import com.example.jip.services.VerificationCodeServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -99,79 +101,51 @@ public class UserController {
         return new ModelAndView("redirect:/reset-password.html");
     }
 
-    // Change password for a user (requires current password validation)
     @PostMapping("/change-password")
-    public ModelAndView changePassword(@RequestParam String oldPassword,
-                                       @RequestParam String newPassword,
-                                       @RequestParam String confirmPassword,
-                                       @RequestParam int uid,
-                                       RedirectAttributes redirectAttributes) {
+    @ResponseBody
+    public Map<String, String> changePassword(@RequestBody Map<String, String> requestData) {
+        String oldPassword = requestData.get("oldPassword");
+        String newPassword = requestData.get("newPassword");
+        String confirmPassword = requestData.get("confirmPassword");
+        int uid = Integer.parseInt(requestData.get("uid"));
+
         Optional<Account> accountOpt = accountRepository.findById(uid);
+        Map<String, String> response = new HashMap<>();
 
         if (accountOpt.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "Account not found.");
-            return new ModelAndView("redirect:/change-password.html");
+            response.put("message", "Account not found.");
+            return response;
         }
 
         Account account = accountOpt.get();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        // Validate confirm password
         if (!newPassword.equals(confirmPassword)) {
-            redirectAttributes.addFlashAttribute("message", "Re-enter Password does not match new password.");
-            return new ModelAndView("redirect:/change-password.html");
+            response.put("message", "Re-enter Password does not match new password.");
+            return response;
         }
 
-        // Validate old password
         if (!passwordEncoder.matches(oldPassword, account.getPassword())) {
-            redirectAttributes.addFlashAttribute("message", "Old Password does not match current password.");
-            return new ModelAndView("redirect:/change-password.html");
+            response.put("message", "Old Password does not match current password.");
+            return response;
         }
 
-        // Update password
         String hashedPassword = passwordEncoder.encode(newPassword);
         account.setPassword(hashedPassword);
         accountRepository.save(account);
 
-        // Determine redirect based on role
-        String roleName = account.getRole().getName();
-        String redirectUrl = switch (roleName) {
-            case "STUDENT" -> "redirect:/users-profile-student.html";
-            case "TEACHER" -> "redirect:/users-profile-teacher.html";
-            default -> "redirect:/users-profile-manager.html";
-        };
-
-        redirectAttributes.addFlashAttribute("message", "Password changed successfully.");
-        return new ModelAndView(redirectUrl);
+        response.put("message", "Password changed successfully.");
+        response.put("redirectUrl", getRedirectUrl(account.getRole().getName()));
+        return response;
     }
 
-    // Check current password for validity
-    @PostMapping("/check-current-password")
-    @ResponseBody
-    public Map<String, Object> checkCurrentPassword(@RequestBody Map<String, String> requestData) {
-        String currentPassword = requestData.get("currentPassword");
-        String currentUsername = verificationCodeService.getCurrentUsername();
-
-        Map<String, Object> response = new HashMap<>();
-        if (currentUsername == null) {
-            response.put("isMatch", false);
-            return response;  // Session expired
-        }
-
-        Optional<Account> accountOpt = accountRepository.findByUsername(currentUsername);
-        if (accountOpt.isPresent()) {
-            Account account = accountOpt.get();
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-            // Compare the provided password with the stored hashed password
-            boolean isPasswordMatch = passwordEncoder.matches(currentPassword, account.getPassword());
-
-            response.put("isMatch", isPasswordMatch);
-        } else {
-            response.put("isMatch", false);
-        }
-
-        return response;
+    private String getRedirectUrl(String roleName) {
+        return switch (roleName) {
+            case "STUDENT" -> "/student.html";
+            case "TEACHER" -> "/teacher.html";
+            case "MANAGER" -> "/manager.html";
+            default -> "/admin.html";
+        };
     }
 
     // Reset password after verification
