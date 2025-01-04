@@ -7,7 +7,9 @@ import com.example.jip.dto.request.markReport.MarkReportImportRequest;
 import com.example.jip.dto.request.markReport.MarkReportUpdateRequest;
 import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.dto.response.markReport.MarkReportResponse;
+import com.example.jip.dto.response.markReportExam.MarkReportExamResponse;
 import com.example.jip.entity.MarkReport;
+import com.example.jip.entity.MarkReportExam;
 import com.example.jip.repository.ListRepository;
 import com.example.jip.repository.MarkReportRepository;
 import com.example.jip.services.MarkReportServices;
@@ -74,6 +76,17 @@ public class MarkReportController {
         MarkReportResponse response = markReportServices.getMarkReportById(markRpId);
         if (response != null) {
             return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @GetMapping("/listMRE")
+    public ResponseEntity<List<MarkReportExamResponse>> getMarkRpExam(@RequestParam("classId") int classId) {
+        List<MarkReportExamResponse> responses = markReportServices.getListMarkReportExam(classId);
+        log.info("Mark reports: {}", responses);
+        if (responses != null) {
+            return ResponseEntity.ok(responses);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

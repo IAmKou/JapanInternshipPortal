@@ -944,12 +944,9 @@
 
             if (response.ok) {
                 showSuccessModal("File imported successfully!");
-                // Wait for 2 seconds before reloading the page
                 setTimeout(() => {
                     window.location.reload();
-                }, 2000);  // 2000ms = 2 seconds
-
-
+                }, 2000); // 2 seconds delay
             } else {
                 const errorText = await response.text();
                 showErrorModal(`Import failed: ${errorText}`);
@@ -969,25 +966,31 @@
             const response = await fetch(`${API_BASE_URL}/list?classId=${classId}`); // Update the endpoint as needed
             const data = await response.json();
 
+            const responseMRE = await fetch(`${API_BASE_URL}/listMRE?classId=${classId}`);
+            const dataMRE = await responseMRE.json();
+
             // Transform data into the desired format
             const excelData = data.map((item) => {
                 // Base information
                 const row = {
                     Name: item.studentName,
                     Email: item.studentEmail,
-                    Presentation: item.studentPresentation || '',
+                    Presentation: item.presentation || '',
                     Script: item.scriptPresentation || '',
                     "Middle Exam": item.middle_exam || '',
                     "Final Exam": item.final_exam || '',
                     Comment: item.comment || ''
                 };
 
+                // Find the MRE data for the current student
+                const studentMRE = dataMRE.filter((mre) => mre.markRpId === item.id);
+
                 // Dynamically add Kanji, Bunpou, and Kotoba scores
-                for (let i = 1; i <= 44; i++) {
-                    row[`Kanji ${i}`] = item[`kanji${i}`] || '';
-                    row[`Bunpou ${i}`] = item[`bunpou${i}`] || '';
-                    row[`Kotoba ${i}`] = item[`kotoba${i}`] || '';
-                }
+                studentMRE.forEach((mre, index) => {
+                    row[`Kanji ${index + 1}`] = mre.kanji || '';
+                    row[`Bunpou ${index + 1}`] = mre.bunpou || '';
+                    row[`Kotoba ${index + 1}`] = mre.kotoba || '';
+                });
 
                 return row;
             });
