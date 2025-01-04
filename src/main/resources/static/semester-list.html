@@ -30,6 +30,39 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
 </head>
 
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    /* Container chính */
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 100%; /* Bao phủ toàn bộ trang */
+    }
+
+    /* Nội dung bên trên */
+    .content {
+        flex: 1; /* Đẩy footer xuống */
+    }
+
+    /* Footer nằm ở cuối */
+    .footer-wrap-layout1 {
+        background-color: #ec9006;
+        color: white;
+        padding: 15px 0;
+        text-align: center;
+    }
+
+    .footer-wrap-layout1 a {
+        color: #ffcc00;
+        text-decoration: none;
+    }
+</style>
+
 <body>
 <!-- Preloader Start Here -->
 <div id="preloader"></div>
@@ -165,7 +198,7 @@
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
                                 <a href="add-class.html" class="nav-link"><i
                                         class="flaticon-multiple-users-silhouette"></i>Add New Class</a>
@@ -177,10 +210,10 @@
                             <li class="nav-item">
                                 <a href="schedule-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Schedule List</span></a>
                             </li>
+                            <li class="nav-item">
+                                <a href="semester-list.html" class="nav-link menu-active"><i class="flaticon-calendar"></i><span>Semester List</span></a>
+                            </li>
                         </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="semester-list.html" class="nav-link menu-active"><i class="flaticon-calendar"></i><span>Semester List</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
@@ -191,7 +224,14 @@
                             </li>
                         </ul>
                     </li>
-
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Room Management</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="add-room.html" class="nav-link"><i class="fas fa-angle-right"></i>Add Room</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>        <!-- Sidebar Area End Here -->
@@ -203,7 +243,7 @@
                     <li>
                         <a href="manager.html">Home</a>
                     </li>
-                    <li>Schedule</li>
+                    <li>Semester List</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
@@ -214,19 +254,9 @@
                         <div class="card-body">
                             <div class="heading-layout1">
                                 <div class="item-title">
-                                    <h3>Class Schedule</h3>
-                                </div>
-                                <div class="dropdown">
-                                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                                       aria-expanded="false">...</a>
-
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" data-target="#standard-modal" data-toggle="modal"><i
-                                                class="fas fa-file-import text-green"></i>Import</a>
-                                    </div>
+                                    <h3 style="margin-top: 15px;margin-bottom: 15px">Semester List</h3>
                                 </div>
                             </div>
-
                             <div class="table-responsive">
                                 <table class="table display text-nowrap">
                                     <thead>

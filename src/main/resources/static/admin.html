@@ -60,7 +60,6 @@
             text-decoration: none;
         }
 
-        /* Phân trang */
         .pagination-controls {
             display: flex;
             justify-content: center;
@@ -94,6 +93,35 @@
             font-size: 16px;
             color: #333;
             font-weight: bold;
+        }
+
+        #notice-board-wrap {
+            /* Xóa thuộc tính overflow để không có thanh cuộn */
+            overflow: visible;
+
+            /* Hoặc bạn có thể đảm bảo chiều cao tự động thay đổi */
+            max-height: none; /* Đảm bảo không giới hạn chiều cao */
+        }
+        .pagination-numbers {
+            display: inline-flex;
+            gap: 5px;
+        }
+
+        .page-number {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .page-number.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .page-number:hover {
+            background-color: #007bff;
+            color: white;
         }
 
 
@@ -255,31 +283,11 @@
             <!-- Breadcubs Area End Here -->
             <!-- Dashboard summery Start Here -->
             <div class="row gutters-20">
-                <!-- Phần Notification -->
-                <div class="col-lg-6 col-12">
-                    <div class="card dashboard-card-six pd-b-20">
-                        <div class="card-body">
-                            <div class="heading-layout1 mg-b-17">
-                                <div class="item-title">
-                                    <h3>Notification</h3>
-                                </div>
-                            </div>
-                            <div id="notice-board-wrap" class="notice-board-wrap">
-                                <!-- Các thông báo sẽ được thêm vào đây bởi script -->
-                            </div>
-                            <div id="pagination-controls" class="pagination-controls mt-3">
-                                <button id="prev-page" class="pagination-button">❮ <span id="prev-text">Previous</span></button>
-                                <span id="current-page" class="pagination-info">Page 1</span>
-                                <button id="next-page" class="pagination-button"><span id="next-text">Next</span> ❯</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Phần Students, Teachers, Manager -->
                 <div class="col-lg-6 col-12">
                     <div class="row">
-                        <div class="col-md-4 col-sm-6 col-12">
+                        <div class="col-md-6 col-sm-12 col-12">  <!-- Đặt Students và Manager cùng trong cột -->
                             <div class="dashboard-summery-one mg-b-20">
                                 <div class="row align-items-center">
                                     <div class="col-6">
@@ -296,7 +304,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 col-sm-6 col-12">
+                        <div class="col-md-6 col-sm-12 col-12">
                             <div class="dashboard-summery-one mg-b-20">
                                 <div class="row align-items-center">
                                     <div class="col-6">
@@ -313,26 +321,51 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 col-sm-6 col-12">
-                            <div class="dashboard-summery-one mg-b-20">
-                                <div class="row align-items-center">
-                                    <div class="col-6">
-                                        <div class="item-icon bg-light-yellow">
-                                            <i class="flaticon-couple text-orange"></i>
-                                        </div>
+                    </div>
+
+                    <!-- Manager đã chuyển xuống dưới cùng cột với Students -->
+                    <div class="col-md-6 col-sm-12 col-12">
+                        <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon bg-light-yellow">
+                                        <i class="flaticon-couple text-orange"></i>
                                     </div>
-                                    <div class="col-6">
-                                        <div class="item-content">
-                                            <div class="item-title">Manager</div>
-                                            <div class="item-number" id="manager-count"><span class="counter"></span></div>
-                                        </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div class="item-title">Manager</div>
+                                        <div class="item-number" id="manager-count"><span class="counter"></span></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Phần Notification -->
+                <div class="col-lg-6 col-12">
+                    <div class="card dashboard-card-six pd-b-20">
+                        <div class="card-body">
+                            <div class="heading-layout1 mg-b-17">
+                                <div class="item-title">
+                                    <h3>Notification</h3>
+                                </div>
+                            </div>
+                            <div id="notice-board-wrap" class="notice-board-wrap">
+                                <!-- Các thông báo sẽ được thêm vào đây bởi script -->
+                            </div>
+                            <div id="pagination-controls" class="pagination-controls">
+                                <button id="prev-page" class="pagination-button">❮</button>
+                                <div id="page-numbers" class="pagination-numbers"></div> <!-- Khu vực hiển thị các số trang -->
+                                <button id="next-page" class="pagination-button">❯</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+
 
 
         </div>
@@ -630,11 +663,9 @@
     // Hàm cập nhật trạng thái phân trang
     function updatePagination(totalItems) {
         const totalPages = Math.ceil(totalItems / itemsPerPage);
-        const currentPageElement = document.getElementById('current-page');
+        const pageNumbersElement = document.getElementById('page-numbers');
         const prevButton = document.getElementById('prev-page');
         const nextButton = document.getElementById('next-page');
-
-        currentPageElement.textContent = `Page ${currentPage} of ${totalPages}`;
 
         // Cập nhật trạng thái nút
         prevButton.disabled = currentPage === 1;
@@ -642,6 +673,25 @@
 
         prevButton.classList.toggle('disabled', currentPage === 1);
         nextButton.classList.toggle('disabled', currentPage === totalPages);
+
+        // Tạo các nút số trang
+        pageNumbersElement.innerHTML = '';
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement('button');
+            pageButton.textContent = i;
+            pageButton.classList.add('page-number');
+            pageButton.addEventListener('click', () => {
+                currentPage = i;
+                fetchNotifications();
+            });
+
+            // Làm nổi bật nút của trang hiện tại
+            if (i === currentPage) {
+                pageButton.classList.add('active');
+            }
+
+            pageNumbersElement.appendChild(pageButton);
+        }
     }
 
     // Xử lý khi nhấn nút "Previous" hoặc "Next"
