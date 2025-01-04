@@ -319,12 +319,16 @@
                                         <div class="col-12-xxxl col-lg-6 col-12 form-group">
                                             <div id="titleEditor" class="form-control" style="height: 300px;"></div>
                                             <textarea name="title" style="position: absolute; top: -9999px;" required></textarea>
+                                            <div class="error-message-container"></div> <!-- Chỗ chứa thông báo lỗi -->
                                         </div>
                                         <div class="col-12 form-group mg-t-8">
                                             <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Create</button>
                                         </div>
                                     </div>
                                 </form>
+
+
+
 
 
                             </div>
@@ -499,6 +503,7 @@
 
 
     <script>
+        // Khởi tạo Quill Editor
         var quill = new Quill('#titleEditor', {
             theme: 'snow',
             modules: {
@@ -506,69 +511,78 @@
                     ['bold', 'italic', 'underline'],
                     ['link'],
                     ['blockquote'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet'}],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                 ]
             }
         });
 
+        // Đồng bộ nội dung từ Quill vào textarea ẩn
         const hiddenTextarea = document.querySelector('textarea[name="title"]');
-
-        // Cập nhật nội dung của textarea mỗi khi có sự thay đổi trong Quill
         quill.on('text-change', () => {
-            hiddenTextarea.value = quill.root.innerHTML;
+            hiddenTextarea.value = quill.root.innerHTML.trim();
         });
 
-        document.getElementById("createNotificationForm").addEventListener("submit", function(e) {
+        // Hàm hiển thị thông báo lỗi
+        function showError(message) {
+            const errorContainer = document.querySelector('.error-message-container');
+            errorContainer.textContent = message;
+            errorContainer.style.color = 'red';
+            errorContainer.style.fontSize = '14px';
+            errorContainer.style.marginTop = '5px';
+        }
+
+        // Hàm ẩn thông báo lỗi
+        function clearError() {
+            const errorContainer = document.querySelector('.error-message-container');
+            errorContainer.textContent = '';
+        }
+
+        // Lắng nghe sự kiện submit của form
+        document.getElementById("createNotificationForm").addEventListener("submit", function (e) {
             e.preventDefault();
 
-            // Lấy nội dung từ hidden textarea
+            // Lấy nội dung từ textarea ẩn
             const titleContent = hiddenTextarea.value.trim();
-            console.log("Title content:", titleContent); // Kiểm tra giá trị nội dung của tiêu đề
 
-            // Kiểm tra nếu tiêu đề rỗng
-            if (titleContent === '') {
-                console.log("Title is empty!"); // In ra console nếu tiêu đề rỗng
-
-                // Hiển thị thông báo lỗi bằng alert
-                alert('Title cannot be empty!'); // Hiển thị alert thông báo lỗi
-                return; // Ngừng việc submit form nếu tiêu đề rỗng
+            // Kiểm tra nội dung rỗng hoặc chỉ chứa các ký tự HTML rỗng
+            if (!titleContent || titleContent === '<p><br></p>') {
+                showError('Notification is required !');
+                return; // Ngăn submit form
             }
 
-            const formData = new FormData(this); // Form data chứa tất cả dữ liệu của form
+            clearError(); // Ẩn lỗi nếu không còn lỗi
 
-            // Gửi yêu cầu AJAX đến backend
+            // Xử lý dữ liệu form và gửi yêu cầu AJAX
+            const formData = new FormData(this);
+
             fetch('/notification/create', {
                 method: 'POST',
                 body: formData
             })
-                .then(response => response.json()) // Giả sử backend trả về JSON
+                .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        // Thông báo thành công
                         const successMessageElement = document.getElementById('successMessage');
                         successMessageElement.innerHTML = 'Notification created successfully!';
                         const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
                         successModal.show();
-                        setTimeout(() => { location.reload(); }, 2000); // Reload trang sau 2 giây
+                        setTimeout(() => { location.reload(); }, 2000);
                     } else {
-                        // Hiển thị thông báo lỗi nếu không tạo được thông báo
                         const errorMessageElement = document.getElementById('errorMessage');
                         errorMessageElement.innerHTML = `Failed to create notification: ${data.message}`;
                         const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
                         errorModal.show();
-                        setTimeout(() => { location.reload(); }, 2000); // Reload trang sau 2 giây
+                        setTimeout(() => { location.reload(); }, 2000);
                     }
                 })
                 .catch(error => {
-                    // Hiển thị thông báo lỗi nếu có lỗi từ backend
                     const errorMessageElement = document.getElementById('errorMessage');
                     errorMessageElement.innerHTML = `Something went wrong: ${error.message}`;
                     const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
                     errorModal.show();
-                    setTimeout(() => { location.reload(); }, 2000); // Reload trang sau 2 giây
+                    setTimeout(() => { location.reload(); }, 2000);
                 });
         });
-
     </script>
     <!-- fetch notification -->
     <script>
