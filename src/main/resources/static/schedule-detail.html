@@ -646,6 +646,14 @@
                                 return response.json();
                             })
                             .then(data => {
+                                const semesterStart = new Date(`${data.semesterStart}T00:00:00`);
+                                const now = new Date();
+
+                                const savePublicButton = document.getElementById('save-public');
+                                if (now >= semesterStart) {
+                                    savePublicButton.disabled = true;
+                                    savePublicButton.title = "Cannot publish the schedule as the semester has already started.";
+                                }
                                 const events = data.map(schedule => ({
                                     id: schedule.id,
                                     title: schedule.activity,
