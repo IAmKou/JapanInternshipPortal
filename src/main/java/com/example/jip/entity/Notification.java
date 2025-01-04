@@ -16,8 +16,9 @@ public class Notification {
     private int id;
 
     @Lob
-    @Column(name = "Title", nullable = false)
+    @Column(name = "Title", nullable = false, columnDefinition = "TEXT")
     private String title;
+
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
