@@ -915,7 +915,6 @@
     const itemsPerPage = 5; // Số thông báo trên mỗi trang
     let recipientId = null; // Khởi tạo recipientId là null
 
-    // Lắng nghe sự kiện DOMContentLoaded
     document.addEventListener('DOMContentLoaded', function () {
         // Lấy userDetails từ sessionStorage khi trang đã tải
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails')) || {};
@@ -923,7 +922,6 @@
 
         if (!recipientId) {
             console.error("Recipient ID không được tìm thấy trong sessionStorage.");
-            // Có thể hiển thị thông báo người dùng chưa đăng nhập hoặc chuyển hướng đến trang đăng nhập
         } else {
             console.log("Recipient ID:", recipientId);
             fetchNotifications(recipientId);  // Gọi hàm ngay khi nhận được recipientId
@@ -932,7 +930,9 @@
 
     function fetchNotifications(recipientId) {
         if (!recipientId) {
-            console.error("No recipientId found.");
+            // Nếu recipientId chưa được gán, chờ một lát và gọi lại hàm
+            console.warn("Recipient ID chưa sẵn sàng, thử lại...");
+            setTimeout(() => fetchNotifications(JSON.parse(sessionStorage.getItem('userDetails'))?.id), 500);
             return;
         }
 
@@ -952,20 +952,18 @@
 
                 // Sắp xếp dữ liệu từ mới nhất đến cũ nhất (sử dụng trường 'createdAt')
                 data.sort((a, b) => {
-                    const dateA = new Date(a.createdAt || Date.now());  // Fallback to current date if 'createdAt' is missing
-                    const dateB = new Date(b.createdAt || Date.now());  // Fallback to current date if 'createdAt' is missing
-                    return dateB - dateA; // Sắp xếp theo thứ tự giảm dần (mới nhất lên đầu)
+                    const dateA = new Date(a.createdAt || a.created || Date.now());
+                    const dateB = new Date(b.createdAt || b.created || Date.now());
+                    return dateB - dateA; // Sắp xếp giảm dần (mới nhất trước)
                 });
 
-                // Phân trang thông báo
+                // Phân trang thông báo (đảm bảo lấy đúng các phần tử theo thứ tự)
                 const startIndex = (currentPage - 1) * itemsPerPage;
                 const endIndex = startIndex + itemsPerPage;
                 const currentNotifications = data.slice(startIndex, endIndex);
 
-                // Xóa nội dung cũ
+                // Xóa nội dung cũ và hiển thị thông báo
                 noticeBoardWrap.innerHTML = '';
-
-                // Hiển thị thông báo cho trang hiện tại
                 currentNotifications.forEach(notification => {
                     const noticeDiv = document.createElement('div');
                     noticeDiv.classList.add('notice-list');
@@ -973,8 +971,8 @@
                     const postDateDiv = document.createElement('div');
                     postDateDiv.classList.add('post-date', 'bg-light-sea-green');
 
-                    // Nếu 'notification.createdAt' có, sử dụng nó, nếu không thì sử dụng thời gian hiện tại.
-                    const notificationDate = new Date(notification.created);
+                    // Lấy ngày tháng định dạng (mặc định là ngày hiện tại nếu thiếu)
+                    const notificationDate = new Date(notification.createdAt || notification.created || Date.now());
                     const formattedDate = new Intl.DateTimeFormat('en-US', {
                         day: '2-digit',
                         month: '2-digit',
@@ -988,7 +986,8 @@
 
                     const noticeLink = document.createElement('a');
                     noticeLink.href = notification.link || '#';
-                    noticeLink.textContent = notification.title;
+                    const plainTextTitle = notification.title.replace(/<\/?[^>]+(>|$)/g, '');
+                    noticeLink.textContent = plainTextTitle;
 
                     noticeTitle.appendChild(noticeLink);
                     noticeDiv.appendChild(postDateDiv);
@@ -1006,9 +1005,11 @@
             });
     }
 
+
+    // Hàm cập nhật trạng thái phân trang
     // Hàm cập nhật trạng thái phân trang
     function updatePagination(totalItems) {
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        const totalPages = Math.min(Math.ceil(totalItems / itemsPerPage), 3); // Giới hạn tối đa 3 trang
         const pageNumbersElement = document.getElementById('page-numbers');
         const prevButton = document.getElementById('prev-page');
         const nextButton = document.getElementById('next-page');
@@ -1028,11 +1029,12 @@
             }
             pageButton.addEventListener('click', () => {
                 currentPage = i;
-                fetchNotifications(recipientId);  // Truyền recipientId vào mỗi lần gọi
+                fetchNotifications(recipientId); // Truyền recipientId vào mỗi lần gọi
             });
             pageNumbersElement.appendChild(pageButton);
         }
     }
+
 
     // Xử lý khi nhấn nút "Previous" hoặc "Next"
     document.getElementById('prev-page').addEventListener('click', () => {

@@ -313,23 +313,20 @@
                                         <h3 style="padding-bottom: 20px">Create New Notification</h3>
                                     </div>
                                 </div>
-                                <form class="new-added-form" action="notification/create" method="post">
+                                <form id="createNotificationForm" class="new-added-form" method="post">
                                     <input type="hidden" name="userId" id="hiddenUserId">
                                     <div class="row">
                                         <div class="col-12-xxxl col-lg-6 col-12 form-group">
-                                            <!-- Quill editor được thay thế vào đây -->
                                             <div id="titleEditor" class="form-control" style="height: 300px;"></div>
-                                            <!-- Thêm một textarea ẩn để lưu giá trị và gửi trong form -->
-                                            <textarea name="title" style="display: none;" required></textarea>
+                                            <textarea name="title" style="position: absolute; top: -9999px;" required></textarea>
                                         </div>
-
-
                                         <div class="col-12 form-group mg-t-8">
                                             <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Create</button>
-                                            <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Clear Form</button>
                                         </div>
                                     </div>
                                 </form>
+
+
                             </div>
                         </div>
                     </div>
@@ -361,6 +358,44 @@
             </div>
         </div>
         <!-- Page Area End Here -->
+    </div>
+    <!-- Success Modal -->
+    <!-- Success Modal -->
+    <div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-success" id="successModalLabel">
+                        <i class="fas fa-check-circle"></i> Success
+                    </h5>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                    <!-- Thông báo thành công sẽ hiển thị ở đây -->
+                    <h4 id="successMessage" class="text-success"></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Error Modal -->
+    <div class="modal fade" id="long-modal" tabindex="-1" aria-labelledby="long-modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="long-modalLabel">Error</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="errorMessage"></p> <!-- Nội dung thông báo lỗi -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
     <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
         <div style="background-color: #ec9006; padding: 15px;">
@@ -465,21 +500,73 @@
 
     <script>
         var quill = new Quill('#titleEditor', {
-            theme: 'snow',  // Chọn theme của Quill (có thể chọn giữa 'snow' và 'bubble')
+            theme: 'snow',
             modules: {
                 toolbar: [
-                    ['bold', 'italic', 'underline'],    // Các nút định dạng văn bản
-                    ['link'],  // Chèn link
-                    ['blockquote'],  // Blockquote
-                    [{ 'list': 'ordered'}, { 'list': 'bullet'}], // Các kiểu danh sách
-                    // Chèn ảnh
+                    ['bold', 'italic', 'underline'],
+                    ['link'],
+                    ['blockquote'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet'}],
                 ]
             }
         });
 
         const hiddenTextarea = document.querySelector('textarea[name="title"]');
+
+        // Cập nhật nội dung của textarea mỗi khi có sự thay đổi trong Quill
         quill.on('text-change', () => {
             hiddenTextarea.value = quill.root.innerHTML;
+        });
+
+        document.getElementById("createNotificationForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            // Lấy nội dung từ hidden textarea
+            const titleContent = hiddenTextarea.value.trim();
+            console.log("Title content:", titleContent); // Kiểm tra giá trị nội dung của tiêu đề
+
+            // Kiểm tra nếu tiêu đề rỗng
+            if (titleContent === '') {
+                console.log("Title is empty!"); // In ra console nếu tiêu đề rỗng
+
+                // Hiển thị thông báo lỗi bằng alert
+                alert('Title cannot be empty!'); // Hiển thị alert thông báo lỗi
+                return; // Ngừng việc submit form nếu tiêu đề rỗng
+            }
+
+            const formData = new FormData(this); // Form data chứa tất cả dữ liệu của form
+
+            // Gửi yêu cầu AJAX đến backend
+            fetch('/notification/create', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json()) // Giả sử backend trả về JSON
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Thông báo thành công
+                        const successMessageElement = document.getElementById('successMessage');
+                        successMessageElement.innerHTML = 'Notification created successfully!';
+                        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+                        successModal.show();
+                        setTimeout(() => { location.reload(); }, 2000); // Reload trang sau 2 giây
+                    } else {
+                        // Hiển thị thông báo lỗi nếu không tạo được thông báo
+                        const errorMessageElement = document.getElementById('errorMessage');
+                        errorMessageElement.innerHTML = `Failed to create notification: ${data.message}`;
+                        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+                        errorModal.show();
+                        setTimeout(() => { location.reload(); }, 2000); // Reload trang sau 2 giây
+                    }
+                })
+                .catch(error => {
+                    // Hiển thị thông báo lỗi nếu có lỗi từ backend
+                    const errorMessageElement = document.getElementById('errorMessage');
+                    errorMessageElement.innerHTML = `Something went wrong: ${error.message}`;
+                    const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+                    errorModal.show();
+                    setTimeout(() => { location.reload(); }, 2000); // Reload trang sau 2 giây
+                });
         });
 
     </script>
@@ -687,7 +774,7 @@
     </script>
     <!-- fetch noti -->
     <script>
-        let currentPage = 1; // Trang hiện tại
+        let currentPage = 1; // Trang hiện tại (chắc chắn là trang 1)
         const itemsPerPage = 5; // Số thông báo trên mỗi trang
 
         // Hàm fetch và hiển thị thông báo
@@ -708,12 +795,20 @@
 
                     // Sắp xếp dữ liệu từ mới nhất đến cũ nhất (sử dụng trường 'date')
                     data.sort((a, b) => {
-                        const dateA = new Date(a.date);
-                        const dateB = new Date(b.date);
-                        return dateB - dateA; // Sắp xếp theo thứ tự giảm dần (mới nhất lên đầu)
+                        const dateA = new Date(a.createdAt || a.created || Date.now());
+                        const dateB = new Date(b.createdAt || b.created || Date.now());
+                        return dateB - dateA; // Sắp xếp giảm dần (mới nhất trước)
                     });
 
                     // Phân trang thông báo
+                    const totalItems = data.length;
+                    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+                    // Đảm bảo không phân trang quá số trang hiện có
+                    if (currentPage > totalPages) {
+                        currentPage = totalPages;
+                    }
+
                     const startIndex = (currentPage - 1) * itemsPerPage;
                     const endIndex = startIndex + itemsPerPage;
                     const currentNotifications = data.slice(startIndex, endIndex);
@@ -721,11 +816,13 @@
                     // Xóa nội dung cũ
                     noticeBoardWrap.innerHTML = '';
 
-                    // Hiển thị thông báo cho trang hiện tại
-                    const formatDate = () => {
-                        const now = new Date();
-                        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                        return now.toLocaleDateString('en-US', options); // Ensure English locale
+                    // Hàm format để in ngày với định dạng mm/dd/yyyy
+                    const formatDate = (dateString) => {
+                        const date = new Date(dateString);
+                        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                        const day = date.getDate().toString().padStart(2, '0');
+                        const year = date.getFullYear();
+                        return `${month}/${day}/${year}`;
                     };
 
                     currentNotifications.forEach(notification => {
@@ -734,7 +831,7 @@
 
                         const postDateDiv = document.createElement('div');
                         postDateDiv.classList.add('post-date', 'bg-light-sea-green');
-                        postDateDiv.textContent = notification.date || formatDate();
+                        postDateDiv.textContent = notification.date ? formatDate(notification.date) : formatDate(new Date());
 
                         const noticeTitle = document.createElement('h6');
                         noticeTitle.classList.add('notice-title');
@@ -751,7 +848,7 @@
                     });
 
                     // Cập nhật nút phân trang
-                    updatePagination(data.length);
+                    updatePagination(totalItems, totalPages);
                 })
                 .catch(error => {
                     console.error('Error fetching notifications:', error);
@@ -761,8 +858,7 @@
         }
 
         // Hàm cập nhật trạng thái phân trang
-        function updatePagination(totalItems) {
-            const totalPages = Math.ceil(totalItems / itemsPerPage);
+        function updatePagination(totalItems, totalPages) {
             const pageNumbersElement = document.getElementById('page-numbers');
             const prevButton = document.getElementById('prev-page');
             const nextButton = document.getElementById('next-page');

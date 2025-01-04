@@ -33,6 +33,16 @@
     <script type="text/javascript"
             src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <style>
+        .status-open {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-close {
+            color: red;
+            font-weight: bold;
+        }
+
         .dropdown-toggle::after {
             content: none !important;
         }
@@ -1118,49 +1128,59 @@
 
     const API_BASE_URL = '/assignment';
     let currentAssignmentId = null;
-    const ITEMS_PER_PAGE = 5; // Số mục hiển thị mỗi trang
-    let currentPage = 1; // Trang hiện tại
-    let allAssignments = []; // Mảng chứa tất cả assignment
+    const ITEMS_PER_PAGE = 8;
+    let currentPage = 1;
+    let allAssignments = [];
+    let totalPages = 0;
 
-
-
-    async function fetchAndDisplayAssignments() {
+    async function fetchAssignmentsData() {
         try {
-            const language = localStorage.getItem('language') || 'en';
-            await getTranslation(language);  // Gọi ngay khi ngôn ngữ được chọn
-
+            // Lấy teacherId từ query string
             const urlParams = new URLSearchParams(window.location.search);
             const teacherId = urlParams.get('teacherId');
+
+            // Gọi API lấy danh sách bài tập
             const response = await fetch(`${API_BASE_URL}/list?teacherId=${teacherId}`);
 
             if (!response.ok) {
                 throw new Error('Error fetching assignments: ' + response.statusText);
             }
 
-            const data = await response.json();
-            assignments = data;  // Lưu trữ toàn bộ dữ liệu assignments
+            // Lưu dữ liệu bài tập
+            allAssignments = await response.json();
 
-            totalPages = Math.ceil(assignments.length / assignmentsPerPage);  // Tính số trang dựa trên tổng số assignments
-            displayPage(currentPage);  // Hiển thị trang hiện tại
+            // Sắp xếp bài tập theo ngày tạo
+            allAssignments.sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
 
+            // Tính toán số lượng trang phân trang
+            totalPages = Math.ceil(allAssignments.length / ITEMS_PER_PAGE);
+
+            // Gọi hàm để hiển thị các bài của trang đầu tiên
+            displayPage(1);  // Hiển thị trang 1 sau khi tải dữ liệu
+
+            // Gọi hàm phân trang
+            displayPagination();
         } catch (error) {
             console.error('Error:', error);
         }
     }
 
-    // Hàm hiển thị assignments trên một trang
     function displayPage(page) {
-        const startIndex = (page - 1) * assignmentsPerPage;
-        const endIndex = page * assignmentsPerPage;
-        const pageAssignments = assignments.slice(startIndex, endIndex);  // Lấy các assignment của trang hiện tại
+        currentPage = page;
 
+        // Tính toán startIndex và endIndex cho trang cần hiển thị
+        const startIndex = (page - 1) * ITEMS_PER_PAGE;
+        const endIndex = Math.min(page * ITEMS_PER_PAGE, allAssignments.length);
+        const assignmentsForPage = allAssignments.slice(startIndex, endIndex);
+
+        // Tìm phần tử table để hiển thị bài
         const tableBody = document.getElementById('assignment_list');
-        tableBody.innerHTML = '';
+        tableBody.innerHTML = '';  // Xóa các dữ liệu cũ trong table
 
-        pageAssignments.forEach(assignment => {
+        // Hiển thị bài cho trang hiện tại
+        assignmentsForPage.forEach((assignment) => {
             const createdDateFormatted = formatDateTime(assignment.created_date);
             const endDateFormatted = formatDateTime(assignment.end_date);
-            const statusTranslated = getStatusTranslation(assignment.status);
 
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -1169,8 +1189,8 @@
             </td>
             <td>${createdDateFormatted}</td>
             <td>${endDateFormatted}</td>
-            <td class="${assignment.status === 'OPEN' ? 'status-open' : assignment.status === 'CLOSE' ? 'status-close' : ''}">
-                ${statusTranslated}
+            <td class="${assignment.status === 'OPEN' ? 'status-open' : 'status-close'}">
+                ${assignment.status}
             </td>
             <td>
                 <div class="dropdown">
@@ -1179,10 +1199,10 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
-                            <i class="fas fa-times text-orange-red"></i><span data-i18n="delete">Delete</span>
+                            <i class="fas fa-times text-orange-red"></i><span>Delete</span>
                         </a>
                         <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
-                            <i class="fas fa-cogs text-dark-pastel-green"></i><span data-i18n="update">Update</span>
+                            <i class="fas fa-cogs text-dark-pastel-green"></i><span>Update</span>
                         </a>
                     </div>
                 </div>
@@ -1190,28 +1210,26 @@
         `;
             tableBody.appendChild(row);
         });
-
-        displayPagination();
     }
 
-    // Hàm hiển thị các nút phân trang
     function displayPagination() {
         const paginationContainer = document.getElementById('pagination');
-        paginationContainer.innerHTML = '';
+        paginationContainer.innerHTML = '';  // Xóa các dữ liệu phân trang cũ
 
-        if (totalPages <= 1) return;
+        if (totalPages <= 1) return; // Nếu chỉ có 1 trang thì không cần phân trang
 
+        // Hiển thị nút phân trang
         for (let i = 1; i <= totalPages; i++) {
             const pageButton = document.createElement('button');
             pageButton.innerText = i;
             pageButton.classList.add('btn', 'btn-secondary', 'mx-1');
 
             if (i === currentPage) {
-                pageButton.classList.add('active');
+                pageButton.classList.add('active');  // Đánh dấu trang hiện tại
             } else {
                 pageButton.addEventListener('click', () => {
-                    currentPage = i;  // Cập nhật trang hiện tại
-                    displayPage(currentPage);
+                    // Khi bấm vào một trang, cập nhật trang và hiển thị lại các bài cho trang đó
+                    displayPage(i);
                 });
             }
 
@@ -1219,11 +1237,9 @@
         }
     }
 
-
-
     function formatDateTime(dateString) {
         const date = new Date(dateString);
-        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
+        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);  // Điều chỉnh theo múi giờ Việt Nam
 
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -1237,8 +1253,16 @@
         return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
     }
 
-    // Gọi lại getTranslation sau khi các phần tử đã được thêm vào DOM
-    document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
+    // Gọi hàm khi DOM đã tải xong
+    document.addEventListener('DOMContentLoaded', () => {
+        // Bắt đầu thực hiện ngay lập tức khi DOM tải xong
+        fetchAssignmentsData();
+    });
+
+
+
+
+
 
 
     function formatDateTimeForInput(dateString) {

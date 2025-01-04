@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -24,16 +26,27 @@ public class NotificationController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createNotification(@RequestParam("title") String title,
-                                           @RequestParam("userId") int senderId) {
+                                                @RequestParam("userId") int senderId) {
         try {
             Integer recipientId = null;
             notificationServices.createNotification(title, senderId);
 
-            return ResponseEntity.ok().body("Notification created successfully!");
+            // Trả về kết quả dưới dạng JSON
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("message", "Notification created successfully!");
+
+            return ResponseEntity.ok().body(response);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Failed to create notification: " + e.getMessage());
+            // Nếu xảy ra lỗi, trả về thông báo lỗi dạng JSON
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("status", "error");
+            errorResponse.put("message", "Failed to create notification: " + e.getMessage());
+
+            return ResponseEntity.status(500).body(errorResponse);
         }
     }
+
 
     @GetMapping("/get/{recipientId}")
     public List<NotificationDTO> getAllUserNotifications(@PathVariable int recipientId) {
