@@ -15,6 +15,7 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Lob
     @Column(name = "Title", nullable = false)
     private String title;
 
