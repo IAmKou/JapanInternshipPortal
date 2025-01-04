@@ -1,5 +1,7 @@
-package com.example.jip.dto.response.exam;
+package com.example.jip.dto.response.markReportExam;
 
+import com.example.jip.entity.Exam;
+import jakarta.persistence.Column;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,10 +14,9 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ExamResponse {
-    int markId;
-    int examId;
-    String title;
+public class MarkReportExamResponse {
+    int markRpId;
+    String examName;
     BigDecimal kanji;
     BigDecimal bunpou;
     BigDecimal kotoba;
