@@ -42,26 +42,74 @@ public class AccountImportServices {
     public List<String> importAccounts(MultipartFile file) {
         List<String> errors = new ArrayList<>();
 
+        if (file.isEmpty()) {
+            errors.add("The uploaded file is empty. Please upload a valid Excel file.");
+            return errors;
+        }
+
         try (InputStream inputStream = file.getInputStream();
              XSSFWorkbook workbook = new XSSFWorkbook(inputStream)) {
-            Sheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> rowIterator = sheet.iterator();
 
+            Sheet sheet = workbook.getSheetAt(0);
+            if (sheet == null) {
+                errors.add("The uploaded Excel file is missing a sheet or is not properly formatted.");
+                return errors;
+            }
+
+            // Validate column headers
+            if (!validateHeaders(sheet.getRow(0), errors)) {
+                return errors; // If headers are invalid, terminate processing
+            }
+
+            Iterator<Row> rowIterator = sheet.iterator();
             if (rowIterator.hasNext()) rowIterator.next(); // Skip header row
+
+            boolean hasData = false;
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
-                try {
-                    processRow(row, errors, workbook);
-                } catch (Exception e) {
-                    errors.add("Error in row " + (row.getRowNum() + 1) + ": " + e.getMessage());
+                if (!isRowEmpty(row)) {
+                    hasData = true;
+                    try {
+                        processRow(row, errors, workbook);
+                    } catch (Exception e) {
+                        errors.add("Error in row " + (row.getRowNum() + 1) + ": " + e.getMessage());
+                    }
                 }
             }
+
+            if (!hasData) {
+                errors.add("The uploaded file contains no data to process.");
+            }
+
         } catch (Exception e) {
             errors.add("File processing error: " + e.getMessage());
             e.printStackTrace();
         }
         return errors;
+    }
+
+    private boolean validateHeaders(Row headerRow, List<String> errors) {
+        if (headerRow == null) {
+            errors.add("Missing header row. Ensure the first row contains column headers.");
+            return false;
+        }
+
+        String[] requiredHeaders = {
+                "Username", "Password", "Role ID", "Full Name", "Japan Name",
+                "Date of Birth", "Image URL", "Gender", "Phone Number", "Passport URL", "Email"
+        };
+
+        DataFormatter dataFormatter = new DataFormatter();
+        for (int i = 0; i < requiredHeaders.length; i++) {
+            Cell cell = headerRow.getCell(i);
+            String headerValue = cell != null ? dataFormatter.formatCellValue(cell).trim() : "";
+            if (!headerValue.equalsIgnoreCase(requiredHeaders[i])) {
+                errors.add("Invalid or missing header at column " + (i + 1) + ": Expected '" + requiredHeaders[i] + "'");
+                return false;
+            }
+        }
+        return true;
     }
 
     private void processRow(Row row, List<String> errors, XSSFWorkbook workbook) {

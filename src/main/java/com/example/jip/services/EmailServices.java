@@ -3,11 +3,14 @@ package com.example.jip.services;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.Properties;
+
+@Slf4j
 @Service
 public class EmailServices {
 
@@ -94,14 +97,12 @@ public class EmailServices {
     }
 
     public void sendEmailCreateAssignment(String recipientEmail, String className) {
-        // Email configuration
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
 
-        // Authenticate
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -110,28 +111,28 @@ public class EmailServices {
         });
 
         try {
-            // Create the email content
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(senderEmail));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
             message.setSubject("New Assignment");
 
-            // Email body
             String emailBody = String.format(
-                    "There is a new assignment in your class : %s\n" +
-                            "go check it out.",
+                    "There is a new assignment in your class: %s\n" +
+                            "Go check it out.",
                     className
             );
 
             message.setText(emailBody);
 
-            // Send the email
+            log.info("Sending email to: {} for class: {}", recipientEmail, className);
             Transport.send(message);
+            log.info("Email sent successfully to: {}", recipientEmail);
+
         } catch (MessagingException e) {
-            e.printStackTrace();
-            e.getMessage();
+            log.error("Failed to send email to: {} due to: {}", recipientEmail, e.getMessage());
         }
     }
+
     public void sendEmailSubmittedAssignment(String recipientEmail, String studentName, String className) {
         // Email configuration
         Properties props = new Properties();
