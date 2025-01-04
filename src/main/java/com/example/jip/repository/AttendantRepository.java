@@ -49,10 +49,12 @@ public interface AttendantRepository extends JpaRepository<Attendant, Integer> {
 
     int countAttendedByStudentId(Student student);
 
-    @Query("SELECT c.total_slot " +
-            "FROM Attendant a " +
-            "JOIN a.curriculum c " +
-            "WHERE a.student.id = :studentId")
-    Integer findTotalSlotByStudentId(@Param("studentId") Integer studentId);
+//    @Query("SELECT c.total_slot " +
+//            "FROM Attendant a " +
+//            "WHERE a.student.id = :studentId")
+//    Integer findTotalSlotByStudentId(@Param("studentId") Integer studentId);
 
+    List<Attendant> findByScheduleId(int id);
+
+    boolean existsByScheduleIdAndIsFinalizedTrue(int id);
 }
