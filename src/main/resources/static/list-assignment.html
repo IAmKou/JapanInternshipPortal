@@ -33,28 +33,6 @@
     <script type="text/javascript"
             src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <style>
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .pagination-button {
-            margin: 0 5px;
-            padding: 5px 10px;
-            border: 1px solid #ddd;
-            background-color: white;
-            cursor: pointer;
-        }
-
-        .pagination-button.active {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .pagination-button:hover {
-            background-color: #f0f0f0;
-        }
         .dropdown-toggle::after {
             content: none !important;
         }
@@ -690,7 +668,7 @@
                             <span class="userRole"></span>
                         </div>
                         <div class="admin-img img">
-                            <img src="" style="width: 50px; height: 50px" alt="Admin">
+                            <img src="" style="width: 50px;height: 50px" alt="Admin">
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -952,7 +930,7 @@
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table id="submittedAssignment_table" class="table text-nowrap">
+                        <table id="submittedAssignment_table" class="table display text-nowrap">
                             <thead>
                             <tr>
                                 <th style="font-weight: bold; color: #000;" data-i18n="title">Title</th>
@@ -963,16 +941,12 @@
                             </tr>
                             </thead>
                             <tbody id="assignment_list">
-                            <!-- Dữ liệu sẽ được điền vào đây -->
                             </tbody>
                         </table>
-
-                        <!-- Hiển thị phân trang -->
-                        <div id="pagination" class="pagination">
-                            <!-- Các nút phân trang sẽ được điền vào đây -->
+                        <div id="pagination" class="d-flex justify-content-center mt-3 pagination-container">
+                            <!-- Pagination buttons will be dynamically added here -->
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -1072,17 +1046,87 @@
 <script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
+<script src="script.js"></script>
 
+<script type="text/javascript">
+    // Hàm thay đổi ngôn ngữ và lưu vào localStorage
+    function changeLanguage(language) {
+        var languageLabel = document.getElementById('languageLabel');
+
+        // Cập nhật nhãn ngôn ngữ trên dropdown
+        if (language === 'en') {
+            languageLabel.innerText = 'EN';
+        } else if (language === 'ja') {
+            languageLabel.innerText = 'JA';
+        }
+
+        // Lưu ngôn ngữ vào localStorage
+        localStorage.setItem('selectedLanguage', language);
+
+        // Kiểm tra nếu Google Translate đã được tải
+        if (window.google && google.translate) {
+            google.translate.TranslateElement.prototype.translatePage(language);
+        }
+    }
+
+    // Hàm khởi tạo Google Translate khi trang tải
+    function loadGoogleTranslate() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+        document.head.appendChild(script);
+    }
+
+    // Hàm khởi tạo Google Translate Element
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,ja',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false,
+        }, 'google_translate_element');
+    }
+
+    // Khi trang được tải, thiết lập ngôn ngữ từ localStorage
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lấy ngôn ngữ đã lưu trong localStorage
+        var savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+        // Cập nhật giao diện với ngôn ngữ đã lưu
+        var languageLabel = document.getElementById('languageLabel');
+        if (savedLanguage === 'en') {
+            languageLabel.innerText = 'EN';
+        } else if (savedLanguage === 'ja') {
+            languageLabel.innerText = 'JA';
+        }
+
+        // Dịch trang ngay từ khi tải
+        if (window.google && google.translate) {
+            google.translate.TranslateElement.prototype.translatePage(savedLanguage);
+        }
+    });
+
+    // Tải Google Translate
+    loadGoogleTranslate();
+</script>
+
+
+
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
 
     const API_BASE_URL = '/assignment';
     let currentAssignmentId = null;
-      // Biến để lưu trữ toàn bộ assignments
-    let currentPage = 1;  // Trang hiện tại
-    const itemsPerPage = 10;  // Số lượng assignments hiển thị mỗi trang
+    const ITEMS_PER_PAGE = 5; // Số mục hiển thị mỗi trang
+    let currentPage = 1; // Trang hiện tại
+    let allAssignments = []; // Mảng chứa tất cả assignment
+
+
+
     async function fetchAndDisplayAssignments() {
         try {
-            const language = localStorage.getItem('language') || 'en'; // Mặc định 'en'
+            const language = localStorage.getItem('language') || 'en';
             await getTranslation(language);  // Gọi ngay khi ngôn ngữ được chọn
 
             const urlParams = new URLSearchParams(window.location.search);
@@ -1093,73 +1137,93 @@
                 throw new Error('Error fetching assignments: ' + response.statusText);
             }
 
-            const assignments = await response.json();
-            console.log('Assignments data:', assignments);
+            const data = await response.json();
+            assignments = data;  // Lưu trữ toàn bộ dữ liệu assignments
 
-            const tableBody = document.getElementById('assignment_list');
-            tableBody.innerHTML = ''; // Xóa các dữ liệu cũ trong bảng
-
-            // Chia dữ liệu thành trang (Phân trang)
-            const pagedAssignments = paginateAssignments(assignments, currentPage, itemsPerPage);
-
-            // Hiển thị các assignments cho trang hiện tại
-            pagedAssignments.forEach(assignment => {
-                const createdDateFormatted = formatDateTime(assignment.created_date);
-                const endDateFormatted = formatDateTime(assignment.end_date);
-
-                // Xử lý trạng thái để dịch
-                const statusTranslated = getStatusTranslation(assignment.status);  // Gọi hàm dịch cho trạng thái
-
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                <td style="font-weight: bold;">
-                    <a href="/view-assignment-details.html?id=${assignment.id}" target="_blank">
-                        ${assignment.description}
-                    </a>
-                </td>
-                <td>${createdDateFormatted}</td>
-                <td>${endDateFormatted}</td>
-                <td class="${assignment.status === 'OPEN' ? 'status-open' : assignment.status === 'CLOSE' ? 'status-close' : ''}">
-                    ${statusTranslated}
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <span class="flaticon-more-button-of-three-dots"></span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
-                                <i class="fas fa-times text-orange-red"></i><span data-i18n="delete">Delete</span>
-                            </a>
-                            <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
-                                <i class="fas fa-cogs text-dark-pastel-green"></i><span data-i18n="update">Update</span>
-                            </a>
-                        </div>
-                    </div>
-                </td>
-            `;
-                tableBody.appendChild(row);
-            });
-
-            // Hiển thị phân trang
-            renderPagination(assignments.length);
+            totalPages = Math.ceil(assignments.length / assignmentsPerPage);  // Tính số trang dựa trên tổng số assignments
+            displayPage(currentPage);  // Hiển thị trang hiện tại
 
         } catch (error) {
             console.error('Error:', error);
         }
     }
 
-    // Hàm phân trang dữ liệu
-    function paginateAssignments(assignments, currentPage, itemsPerPage) {
-        const start = (currentPage - 1) * itemsPerPage;
-        const end = currentPage * itemsPerPage;
-        return assignments.slice(start, end);
+    // Hàm hiển thị assignments trên một trang
+    function displayPage(page) {
+        const startIndex = (page - 1) * assignmentsPerPage;
+        const endIndex = page * assignmentsPerPage;
+        const pageAssignments = assignments.slice(startIndex, endIndex);  // Lấy các assignment của trang hiện tại
+
+        const tableBody = document.getElementById('assignment_list');
+        tableBody.innerHTML = '';
+
+        pageAssignments.forEach(assignment => {
+            const createdDateFormatted = formatDateTime(assignment.created_date);
+            const endDateFormatted = formatDateTime(assignment.end_date);
+            const statusTranslated = getStatusTranslation(assignment.status);
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            <td style="font-weight: bold;">
+                <a href="/view-assignment-details.html?id=${assignment.id}" target="_blank">${assignment.description}</a>
+            </td>
+            <td>${createdDateFormatted}</td>
+            <td>${endDateFormatted}</td>
+            <td class="${assignment.status === 'OPEN' ? 'status-open' : assignment.status === 'CLOSE' ? 'status-close' : ''}">
+                ${statusTranslated}
+            </td>
+            <td>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <span class="flaticon-more-button-of-three-dots"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
+                            <i class="fas fa-times text-orange-red"></i><span data-i18n="delete">Delete</span>
+                        </a>
+                        <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
+                            <i class="fas fa-cogs text-dark-pastel-green"></i><span data-i18n="update">Update</span>
+                        </a>
+                    </div>
+                </div>
+            </td>
+        `;
+            tableBody.appendChild(row);
+        });
+
+        displayPagination();
     }
 
-    // Hàm định dạng thời gian
+    // Hàm hiển thị các nút phân trang
+    function displayPagination() {
+        const paginationContainer = document.getElementById('pagination');
+        paginationContainer.innerHTML = '';
+
+        if (totalPages <= 1) return;
+
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement('button');
+            pageButton.innerText = i;
+            pageButton.classList.add('btn', 'btn-secondary', 'mx-1');
+
+            if (i === currentPage) {
+                pageButton.classList.add('active');
+            } else {
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;  // Cập nhật trang hiện tại
+                    displayPage(currentPage);
+                });
+            }
+
+            paginationContainer.appendChild(pageButton);
+        }
+    }
+
+
+
     function formatDateTime(dateString) {
         const date = new Date(dateString);
-        date.setTime(date.getTime() + 7 * 60 * 60 * 1000); // Tính timezone GMT+7
+        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
 
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -1173,34 +1237,8 @@
         return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
     }
 
-    // Hàm render phân trang
-    function renderPagination(totalItems) {
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-        const paginationDiv = document.getElementById('pagination');
-        paginationDiv.innerHTML = '';  // Xóa các nút phân trang hiện tại
-
-        for (let i = 1; i <= totalPages; i++) {
-            const pageButton = document.createElement('button');
-            pageButton.textContent = i;
-            pageButton.classList.add('pagination-button');
-            if (i === currentPage) {
-                pageButton.classList.add('active'); // Thêm class active cho trang hiện tại
-            }
-
-            pageButton.addEventListener('click', () => {
-                currentPage = i;
-                fetchAndDisplayAssignments(); // Gọi lại hàm để hiển thị dữ liệu mới theo trang
-                renderPagination(totalItems);  // Cập nhật lại phân trang
-            });
-
-            paginationDiv.appendChild(pageButton);
-        }
-    }
-
-    // Gọi lại hàm khi trang tải
-    document.addEventListener('DOMContentLoaded', function () {
-        fetchAndDisplayAssignments();  // Gọi để lấy và hiển thị assignments
-    });
+    // Gọi lại getTranslation sau khi các phần tử đã được thêm vào DOM
+    document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
 
 
     function formatDateTimeForInput(dateString) {
@@ -1521,48 +1559,57 @@
 </script>
 <!-- fetch user -->
 <script>
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    const roleTranslations = {
-        "en": {
-            "ADMIN": "Admin",
-            "TEACHER": "Teacher",
-            "STUDENT": "Student",
-            "MANAGER": "MANAGER",
-        },
-        "ja": {
-            "ADMIN": "管理者",
-            "TEACHER": "教師",
-            "STUDENT": "学生",
-            "MANAGER": "管理者"
-        }
-    };
-    if (userDetails) {
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
-        const currentLanguage = localStorage.getItem('language');
-
-        // Hiển thị thông tin người dùng với tên và vai trò dịch theo ngôn ngữ hiện tại
-        const translatedRoleName = roleTranslations[currentLanguage][userDetails.roleName] || userDetails.roleName;
-        // Populate Name
-        userFullNameElements.forEach(element => {
-            element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
-        });
-
-        // Populate Role
-        userRoleElements.forEach(element => {
-            element.textContent = translatedRoleName;
-        });
-
-        const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
-
-        imgContainers.forEach(container => {
-            const imgElement = container.querySelector('img'); // Select the <img> inside the div
-            if (imgElement) {
-                imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
+    // Fetch user data and store it in sessionStorage
+    (async function fetchUserData() {
+        try {
+            const response = await fetch('/user-detail');
+            if (response.ok) {
+                const userData = await response.json();
+                sessionStorage.setItem('userDetails', JSON.stringify(userData));
+                console.log("User data stored in sessionStorage:", userData);
+                getUserDetails(userData);
+                // Ensure that the fetch functions are called after userDetails are set
+                fetchTotalStudents(userData.teacherId);
+                fetchClasses(userData.teacherId);
+            } else {
+                console.error("Failed to fetch user details:", response.statusText);
             }
-        });
-    } else {
-        console.error("User details not found in sessionStorage");
+        } catch (error) {
+            console.error("Error fetching user details:", error);
+        }
+    })();
+
+    // Function to set user details in the UI
+    function getUserDetails(userDetails) {
+        if (userDetails) {
+            console.log("Setting user details:", userDetails);
+
+            document.querySelectorAll('.userFullName').forEach(element => {
+                element.textContent = userDetails.fullName || "Unknown Name";
+            });
+            document.querySelectorAll('.userRole').forEach(element => {
+                element.textContent = userDetails.roleName || "Unknown Role";
+            });
+            const userIdElement = document.getElementById('userId');
+            if (userIdElement) {
+                userIdElement.value = userDetails.id || "";
+            }
+
+            const imgContainers = document.querySelectorAll('.img');
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img');
+                if (imgElement) {
+                    imgElement.src = userDetails.img
+                        ? `${userDetails.img}?v=${new Date().getTime()}`
+                        : '/path/to/default-passport.jpg';
+                    console.log("Image source set to:", imgElement.src);
+                } else {
+                    console.error("Image element not found in:", container);
+                }
+            });
+        } else {
+            console.error("User details not found in sessionStorage");
+        }
     }
 
     function submitForm() {
@@ -1912,18 +1959,7 @@
         }
     });
 </script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Đảm bảo chỉ chạy khi các th đã được tải và áp dụng.
-        setTimeout(function () {
-            // Loại bỏ các lớp "sorting" và "sorting_asc" nếu tồn tại trên th
-            const thElements = document.querySelectorAll('th.sorting, th.sorting_asc');
-            thElements.forEach(function (thElement) {
-                thElement.classList.remove('sorting', 'sorting_asc');
-            });
-        }, 100);  // Điều chỉnh thời gian đợi cho phù hợp
-    });
-</script>
+
 </body>
 
 </html>

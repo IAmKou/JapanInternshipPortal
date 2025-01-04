@@ -29,6 +29,45 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        #pagination .btn {
+            min-width: 40px;
+            min-height: 40px;
+            font-size: 16px;
+            border-radius: 8px;
+            padding: 6px 12px;
+            transition: all 0.3s ease;
+        }
+
+        #pagination .btn:hover {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #pagination .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+
+        #pagination .btn-outline-primary {
+            color: #007bff;
+            border: 1px solid #007bff;
+        }
+
+        #pagination .btn-secondary {
+            background-color: #e9ecef;
+            color: #6c757d;
+            border: none;
+        }
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -469,7 +508,7 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table id="submittedAssignment_table" class="table display data-table text-nowrap">
+                        <table id="submittedAssignment_table" class="table display text-nowrap">
                             <thead>
                             <tr>
                                 <th style="font-weight: bold; color: #000;">Description</th>
@@ -483,6 +522,10 @@
                             <!-- Assignment data will be inserted here -->
                             </tbody>
                         </table>
+                        <div id="pagination" class="d-flex justify-content-center mt-3 pagination-container">
+                            <!-- Pagination buttons will be dynamically added here -->
+                        </div>
+
                     </div>
 
                 </div>
@@ -501,6 +544,38 @@
                 <div class="modal-buttons">
                     <button class="confirm-btn" onclick="confirmDelete()">Confirm</button>
                     <button class="cancel-btn" onclick="closeDeleteConfirmModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title text-success" id="successModalLabel">
+                            <i class="fas fa-check-circle"></i> Success
+                        </h5>
+                    </div>
+                    <div class="modal-body text-center" style="font-size: 20px; font-weight: bold;">
+                        Assignment updated successfully!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Modal -->
+        <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title text-danger" id="errorModalLabel">
+                            <i class="fas fa-times-circle"></i> Error
+                        </h5>
+                    </div>
+                    <div class="modal-body text-center" style="font-size: 20px; font-weight: bold;">
+                        Assignment not found!
+                    </div>
                 </div>
             </div>
         </div>
@@ -536,159 +611,143 @@
 <script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
-<script src="script.js"></script>
 
-<script type="text/javascript">
-    // Hàm thay đổi ngôn ngữ và lưu vào localStorage
-    function changeLanguage(language) {
-        var languageLabel = document.getElementById('languageLabel');
-
-        // Cập nhật nhãn ngôn ngữ trên dropdown
-        if (language === 'en') {
-            languageLabel.innerText = 'EN';
-        } else if (language === 'ja') {
-            languageLabel.innerText = 'JA';
-        }
-
-        // Lưu ngôn ngữ vào localStorage
-        localStorage.setItem('selectedLanguage', language);
-
-        // Kiểm tra nếu Google Translate đã được tải
-        if (window.google && google.translate) {
-            google.translate.TranslateElement.prototype.translatePage(language);
-        }
-    }
-
-    // Hàm khởi tạo Google Translate khi trang tải
-    function loadGoogleTranslate() {
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-        document.head.appendChild(script);
-    }
-
-    // Hàm khởi tạo Google Translate Element
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            includedLanguages: 'en,ja',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-            autoDisplay: false,
-        }, 'google_translate_element');
-    }
-
-    // Khi trang được tải, thiết lập ngôn ngữ từ localStorage
-    document.addEventListener('DOMContentLoaded', function () {
-        // Lấy ngôn ngữ đã lưu trong localStorage
-        var savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-
-        // Cập nhật giao diện với ngôn ngữ đã lưu
-        var languageLabel = document.getElementById('languageLabel');
-        if (savedLanguage === 'en') {
-            languageLabel.innerText = 'EN';
-        } else if (savedLanguage === 'ja') {
-            languageLabel.innerText = 'JA';
-        }
-
-        // Dịch trang ngay từ khi tải
-        if (window.google && google.translate) {
-            google.translate.TranslateElement.prototype.translatePage(savedLanguage);
-        }
-    });
-
-    // Tải Google Translate
-    loadGoogleTranslate();
-</script>
-
-
-
-
-<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
 
     let status = null;
+    const ITEMS_PER_PAGE = 5; // Số mục hiển thị mỗi trang
+    let currentPage = 1; // Trang hiện tại
+    let allAssignments = []; // Mảng chứa tất cả assignment
+
+    function renderTable(assignments) {
+        const tableBody = document.getElementById('submittedAssignment_list');
+        tableBody.innerHTML = '';
+
+        if (assignments.length === 0) {
+            const noDataRow = document.createElement('tr');
+            noDataRow.innerHTML = `
+            <td colspan="5" class="text-center">No submitted assignments available.</td>
+        `;
+            tableBody.appendChild(noDataRow);
+            return;
+        }
+
+        assignments.forEach(submittedAssignment => {
+            const row = document.createElement('tr');
+            const isMarked = submittedAssignment.status === "MARKED";
+            row.innerHTML = `
+            <td>
+                <a href="/submited-assignment-detail.html?id=${submittedAssignment.id}" target="_blank">
+                    ${submittedAssignment.description}
+                </a>
+            </td>
+            <td>${submittedAssignment.mark || "N/A"}</td>
+            <td>${new Date(submittedAssignment.date).toLocaleDateString()}</td>
+            <td style="color:green">${submittedAssignment.status || "N/A"}</td>
+            <td>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <span class="flaticon-more-button-of-three-dots"></span>
+                    </a>
+                     <div class="dropdown-menu dropdown-menu-right">
+                        ${isMarked ? `
+                            <span class="dropdown-item text-muted">
+                                <i class="fas fa-ban text-gray"></i> Delete (Not Allowed)
+                            </span>
+                        ` : `
+                            <a class="dropdown-item" onclick="openDeleteConfirmModal(${submittedAssignment.id})">
+                                <i class="fas fa-times text-orange-red"></i> Delete
+                            </a>
+                        `}
+                    </div>
+                </div>
+            </td>
+        `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function renderPagination(totalItems, itemsPerPage, currentPage) {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        const paginationContainer = document.getElementById('pagination');
+        paginationContainer.innerHTML = ''; // Reset nút phân trang
+
+        // Thêm nút "Previous"
+        const prevButton = document.createElement('button');
+        prevButton.textContent = '«';
+        prevButton.className = `btn ${currentPage === 1 ? 'btn-secondary disabled' : 'btn-outline-primary'} mx-1`;
+        prevButton.disabled = currentPage === 1;
+        prevButton.onclick = () => {
+            if (currentPage > 1) {
+                currentPage--;
+                updatePaginationAndTable();
+            }
+        };
+        paginationContainer.appendChild(prevButton);
+
+        // Thêm nút số
+        for (let i = 1; i <= totalPages; i++) {
+            const button = document.createElement('button');
+            button.textContent = i;
+            button.className = `btn ${i === currentPage ? 'btn-primary' : 'btn-outline-primary'} mx-1`;
+            button.onclick = () => {
+                currentPage = i;
+                updatePaginationAndTable();
+            };
+            paginationContainer.appendChild(button);
+        }
+
+        // Thêm nút "Next"
+        const nextButton = document.createElement('button');
+        nextButton.textContent = '»';
+        nextButton.className = `btn ${currentPage === totalPages ? 'btn-secondary disabled' : 'btn-outline-primary'} mx-1`;
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.onclick = () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updatePaginationAndTable();
+            }
+        };
+        paginationContainer.appendChild(nextButton);
+
+        function updatePaginationAndTable() {
+            const start = (currentPage - 1) * ITEMS_PER_PAGE;
+            const end = start + ITEMS_PER_PAGE;
+            renderTable(allAssignments.slice(start, end));
+            renderPagination(totalItems, itemsPerPage, currentPage);
+        }
+    }
+
     async function fetchAndDisplaySubmittedAssignments() {
         try {
             const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-
             if (!userDetails || !userDetails.id) {
                 throw new Error("Account ID is missing in session storage.");
             }
-
             const accountId = userDetails.id;
-            console.log("Fetched Account ID from sessionStorage:", accountId);
 
-            // Fetch the student ID using the account ID
+            // Fetch the student ID
             const studentIdResponse = await fetch(`/student-assignment/get-student-id?accountId=${accountId}`);
-            if (!studentIdResponse.ok) {
-                throw new Error("Failed to fetch student ID.");
-            }
-
+            if (!studentIdResponse.ok) throw new Error("Failed to fetch student ID.");
             const studentId = await studentIdResponse.json();
-            console.log("Mapped Student ID:", studentId);
 
-            // Fetch submitted assignments using the student ID
+            // Fetch submitted assignments
             const submittedAssignmentResponse = await fetch(`/student-assignment/list-submitted-assignments-student?studentId=${studentId}`);
-            if (!submittedAssignmentResponse.ok) {
-                throw new Error(`Error fetching submitted assignments: ${submittedAssignmentResponse.statusText}`);
-            }
+            if (!submittedAssignmentResponse.ok) throw new Error("Failed to fetch submitted assignments.");
+            allAssignments = await submittedAssignmentResponse.json();
 
-            const submittedAssignments = await submittedAssignmentResponse.json();
-            console.log("Fetched Submitted Assignments:", submittedAssignments);
+            console.log("Fetched Submitted Assignments:", allAssignments);
 
-            // Clear and populate the table
-            const tableBody = document.getElementById('submittedAssignment_list');
-            tableBody.innerHTML = '';
-
-            if (submittedAssignments.length === 0) {
-                const noDataRow = document.createElement('tr');
-                noDataRow.innerHTML = `
-                <td colspan="4" class="text-center">No submitted assignments available.</td>
-            `;
-                tableBody.appendChild(noDataRow);
-                return;
-            }
-
-            submittedAssignments.forEach(submittedAssignment => {
-                const row = document.createElement('tr');
-                const isMarked = submittedAssignment.status === "MARKED";
-                row.innerHTML = `
-                <td>
-                    <a href="/submited-assignment-detail.html?id=${submittedAssignment.id}" target="_blank">
-                        ${submittedAssignment.description}
-                    </a>
-                </td>
-                <td>${submittedAssignment.mark || "N/A"}</td>
-                <td>${new Date(submittedAssignment.date).toLocaleDateString()}</td>
-                <td style="color:green">${submittedAssignment.status || "N/A"}</td>
-                <td>
-                    <div class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <span class="flaticon-more-button-of-three-dots"></span>
-                        </a>
-                         <div class="dropdown-menu dropdown-menu-right">
-                            ${isMarked ? `
-                                <span class="dropdown-item text-muted">
-                                    <i class="fas fa-ban text-gray"></i> Delete (Not Allowed)
-                                </span>
-                            ` : `
-                                <a class="dropdown-item" onclick="openDeleteConfirmModal(${submittedAssignment.id})">
-                                    <i class="fas fa-times text-orange-red"></i> Delete
-                                </a>
-                            `}
-                        </div>
-                    </div>
-                </td>
-            `;
-                tableBody.appendChild(row);
-            });
+            const start = (currentPage - 1) * ITEMS_PER_PAGE;
+            const end = start + ITEMS_PER_PAGE;
+            renderTable(allAssignments.slice(start, end));
+            renderPagination(allAssignments.length, ITEMS_PER_PAGE, currentPage);
         } catch (error) {
             console.error("Error:", error);
-
             const tableBody = document.getElementById('submittedAssignment_list');
             tableBody.innerHTML = `
             <tr>
-                <td colspan="4" class="text-center text-danger">Failed to load assignments. Please try again later.</td>
+                <td colspan="5" class="text-center text-danger">Failed to load assignments. Please try again later.</td>
             </tr>
         `;
         }
