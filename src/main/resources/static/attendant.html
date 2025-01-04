@@ -610,25 +610,20 @@
             const tableBody = document.querySelector('.table tbody');
             const urlParams = new URLSearchParams(window.location.search);
             const classId = urlParams.get('classId');
+            const submitButton = document.querySelector('#submitButton');
 
-            // Restrict Attendance Time
-            const now = new Date();
-            const currentTime = now.getHours() * 60 + now.getMinutes(); // Current time in minutes
-            const attendanceStartTime = 13 * 60 + 30; // 13:30 in minutes
-            const attendanceEndTime = 17 * 60; // 17:00 in minutes
-
-            if (currentTime < attendanceStartTime || currentTime > attendanceEndTime) {
-                alert("Attendance can only be taken between 13:30 PM and 17:00 PM.");
-                document.querySelector('#submitButton').disabled = true; // Disable the submit button
-                return;
+            // Function to handle errors
+            function handleError(message) {
+                console.error(message);
+                alert(message);
             }
 
-
             if (classId) {
+                // Fetch student data
                 fetch(`/student/${classId}/getAll`)
                     .then(response => {
                         if (!response.ok) {
-                            throw new Error('Network response was not ok ' + response.statusText);
+                            throw new Error('Failed to fetch students: ' + response.statusText);
                         }
                         return response.json();
                     })
@@ -658,38 +653,27 @@
                             row.appendChild(nameCell);
 
                             // Attendance checkboxes
-                            const presentCell = document.createElement('td');
-                            presentCell.innerHTML = `
-                            <div class="form-check">
-                                <input type="checkbox" value="Present" class="form-check-input checkAll">
-                                <label class="form-check-label">Present</label>
-                            </div>`;
-                            row.appendChild(presentCell);
-
-                            const lateCell = document.createElement('td');
-                            lateCell.innerHTML = `
-                            <div class="form-check">
-                                <input type="checkbox" value="Late" class="form-check-input checkAll">
-                                <label class="form-check-label">Late</label>
-                            </div>`;
-                            row.appendChild(lateCell);
-
-                            const absentCell = document.createElement('td');
-                            absentCell.innerHTML = `
-                            <div class="form-check">
-                                <input type="checkbox" value="Absent" class="form-check-input checkAll">
-                                <label class="form-check-label">Absent</label>
-                            </div>`;
-                            row.appendChild(absentCell);
-
-                            // Permitted Absence (always disabled)
-                            const permittedAbsenceCell = document.createElement('td');
-                            permittedAbsenceCell.innerHTML = `
-                            <div class="form-check">
-                                <input type="checkbox" value="Permitted" class="form-check-input checkAll" disabled>
-                                <label class="form-check-label">Permitted Absence</label>
-                            </div>`;
-                            row.appendChild(permittedAbsenceCell);
+                            const statuses = ['Present', 'Late', 'Absent', 'Permitted'];
+                            statuses.forEach((status, index) => {
+                                const cell = document.createElement('td');
+                                const formCheck = document.createElement('div');
+                                formCheck.className = 'form-check';
+                                const checkbox = document.createElement('input');
+                                checkbox.type = 'checkbox';
+                                checkbox.value = status;
+                                checkbox.className = 'form-check-input checkAll';
+                                checkbox.disabled = status === 'Permitted' || student.mark === true;
+                                if (status === 'Permitted' && student.mark === true) {
+                                    checkbox.checked = true;
+                                }
+                                const label = document.createElement('label');
+                                label.className = 'form-check-label';
+                                label.textContent = status;
+                                formCheck.appendChild(checkbox);
+                                formCheck.appendChild(label);
+                                cell.appendChild(formCheck);
+                                row.appendChild(cell);
+                            });
 
                             // Actions cell
                             const actionsCell = document.createElement('td');
@@ -705,46 +689,35 @@
                             const dropdownMenu = document.createElement('div');
                             dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
                             dropdownMenu.innerHTML = `
-                            <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>`;
+                    <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>`;
                             dropdown.appendChild(dropdownMenu);
                             actionsCell.appendChild(dropdown);
                             row.appendChild(actionsCell);
 
                             // Append the row to the table body
                             tableBody.appendChild(row);
-
-                            // Add the event listener to ensure only one checkbox is checked in the row
-                            const checkboxes = row.querySelectorAll('.form-check-input');
-                            checkboxes.forEach(checkbox => {
-                                checkbox.addEventListener('change', function () {
-                                    checkboxes.forEach(otherCheckbox => {
-                                        if (otherCheckbox !== checkbox) {
-                                            otherCheckbox.checked = false;
-                                        }
-                                    });
-                                });
-                            });
-
-                            // If student has mark = true, disable all checkboxes and check "Permitted Absence"
-                            if (student.mark === true) {
-                                checkboxes.forEach(checkbox => {
-                                    checkbox.disabled = true;  // Disable all checkboxes for this row
-                                });
-
-                                // Check the "Permitted Absence" checkbox
-                                const permittedAbsenceCheckbox = permittedAbsenceCell.querySelector('input');
-                                permittedAbsenceCheckbox.checked = true;
-                            }
                         });
                     })
-                    .catch(error => console.error('Error fetching students:', error));
+                    .catch(error => handleError('Error fetching students: ' + error.message));
             } else {
-                console.error("classId is missing from the URL.");
+                handleError('Class ID is missing from the URL.');
             }
 
+            // Event delegation for checkboxes
+            document.addEventListener('change', function (event) {
+                if (event.target.classList.contains('form-check-input')) {
+                    const row = event.target.closest('tr');
+                    const checkboxes = row.querySelectorAll('.form-check-input');
+                    checkboxes.forEach(checkbox => {
+                        if (checkbox !== event.target && !checkbox.disabled) {
+                            checkbox.checked = false;
+                        }
+                    });
+                }
+            });
+
             // Validation for checking if at least one checkbox is selected in each row
-            document.querySelector('#submitButton').addEventListener('click', function (event) {
-                // Validate and submit attendance
+            submitButton.addEventListener('click', function (event) {
                 let isValid = true;
                 const attendanceData = [];
 
@@ -766,15 +739,16 @@
                         attendanceData.push({
                             studentId: parseInt(studentId, 10),
                             status: status,
-                            date: new Date().toLocaleDateString('en-CA'),
+                            date: new Date().toISOString().split('T')[0],
                         });
                     }
                 });
 
                 if (!isValid) {
                     event.preventDefault();
-                    alert("Please check at least one checkbox for each student.");
+                    alert('Please check at least one checkbox for each student.');
                 } else {
+                    submitButton.disabled = true;
                     fetch(`/attendant/save/${classId}`, {
                         method: 'POST',
                         headers: {
@@ -789,12 +763,11 @@
                             return response.text();
                         })
                         .then(data => {
-                            console.log('Attendance saved successfully:', data);
                             alert(data);
                         })
-                        .catch(error => {
-                            console.error('Error saving attendance:', error);
-                            alert('Failed to save attendance.');
+                        .catch(error => handleError('Error saving attendance: ' + error.message))
+                        .finally(() => {
+                            submitButton.disabled = false;
                         });
                 }
             });

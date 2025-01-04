@@ -1,6 +1,5 @@
 <!doctype html>
 <html class="no-js" lang="">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -27,9 +26,7 @@
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
-
     <style>
-
         .post-container {
             max-width: 800px;
             margin: 0 auto;
@@ -39,24 +36,20 @@
             border: 1px solid #ddd;
             border-radius: 8px;
         }
-
         .post-header h2 {
             font-size: 24px;
             color: #333;
             margin-bottom: 10px;
         }
-
         .post-image {
             text-align: center;
             margin: 20px 0;
         }
-
         .post-image img {
             max-width: 100%;
             height: auto;
             border-radius: 5px;
         }
-
         .post-description {
             font-size: 16px;
             color: #555;
@@ -66,16 +59,12 @@
             overflow: hidden;
             word-break: break-word;
         }
-
         #pageNumber {
             font-size: 18px;
             font-weight: bold;
         }
-
     </style>
-
 </head>
-
 <body>
 <!-- Preloader Start Here -->
 <div id="preloader"></div>
@@ -83,7 +72,6 @@
 <div id="wrapper" class="wrapper bg-ash">
     <!-- Header Menu Area Start Here -->
     <div id="google_translate_element"></div>
-
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
@@ -116,7 +104,6 @@
             <ul class="navbar-nav">
                 <li class="navbar-item header-search-bar">
                     <div class="input-group stylish-input-group">
-
                     </div>
                 </li>
             </ul>
@@ -145,7 +132,6 @@
                         </div>
                     </div>
                 </li>
-
                 <li class="navbar-item dropdown header-notification">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
@@ -272,7 +258,6 @@
                                 <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My list
                                     materials</a>
                             </li>
-
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
@@ -282,14 +267,12 @@
                                 <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
                                     application</a>
                             </li>
-
                             <li class="nav-item">
                                 <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
                                     application</a>
                             </li>
                         </ul>
                     </li>
-
                     <li class="nav-item sidebar-nav-item">
                         <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
@@ -299,13 +282,11 @@
                             </li>
                         </ul>
                     </li>
-
                 </ul>
             </div>
         </div>
         <!-- Sidebar Area End Here -->
         <!-- Main Body Content Start Here -->
-
         <div class="post-container">
             <div style="display: flex">
                 <!-- Post Header -->
@@ -323,7 +304,6 @@
         </div>
         <!-- Main Body Content End Here -->
     </div>
-
     <div class="ui-modal-box">
         <div class="modal-box">
             <div class="modal sign-up-modal fade" id="sign-up" tabindex="-1" role="dialog"
@@ -367,7 +347,6 @@
     </div>
 </div>
 <!-- Page Area End Here -->
-
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -387,28 +366,23 @@
 <!-- Custom Js -->
 <script src="js/main.js"></script>
 <script src="script.js"></script>
-
 <script type="text/javascript">
     // Hàm thay đổi ngôn ngữ và lưu vào localStorage
     function changeLanguage(language) {
         var languageLabel = document.getElementById('languageLabel');
-
         // Cập nhật nhãn ngôn ngữ trên dropdown
         if (language === 'en') {
             languageLabel.innerText = 'EN';
         } else if (language === 'ja') {
             languageLabel.innerText = 'JA';
         }
-
         // Lưu ngôn ngữ vào localStorage
         localStorage.setItem('selectedLanguage', language);
-
         // Kiểm tra nếu Google Translate đã được tải
         if (window.google && google.translate) {
             google.translate.TranslateElement.prototype.translatePage(language);
         }
     }
-
     // Hàm khởi tạo Google Translate khi trang tải
     function loadGoogleTranslate() {
         var script = document.createElement('script');
@@ -416,7 +390,6 @@
         script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
         document.head.appendChild(script);
     }
-
     // Hàm khởi tạo Google Translate Element
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({
@@ -426,12 +399,10 @@
             autoDisplay: false,
         }, 'google_translate_element');
     }
-
     // Khi trang được tải, thiết lập ngôn ngữ từ localStorage
     document.addEventListener('DOMContentLoaded', function () {
         // Lấy ngôn ngữ đã lưu trong localStorage
         var savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-
         // Cập nhật giao diện với ngôn ngữ đã lưu
         var languageLabel = document.getElementById('languageLabel');
         if (savedLanguage === 'en') {
@@ -439,56 +410,43 @@
         } else if (savedLanguage === 'ja') {
             languageLabel.innerText = 'JA';
         }
-
         // Dịch trang ngay từ khi tải
         if (window.google && google.translate) {
             google.translate.TranslateElement.prototype.translatePage(savedLanguage);
         }
     });
-
     // Tải Google Translate
     loadGoogleTranslate();
 </script>
-
-
-
-
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
 <script>
     let currentPage = 1;
     const threadsPerPage = 5;
     const threads = Array.from(document.querySelectorAll('.thread-box'));
     let totalPages = Math.ceil(threads.length / threadsPerPage);
-
     function showPage(page) {
         // Hide all threads
         threads.forEach(thread => thread.style.display = 'none');
-
         // Show only the threads for the current page
         const start = (page - 1) * threadsPerPage;
         const end = start + threadsPerPage;
         threads.slice(start, end).forEach(thread => thread.style.display = 'block');
-
         // Update page number and button states
         document.getElementById('pageNumber').textContent = page;
         document.getElementById('prevPage').disabled = page === 1;
         document.getElementById('nextPage').disabled = page === totalPages;
     }
-
     // Change page based on button click
     function changePage(direction) {
         currentPage += direction;
         showPage(currentPage);
     }
-
     // Initialize pagination on page load
     document.addEventListener('DOMContentLoaded', () => showPage(currentPage));
 </script>
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const threadId = urlParams.get('id');
-
     if (threadId) {
         // Use the threadId to fetch the thread's details
         fetch(`/thread/${threadId}`)
@@ -498,7 +456,6 @@
     } else {
         console.error("No thread ID found in URL.");
     }
-
     function renderThreadDetails(thread) {
         const threadTitle = document.getElementById('threadTitle');
         const threadDescription = document.getElementById('threadDescription');

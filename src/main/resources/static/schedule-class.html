@@ -423,7 +423,6 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         let holidays = [];
-        let eventsToSave = [];
         const calendarEl = document.getElementById('calendar');
         const urlParams = new URLSearchParams(window.location.search);
         const classId = urlParams.get('classId');
@@ -432,6 +431,12 @@
         if (!calendarEl) {
             console.error('Required elements not found in the DOM.');
             return;
+        }
+
+        function isPastDate(date) {
+            const now = new Date();
+            now.setHours(0, 0, 0, 0); // Normalize to start of the day
+            return new Date(date) < now;
         }
 
         function fetchRoomAvailability(date) {
@@ -475,7 +480,6 @@
                     .then(() => ({ semesterStart, semesterEnd }));
             })
             .then(({ semesterStart, semesterEnd }) => {
-                // Initialize FullCalendar
                 const calendar = new FullCalendar.Calendar(calendarEl, {
                     headerToolbar: {
                         left: 'prev,next today',
@@ -517,10 +521,16 @@
                             });
                     },
                     dateClick: function (info) {
+                        if (isPastDate(info.dateStr)) {
+                            alert('You cannot create events in the past.');
+                            return;
+                        }
+
                         if (holidays.includes(info.dateStr)) {
                             alert('You cannot create events on holidays.');
                             return;
                         }
+
                         const roomDropdown = document.getElementById('roomDropdown');
                         fetchRoomAvailability(info.dateStr)
                             .then(rooms => {
@@ -555,94 +565,90 @@
                     },
                     eventClick: function (info) {
                         const event = info.event;
+
+                        if (isPastDate(event.startStr)) {
+                            alert('You cannot update events in the past.');
+                            return;
+                        }
+
                         const eventModal = document.getElementById('eventDetailModal');
-                        // Populate event details
                         document.getElementById('event-title').value = event.title;
                         document.getElementById('event-color').value = event.backgroundColor;
                         document.getElementById('event-id').value = event.id;
                         const roomDropdown = document.getElementById('roomDropdownEdit');
-                        // Fetch available rooms and populate dropdown
+
                         fetchRoomAvailability(event.startStr)
                             .then(rooms => {
                                 roomDropdown.innerHTML = '';
-                                // Add default option
                                 const defaultOption = document.createElement('option');
                                 defaultOption.value = '';
                                 defaultOption.textContent = 'Select a Room';
                                 defaultOption.disabled = true;
                                 defaultOption.selected = true;
                                 roomDropdown.appendChild(defaultOption);
-                                // Add room options
                                 rooms.forEach(room => {
                                     const option = document.createElement('option');
                                     option.value = room.roomName;
                                     option.textContent = room.roomName;
-                                    // Mark occupied rooms
                                     if (room.status === 'Occupied') {
                                         option.style.color = 'red';
                                         option.disabled = true;
                                     }
-                                    // Pre-select the current room
                                     if (room.roomName === event.extendedProps.room) {
                                         option.selected = true;
                                     }
                                     roomDropdown.appendChild(option);
                                 });
                             });
-                        // Update event functionality
+
                         document.getElementById('update-event').onclick = function () {
                             const updatedTitle = document.getElementById('event-title').value;
                             const updatedColor = document.getElementById('event-color').value;
                             const updatedRoom = roomDropdown.value;
+
+                            if (isPastDate(event.startStr)) {
+                                alert('You cannot update events in the past.');
+                                return;
+                            }
+
                             event.setProp('title', updatedTitle);
                             event.setProp('backgroundColor', updatedColor);
                             event.setProp('borderColor', updatedColor);
                             event.setExtendedProp('room', updatedRoom);
+
                             fetch(`/schedule/update/${event.id}`, {
                                 method: 'PUT',
-                                    headers: {'Content-Type': 'application/json'},
+                                headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
                                     activity: updatedTitle,
                                     color: updatedColor,
                                     room: updatedRoom,
                                 }),
                             })
-                        .then(response => {
-                                if (!response.ok) throw new Error('Failed to update event');
-                                alert('Event updated successfully!');
-                                $('#eventDetailModal').modal('hide');
-                            })
+                                .then(response => {
+                                    if (!response.ok) throw new Error('Failed to update event');
+                                    alert('Event updated successfully!');
+                                    $('#eventDetailModal').modal('hide');
+                                })
                                 .catch(error => console.error('Error updating event:', error));
                         };
-                        // Delete event functionality
+
                         document.getElementById('delete-event').onclick = function () {
                             if (confirm('Are you sure you want to delete this event?')) {
                                 fetch(`/schedule/delete/${event.id}`, {
                                     method: 'DELETE',
                                 })
-                            .then(response => {
-                                    if (!response.ok) throw new Error('Failed to delete event');
-                                    event.remove();
-                                    alert('Event deleted successfully!');
-                                    $('#eventDetailModal').modal('hide');
-                                })
+                                    .then(response => {
+                                        if (!response.ok) throw new Error('Failed to delete event');
+                                        event.remove();
+                                        alert('Event deleted successfully!');
+                                        $('#eventDetailModal').modal('hide');
+                                    })
                                     .catch(error => console.error('Error deleting event:', error));
                             }
                         };
-                        // Show the modal
+
                         $('#eventDetailModal').modal('show');
-                    },
-                    eventReceive: function (info) {
-                        if (holidays.includes(info.event.startStr)) {
-                            alert('Events cannot be dropped on holidays.');
-                            info.revert();
-                        }
-                    },
-                    eventDrop: function (info) {
-                        if (holidays.includes(info.event.startStr)) {
-                            alert('Events cannot be dropped on holidays.');
-                            info.revert();
-                        }
                     },
                 });
                 calendar.render();
@@ -653,6 +659,11 @@
                     const room = roomDropdown.value;
                     const color = document.getElementById('eventColor').value;
                     const clickedDate = document.getElementById('clicked-date').value;
+
+                    if (isPastDate(clickedDate)) {
+                        alert('You cannot save events in the past.');
+                        return;
+                    }
 
                     if (!title) {
                         alert('Please provide a title.');
@@ -707,6 +718,7 @@
             })
             .catch(error => console.error('Error initializing calendar:', error));
     });
+
 </script>
 
 
