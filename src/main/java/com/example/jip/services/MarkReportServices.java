@@ -4,6 +4,7 @@ import com.example.jip.dto.MarkReportDTO;
 import com.example.jip.dto.request.markReport.MarkReportImportRequest;
 import com.example.jip.dto.request.markReport.MarkReportUpdateRequest;
 import com.example.jip.dto.response.markReport.MarkReportResponse;
+import com.example.jip.dto.response.markReportExam.MarkReportExamResponse;
 import com.example.jip.entity.*;
 import com.example.jip.repository.*;
 import lombok.AccessLevel;
@@ -55,9 +56,57 @@ public class MarkReportServices {
                     response.setSkill(markReport.getSkill());
                     response.setAttitude(markReport.getAttitude());
                     response.setFinal_mark(markReport.getFinal_mark());
+                    response.setComment(markReport.getComment());
                     return response;
                 })
                 .collect(Collectors.toList());
+    }
+
+    public List<MarkReportExamResponse> getListMarkReportExam(int classId){
+        List<MarkReportExam> resultsExam = markRpExamRepository.findAllByClassId(classId);
+        return resultsExam.stream()
+                .map(markReport -> {
+                    MarkReportExamResponse response = new MarkReportExamResponse();
+                    response.setMarkRpId(markReport.getMarkReport().getId()); // Add `studentId` mapping
+                    response.setExamName(markReport.getExam().getTitle());
+                    response.setKotoba(markReport.getKotoba());
+                    response.setBunpou(markReport.getBunpou());
+                    response.setKanji(markReport.getKanji());
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<MarkReportExamResponse> getMarkReportExamByMarkRpId(int markRpId){
+        List<MarkReportExam> resultsExam = markRpExamRepository.findAllByMarkRpId(markRpId);
+        return resultsExam.stream()
+                .map(markReport -> {
+                    MarkReportExamResponse response = new MarkReportExamResponse();
+                    response.setMarkRpId(markReport.getMarkReport().getId()); // Add `studentId` mapping
+                    response.setExamName(markReport.getExam().getTitle());
+                    response.setKotoba(markReport.getKotoba());
+                    response.setBunpou(markReport.getBunpou());
+                    response.setKanji(markReport.getKanji());
+                    return response;
+                })
+                .collect(Collectors.toList());
+
+    }
+
+    public List<MarkReportExamResponse> getMarkReportExamByStudentId(int studentId){
+        List<MarkReportExam> resultsExam = markRpExamRepository.findAllByStudentId(studentId);
+        return resultsExam.stream()
+                .map(markReport -> {
+                    MarkReportExamResponse response = new MarkReportExamResponse();
+                    response.setMarkRpId(markReport.getMarkReport().getId()); // Add `studentId` mapping
+                    response.setExamName(markReport.getExam().getTitle());
+                    response.setKotoba(markReport.getKotoba());
+                    response.setBunpou(markReport.getBunpou());
+                    response.setKanji(markReport.getKanji());
+                    return response;
+                })
+                .collect(Collectors.toList());
+
     }
 
     public MarkReportResponse getMarkReportById(int markRpId) {
@@ -95,6 +144,8 @@ public class MarkReportServices {
             response.setStudentName(markReport.getStudent().getFullname());
             response.setComment(markReport.getComment());
             response.setStudentClass(className);
+            response.setPresentation(markReport.getPresentation());
+            response.setScriptPresentation(markReport.getScript_presentation());
             response.setSoftskill(markReport.getSoftskill());
             response.setAvg_exam_mark(markReport.getAvg_exam_mark());
             response.setMiddle_exam(markReport.getMiddle_exam());
@@ -125,72 +176,69 @@ public class MarkReportServices {
                     continue;
                 }
 
+                List<String> rowErrors = new ArrayList<>();
+
                 try {
-                    // Parse the fixed columns
+                    // Parse fixed columns
                     String name = getStringCellValue(row.getCell(0), rowNumber, "Name");
                     String email = getStringCellValue(row.getCell(1), rowNumber, "Email");
-                    BigDecimal presentation = getNumericCellValue(row.getCell(2), rowNumber, "Presentation");
-                    BigDecimal script = getNumericCellValue(row.getCell(3), rowNumber, "Script");
-                    BigDecimal middleExam = getNumericCellValue(row.getCell(4), rowNumber, "Middle Exam");
-                    BigDecimal finalExam = getNumericCellValue(row.getCell(5), rowNumber, "Final Exam");
+                    BigDecimal presentation = getNumericCellValue(row.getCell(2), rowNumber, "Presentation", rowErrors);
+                    BigDecimal script = getNumericCellValue(row.getCell(3), rowNumber, "Script", rowErrors);
+                    BigDecimal middleExam = getNumericCellValue(row.getCell(4), rowNumber, "Middle Exam", rowErrors);
+                    BigDecimal finalExam = getNumericCellValue(row.getCell(5), rowNumber, "Final Exam", rowErrors);
                     String comment = getStringCellValue(row.getCell(6), rowNumber, "Comment");
 
-                    // Validate required fields (if any)
+                    // Validate required fields
                     if ((name == null || name.isEmpty()) || (email == null || email.isEmpty())) {
-                        errors.add("Row " + rowNumber + ": Name and Email are required.");
-                        continue;
+                        rowErrors.add("Row " + rowNumber + ": Name and Email are required.\n");
                     }
 
                     // Check if student exists
                     Student studentExisted = studentRepository.findByEmail(email).orElse(null);
                     if (studentExisted == null) {
-                        errors.add("Row " + rowNumber + ": Student not found.");
+                        rowErrors.add("Row " + rowNumber + ": Student not found. \n");
+                    }
+
+                    // Stop processing the row if there are errors
+                    if (!rowErrors.isEmpty()) {
+                        errors.addAll(rowErrors);
                         continue;
                     }
 
+
                     // Parse dynamic fields for Kanji, Bunpou, and Kotoba
-                    List<MarkReportExam> scores = markRpExamRepository.findAllByStudentId(studentExisted.getId());
-                    log.info("List Exam of student has id {} is:" + scores, studentExisted.getId());
                     int colIndex = 7; // Start after the fixed columns
                     for (int i = 0; i < 44; i++) {
-                        BigDecimal kanji = getNumericCellValue(row.getCell(colIndex++), rowNumber, "Kanji " + i);
-                        BigDecimal bunpou = getNumericCellValue(row.getCell(colIndex++), rowNumber, "Bunpou " + i);
-                        BigDecimal kotoba = getNumericCellValue(row.getCell(colIndex++), rowNumber, "Kotoba " + i);
+                        BigDecimal kanji = getNumericCellValue(row.getCell(colIndex++), rowNumber, "Kanji " + (i + 1), rowErrors);
+                        BigDecimal bunpou = getNumericCellValue(row.getCell(colIndex++), rowNumber, "Bunpou " + (i + 1), rowErrors);
+                        BigDecimal kotoba = getNumericCellValue(row.getCell(colIndex++), rowNumber, "Kotoba " + (i + 1), rowErrors);
 
-                        MarkReportExam exam = scores.get(i);
-                        if (kanji != null){
+                        // Validate score range
+                        validateScoreRange(kanji, rowNumber, "Kanji " + (i + 1), rowErrors);
+                        validateScoreRange(bunpou, rowNumber, "Bunpou " + (i + 1), rowErrors);
+                        validateScoreRange(kotoba, rowNumber, "Kotoba " + (i + 1), rowErrors);
+
+                        if (rowErrors.isEmpty()) {
+                            List<MarkReportExam> scores = markRpExamRepository.findAllByStudentId(studentExisted.getId());
+                            log.info("List Exam of student with id {} is: {}", studentExisted.getId(), scores);
+                            MarkReportExam exam = scores.get(i);
                             exam.setKanji(kanji);
-                        } else {
-                            exam.setKanji(null);
-                        }
-                        if (bunpou != null){
                             exam.setBunpou(bunpou);
-                        } else {
-                            exam.setBunpou(null);
-                        }
-                        if (kotoba != null){
                             exam.setKotoba(kotoba);
-                        } else {
-                            exam.setKotoba(null);
                         }
-
-
                     }
 
-                    // Create a new MarkReportImportRequest with all the parsed data
-                    MarkReportImportRequest markReport = new MarkReportImportRequest(
-                            name,
-                            email,
-                            presentation,
-                            script,
-                            middleExam,
-                            finalExam,
-                            comment
-                    );
-                    log.info("Mark Report {}", markReport);
-                    markReports.add(markReport);
+                    if (!rowErrors.isEmpty()) {
+                        errors.addAll(rowErrors);
+                        continue;
+                    } else {
+                        markReports.add(new MarkReportImportRequest(
+                            name, email, presentation, script, middleExam, finalExam, comment));
+                    }
+
                 } catch (Exception e) {
-                    errors.add("Row " + rowNumber + ": " + e.getMessage());
+                    rowErrors.add("Row " + rowNumber + ": " + e.getMessage());
+                    errors.addAll(rowErrors);
                 }
             }
         } catch (IOException e) {
@@ -198,11 +246,18 @@ public class MarkReportServices {
             throw new IOException("Failed to parse Excel file: " + e.getMessage(), e);
         }
 
+        // Check for validation errors and throw exception if present
         if (!errors.isEmpty()) {
-            log.warn("Validation errors: " + String.join(", ", errors));
+            throw new IllegalArgumentException("Validation errors: " + String.join(", ", errors + "\n"));
         }
 
         return markReports;
+    }
+
+    private void validateScoreRange(BigDecimal score, int rowNumber, String columnName, List<String> errors) {
+        if (score != null && (score.compareTo(BigDecimal.ZERO) < 0 || score.compareTo(BigDecimal.TEN) > 0)) {
+            errors.add("Row " + rowNumber + ": " + columnName + " must be between 0 and 10. Found: " + score + "\n");
+        }
     }
 
     private String getStringCellValue(Cell cell, int rowNumber, String columnName) {
@@ -217,28 +272,39 @@ public class MarkReportServices {
         }
     }
 
-    private BigDecimal getNumericCellValue(Cell cell, int rowNumber, String columnName) {
+    private BigDecimal getNumericCellValue(Cell cell, int rowNumber, String columnName, List<String> errors) {
         if (cell == null) {
             return null; // Allow null value
         }
         try {
+            BigDecimal value;
             if (cell.getCellType() == CellType.NUMERIC) {
-                return new BigDecimal(cell.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
+                value = new BigDecimal(cell.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
             } else if (cell.getCellType() == CellType.STRING) {
-                String value = cell.getStringCellValue().trim();
-                if (value.isEmpty()) {
+                String strValue = cell.getStringCellValue().trim();
+                if (strValue.isEmpty()) {
                     return null; // Allow empty string as null
                 }
-                return new BigDecimal(value).setScale(2, RoundingMode.HALF_UP);
+                value = new BigDecimal(strValue).setScale(2, RoundingMode.HALF_UP);
             } else {
-                log.warn("Row " + rowNumber + ": " + columnName + " must be a numeric value.");
+                errors.add("Row " + rowNumber + ": " + columnName + " must be a numeric value." + "\n");
                 return null;
             }
+
+            // Reject values outside the range 0-10
+            if (value.compareTo(BigDecimal.ZERO) < 0 || value.compareTo(BigDecimal.TEN) > 0) {
+                errors.add("Row " + rowNumber + ": " + columnName + " must be between 0 and 10. Found: " + value + "\n");
+                return null; // Discard invalid value
+            }
+
+            return value;
         } catch (NumberFormatException e) {
-            log.warn("Row " + rowNumber + ": " + columnName + " contains invalid numeric value.");
+            errors.add("Row " + rowNumber + ": " + columnName + " contains an invalid numeric value: "  + "\n");
             return null;
         }
     }
+
+
 
     @Transactional
     public void importMarkReports(List<MarkReportImportRequest> markReports) {
@@ -248,8 +314,8 @@ public class MarkReportServices {
                     Student student = studentRepository.findByEmail(request.getEmail())
                             .orElseThrow();
 //                    Skill Calculation:
-//                    exam = (kotoba + bunpou + kanji) /3
-//                    avg_exam_mark = sum of all exam / total exam
+//                    markReportExam = (kotoba + bunpou + kanji) /3
+//                    avg_exam_mark = sum of all markReportExam / total markReportExam
 //                    skill = (avg_exam_mark * 0.3) + (middle_exam * 0.4) + (final_exam * 0.3)
 //
 //                    Attitude Calculation:
@@ -365,10 +431,10 @@ public class MarkReportServices {
                     if(markReport.getAvg_exam_mark() == null || request.getMiddle_exam() == null || request.getFinal_exam() == null) {
                         markReport.setSkill(null);
                     } else {
-                        markReport.getAvg_exam_mark().multiply(new BigDecimal("0.3"));
-                        BigDecimal middleExam = request.getMiddle_exam().multiply(new BigDecimal("0.4"));
-                        BigDecimal finalExam = request.getFinal_exam().multiply(new BigDecimal("0.3"));
-                        BigDecimal skill = avgExamMark.add(middleExam).add(finalExam);
+                        BigDecimal avgExam = markReport.getAvg_exam_mark().multiply(new BigDecimal("0.3"));
+                        BigDecimal middleExam = markReport.getMiddle_exam().multiply(new BigDecimal("0.4"));
+                        BigDecimal finalExam = markReport.getFinal_exam().multiply(new BigDecimal("0.3"));
+                        BigDecimal skill = avgExam.add(middleExam).add(finalExam);
                         markReport.setSkill(skill);
                     }
 
@@ -397,8 +463,8 @@ public class MarkReportServices {
         Student student = studentRepository.findById(markReport.getStudent().getId())
                 .orElseThrow();
 //                    Skill Calculation:
-//                    exam = (kotoba + bunpou + kanji) /3
-//                    avg_exam_mark = sum of all exam / total exam
+//                    markReportExam = (kotoba + bunpou + kanji) /3
+//                    avg_exam_mark = sum of all markReportExam / total markReportExam
 //                    skill = (avg_exam_mark * 0.3) + (middle_exam * 0.4) + (final_exam * 0.3)
 //
 //                    Attitude Calculation:
@@ -508,10 +574,10 @@ public class MarkReportServices {
         if(markReport.getAvg_exam_mark() == null || request.getMiddle_exam() == null || request.getFinal_exam() == null) {
             markReport.setSkill(null);
         } else {
-            markReport.getAvg_exam_mark().multiply(new BigDecimal("0.3"));
-            BigDecimal middleExam = request.getMiddle_exam().multiply(new BigDecimal("0.4"));
-            BigDecimal finalExam = request.getFinal_exam().multiply(new BigDecimal("0.3"));
-            BigDecimal skill = avgExamMark.add(middleExam).add(finalExam);
+            BigDecimal avgExam = markReport.getAvg_exam_mark().multiply(new BigDecimal("0.3"));
+            BigDecimal middleExam = markReport.getMiddle_exam().multiply(new BigDecimal("0.4"));
+            BigDecimal finalExam = markReport.getFinal_exam().multiply(new BigDecimal("0.3"));
+            BigDecimal skill = avgExam.add(middleExam).add(finalExam);
             markReport.setSkill(skill);
         }
 

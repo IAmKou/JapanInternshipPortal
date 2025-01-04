@@ -22,7 +22,7 @@ public class ExamService {
             Exam exam = new Exam();
             exam.setTitle("Exam " + (i + 1) + " " + semesterName);
             log.info("Created Exam: {}", exam.getTitle());
-            examRepository.save(exam); // Save each exam
+            examRepository.save(exam); // Save each markReportExam
         }
     }
 }

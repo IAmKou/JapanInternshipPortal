@@ -162,10 +162,10 @@ CREATE TABLE Assignment (
                             description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
                             content LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
                             teacher_id INT,
+                            status varchar(10),
                             img VARCHAR(255),
-                            class_id INT,
-                            FOREIGN KEY (teacher_id) REFERENCES Teacher(Id),
-                            FOREIGN KEY (class_id) REFERENCES Class(Id)
+                            FOREIGN KEY (teacher_id) REFERENCES Teacher(Id)
+
 );
 
 -- Student Assignment table (linked with Assignment and Student)
