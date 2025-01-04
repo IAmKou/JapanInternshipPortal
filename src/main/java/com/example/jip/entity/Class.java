@@ -30,7 +30,7 @@ import java.util.Set;
         @Enumerated(EnumType.STRING)
         private status status;
 
-        @OneToMany(mappedBy = "clas", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+        @OneToMany(mappedBy = "clas", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
         private Set<Listt> classLists = new HashSet<>();
 
         @ManyToMany(mappedBy = "classes")
@@ -61,6 +61,8 @@ import java.util.Set;
             this.id = id;
             this.semester = semester;
         }
+
+
 
 
         public enum status{
