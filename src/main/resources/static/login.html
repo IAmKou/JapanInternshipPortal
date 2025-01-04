@@ -1,8 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="">
 
-
-<!-- Mirrored from login.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:30 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -30,58 +28,72 @@
 </head>
 
 <body>
-    <!-- Preloader Start Here -->
-    <div id="preloader"></div>
-    <!-- Preloader End Here -->
-    <!-- Login Page Start Here -->
-    <div class="login-page-wrap">
-        <div class="login-page-content">
-            <div class="login-box">
-                <div style="width: 300px; height: 80px; overflow: hidden; margin-bottom: 40px;">
-                    <img src="img/login%20logo.png" alt="logo" style="width: 120%; height: 120%; object-fit: contain;">
-                </div>
-                <form action="/perform_login" method="post" class="login-form">
-                    <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" placeholder="Enter username" name="username" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" placeholder="Enter password" name="password" class="form-control">
-                    </div>
-                    <div class="form-group d-flex align-items-center justify-content-between">
-                        <a href="forgot-password.html" class="forgot-btn">Forgot Password ?</a>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="login-btn">Login</button>
-                    </div>
-                </form>
-                <p id="error-message" style="color:red;"></p>
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<!-- Login Page Start Here -->
+<div class="login-page-wrap">
+    <div class="login-page-content">
+        <div class="login-box">
+            <div style="width: 300px; height: 80px; overflow: hidden; margin-bottom: 40px;">
+                <img src="img/login%20logo.png" alt="logo" style="width: 120%; height: 120%; object-fit: contain;">
             </div>
+            <form action="/perform_login" method="post" class="login-form">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" placeholder="Enter username" name="username" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="Enter password" name="password" class="form-control">
+                </div>
+                <div class="form-group d-flex align-items-center justify-content-between">
+                    <a href="forgot-password.html" class="forgot-btn">Forgot Password ?</a>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="login-btn">Login</button>
+                </div>
+            </form>
+            <p id="error-message" style="color:red;"></p>
         </div>
     </div>
-    <!-- Login Page End Here -->
-    <!-- jquery-->
-    <script src="/js/jquery-3.3.1.min.js"></script>
-    <!-- Plugins js -->
-    <script src="/js/plugins.js"></script>
-    <!-- Popper js -->
-    <script src="/js/popper.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="/js/bootstrap.min.js"></script>
-    <!-- Scroll Up Js -->
-    <script src="/js/jquery.scrollUp.min.js"></script>
-    <!-- Custom Js -->
-    <script src="/js/main.js"></script>
+</div>
+<!-- Login Page End Here -->
+<!-- jquery-->
+<script src="/js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="/js/plugins.js"></script>
+<!-- Popper js -->
+<script src="/js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="/js/bootstrap.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="/js/jquery.scrollUp.min.js"></script>
+<!-- Custom Js -->
+<script src="/js/main.js"></script>
 <script>
+    // Kiểm tra xem người dùng đã đăng nhập chưa từ session hoặc localStorage
+    window.onload = function () {
+        const loggedIn = sessionStorage.getItem("loggedIn") || localStorage.getItem("loggedIn");
+        if (loggedIn) {
+            const role = sessionStorage.getItem("role") || localStorage.getItem("role");
+            if (role === "ADMIN") {
+                window.location.href = "/admin.html";
+            } else if (role === "TEACHER") {
+                window.location.href = "/teacher.html";
+            } else if (role === "MANAGER") {
+                window.location.href = "/manager.html";
+            } else {
+                window.location.href = "/student.html";
+            }
+        }
+    };
+
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('error')) {
         document.getElementById('error-message').textContent = 'Invalid username or password. Please try again.';
     }
 </script>
-
 </body>
 
-
-<!-- Mirrored from login.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:31 GMT -->
 </html>
