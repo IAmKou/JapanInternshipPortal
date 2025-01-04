@@ -116,7 +116,7 @@ public class UserController {
         // Verify current password
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if (!passwordEncoder.matches(oldPassword, account.getPassword())) {
-            return new ModelAndView("redirect:/reset-password.html?message=Current password does not match.");
+            return new ModelAndView("redirect:/reset-password.html?message=currentPasswordDoesNotMatch");
         }
 
         // Check if new password matches confirm password
@@ -138,6 +138,7 @@ public class UserController {
 
         return new ModelAndView("redirect:/login.html?message=Password reset successfully.");
     }
+
 }
 
 
