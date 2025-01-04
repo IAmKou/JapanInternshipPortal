@@ -861,10 +861,7 @@
 
                     $('#addEventModal').modal('hide'); // Hide the modal after saving
                 };
-
-                document.getElementById('save-draft').onclick = function () {
-                    saveEvents('/schedule/saveDraft', false);
-                };
+                
 
                 document.getElementById('save-public').onclick = function () {
                     const classDropdown = document.getElementById('class-dropdown');
