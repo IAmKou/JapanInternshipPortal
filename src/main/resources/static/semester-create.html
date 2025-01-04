@@ -914,7 +914,7 @@
         event.preventDefault(); // Prevent default form submission
 
         // Get the values from the form
-        const semesterName = document.querySelector('input[name="name"]').value;
+        const semesterName = document.querySelector('input[name="name"]').value.trim();
         const startTime = document.querySelector('input[name="st"]').value;
         const endTime = document.querySelector('input[name="et"]').value;
 
