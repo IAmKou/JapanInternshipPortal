@@ -548,7 +548,7 @@
 
             // Kiểm tra nếu nội dung rỗng, chỉ chứa thẻ HTML trống, chỉ chứa dấu cách
             if (!strippedContent) {
-                showError('Notification is required and cannot contain only spaces!'); // Hiển thị lỗi
+                showError('Notification is required!'); // Hiển thị lỗi
                 return; // Ngừng việc submit form
             }
 
@@ -859,7 +859,18 @@
                         // Thay vì thẻ <a>, trực tiếp hiển thị tiêu đề trong thẻ <h6>
                         const noticeTitle = document.createElement('h6');
                         noticeTitle.classList.add('notice-title');
-                        noticeTitle.innerHTML = notification.title; // Giữ nguyên HTML trong tiêu đề
+
+// Giữ nguyên HTML trong tiêu đề
+                        noticeTitle.innerHTML = notification.title; // Tiêu đề chứa HTML
+
+// Kiểm tra nếu tiêu đề chứa thẻ <a> (đường link)
+                        const links = noticeTitle.getElementsByTagName('a');
+
+// Nếu có bất kỳ thẻ <a> nào trong tiêu đề, thay đổi màu sắc thành màu xanh
+                        for (let link of links) {
+                            link.style.color = 'blue';  // Màu xanh cho các đường link
+                            link.style.textDecoration = 'underline';  // Gạch chân các đường link
+                        }
 
                         noticeDiv.appendChild(postDateDiv);
                         noticeDiv.appendChild(noticeTitle);
