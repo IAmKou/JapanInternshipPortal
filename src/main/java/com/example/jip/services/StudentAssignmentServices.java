@@ -77,7 +77,7 @@ public class StudentAssignmentServices {
             log.warn("No files provided in the request.");
         }
 
-        notificationServices.createAutoNotificationForAssignment(student.getFullname() + "has submitted an assignment",student.getId(),assignment.getTeacher().getId());
+        notificationServices.createAutoNotificationForAssignment(student.getFullname() + "has submitted an assignment",student.getAccount().getId(),assignment.getTeacher().getAccount().getId());
 
         return studentAssignmentRepository.save(studentAssignment);
     }
