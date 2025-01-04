@@ -281,13 +281,13 @@ CREATE TABLE Application (
 
 -- Notification table (linked with Account)
 CREATE TABLE Notification (
-                              Id INT AUTO_INCREMENT PRIMARY KEY,
-                              Title TEXT NOT NULL,
-                              Created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                              account_id INT,
-                              recipient_account_id INT DEFAULT NULL,
-                              FOREIGN KEY (account_id) REFERENCES Account(Id),
-                              FOREIGN KEY (recipient_account_id) REFERENCES Account(Id)
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Title TEXT NOT NULL,  -- Thay kiểu VARCHAR(100) thành TEXT
+    Created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    account_id INT,
+    recipient_account_id INT DEFAULT NULL,
+    FOREIGN KEY (account_id) REFERENCES Account(Id),
+    FOREIGN KEY (recipient_account_id) REFERENCES Account(Id)
 );
 
 -- Report table (linked with Account)
