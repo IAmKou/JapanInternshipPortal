@@ -541,9 +541,6 @@
             errorContainer.textContent = '';
         }
 
-        // Lắng nghe sự kiện submit của form
-        // Lắng nghe sự kiện submit của form
-        // Lắng nghe sự kiện submit của form
         document.getElementById("createNotificationForm").addEventListener("submit", function (e) {
             e.preventDefault();
 
@@ -631,9 +628,10 @@
 
                     // Extract plain text (remove all HTML tags)
                     const plainTextTitle = notification.title
-                        .replace(/<\/?[^>]+>/gi, '') // Remove all HTML tags completely
+                        .replace(/<\/?[^>]+(?!<\/?strong>|<\/?em>|<\/?u>).*>/gi, '') // Loại bỏ thẻ HTML nhưng giữ strong, em, và u
                         .replace(/\s{2,}/g, ' ')    // Normalize extra spaces
-                        .trim();                   // Remove leading/trailing spaces
+                        .trim();  // Xóa khoảng trắng thừa
+                    // Remove leading/trailing spaces
 
                     noticeLink.textContent = plainTextTitle;
 
@@ -683,7 +681,7 @@
 
                     // Extract plain text (remove all HTML tags)
                     const plainTextTitle = notification.title
-                        .replace(/<\/?[^>]+>/gi, '') // Remove all HTML tags completely
+                        .replace(/<\/?[^>]+(?!<\/?strong>|<\/?em>|<\/?u>).*>/gi, '') // Remove all HTML tags completely
                         .replace(/\s{2,}/g, ' ')    // Normalize extra spaces
                         .trim();                   // Remove leading/trailing spaces
 
@@ -865,8 +863,9 @@
 
                         const noticeLink = document.createElement('a');
                         noticeLink.href = notification.link || '#';
-                        const plainTextTitle = notification.title.replace(/<\/?[^>]+(>|$)/g, ''); // Strip HTML tags
-                        noticeLink.textContent = plainTextTitle;
+
+                        // Sử dụng innerHTML để hiển thị các thẻ HTML trong tiêu đề
+                        noticeLink.innerHTML = notification.title; // Giữ nguyên các thẻ HTML đã có trong tiêu đề
 
                         noticeTitle.appendChild(noticeLink);
                         noticeDiv.appendChild(postDateDiv);
