@@ -173,7 +173,9 @@ public class AssignmentServices {
                                     student.getAccount().getId()
                             );
 
+                            log.info("Attempting to send email to: {}", student.getEmail());
                             emailServices.sendEmailCreateAssignment(student.getEmail(), clas.getName());
+                            log.info("Email method executed for: {}", student.getEmail());
                         } catch (Exception e) {
                             log.error("Error processing student: {}", e.getMessage());
                         }
