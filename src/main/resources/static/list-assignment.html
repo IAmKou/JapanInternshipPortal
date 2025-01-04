@@ -33,10 +33,35 @@
     <script type="text/javascript"
             src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <style>
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination-button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .pagination-button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .pagination-button:hover {
+            background-color: #f0f0f0;
+        }
+        .dropdown-toggle::after {
+            content: none !important;
+        }
         /* Các style cho nhóm input và button */
         .input-group {
-            display: flex;                   /* Sắp xếp phần tử con theo chiều ngang */
-            align-items: center;             /* Căn giữa theo chiều dọc */
+            border-radius: 0.375rem; /* Làm mềm góc cạnh */
+            overflow: hidden; /* Tránh viền bị lệch */
         }
 
         .shadow-lg {
@@ -48,17 +73,15 @@
         }
 
         /* Dành cho phần tử input */
-        .form-control {
-            display: block;
-            width: 100%;
-            padding: 0.375rem 0.75rem;
-            font-size: 1rem;
-            line-height: 1.5;
-            color: #495057;
-            background-color: #fff;
+        .form-control, .form-select {
             border: 1px solid #ced4da;
-            border-radius: 0.375rem;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            border-left: none; /* Tránh trùng với input-group-text */
+            box-shadow: none; /* Xóa hiệu ứng shadow */
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Hiệu ứng focus nhẹ */
         }
 
         .search-input {
@@ -86,7 +109,13 @@
         }
 
         .btn-gradient-yellow {
-            background: linear-gradient(90deg, rgba(255, 221, 51, 1) 0%, rgba(255, 160, 0, 1) 100%); /* Gradient màu vàng cho nút */
+            background: linear-gradient(to right, #ffcc00, #ff9900);
+            border: none;
+            color: white;
+        }
+
+        .btn-gradient-yellow:hover {
+            background: linear-gradient(to right, #ff9900, #ff6600);
         }
 
         .rounded-end {
@@ -306,6 +335,15 @@
             color: white; /* Màu chữ của nút */
             border: none; /* Xóa đường viền nếu cần */
             border-radius: 5px; /* Thêm góc bo tròn */
+        }
+        .input-group-text {
+            background-color: #f8f9fa; /* Màu nền sáng cho phần text input */
+            border: 1px solid #ced4da; /* Viền nhẹ với cùng tông màu */
+            border-right: none; /* Tránh viền trùng với ô input */
+        }
+        .input-group-text i {
+            font-size: 2rem; /* Icon lớn hơn */
+            color: #ccc; /* Màu của icon */
         }
 
         .btn-secondary.dropdown-toggle:hover {
@@ -849,7 +887,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-
+                            <h2 data-i18n="all_assignment">All Assignment</h2>
                             <div class="d-flex align-items-center">
                                 <label for="searchInput" class="text-primary font-weight-bold me-3 mb-0" data-i18n="search">
                                     Search
@@ -910,11 +948,11 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h2 data-i18n="all_assignment">All Assignment</h2>
+
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table id="submittedAssignment_table" class="table display data-table text-nowrap">
+                        <table id="submittedAssignment_table" class="table text-nowrap">
                             <thead>
                             <tr>
                                 <th style="font-weight: bold; color: #000;" data-i18n="title">Title</th>
@@ -925,9 +963,16 @@
                             </tr>
                             </thead>
                             <tbody id="assignment_list">
+                            <!-- Dữ liệu sẽ được điền vào đây -->
                             </tbody>
                         </table>
+
+                        <!-- Hiển thị phân trang -->
+                        <div id="pagination" class="pagination">
+                            <!-- Các nút phân trang sẽ được điền vào đây -->
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -1027,90 +1072,23 @@
 <script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
-<script src="script.js"></script>
 
-<script type="text/javascript">
-    // Hàm thay đổi ngôn ngữ và lưu vào localStorage
-    function changeLanguage(language) {
-        var languageLabel = document.getElementById('languageLabel');
-
-        // Cập nhật nhãn ngôn ngữ trên dropdown
-        if (language === 'en') {
-            languageLabel.innerText = 'EN';
-        } else if (language === 'ja') {
-            languageLabel.innerText = 'JA';
-        }
-
-        // Lưu ngôn ngữ vào localStorage
-        localStorage.setItem('selectedLanguage', language);
-
-        // Kiểm tra nếu Google Translate đã được tải
-        if (window.google && google.translate) {
-            google.translate.TranslateElement.prototype.translatePage(language);
-        }
-    }
-
-    // Hàm khởi tạo Google Translate khi trang tải
-    function loadGoogleTranslate() {
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-        document.head.appendChild(script);
-    }
-
-    // Hàm khởi tạo Google Translate Element
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            includedLanguages: 'en,ja',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-            autoDisplay: false,
-        }, 'google_translate_element');
-    }
-
-    // Khi trang được tải, thiết lập ngôn ngữ từ localStorage
-    document.addEventListener('DOMContentLoaded', function () {
-        // Lấy ngôn ngữ đã lưu trong localStorage
-        var savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-
-        // Cập nhật giao diện với ngôn ngữ đã lưu
-        var languageLabel = document.getElementById('languageLabel');
-        if (savedLanguage === 'en') {
-            languageLabel.innerText = 'EN';
-        } else if (savedLanguage === 'ja') {
-            languageLabel.innerText = 'JA';
-        }
-
-        // Dịch trang ngay từ khi tải
-        if (window.google && google.translate) {
-            google.translate.TranslateElement.prototype.translatePage(savedLanguage);
-        }
-    });
-
-    // Tải Google Translate
-    loadGoogleTranslate();
-</script>
-
-
-
-
-<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
 
     const API_BASE_URL = '/assignment';
     let currentAssignmentId = null;
       // Biến để lưu trữ toàn bộ assignments
-
+    let currentPage = 1;  // Trang hiện tại
+    const itemsPerPage = 10;  // Số lượng assignments hiển thị mỗi trang
     async function fetchAndDisplayAssignments() {
         try {
             const language = localStorage.getItem('language') || 'en'; // Mặc định 'en'
-
-            // Kiểm tra trạng thái ngôn ngữ và gọi getTranslation ngay lập tức
             await getTranslation(language);  // Gọi ngay khi ngôn ngữ được chọn
 
             const urlParams = new URLSearchParams(window.location.search);
             const teacherId = urlParams.get('teacherId');
             const response = await fetch(`${API_BASE_URL}/list?teacherId=${teacherId}`);
+
             if (!response.ok) {
                 throw new Error('Error fetching assignments: ' + response.statusText);
             }
@@ -1121,7 +1099,11 @@
             const tableBody = document.getElementById('assignment_list');
             tableBody.innerHTML = ''; // Xóa các dữ liệu cũ trong bảng
 
-            assignments.forEach(assignment => {
+            // Chia dữ liệu thành trang (Phân trang)
+            const pagedAssignments = paginateAssignments(assignments, currentPage, itemsPerPage);
+
+            // Hiển thị các assignments cho trang hiện tại
+            pagedAssignments.forEach(assignment => {
                 const createdDateFormatted = formatDateTime(assignment.created_date);
                 const endDateFormatted = formatDateTime(assignment.end_date);
 
@@ -1159,38 +1141,25 @@
                 tableBody.appendChild(row);
             });
 
+            // Hiển thị phân trang
+            renderPagination(assignments.length);
+
         } catch (error) {
             console.error('Error:', error);
         }
     }
 
-    function getStatusTranslation(status) {
-        const translations = {
-            'OPEN': {
-                'en': 'Open',
-                'ja': '開く',
-            },
-            'CLOSE': {
-                'en': 'Closed',
-                'ja': '閉じる',
-            },
-        };
-
-        const language = localStorage.getItem('language') || 'en';  // Default to 'en' if not found
-
-        // Use default value (status itself) if no translation is found
-        if (translations[status]) {
-            return translations[status][language] || translations[status]['en'];  // Fallback to English if no translation
-        }
-
-        return status;  // Return the original status if it doesn't exist in translations
+    // Hàm phân trang dữ liệu
+    function paginateAssignments(assignments, currentPage, itemsPerPage) {
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = currentPage * itemsPerPage;
+        return assignments.slice(start, end);
     }
 
-
-
+    // Hàm định dạng thời gian
     function formatDateTime(dateString) {
         const date = new Date(dateString);
-        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
+        date.setTime(date.getTime() + 7 * 60 * 60 * 1000); // Tính timezone GMT+7
 
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -1204,8 +1173,34 @@
         return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
     }
 
-    // Gọi lại getTranslation sau khi các phần tử đã được thêm vào DOM
-    document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
+    // Hàm render phân trang
+    function renderPagination(totalItems) {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        const paginationDiv = document.getElementById('pagination');
+        paginationDiv.innerHTML = '';  // Xóa các nút phân trang hiện tại
+
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement('button');
+            pageButton.textContent = i;
+            pageButton.classList.add('pagination-button');
+            if (i === currentPage) {
+                pageButton.classList.add('active'); // Thêm class active cho trang hiện tại
+            }
+
+            pageButton.addEventListener('click', () => {
+                currentPage = i;
+                fetchAndDisplayAssignments(); // Gọi lại hàm để hiển thị dữ liệu mới theo trang
+                renderPagination(totalItems);  // Cập nhật lại phân trang
+            });
+
+            paginationDiv.appendChild(pageButton);
+        }
+    }
+
+    // Gọi lại hàm khi trang tải
+    document.addEventListener('DOMContentLoaded', function () {
+        fetchAndDisplayAssignments();  // Gọi để lấy và hiển thị assignments
+    });
 
 
     function formatDateTimeForInput(dateString) {
@@ -1917,7 +1912,18 @@
         }
     });
 </script>
-
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Đảm bảo chỉ chạy khi các th đã được tải và áp dụng.
+        setTimeout(function () {
+            // Loại bỏ các lớp "sorting" và "sorting_asc" nếu tồn tại trên th
+            const thElements = document.querySelectorAll('th.sorting, th.sorting_asc');
+            thElements.forEach(function (thElement) {
+                thElement.classList.remove('sorting', 'sorting_asc');
+            });
+        }, 100);  // Điều chỉnh thời gian đợi cho phù hợp
+    });
+</script>
 </body>
 
 </html>

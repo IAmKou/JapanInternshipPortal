@@ -674,6 +674,17 @@
             // Populate form fields with the fetched data
             document.getElementById('submitted-assignment-description').textContent = studentAssignment.description;
             document.getElementById('submitted-assignment-content').textContent = studentAssignment.content;
+            if (studentAssignment.content) {
+                // Loại bỏ thẻ block như <p>, <div>, thay thế bằng newline '\n'
+                var sanitizedContent = assignment.content.replace(/<\/?(p|div)[^>]*>/gi, '\n');
+
+                // Hiển thị nội dung trong HTML, giữ các thẻ inline như <strong>, <em>...
+                document.getElementById('submitted-assignment-content').innerHTML = sanitizedContent;
+                document.getElementById('submitted-assignment-content').style.fontSize = "18px";  // Tăng cỡ chữ cho content
+            } else {
+                document.getElementById('submitted-assignment-content').textContent = "No content provided";
+                document.getElementById('submitted-assignment-content').style.fontSize = "18px";  // Tăng cỡ chữ khi không có nội dung
+            }
             document.getElementById('submitted-assignment-student-name').textContent = studentAssignment.studentName;
 
             const formattedDate = new Date(studentAssignment.date).toISOString().split("T")[0];

@@ -545,102 +545,103 @@
     <!-- fetch profile -->
 
     <script>
-        let selectedMaterialId;  // Biến để lưu materialId của tài liệu cần xóa
-        // Hàm lấy danh sách materials từ API và hiển thị trên frontend
-        function fetchMaterials() {
-            // Lấy teacher_id từ sessionStorage
-            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-            const currentTeacherId = userDetails ? userDetails.id : null;
-            const language = localStorage.getItem('language') || 'en';  // Mặc định 'en'
-            getTranslation(language);  // Áp dụng ngôn ngữ ngay lập tức khi tải nhiệm vụ
-            console.log("Current Teacher ID: ", currentTeacherId);
+            let selectedMaterialId;  // Biến để lưu materialId của tài liệu cần xóa
+            // Hàm lấy danh sách materials từ API và hiển thị trên frontend
+            function fetchMaterials() {
+                // Lấy teacher_id từ sessionStorage
+                const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+                const currentTeacherId = userDetails ? userDetails.id : null;
+                const language = localStorage.getItem('language') || 'en';  // Mặc định 'en'
+                getTranslation(language);  // Áp dụng ngôn ngữ ngay lập tức khi tải nhiệm vụ
+                console.log("Current Teacher ID: ", currentTeacherId);
 
-            // Fetch dữ liệu từ backend và lấy teacherId cùng với materials
-            fetch('/materials/list?accountId=' + currentTeacherId)  // Truyền accountId vào request
-                .then(response => response.json())
-                .then(data => {
-                    const teacherIdFromBackend = data.teacherId;  // Lấy teacherId từ backend
-                    console.log("Teacher ID from backend: ", teacherIdFromBackend);
+                // Fetch dữ liệu từ backend và lấy teacherId cùng với materials
+                fetch('/materials/list?accountId=' + currentTeacherId)  // Truyền accountId vào request
+                    .then(response => response.json())
+                    .then(data => {
+                        const teacherIdFromBackend = data.teacherId;  // Lấy teacherId từ backend
+                        console.log("Teacher ID from backend: ", teacherIdFromBackend);
 
-                    // Duyệt qua tất cả materials để hiển thị
-                    const materialList = document.getElementById('material-list');
-                    materialList.innerHTML = '';  // Xóa nội dung hiện tại
+                        // Duyệt qua tất cả materials để hiển thị
+                        const materialList = document.getElementById('material-list');
+                        materialList.innerHTML = '';  // Xóa nội dung hiện tại
 
-                    data.materials.forEach(material => {
-                        const row = document.createElement('tr');
-                        let dropdownHtml = '';
+                        data.materials.forEach(material => {
+                            const row = document.createElement('tr');
+                            let dropdownHtml = '';
 
-                        // Kiểm tra nếu teacher_id của material trùng với teacher_id của người dùng
-                        if (material.teacher.id === teacherIdFromBackend) {
-                            dropdownHtml = `
-                        <div class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="flaticon-more-button-of-three-dots"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i><span data-i18n="close">Close</span></a>
-                                <button type="button" class="dropdown-item" onclick="openDeleteModal('${material.id}')">
-                                    <i class="fas fa-trash text-orange-peel"></i><span data-i18n="delete">Delete</span>
-                                </button>
+                            // Kiểm tra nếu teacher_id của material trùng với teacher_id của người dùng
+                            if (material.teacher.id === teacherIdFromBackend) {
+                                dropdownHtml = `
+                            <div class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="flaticon-more-button-of-three-dots"></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i><span data-i18n="close">Close</span></a>
+                                    <button type="button" class="dropdown-item" onclick="openDeleteModal('${material.id}')">
+                                        <i class="fas fa-trash text-orange-peel"></i><span data-i18n="delete">Delete</span>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    `;
-                        }
+                        `;
+                            }
 
-                        row.innerHTML = `
-    <td class="text-left">
-        <span style="display: flex; align-items: center;">
-            <i class="flaticon-script" style="font-size: 20px; margin-right: 8px;"></i>
-            <a href="View-material-details.html?id=${material.id}" style=" color:  #007bff;">
-                ${material.title}
-            </a>
-        </span>
-    </td>
-    <td>
-        ${dropdownHtml}
-    </td>
-`;
-                        materialList.appendChild(row);
-                    });
-                    setTimeout(() => {
-                        getTranslation(language);
-                    }, 100);  // Gọi lại dịch sau 100ms để các phần tử được render và dịch
-                    // Cập nhật lại DataTable mà không phá hủy bảng cũ
-                    if ($.fn.dataTable.isDataTable('.data-table')) {
-                        var table = $('.data-table').DataTable();
-                        table.clear();  // Xóa dữ liệu cũ
-                        table.rows.add(materialList.rows);  // Thêm các dòng mới
-                        table.draw();  // Vẽ lại bảng
-                    } else {
-                        // Khởi tạo DataTable chỉ khi nó chưa được khởi tạo
-                        $('.data-table').DataTable({
-                            "bSort": false,
-                            "bPaginate": false,
-                            "bInfo": false,
-                            "bFilter": false,
-                            "autoWidth": false,
-                            "columnDefs": [{
-                                "targets": 'no-sort',
-                                "orderable": false
-                            }],
-                            "language": {
-                                "paginate": {
-                                    "first": i18n[lang].paginate.first,
-                                    "previous": i18n[lang].paginate.previous,
-                                    "next": i18n[lang].paginate.next,
-                                    "last": i18n[lang].paginate.last,
-                                }
-                            },
-                            "header": false,  // Tắt phần header nếu không muốn nó hiển thị
-                            "ordering": false,  // Tắt sắp xếp nếu không cần
-                            "scrollY": "300px",  // Nếu bạn muốn hiển thị cuộn dọc cho bảng
-                            "scrollCollapse": true,  // Cho phép cuộn bảng nếu không đủ chỗ
-                            "paging": true  // Tắt phân trang
+                            row.innerHTML = `
+        <td class="text-left">
+            <span style="display: flex; align-items: center;">
+                <i class="flaticon-script" style="font-size: 20px; margin-right: 8px;"></i>
+                <a href="View-material-details.html?id=${material.id}" style=" color:  #007bff;">
+                    ${material.title}
+                </a>
+            </span>
+        </td>
+        <td>
+            ${dropdownHtml}
+        </td>
+    `;
+                            materialList.appendChild(row);
                         });
-                    }
-                })
-                .catch(error => console.error('Error fetching materials:', error));
-        }
+                        setTimeout(() => {
+                            getTranslation(language);
+                        }, 100);  // Gọi lại dịch sau 100ms để các phần tử được render và dịch
+                        // Cập nhật lại DataTable mà không phá hủy bảng cũ
+                        if ($.fn.dataTable.isDataTable('.data-table')) {
+                            var table = $('.data-table').DataTable();
+                            table.clear();  // Xóa dữ liệu cũ
+                            table.rows.add(materialList.rows);  // Thêm các dòng mới
+                            table.draw();  // Vẽ lại bảng
+                        } else {
+                            // Khởi tạo DataTable chỉ khi nó chưa được khởi tạo
+                            $('.data-table').DataTable({
+                                "bSort": false,
+                                "bPaginate": true,  // Đảm bảo phân trang được bật
+                                "bInfo": false,
+                                "bFilter": false,
+                                "autoWidth": false,
+                                "columnDefs": [{
+                                    "targets": 'no-sort',
+                                    "orderable": false
+                                }],
+                                "pageLength": 10,  // Cấu hình số lượng bản ghi trên mỗi trang là 10
+                                "language": {
+                                    "paginate": {
+                                        "first": i18n[lang].paginate.first,
+                                        "previous": i18n[lang].paginate.previous,
+                                        "next": i18n[lang].paginate.next,
+                                        "last": i18n[lang].paginate.last,
+                                    }
+                                },
+                                "header": false,
+                                "ordering": false,
+                                "scrollY": "300px",
+                                "scrollCollapse": true,
+                                "paging": true
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Error fetching materials:', error));
+            }
 
         // Hàm mở modal và lưu materialId của tài liệu cần xóa
         function openDeleteModal(materialId) {

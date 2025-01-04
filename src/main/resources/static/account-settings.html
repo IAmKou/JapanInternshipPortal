@@ -671,7 +671,10 @@
                         <div class="card-body">
 
 
+                                <h2 class="mb-0 fw-bold" data-i18n="user_list" style="padding-bottom: 30px">Account List</h2>
+
                             <div class="d-flex align-items-center">
+
                                 <label class="text-primary font-weight-bold me-3 mb-0" data-i18n="search"
                                        for="searchInput">
                                     Search
@@ -732,11 +735,13 @@
                                                     <i class="fas fa-plus text-orange-red"></i> Add New User
                                                 </a>
 
-                                                <a class="dropdown-item" data-bs-target="#standard-modal" data-bs-toggle="modal"
-                                                   data-i18n="import_users"><i class="fas fa-file-import text-green"></i> Import Users</a>
+                                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#example-modal" data-i18n="import_users">
+                                                    <i class="fas fa-file-import text-green"></i> Import Users
+                                                </a>
+
                                                 <a href="/template/Import%20Account%201.xlsx" download
                                                    style="font-size: 16px; color: #007bff; text-decoration: underline; margin-top: 10px; display: inline-block;">
-                                                     Import Account Template
+                                                    Import Account Template
                                                 </a>
                                             </div>
                                         </div>
@@ -755,9 +760,7 @@
                 <div class="col-12">
                     <div class="card shadow-lg rounded-4 border-0 overflow-hidden">
                         <!-- Card Header -->
-                        <div class="card-header text-white text-center py-4 bg-gradient-to-right">
-                            <h2 class="mb-0 fw-bold" data-i18n="user_list">Account List</h2>
-                        </div>
+
 
                         <!-- Card Body -->
                         <div class="card-body px-4 py-5 bg-light">
@@ -793,13 +796,14 @@
     </div>
 </div>
 <!-- Page Area End Here -->
+<!-- Modal -->
 <div class="modal fade" id="example-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content shadow-lg rounded">
             <!-- Tiêu đề Modal -->
             <div class="modal-header gradient-header">
                 <h5 class="modal-title">Upload File</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close text-white" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -809,23 +813,22 @@
                     <div class="form-group">
                         <label class="label" for="file">Choose File</label>
                         <div class="input-icon">
-                            <i class="fas fa-file-upload"></i>
+                           
                             <input type="file" class="form-control" id="file" name="file" required>
                         </div>
                     </div>
-                    <div class="alert alert-info mt-3">
-                        Please upload an Excel file.
-                    </div>
+
                 </div>
                 <!-- Footer Modal -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
 
 <!-- Modal Structure -->
 <div class="modal fade" id="createAccountModal" tabindex="-1" aria-labelledby="createAccountModalLabel" aria-hidden="true">
