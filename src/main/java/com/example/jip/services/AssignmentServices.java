@@ -150,30 +150,35 @@ public class AssignmentServices {
 
         // Assign the assignment to classes and students
         if (request.getClassIds() != null && !request.getClassIds().isEmpty()) {
-            for (Integer classId : request.getClassIds()) {
+            request.getClassIds().forEach(classId -> CompletableFuture.runAsync(() -> {
                 Optional<Class> clasOpt = classRepository.findById(classId);
                 if (clasOpt.isPresent()) {
                     Class clas = clasOpt.get();
                     log.info("Number of students in the class list: {}", clas.getClassLists() != null ? clas.getClassLists().size() : "null");
-                    // Link assignment to class
                     assignmentClassRepository.save(new AssignmentClass(savedAssignment, clas));
 
-                    // Link assignment to all students in the class
-                    for (Listt listEntry : clas.getClassLists()) {
-                        Student student = listEntry.getStudent();
-                        log.info("Creating notification for student ID: {}", student.getAccount().getId());
-                        assignmentStudentRepository.save(new AssignmentStudent(savedAssignment, student));
-                        notificationServices.createAutoNotificationForAssignment(
-                                "New assignment created",
-                                teacher.getAccount().getId(),
-                                student.getAccount().getId()
-                        );
-//                        emailServices.sendEmailCreateAssignment(student.getEmail(),clas.getName());
-                    }
+                    clas.getClassLists().forEach(listEntry -> CompletableFuture.runAsync(() -> {
+                        try {
+                            Student student = listEntry.getStudent();
+                            log.info("Creating notification for student ID: {}", student.getAccount().getId());
+
+                            assignmentStudentRepository.save(new AssignmentStudent(savedAssignment, student));
+
+                            notificationServices.createAutoNotificationForAssignment(
+                                    "New assignment created",
+                                    teacher.getAccount().getId(),
+                                    student.getAccount().getId()
+                            );
+
+                            emailServices.sendEmailCreateAssignment(student.getEmail(), clas.getName());
+                        } catch (Exception e) {
+                            log.error("Error processing student: {}", e.getMessage());
+                        }
+                    }));
                 } else {
                     log.warn("Class with ID {} not found", classId);
                 }
-            }
+            }));
         } else {
             log.warn("No class IDs provided.");
         }
