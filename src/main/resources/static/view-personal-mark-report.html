@@ -423,19 +423,19 @@
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3 data-i18n="users">Student Mark Report</h3>
+                <h3 data-i18n="users">Personal Mark Report</h3>
                 <ul>
                     <li>
-                        <a data-i18n="home" href="admin.html">Class Mark List</a>
+                        <a data-i18n="home" href="student.html">Dashboard</a>
                     </li>
-                    <li data-i18n="user_details">Student Mark Report</li>
+                    <li data-i18n="user_details">Personal Mark Report</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
             <!-- Student Details Area Start Here -->
             <div class="card height-auto">
                 <div class="card-body">
-                    <h3 style="padding-left: 8px; padding-top: 5px; font-weight: bold">Student Mark Report</h3>
+                    <h3 style="padding-left: 8px; padding-top: 5px; font-weight: bold">Personal Mark Report</h3>
                     <div class="item-content">
                         <table class="table table-borderless text-nowrap" id="userInfoTable">
                             <tbody>
@@ -467,24 +467,8 @@
                                 <th style="text-align: center;background-color: #ff9625">Kanji</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <!-- Generate 15 rows dynamically -->
-                            <script>
-                                for (let i = 1; i <= 15; i++) {
-                                    document.write(`
-                        <tr>
-                            <td style="color: #000;">Test ${i}</td>
-                            <td style="color: #000;"></td>
-                            <td style="color: #000;"></td>
-                            <td style="color: #000;"></td>
-                        </tr>
-                    `);
-                                }
-                            </script>
-                            <tr class="no-border">
-                                <td style="font-weight: bold; color: #000;">Daily Exam Total</td>
-                                <td colspan="3" style="font-weight: bold; color: #000;" id="avg-exam2"></td>
-                            </tr>
+                            <tbody id="mre_list">
+
                             </tbody>
                         </table>
 
@@ -588,6 +572,52 @@
 <!-- Custom Js -->
 <script src="js/main.js"></script>
 <script>
+
+    async function fetchMarkRpExamDetails() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const studentId = urlParams.get('studentId');
+
+        try {
+            const response = await fetch(`/mark-report/detailMRES?studentId=${studentId}`);
+            if (!response.ok) {
+                throw new Error('Error fetching mark report exam details');
+            }
+
+            // Parse response once
+            const markReportExams = await response.json();
+            console.log('Mark report exam details:', markReportExams);
+
+            // Populate table
+            const tableBody = document.getElementById('mre_list');
+            tableBody.innerHTML = '';
+
+            markReportExams.forEach((mre) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td style="color: #000;">${mre.examName || 'Unknown Exam'}</td>
+                <td style="color: #000;">${mre.bunpou || ''}</td>
+                <td style="color: #000;">${mre.kotoba || ''}</td>
+                <td style="color: #000;">${mre.kanji || ''}</td>
+            `;
+                tableBody.appendChild(row);
+            });
+
+            // Add the "Daily Exam Total" row
+            const totalRow = document.createElement('tr');
+            totalRow.innerHTML = `
+            <td style="font-weight: bold; color: #000;">Daily Exam Total</td>
+            <td colspan="3" style="font-weight: bold; color: #000;" id="avg-exam2"></td>
+        `;
+            tableBody.appendChild(totalRow);
+            // Call the next function after the table is updated
+            fetchMarkRpDetails();
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    fetchMarkRpExamDetails();
+
     async function fetchMarkRpDetails() {
         const urlParams = new URLSearchParams(window.location.search);
         const studentId = urlParams.get('studentId');
@@ -602,7 +632,8 @@
             const markRp = await response.json();
             console.log('mark rp details:', markRp);
 
-
+            //for the upper table
+            document.getElementById('avg-exam2').textContent = markRp.avg_exam_mark;
             document.getElementById('student-name').textContent = markRp.studentName;
             document.getElementById('clas').textContent = markRp.studentClass;
             document.getElementById('comment').textContent = markRp.comment;
@@ -610,8 +641,9 @@
             document.getElementById('middle-exam').textContent = markRp.middle_exam;
             document.getElementById('final-exam').textContent = markRp.final_exam;
             document.getElementById('skill').textContent = markRp.skill;
+            document.getElementById('presentation').textContent = markRp.presentation;
+            document.getElementById('script').textContent = markRp.scriptPresentation;
             document.getElementById('soft-skill').textContent = markRp.softskill;
-            document.getElementById('soft-skill2').textContent = markRp.softskill;
             // document.getElementById('assignment').textContent = markRp.assignment;
             // document.getElementById('attendant').textContent = markRp.attendant;
             document.getElementById('final-mark').textContent = markRp.final_mark;

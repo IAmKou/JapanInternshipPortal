@@ -81,6 +81,28 @@ public class MarkReportController {
         }
     }
 
+    @GetMapping("/detailMRE")
+    public ResponseEntity<List<MarkReportExamResponse>> getMarkRpExamById(@RequestParam("markRpId") int markRpId) {
+        log.info("Received markRpId: " + markRpId);
+        List<MarkReportExamResponse> response = markReportServices.getMarkReportExamByMarkRpId(markRpId);
+        if (response != null) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @GetMapping("/detailMRES")
+    public ResponseEntity<List<MarkReportExamResponse>> getMarkRpExamByStudentId(@RequestParam("studentId") int studentId) {
+        log.info("Received studentId: " + studentId);
+        List<MarkReportExamResponse> response = markReportServices.getMarkReportExamByStudentId(studentId);
+        if (response != null) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
     @GetMapping("/listMRE")
     public ResponseEntity<List<MarkReportExamResponse>> getMarkRpExam(@RequestParam("classId") int classId) {
         List<MarkReportExamResponse> responses = markReportServices.getListMarkReportExam(classId);

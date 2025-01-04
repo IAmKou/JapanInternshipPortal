@@ -68,12 +68,45 @@ public class MarkReportServices {
                 .map(markReport -> {
                     MarkReportExamResponse response = new MarkReportExamResponse();
                     response.setMarkRpId(markReport.getMarkReport().getId()); // Add `studentId` mapping
+                    response.setExamName(markReport.getExam().getTitle());
                     response.setKotoba(markReport.getKotoba());
                     response.setBunpou(markReport.getBunpou());
                     response.setKanji(markReport.getKanji());
                     return response;
                 })
                 .collect(Collectors.toList());
+    }
+
+    public List<MarkReportExamResponse> getMarkReportExamByMarkRpId(int markRpId){
+        List<MarkReportExam> resultsExam = markRpExamRepository.findAllByMarkRpId(markRpId);
+        return resultsExam.stream()
+                .map(markReport -> {
+                    MarkReportExamResponse response = new MarkReportExamResponse();
+                    response.setMarkRpId(markReport.getMarkReport().getId()); // Add `studentId` mapping
+                    response.setExamName(markReport.getExam().getTitle());
+                    response.setKotoba(markReport.getKotoba());
+                    response.setBunpou(markReport.getBunpou());
+                    response.setKanji(markReport.getKanji());
+                    return response;
+                })
+                .collect(Collectors.toList());
+
+    }
+
+    public List<MarkReportExamResponse> getMarkReportExamByStudentId(int studentId){
+        List<MarkReportExam> resultsExam = markRpExamRepository.findAllByStudentId(studentId);
+        return resultsExam.stream()
+                .map(markReport -> {
+                    MarkReportExamResponse response = new MarkReportExamResponse();
+                    response.setMarkRpId(markReport.getMarkReport().getId()); // Add `studentId` mapping
+                    response.setExamName(markReport.getExam().getTitle());
+                    response.setKotoba(markReport.getKotoba());
+                    response.setBunpou(markReport.getBunpou());
+                    response.setKanji(markReport.getKanji());
+                    return response;
+                })
+                .collect(Collectors.toList());
+
     }
 
     public MarkReportResponse getMarkReportById(int markRpId) {
@@ -111,6 +144,8 @@ public class MarkReportServices {
             response.setStudentName(markReport.getStudent().getFullname());
             response.setComment(markReport.getComment());
             response.setStudentClass(className);
+            response.setPresentation(markReport.getPresentation());
+            response.setScriptPresentation(markReport.getScript_presentation());
             response.setSoftskill(markReport.getSoftskill());
             response.setAvg_exam_mark(markReport.getAvg_exam_mark());
             response.setMiddle_exam(markReport.getMiddle_exam());

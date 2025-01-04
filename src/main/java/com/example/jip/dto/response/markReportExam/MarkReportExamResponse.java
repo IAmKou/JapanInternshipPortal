@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,6 +16,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MarkReportExamResponse {
     int markRpId;
+    String examName;
     BigDecimal kanji;
     BigDecimal bunpou;
     BigDecimal kotoba;
