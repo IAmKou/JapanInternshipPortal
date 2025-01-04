@@ -390,13 +390,11 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="long-modalLabel">Error</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p id="errorMessage"></p> <!-- Nội dung thông báo lỗi -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -858,16 +856,11 @@
                         postDateDiv.classList.add('post-date', 'bg-light-sea-green');
                         postDateDiv.textContent = notification.date ? formatDate(notification.date) : formatDate(new Date());
 
+                        // Thay vì thẻ <a>, trực tiếp hiển thị tiêu đề trong thẻ <h6>
                         const noticeTitle = document.createElement('h6');
                         noticeTitle.classList.add('notice-title');
+                        noticeTitle.innerHTML = notification.title; // Giữ nguyên HTML trong tiêu đề
 
-                        const noticeLink = document.createElement('a');
-                        noticeLink.href = notification.link || '#';
-
-                        // Sử dụng innerHTML để hiển thị các thẻ HTML trong tiêu đề
-                        noticeLink.innerHTML = notification.title; // Giữ nguyên các thẻ HTML đã có trong tiêu đề
-
-                        noticeTitle.appendChild(noticeLink);
                         noticeDiv.appendChild(postDateDiv);
                         noticeDiv.appendChild(noticeTitle);
                         noticeBoardWrap.appendChild(noticeDiv);
