@@ -606,17 +606,6 @@
                     console.error('Error fetching holidays:', error);
                 });
         }
-        function handleEventValidation(info) {
-            const targetDate = new Date(info.event.start.toISOString());
-            const day = targetDate.getUTCDay(); // 0 = Sunday, 6 = Saturday
-            const isTestEvent = info.event.title.toLowerCase().includes('test');
-
-            // Prevent "test" events from being dropped/received on Saturday or Sunday
-            if (isTestEvent && (day === 0 || day === 6)) {
-                alert("Test events cannot be scheduled on Saturday or Sunday.");
-                info.revert(); // Revert the event to its original position
-            }
-        }
 
         // Fetch semester details and initialize the calendar
         fetch(`/semester/get/${semesterId}`)
@@ -642,8 +631,6 @@
                         center: 'title',
                         right: 'dayGridMonth',
                     },
-                    editable: true,
-                    droppable: false,
                     validRange: {
                         start: semesterStart,
                         end: semesterEnd,
@@ -760,13 +747,6 @@
                                 console.error('Error fetching room availability:', error);
                                 alert('Failed to fetch room availability.');
                             });
-                    },
-                    eventDrop: function (info) {
-                        handleEventValidation(info);
-
-                    },
-                    eventReceive: function (info) {
-                        handleEventValidation(info);
                     }
                 });
                 calendar.render();
