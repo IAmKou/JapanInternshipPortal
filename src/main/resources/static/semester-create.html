@@ -29,39 +29,6 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
-        /* Custom Modal Styling for Error Modal */
-        #error-modal .modal-header {
-            background-color: #dc3545; /* Màu nền của header (Đỏ cho lỗi) */
-            color: #fff;
-            font-size: 1.25rem;
-        }
-
-        #error-modal .modal-body {
-            font-size: 1.1rem;
-            padding: 30px;
-            background-color: #f8f9fa;
-            color: #333;
-        }
-
-        #error-modal .modal-body .fas.fa-times-circle {
-            color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
-        }
-
-        #error-modal .btn-danger {
-            font-size: 1rem;
-            padding: 10px 20px;
-            background-color: #dc3545; /* Màu đỏ cho nút lỗi */
-            border-color: #dc3545;
-        }
-
-        #error-modal .btn-close {
-            color: white;
-        }
-
-        #error-modal .modal-body p {
-            font-size: 0.9rem;
-            color: #6c757d; /* Màu nhạt hơn cho mô tả */
-        }
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -601,16 +568,11 @@
                 </li>
 
                 <li class="navbar-item dropdown header-language">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
-                    </a>
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
+                       data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
-                            <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;"> English
-                        </a>
-                        <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
-                            <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese" style="width: 20px; height: 15px;"> 日本語
-                        </a>
+                        <a class="dropdown-item" href="#">English</a>
+                        <a class="dropdown-item" href="#">Japanese</a>
                     </div>
                 </li>
             </ul>
@@ -763,13 +725,11 @@
                 </div>
                 <div class="modal-body text-center">
                     <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
-                    <!-- Thông báo thành công sẽ hiển thị ở đây -->
-                    <h4 id="successMessage" class="text-success"></h4>
+                    <h4 class="text-success">Account import was successful!</h4>
                 </div>
             </div>
         </div>
     </div>
-
 
 
     <!-- Error Modal -->
@@ -780,7 +740,6 @@
                     <h5 class="modal-title text-danger" id="errorModalLabel">
                         <i class="fas fa-times-circle"></i> Error
                     </h5>
-
                 </div>
                 <div class="modal-body">
 
@@ -788,6 +747,7 @@
             </div>
         </div>
     </div>
+
     <!-- Modal Xác Nhận Xóa -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -826,82 +786,73 @@
 <script src="js/datepicker.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Kiểm tra và lấy ngôn ngữ đã lưu trong localStorage
-        let savedLanguage = localStorage.getItem('language');
+<script src="script.js"></script>
 
-        // Nếu chưa có ngôn ngữ lưu, đặt mặc định là tiếng Anh
-        if (!savedLanguage) {
-            savedLanguage = 'en'; // Mặc định tiếng Anh
-            localStorage.setItem('language', 'en');
-        }
+<script type="text/javascript">
+    // Hàm thay đổi ngôn ngữ và lưu vào localStorage
+    function changeLanguage(language) {
+        var languageLabel = document.getElementById('languageLabel');
 
-        // Cập nhật nhãn ngôn ngữ trên giao diện ngay khi trang tải
-        const languageLabel = document.getElementById('languageLabel');
-        if (languageLabel) {
-            languageLabel.innerText = savedLanguage === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
-        }
-
-        // Áp dụng ngôn ngữ khi trang tải
-        changeLanguage(savedLanguage, false); // false: Không cần tải lại trang
-    });
-
-    function changeLanguage(language, reload = true) {
-        const languageLabel = document.getElementById('languageLabel');
-        if (languageLabel) {
-            languageLabel.innerText = language === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
+        // Cập nhật nhãn ngôn ngữ trên dropdown
+        if (language === 'en') {
+            languageLabel.innerText = 'EN';
+        } else if (language === 'ja') {
+            languageLabel.innerText = 'JA';
         }
 
         // Lưu ngôn ngữ vào localStorage
-        localStorage.setItem('language', language);
+        localStorage.setItem('selectedLanguage', language);
 
-        if (reload) {
-            if (language === 'en') {
-                window.location.reload(); // Tải lại trang nếu là tiếng Anh
-            } else {
-                // Nếu là tiếng Nhật, tự động dịch trang
-                translatePage(language);
-            }
+        // Kiểm tra nếu Google Translate đã được tải
+        if (window.google && google.translate) {
+            google.translate.TranslateElement.prototype.translatePage(language);
         }
     }
 
-    // Hàm dịch trang
-    function translatePage(language) {
-        const pageContent = document.body.innerHTML;
-
-        // Các nội dung cần dịch (ví dụ: tên người dùng, vai trò người dùng)
-        const userFullName = document.querySelector('.userFullName')?.innerText || '';
-        const userRole = document.querySelector('.userRole')?.innerText || '';
-
-        // Gửi yêu cầu dịch trang
-        fetch('/api/translate/whole-page', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({
-                text: pageContent,
-                targetLanguage: language,
-                extraText: {
-                    userFullName,
-                    userRole,
-                },
-            }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.translatedText) {
-                    // Cập nhật toàn bộ nội dung trang với văn bản dịch
-                    document.body.innerHTML = data.translatedText;
-                }
-            })
-            .catch(error => {
-                console.error('Error translating page:', error);
-            });
+    // Hàm khởi tạo Google Translate khi trang tải
+    function loadGoogleTranslate() {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+        document.head.appendChild(script);
     }
+
+    // Hàm khởi tạo Google Translate Element
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,ja',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false,
+        }, 'google_translate_element');
+    }
+
+    // Khi trang được tải, thiết lập ngôn ngữ từ localStorage
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lấy ngôn ngữ đã lưu trong localStorage
+        var savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+        // Cập nhật giao diện với ngôn ngữ đã lưu
+        var languageLabel = document.getElementById('languageLabel');
+        if (savedLanguage === 'en') {
+            languageLabel.innerText = 'EN';
+        } else if (savedLanguage === 'ja') {
+            languageLabel.innerText = 'JA';
+        }
+
+        // Dịch trang ngay từ khi tải
+        if (window.google && google.translate) {
+            google.translate.TranslateElement.prototype.translatePage(savedLanguage);
+        }
+    });
+
+    // Tải Google Translate
+    loadGoogleTranslate();
 </script>
+
+
+<script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
     if (userDetails) {
@@ -958,11 +909,12 @@
 
 </script>
 <script>
+    // Handling form submission for creating a semester
     document.querySelector('form.new-added-form').addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent default form submission
 
-        // Get the values from the form, using trim() to clean up the name field
-        const semesterName = document.querySelector('input[name="name"]').value.trim();
+        // Get the values from the form
+        const semesterName = document.querySelector('input[name="name"]').value;
         const startTime = document.querySelector('input[name="st"]').value;
         const endTime = document.querySelector('input[name="et"]').value;
 
@@ -973,110 +925,60 @@
 
         // Validate start time: it should not be in the past
         if (startDate < currentDate) {
-            showErrorModal('Start time cannot be in the past.');
+            alert('Start time cannot be in the past.');
             return; // Stop the form submission
         }
 
         // Validate end time: it should not be before the start time
         if (endDate < startDate) {
-            showErrorModal('End time cannot be before the start time.');
+            alert('End time cannot be before the start time.');
             return; // Stop the form submission
         }
 
-        // Show loading state (for user feedback during request)
-        showLoadingState();
+        // Set status based on the difference between current date and start time
+        let status = 'Inactive';  // Default status
 
-        // Check if the semester name already exists (AJAX request)
-        fetch('/semester/check-name', {
+        const timeDiff = startDate - currentDate;
+        const daysToStart = timeDiff / (1000 * 3600 * 24);  // Convert milliseconds to days
+
+        // If current date is within 7 days of start date, set status to 'Active'
+        if (daysToStart <= 7 && daysToStart >= 0) {
+            status = 'Active';
+        }
+
+        // Prepare the semester data with the calculated status
+        const semesterData = {
+            name: semesterName,
+            start_time: startTime,
+            end_time: endTime,
+            status: status  // Include the status in the data sent to the backend
+        };
+
+        // Send the data via AJAX
+        fetch('/semester/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name: semesterName })
+            body: JSON.stringify(semesterData)
         })
-            .then(response => response.json())
+            .then(response => {
+                // Check if the response is OK (status 200-299)
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();  // Parse the response body as JSON (this already converts it to an object)
+            })
             .then(data => {
-                if (data.exists) {
-                    showErrorModal('Semester name already exists. Please choose another name.');
-                    hideLoadingState();
-                    return; // Stop the form submission
-                }
-
-                // Set status based on the difference between current date and start time
-                let status = 'Inactive';  // Default status
-                const timeDiff = startDate - currentDate;
-                const daysToStart = timeDiff / (1000 * 3600 * 24);  // Convert milliseconds to days
-
-                // If current date is within 7 days of start date, set status to 'Active'
-                if (daysToStart <= 7 && daysToStart >= 0) {
-                    status = 'Active';
-                }
-
-                // Prepare the semester data with the calculated status
-                const semesterData = {
-                    name: semesterName,
-                    start_time: startTime,
-                    end_time: endTime,
-                    status: status  // Include the status in the data sent to the backend
-                };
-
-                // Send the data via AJAX to create the semester
-                fetch('/semester/create', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(semesterData)
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Failed to create semester');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        showSuccessModal(data.message);  // Show success message
-                        window.location.reload();  // Reload the page after successful creation
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        showErrorModal('An error occurred while creating the semester. Please try again.');
-                        hideLoadingState();  // Hide the loading state
-                    });
+                // Display success message
+                alert(data.message);
+                window.location.reload();
             })
             .catch(error => {
-                console.error('Error checking semester name:', error);
-                showErrorModal('An error occurred while checking the semester name.');
-                hideLoadingState();  // Hide the loading state
+                console.error('Error:', error);
+                alert('An error occurred while creating the semester.');
             });
     });
-
-    // Function to show loading state (while waiting for server response)
-    function showLoadingState() {
-        // Display a loading message or animation to let the user know that something is happening
-        document.getElementById('loadingMessage').style.display = 'block';
-    }
-
-    // Function to hide loading state
-    function hideLoadingState() {
-        // Hide the loading message or animation
-        document.getElementById('loadingMessage').style.display = 'none';
-    }
-
-    // Function to show the success modal
-    function showSuccessModal(message) {
-        document.getElementById('successMessage').textContent = message;
-        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
-        successModal.show();
-    }
-
-    // Function to show the error modal (with custom error message)
-    function showErrorModal(message) {
-        document.getElementById('long-modal').querySelector('.modal-body').textContent = message; // Set error message
-        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
-        errorModal.show();  // Show the error modal
-    }
-
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
