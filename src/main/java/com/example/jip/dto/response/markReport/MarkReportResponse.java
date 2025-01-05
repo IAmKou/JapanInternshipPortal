@@ -31,5 +31,7 @@ public class MarkReportResponse {
     BigDecimal attitude;
     BigDecimal final_mark;
     String comment;
+    BigDecimal assignment;
+    BigDecimal attendant;
 
 }

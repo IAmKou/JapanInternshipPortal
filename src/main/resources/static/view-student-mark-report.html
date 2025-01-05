@@ -456,7 +456,9 @@
                             </tr>
                             <tr>
                                 <td  style="color: #000">Teacher's Comment: </td>
-                                <td class="font-medium text-dark-medium" id="comment"></td>
+                                <td class="font-medium text-dark-medium">
+                                    <input type="text" id="comment">
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -497,12 +499,16 @@
                             <tr>
                                 <td style=" color: #000;">Middle Exam Mark</td>
                                 <td style="font-weight: bold; color: #007bff;">16%</td>
-                                <td style="color: #000;" id="middle-exam"></td>
+                                <td style="color: #000;" >
+                                    <input type="number" id="middle-exam" min="0" max="10" step="0.1">
+                                </td>
                             </tr>
                             <tr>
                                 <td style=" color: #000;">Final Exam Mark</td>
                                 <td style="font-weight: bold; color: #007bff;">12%</td>
-                                <td style=" color: #000;" id="final-exam"></td>
+                                <td style=" color: #000;" >
+                                    <input type="number" id="final-exam" min="0" max="10" step="0.1">
+                                </td>
                             </tr>
                             <tr>
                                 <td style=" color: #000;">Total</td>
@@ -513,13 +519,17 @@
                                 <td rowspan="3" style=" color: #000;">Soft Skill</td>
                                 <td style=" color: #000;">Presentation</td>
                                 <td style="font-weight: bold; color: #007bff;">15%</td>
-                                <td style=" color: #000;" id="presentation"></td>
+                                <td style=" color: #000;">
+                                    <input type="number" id="presentation" min="0" max="10" step="0.1">
+                                </td>
                             </tr>
                             <tr>
 
                                 <td style=" color: #000;">Presentation Script</td>
                                 <td style="font-weight: bold; color: #007bff;">15%</td>
-                                <td style=" color: #000;" id="script"></td>
+                                <td style=" color: #000;">
+                                    <input type="number" id="script" min="0" max="10" step="0.1">
+                                </td>
                             </tr>
                             <tr>
                                 <td style=" color: #000;">Total</td>
@@ -550,12 +560,42 @@
                             </tr>
                             </tbody>
                         </table>
-
+                        <button class="btn btn-primary" onclick="updateMarkReport()">Update Report</button>
                     </div>
                 </div>
 
             </div>
             <!-- Student Details Area End Here -->
+        </div>
+        <!-- Success Modal -->
+        <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title text-success" id="successModalLabel">
+                            <i class="fas fa-check-circle"></i> Success
+                        </h5>
+                    </div>
+                    <div class="modal-body text-center">
+                        <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Modal -->
+        <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title text-danger" id="errorModalLabel">
+                            <i class="fas fa-times-circle"></i> Error
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -651,6 +691,18 @@
     }
 </script>
 <script>
+    function showSuccessModal(message) {
+        document.getElementById('success-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        successModal.show();
+    }
+
+    // Function to show the error modal
+    function showErrorModal(message) {
+        document.getElementById('long-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
+        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+        errorModal.show();
+    }
 
     async function fetchMarkRpExamDetails() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -674,9 +726,12 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                 <td style="color: #000;">${mre.examName || 'Unknown Exam'}</td>
-                <td style="color: #000;">${mre.bunpou || ''}</td>
-                <td style="color: #000;">${mre.kotoba || ''}</td>
-                <td style="color: #000;">${mre.kanji || ''}</td>
+                <td style="color: #000;">
+                <input type="number" min="0" max="10" step="0.1" value="${mre.bunpou || ''}"></td>
+                <td style="color: #000;">
+                <input type="number" min="0" max="10" step="0.1" value="${mre.kotoba || ''}"></td>
+                <td style="color: #000;">
+                <input type="number" min="0" max="10" step="0.1" value="${mre.kanji || ''}"></td>
             `;
                 tableBody.appendChild(row);
             });
@@ -714,15 +769,15 @@
             document.getElementById('avg-exam2').textContent = markRp.avg_exam_mark;
             document.getElementById('student-name').textContent = markRp.studentName;
             document.getElementById('clas').textContent = markRp.studentClass;
-            document.getElementById('comment').textContent = markRp.comment;
+            document.getElementById('comment').value = markRp.comment;
             document.getElementById('avg-exam').textContent = markRp.avg_exam_mark;
-            document.getElementById('middle-exam').textContent = markRp.middle_exam;
-            document.getElementById('final-exam').textContent = markRp.final_exam;
+            document.getElementById('middle-exam').value = markRp.middle_exam;
+            document.getElementById('final-exam').value = markRp.final_exam;
             document.getElementById('skill').textContent = markRp.skill;
-            document.getElementById('presentation').textContent = markRp.presentation;
-            document.getElementById('script').textContent = markRp.scriptPresentation;
+            document.getElementById('presentation').value = markRp.presentation;
+            document.getElementById('script').value = markRp.scriptPresentation;
             document.getElementById('soft-skill').textContent = markRp.softskill;
-            // document.getElementById('assignment').textContent = markRp.assignment;
+            document.getElementById('assignment').textContent = markRp.assignment;
             // document.getElementById('attendant').textContent = markRp.attendant;
             document.getElementById('final-mark').textContent = markRp.final_mark;
         } catch (error) {
@@ -732,6 +787,98 @@
 
     // Start by fetching mark report exam details
     fetchMarkRpExamDetails();
+
+    async function updateMarkReport() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const markRpId = urlParams.get('id');
+
+        // Collect data
+        const exams = [];
+        let isValid = true;
+
+        // Validate exam inputs
+        document.querySelectorAll('#mre_list tr').forEach((row) => {
+            const cells = row.querySelectorAll('input');
+            if (cells.length > 0) {
+                const examName = row.querySelector('td:first-child').textContent.trim();
+                const bunpou = parseFloat(cells[0].value);
+                const kotoba = parseFloat(cells[1].value);
+                const kanji = parseFloat(cells[2].value);
+
+                if (
+                    isNaN(bunpou) || bunpou < 0 || bunpou > 10 ||
+                    isNaN(kotoba) || kotoba < 0 || kotoba > 10 ||
+                    isNaN(kanji) || kanji < 0 || kanji > 10
+                ) {
+                    showErrorModal(`Invalid input for ${examName}: All fields must be a number between 0 and 10.`);
+                    isValid = false;
+                    return;
+                }
+
+                exams.push({
+                    markRpId,
+                    examName,
+                    bunpou,
+                    kotoba,
+                    kanji
+                });
+            }
+        });
+
+        // Validate other fields
+        const middle_exam = parseFloat(document.getElementById('middle-exam').value);
+        const final_exam = parseFloat(document.getElementById('final-exam').value);
+        const presentation = parseFloat(document.getElementById('presentation').value);
+        const scriptPresentation = parseFloat(document.getElementById('script').value);
+        const comment = document.getElementById('comment').value;
+
+        if (
+            isNaN(middle_exam) || middle_exam < 0 || middle_exam > 10 ||
+            isNaN(final_exam) || final_exam < 0 || final_exam > 10 ||
+            isNaN(presentation) || presentation < 0 || presentation > 10 ||
+            isNaN(scriptPresentation) || scriptPresentation < 0 || scriptPresentation > 10
+        ) {
+            showErrorModal("Invalid input: Middle Exam, Final Exam, Presentation, and Script must be a number between 0 and 10.");
+            isValid = false;
+        }
+
+        if (comment.trim() === "") {
+            showErrorModal("Comment cannot be empty.");
+            isValid = false;
+        }
+
+        // Stop execution if validation fails
+        if (!isValid) return;
+
+        // Prepare data object
+        const data = {
+            markRpId,
+            comment,
+            middle_exam,
+            final_exam,
+            presentation,
+            scriptPresentation,
+            exams
+        };
+
+        try {
+            const response = await fetch(`/mark-report/update?markRpId=${markRpId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) throw new Error('Failed to update mark report');
+
+            showSuccessModal("Mark report updated successfully");
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000); // 2 seconds delay
+        } catch (error) {
+            console.error('Error:', error);
+            showErrorModal('Error updating mark report');
+        }
+    }
 </script>
 <!-- fetch user -->
 <script>

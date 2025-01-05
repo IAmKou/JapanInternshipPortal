@@ -677,7 +677,6 @@
                                 <th colspan="2">Soft Skill (30%)</th>
                                 <th rowspan="2">Attitude (30%)</th>
                                 <th rowspan="2">Course Total</th>
-                                <th rowspan="2"></th>
                             </tr>
                             <tr>
                                 <th>Avg Exam Mark (12%)</th>
@@ -696,32 +695,7 @@
                 </div>
             </div>
         </div>
-        <div id="overlay" class="overlay">
-            <div id="markrpPopup" class="popup">
-                <div class="popup-content">
-                    <span class="close" onclick="closePopup()">&times;</span>
-                    <h2>Update Mark</h2>
-                    <form class="new-added-form" action="javascript:void(0);" onsubmit="updateMark(event)">
-                        <label for="middle_exam_mark">Middle Exam Mark:</label>
-                        <input type="number" id="middle_exam_mark" name="middle_exam_mark" min="0" max="100" step="1" required/>
 
-                        <label for="final_exam_mark">Final Exam Mark:</label>
-                        <input type="number" id="final_exam_mark" name="final_exam_mark" min="0" max="100" step="1" required/>
-
-                        <label for="script_mark">Script Mark:</label>
-                        <input type="number" id="script_mark" name="script_mark" min="0" max="100" step="1" required/>
-
-                        <label for="presentation_mark">Presentation Mark:</label>
-                        <input type="number" id="presentation_mark" name="presentation_mark" min="0" max="100" step="1" required/>
-
-                        <div class="button-group">
-                            <button type="submit" class="btn submit-btn">Update</button>
-                            <button type="button" class="btn cancel-btn" onclick="closePopup()">Cancel</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
 
         <!-- Success Modal -->
         <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
@@ -829,11 +803,7 @@
     <td>${markrp.presentation ?? '-'}</td>
     <td>${markrp.attitude ?? '-'}</td>
     <td>${markrp.finalMark ?? '-'}</td>
-    <td>
-        <button class="btn update-btn" onclick="openUpdatePopup(${markrp.id})">
-            Update
-        </button>
-    </td>
+
     `;
                 tableBody.appendChild(row);
             });
@@ -846,83 +816,6 @@
     // Initialize the table with mark_reports on page load
     document.addEventListener('DOMContentLoaded', fetchAndDisplayMarks);
     let currentMarkId = null;
-
-    // Function to open the update popup async
-    async function openUpdatePopup(markrpId) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/detail?markRpId=${markrpId}`);
-            if (!response.ok) {
-                throw new Error('Error fetching markrp for update: ' + response.statusText);
-            }
-
-            const markrp = await response.json();
-
-            // Điền dữ liệu vào form
-            document.getElementById('middle_exam_mark').value = markrp.middle_exam ?? '';
-            document.getElementById('final_exam_mark').value = markrp.final_exam ?? '';
-            document.getElementById('script_mark').value = markrp.scriptPresentation ?? '';
-            document.getElementById('presentation_mark').value = markrp.presentation ?? '';
-
-            // Hiển thị popup chỉnh sửa
-            currentMarkId = markrp.id;
-            document.getElementById('markrpPopup').style.display = 'flex';
-            document.getElementById('overlay').style.display = 'flex';
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    async function updateMark(event) {
-        event.preventDefault();
-
-        // Get values from the form
-        const middle_exam_mark = document.getElementById('middle_exam_mark').value;
-        const final_exam_mark = document.getElementById('final_exam_mark').value;
-        const script_mark = document.getElementById('script_mark').value;
-        const presentation_mark = document.getElementById('presentation_mark').value;
-
-        // Validation for required fields
-        const inputs = [middle_exam_mark, final_exam_mark, script_mark, presentation_mark];
-        if (inputs.some(value => value < 0 || value > 100)) {
-            showErrorModal('Please ensure all numeric values are between 0 and 100.');
-            return;
-        }
-
-        // Prepare form data for submission
-        const formData = new FormData();
-        formData.append('middle_exam', middle_exam_mark);
-        formData.append('final_exam', final_exam_mark);
-        formData.append('scriptPresentation', script_mark);
-        formData.append('presentation', presentation_mark);
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/update?markRpId=${currentMarkId}`, {
-                method: 'PUT',
-                body: formData,
-            });
-
-            if (response.ok) {
-                showSuccessModal('Mark updated successfully!');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
-            } else if (response.status === 404) {
-                showErrorModal('Mark Rp not found!');
-            } else {
-                console.error('Error updating Mark:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-
-
-    // Function to close the update popup
-    function closePopup() {
-        document.getElementById('markrpPopup').style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
-    }
-
 
     // Open and Close Modal Logic
     const modal = document.getElementById("import-modal");
