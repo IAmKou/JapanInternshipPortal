@@ -38,6 +38,8 @@ public class AccountImportServices {
     private ExamRepository examRepository;
     @Autowired
     private MarkRpExamRepository markRpExamRepository;
+    @Autowired
+    private EmailServices emailServices;
 
     public List<String> importAccounts(MultipartFile file) {
         List<String> errors = Collections.synchronizedList(new ArrayList<>());
@@ -244,7 +246,7 @@ public class AccountImportServices {
                 MarkReportExam markRpExam = new MarkReportExam(markReport, exam);
                 markRpExamRepository.save(markRpExam);
             }
-
+            emailServices.sendEmail(email,username,password);
         } catch (Exception e) {
             errors.add("Failed to process row: " + (row.getRowNum() + 1) + " due to: " + e.getMessage());
         }
