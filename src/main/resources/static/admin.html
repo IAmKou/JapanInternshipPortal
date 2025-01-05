@@ -548,7 +548,7 @@
         const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
         const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
 
-        // Kiểm tra trạng thái khi trang được tải lại
+        // Kiểm tra trạng thái khi trang được tải lại hoặc khi chuyển sang trang mới
         const hasSeenNotifications = localStorage.getItem('hasSeenNotifications');
         if (hasSeenNotifications === 'true') {
             notificationCount.style.display = 'none'; // Nếu đã xem thông báo, ẩn số lượng
@@ -636,13 +636,20 @@
 
                 // Đánh dấu tất cả thông báo là đã đọc (isRead = true)
                 data.forEach(notification => notification.isRead = true);
+
+                // Lưu lại trạng thái thông báo đã đọc vào localStorage (tùy vào yêu cầu của bạn)
+                localStorage.setItem('notifications', JSON.stringify(data));
             });
         })
         .catch(error => {
             console.error('Error fetching notifications:', error);
             document.getElementById('notification-list').innerHTML = '<p>Failed to load notifications.</p>';
         });
+
 </script>
+
+
+
 
 
 
