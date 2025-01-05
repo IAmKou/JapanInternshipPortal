@@ -212,8 +212,6 @@
                     </div>
                 </li>
 
-
-
                 <li class="navbar-item dropdown header-language">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
@@ -546,17 +544,14 @@
 </script>
 <!-- fetch notification headbar-->
 <script>
-    // Kiểm tra trạng thái khi trang được tải lại
     window.onload = function() {
         const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
         const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
 
-        // Kiểm tra trạng thái đã bấm vào chuông thông báo chưa (lưu trong localStorage)
+        // Kiểm tra trạng thái khi trang được tải lại
         const hasSeenNotifications = localStorage.getItem('hasSeenNotifications');
-
-        // Nếu đã bấm chuông trước đó và ẩn số lượng thông báo, thì không hiển thị số lượng nữa
         if (hasSeenNotifications === 'true') {
-            notificationCount.style.display = 'none';
+            notificationCount.style.display = 'none'; // Nếu đã xem thông báo, ẩn số lượng
         }
     };
 
@@ -568,8 +563,24 @@
             const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
             const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông
 
-            // Cập nhật số lượng thông báo
-            notificationCount.textContent = data.length;
+            // Kiểm tra dữ liệu nhận được
+            console.log(data);
+
+            // Giả sử tất cả thông báo là chưa đọc (isRead = false) nếu không có trường này
+            data.forEach(notification => {
+                if (!notification.hasOwnProperty('isRead')) {
+                    notification.isRead = false; // Thêm trường isRead nếu không có
+                }
+            });
+
+            // Lọc các thông báo chưa đọc (isRead === false)
+            const unreadNotifications = data.filter(notification => notification.isRead === false);
+
+            // Cập nhật số lượng thông báo chưa đọc
+            notificationCount.textContent = unreadNotifications.length;
+
+            // Hiển thị số lượng thông báo nếu có thông báo chưa đọc, nếu không thì ẩn
+            notificationCount.style.display = unreadNotifications.length > 0 ? 'inline' : 'none';
 
             // Nếu không có thông báo, hiển thị thông báo trống
             if (data.length === 0) {
@@ -598,9 +609,6 @@
                 const noticeTitle = document.createElement('h6');
                 noticeTitle.classList.add('notice-title');
 
-                const noticeLink = document.createElement('a');
-                noticeLink.href = "#"; // Thêm link nếu cần
-
                 // Set tiêu đề với nội dung HTML (bao gồm thẻ <a>)
                 noticeTitle.innerHTML = notification.title;
 
@@ -625,6 +633,9 @@
                 notificationCount.style.display = 'none'; // Ẩn số lượng thông báo khi bấm chuông
                 // Lưu trạng thái "đã xem thông báo" vào localStorage
                 localStorage.setItem('hasSeenNotifications', 'true');
+
+                // Đánh dấu tất cả thông báo là đã đọc (isRead = true)
+                data.forEach(notification => notification.isRead = true);
             });
         })
         .catch(error => {
@@ -632,6 +643,7 @@
             document.getElementById('notification-list').innerHTML = '<p>Failed to load notifications.</p>';
         });
 </script>
+
 
 
 <!-- fetch noti -->
