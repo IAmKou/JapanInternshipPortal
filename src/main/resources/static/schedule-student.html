@@ -33,6 +33,10 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
 
     <style>
+        .fc-prev-button, .fc-next-button {
+            !important;
+            margin-right: 10px; /* Điều chỉnh giá trị này để thay đổi khoảng cách */
+        }
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -279,11 +283,10 @@
                         <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="Send-application-student.html" class="nav-link"><i
+                                <a href="Send-application.html" class="nav-link"><i
                                         class="fas fa-angle-right"></i>Send
                                     application</a>
                             </li>
-
                             <li class="nav-item">
                                 <a href="View-my-application-student.html" class="nav-link"><i
                                         class="fas fa-angle-right"></i>My
@@ -296,12 +299,12 @@
                         <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="forum-student.html"><i class="fas fa-angle-right"></i>View
+                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View
                                     list
                                     threads</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="create-forum-student.html"><i class="fas fa-angle-right"></i>Create
+                                <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
                                     Thread</a>
                             </li>
                         </ul>
@@ -507,6 +510,7 @@
         }
     }
 </script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const calendarEl = document.getElementById('calendar');
@@ -519,9 +523,9 @@
         }
         let calendar = new FullCalendar.Calendar(calendarEl, {
             headerToolbar: {
-                left: 'prev,next today',
+                left: 'prev,next',
                 center: 'title',
-                right: 'dayGridMonth',
+                right: '',
             },
             timeZone: 'UTC',
             events: function (fetchInfo, successCallback, failureCallback) {
