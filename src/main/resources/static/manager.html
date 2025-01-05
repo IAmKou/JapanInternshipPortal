@@ -58,6 +58,60 @@
             color: #ffcc00;
             text-decoration: none;
         }
+        .pagination-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;  /* Giảm padding để nút nhỏ lại */
+            cursor: pointer;
+            font-size: 14px; /* Giảm kích thước font chữ */
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination-button:hover {
+            background-color: #0056b3;
+        }
+
+        .pagination-button:disabled {
+            background-color: #d3d3d3;
+            cursor: not-allowed;
+        }
+
+        .pagination-info {
+            font-size: 16px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        #notice-board-wrap {
+            /* Xóa thuộc tính overflow để không có thanh cuộn */
+            overflow: visible;
+
+            /* Hoặc bạn có thể đảm bảo chiều cao tự động thay đổi */
+            max-height: none; /* Đảm bảo không giới hạn chiều cao */
+        }
+        .pagination-numbers {
+            display: inline-flex;
+            gap: 5px;
+        }
+
+        .page-number {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .page-number.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .page-number:hover {
+            background-color: #007bff;
+            color: white;
+        }
     </style>
 </head>
 
@@ -173,12 +227,17 @@
                             </div>
                         </div>
                     </li>
-                     <li class="navbar-item dropdown header-language">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" 
-                        data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
+                    <li class="navbar-item dropdown header-language">
+                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
+                        </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#">English</a>
-                            <a class="dropdown-item" href="#">Japanese</a>
+                            <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
+                                <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;"> English
+                            </a>
+                            <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
+                                <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese" style="width: 20px; height: 15px;"> 日本語
+                            </a>
                         </div>
                     </li>
                 </ul>
@@ -259,8 +318,9 @@
                 <!-- Breadcubs Area End Here -->
                 <!-- Dashboard Content Start Here -->
                 <div class="row">
-                    <div class="col-12-xxxl col-12">
-                    <div class="card dashboard-card-eleven">
+                    <!-- Phần Applications chiếm 9 cột -->
+                    <div class="col-lg-9 col-12">
+                        <div class="card dashboard-card-eleven">
                             <div class="card-body">
                                 <div class="heading-layout1">
                                     <div class="item-title">
@@ -297,49 +357,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-12 col-12-xxxl col-xl-12">
-                        <div class="card dashboard-card-six">
+
+                    <!-- Phần Notification chiếm 3 cột -->
+                    <div class="col-lg-3 col-12">
+                        <div class="card dashboard-card-six pd-b-20">
                             <div class="card-body">
                                 <div class="heading-layout1 mg-b-17">
                                     <div class="item-title">
-                                        <h3>Notifications</h3>
+                                        <h3>Notification</h3>
                                     </div>
                                 </div>
-                                <div class="notice-box-wrap">
-                                    <div class="notice-list">
-                                        <div class="post-date bg-skyblue">16 June, 2019</div>
-                                        <h6 class="notice-title"><a href="#">Great School manag mene esom tus eleifend
-                                            lectus
-                                            sed maximus mi faucibusnting.</a></h6>
-                                        <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                                    </div>
-                                    <div class="notice-list">
-                                        <div class="post-date bg-yellow">16 June, 2019</div>
-                                        <h6 class="notice-title"><a href="#">Great School manag printing.</a></h6>
-                                        <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                                    </div>
-                                    <div class="notice-list">
-                                        <div class="post-date bg-pink">16 June, 2019</div>
-                                        <h6 class="notice-title"><a href="#">Great School manag Nulla rhoncus eleifensed mim
-                                            us mi faucibus id. Mauris vestibulum non purus lobortismenearea</a></h6>
-                                        <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                                    </div>
-                                    <div class="notice-list">
-                                        <div class="post-date bg-skyblue">16 June, 2019</div>
-                                        <h6 class="notice-title"><a href="#">Great School manag mene esom text of the
-                                            printing.</a></h6>
-                                        <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                                    </div>
-                                    <div class="notice-list">
-                                        <div class="post-date bg-yellow">16 June, 2019</div>
-                                        <h6 class="notice-title"><a href="#">Great School manag printing.</a></h6>
-                                        <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                                    </div>
-                                    <div class="notice-list">
-                                        <div class="post-date bg-pink">16 June, 2019</div>
-                                        <h6 class="notice-title"><a href="#">Great School manag meneesom.</a></h6>
-                                        <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                                    </div>
+                                <div id="notice-board-wrap" class="notice-board-wrap">
+                                    <!-- Các thông báo sẽ được thêm vào đây bởi script -->
+                                </div>
+                                <div id="pagination-controls" class="pagination-controls">
+                                    <button id="prev-page" class="pagination-button">❮</button>
+                                    <div id="page-numbers" class="pagination-numbers"></div> <!-- Khu vực hiển thị các số trang -->
+                                    <button id="next-page" class="pagination-button">❯</button>
                                 </div>
                             </div>
                         </div>
@@ -380,74 +414,82 @@
     <script src="js/jquery.dataTables.min.js"></script>
     <!-- Custom Js -->
     <script src="js/main.js"></script>
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Kiểm tra và lấy ngôn ngữ đã lưu trong localStorage
+            let savedLanguage = localStorage.getItem('language');
 
-    <script type="text/javascript">
-        // Hàm thay đổi ngôn ngữ và lưu vào localStorage
-        function changeLanguage(language) {
-            var languageLabel = document.getElementById('languageLabel');
+            // Nếu chưa có ngôn ngữ lưu, đặt mặc định là tiếng Anh
+            if (!savedLanguage) {
+                savedLanguage = 'en'; // Mặc định tiếng Anh
+                localStorage.setItem('language', 'en');
+            }
 
-            // Cập nhật nhãn ngôn ngữ trên dropdown
-            if (language === 'en') {
-                languageLabel.innerText = 'EN';
-            } else if (language === 'ja') {
-                languageLabel.innerText = 'JA';
+            // Cập nhật nhãn ngôn ngữ trên giao diện ngay khi trang tải
+            const languageLabel = document.getElementById('languageLabel');
+            if (languageLabel) {
+                languageLabel.innerText = savedLanguage === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
+            }
+
+            // Áp dụng ngôn ngữ khi trang tải
+            changeLanguage(savedLanguage, false); // false: Không cần tải lại trang
+        });
+
+        function changeLanguage(language, reload = true) {
+            const languageLabel = document.getElementById('languageLabel');
+            if (languageLabel) {
+                languageLabel.innerText = language === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
             }
 
             // Lưu ngôn ngữ vào localStorage
-            localStorage.setItem('selectedLanguage', language);
+            localStorage.setItem('language', language);
 
-            // Kiểm tra nếu Google Translate đã được tải
-            if (window.google && google.translate) {
-                google.translate.TranslateElement.prototype.translatePage(language);
+            if (reload) {
+                if (language === 'en') {
+                    window.location.reload(); // Tải lại trang nếu là tiếng Anh
+                } else {
+                    // Nếu là tiếng Nhật, tự động dịch trang
+                    translatePage(language);
+                }
             }
         }
 
-        // Hàm khởi tạo Google Translate khi trang tải
-        function loadGoogleTranslate() {
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-            document.head.appendChild(script);
+        // Hàm dịch trang
+        function translatePage(language) {
+            const pageContent = document.body.innerHTML;
+
+            // Các nội dung cần dịch (ví dụ: tên người dùng, vai trò người dùng)
+            const userFullName = document.querySelector('.userFullName')?.innerText || '';
+            const userRole = document.querySelector('.userRole')?.innerText || '';
+
+            // Gửi yêu cầu dịch trang
+            fetch('/api/translate/whole-page', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    text: pageContent,
+                    targetLanguage: language,
+                    extraText: {
+                        userFullName,
+                        userRole,
+                    },
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.translatedText) {
+                        // Cập nhật toàn bộ nội dung trang với văn bản dịch
+                        document.body.innerHTML = data.translatedText;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error translating page:', error);
+                });
         }
-
-        // Hàm khởi tạo Google Translate Element
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,ja',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false,
-            }, 'google_translate_element');
-        }
-
-        // Khi trang được tải, thiết lập ngôn ngữ từ localStorage
-        document.addEventListener('DOMContentLoaded', function () {
-            // Lấy ngôn ngữ đã lưu trong localStorage
-            var savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-
-            // Cập nhật giao diện với ngôn ngữ đã lưu
-            var languageLabel = document.getElementById('languageLabel');
-            if (savedLanguage === 'en') {
-                languageLabel.innerText = 'EN';
-            } else if (savedLanguage === 'ja') {
-                languageLabel.innerText = 'JA';
-            }
-
-            // Dịch trang ngay từ khi tải
-            if (window.google && google.translate) {
-                google.translate.TranslateElement.prototype.translatePage(savedLanguage);
-            }
-        });
-
-        // Tải Google Translate
-        loadGoogleTranslate();
     </script>
-
-
-
-
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script>
         (async function fetchUserData() {
             try {
@@ -531,7 +573,7 @@
                         });
 
                         // Lấy tối đa 10 ứng dụng
-                        const limitedData = sortedData.slice(0, 10);
+                        const limitedData = sortedData.slice(0, 5);
 
                         // Hiển thị dữ liệu đã giới hạn
                         limitedData.forEach(application => {
@@ -596,6 +638,147 @@
             result += currentLine; // Thêm phần còn lại vào cuối
             return result;
         }
+    </script>
+    <script>
+        let currentPage = 1; // Trang hiện tại (chắc chắn là trang 1)
+        const itemsPerPage = 5; // Số thông báo trên mỗi trang
+
+        // Hàm fetch và hiển thị thông báo
+        function fetchNotifications() {
+            fetch('/notification/getAll')
+                .then(response => response.json()) // Parse the response as JSON
+                .then(data => {
+                    const noticeBoardWrap = document.getElementById('notice-board-wrap');
+
+                    // Nếu không có thông báo
+                    if (data.length === 0) {
+                        noticeBoardWrap.innerHTML = '<p>No notifications available.</p>';
+                        return;
+                    }
+
+                    // Loại bỏ thông báo mặc định có tiêu đề "Notification"
+                    data = data.filter(notification => notification.title !== 'Notification' && notification.title.trim() !== '');
+
+                    // Sắp xếp dữ liệu từ mới nhất đến cũ nhất (sử dụng trường 'date')
+                    data.sort((a, b) => {
+                        const dateA = new Date(a.createdAt || a.created || Date.now());
+                        const dateB = new Date(b.createdAt || b.created || Date.now());
+                        return dateB - dateA; // Sắp xếp giảm dần (mới nhất trước)
+                    });
+
+                    // Phân trang thông báo
+                    const totalItems = data.length;
+                    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+                    // Đảm bảo không phân trang quá số trang hiện có
+                    if (currentPage > totalPages) {
+                        currentPage = totalPages;
+                    }
+
+                    const startIndex = (currentPage - 1) * itemsPerPage;
+                    const endIndex = startIndex + itemsPerPage;
+                    const currentNotifications = data.slice(startIndex, endIndex);
+
+                    // Xóa nội dung cũ
+                    noticeBoardWrap.innerHTML = '';
+
+                    // Hàm format để in ngày với định dạng mm/dd/yyyy
+                    const formatDate = (dateString) => {
+                        const date = new Date(dateString);
+                        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                        const day = date.getDate().toString().padStart(2, '0');
+                        const year = date.getFullYear();
+                        return `${month}/${day}/${year}`;
+                    };
+
+                    currentNotifications.forEach(notification => {
+                        const noticeDiv = document.createElement('div');
+                        noticeDiv.classList.add('notice-list');
+
+                        const postDateDiv = document.createElement('div');
+                        postDateDiv.classList.add('post-date', 'bg-light-sea-green');
+                        postDateDiv.textContent = notification.date ? formatDate(notification.date) : formatDate(new Date());
+
+                        // Thay vì thẻ <a>, trực tiếp hiển thị tiêu đề trong thẻ <h6>
+                        const noticeTitle = document.createElement('h6');
+                        noticeTitle.classList.add('notice-title');
+
+// Giữ nguyên HTML trong tiêu đề
+                        noticeTitle.innerHTML = notification.title; // Tiêu đề chứa HTML
+
+// Kiểm tra nếu tiêu đề chứa thẻ <a> (đường link)
+                        const links = noticeTitle.getElementsByTagName('a');
+
+// Nếu có bất kỳ thẻ <a> nào trong tiêu đề, thay đổi màu sắc thành màu xanh
+                        for (let link of links) {
+                            link.style.color = 'blue';  // Màu xanh cho các đường link
+                            link.style.textDecoration = 'underline';  // Gạch chân các đường link
+                        }
+
+                        noticeDiv.appendChild(postDateDiv);
+                        noticeDiv.appendChild(noticeTitle);
+                        noticeBoardWrap.appendChild(noticeDiv);
+                    });
+
+                    // Cập nhật nút phân trang
+                    updatePagination(totalItems, totalPages);
+                })
+                .catch(error => {
+                    console.error('Error fetching notifications:', error);
+                    const noticeBoardWrap = document.getElementById('notice-board-wrap');
+                    noticeBoardWrap.innerHTML = '<p>Failed to load notifications.</p>';
+                });
+        }
+
+        // Hàm cập nhật trạng thái phân trang
+        function updatePagination(totalItems, totalPages) {
+            const pageNumbersElement = document.getElementById('page-numbers');
+            const prevButton = document.getElementById('prev-page');
+            const nextButton = document.getElementById('next-page');
+
+            // Cập nhật trạng thái nút
+            prevButton.disabled = currentPage === 1;
+            nextButton.disabled = currentPage === totalPages;
+
+            prevButton.classList.toggle('disabled', currentPage === 1);
+            nextButton.classList.toggle('disabled', currentPage === totalPages);
+
+            // Tạo các nút số trang
+            pageNumbersElement.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.classList.add('page-number');
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    fetchNotifications();
+                });
+
+                // Làm nổi bật nút của trang hiện tại
+                if (i === currentPage) {
+                    pageButton.classList.add('active');
+                }
+
+                pageNumbersElement.appendChild(pageButton);
+            }
+        }
+
+        // Xử lý khi nhấn nút "Previous" hoặc "Next"
+        document.getElementById('prev-page').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchNotifications();
+            }
+        });
+
+        document.getElementById('next-page').addEventListener('click', () => {
+            currentPage++;
+            fetchNotifications();
+        });
+
+        // Gọi lần đầu khi tải trang
+        fetchNotifications();
+
     </script>
 </body>
 

@@ -229,6 +229,7 @@
 
 
 
+
             </ul>
         </div>
     </div>
@@ -407,77 +408,81 @@
 <!-- Custom Js -->
 <script src="js/main.js"></script>
 <script>
-    function changeLanguage(language) {
-        const languageLabel = document.getElementById('languageLabel');
-        languageLabel.innerText = language === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
+    document.addEventListener('DOMContentLoaded', function () {
+        // Kiểm tra và lấy ngôn ngữ đã lưu trong localStorage
+        let savedLanguage = localStorage.getItem('language');
 
-        if (language === 'ja') {
-            // Lưu ngôn ngữ tiếng Nhật vào localStorage
-            localStorage.setItem('language', 'ja');
-        } else {
-            // Nếu không phải tiếng Nhật, xóa ngôn ngữ khỏi localStorage
-            localStorage.removeItem('language');
+        // Nếu chưa có ngôn ngữ lưu, đặt mặc định là tiếng Anh
+        if (!savedLanguage) {
+            savedLanguage = 'en'; // Mặc định tiếng Anh
+            localStorage.setItem('language', 'en');
         }
 
-        // Tải lại trang nếu là tiếng Anh (để hiển thị nội dung bằng tiếng Anh)
-        if (language === 'en') {
-            window.location.reload(); // Tải lại trang
-        } else {
-            // Gửi yêu cầu dịch trang khi ngôn ngữ là tiếng Nhật
-            const pageContent = document.body.innerHTML;
+        // Cập nhật nhãn ngôn ngữ trên giao diện ngay khi trang tải
+        const languageLabel = document.getElementById('languageLabel');
+        if (languageLabel) {
+            languageLabel.innerText = savedLanguage === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
+        }
 
-            const userFullName = document.querySelector('.userFullName') ? document.querySelector('.userFullName').innerText : '';
-            const userRole = document.querySelector('.userRole') ? document.querySelector('.userRole').innerText : '';
+        // Áp dụng ngôn ngữ khi trang tải
+        changeLanguage(savedLanguage, false); // false: Không cần tải lại trang
+    });
 
-            fetch('/api/translate/whole-page', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    text: pageContent,
-                    targetLanguage: language,
-                    extraText: {
-                        userFullName: userFullName,
-                        userRole: userRole,
-                    },
-                }),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.translatedText) {
-                        document.body.innerHTML = data.translatedText;
+    function changeLanguage(language, reload = true) {
+        const languageLabel = document.getElementById('languageLabel');
+        if (languageLabel) {
+            languageLabel.innerText = language === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
+        }
 
-                        // Cập nhật nhãn ngôn ngữ sau khi dịch xong
-                        const updatedLanguageLabel = document.getElementById('languageLabel');
-                        updatedLanguageLabel.innerText = language === 'en' ? 'EN' : 'JA';
+        // Lưu ngôn ngữ vào localStorage
+        localStorage.setItem('language', language);
 
-                        // Dịch các phần tử bổ sung nếu có
-                        if (data.extraTranslations) {
-                            if (data.extraTranslations.userFullName) {
-                                document.querySelector('.userFullName').innerText = data.extraTranslations.userFullName;
-                            }
-                            if (data.extraTranslations.userRole) {
-                                document.querySelector('.userRole').innerText = data.extraTranslations.userRole;
-                            }
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('Error during translation:', error);
-                    alert('Có lỗi xảy ra khi dịch trang. Vui lòng thử lại sau.');
-                });
+        if (reload) {
+            if (language === 'en') {
+                window.location.reload(); // Tải lại trang nếu là tiếng Anh
+            } else {
+                // Nếu là tiếng Nhật, tự động dịch trang
+                translatePage(language);
+            }
         }
     }
 
+    // Hàm dịch trang
+    function translatePage(language) {
+        const pageContent = document.body.innerHTML;
 
+        // Các nội dung cần dịch (ví dụ: tên người dùng, vai trò người dùng)
+        const userFullName = document.querySelector('.userFullName')?.innerText || '';
+        const userRole = document.querySelector('.userRole')?.innerText || '';
+
+        // Gửi yêu cầu dịch trang
+        fetch('/api/translate/whole-page', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                text: pageContent,
+                targetLanguage: language,
+                extraText: {
+                    userFullName,
+                    userRole,
+                },
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.translatedText) {
+                    // Cập nhật toàn bộ nội dung trang với văn bản dịch
+                    document.body.innerHTML = data.translatedText;
+                }
+            })
+            .catch(error => {
+                console.error('Error translating page:', error);
+            });
+    }
 </script>
-
-
-
-
-
 
 
 
@@ -587,7 +592,7 @@
 </script>
 <!-- fetch noti -->
 <script>
-    let currentPage = 1; // Trang hiện tại
+    let currentPage = 1; // Trang hiện tại (chắc chắn là trang 1)
     const itemsPerPage = 5; // Số thông báo trên mỗi trang
 
     // Hàm fetch và hiển thị thông báo
@@ -608,12 +613,20 @@
 
                 // Sắp xếp dữ liệu từ mới nhất đến cũ nhất (sử dụng trường 'date')
                 data.sort((a, b) => {
-                    const dateA = new Date(a.date);
-                    const dateB = new Date(b.date);
-                    return dateB - dateA; // Sắp xếp theo thứ tự giảm dần (mới nhất lên đầu)
+                    const dateA = new Date(a.createdAt || a.created || Date.now());
+                    const dateB = new Date(b.createdAt || b.created || Date.now());
+                    return dateB - dateA; // Sắp xếp giảm dần (mới nhất trước)
                 });
 
                 // Phân trang thông báo
+                const totalItems = data.length;
+                const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+                // Đảm bảo không phân trang quá số trang hiện có
+                if (currentPage > totalPages) {
+                    currentPage = totalPages;
+                }
+
                 const startIndex = (currentPage - 1) * itemsPerPage;
                 const endIndex = startIndex + itemsPerPage;
                 const currentNotifications = data.slice(startIndex, endIndex);
@@ -621,11 +634,13 @@
                 // Xóa nội dung cũ
                 noticeBoardWrap.innerHTML = '';
 
-                // Hiển thị thông báo cho trang hiện tại
-                const formatDate = () => {
-                    const now = new Date();
-                    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                    return now.toLocaleDateString('en-US', options); // Ensure English locale
+                // Hàm format để in ngày với định dạng mm/dd/yyyy
+                const formatDate = (dateString) => {
+                    const date = new Date(dateString);
+                    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                    const day = date.getDate().toString().padStart(2, '0');
+                    const year = date.getFullYear();
+                    return `${month}/${day}/${year}`;
                 };
 
                 currentNotifications.forEach(notification => {
@@ -634,24 +649,31 @@
 
                     const postDateDiv = document.createElement('div');
                     postDateDiv.classList.add('post-date', 'bg-light-sea-green');
-                    postDateDiv.textContent = notification.date || formatDate();
+                    postDateDiv.textContent = notification.date ? formatDate(notification.date) : formatDate(new Date());
 
+                    // Thay vì thẻ <a>, trực tiếp hiển thị tiêu đề trong thẻ <h6>
                     const noticeTitle = document.createElement('h6');
                     noticeTitle.classList.add('notice-title');
 
-                    const noticeLink = document.createElement('a');
-                    noticeLink.href = notification.link || '#';
-                    const plainTextTitle = notification.title.replace(/<\/?[^>]+(>|$)/g, ''); // Strip HTML tags
-                    noticeLink.textContent = plainTextTitle;
+// Giữ nguyên HTML trong tiêu đề
+                    noticeTitle.innerHTML = notification.title; // Tiêu đề chứa HTML
 
-                    noticeTitle.appendChild(noticeLink);
+// Kiểm tra nếu tiêu đề chứa thẻ <a> (đường link)
+                    const links = noticeTitle.getElementsByTagName('a');
+
+// Nếu có bất kỳ thẻ <a> nào trong tiêu đề, thay đổi màu sắc thành màu xanh
+                    for (let link of links) {
+                        link.style.color = 'blue';  // Màu xanh cho các đường link
+                        link.style.textDecoration = 'underline';  // Gạch chân các đường link
+                    }
+
                     noticeDiv.appendChild(postDateDiv);
                     noticeDiv.appendChild(noticeTitle);
                     noticeBoardWrap.appendChild(noticeDiv);
                 });
 
                 // Cập nhật nút phân trang
-                updatePagination(data.length);
+                updatePagination(totalItems, totalPages);
             })
             .catch(error => {
                 console.error('Error fetching notifications:', error);
@@ -661,8 +683,7 @@
     }
 
     // Hàm cập nhật trạng thái phân trang
-    function updatePagination(totalItems) {
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
+    function updatePagination(totalItems, totalPages) {
         const pageNumbersElement = document.getElementById('page-numbers');
         const prevButton = document.getElementById('prev-page');
         const nextButton = document.getElementById('next-page');

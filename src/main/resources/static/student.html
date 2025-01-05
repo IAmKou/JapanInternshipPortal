@@ -684,10 +684,16 @@
                     const noticeTitle = document.createElement('h6');
                     noticeTitle.classList.add('notice-title');
 
-                    const noticeLink = document.createElement('a');
-                    noticeLink.href = notification.link || '#';
-                    const plainTextTitle = notification.title.replace(/<\/?[^>]+(>|$)/g, '');
-                    noticeLink.textContent = plainTextTitle;
+                    noticeTitle.innerHTML = notification.title; // Tiêu đề chứa HTML
+
+// Kiểm tra nếu tiêu đề chứa thẻ <a> (đường link)
+                    const links = noticeTitle.getElementsByTagName('a');
+
+// Nếu có bất kỳ thẻ <a> nào trong tiêu đề, thay đổi màu sắc thành màu xanh
+                    for (let link of links) {
+                        link.style.color = 'blue';  // Màu xanh cho các đường link
+                        link.style.textDecoration = 'underline';  // Gạch chân các đường link
+                    }
 
                     noticeTitle.appendChild(noticeLink);
                     noticeDiv.appendChild(postDateDiv);

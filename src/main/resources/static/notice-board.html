@@ -428,30 +428,54 @@
     <!-- Custom Js -->
     <script src="js/main.js"></script>
     <script>
-        function changeLanguage(language) {
+        document.addEventListener('DOMContentLoaded', function () {
+            // Kiểm tra và lấy ngôn ngữ đã lưu trong localStorage
+            let savedLanguage = localStorage.getItem('language');
+
+            // Nếu chưa có ngôn ngữ lưu, đặt mặc định là tiếng Anh
+            if (!savedLanguage) {
+                savedLanguage = 'en'; // Mặc định tiếng Anh
+                localStorage.setItem('language', 'en');
+            }
+
+            // Cập nhật nhãn ngôn ngữ trên giao diện ngay khi trang tải
             const languageLabel = document.getElementById('languageLabel');
-            languageLabel.innerText = language === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
-
-            if (language === 'ja') {
-                // Lưu ngôn ngữ tiếng Nhật vào localStorage
-                localStorage.setItem('language', 'ja');
-            } else {
-                // Nếu không phải tiếng Nhật, xóa ngôn ngữ khỏi localStorage
-                localStorage.removeItem('language');
+            if (languageLabel) {
+                languageLabel.innerText = savedLanguage === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
             }
 
-            if (language === 'en') {
-                // Nếu chọn tiếng Anh, quay về nội dung ban đầu mà không cần dịch
-                window.location.reload(); // Tải lại trang gốc
-                return;
+            // Áp dụng ngôn ngữ khi trang tải
+            changeLanguage(savedLanguage, false); // false: Không cần tải lại trang
+        });
+
+        function changeLanguage(language, reload = true) {
+            const languageLabel = document.getElementById('languageLabel');
+            if (languageLabel) {
+                languageLabel.innerText = language === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
             }
 
+            // Lưu ngôn ngữ vào localStorage
+            localStorage.setItem('language', language);
+
+            if (reload) {
+                if (language === 'en') {
+                    window.location.reload(); // Tải lại trang nếu là tiếng Anh
+                } else {
+                    // Nếu là tiếng Nhật, tự động dịch trang
+                    translatePage(language);
+                }
+            }
+        }
+
+        // Hàm dịch trang
+        function translatePage(language) {
             const pageContent = document.body.innerHTML;
 
-            const userFullName = document.querySelector('.userFullName') ? document.querySelector('.userFullName').innerText : '';
-            const userRole = document.querySelector('.userRole') ? document.querySelector('.userRole').innerText : '';
+            // Các nội dung cần dịch (ví dụ: tên người dùng, vai trò người dùng)
+            const userFullName = document.querySelector('.userFullName')?.innerText || '';
+            const userRole = document.querySelector('.userRole')?.innerText || '';
 
-            // Gửi yêu cầu dịch trang khi ngôn ngữ không phải là tiếng Anh
+            // Gửi yêu cầu dịch trang
             fetch('/api/translate/whole-page', {
                 method: 'POST',
                 headers: {
@@ -462,41 +486,22 @@
                     text: pageContent,
                     targetLanguage: language,
                     extraText: {
-                        userFullName: userFullName,
-                        userRole: userRole,
+                        userFullName,
+                        userRole,
                     },
                 }),
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     if (data.translatedText) {
+                        // Cập nhật toàn bộ nội dung trang với văn bản dịch
                         document.body.innerHTML = data.translatedText;
-
-                        // Cập nhật nhãn ngôn ngữ sau khi nội dung được dịch
-                        const updatedLanguageLabel = document.getElementById('languageLabel');
-                        updatedLanguageLabel.innerText = language === 'en' ? 'EN' : 'JA';
-
-                        if (data.extraTranslations) {
-                            if (data.extraTranslations.userFullName) {
-                                document.querySelector('.userFullName').innerText = data.extraTranslations.userFullName;
-                            }
-                            if (data.extraTranslations.userRole) {
-                                document.querySelector('.userRole').innerText = data.extraTranslations.userRole;
-                            }
-                        }
                     }
                 })
                 .catch(error => {
-                    console.error('Error during translation:', error);
-                    alert('Có lỗi xảy ra khi dịch trang. Vui lòng thử lại sau.');
+                    console.error('Error translating page:', error);
                 });
         }
-
     </script>
 
 
