@@ -121,24 +121,25 @@ public class MarkReportServices {
             String semester = semesterRepository.findSemesterByClassId(clas.getId()).getName();
 
             // Calculate attitude
+            BigDecimal assignmentCompletion = BigDecimal.ZERO;
             int totalAssignments = assignmentStudentRepository.countByStudentId(markReport.getStudent().getId());
             // Ensure there are assignments to avoid division by zero
-            if (totalAssignments == 0) {
-                throw new IllegalArgumentException("No assignments found for the student with ID: " + markReport.getStudent().getId());
-            }
-            // Initialize the total marks of submitted assignments
-            BigDecimal submittedAssignments = BigDecimal.ZERO;
+            if (totalAssignments != 0) {
+                BigDecimal submittedAssignments = BigDecimal.ZERO;
 
-            // Iterate through all assignments of the student
-            for (StudentAssignment sa : studentAssignmentRepository.findAllByStudentId(markReport.getStudent().getId())) {
-                BigDecimal submissionMark = sa.getMark();
-                // Check for null marks and handle gracefully
-                if (submissionMark != null) {
-                    submittedAssignments = submittedAssignments.add(submissionMark);
+                // Iterate through all assignments of the student
+                for (StudentAssignment sa : studentAssignmentRepository.findAllByStudentId(markReport.getStudent().getId())) {
+                    BigDecimal submissionMark = sa.getMark();
+                    // Check for null marks and handle gracefully
+                    if (submissionMark != null) {
+                        submittedAssignments = submittedAssignments.add(submissionMark);
+                    }
                 }
+                assignmentCompletion = submittedAssignments
+                        .divide(new BigDecimal(totalAssignments), 2, RoundingMode.HALF_UP);
             }
-            BigDecimal assignmentCompletion = submittedAssignments
-                    .divide(new BigDecimal(totalAssignments), 2, RoundingMode.HALF_UP);
+
+
             MarkReportResponse response = new MarkReportResponse();
             response.setSemester(semester);
             response.setId(markReport.getId());
@@ -163,25 +164,25 @@ public class MarkReportServices {
 
     public MarkReportResponse getMarkReportByStudentId(int studentId) {
         MarkReport markReport = markReportRepository.findByStudentId(studentId);
+
         // Calculate attitude
+        BigDecimal assignmentCompletion = BigDecimal.ZERO;
         int totalAssignments = assignmentStudentRepository.countByStudentId(markReport.getStudent().getId());
         // Ensure there are assignments to avoid division by zero
-        if (totalAssignments == 0) {
-            throw new IllegalArgumentException("No assignments found for the student with ID: " + markReport.getStudent().getId());
-        }
-        // Initialize the total marks of submitted assignments
-        BigDecimal submittedAssignments = BigDecimal.ZERO;
+        if (totalAssignments != 0) {
+            BigDecimal submittedAssignments = BigDecimal.ZERO;
 
-        // Iterate through all assignments of the student
-        for (StudentAssignment sa : studentAssignmentRepository.findAllByStudentId(markReport.getStudent().getId())) {
-            BigDecimal submissionMark = sa.getMark();
-            // Check for null marks and handle gracefully
-            if (submissionMark != null) {
-                submittedAssignments = submittedAssignments.add(submissionMark);
+            // Iterate through all assignments of the student
+            for (StudentAssignment sa : studentAssignmentRepository.findAllByStudentId(markReport.getStudent().getId())) {
+                BigDecimal submissionMark = sa.getMark();
+                // Check for null marks and handle gracefully
+                if (submissionMark != null) {
+                    submittedAssignments = submittedAssignments.add(submissionMark);
+                }
             }
+            assignmentCompletion = submittedAssignments
+                    .divide(new BigDecimal(totalAssignments), 2, RoundingMode.HALF_UP);
         }
-        BigDecimal assignmentCompletion = submittedAssignments
-                .divide(new BigDecimal(totalAssignments), 2, RoundingMode.HALF_UP);
         if(markReport != null){
             Class clas = listRepository.getClassByStudentId(markReport.getStudent().getId());
             String className = clas.getName();
@@ -384,24 +385,23 @@ public class MarkReportServices {
                     }
 
                     // Calculate attitude
-                    int totalAssignments = assignmentStudentRepository.countByStudentId(student.getId());
+                    BigDecimal assignmentCompletion = BigDecimal.ZERO;
+                    int totalAssignments = assignmentStudentRepository.countByStudentId(markReport.getStudent().getId());
                     // Ensure there are assignments to avoid division by zero
-                    if (totalAssignments == 0) {
-                        throw new IllegalArgumentException("No assignments found for the student with ID: " + student.getId());
-                    }
-                    // Initialize the total marks of submitted assignments
-                    BigDecimal submittedAssignments = BigDecimal.ZERO;
+                    if (totalAssignments != 0) {
+                        BigDecimal submittedAssignments = BigDecimal.ZERO;
 
-                    // Iterate through all assignments of the student
-                    for (StudentAssignment sa : studentAssignmentRepository.findAllByStudentId(student.getId())) {
-                        BigDecimal submissionMark = sa.getMark();
-                        // Check for null marks and handle gracefully
-                        if (submissionMark != null) {
-                            submittedAssignments = submittedAssignments.add(submissionMark);
+                        // Iterate through all assignments of the student
+                        for (StudentAssignment sa : studentAssignmentRepository.findAllByStudentId(markReport.getStudent().getId())) {
+                            BigDecimal submissionMark = sa.getMark();
+                            // Check for null marks and handle gracefully
+                            if (submissionMark != null) {
+                                submittedAssignments = submittedAssignments.add(submissionMark);
+                            }
                         }
+                        assignmentCompletion = submittedAssignments
+                                .divide(new BigDecimal(totalAssignments), 2, RoundingMode.HALF_UP);
                     }
-                    BigDecimal assignmentCompletion = submittedAssignments
-                            .divide(new BigDecimal(totalAssignments), 2, RoundingMode.HALF_UP);
 //
 //                    int totalSlots = attendantRepository.findTotalSlotByStudentId(student.getId());
 //                    int attendedSlots = attendantRepository.countAttendedByStudentId(student);
@@ -535,26 +535,25 @@ public class MarkReportServices {
 
 
 
-//                    // Calculate attitude
-//                    int totalAssignments = assignmentStudentRepository.countByStudentId(student.getId());
-//                    // Ensure there are assignments to avoid division by zero
-//                    if (totalAssignments == 0) {
-//                        throw new IllegalArgumentException("No assignments found for the student with ID: " + student.getId());
-//                    }
-//                    // Initialize the total marks of submitted assignments
-//                    BigDecimal submittedAssignments = BigDecimal.ZERO;
-//
-//                    // Iterate through all assignments of the student
-//                    for (StudentAssignment sa : studentAssignmentRepository.findAllByStudentId(student.getId())) {
-//                        BigDecimal submissionMark = sa.getMark();
-//                        // Check for null marks and handle gracefully
-//                        if (submissionMark != null) {
-//                            submittedAssignments = submittedAssignments.add(submissionMark);
-//                        }
-//                    }
-//                    BigDecimal assignmentCompletion = submittedAssignments
-//                            .divide(new BigDecimal(totalAssignments), 2, RoundingMode.HALF_UP);
-//
+        // Calculate attitude
+        BigDecimal assignmentCompletion = BigDecimal.ZERO;
+        int totalAssignments = assignmentStudentRepository.countByStudentId(markReport.getStudent().getId());
+        // Ensure there are assignments to avoid division by zero
+        if (totalAssignments != 0) {
+            BigDecimal submittedAssignments = BigDecimal.ZERO;
+
+            // Iterate through all assignments of the student
+            for (StudentAssignment sa : studentAssignmentRepository.findAllByStudentId(markReport.getStudent().getId())) {
+                BigDecimal submissionMark = sa.getMark();
+                // Check for null marks and handle gracefully
+                if (submissionMark != null) {
+                    submittedAssignments = submittedAssignments.add(submissionMark);
+                }
+            }
+            assignmentCompletion = submittedAssignments
+                    .divide(new BigDecimal(totalAssignments), 2, RoundingMode.HALF_UP);
+        }
+
 //                    int totalSlots = attendantRepository.findTotalSlotByStudentId(student.getId());
 //                    int attendedSlots = attendantRepository.countAttendedByStudentId(student);
 //                    BigDecimal attendance = new BigDecimal(attendedSlots)
