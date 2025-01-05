@@ -389,45 +389,17 @@
                     </li>
 
                     <li class="navbar-item dropdown header-notification">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
+                        <a id="notification-bell" class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                             <i class="far fa-bell"></i>
                             <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
-                            <span>8</span>
+                            <span id="notification-count">0</span>
                         </a>
-
-                        <div class="dropdown-menu dropdown-menu-right">
+                        <div class="dropdown-menu dropdown-menu-right" id="notification-dropdown">
                             <div class="item-header">
-                                <h6 class="item-title">03 Notifiacations</h6>
+                                <h6 class="item-title" id="notification-title">Notifications</h6>
                             </div>
-                            <div class="item-content">
-                                <div class="media">
-                                    <div class="item-icon bg-skyblue">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Complete Today Task</div>
-                                        <span>1 Mins ago</span>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-icon bg-orange">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Director Metting</div>
-                                        <span>20 Mins ago</span>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-icon bg-violet-blue">
-                                        <i class="fas fa-cogs"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Update Password</div>
-                                        <span>45 Mins ago</span>
-                                    </div>
-                                </div>
+                            <div class="item-content" id="notification-list">
+                                <!-- Notifications will be dynamically inserted here -->
                             </div>
                         </div>
                     </li>
@@ -905,6 +877,111 @@
 
         return formattedContent;
     }
+</script>
+<!-- fetch notification headbar-->
+<script>
+    window.onload = function() {
+        const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
+        const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
+
+        // Kiểm tra trạng thái khi trang được tải lại hoặc khi chuyển sang trang mới
+        const hasSeenNotifications = localStorage.getItem('hasSeenNotifications');
+        if (hasSeenNotifications === 'true') {
+            notificationCount.style.display = 'none'; // Nếu đã xem thông báo, ẩn số lượng
+        }
+    };
+
+    // Fetch notifications từ server
+    fetch('/notification/getAll')
+        .then(response => response.json()) // Parse dữ liệu JSON
+        .then(data => {
+            const notificationList = document.getElementById('notification-list'); // Container danh sách thông báo
+            const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
+            const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông
+
+            // Kiểm tra dữ liệu nhận được
+            console.log(data);
+
+            // Giả sử tất cả thông báo là chưa đọc (isRead = false) nếu không có trường này
+            data.forEach(notification => {
+                if (!notification.hasOwnProperty('isRead')) {
+                    notification.isRead = false; // Thêm trường isRead nếu không có
+                }
+            });
+
+            // Lọc các thông báo chưa đọc (isRead === false)
+            const unreadNotifications = data.filter(notification => notification.isRead === false);
+
+            // Cập nhật số lượng thông báo chưa đọc
+            notificationCount.textContent = unreadNotifications.length;
+
+            // Hiển thị số lượng thông báo nếu có thông báo chưa đọc, nếu không thì ẩn
+            notificationCount.style.display = unreadNotifications.length > 0 ? 'inline' : 'none';
+
+            // Nếu không có thông báo, hiển thị thông báo trống
+            if (data.length === 0) {
+                notificationList.innerHTML = '<p>No notifications available.</p>';
+                return;
+            }
+
+            // Clear các thông báo cũ
+            notificationList.innerHTML = '';
+
+            // Sắp xếp thông báo theo thời gian (mới nhất trước)
+            data.sort((a, b) => {
+                const dateA = new Date(a.createdAt || a.created || Date.now());
+                const dateB = new Date(b.createdAt || b.created || Date.now());
+                return dateB - dateA; // Sắp xếp giảm dần (mới nhất trước)
+            });
+
+            // Giới hạn hiển thị 7 thông báo mới nhất
+            const notificationsToDisplay = data.slice(0, 7);
+
+            // Thêm từng thông báo vào danh sách
+            notificationsToDisplay.forEach(notification => {
+                const noticeDiv = document.createElement('div');
+                noticeDiv.classList.add('notice-list');
+
+                const noticeTitle = document.createElement('h6');
+                noticeTitle.classList.add('notice-title');
+
+                // Set tiêu đề với nội dung HTML (bao gồm thẻ <a>)
+                noticeTitle.innerHTML = notification.title;
+
+                // Kiểm tra nếu tiêu đề có chứa các thẻ <a> (link)
+                const links = noticeTitle.getElementsByTagName('a');
+
+                // Nếu có bất kỳ thẻ <a> nào trong tiêu đề, style chúng
+                for (let link of links) {
+                    link.style.color = 'blue';  // Màu xanh cho các link
+                    link.style.textDecoration = 'underline';  // Gạch chân các link
+                }
+
+                // Thêm tiêu đề vào phần tử thông báo
+                noticeDiv.appendChild(noticeTitle);
+
+                // Thêm thông báo vào danh sách
+                notificationList.appendChild(noticeDiv);
+            });
+
+            // Ẩn số lượng thông báo khi người dùng bấm chuông
+            notificationBell.addEventListener('click', () => {
+                notificationCount.style.display = 'none'; // Ẩn số lượng thông báo khi bấm chuông
+                // Lưu trạng thái "đã xem thông báo" vào localStorage
+                localStorage.setItem('hasSeenNotifications', 'true');
+
+                // Đánh dấu tất cả thông báo là đã đọc (isRead = true)
+                data.forEach(notification => notification.isRead = true);
+
+                // Lưu lại trạng thái thông báo đã đọc vào localStorage (tùy vào yêu cầu của bạn)
+                localStorage.setItem('notifications', JSON.stringify(data));
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching notifications:', error);
+            document.getElementById('notification-list').innerHTML = '<p>Failed to load notifications.</p>';
+        });
+
 </script>
 <!-- Mirrored from admit-form.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:46 GMT -->
 </html>

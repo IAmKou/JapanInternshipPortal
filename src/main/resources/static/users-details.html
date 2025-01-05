@@ -365,45 +365,17 @@
                     </div>
                 </li>
                 <li class="navbar-item dropdown header-notification">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false">
+                    <a id="notification-bell" class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                         <i class="far fa-bell"></i>
                         <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
-                        <span>8</span>
+                        <span id="notification-count">0</span>
                     </a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
+                    <div class="dropdown-menu dropdown-menu-right" id="notification-dropdown">
                         <div class="item-header">
-                            <h6 class="item-title">03 Notifiacations</h6>
+                            <h6 class="item-title" id="notification-title">Notifications</h6>
                         </div>
-                        <div class="item-content">
-                            <div class="media">
-                                <div class="item-icon bg-skyblue">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="post-title">Complete Today Task</div>
-                                    <span>1 Mins ago</span>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-icon bg-orange">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="post-title">Director Metting</div>
-                                    <span>20 Mins ago</span>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-icon bg-violet-blue">
-                                    <i class="fas fa-cogs"></i>
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="post-title">Update Password</div>
-                                    <span>45 Mins ago</span>
-                                </div>
-                            </div>
+                        <div class="item-content" id="notification-list">
+                            <!-- Notifications will be dynamically inserted here -->
                         </div>
                     </div>
                 </li>
@@ -893,169 +865,96 @@
     });
 </script>
 <script>
-    // Hàm thay đổi ngôn ngữ
-    // Hàm thay đổi ngôn ngữ
-    function getTranslation(language) {
-        const translations = {
-            "en": {
-                //Main screen
-                "home": "Home",
-                "users": "Users",
-                "user_details": "User Details",
-                "search": "Search",
-                "setting": "Setting",
-                "user_list": "User List",
-                "image": "Image",
-                "name": "Name:",
-                "j_name": "Japan Name:",
-                "gender": "Gender:",
-                "email": "Email:",
-                "phone": "Phone:",
-                "role": "Role:",
-                "edit": "Edit",
-                "phone_number": "Phone Number",
-                "male": "Male",
-                "female": "Female",
-                // end main screen
-                // headbar
-                "log_out": "Log Out",
-                // end headbar
-                "add_account": "Add Account",
-                "choose_file": "Choose File",
-                "close": "Close",
-                "submit": "Submit",
-                // sidebar admin
-                "admin": "Admin",
-                "dashboard": "Dashboard",
-                "report": "Report",
-                "notification": "Notification",
-                "account_list": "Account List",
-                "security": "Security",
-                "change_password": "Change Password",
+    // Kiểm tra trạng thái khi trang được tải lại
+    window.onload = function() {
+        const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
+        const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
 
-                // end sidebar admin
-            },
-            "ja": {
-                //Main screen
-                "home": "ホーム:",
-                "users": "ユーザー",
-                "user_details": "ユーザー詳細",
-                "name": "名前:",
-                "role": "役割:",
-                "gender": "性別:",
-                "email": "メール:",
-                "phone": "電話:",
-                "edit": "編集",
-                "phone_number": "電話番号",
-                "male": "男性",
-                "female": "女性",
-                // end main screen
-                // headbar
-                "log_out": "ログアウト",
-                // end headbar
-                "add_account": "アカウントを追加",
-                "choose_file": "ファイルを選択",
-                "submit": "送信",
-                "close": "閉じる",
-                "j_name": "日本の名前:",
-                // sidebar admin
-                "admin": "管理者",
-                "dashboard": "ダッシュボード",
-                "report": "レポート",
-                "notification": "通知",
-                "account_list": "アカウントリスト",
-                "security": "セキュリティ",
-                "change_password": "パスワード変更",
-                // end sidebar admin
-            }
-        };
+        // Kiểm tra trạng thái đã bấm vào chuông thông báo chưa (lưu trong localStorage)
+        const hasSeenNotifications = localStorage.getItem('hasSeenNotifications');
 
-        // Cập nhật nội dung các phần tử có thuộc tính data-i18n
-        const elements = document.querySelectorAll('[data-i18n]');
-        elements.forEach(function(element) {
-            const translationKey = element.getAttribute('data-i18n');
-            if (translations[language] && translations[language][translationKey]) {
-                element.innerHTML = translations[language][translationKey];
-            }
+        // Nếu đã bấm chuông trước đó và ẩn số lượng thông báo, thì không hiển thị số lượng nữa
+        if (hasSeenNotifications === 'true') {
+            notificationCount.style.display = 'none';
+        }
+    };
+
+    // Fetch và hiển thị thông báo trong phần thanh điều hướng
+    function fetchNotificationsInNavBar(recipientId) {
+        if (!recipientId) {
+            console.warn("Recipient ID chưa sẵn sàng, thử lại...");
+            setTimeout(() => fetchNotificationsInNavBar(JSON.parse(sessionStorage.getItem('userDetails'))?.id), 500);
+            return;
+        }
+
+        fetch(`/notification/get/${recipientId}`) // Truy cập đúng endpoint với recipientId
+            .then(response => response.json())
+            .then(data => {
+                // Loại bỏ thông báo mặc định có tiêu đề "Notification"
+                data = data.filter(notification => notification.title !== 'Notification' && notification.title.trim() !== '');
+
+                // Sắp xếp dữ liệu từ mới nhất đến cũ nhất (sử dụng trường 'createdAt')
+                data.sort((a, b) => {
+                    const dateA = new Date(a.createdAt || a.created || Date.now());
+                    const dateB = new Date(b.createdAt || b.created || Date.now());
+                    return dateB - dateA; // Sắp xếp giảm dần (mới nhất trước)
+                });
+
+                // Giả sử tất cả thông báo là chưa đọc (isRead = false) nếu không có trường này
+                data.forEach(notification => {
+                    if (!notification.hasOwnProperty('isRead')) {
+                        notification.isRead = false; // Thêm trường isRead nếu không có
+                    }
+                });
+
+                // Lọc các thông báo chưa đọc (isRead === false)
+                const unreadNotifications = data.filter(notification => notification.isRead === false);
+
+                // Render thông báo vào trong thanh điều hướng
+                renderNotificationsInNavBar(unreadNotifications, data);
+            })
+            .catch(error => {
+                console.error('Error fetching notifications:', error);
+                const notificationList = document.getElementById('notification-list');
+                notificationList.innerHTML = '<p>Failed to load notifications.</p>';
+            });
+    }
+
+    // Render thông báo vào trong thanh điều hướng
+    function renderNotificationsInNavBar(unreadNotifications, allNotifications) {
+        const notificationCount = document.getElementById('notification-count');
+        const notificationList = document.getElementById('notification-list');
+        const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông
+
+        // Cập nhật số lượng thông báo chưa đọc
+        notificationCount.textContent = unreadNotifications.length;
+
+        // Hiển thị số lượng thông báo nếu có thông báo chưa đọc, nếu không thì ẩn
+        notificationCount.style.display = unreadNotifications.length > 0 ? 'inline' : 'none';
+
+        // Xóa nội dung cũ và hiển thị thông báo trong thanh điều hướng
+        notificationList.innerHTML = ''; // Clear old notifications
+        unreadNotifications.slice(0, 7).forEach(notification => { // Hiển thị tối đa 7 thông báo mới nhất
+            const noticeDiv = document.createElement('div');
+            noticeDiv.classList.add('notification-item');
+
+            const title = document.createElement('h6');
+            title.innerHTML = notification.title;
+
+            noticeDiv.appendChild(title);
+            notificationList.appendChild(noticeDiv);
         });
 
-        // Xử lý riêng cho trường "Gender" dựa trên giá trị động (Male/Female)
-        const genderElement = document.querySelector('[data-i18n="gender"] + td');
-        if (genderElement) {
-            const genderValue = genderElement.innerHTML.trim(); // Lấy giá trị hiện tại
-            if (language === "ja") {
-                if (genderValue === "Male") {
-                    genderElement.innerHTML = "男性"; // Chuyển thành "Nam"
-                } else if (genderValue === "Female") {
-                    genderElement.innerHTML = "女性"; // Chuyển thành "Nữ"
-                }
-            } else if (language === "en") {
-                if (genderValue === "男性") {
-                    genderElement.innerHTML = "Male"; // Trở về "Male"
-                } else if (genderValue === "女性") {
-                    genderElement.innerHTML = "Female"; // Trở về "Female"
-                }
-            }
-        }
+        // Thêm sự kiện click vào chuông thông báo để đánh dấu tất cả là đã đọc
+        notificationBell.addEventListener('click', () => {
+            notificationCount.style.display = 'none'; // Ẩn số lượng thông báo khi bấm chuông
+            // Lưu trạng thái "đã xem thông báo" vào localStorage
+            localStorage.setItem('hasSeenNotifications', 'true');
 
-        const roleElement = document.querySelector('[data-i18n="roleName"]');
-        if (roleElement) {
-            const roleValue = roleElement.value.trim(); // Lấy giá trị từ thuộc tính 'value' của input
-            if (language === "ja") {
-                if (roleValue === "TEACHER") {
-                    roleElement.value = "教師"; // Chuyển thành "Teacher" tiếng Nhật
-                } else if (roleValue === "STUDENT") {
-                    roleElement.value = "学生"; // Chuyển thành "Student" tiếng Nhật
-                } else if (roleValue === "MANAGER") {
-                    roleElement.value = "管理者"; // Chuyển thành "Manager" tiếng Nhật
-                }
-            } else if (language === "en") {
-                if (roleValue === "教師") {
-                    roleElement.value = "TEACHER"; // Trở về "Teacher" tiếng Anh
-                } else if (roleValue === "学生") {
-                    roleElement.value = "STUDENT"; // Trở về "Student" tiếng Anh
-                } else if (roleValue === "管理者") {
-                    roleElement.value = "MANAGER"; // Trở về "Manager" tiếng Anh
-                }
-            }
-        }
-
+            // Đánh dấu tất cả thông báo là đã đọc (isRead = true)
+            allNotifications.forEach(notification => notification.isRead = true);
+        });
     }
-
-    // Hàm thay đổi ngôn ngữ và cập nhật ngôn ngữ hiển thị trong thanh điều hướng
-    function changeLanguage(language) {
-        // Lưu ngôn ngữ vào localStorage
-        localStorage.setItem('language', language);
-
-        // Cập nhật lại nhãn ngôn ngữ trong phần tử (nút hiển thị ngôn ngữ)
-        const languageLabel = document.getElementById('languageLabel');
-        if (languageLabel) {
-            languageLabel.innerHTML = language === 'en' ? 'EN' : (language === 'ja' ? 'JA' : 'EN');
-        }
-
-        // Áp dụng ngôn ngữ cho toàn bộ trang
-        getTranslation(language);  // Gọi lại hàm dịch ngôn ngữ ngay lập tức
-
-        // Reload lại trang sau khi thay đổi ngôn ngữ
-        location.reload();  // Tải lại trang
-    }
-
-    // Kiểm tra ngôn ngữ khi trang được tải
-    window.addEventListener('load', function () {
-        const language = localStorage.getItem('language') || 'en'; // Mặc định là 'en' nếu không có ngôn ngữ lưu trữ
-        // Gọi hàm dịch ngôn ngữ
-        getTranslation(language);
-        // Đặt lại nhãn ngôn ngữ trong phần tử (tiếng Anh là EN nếu không có ngôn ngữ)
-        const languageLabel = document.getElementById('languageLabel');
-        if (languageLabel) {
-            languageLabel.innerHTML = language === 'en' ? 'EN' : (language === 'ja' ? 'JA' : 'EN');
-        }
-    });
-
-
-
-
-
 </script>
 </body>
 

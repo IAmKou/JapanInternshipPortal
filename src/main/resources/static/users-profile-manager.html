@@ -79,8 +79,8 @@
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                        aria-expanded="false">
                         <div class="admin-title">
-                            <h5 class="item-title">Stevne Zone</h5>
-                            <span>Admin</span>
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole" ></span>
                         </div>
                         <div class="admin-img img">
                             <img src="" alt="Admin" style="width: 50px; height: 50px">
@@ -88,58 +88,30 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="item-header">
-                            <h6 class="item-title">Steven Zone</h6>
+                            <h6 class="item-title userFullName"></h6>
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
-                                <li><a href="#"><i class="flaticon-user"></i>My Profile</a></li>
+                                <li><a href="users-profile-student.html"><i class="flaticon-user"></i>My Profile</a></li>
                                 <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span data-i18n="change_password">Change Password</span></a></li>
-                                <li><a href="login.html"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
                     </div>
                 </li>
 
                 <li class="navbar-item dropdown header-notification">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false">
+                    <a id="notification-bell" class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                         <i class="far fa-bell"></i>
                         <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
-                        <span>8</span>
+                        <span id="notification-count">0</span>
                     </a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
+                    <div class="dropdown-menu dropdown-menu-right" id="notification-dropdown">
                         <div class="item-header">
-                            <h6 class="item-title">03 Notifiacations</h6>
+                            <h6 class="item-title" id="notification-title">Notifications</h6>
                         </div>
-                        <div class="item-content">
-                            <div class="media">
-                                <div class="item-icon bg-skyblue">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="post-title">Complete Today Task</div>
-                                    <span>1 Mins ago</span>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-icon bg-orange">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="post-title">Director Metting</div>
-                                    <span>20 Mins ago</span>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-icon bg-violet-blue">
-                                    <i class="fas fa-cogs"></i>
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="post-title">Update Password</div>
-                                    <span>45 Mins ago</span>
-                                </div>
-                            </div>
+                        <div class="item-content" id="notification-list">
+                            <!-- Notifications will be dynamically inserted here -->
                         </div>
                     </div>
                 </li>
@@ -164,138 +136,217 @@
     <div class="dashboard-page-one">
         <!-- Sidebar Area Start Here -->
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
-            <!-- Sidebar Area End Here -->
-            <div class="dashboard-content-one">
-                <!-- Breadcubs Area Start Here -->
-                <div class="breadcrumbs-area">
-                    <h3>Users</h3>
-                    <ul>
-                        <li>
-                            <a href="admin.html">Home</a>
-                        </li>
-                        <li>Users Details</li>
-                    </ul>
+            <div class="mobile-sidebar-header d-md-none">
+                <div class="header-logo">
+                    <a href="student.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
-                <!-- Breadcubs Area End Here -->
-                <!-- Student Details Area Start Here -->
-                <div class="card height-auto">
-                    <div class="card-body">
-                        <div class="single-info-details">
-                            <div class="item-img img">
-                                <img src="" alt="student" id="img" style="width: 100px; height: 100px">
-                            </div>
-                            <div class="item-content">
-                                <div class="header-inline item-header">
-                                    <h3 class="text-dark-medium font-medium" id="name"></h3>
-                                    <div class="heading-layout1">
-                                        <div class="dropdown">
-                                            <a class="dropdown-toggle" href="#" role="button"
-                                               data-toggle="dropdown" aria-expanded="false">...</a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" data-toggle="modal" data-target="#sign-up"><i
-                                                        class="fas fa-cogs text-dark-pastel-green"></i>Report</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="info-table table-responsive">
-                                    <table class="table text-nowrap" id="userInfoTable">
-                                        <tbody>
-                                        <tr>
-                                            <td>Id:</td>
-                                            <td class="font-medium text-dark-medium"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Name:</td>
-                                            <td class="font-medium text-dark-medium userFullName"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Japan Name:</td>
-                                            <td class="font-medium text-dark-medium"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Gender:</td>
-                                            <td class="font-medium text-dark-medium"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Date Of Birth:</td>
-                                            <td class="font-medium text-dark-medium"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>E-mail:</td>
-                                            <td class="font-medium text-dark-medium"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Phone:</td>
-                                            <td class="font-medium text-dark-medium"></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Student Details Area End Here -->
-                    <div class="ui-modal-box">
-                        <div class="modal-box">
-                            <div class="modal sign-up-modal fade" id="sign-up" tabindex="-1" role="dialog"
-                                 aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <div class="close-btn">
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="item-logo">
-                                                <img src="img/JIP%20LOGO%20n.png" alt="logo">
-                                            </div>
-                                            <form class="login-form" id="reportForm">
-                                                <div class="row gutters-15">
-                                                    <div class="form-group col-12">
-                                                        <input type="text" value="Wrong information" readonly
-                                                               name="title" class="form-control">
-                                                    </div>
-                                                    <div class="form-group col-12">
-                                                        <input type="text"
-                                                               placeholder="Enter the wrong information here" required
-                                                               name="content" class="form-control">
-                                                    </div>
-                                                    <input type="hidden" value="" name="uid" id="userId">
-                                                    <div class="form-group col-12">
-                                                        <button type="submit" class="login-btn">Send Report</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Success Modal -->
-                    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-body text-center">
-                                    <h5>Report Submitted Successfully!</h5>
-                                    <button type="button" class="btn btn-primary" id="goToProfile">Go to Profile
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+            <div class="sidebar-menu-content">
+                <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item">
+                                <a href="student.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Students</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="list-student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="list-submitted-assignments.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Submitted Assignment</a>
+                            </li>
+                        </ul>
+                    </li>
 
-                    <!-- Error Modal -->
-                    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-body text-center">
-                                    <h5 id="errorMessage">Error: Something went wrong.</h5>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="javascript:void(0);" class="nav-link" onclick="submitForm();"><i
+                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();">
+                                    <i class="fas fa-angle-right"></i>Personal Mark Report</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                        <ul class="nav sub-group-menu ">
+                            <li class="nav-item" id="student-view1">
+                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    Materials</a>
+                            </li>
+                            <li class="nav-item" id="student-view">
+                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My List
+                                    Materials</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                    application</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                    application</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item sidebar-nav-item">
+                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="forum-student.html"><i class="fas fa-angle-right"></i>View list
+                                    threads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="create-forum-student.html"><i class="fas fa-angle-right"></i>Create Thread</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <!-- Sidebar Area End Here -->
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <h3>Users</h3>
+                <ul>
+                    <li>
+                        <a href="admin.html">Home</a>
+                    </li>
+                    <li>Users Details</li>
+                </ul>
+            </div>
+            <!-- Breadcubs Area End Here -->
+            <!-- Student Details Area Start Here -->
+            <div class="card height-auto">
+                <div class="card-body">
+                    <div class="single-info-details">
+                        <div class="item-img img">
+                            <img src="" alt="student" id="img" style="width: 100px; height: 100px">
+                        </div>
+                        <div class="item-content">
+                            <div class="header-inline item-header">
+                                <h3 class="text-dark-medium font-medium" id="name"></h3>
+                                <div class="heading-layout1">
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle" href="#" role="button"
+                                           data-toggle="dropdown" aria-expanded="false">...</a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" data-toggle="modal" data-target="#sign-up"><i
+                                                    class="fas fa-cogs text-dark-pastel-green"></i>Report</a>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+                            <div class="info-table table-responsive">
+                                <table class="table text-nowrap" id="userInfoTable">
+                                    <tbody>
+                                    <tr>
+                                        <td>Id:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Name:</td>
+                                        <td class="font-medium text-dark-medium userFullName"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Japan Name:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Gender:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date Of Birth:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>E-mail:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phone:</td>
+                                        <td class="font-medium text-dark-medium"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Student Details Area End Here -->
+                <div class="ui-modal-box">
+                    <div class="modal-box">
+                        <div class="modal sign-up-modal fade" id="sign-up" tabindex="-1" role="dialog"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <div class="close-btn">
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="item-logo">
+                                            <img src="img/JIP%20LOGO%20n.png" alt="logo">
+                                        </div>
+                                        <form class="login-form" id="reportForm">
+                                            <div class="row gutters-15">
+                                                <div class="form-group col-12">
+                                                    <input type="text" value="Wrong information" readonly name="title" class="form-control">
+                                                </div>
+                                                <div class="form-group col-12">
+                                                    <input type="text" placeholder="Enter the wrong information here" required name="content" class="form-control">
+                                                </div>
+                                                <input type="hidden" value="" name="uid" id="userId">
+                                                <div class="form-group col-12">
+                                                    <button type="submit" class="login-btn">Send Report</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Success Modal -->
+                <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <h5>Report Submitted Successfully!</h5>
+                                <button type="button" class="btn btn-primary" id="goToProfile">Go to Profile</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Modal -->
+                <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <h5 id="errorMessage">Error: Something went wrong.</h5>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
@@ -419,6 +470,7 @@
             "Id:": userDetails.id || 'N/A',
             "Japan Name:": userDetails.jname || 'N/A',
             "Gender:": userDetails.gender || 'N/A',
+            "Date Of Birth:": userDetails.dob || 'N/A',
             "E-mail:": userDetails.email || 'N/A',
             "Phone:": userDetails.phoneNumber || 'N/A'
         };
@@ -445,6 +497,30 @@
         });
     } else {
         console.error("User details not found in sessionStorage");
+    }
+
+    function submitForm() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.studentId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `schedule-list-student.html?studentId=${userDetails.studentId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+
+    function toMarkReport() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.studentId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `personal-mark-report.html?studentId=${userDetails.studentId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
     }
 </script>
 <script>
@@ -478,7 +554,111 @@
         }
     });
 </script>
+<!-- fetch notification headbar-->
+<script>
+    window.onload = function() {
+        const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
+        const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
 
+        // Kiểm tra trạng thái khi trang được tải lại hoặc khi chuyển sang trang mới
+        const hasSeenNotifications = localStorage.getItem('hasSeenNotifications');
+        if (hasSeenNotifications === 'true') {
+            notificationCount.style.display = 'none'; // Nếu đã xem thông báo, ẩn số lượng
+        }
+    };
+
+    // Fetch notifications từ server
+    fetch('/notification/getAll')
+        .then(response => response.json()) // Parse dữ liệu JSON
+        .then(data => {
+            const notificationList = document.getElementById('notification-list'); // Container danh sách thông báo
+            const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
+            const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông
+
+            // Kiểm tra dữ liệu nhận được
+            console.log(data);
+
+            // Giả sử tất cả thông báo là chưa đọc (isRead = false) nếu không có trường này
+            data.forEach(notification => {
+                if (!notification.hasOwnProperty('isRead')) {
+                    notification.isRead = false; // Thêm trường isRead nếu không có
+                }
+            });
+
+            // Lọc các thông báo chưa đọc (isRead === false)
+            const unreadNotifications = data.filter(notification => notification.isRead === false);
+
+            // Cập nhật số lượng thông báo chưa đọc
+            notificationCount.textContent = unreadNotifications.length;
+
+            // Hiển thị số lượng thông báo nếu có thông báo chưa đọc, nếu không thì ẩn
+            notificationCount.style.display = unreadNotifications.length > 0 ? 'inline' : 'none';
+
+            // Nếu không có thông báo, hiển thị thông báo trống
+            if (data.length === 0) {
+                notificationList.innerHTML = '<p>No notifications available.</p>';
+                return;
+            }
+
+            // Clear các thông báo cũ
+            notificationList.innerHTML = '';
+
+            // Sắp xếp thông báo theo thời gian (mới nhất trước)
+            data.sort((a, b) => {
+                const dateA = new Date(a.createdAt || a.created || Date.now());
+                const dateB = new Date(b.createdAt || b.created || Date.now());
+                return dateB - dateA; // Sắp xếp giảm dần (mới nhất trước)
+            });
+
+            // Giới hạn hiển thị 7 thông báo mới nhất
+            const notificationsToDisplay = data.slice(0, 7);
+
+            // Thêm từng thông báo vào danh sách
+            notificationsToDisplay.forEach(notification => {
+                const noticeDiv = document.createElement('div');
+                noticeDiv.classList.add('notice-list');
+
+                const noticeTitle = document.createElement('h6');
+                noticeTitle.classList.add('notice-title');
+
+                // Set tiêu đề với nội dung HTML (bao gồm thẻ <a>)
+                noticeTitle.innerHTML = notification.title;
+
+                // Kiểm tra nếu tiêu đề có chứa các thẻ <a> (link)
+                const links = noticeTitle.getElementsByTagName('a');
+
+                // Nếu có bất kỳ thẻ <a> nào trong tiêu đề, style chúng
+                for (let link of links) {
+                    link.style.color = 'blue';  // Màu xanh cho các link
+                    link.style.textDecoration = 'underline';  // Gạch chân các link
+                }
+
+                // Thêm tiêu đề vào phần tử thông báo
+                noticeDiv.appendChild(noticeTitle);
+
+                // Thêm thông báo vào danh sách
+                notificationList.appendChild(noticeDiv);
+            });
+
+            // Ẩn số lượng thông báo khi người dùng bấm chuông
+            notificationBell.addEventListener('click', () => {
+                notificationCount.style.display = 'none'; // Ẩn số lượng thông báo khi bấm chuông
+                // Lưu trạng thái "đã xem thông báo" vào localStorage
+                localStorage.setItem('hasSeenNotifications', 'true');
+
+                // Đánh dấu tất cả thông báo là đã đọc (isRead = true)
+                data.forEach(notification => notification.isRead = true);
+
+                // Lưu lại trạng thái thông báo đã đọc vào localStorage (tùy vào yêu cầu của bạn)
+                localStorage.setItem('notifications', JSON.stringify(data));
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching notifications:', error);
+            document.getElementById('notification-list').innerHTML = '<p>Failed to load notifications.</p>';
+        });
+
+</script>
 </body>
 
 

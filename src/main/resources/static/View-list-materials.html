@@ -188,45 +188,17 @@
                         </div>
                     </li>
                     <li class="navbar-item dropdown header-notification">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                           aria-expanded="false">
+                        <a id="notification-bell" class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                             <i class="far fa-bell"></i>
                             <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
-                            <span>8</span>
+                            <span id="notification-count">0</span>
                         </a>
-
-                        <div class="dropdown-menu dropdown-menu-right">
+                        <div class="dropdown-menu dropdown-menu-right" id="notification-dropdown">
                             <div class="item-header">
-                                <h6 class="item-title">03 Notifiacations</h6>
+                                <h6 class="item-title" id="notification-title">Notifications</h6>
                             </div>
-                            <div class="item-content">
-                                <div class="media">
-                                    <div class="item-icon bg-skyblue">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Complete Today Task</div>
-                                        <span>1 Mins ago</span>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-icon bg-orange">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Director Metting</div>
-                                        <span>20 Mins ago</span>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-icon bg-violet-blue">
-                                        <i class="fas fa-cogs"></i>
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="post-title">Update Password</div>
-                                        <span>45 Mins ago</span>
-                                    </div>
-                                </div>
+                            <div class="item-content" id="notification-list">
+                                <!-- Notifications will be dynamically inserted here -->
                             </div>
                         </div>
                     </li>
@@ -820,200 +792,7 @@
             }
         }
     </script>
-    <script>
-        // Hàm thay đổi ngôn ngữ
-        function getTranslation(language) {
-            const translations = {
-                "en": {
-                    paginate: {
-                        first: "First",
-                        previous: "Previous",
-                        next: "Next",
-                        last: "Last"
-                    },
 
-                    //Main screen
-                    "create_material": "Create Material",
-                    "material_details": "Material Details",
-                    "all_list_materials": "All List Materials",
-                    "content": "Content *",
-                    "file_attach": "File Attach *:",
-                    "save": "Save",
-                    "reset": "Reset",
-                    "home": "Home",
-                    "user_list": "Account List",
-                    "id": "ID",
-                    "image": "Image",
-                    "name": "Name",
-                    "role": "Role",
-                    "actions": "Actions",
-                    "do_you": "Do you want to create this material?",
-                    "confirm_deletion": "Confirm Deletion",
-                    "are_you": "Are you sure you want to delete this material?",
-                    "delete": "Delete",
-                    "cancel": "Cancel",
-                    "success": "Success",
-                    "delete_material_success": "Delete material was successful!",
-                    // end main screen
-                    // headbar
-                    "log_out": "Log Out",
-                    "my_profile": "My Profile",
-                    // end headbar
-                    "add_account": "Add Account",
-                    "choose_file": "Choose File",
-                    "close": "Close",
-                    "submit": "Submit",
-                    "j_name": "Japan Name",
-                    // sidebar teacher
-                    "dashboard": "Dashboard",
-                    "teacher": "Teacher",
-                    "assignment": "Assignment",
-                    "all_assignment": "All Assignment",
-                    "add_new_assignment": "Add New Assignment",
-                    "schedule": "Schedule",
-                    "class": "Class",
-                    "class_list": "Class List",
-                    "exam": "Exam",
-                    "list_exam": "List Exam",
-                    "create_exam": "Create Exam",
-                    "material": "Material",
-                    "list_materials": "List Materials",
-                    "application": "Application",
-                    "send_application": "Send Application",
-                    "my_application": "My Application",
-                    "thread": "Thread",
-                    "view_list_threads": "View List Threads",
-                    "create_thread": "Create Thread",
-                    "security": "Security",
-                    "change_password": "Change Password",
-                    // end sidebar admin
-                },
-                "ja": {
-                    paginate: {
-
-                        previous: "前",
-                        next: "次",
-
-                    },
-
-                    //Main screen
-                    "create_material": "教材を作成",
-                    "material_details": "教材の詳細",
-                    "all_list_materials": "すべての資料リスト",
-                    "content": "内容 *",
-                    "file_attach": "添付ファイル *:",
-                    "save": "保存",
-                    "reset": "リセット",
-                    "home": "ホーム",
-                    "user_list": "ユーザーリスト",
-                    "id": "ID",
-                    "image": "写真",
-                    "name": "名前",
-                    "role": "役割",
-                    "actions": "アクション",
-                    "do_you": "この資料を作成しますか？",
-                    "confirm_deletion": "削除の確認",
-                    "are_you": "この資料を削除してもよろしいですか？",
-                    "delete": "削除",
-                    "cancel": "キャンセル",
-
-                    "success": "成功",
-                    "delete_material_success": "資料の削除に成功しました！",
-                    // end main screen
-                    // headbar
-                    "log_out": "ログアウト",
-                    "my_profile": "私のプロフィール",
-                    // end headbar
-                    "add_account": "アカウントを追加",
-                    "choose_file": "ファイルを選択",
-                    "submit": "送信",
-                    "close": "閉じる",
-                    "j_name": "日本の名前",
-                    // sidebar teacher
-                    "dashboard": "ダッシュボード",
-                    "teacher": "教師",
-                    "assignment": "課題",
-                    "all_assignment": "すべての課題",
-                    "add_new_assignment": "新しい課題を追加",
-                    "schedule": "スケジュール",
-                    "class": "クラス",
-                    "class_list": "クラス一覧",
-                    "exam": "試験",
-                    "list_exam": "試験一覧",
-                    "create_exam": "試験を作成",
-                    "material": "教材",
-                    "list_materials": "教材一覧",
-                    "application": "申請",
-                    "send_application": "申請を送信",
-                    "my_application": "私の申請",
-                    "thread": "スレッド",
-                    "view_list_threads": "スレッド一覧を表示",
-                    "create_thread": "スレッドを作成",
-                    "security": "セキュリティ",
-                    "change_password": "パスワード変更"
-                    // end sidebar admin
-                }
-
-            };
-
-
-            // Cập nhật nội dung các phần tử có thuộc tính data-i18n
-            const elements = document.querySelectorAll('[data-i18n]');
-            elements.forEach(function(element) {
-                const translationKey = element.getAttribute('data-i18n');
-                if (translations[language] && translations[language][translationKey]) {
-                    element.innerHTML = translations[language][translationKey];
-                }
-            });
-            if ($.fn.dataTable.isDataTable('.data-table')) {
-                var table = $('.data-table').DataTable();
-                table.settings()[0].oLanguage.sSearch = translations[language].search || '';
-                table.settings()[0].oLanguage.oPaginate = {
-                    sFirst: translations[language].paginate.first,
-                    sPrevious: translations[language].paginate.previous,
-                    sNext: translations[language].paginate.next,
-                    sLast: translations[language].paginate.last,
-                };
-                table.draw();
-            }
-        }
-
-
-        // Hàm thay đổi ngôn ngữ và cập nhật ngôn ngữ hiển thị trong thanh điều hướng
-        function changeLanguage(language) {
-            // Lưu ngôn ngữ vào localStorage
-            localStorage.setItem('language', language);
-
-            // Cập nhật lại nhãn ngôn ngữ trong phần tử (nút hiển thị ngôn ngữ)
-            const languageLabel = document.getElementById('languageLabel');
-            if (languageLabel) {
-                languageLabel.innerHTML = language === 'en' ? 'EN' : (language === 'ja' ? 'JA' : 'EN');
-            }
-
-            // Áp dụng ngôn ngữ cho toàn bộ trang
-            getTranslation(language);  // Gọi lại hàm dịch ngôn ngữ ngay lập tức
-
-            // Reload lại trang sau khi thay đổi ngôn ngữ
-            location.reload();  // Tải lại trang
-        }
-
-        // Kiểm tra ngôn ngữ khi trang được tải
-        window.addEventListener('load', function () {
-            const language = localStorage.getItem('language') || 'en'; // Mặc định là 'en' nếu không có ngôn ngữ lưu trữ
-            // Gọi hàm dịch ngôn ngữ
-            getTranslation(language);
-            // Đặt lại nhãn ngôn ngữ trong phần tử (tiếng Anh là EN nếu không có ngôn ngữ)
-            const languageLabel = document.getElementById('languageLabel');
-            if (languageLabel) {
-                languageLabel.innerHTML = language === 'en' ? 'EN' : (language === 'ja' ? 'JA' : 'EN');
-            }
-        });
-
-
-
-
-
-    </script>
 <script>
     let originalMaterialsData = [];  // Lưu trữ dữ liệu ban đầu từ API
 
@@ -1137,6 +916,98 @@
     }
 
 </script>
+    <script>
+        // Kiểm tra trạng thái khi trang được tải lại
+        window.onload = function() {
+            const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
+            const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
+
+            // Kiểm tra trạng thái đã bấm vào chuông thông báo chưa (lưu trong localStorage)
+            const hasSeenNotifications = localStorage.getItem('hasSeenNotifications');
+
+            // Nếu đã bấm chuông trước đó và ẩn số lượng thông báo, thì không hiển thị số lượng nữa
+            if (hasSeenNotifications === 'true') {
+                notificationCount.style.display = 'none';
+            }
+        };
+
+        // Fetch và hiển thị thông báo trong phần thanh điều hướng
+        function fetchNotificationsInNavBar(recipientId) {
+            if (!recipientId) {
+                console.warn("Recipient ID chưa sẵn sàng, thử lại...");
+                setTimeout(() => fetchNotificationsInNavBar(JSON.parse(sessionStorage.getItem('userDetails'))?.id), 500);
+                return;
+            }
+
+            fetch(`/notification/get/${recipientId}`) // Truy cập đúng endpoint với recipientId
+                .then(response => response.json())
+                .then(data => {
+                    // Loại bỏ thông báo mặc định có tiêu đề "Notification"
+                    data = data.filter(notification => notification.title !== 'Notification' && notification.title.trim() !== '');
+
+                    // Sắp xếp dữ liệu từ mới nhất đến cũ nhất (sử dụng trường 'createdAt')
+                    data.sort((a, b) => {
+                        const dateA = new Date(a.createdAt || a.created || Date.now());
+                        const dateB = new Date(b.createdAt || b.created || Date.now());
+                        return dateB - dateA; // Sắp xếp giảm dần (mới nhất trước)
+                    });
+
+                    // Giả sử tất cả thông báo là chưa đọc (isRead = false) nếu không có trường này
+                    data.forEach(notification => {
+                        if (!notification.hasOwnProperty('isRead')) {
+                            notification.isRead = false; // Thêm trường isRead nếu không có
+                        }
+                    });
+
+                    // Lọc các thông báo chưa đọc (isRead === false)
+                    const unreadNotifications = data.filter(notification => notification.isRead === false);
+
+                    // Render thông báo vào trong thanh điều hướng
+                    renderNotificationsInNavBar(unreadNotifications, data);
+                })
+                .catch(error => {
+                    console.error('Error fetching notifications:', error);
+                    const notificationList = document.getElementById('notification-list');
+                    notificationList.innerHTML = '<p>Failed to load notifications.</p>';
+                });
+        }
+
+        // Render thông báo vào trong thanh điều hướng
+        function renderNotificationsInNavBar(unreadNotifications, allNotifications) {
+            const notificationCount = document.getElementById('notification-count');
+            const notificationList = document.getElementById('notification-list');
+            const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông
+
+            // Cập nhật số lượng thông báo chưa đọc
+            notificationCount.textContent = unreadNotifications.length;
+
+            // Hiển thị số lượng thông báo nếu có thông báo chưa đọc, nếu không thì ẩn
+            notificationCount.style.display = unreadNotifications.length > 0 ? 'inline' : 'none';
+
+            // Xóa nội dung cũ và hiển thị thông báo trong thanh điều hướng
+            notificationList.innerHTML = ''; // Clear old notifications
+            unreadNotifications.slice(0, 7).forEach(notification => { // Hiển thị tối đa 7 thông báo mới nhất
+                const noticeDiv = document.createElement('div');
+                noticeDiv.classList.add('notification-item');
+
+                const title = document.createElement('h6');
+                title.innerHTML = notification.title;
+
+                noticeDiv.appendChild(title);
+                notificationList.appendChild(noticeDiv);
+            });
+
+            // Thêm sự kiện click vào chuông thông báo để đánh dấu tất cả là đã đọc
+            notificationBell.addEventListener('click', () => {
+                notificationCount.style.display = 'none'; // Ẩn số lượng thông báo khi bấm chuông
+                // Lưu trạng thái "đã xem thông báo" vào localStorage
+                localStorage.setItem('hasSeenNotifications', 'true');
+
+                // Đánh dấu tất cả thông báo là đã đọc (isRead = true)
+                allNotifications.forEach(notification => notification.isRead = true);
+            });
+        }
+    </script>
 </body>
 
 
