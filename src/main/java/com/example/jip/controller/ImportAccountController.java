@@ -21,24 +21,18 @@ public class ImportAccountController {
     @PostMapping("/excel")
     public ResponseEntity<?> importFile(@RequestParam("file") MultipartFile file) {
         if (!file.getOriginalFilename().endsWith(".xlsx")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Invalid file format. Please upload an Excel file.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(List.of("Invalid file format. Please upload an Excel file."));
         }
-
         try {
-            MultipartFile errorFile = accountImportServices.importAccounts(file);
+            List<String> errors = accountImportServices.importAccounts(file);
 
-            if (errorFile != null && !errorFile.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .header("Content-Disposition", "attachment; filename=errors.xlsx")
-                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                        .body(errorFile.getBytes());
+            if (!errors.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
             }
-
-            return ResponseEntity.ok("Data imported successfully.");
+            return ResponseEntity.ok(List.of("Data imported successfully"));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error occurred: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(List.of("Error occurred: " + e.getMessage()));
         }
     }
 }
+
