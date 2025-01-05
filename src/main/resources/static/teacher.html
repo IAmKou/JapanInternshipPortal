@@ -1050,29 +1050,11 @@
         const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
 
         // Kiểm tra trạng thái đã bấm vào chuông thông báo chưa (lưu trong localStorage)
-        const hasSeenNotifications = localStorage.getItem('hasSeenNotifications'); // Kiểm tra đã xem thông báo chưa
+        const hasSeenNotifications = localStorage.getItem('hasSeenNotifications');
 
-        // Kiểm tra trạng thái đăng xuất
-        const userLoggedOut = sessionStorage.getItem('userLoggedOut'); // Kiểm tra trạng thái đăng xuất
-
-        if (userLoggedOut === 'true') {
-            // Khi đăng xuất, xóa các thông báo đã đọc và trạng thái bấm chuông trong localStorage
-            localStorage.removeItem('readNotifications');
-            localStorage.removeItem('hasSeenNotifications');
-            sessionStorage.removeItem('userLoggedOut'); // Xóa trạng thái đăng xuất
-            notificationCount.style.display = 'none'; // Ẩn số lượng thông báo khi đăng xuất
-        }
-
-        // Nếu người dùng đã bấm chuông trước đó và đã xem hết thông báo, ẩn số lượng thông báo
+        // Nếu đã bấm chuông trước đó và ẩn số lượng thông báo, thì không hiển thị số lượng nữa
         if (hasSeenNotifications === 'true') {
-            notificationCount.style.display = 'none'; // Ẩn số lượng thông báo
-        } else {
-            // Nếu chưa bấm chuông, hiển thị số lượng thông báo chưa đọc
-            const unreadNotificationsCount = localStorage.getItem('unreadNotificationsCount');
-            if (unreadNotificationsCount) {
-                notificationCount.textContent = unreadNotificationsCount;
-                notificationCount.style.display = 'inline';
-            }
+            notificationCount.style.display = 'none';
         }
     };
 
@@ -1104,22 +1086,8 @@
                     }
                 });
 
-                // Kiểm tra xem các thông báo đã được đánh dấu là đã đọc chưa
-                // Lấy dữ liệu từ localStorage để xác định những thông báo nào đã được đánh dấu là đã đọc
-                const readNotifications = JSON.parse(localStorage.getItem('readNotifications')) || [];
-
-                // Đánh dấu những thông báo đã đọc trong dữ liệu
-                data.forEach(notification => {
-                    if (readNotifications.includes(notification.id)) {
-                        notification.isRead = true;
-                    }
-                });
-
                 // Lọc các thông báo chưa đọc (isRead === false)
                 const unreadNotifications = data.filter(notification => notification.isRead === false);
-
-                // Lưu số lượng thông báo chưa đọc vào localStorage
-                localStorage.setItem('unreadNotificationsCount', unreadNotifications.length);
 
                 // Render thông báo vào trong thanh điều hướng
                 renderNotificationsInNavBar(unreadNotifications, data);
@@ -1164,24 +1132,9 @@
 
             // Đánh dấu tất cả thông báo là đã đọc (isRead = true)
             allNotifications.forEach(notification => notification.isRead = true);
-
-            // Lưu các ID của thông báo đã đọc vào localStorage
-            const readNotifications = allNotifications.filter(notification => notification.isRead === true).map(notification => notification.id);
-            localStorage.setItem('readNotifications', JSON.stringify(readNotifications));
-
-            // Cập nhật lại số lượng thông báo chưa đọc
-            notificationCount.textContent = 0;
         });
     }
-
-    // Khi người dùng đăng xuất, lưu trạng thái đăng xuất vào sessionStorage
-    function logoutUser() {
-        sessionStorage.setItem('userLoggedOut', 'true');
-        // Chuyển hướng người dùng đến trang đăng nhập hoặc trang nào đó
-        window.location.href = '/login.html'; // Đảm bảo rằng đây là URL chính xác cho trang đăng nhập của bạn
-    }
 </script>
-
 </body>
 
 
