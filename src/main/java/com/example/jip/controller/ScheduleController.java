@@ -152,27 +152,7 @@ public class ScheduleController {
                     java.sql.Date sqlDate = Date.valueOf(localDate);
 
                     // Fetch and update draft schedules
-                    if (scheduleDTO.getRoom() != null) {
-                        Room availableRoom = roomRepository
-                                .findFirstAvailableRoomByStatusAndDate(String.valueOf(RoomAvailability.Status.Available), sqlDate)
-                                .orElseThrow(() -> new IllegalArgumentException("No available rooms for date: " + scheduleDTO.getDate()));
 
-                        Schedule draftSchedule = scheduleRepository.findById(scheduleDTO.getId())
-                                .orElseThrow(() -> new IllegalArgumentException("Invalid Schedule ID: " + scheduleDTO.getId()));
-
-                        // Assign new room
-                        draftSchedule.setRoom(availableRoom.getName());
-                        scheduleRepository.save(draftSchedule);
-
-                        // Update room availability
-                        roomAvailabilityRepository.findByRoomAndDate(availableRoom, sqlDate).ifPresent(roomAvailability -> {
-                            roomAvailability.setStatus(RoomAvailability.Status.Occupied);
-                            roomAvailability.setSchedule(draftSchedule);
-                            roomAvailability.setClasz(clasz);
-                            roomAvailabilityRepository.save(roomAvailability);
-                        });
-                        createAttendantsForSchedule(draftSchedule);
-                    }
                     Schedule schedule;
                     if (scheduleDTO.getId() != null) {
                         schedule = scheduleRepository.findById(scheduleDTO.getId())
@@ -192,6 +172,21 @@ public class ScheduleController {
                     schedule.setStatus(Schedule.status.Published);
 
                     scheduleRepository.save(schedule);
+                    if (scheduleDTO.getRoom() != null) {
+                        Room availableRoom = roomRepository
+                                .findFirstAvailableRoomByStatusAndDate(String.valueOf(RoomAvailability.Status.Available), sqlDate)
+                                .orElseThrow(() -> new IllegalArgumentException("No available rooms for date: " + scheduleDTO.getDate()));
+                        schedule.setRoom(availableRoom.getName());
+                        // Update room availability
+                        roomAvailabilityRepository.findByRoomAndDate(availableRoom, sqlDate).ifPresent(roomAvailability -> {
+                            roomAvailability.setStatus(RoomAvailability.Status.Occupied);
+                            roomAvailability.setSchedule(schedule);
+                            roomAvailability.setClasz(clasz);
+                            roomAvailabilityRepository.save(roomAvailability);
+                        });
+                        createAttendantsForSchedule(schedule);
+                    }
+
                 } catch (Exception ex) {
                     // Log and continue
                     System.out.println("Error processing schedule: " + scheduleDTO + ". Error: " + ex.getMessage());
