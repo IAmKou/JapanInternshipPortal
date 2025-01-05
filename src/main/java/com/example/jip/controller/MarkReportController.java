@@ -125,9 +125,9 @@ public class MarkReportController {
         }
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public ResponseEntity<?> updateAssignment(@RequestParam("markRpId") int markRp_id,
-                                              @ModelAttribute MarkReportUpdateRequest request) {
+                                              @RequestBody MarkReportUpdateRequest request) {
         try {
             log.info("Received request: " + request);  // Log the incoming request for debugging
 

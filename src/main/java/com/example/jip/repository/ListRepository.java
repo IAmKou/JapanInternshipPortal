@@ -46,7 +46,7 @@ public interface ListRepository extends JpaRepository<Listt, ListId> {
             "WHERE l.clas.id = :classId")
     List<MarkReportDTO> getStudentsWithMarkReportsByClassId(@Param("classId") Integer classId);
 
-    @Query("SELECT l.clas.name FROM Listt l WHERE l.student.id = :studentId")
-    String getClassByStudentId(int studentId);
+    @Query("SELECT l.clas FROM Listt l WHERE l.student.id = :studentId")
+    Class getClassByStudentId(int studentId);
 
 }

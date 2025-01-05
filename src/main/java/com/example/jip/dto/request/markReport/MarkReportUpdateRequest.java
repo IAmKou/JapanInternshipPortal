@@ -1,20 +1,21 @@
 package com.example.jip.dto.request.markReport;
 
+import com.example.jip.dto.request.markReportExam.MarkReportExamUpdateRequest;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MarkReportUpdateRequest {
-    @NonNull
     BigDecimal middle_exam;
-    @NonNull
     BigDecimal final_exam;
-    @NonNull
     BigDecimal presentation;
-    @NonNull
     BigDecimal scriptPresentation;
+    List<MarkReportExamUpdateRequest> exams;
 }
+

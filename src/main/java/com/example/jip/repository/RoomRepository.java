@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface RoomRepository extends JpaRepository<Room, Integer> {
 Optional<Room> findByName(String name);
     boolean existsByName(String name);
-    @Query(value = "SELECT r.* FROM Room r " +
+    @Query(value = "SELECT r.* FROM room r " +
             "JOIN room_availability ra ON r.id = ra.room_id " +
             "WHERE ra.status = :status AND ra.date = :date LIMIT 1",
             nativeQuery = true)
