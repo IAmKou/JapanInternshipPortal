@@ -18,6 +18,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MarkReportResponse {
     int id;
+    String semester;
     String studentName;
     String studentClass;
     String studentEmail;
@@ -28,10 +29,9 @@ public class MarkReportResponse {
     BigDecimal scriptPresentation;
     BigDecimal presentation;
     BigDecimal skill;
-    BigDecimal attitude;
     BigDecimal final_mark;
     String comment;
     BigDecimal assignment;
     BigDecimal attendant;
-
+    BigDecimal attitude;
 }

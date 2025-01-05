@@ -625,8 +625,6 @@
                         center: 'title',
                         right: 'dayGridMonth',
                     },
-                    editable: true,
-                    droppable: false,
                     validRange: {
                         start: semesterStart,
                         end: semesterEnd,
@@ -743,14 +741,8 @@
                                 console.error('Error fetching room availability:', error);
                                 alert('Failed to fetch room availability.');
                             });
-                    },
-                    eventDrop: function (info) {
-                        handleEventValidation(info);
-
-                    },
-                    eventReceive: function (info) {
-                        handleEventValidation(info);
                     }
+
                 });
                 calendar.render();
 

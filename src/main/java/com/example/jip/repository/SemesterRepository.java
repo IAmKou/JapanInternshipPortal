@@ -26,4 +26,7 @@ public interface SemesterRepository extends JpaRepository<Semester, Integer> {
     List<Semester> findByEndDate(Date endDate);
     @Query("SELECT s FROM Semester s WHERE s.end_time > :creationDate")
     List<Semester> findSemestersEndingAfter(@Param("creationDate") Date creationDate);
+
+    @Query("SELECT s FROM Semester s join Class c on s.id = c.semester.id WHERE c.id = :classId")
+    Semester findSemesterByClassId(int classId);
 }

@@ -153,7 +153,6 @@ CREATE TABLE Attendant (
 );
 
 
-
 -- Assignment table
 CREATE TABLE Assignment (
                             Id INT AUTO_INCREMENT PRIMARY KEY,
@@ -290,11 +289,4 @@ CREATE TABLE Notification (
     FOREIGN KEY (recipient_account_id) REFERENCES Account(Id)
 );
 
--- Report table (linked with Account)
-CREATE TABLE Report (
-                        Id INT AUTO_INCREMENT PRIMARY KEY,
-                        Title VARCHAR(100),
-                        Content VARCHAR(100),
-                        reporter_id INT,
-                        FOREIGN KEY (reporter_id) REFERENCES Account(Id)
-);
+

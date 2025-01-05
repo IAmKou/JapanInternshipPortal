@@ -7,6 +7,7 @@ import com.example.jip.dto.request.markReportExam.MarkReportExamUpdateRequest;
 import com.example.jip.dto.response.markReport.MarkReportResponse;
 import com.example.jip.dto.response.markReportExam.MarkReportExamResponse;
 import com.example.jip.entity.*;
+import com.example.jip.entity.Class;
 import com.example.jip.repository.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,7 @@ public class MarkReportServices {
     StudentAssignmentRepository studentAssignmentRepository;
     AttendantRepository attendantRepository;
     MarkRpExamRepository markRpExamRepository;
+    SemesterRepository semesterRepository;
 
     public List<MarkReportResponse> getListMarkReport(int classId) {
         List<MarkReport> results =  markReportRepository.findAllByClassId(classId);
@@ -112,8 +114,12 @@ public class MarkReportServices {
 
     public MarkReportResponse getMarkReportById(int markRpId) {
         MarkReport markReport = markReportRepository.findById(markRpId);
+
         if (markReport != null) {
-            String className = listRepository.getClassByStudentId(markReport.getStudent().getId());
+            Class clas = listRepository.getClassByStudentId(markReport.getStudent().getId());
+            String className = clas.getName();
+            String semester = semesterRepository.findSemesterByClassId(clas.getId()).getName();
+
             // Calculate attitude
             int totalAssignments = assignmentStudentRepository.countByStudentId(markReport.getStudent().getId());
             // Ensure there are assignments to avoid division by zero
@@ -134,6 +140,7 @@ public class MarkReportServices {
             BigDecimal assignmentCompletion = submittedAssignments
                     .divide(new BigDecimal(totalAssignments), 2, RoundingMode.HALF_UP);
             MarkReportResponse response = new MarkReportResponse();
+            response.setSemester(semester);
             response.setId(markReport.getId());
             response.setStudentName(markReport.getStudent().getFullname());
             response.setStudentClass(className);
@@ -176,8 +183,11 @@ public class MarkReportServices {
         BigDecimal assignmentCompletion = submittedAssignments
                 .divide(new BigDecimal(totalAssignments), 2, RoundingMode.HALF_UP);
         if(markReport != null){
-            String className = listRepository.getClassByStudentId(studentId);
+            Class clas = listRepository.getClassByStudentId(markReport.getStudent().getId());
+            String className = clas.getName();
+            String semester = semesterRepository.findSemesterByClassId(clas.getId()).getName();
             MarkReportResponse response = new MarkReportResponse();
+            response.setSemester(semester);
             response.setId(markReport.getId());
             response.setStudentName(markReport.getStudent().getFullname());
             response.setComment(markReport.getComment());
