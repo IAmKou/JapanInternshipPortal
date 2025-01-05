@@ -84,6 +84,17 @@ public class SemesterServices {
         return false;
     }
 
+    public boolean isEndTimeWithinExistingSemester(Date endTime) {
+        List<Semester> existingSemesters = semesterRepository.findAll();
+        for (Semester existingSemester : existingSemesters) {
+            if (!endTime.before(existingSemester.getStart_time()) &&
+                    !endTime.after(existingSemester.getEnd_time())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private Schedule.dayOfWeek getDayOfWeekFromDate(java.sql.Date date) {
         java.time.LocalDate localDate = date.toLocalDate();

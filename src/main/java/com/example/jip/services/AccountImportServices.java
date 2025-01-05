@@ -18,6 +18,9 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Service
 public class AccountImportServices {
@@ -39,12 +42,14 @@ public class AccountImportServices {
     @Autowired
     private MarkRpExamRepository markRpExamRepository;
 
-    public List<String> importAccounts(MultipartFile file) {
+
+    public MultipartFile importAccounts(MultipartFile file) {
         List<String> errors = new ArrayList<>();
+        List<Row> validRows = new ArrayList<>();
 
         if (file.isEmpty()) {
             errors.add("The uploaded file is empty. Please upload a valid Excel file.");
-            return errors;
+            return writeErrorLogToExcel(errors, null);
         }
 
         try (InputStream inputStream = file.getInputStream();
@@ -53,40 +58,58 @@ public class AccountImportServices {
             Sheet sheet = workbook.getSheetAt(0);
             if (sheet == null) {
                 errors.add("The uploaded Excel file is missing a sheet or is not properly formatted.");
-                return errors;
+                return writeErrorLogToExcel(errors, null);
             }
 
             // Validate column headers
             if (!validateHeaders(sheet.getRow(0), errors)) {
-                return errors; // If headers are invalid, terminate processing
+                return writeErrorLogToExcel(errors, sheet);
             }
 
+            // Validate rows
             Iterator<Row> rowIterator = sheet.iterator();
             if (rowIterator.hasNext()) rowIterator.next(); // Skip header row
-
-            boolean hasData = false;
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 if (!isRowEmpty(row)) {
-                    hasData = true;
+                    if (validateRow(row, errors)) {
+                        validRows.add(row);
+                    }
+                }
+            }
+
+            // Process valid rows with multithreading
+            ExecutorService executorService = Executors.newFixedThreadPool(10);
+            List<Future<?>> futures = new ArrayList<>();
+
+            for (Row row : validRows) {
+                futures.add(executorService.submit(() -> {
                     try {
                         processRow(row, errors, workbook);
                     } catch (Exception e) {
                         errors.add("Error in row " + (row.getRowNum() + 1) + ": " + e.getMessage());
                     }
+                }));
+            }
+
+            // Wait for all tasks to complete
+            for (Future<?> future : futures) {
+                try {
+                    future.get();
+                } catch (Exception e) {
+                    errors.add("Error during processing: " + e.getMessage());
                 }
             }
 
-            if (!hasData) {
-                errors.add("The uploaded file contains no data to process.");
-            }
+            executorService.shutdown();
 
         } catch (Exception e) {
             errors.add("File processing error: " + e.getMessage());
             e.printStackTrace();
         }
-        return errors;
+
+        return writeErrorLogToExcel(errors, null);
     }
 
     private boolean validateHeaders(Row headerRow, List<String> errors) {
@@ -110,6 +133,101 @@ public class AccountImportServices {
             }
         }
         return true;
+    }
+
+    private boolean validateRow(Row row, List<String> errors) {
+        DataFormatter dataFormatter = new DataFormatter();
+        boolean isValid = true;
+
+        // Validate username
+        String username = dataFormatter.formatCellValue(row.getCell(0)).trim();
+        if (username.isEmpty()) {
+            errors.add("Missing username at row " + (row.getRowNum() + 1));
+            isValid = false;
+        }
+
+        // Validate password
+        String password = dataFormatter.formatCellValue(row.getCell(1)).trim();
+        if (password.isEmpty()) {
+            errors.add("Missing password at row " + (row.getRowNum() + 1));
+            isValid = false;
+        }
+
+        // Validate role ID
+        try {
+            int roleId = Integer.parseInt(dataFormatter.formatCellValue(row.getCell(2)).trim());
+            if (roleId <= 0) {
+                errors.add("Invalid role ID at row " + (row.getRowNum() + 1));
+                isValid = false;
+            }
+        } catch (NumberFormatException e) {
+            errors.add("Invalid role ID at row " + (row.getRowNum() + 1));
+            isValid = false;
+        }
+
+        // Validate full name
+        String fullName = dataFormatter.formatCellValue(row.getCell(3)).trim();
+        if (fullName.isEmpty()) {
+            errors.add("Missing full name at row " + (row.getRowNum() + 1));
+            isValid = false;
+        }
+
+        // Validate Japan name
+        String japanName = dataFormatter.formatCellValue(row.getCell(4)).trim();
+        if (japanName.isEmpty()) {
+            errors.add("Missing Japan name at row " + (row.getRowNum() + 1));
+            isValid = false;
+        }
+
+        // Validate date of birth
+        LocalDate dob;
+        Cell dobCell = row.getCell(5);
+        if (dobCell == null) {
+            errors.add("Missing date of birth at row " + (row.getRowNum() + 1));
+            isValid = false;
+        } else if (dobCell.getCellType() == CellType.NUMERIC) {
+            try {
+                dob = dobCell.getLocalDateTimeCellValue().toLocalDate();
+            } catch (Exception e) {
+                errors.add("Invalid date format at row " + (row.getRowNum() + 1));
+                isValid = false;
+            }
+        } else if (dobCell.getCellType() == CellType.STRING) {
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                dob = LocalDate.parse(dobCell.getStringCellValue().trim(), formatter);
+            } catch (Exception e) {
+                errors.add("Invalid date format at row " + (row.getRowNum() + 1));
+                isValid = false;
+            }
+        } else {
+            errors.add("Invalid date of birth format at row " + (row.getRowNum() + 1));
+            isValid = false;
+        }
+
+        // Validate gender
+        try {
+            Gender gender = Gender.valueOf(dataFormatter.formatCellValue(row.getCell(7)).trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            errors.add("Invalid gender at row " + (row.getRowNum() + 1));
+            isValid = false;
+        }
+
+        // Validate phone number
+        String phoneNumber = dataFormatter.formatCellValue(row.getCell(8)).trim();
+        if (phoneNumber.isEmpty() || !phoneNumber.matches("^0\\d{9,}$")) {
+            errors.add("Invalid or missing phone number at row " + (row.getRowNum() + 1));
+            isValid = false;
+        }
+
+        // Validate email
+        String email = dataFormatter.formatCellValue(row.getCell(10)).trim();
+        if (email.isEmpty() || !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            errors.add("Invalid or missing email at row " + (row.getRowNum() + 1));
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     private void processRow(Row row, List<String> errors, XSSFWorkbook workbook) {
@@ -303,7 +421,23 @@ public class AccountImportServices {
         }
         return null;  // If no image is found
     }
+    private MultipartFile writeErrorLogToExcel(List<String> errors, Sheet sheet) {
+        try (XSSFWorkbook workbook = new XSSFWorkbook()) {
+            XSSFSheet errorSheet = workbook.createSheet("Errors");
 
+            int rowNum = 0;
+            for (String error : errors) {
+                Row row = errorSheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(error);
+            }
+
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            workbook.write(out);
+            return new MockMultipartFile("errors", "errors.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", out.toByteArray());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to write error log to Excel: " + e.getMessage());
+        }
+    }
 
     private boolean isRowEmpty(Row row) {
         for (int i = 0; i <= 10; i++) {
@@ -351,8 +485,8 @@ public class AccountImportServices {
         if (email == null ) {
             errors.add("Row " + rowNum + ": Email can't be null");
             isValid = true;
-        } else if (!email.matches("^[\\w.%+-]+@(gmail\\.com|fpt\\.edu\\.vn)$")) {
-        errors.add("Row " + rowNum + ": Email must end with @gmail.com or @fpt.edu.vn");
+        } else if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+        errors.add("Row " + rowNum + ": Email must be valid");
         isValid = true;
         }
 
