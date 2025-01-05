@@ -550,13 +550,11 @@
 
                 <!--Notification-->
                 <li class="navbar-item dropdown header-notification">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false">
+                    <a id="notification-bell" class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                         <i class="far fa-bell"></i>
                         <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
                         <span id="notification-count">0</span>
                     </a>
-
                     <div class="dropdown-menu dropdown-menu-right" id="notification-dropdown">
                         <div class="item-header">
                             <h6 class="item-title" id="notification-title">Notifications</h6>
@@ -1321,6 +1319,94 @@
 
     // Function to show success modal
 
+</script>
+<!-- fetch notification headbar-->
+<script>
+    // Kiểm tra trạng thái khi trang được tải lại
+    window.onload = function() {
+        const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
+        const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
+
+        // Kiểm tra trạng thái đã bấm vào chuông thông báo chưa (lưu trong localStorage)
+        const hasSeenNotifications = localStorage.getItem('hasSeenNotifications');
+
+        // Nếu đã bấm chuông trước đó và ẩn số lượng thông báo, thì không hiển thị số lượng nữa
+        if (hasSeenNotifications === 'true') {
+            notificationCount.style.display = 'none';
+        }
+    };
+
+    // Fetch notifications từ server
+    fetch('/notification/getAll')
+        .then(response => response.json()) // Parse dữ liệu JSON
+        .then(data => {
+            const notificationList = document.getElementById('notification-list'); // Container danh sách thông báo
+            const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
+            const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông
+
+            // Cập nhật số lượng thông báo
+            notificationCount.textContent = data.length;
+
+            // Nếu không có thông báo, hiển thị thông báo trống
+            if (data.length === 0) {
+                notificationList.innerHTML = '<p>No notifications available.</p>';
+                return;
+            }
+
+            // Clear các thông báo cũ
+            notificationList.innerHTML = '';
+
+            // Sắp xếp thông báo theo thời gian (mới nhất trước)
+            data.sort((a, b) => {
+                const dateA = new Date(a.createdAt || a.created || Date.now());
+                const dateB = new Date(b.createdAt || b.created || Date.now());
+                return dateB - dateA; // Sắp xếp giảm dần (mới nhất trước)
+            });
+
+            // Giới hạn hiển thị 7 thông báo mới nhất
+            const notificationsToDisplay = data.slice(0, 7);
+
+            // Thêm từng thông báo vào danh sách
+            notificationsToDisplay.forEach(notification => {
+                const noticeDiv = document.createElement('div');
+                noticeDiv.classList.add('notice-list');
+
+                const noticeTitle = document.createElement('h6');
+                noticeTitle.classList.add('notice-title');
+
+                const noticeLink = document.createElement('a');
+                noticeLink.href = "#"; // Thêm link nếu cần
+
+                // Set tiêu đề với nội dung HTML (bao gồm thẻ <a>)
+                noticeTitle.innerHTML = notification.title;
+
+                // Kiểm tra nếu tiêu đề có chứa các thẻ <a> (link)
+                const links = noticeTitle.getElementsByTagName('a');
+
+                // Nếu có bất kỳ thẻ <a> nào trong tiêu đề, style chúng
+                for (let link of links) {
+                    link.style.color = 'blue';  // Màu xanh cho các link
+                    link.style.textDecoration = 'underline';  // Gạch chân các link
+                }
+
+                // Thêm tiêu đề vào phần tử thông báo
+                noticeDiv.appendChild(noticeTitle);
+
+                // Thêm thông báo vào danh sách
+                notificationList.appendChild(noticeDiv);
+            });
+
+            // Ẩn số lượng thông báo khi người dùng bấm chuông
+            notificationBell.addEventListener('click', () => {
+                notificationCount.style.display = 'none'; // Ẩn số lượng thông báo khi bấm chuông
+                // Lưu trạng thái "đã xem thông báo" vào localStorage
+                localStorage.setItem('hasSeenNotifications', 'true');
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching notifications:', error);
+            document.getElementById('notification-list').innerHTML = '<p>Failed to load notifications.</p>';
+        });
 </script>
 </body>
 </html>
