@@ -269,45 +269,17 @@
                     </div>
                 </li>
                 <li class="navbar-item dropdown header-notification">
-                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                       role="button">
+                    <a id="notification-bell" class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                         <i class="far fa-bell"></i>
                         <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
-                        <span>8</span>
+                        <span id="notification-count">0</span>
                     </a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
+                    <div class="dropdown-menu dropdown-menu-right" id="notification-dropdown">
                         <div class="item-header">
-                            <h6 class="item-title">03 Notifiacations</h6>
+                            <h6 class="item-title" id="notification-title">Notifications</h6>
                         </div>
-                        <div class="item-content">
-                            <div class="media">
-                                <div class="item-icon bg-skyblue">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="post-title">Complete Today Task</div>
-                                    <span>1 Mins ago</span>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-icon bg-orange">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="post-title">Director Metting</div>
-                                    <span>20 Mins ago</span>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-icon bg-violet-blue">
-                                    <i class="fas fa-cogs"></i>
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="post-title">Update Password</div>
-                                    <span>45 Mins ago</span>
-                                </div>
-                            </div>
+                        <div class="item-content" id="notification-list">
+                            <!-- Notifications will be dynamically inserted here -->
                         </div>
                     </div>
                 </li>
@@ -830,6 +802,98 @@
             console.error("Teacher ID is missing or user details not found in sessionStorage");
             showErrorModal("Teacher ID is missing or user details not found in sessionStorage.");
         }
+    }
+</script>
+<script>
+    // Kiểm tra trạng thái khi trang được tải lại
+    window.onload = function() {
+        const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
+        const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
+
+        // Kiểm tra trạng thái đã bấm vào chuông thông báo chưa (lưu trong localStorage)
+        const hasSeenNotifications = localStorage.getItem('hasSeenNotifications');
+
+        // Nếu đã bấm chuông trước đó và ẩn số lượng thông báo, thì không hiển thị số lượng nữa
+        if (hasSeenNotifications === 'true') {
+            notificationCount.style.display = 'none';
+        }
+    };
+
+    // Fetch và hiển thị thông báo trong phần thanh điều hướng
+    function fetchNotificationsInNavBar(recipientId) {
+        if (!recipientId) {
+            console.warn("Recipient ID chưa sẵn sàng, thử lại...");
+            setTimeout(() => fetchNotificationsInNavBar(JSON.parse(sessionStorage.getItem('userDetails'))?.id), 500);
+            return;
+        }
+
+        fetch(`/notification/get/${recipientId}`) // Truy cập đúng endpoint với recipientId
+            .then(response => response.json())
+            .then(data => {
+                // Loại bỏ thông báo mặc định có tiêu đề "Notification"
+                data = data.filter(notification => notification.title !== 'Notification' && notification.title.trim() !== '');
+
+                // Sắp xếp dữ liệu từ mới nhất đến cũ nhất (sử dụng trường 'createdAt')
+                data.sort((a, b) => {
+                    const dateA = new Date(a.createdAt || a.created || Date.now());
+                    const dateB = new Date(b.createdAt || b.created || Date.now());
+                    return dateB - dateA; // Sắp xếp giảm dần (mới nhất trước)
+                });
+
+                // Giả sử tất cả thông báo là chưa đọc (isRead = false) nếu không có trường này
+                data.forEach(notification => {
+                    if (!notification.hasOwnProperty('isRead')) {
+                        notification.isRead = false; // Thêm trường isRead nếu không có
+                    }
+                });
+
+                // Lọc các thông báo chưa đọc (isRead === false)
+                const unreadNotifications = data.filter(notification => notification.isRead === false);
+
+                // Render thông báo vào trong thanh điều hướng
+                renderNotificationsInNavBar(unreadNotifications, data);
+            })
+            .catch(error => {
+                console.error('Error fetching notifications:', error);
+                const notificationList = document.getElementById('notification-list');
+                notificationList.innerHTML = '<p>Failed to load notifications.</p>';
+            });
+    }
+
+    // Render thông báo vào trong thanh điều hướng
+    function renderNotificationsInNavBar(unreadNotifications, allNotifications) {
+        const notificationCount = document.getElementById('notification-count');
+        const notificationList = document.getElementById('notification-list');
+        const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông
+
+        // Cập nhật số lượng thông báo chưa đọc
+        notificationCount.textContent = unreadNotifications.length;
+
+        // Hiển thị số lượng thông báo nếu có thông báo chưa đọc, nếu không thì ẩn
+        notificationCount.style.display = unreadNotifications.length > 0 ? 'inline' : 'none';
+
+        // Xóa nội dung cũ và hiển thị thông báo trong thanh điều hướng
+        notificationList.innerHTML = ''; // Clear old notifications
+        unreadNotifications.slice(0, 7).forEach(notification => { // Hiển thị tối đa 7 thông báo mới nhất
+            const noticeDiv = document.createElement('div');
+            noticeDiv.classList.add('notification-item');
+
+            const title = document.createElement('h6');
+            title.innerHTML = notification.title;
+
+            noticeDiv.appendChild(title);
+            notificationList.appendChild(noticeDiv);
+        });
+
+        // Thêm sự kiện click vào chuông thông báo để đánh dấu tất cả là đã đọc
+        notificationBell.addEventListener('click', () => {
+            notificationCount.style.display = 'none'; // Ẩn số lượng thông báo khi bấm chuông
+            // Lưu trạng thái "đã xem thông báo" vào localStorage
+            localStorage.setItem('hasSeenNotifications', 'true');
+
+            // Đánh dấu tất cả thông báo là đã đọc (isRead = true)
+            allNotifications.forEach(notification => notification.isRead = true);
+        });
     }
 </script>
 </body>
