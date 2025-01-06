@@ -31,6 +31,9 @@
 </head>
 
 <style>
+    .dropdown-toggle::after {
+        content: none !important;
+    }
     html, body {
         margin: 0;
         padding: 0;
@@ -188,7 +191,7 @@
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                        <ul class="nav sub-group-menu sub-group-active">
+                        <ul class="nav sub-group-menu">
                             <li class="nav-item">
                                 <a href="add-class.html" class="nav-link"><i
                                         class="flaticon-multiple-users-silhouette"></i>Add New Class</a>
@@ -200,8 +203,17 @@
                             <li class="nav-item">
                                 <a href="schedule-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Schedule List</span></a>
                             </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i
+                                class="fas fa-calendar"></i><span>Semester</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="semester-list.html" class="nav-link menu-active"><i class="flaticon-calendar"></i><span>Semester List</span></a>
+                                <a href="semester-create.html" class="nav-link"><i
+                                        class="flaticon-calendar"></i>Create Semester</a>
+                            <li class="nav-item">
+                                <a href="semester-list.html" class="nav-link menu-active"><i class="flaticon-menu"></i><span>Semester List</span></a>
                             </li>
                         </ul>
                     </li>
@@ -471,8 +483,9 @@
         console.error("User details not found in sessionStorage");
     }
 </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
         fetch("/semester/get")
             .then(response => response.json())
             .then(data => {
@@ -484,34 +497,10 @@
 
                     // Add columns for semester name and schedule status
                     row.innerHTML = `
-                        <td>${item.semesterName}</td>
+                        <td><a href="/schedule-detail.html?semesterId=${item.semesterId}">${item.semesterName}</a></td>
                         <td>${item.semesterStart}</td>
                         <td>${item.semesterEnd}</td>
-
                     `;
-
-                    // Create actions cell with dropdown
-                    const actionsCell = document.createElement('td');
-                    const dropdown = document.createElement('div');
-                    dropdown.className = 'dropdown';
-
-                    const dropdownToggle = document.createElement('a');
-                    dropdownToggle.href = '#';
-                    dropdownToggle.className = 'dropdown-toggle';
-                    dropdownToggle.setAttribute('data-toggle', 'dropdown');
-                    dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
-                    dropdown.appendChild(dropdownToggle);
-
-                    const dropdownMenu = document.createElement('div');
-                    dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
-                    dropdownMenu.innerHTML = `
-                        <a class="dropdown-item" href="/schedule-detail.html?semesterId=${item.semesterId}">
-                            <i class="fas fa-glasses text-dark-pastel-green"></i> View Schedule
-                        </a>
-                    `;
-                    dropdown.appendChild(dropdownMenu);
-                    actionsCell.appendChild(dropdown);
-                    row.appendChild(actionsCell);
 
                     // Append the row to the table body
                     tableBody.appendChild(row);
@@ -520,6 +509,7 @@
             .catch(error => console.error("Error fetching data:", error));
     });
 </script>
+
 <!-- fetch notification headbar-->
 <script>
     window.onload = function() {
