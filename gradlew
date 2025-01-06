@@ -119,6 +119,7 @@ CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
 
 
 # Determine the Java command to use to start the JVM.
+# Determine the Java command to use to start the JVM.
 if [ -n "$JAVA_HOME" ] ; then
     if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
         # IBM's JDK on AIX uses strange locations for the executables
@@ -133,6 +134,7 @@ Please set the JAVA_HOME variable in your environment to match the
 location of your Java installation."
     fi
 else
+    export JAVA_HOME=/opt/render/project/.jdk
     JAVACMD=java
     if ! command -v java >/dev/null 2>&1
     then
@@ -142,6 +144,7 @@ Please set the JAVA_HOME variable in your environment to match the
 location of your Java installation."
     fi
 fi
+
 
 # Increase the maximum file descriptors if we can.
 if ! "$cygwin" && ! "$darwin" && ! "$nonstop" ; then
