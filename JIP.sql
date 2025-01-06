@@ -129,13 +129,17 @@ CREATE TABLE room_availability (
 -- Attendant table
 CREATE TABLE Attendant (
                            Id INT AUTO_INCREMENT PRIMARY KEY,
-                           student_id INT,
+                           student_id INT null,
                            schedule_id BIGINT,
-                           status ENUM('Present', 'Absent', 'Late', 'Permitted') NOT NULL,
+                           status ENUM('Present', 'Absent', 'Late', 'Permitted')  NULL,
                            date DATE NOT NULL,
-                           FOREIGN KEY (student_id) REFERENCES Student(Id),
-                           FOREIGN KEY (schedule_id) REFERENCES Schedule(Id)
+                           start_time time default '13:30:00',
+                           end_time time default '17:00:00',
+                           isFinalized TINYINT(1) DEFAULT 0,
+                           FOREIGN KEY (student_id) REFERENCES Student(Id) ,
+                           FOREIGN KEY (schedule_id) REFERENCES Schedule(Id) On Delete cascade
 );
+
 
 
 -- Assignment table
