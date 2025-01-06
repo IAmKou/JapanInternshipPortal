@@ -628,7 +628,7 @@
                     if (status) {
                         attendanceData.push({
                             studentId: studentId,
-                            status: status,
+                            status: status.toUpperCase(),
                             date: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
                         });
                     }
@@ -654,7 +654,8 @@
                     })
                     .then(data => {
                         console.log('Attendance saved successfully:', data);
-                        alert("Attendance updated successfully!");
+                        alert("Attendance saved successfully!");
+                        window.location.href = 'class-list-teacher';
                     })
                     .catch(error => {
                         console.error('Error saving attendance:', error);

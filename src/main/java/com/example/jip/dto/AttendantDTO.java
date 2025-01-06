@@ -1,13 +1,13 @@
 package com.example.jip.dto;
 
 import com.example.jip.entity.Attendant;
-import com.example.jip.entity.Schedule;
-import com.example.jip.entity.Student;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Date;
-
+@Getter
+@Setter
 public class AttendantDTO {
     private int attendantId;
     private Attendant.Status status;
@@ -18,6 +18,7 @@ public class AttendantDTO {
     private String studentName;
     private boolean mark;
     private String img;
+    private boolean isFinalized;
 
 
     public AttendantDTO() {}
@@ -31,9 +32,10 @@ public class AttendantDTO {
         this.img = attendant.getStudent().getImg();
         this.mark = attendant.getStudent().isMark();
         this.studentName = attendant.getStudent().getFullname();
+        this.isFinalized = attendant.getIsFinalized();
     }
 
-    public AttendantDTO(int attendantId, Attendant.Status status, Date date, int studentId, int scheduleId, String studentName, boolean mark, String img) {
+    public AttendantDTO(int attendantId, Attendant.Status status, Date date, int studentId, int scheduleId, String studentName, boolean mark, String img, boolean isFinalized) {
         this.attendantId = attendantId;
         this.status = status;
         this.date = date;
@@ -42,70 +44,7 @@ public class AttendantDTO {
         this.studentName = studentName;
         this.mark = mark;
         this.img = img;
-    }
-
-    public int getScheduleId() {
-        return scheduleId;
-    }
-
-    public void setScheduleId(int scheduleId) {
-        this.scheduleId = scheduleId;
-    }
-
-    public String getStudentName() {
-        return studentName;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
-    }
-
-    public boolean isMark() {
-        return mark;
-    }
-
-    public void setMark(boolean mark) {
-        this.mark = mark;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
-    public int getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
-    }
-
-    public int getAttendantId() {
-        return attendantId;
-    }
-
-    public void setAttendantId(int attendantId) {
-        this.attendantId = attendantId;
-    }
-
-    public Attendant.Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Attendant.Status status) {
-        this.status = status;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+        this.isFinalized = isFinalized;
     }
 
     @Override
