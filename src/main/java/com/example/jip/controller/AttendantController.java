@@ -95,18 +95,24 @@ public class AttendantController {
             @RequestBody List<AttendantDTO> attendanceData
     ) {
         try {
+            System.out.println("Received classId: " + classId);
+            System.out.println("Received attendance data: " + attendanceData);
+
             // Validate and update attendance records
             attendantServices.updateAttendance(classId, attendanceData);
             return ResponseEntity.ok("Attendance updated successfully!");
         } catch (IllegalArgumentException e) {
+            System.out.println("Caught IllegalArgumentException: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (IllegalStateException e) {
+            System.out.println("Caught IllegalStateException: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update attendance: " + e.getMessage());
         }
     }
+
 
 
     @GetMapping("/{classId}/attendanceStatus")
