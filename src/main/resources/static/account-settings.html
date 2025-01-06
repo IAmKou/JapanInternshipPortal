@@ -1,8 +1,5 @@
 <!doctype html>
 <html class="no-js" lang="" xmlns="http://www.w3.org/1999/html">
-
-
-<!-- Mirrored from account-settings.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:51 GMT -->
 <head>
     <meta charset="utf-8">
     <meta content="ie=edge" http-equiv="x-ua-compatible">
@@ -133,12 +130,6 @@
             overflow: hidden;
         }
 
-        .label {
-            font-size: 15px;
-            font-weight: 600;
-            color: #444;
-        }
-
         .input-icon {
             position: relative;
         }
@@ -248,11 +239,6 @@
             min-height: 100%; /* Bao phủ toàn bộ trang */
         }
 
-        /* Nội dung bên trên */
-        .content {
-            flex: 1; /* Đẩy footer xuống */
-        }
-
         /* Footer nằm ở cuối */
         .footer-wrap-layout1 {
             background-color: #ec9006;
@@ -338,17 +324,6 @@
             border-radius: 5px; /* Bo góc mềm mại */
             border: 1px solid #000; /* Viền màu đen */
             box-shadow: none; /* Loại bỏ bóng */
-        }
-
-
-        /* Custom Button */
-        .btn-search {
-            height: 50px; /* Đồng bộ chiều cao với input */
-            font-size: 16px; /* Kích thước chữ to hơn */
-            font-weight: bold; /* Làm chữ đậm hơn */
-            text-transform: uppercase; /* Viết hoa chữ */
-            border-radius: 5px; /* Bo góc tương tự input */
-            padding: 0 20px; /* Tăng khoảng cách trong nút */
         }
 
         /* Custom Modal Styling */
@@ -570,7 +545,6 @@
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
-
                                 <li><a href="/logout"><i class="flaticon-turn-off"></i><span
                                         data-i18n="log_out">Log Out</span></a></li>
                             </ul>
@@ -666,7 +640,6 @@
                     <div class="card">
                         <div class="card-body">
 
-
                                 <h2 class="mb-0 fw-bold" data-i18n="user_list" style="padding-bottom: 30px">Account List</h2>
 
                             <div class="d-flex align-items-center">
@@ -719,30 +692,25 @@
                                             </div>
                                         </div>
 
-
                                         <!-- Dropdown -->
                                         <div class="dropdown ms-3" >
                                             <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-i18n="add_import_users"
-                                               href="#" style="font-size: 16px; padding:11px 20px; position: relative; top: -3px;left: 100px;">
-                                                Add or Import Users
+                                               href="#" style="font-size: 16px; padding:11px 20px; position: relative; top: -3px;left: 100px;"> Add or Import Users
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <a class="dropdown-item" data-i18n="add_new_user" href="#" data-bs-toggle="modal" data-bs-target="#createAccountModal">
                                                     <i class="fas fa-plus text-orange-red"></i> Add New User
                                                 </a>
-
-                                                <a class="dropdown-item" data-bs-target="#standard-modal" data-bs-toggle="modal"
-                                                   data-i18n="import_users"><i class="fas fa-file-import text-green"></i> Import Users</a>
-
-                                                <a href="/template/import%20account%20template%20(9)%20-%20Copy.xlsx" download
-                                                   style="font-size: 16px; color: #007bff; text-decoration: underline; margin-top: 10px; display: inline-block;">
-                                                    Import Account Template
+                                                <a class="dropdown-item" data-bs-target="#standard-modal" data-bs-toggle="modal">
+                                                    <i class="fas fa-file-import text-green"></i> Import Users
+                                                </a>
+                                                <a class="dropdown-item" href="/template/import%20account%20template%20(9)%20-%20Copy.xlsx" download>
+                                                    <i class="fas fa-file-import text-green"></i> Import Account Template
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </form>
 
 
@@ -755,15 +723,13 @@
                 <div class="col-12">
                     <div class="card shadow-lg rounded-4 border-0 overflow-hidden">
                         <!-- Card Header -->
-
-
                         <!-- Card Body -->
                         <div class="card-body px-4 py-5 bg-light">
                             <div class="table-responsive">
                                 <table class="table align-middle table-hover text-center table-borderless">
                                     <thead class="bg-primary text-white">
                                     <tr>
-                                        <th class="text-center" data-i18n="id">ID</th>
+                                        <th class="text-center" data-i18n="#">#</th>
                                         <th class="text-center" data-i18n="image">Image</th>
                                         <th class="text-center" data-i18n="name">Name</th>
                                         <th class="text-center" data-i18n="j_name">Japan Name</th>
@@ -773,16 +739,15 @@
                                     </thead>
                                     <tbody></tbody>
                                 </table>
+
                                 <div class="pagination-container">
                                     <ul class="pagination justify-content-center">
-                                        <li class="page-item previous"><a class="page-link" href="#">Previous</a></li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item next"><a class="page-link" href="#">Next</a></li>
+                                        <li class="page-item previous"><a class="page-link" href="#"><</a></li>
+                                        <!-- Các nút số trang sẽ được thêm vào đây động -->
+                                        <li class="page-item next"><a class="page-link" href="#">></a></li>
                                     </ul>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -1324,69 +1289,60 @@
     document.addEventListener("DOMContentLoaded", function () {
         const tableBody = document.querySelector(".table tbody");
         const paginationContainer = document.querySelector(".pagination");
-        const language = localStorage.getItem('language') || 'en';
-        getTranslation(language);
+        const usersPerPage = 15;
+        let currentPage = 1;
+        let users = [];
 
-        const usersPerPage = 30;  // Số người dùng mỗi trang
-        let currentPage = 1;  // Trang hiện tại
-        let users = [];  // Mảng chứa tất cả người dùng
-
-        // Fetch all users (không thay đổi backend)
         async function fetchUsers() {
             try {
-                const response = await fetch('/users');  // Lấy tất cả người dùng
+                const response = await fetch(`/users`);
                 if (!response.ok) throw new Error(`Failed to fetch: ${response.statusText}`);
-
-                const data = await response.json();
-                users = data;  // Lấy tất cả người dùng từ API
-
-                renderTable();  // Gọi render lại bảng với dữ liệu tất cả người dùng
-                renderPagination(); // Render phân trang
+                const allUsers = await response.json();
+                users = allUsers.filter(user => user.id !== 1);
+                renderTable(users.slice(0, usersPerPage));
+                renderPagination();
             } catch (error) {
                 console.error("Error fetching users:", error);
             }
         }
 
-        // Render bảng với tất cả người dùng (chỉ hiển thị trong phạm vi trang hiện tại)
-        function renderTable() {
-            tableBody.innerHTML = "";  // Xoá bảng cũ trước khi render lại
-            const startIndex = (currentPage - 1) * usersPerPage; // Tính chỉ số bắt đầu của người dùng
-            const endIndex = currentPage * usersPerPage; // Tính chỉ số kết thúc của người dùng
+        function renderTable(filteredUsers) {
+            tableBody.innerHTML = "";
 
-            const usersToDisplay = users.slice(startIndex, endIndex);  // Cắt mảng người dùng theo trang
+            if (!filteredUsers || !filteredUsers.length) return;
 
-            usersToDisplay.forEach((user, i) => {
-                if (user.id === 1) return; // Skip user with id === 1
+            filteredUsers.forEach((user, index) => {
+                const fullName = user.fullName || "N/A";
+                const roleName = user.roleName || "N/A";
+                const jname = user.jname || "N/A";
+                const img = user.img || 'img/figure/admin.jpg';
 
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                <td>${startIndex + i + 1}</td>
-                <td>
-                    <img src="${user.img ? user.img : 'img/figure/admin.jpg'}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-                </td>
-                <td>${user.roleName === "ADMIN" ? user.username : user.fullName}</td>
-                <td>${user.roleName === "ADMIN" ? user.username : user.jname}</td>
-                <td>${user.roleName}</td>
-                <td>
-                    <a href="users-details.html?userId=${user.id}" class="text-decoration-none text-primary" title="View User Details">
-                        <i class="fas fa-eye" style="font-size: 16px; margin-right: 8px;"></i>
-                        View Details
-                    </a>
-                </td>
-            `;
-                tableBody.appendChild(row);
+                const row = `
+                <tr>
+                    <td>${index + 1 + (currentPage - 1) * usersPerPage}</td>
+                    <td><img src="${img}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;"></td>
+                    <td>${fullName}</td>
+                    <td>${jname}</td>
+                    <td>${roleName}</td>
+                    <td><a href="users-details.html?userId=${user.id}" class="text-decoration-none text-primary" title="View User Details">
+                            <i class="fas fa-eye" style="font-size: 16px; margin-right: 8px;"></i>View Details</a></td>
+                </tr>`;
+                tableBody.innerHTML += row;
             });
         }
 
-        // Render phân trang
         function renderPagination() {
-            paginationContainer.innerHTML = "";  // Xoá các mục phân trang cũ
+            const totalPages = Math.ceil(users.length / usersPerPage);
 
-            const totalPages = Math.ceil(users.length / usersPerPage); // Tổng số trang
+            // Xóa các nút số trang cũ trước khi thêm mới
+            paginationContainer.querySelectorAll("li.page-item.number").forEach(item => item.remove());
+
             for (let i = 1; i <= totalPages; i++) {
                 const pageItem = document.createElement("li");
-                pageItem.classList.add("page-item");
-                if (i === currentPage) pageItem.classList.add("active");
+                pageItem.classList.add("page-item", "number");
+                if (i === currentPage) {
+                    pageItem.classList.add("active");
+                }
 
                 const pageLink = document.createElement("a");
                 pageLink.classList.add("page-link");
@@ -1395,45 +1351,53 @@
 
                 pageLink.addEventListener("click", function (e) {
                     e.preventDefault();
-                    currentPage = i;  // Cập nhật trang hiện tại
-                    renderTable();  // Render lại bảng
-                    renderPagination(); // Render lại phân trang
+                    currentPage = i;
+                    const startIndex = (currentPage - 1) * usersPerPage;
+                    const endIndex = startIndex + usersPerPage;
+                    renderTable(users.slice(startIndex, endIndex));
+                    renderPagination();
                 });
 
                 pageItem.appendChild(pageLink);
-                paginationContainer.appendChild(pageItem);
+                paginationContainer.insertBefore(pageItem, paginationContainer.querySelector(".next"));
             }
 
-            // Disable 'Previous' button if on the first page
-            const prevButton = document.querySelector(".page-item.previous");
-            prevButton.classList.toggle("disabled", currentPage === 1);
-
-            // Disable 'Next' button if on the last page
-            const nextButton = document.querySelector(".page-item.next");
-            nextButton.classList.toggle("disabled", currentPage === totalPages);
+            updatePaginationButtons();
         }
 
-        // Điều khiển phân trang (Trước và Sau)
-        paginationContainer.querySelector(".previous").addEventListener("click", function (e) {
-            if (currentPage > 1) {
-                currentPage--;
-                renderTable();
-                renderPagination();
-            }
-        });
-
-        paginationContainer.querySelector(".next").addEventListener("click", function (e) {
+        function updatePaginationButtons() {
             const totalPages = Math.ceil(users.length / usersPerPage);
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderTable();
-                renderPagination();
-            }
-        });
+            const prevButton = paginationContainer.querySelector(".previous");
+            const nextButton = paginationContainer.querySelector(".next");
 
-        fetchUsers();  // Lấy người dùng khi trang được tải
+            // Thêm hoặc gỡ bỏ lớp 'disabled' dựa trên điều kiện
+            prevButton.classList.toggle("disabled", currentPage === 1);
+            nextButton.classList.toggle("disabled", currentPage === totalPages);
+
+            prevButton.querySelector("a").addEventListener("click", function (e) {
+                e.preventDefault();
+                if (currentPage > 1) {
+                    currentPage--;
+                    const startIndex = (currentPage - 1) * usersPerPage;
+                    const endIndex = startIndex + usersPerPage;
+                    renderTable(users.slice(startIndex, endIndex));
+                    renderPagination();
+                }
+            });
+
+            nextButton.querySelector("a").addEventListener("click", function (e) {
+                e.preventDefault();
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    const startIndex = (currentPage - 1) * usersPerPage;
+                    const endIndex = startIndex + usersPerPage;
+                    renderTable(users.slice(startIndex, endIndex));
+                    renderPagination();
+                }
+            });
+        }
+        fetchUsers();
     });
-
 </script>
 
 <script>
@@ -1452,90 +1416,6 @@
     }
 </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const form = document.getElementById("searchForm");
-        const searchInput = document.getElementById("searchInput");
-        const filterSelect = document.getElementById("filterSelect");
-        const tableBody = document.querySelector(".table tbody");
-        let users = []; // Dữ liệu người dùng
-
-        // Hàm fetch và render ban đầu
-        async function fetchUsers() {
-            try {
-                const response = await fetch(`/users`);
-                if (!response.ok) throw new Error(`Failed to fetch: ${response.statusText}`);
-                users = await response.json();
-                renderTable(users);
-            } catch (error) {
-                console.error("Error fetching users:", error);
-            }
-        }
-
-        // Hàm render table
-        function renderTable(filteredUsers) {
-            tableBody.innerHTML = ""; // Xóa nội dung bảng
-
-            filteredUsers.forEach((user, index) => {
-                if (user.id === 1) return; // Bỏ qua ID = 1
-
-                const fullName = user.fullName || "N/A";
-                const roleName = user.roleName || "N/A";
-                const jname = user.jname || "N/A";
-                const img = user.img || 'img/figure/admin.jpg';
-
-                const row = `
-            <tr>
-                <td>${index + 1}</td>
-                <td><img src="${img}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;"></td>
-                <td>${fullName}</td>
-                <td>${jname}</td>
-                <td>${roleName}</td>
-                <td><a href="users-details.html?userId=${user.id}" class="text-decoration-none text-primary" title="View User Details">
-                        <i class="fas fa-eye" style="font-size: 16px; margin-right: 8px;"></i>View Details</a></td>
-            </tr>`;
-                tableBody.innerHTML += row;
-            });
-        }
-
-        // Xử lý khi nhấn nút Search
-        form.addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            const query = searchInput.value.toLowerCase().trim();
-
-            const filteredUsers = users.filter(user => {
-                const fullName = user.fullName ? user.fullName.toLowerCase() : "";
-                const jname = user.jname ? user.jname.toLowerCase() : "";
-
-                // Tìm kiếm theo fullname hoặc jname
-                return fullName.includes(query) || jname.includes(query);
-            });
-
-            renderTable(filteredUsers); // Render kết quả đã lọc
-        });
-
-        // Xử lý khi thay đổi filter
-        filterSelect.addEventListener("change", function () {
-            const selectedRole = filterSelect.value; // Giá trị role được chọn (teacher/student/manager)
-
-            if (!selectedRole) {
-                renderTable(users); // Hiển thị toàn bộ khi không chọn filter
-            } else {
-                const filteredUsers = users.filter(user => {
-                    const roleName = user.roleName ? user.roleName.toLowerCase() : "";
-                    return roleName === selectedRole; // Lọc theo role
-                });
-
-                renderTable(filteredUsers); // Render kết quả đã lọc
-            }
-        });
-
-        fetchUsers();
-    });
-
-
-</script>
 <script>
     document.getElementById('accountForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -1583,6 +1463,8 @@
             });
     });
 </script>
+
+
 <script>
     document.getElementById('createForm').addEventListener('submit', function (event) {
         event.preventDefault(); // Ngăn chặn hành động submit mặc định
@@ -1643,8 +1525,6 @@
                 showMessageForm1(error.message || 'Failed to create the account. Please try again later.');
             });
 
-
-
     });
 
     // Function để hiển thị lỗi trong modal
@@ -1699,9 +1579,8 @@
             messageDiv.classList.add('d-none'); // Ẩn thông báo lỗi khi người dùng thay đổi input
         });
     });
-
-
 </script>
+
 <script>
     document.getElementById('createFormStudent').addEventListener('submit', function (event) {
         event.preventDefault(); // Ngăn chặn hành động submit mặc định
@@ -1711,9 +1590,7 @@
         // Lấy giá trị từ hidden inputs
         const account_id = document.getElementById('account_id').value;
 
-
         // Validate dữ liệu
-
         const dob = document.getElementById('DoB').value.trim();
 
         const email = document.getElementById('email').value.trim();
@@ -1776,9 +1653,6 @@
                 console.error('Error:', error);
                 showMessageForm1(error.message || 'Failed to create the account. Please try again later.');
             });
-
-
-
     });
 
     // Function để hiển thị lỗi trong modal
