@@ -68,22 +68,6 @@
             font-size: 18px;
             /* Đảm bảo font phù hợp */
         }
-
-        /* Tùy chỉnh cho thẻ select2 */
-        .select2-container {
-            width: 100% !important;  /* Đảm bảo width của select2 chiếm toàn bộ không gian */
-        }
-
-        /* Kiểu dáng cho thanh chọn của select2 */
-        .select2-selection {
-            padding: 10px 15px;                       /* Thêm khoảng cách padding cho thanh chọn */
-            border: 2px solid #007bff !important;     /* Màu viền */
-            border-radius: 5px;                       /* Bo tròn các góc của ô chọn */
-            text-align: center;                       /* Căn giữa văn bản */
-            font-weight: bold !important;             /* Đậm chữ */
-            font-size: 16px;                          /* Tăng kích thước chữ */
-            line-height: 30px;                        /* Đảm bảo văn bản căn giữa theo chiều dọc */
-        }
         .select2-container .select2-selection--single .select2-selection__rendered {
             line-height: 30px;
             color: #b4b4b4;
@@ -98,10 +82,6 @@
             margin-top: 10px;
         }
 
-        input[name="className"] {
-            border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
-            border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
-        }
 
         input[name="className"]:hover {
             border-color: #28a745 !important;
@@ -331,40 +311,38 @@
                     </div>
                     <form action="class/create" class="new-added-form" method="post" id="createClassForm">
                         <div class="row">
-                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label for="className" style="color: #007bff; font-weight: bold;">Class Name</label>
-                                <input type="text" id="className" placeholder="" name="className" class="form-control">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                    <label for="className" style="color: #007bff; font-weight: bold;">Class Name</label>
+                                    <input type="text" id="className" placeholder="" name="className" class="form-control">
+                                </div>
+                                <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                    <label for="teacher" style="color: #007bff; font-weight: bold;">Teacher</label>
+                                    <select id="teacher" name="teacherId" class="select2 form-control">
+                                        <!-- Các option sẽ được thêm vào đây -->
+                                    </select>
+                                </div>
+                                <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                    <label for="semester" style="color: #007bff; font-weight: bold;">Semester</label>
+                                    <select id="semester" name="semesterId" class="select2 form-control">
+                                        <!-- Các option sẽ được thêm vào đây -->
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label for="teacher" style="color: #007bff; font-weight: bold;">Teacher</label>
-                                <select id="teacher" name="teacherId" class="select2">
-                                    <!-- Các option sẽ được thêm vào đây -->
-                                </select>
-                            </div>
-
-                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label for="semester" style="color: #007bff; font-weight: bold;">Semester</label>
-                                <select id="semester" name="teacherId" class="select2">
-                                </select>
-                            </div>
-                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label style="color: #007bff; font-weight: bold;">Add student</label>
-                                <button type="button" id="fetchStudentsButton" class="btn-fill-lg text-light bg-dodger-blue">
-                                    Get Students
-                                </button>
-                            </div>
-
                             <div id="studentList" class="table-responsive">
                                 <table class="table display data-table text-nowrap">
                                 </table>
-                                <div id="pagination" class="pagination-container"></div>
+                                <div class="pagination-container">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item previous"><a class="page-link" href="#"><</a></li>
+                                        <!-- Các nút số trang sẽ được thêm vào đây động -->
+                                        <li class="page-item next"><a class="page-link" href="#">></a></li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div id="studentCount"></div>
                             <div class="col-md-6 form-group"></div>
                             <div class="col-12 form-group mg-t-8">
-                                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Create Class
-                                </button>
-                                <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Clear Form</button>
+                                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Create Class</button>
                             </div>
                         </div>
                     </form>
@@ -487,8 +465,8 @@
         let students = []; // Store all fetched students
         let currentPage = 1; // Current page number
         const studentsPerPage = 30; // Number of students per page
-
-        document.getElementById('fetchStudentsButton').addEventListener('click', fetchStudents);
+        // Fetch students when the page loads
+        fetchStudents();
 
         function fetchStudents() {
             console.log("Fetching students...");
@@ -536,7 +514,7 @@
 
             // Create header row
             const headerRow = document.createElement('tr');
-            ['Order', 'Select', 'Full Name', 'Japan Name', 'Gender'].forEach(text => {
+            ['#', 'Select', 'Full Name', 'Japan Name', 'Date of Birth','Gender','Email'].forEach(text => {
                 const headerCell = document.createElement('th');
                 headerCell.textContent = text;
                 headerRow.appendChild(headerCell);
@@ -579,42 +557,88 @@
                 japannameCell.textContent = student.jname;
                 row.appendChild(japannameCell);
 
+                // Date of Birth column
+                const dob = document.createElement('td');
+                dob.textContent = student.dob;
+                row.appendChild(dob);
+
                 // Gender column
                 const genderCell = document.createElement('td');
                 genderCell.textContent = student.gender;
                 row.appendChild(genderCell);
 
+                // Email column
+                const email = document.createElement('td');
+                email.textContent = student.email;
+                row.appendChild(email);
+
                 table.appendChild(row);
             });
-
-            const studentCountDiv = document.getElementById('studentCount');
-            studentCountDiv.textContent = `Showing ${startIndex + 1} to ${endIndex} of ${students.length} students`;
         }
 
         function renderPagination() {
-            const paginationDiv = document.getElementById('pagination');
+            const paginationDiv = document.querySelector('.pagination-container .pagination');
             paginationDiv.innerHTML = ""; // Clear previous pagination buttons
 
             const totalPages = Math.ceil(students.length / studentsPerPage);
 
-            for (let i = 1; i <= totalPages; i++) {
-                const button = document.createElement('button');
-                button.textContent = i;
-                button.className = 'page-btn';
-                if (i === currentPage) {
-                    button.classList.add('active');
+            // Previous button
+            const prevLi = document.createElement('li');
+            prevLi.className = `page-item previous ${currentPage === 1 ? 'disabled' : ''}`;
+            const prevLink = document.createElement('a');
+            prevLink.className = 'page-link';
+            prevLink.href = '#';
+            prevLink.textContent = '<';
+            prevLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderTable();
+                    renderPagination();
                 }
-                button.addEventListener('click', () => {
+            });
+            prevLi.appendChild(prevLink);
+            paginationDiv.appendChild(prevLi);
+
+            // Page number buttons
+            for (let i = 1; i <= totalPages; i++) {
+                const li = document.createElement('li');
+                li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                const link = document.createElement('a');
+                link.className = 'page-link';
+                link.href = '#';
+                link.textContent = i;
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
                     currentPage = i;
                     renderTable();
                     renderPagination();
                 });
-                paginationDiv.appendChild(button);
+                li.appendChild(link);
+                paginationDiv.appendChild(li);
             }
+
+            // Next button
+            const nextLi = document.createElement('li');
+            nextLi.className = `page-item next ${currentPage === totalPages ? 'disabled' : ''}`;
+            const nextLink = document.createElement('a');
+            nextLink.className = 'page-link';
+            nextLink.href = '#';
+            nextLink.textContent = '>';
+            nextLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderTable();
+                    renderPagination();
+                }
+            });
+            nextLi.appendChild(nextLink);
+            paginationDiv.appendChild(nextLi);
         }
 
 
-    document.getElementById('createClassForm').addEventListener('submit', function (event) {
+        document.getElementById('createClassForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
         const className = document.getElementById("className").value;
@@ -670,8 +694,6 @@
             .catch(error => alert("Error creating class: " + error));
     });
     });
-    // Initial fetch to populate students
-
 </script>
 <!-- fetch teacher -->
 <script>
