@@ -225,25 +225,6 @@ CREATE TABLE Thread (
                         FOREIGN KEY (creator_id) REFERENCES Account(Id)
 );
 
--- Post table (linked with Account)
-CREATE TABLE Post (
-                      Id INT AUTO_INCREMENT PRIMARY KEY,
-                      replies VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-                      date_created DATE NOT NULL,
-                      image BLOB,
-                      creator_id INT,
-                      FOREIGN KEY (creator_id) REFERENCES Account(Id)
-);
-
--- Comment table (linked with Account)
-CREATE TABLE Comment (
-                         Id INT AUTO_INCREMENT PRIMARY KEY,
-                         content TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-                         date DATE NOT NULL,
-                         creator_id INT,
-                         FOREIGN KEY (creator_id) REFERENCES Account(Id)
-);
-
 -- Application table (linked with Student and Teacher)
 CREATE TABLE Application (
                              Id INT AUTO_INCREMENT PRIMARY KEY,
