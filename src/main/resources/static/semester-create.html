@@ -649,7 +649,7 @@
                                     <div class="col-12-xxxl col-lg-6 col-12 form-group">
                                         <label style="color: #007bff; font-weight: bold;">Semester Name <span
                                                 style="color: red;">*</span></label>
-                                        <input type="text" placeholder="" class="form-control" name="name" required>
+                                        <input type="text" placeholder="" maxlength="255" class="form-control" name="name" required>
                                     </div>
                                     <div class="col-12-xxxl col-lg-6 col-12 form-group">
                                         <label style="color: #007bff; font-weight: bold;">Start Time <span
@@ -701,7 +701,7 @@
             </div>
             <form id="updateSemesterForm">
                 <label for="semesterName">Name:</label>
-                <input type="text" id="semesterName" required>
+                <input type="text" maxlength="255"  id="semesterName" required>
 
                 <label for="semesterStart">Start Date:</label>
                 <input type="date" id="semesterStart" required>
