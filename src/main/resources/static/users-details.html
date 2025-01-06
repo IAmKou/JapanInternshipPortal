@@ -288,82 +288,7 @@
                         </div>
                     </div>
                 </li>
-                <li class="navbar-item dropdown header-message">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false">
-                        <i class="far fa-envelope"></i>
-                        <div class="item-title d-md-none text-16 mg-l-10">Message</div>
-                        <span>5</span>
-                    </a>
 
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <div class="item-header">
-                            <h6 class="item-title">05 Message</h6>
-                        </div>
-                        <div class="item-content">
-                            <div class="media">
-                                <div class="item-img bg-skyblue author-online">
-                                    <img src="img/figure/student11.png" alt="img">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Maria Zaman</span>
-                                            <span class="item-time">18:30</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-img bg-yellow author-online">
-                                    <img src="img/figure/student12.png" alt="img">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Benny Roy</span>
-                                            <span class="item-time">10:35</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-img bg-pink">
-                                    <img src="img/figure/student13.png" alt="img">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Steven</span>
-                                            <span class="item-time">02:35</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="item-img bg-violet-blue">
-                                    <img src="img/figure/student11.png" alt="img">
-                                </div>
-                                <div class="media-body space-sm">
-                                    <div class="item-title">
-                                        <a href="#">
-                                            <span class="item-name">Joshep Joe</span>
-                                            <span class="item-time">12:35</span>
-                                        </a>
-                                    </div>
-                                    <p>What is the reason of buy this item.
-                                        Is it usefull for me.....</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
                 <li class="navbar-item dropdown header-notification">
                     <a id="notification-bell" class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                         <i class="far fa-bell"></i>
@@ -627,22 +552,9 @@
 <!-- fetch user -->
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    const roleTranslations = {
-        "en": {
-            "ADMIN": "Admin",
-            "TEACHER": "Teacher",
-            "STUDENT": "Student"
-        },
-        "ja": {
-            "ADMIN": "管理者",
-            "TEACHER": "教師",
-            "STUDENT": "学生"
-        }
-    };
-    const currentLanguage = localStorage.getItem('language') || 'en';  // Mặc định là 'en'
+
 
     // Hiển thị thông tin người dùng với tên và vai trò dịch theo ngôn ngữ hiện tại
-    const translatedRoleName = roleTranslations[currentLanguage][userDetails.roleName] || userDetails.roleName;
     if (userDetails) {
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
@@ -654,7 +566,7 @@
 
         // Populate Role
         userRoleElements.forEach(element => {
-            element.textContent = translatedRoleName;
+            element.textContent =  userDetails.roleName;
         });
     } else {
         console.error("User details not found in sessionStorage");
@@ -665,8 +577,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         const userId = new URLSearchParams(window.location.search).get('userId');
         let currentUser = null;
-        const language = localStorage.getItem('language') || 'en'; // Mặc định là 'en'
-        getTranslation(language); // Gọi hàm dịch ngôn ngữ
+
 
         // Initially hide the save button
         document.querySelector('.save-button').style.display = 'none';
