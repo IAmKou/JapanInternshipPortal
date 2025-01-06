@@ -40,6 +40,27 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        /* Đảm bảo các radio buttons có kiểu hiển thị đúng */
+        input[type="radio"] {
+            -webkit-appearance: none;  /* Trình duyệt WebKit */
+            -moz-appearance: none;     /* Trình duyệt Firefox */
+            appearance: none;          /* Khác biệt cho trình duyệt hỗ trợ chuẩn */
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;        /* Chúng ta sẽ thay đổi dạng của radio thành hình tròn */
+            border: 2px solid #007bff; /* Màu sắc của đường viền */
+            background-color: white;   /* Màu nền bên trong */
+            cursor: pointer;
+        }
+
+        /* Tạo hiệu ứng khi radio được chọn */
+        input[type="radio"]:checked {
+            background-color: #007bff;
+            border-color: #0056b3;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+
         .custom-filter-select {
             padding-right: 2.5rem; /* Thêm khoảng cách cho icon bên phải */
             font-size: 1rem; /* Kích thước chữ vừa phải */
@@ -763,7 +784,7 @@
                                 <table class="table align-middle table-hover text-center table-borderless">
                                     <thead class="bg-primary text-white">
                                     <tr>
-                                        <th class="text-center" data-i18n="id">ID</th>
+                                        <th class="text-center" data-i18n="id">#</th>
                                         <th class="text-center" data-i18n="image">Image</th>
                                         <th class="text-center" data-i18n="name">Name</th>
                                         <th class="text-center" data-i18n="j_name">Japan Name</th>
@@ -906,15 +927,23 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label class="font-weight-bold d-inline-block">Gender <span class="text-danger">*</span></label>
+
+                            <!-- Male Option -->
                             <div class="form-check form-check-inline">
-                                <input type="radio" name="gender" value="Male" id="male_form1" class="form-check-input">
-                                <label  for="male_form1">Male</label>
+                                <input class="form-check-input mt-4" type="radio" name="gender" value="Male" id="male_form1">
+                                <span for="male_form1" class="d-block mt-4">Male</span>
                             </div>
+
+                            <!-- Female Option -->
                             <div class="form-check form-check-inline">
-                                <input type="radio" name="gender" value="Female" id="female_form1" class="form-check-input">
-                                <label for="female_form1">Female</label>
+                                <input class="form-check-input mt-4" type="radio" name="gender" value="Female" id="female_form1">
+                                <span for="female_form1" class="d-block mt-4">Female</span>
                             </div>
                         </div>
+
+
+
+
                         <div class="form-group col-md-6">
                             <label for="img_form1" class="font-weight-bold">Profile Image <span class="text-danger">*</span></label>
                             <input type="file" class="form-control-file shadow-sm" name="img" id="img_form1">
@@ -972,22 +1001,30 @@
                     </div>
 
                     <div class="form-row">
+                        <!-- Phone Number Input -->
                         <div class="form-group col-md-6">
                             <label for="phone" class="font-weight-bold">Phone Number <span class="text-danger">*</span></label>
                             <input type="text" name="phoneNumber" required placeholder="ex: 012345678" id="phone" class="form-control shadow-sm rounded">
                         </div>
+
+                        <!-- Gender Selection -->
                         <div class="form-group col-md-6">
-                            <label class="font-weight-bold d-inline-block">Gender <span class="text-danger">*</span></label>
+                            <label class="font-weight-bold">Gender <span class="text-danger">*</span></label>
+
+                            <!-- Male Option -->
                             <div class="form-check form-check-inline">
-                                <input type="radio" name="gender" value="Male" id="male" class="form-check-input">
-                                <label for="male" class="form-check-label">Male</label>
+                                <input class="form-check-input" type="radio" name="gender" value="Male" id="male">
+                                <span for="male" class="form-check-label">Male</span>
                             </div>
+
+                            <!-- Female Option -->
                             <div class="form-check form-check-inline">
-                                <input type="radio" name="gender" value="Female" id="female" class="form-check-input">
-                                <label for="female" class="form-check-label">Female</label>
+                                <input class="form-check-input" type="radio" name="gender" value="Female" id="female">
+                                <span for="female" class="form-check-label">Female</span>
                             </div>
                         </div>
                     </div>
+
 
 
 
@@ -1032,6 +1069,22 @@
     </div>
 </div>
 
+<div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal1" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-success" id="successModalLabel1">
+                    <i class="fas fa-check-circle"></i> Success
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                <h4 class="text-success">Account was add successful!</h4>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Error Modal -->
 <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
@@ -1584,7 +1637,7 @@
     });
 </script>
 <script>
-    document.getElementById('createForm').addEventListener('submit', function (event) {
+    document.getElementById('createForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Ngăn chặn hành động submit mặc định
 
         const formData = new FormData(this);
@@ -1634,17 +1687,23 @@
                 if (data.includes("Error")) {
                     showMessageForm1(data);  // Hiển thị thông báo lỗi nếu có
                 } else {
-                    alert(data);  // Hiển thị thông báo thành công
-                    location.reload();  // Reload lại trang sau khi lưu dữ liệu thành công
+                    // Đặt thông điệp cho modal thành công
+                    document.getElementById("modal-message").textContent = "Account was added successfully!";
+
+                    // Tạo đối tượng modal và hiển thị
+                    var myModal = new bootstrap.Modal(document.getElementById('success-modal1'));
+                    myModal.show();  // Hiển thị modal sau khi submit thành công
+
+                    // Gọi reload sau một thời gian để người dùng thấy thông báo
+                    setTimeout(() => {
+                        location.reload();  // Reload trang sau khi thành công
+                    }, 1000);  // Đợi 1 giây trước khi reload
                 }
             })
             .catch((error) => {
                 console.error('Error:', error);
                 showMessageForm1(error.message || 'Failed to create the account. Please try again later.');
             });
-
-
-
     });
 
     // Function để hiển thị lỗi trong modal
@@ -1694,7 +1753,7 @@
 
     // Reset thông báo khi người dùng tương tác lại với form
     document.querySelectorAll('#createForm input').forEach((input) => {
-        input.addEventListener('input', function () {
+        input.addEventListener('input', function() {
             const messageDiv = document.getElementById('message_form1');
             messageDiv.classList.add('d-none'); // Ẩn thông báo lỗi khi người dùng thay đổi input
         });
@@ -1768,7 +1827,9 @@
                 if (data.includes("Error")) {
                     showMessageForm1(data);  // Hiển thị thông báo lỗi nếu có
                 } else {
-                    alert(data);  // Hiển thị thông báo thành công
+                    document.getElementById("modal-message").textContent = "Account was added successfully!";  // Đặt thông điệp cho modal
+                    var myModal = new bootstrap.Modal(document.getElementById('success-modal1'));  // Tạo đối tượng modal
+                    myModal.show();  // Hiển thị modal  // Hiển thị thông báo thành công
                     location.reload();  // Reload lại trang sau khi lưu dữ liệu thành công
                 }
             })
