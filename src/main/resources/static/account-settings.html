@@ -1320,13 +1320,9 @@
     document.addEventListener("DOMContentLoaded", function () {
         const tableBody = document.querySelector(".table tbody");
         const paginationContainer = document.querySelector(".pagination");
-        const searchForm = document.getElementById("searchForm");
-        const searchInput = document.getElementById("searchInput");
-        const filterSelect = document.getElementById("filterSelect");
         const usersPerPage = 15;
         let currentPage = 1;
         let users = [];
-        let filteredUsers = [];
 
         async function fetchUsers() {
             try {
@@ -1334,64 +1330,50 @@
                 if (!response.ok) throw new Error(`Failed to fetch: ${response.statusText}`);
                 const allUsers = await response.json();
                 users = allUsers.filter(user => user.id !== 1);
-                filteredUsers = [...users]; // Clone toàn bộ user làm dữ liệu gốc
-                applyFiltersAndRender();
+                renderTable(users.slice(0, usersPerPage));
+                renderPagination();
             } catch (error) {
                 console.error("Error fetching users:", error);
             }
         }
 
-        function applyFiltersAndRender() {
-            const searchValue = searchInput.value.toLowerCase();
-            const selectedRole = filterSelect.value;
-
-            filteredUsers = users.filter(user => {
-                const nameMatches = user.fullName.toLowerCase().includes(searchValue) ||
-                    (user.jname && user.jname.toLowerCase().includes(searchValue));
-                const roleMatches = !selectedRole || user.roleName === selectedRole;
-                return nameMatches && roleMatches;
-            });
-
-            renderTable(filteredUsers.slice(0, usersPerPage));
-            renderPagination();
-        }
-
         function renderTable(filteredUsers) {
             tableBody.innerHTML = "";
 
-            if (!filteredUsers || !filteredUsers.length) {
-                tableBody.innerHTML = "<tr><td colspan='6'>No results found</td></tr>";
-                return;
-            }
+            if (!filteredUsers || !filteredUsers.length) return;
 
             filteredUsers.forEach((user, index) => {
                 const fullName = user.fullName || "N/A";
                 const roleName = user.roleName || "N/A";
                 const jname = user.jname || "N/A";
-                const img = user.img || "img/figure/admin.jpg";
+                const img = user.img || 'img/figure/admin.jpg';
 
                 const row = `
-            <tr>
-                <td>${index + 1 + (currentPage - 1) * usersPerPage}</td>
-                <td><img src="${img}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;"></td>
-                <td>${fullName}</td>
-                <td>${jname}</td>
-                <td>${roleName}</td>
-                <td><a href="users-details.html?userId=${user.id}" class="text-decoration-none text-primary" title="View User Details">
-                        <i class="fas fa-eye" style="font-size: 16px; margin-right: 8px;"></i>View Details</a></td>
-            </tr>`;
+                <tr>
+                    <td>${index + 1 + (currentPage - 1) * usersPerPage}</td>
+                    <td><img src="${img}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;"></td>
+                    <td>${fullName}</td>
+                    <td>${jname}</td>
+                    <td>${roleName}</td>
+                    <td><a href="users-details.html?userId=${user.id}" class="text-decoration-none text-primary" title="View User Details">
+                            <i class="fas fa-eye" style="font-size: 16px; margin-right: 8px;"></i>View Details</a></td>
+                </tr>`;
                 tableBody.innerHTML += row;
             });
         }
 
         function renderPagination() {
-            const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+            const totalPages = Math.ceil(users.length / usersPerPage);
+
+            // Xóa các nút số trang cũ trước khi thêm mới
             paginationContainer.querySelectorAll("li.page-item.number").forEach(item => item.remove());
 
             for (let i = 1; i <= totalPages; i++) {
                 const pageItem = document.createElement("li");
                 pageItem.classList.add("page-item", "number");
-                if (i === currentPage) pageItem.classList.add("active");
+                if (i === currentPage) {
+                    pageItem.classList.add("active");
+                }
 
                 const pageLink = document.createElement("a");
                 pageLink.classList.add("page-link");
@@ -1403,7 +1385,7 @@
                     currentPage = i;
                     const startIndex = (currentPage - 1) * usersPerPage;
                     const endIndex = startIndex + usersPerPage;
-                    renderTable(filteredUsers.slice(startIndex, endIndex));
+                    renderTable(users.slice(startIndex, endIndex));
                     renderPagination();
                 });
 
@@ -1415,10 +1397,11 @@
         }
 
         function updatePaginationButtons() {
-            const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+            const totalPages = Math.ceil(users.length / usersPerPage);
             const prevButton = paginationContainer.querySelector(".previous");
             const nextButton = paginationContainer.querySelector(".next");
 
+            // Thêm hoặc gỡ bỏ lớp 'disabled' dựa trên điều kiện
             prevButton.classList.toggle("disabled", currentPage === 1);
             nextButton.classList.toggle("disabled", currentPage === totalPages);
 
@@ -1428,7 +1411,7 @@
                     currentPage--;
                     const startIndex = (currentPage - 1) * usersPerPage;
                     const endIndex = startIndex + usersPerPage;
-                    renderTable(filteredUsers.slice(startIndex, endIndex));
+                    renderTable(users.slice(startIndex, endIndex));
                     renderPagination();
                 }
             });
@@ -1439,142 +1422,16 @@
                     currentPage++;
                     const startIndex = (currentPage - 1) * usersPerPage;
                     const endIndex = startIndex + usersPerPage;
-                    renderTable(filteredUsers.slice(startIndex, endIndex));
+                    renderTable(users.slice(startIndex, endIndex));
                     renderPagination();
                 }
             });
         }
-
-        searchForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            currentPage = 1; // Reset về trang đầu
-            applyFiltersAndRender();
-        });
-
-        filterSelect.addEventListener("change", function () {
-            currentPage = 1; // Reset về trang đầu
-            applyFiltersAndRender();
-        });
-
         fetchUsers();
     });
-
 </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const searchInput = document.getElementById("searchInput");
-        const filterSelect = document.getElementById("filterSelect");
-        const searchForm = document.getElementById("searchForm");
-        const tableBody = document.querySelector("tbody");
-        const usersPerPage = 15;
-        let currentPage = 1;
-        let users = []; // Danh sách người dùng lấy từ server
 
-        // Fetch dữ liệu users từ server
-        async function fetchUsers() {
-            try {
-                const response = await fetch('/users'); // Thay URL API phù hợp
-                if (!response.ok) throw new Error(`Failed to fetch users: ${response.statusText}`);
-                users = await response.json();
-                renderTable(users); // Hiển thị tất cả user ban đầu
-                populateFilterOptions(); // Cập nhật các lựa chọn role vào filter
-            } catch (error) {
-                console.error("Error fetching users:", error);
-            }
-        }
-
-        // Cập nhật danh sách các vai trò vào filterSelect (loại bỏ ADMIN)
-        function populateFilterOptions() {
-            const roles = [...new Set(users.map(user => user.roleName))]; // Lấy danh sách vai trò duy nhất
-            filterSelect.innerHTML = `<option value="">All Roles</option>`; // Thêm lựa chọn "Tất cả"
-
-            // Loại bỏ ADMIN khỏi danh sách vai trò
-            const filteredRoles = roles.filter(role => role !== "ADMIN");
-
-            // Thêm các vai trò còn lại vào filterSelect
-            filteredRoles.forEach(role => {
-                const option = document.createElement("option");
-                option.value = role;
-                option.textContent = role;
-                filterSelect.appendChild(option);
-            });
-        }
-
-        // Xử lý tìm kiếm theo tên (searchInput)
-        function handleSearch() {
-            const searchTerm = searchInput.value.trim().toLowerCase();
-
-            // Lọc danh sách user theo tên (fullName hoặc jname)
-            const filteredUsers = users.filter(user =>
-                user.fullName?.toLowerCase().includes(searchTerm) ||
-                user.jname?.toLowerCase().includes(searchTerm)
-            );
-
-            renderTable(filteredUsers); // Hiển thị kết quả tìm kiếm
-        }
-
-        // Xử lý lọc theo vai trò (filterSelect)
-        function handleFilter() {
-            const selectedRole = filterSelect.value;
-
-            // Lọc danh sách user theo vai trò (roleName)
-            const filteredUsers = selectedRole === "" ? users : users.filter(user => user.roleName === selectedRole);
-
-            renderTable(filteredUsers); // Hiển thị kết quả lọc theo vai trò
-        }
-
-        // Hiển thị bảng user
-        function renderTable(data) {
-            tableBody.innerHTML = ""; // Xóa dữ liệu cũ
-
-            if (data.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="6" class="text-center">Không tìm thấy kết quả</td></tr>`;
-                return;
-            }
-
-            data.forEach((user, index) => {
-                const fullName = user.fullName || "N/A";
-                const jName = user.jname || "N/A";
-                const roleName = user.roleName || "N/A";
-                const img = user.img || 'img/figure/admin.jpg';
-
-                const row = `
-                <tr>
-                    <td>${index + 1 + (currentPage - 1) * usersPerPage}</td>
-                    <td><img src="${img}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;"></td>
-                    <td>${fullName}</td>
-                    <td>${jName}</td>
-                    <td>${roleName}</td>
-                    <td>
-                        <a href="users-details.html?userId=${user.id}" class="text-decoration-none text-primary">
-                            <i class="fas fa-eye"></i> View Details
-                        </a>
-                    </td>
-                </tr>
-            `;
-                tableBody.innerHTML += row;
-            });
-        }
-
-        // Gắn sự kiện tìm kiếm (search input)
-        searchForm.addEventListener("submit", function (e) {
-            e.preventDefault(); // Ngăn trang reload
-            handleSearch();
-        });
-
-        // Gắn sự kiện thay đổi filter (filter select)
-        filterSelect.addEventListener("change", function () {
-            handleSearch(); // Gọi lại tìm kiếm để kết hợp tìm kiếm và lọc
-            handleFilter(); // Lọc lại user khi chọn vai trò mới
-        });
-
-        // Fetch users khi load trang
-        fetchUsers();
-    });
-
-
-</script>
 
 <script>
     // Function to extract query parameter by name
