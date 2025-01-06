@@ -922,7 +922,6 @@
 
 </script>
 <script>
-    // Handling form submission for creating a semester
     document.querySelector('form.new-added-form').addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent default form submission
 
@@ -939,22 +938,21 @@
         // Validate start time: it should not be in the past
         if (startDate < currentDate) {
             alert('Start time cannot be in the past.');
-            return; // Stop the form submission
+            return;
         }
 
         // Validate end time: it should not be before the start time
         if (endDate < startDate) {
             alert('End time cannot be before the start time.');
-            return; // Stop the form submission
+            return;
         }
 
         // Set status based on the difference between current date and start time
-        let status = 'Inactive';  // Default status
+        let status = 'Inactive'; // Default status
 
         const timeDiff = startDate - currentDate;
-        const daysToStart = timeDiff / (1000 * 3600 * 24);  // Convert milliseconds to days
+        const daysToStart = timeDiff / (1000 * 3600 * 24); // Convert milliseconds to days
 
-        // If current date is within 7 days of start date, set status to 'Active'
         if (daysToStart <= 7 && daysToStart >= 0) {
             status = 'Active';
         }
@@ -964,7 +962,7 @@
             name: semesterName,
             start_time: startTime,
             end_time: endTime,
-            status: status  // Include the status in the data sent to the backend
+            status: status
         };
 
         // Send the data via AJAX
@@ -976,23 +974,24 @@
             body: JSON.stringify(semesterData)
         })
             .then(response => {
-                // Check if the response is OK (status 200-299)
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    return response.json().then(err => {
+                        throw new Error(err.message || 'Unknown error occurred');
+                    });
                 }
-                return response.json();  // Parse the response body as JSON (this already converts it to an object)
+                return response.json();
             })
             .then(data => {
-                // Display success message
                 alert(data.message);
                 window.location.reload();
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred while creating the semester.');
+                alert(error.message);
             });
     });
 </script>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const noticeBoardWrap = document.getElementById('notice-board-wrap');
