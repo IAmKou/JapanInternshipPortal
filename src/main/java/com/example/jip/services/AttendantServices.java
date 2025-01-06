@@ -78,8 +78,6 @@ public class AttendantServices {
 
 
 
-
-
     @Transactional
     public void updateAttendance(int classId, List<AttendantDTO> attendanceData) {
         LocalDate today = LocalDate.now();

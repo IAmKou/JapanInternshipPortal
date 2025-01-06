@@ -270,19 +270,7 @@ public class MaterialController {
 
         return ResponseEntity.ok("Xóa tài liệu và các bản ghi liên quan thành công!");
     }
-    private void uploadFilesToFolder(MultipartFile[] files, String folderName) {
-        Set<String> uploadedFiles = new HashSet<>();
-        for (MultipartFile file : files) {
-            if (!file.isEmpty() && uploadedFiles.add(file.getOriginalFilename())) {
-                try {
-                    FileUploadUtil.assertAllowed(file, FileUploadUtil.IMAGE_PATTERN);
-                    cloudinaryService.uploadFileToFolder(file, folderName);
-                } catch (Exception e) {
-                    throw new RuntimeException("Error uploading file: " + file.getOriginalFilename(), e);
-                }
-            }
-        }
-    }
+
 
     private String sanitizeFolderName(String folderName) {
         return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim().replace(" ", "_");

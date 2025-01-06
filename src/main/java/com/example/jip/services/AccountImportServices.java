@@ -33,6 +33,8 @@ public class AccountImportServices {
     @Autowired
     private CloudinaryService cloudinaryService;
     @Autowired
+    private S3Service s3Service;
+    @Autowired
     private MarkReportRepository markReportRepository;
     @Autowired
     private ExamRepository examRepository;
@@ -264,8 +266,8 @@ public class AccountImportServices {
             //Em luong co the check lai ham vs sua lai file excel nhe, e vinh test add dc vao file r
             if (imageBytes != null) {
                 MultipartFile imageFile = new MockMultipartFile("file", "image.jpg", "image/jpeg", imageBytes);
-                CloudinaryResponse response = cloudinaryService.uploadFileToFolder(imageFile, "Account/"); // Upload to Cloudinary and return URL
-                return response.getUrl();
+                String response = s3Service.uploadFile(imageFile, "Account/", imageFile.getOriginalFilename()); // Upload to Cloudinary and return URL
+                return response;
             }
 
         } catch (Exception e) {
@@ -274,9 +276,6 @@ public class AccountImportServices {
         return null;
     }
 
-    private String sanitizeFolderName(String folderName) {
-        return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim().replace(" ", "_");
-    }
 
     private byte[] getImageBytesFromExcel(XSSFWorkbook workbook) {
         for (XSSFPictureData pictureData : workbook.getAllPictures()) {

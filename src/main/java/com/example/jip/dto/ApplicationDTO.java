@@ -21,6 +21,7 @@
          String category;
          String content;
          String img;
+         List<String> files;
         Date created_date;
          Status status; // Đổi tên enum
          String reply;
@@ -55,7 +56,6 @@
                 this.img = "No files available";  // Nếu danh sách trống, gán chuỗi mặc định
             }
         }
-
 
 
     }

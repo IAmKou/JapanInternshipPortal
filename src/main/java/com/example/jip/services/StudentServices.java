@@ -23,6 +23,9 @@ public class StudentServices {
     private CloudinaryService cloudinaryService;
 
     @Autowired
+    private S3Service s3Service;
+
+    @Autowired
     private EmailServices emailServices;
 
     @Autowired
@@ -46,8 +49,8 @@ public class StudentServices {
         }
 
         // Upload image and passport
-        String imgUrl = cloudinaryService.uploadFileToFolder(img, "Account/").getUrl();
-        String passUrl = cloudinaryService.uploadFileToFolder(passport, "Account/").getUrl();
+        String imgUrl = s3Service.uploadFile(img, "Account/Student/" + fullname, img.getOriginalFilename());
+        String passUrl =  s3Service.uploadFile(passport, "Account/Student/" + fullname + "/Passport", img.getOriginalFilename());
 
         // Create a new Student object
         Student student = new Student();

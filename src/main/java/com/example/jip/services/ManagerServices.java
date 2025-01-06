@@ -22,6 +22,9 @@ public class ManagerServices {
     private CloudinaryService cloudinaryService;
 
     @Autowired
+    private S3Service s3Service;
+
+    @Autowired
     private EmailServices emailServices;
 
 
@@ -35,7 +38,8 @@ public class ManagerServices {
             throw new IllegalArgumentException("Duplicate email or phone number found");
         }
 
-        String imgUrl = cloudinaryService.uploadFileToFolder(img, "Account/").getUrl();
+
+        String imgUrl = s3Service.uploadFile(img, "Account/Manager/" + fullname, img.getOriginalFilename());
 
         Manager manager = new Manager();
         manager.setFullname(fullname);
