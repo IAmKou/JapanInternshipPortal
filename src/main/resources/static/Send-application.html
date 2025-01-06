@@ -234,6 +234,17 @@
             width: 100% !important;                 /* Tăng độ rộng đến 100% của container */
         }
 
+        /* Đảm bảo xóa bỏ bất kỳ màu border nào từ select2 */
+        .select2-container {
+            border: none !important; /* Loại bỏ border mặc định từ select2 */
+        }
+
+        /* Đảm bảo rằng khi thả xuống, không có đường viền màu đen */
+        .select2-selection {
+            border: 2px solid #007bff !important; /* Chỉ sử dụng màu xanh dương */
+        }
+
+
         /* Khi người dùng focus vào select */
         .select2:focus {
             border-color: #007bff !important;  /* Giữ màu xanh khi focus */
@@ -811,6 +822,7 @@
             options = [
                 { value: "Schedule Changing Application", text: "schedule-change" },
                 { value: "Teacher Change Application", text: "change_teacher" },
+                { value: "Edit Attandance", text: "edit_att" },
                 { value: "Others Application", text: "others" }
             ];
         }
