@@ -1324,17 +1324,43 @@
         let currentPage = 1;
         let users = [];
 
+        const searchInput = document.querySelector("#searchInput");
+        const filterSelect = document.querySelector("#filterSelect");
+
+        let searchQuery = '';
+        let selectedRole = '';
+
         async function fetchUsers() {
             try {
                 const response = await fetch(`/users`);
                 if (!response.ok) throw new Error(`Failed to fetch: ${response.statusText}`);
                 const allUsers = await response.json();
-                users = allUsers.filter(user => user.id !== 1);
-                renderTable(users.slice(0, usersPerPage));
+                users = allUsers.filter(user => user.id !== 1);  // Exclude admin
+                renderTable(filterUsers(users)); // Render with applied filters
                 renderPagination();
             } catch (error) {
                 console.error("Error fetching users:", error);
             }
+        }
+
+        // Tìm kiếm và lọc người dùng
+        function filterUsers(users) {
+            let filteredUsers = [...users];
+
+            // Lọc theo tên và tên Nhật (search query)
+            if (searchQuery) {
+                filteredUsers = filteredUsers.filter(user =>
+                    (user.fullName && user.fullName.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                    (user.jname && user.jname.toLowerCase().includes(searchQuery.toLowerCase()))
+                );
+            }
+
+            // Lọc theo vai trò (role)
+            if (selectedRole) {
+                filteredUsers = filteredUsers.filter(user => user.roleName && user.roleName.toLowerCase() === selectedRole.toLowerCase());
+            }
+
+            return filteredUsers;
         }
 
         function renderTable(filteredUsers) {
@@ -1349,23 +1375,24 @@
                 const img = user.img || 'img/figure/admin.jpg';
 
                 const row = `
-                <tr>
-                    <td>${index + 1 + (currentPage - 1) * usersPerPage}</td>
-                    <td><img src="${img}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;"></td>
-                    <td>${fullName}</td>
-                    <td>${jname}</td>
-                    <td>${roleName}</td>
-                    <td><a href="users-details.html?userId=${user.id}" class="text-decoration-none text-primary" title="View User Details">
-                            <i class="fas fa-eye" style="font-size: 16px; margin-right: 8px;"></i>View Details</a></td>
-                </tr>`;
+            <tr>
+                <td>${index + 1 + (currentPage - 1) * usersPerPage}</td>
+                <td><img src="${img}" alt="User Image" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;"></td>
+                <td>${fullName}</td>
+                <td>${jname}</td>
+                <td>${roleName}</td>
+                <td><a href="users-details.html?userId=${user.id}" class="text-decoration-none text-primary" title="View User Details">
+                        <i class="fas fa-eye" style="font-size: 16px; margin-right: 8px;"></i>View Details</a></td>
+            </tr>`;
                 tableBody.innerHTML += row;
             });
         }
 
         function renderPagination() {
-            const totalPages = Math.ceil(users.length / usersPerPage);
+            const filteredUsers = filterUsers(users); // Lọc dữ liệu người dùng theo tìm kiếm và lọc
+            const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
-            // Xóa các nút số trang cũ trước khi thêm mới
+            // Xóa các nút số trang cũ
             paginationContainer.querySelectorAll("li.page-item.number").forEach(item => item.remove());
 
             for (let i = 1; i <= totalPages; i++) {
@@ -1385,7 +1412,7 @@
                     currentPage = i;
                     const startIndex = (currentPage - 1) * usersPerPage;
                     const endIndex = startIndex + usersPerPage;
-                    renderTable(users.slice(startIndex, endIndex));
+                    renderTable(filteredUsers.slice(startIndex, endIndex));
                     renderPagination();
                 });
 
@@ -1397,11 +1424,11 @@
         }
 
         function updatePaginationButtons() {
-            const totalPages = Math.ceil(users.length / usersPerPage);
+            const filteredUsers = filterUsers(users);
+            const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
             const prevButton = paginationContainer.querySelector(".previous");
             const nextButton = paginationContainer.querySelector(".next");
 
-            // Thêm hoặc gỡ bỏ lớp 'disabled' dựa trên điều kiện
             prevButton.classList.toggle("disabled", currentPage === 1);
             nextButton.classList.toggle("disabled", currentPage === totalPages);
 
@@ -1411,7 +1438,7 @@
                     currentPage--;
                     const startIndex = (currentPage - 1) * usersPerPage;
                     const endIndex = startIndex + usersPerPage;
-                    renderTable(users.slice(startIndex, endIndex));
+                    renderTable(filteredUsers.slice(startIndex, endIndex));
                     renderPagination();
                 }
             });
@@ -1422,11 +1449,27 @@
                     currentPage++;
                     const startIndex = (currentPage - 1) * usersPerPage;
                     const endIndex = startIndex + usersPerPage;
-                    renderTable(users.slice(startIndex, endIndex));
+                    renderTable(filteredUsers.slice(startIndex, endIndex));
                     renderPagination();
                 }
             });
         }
+
+        // Khi form search được submit
+        document.querySelector("#searchForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            searchQuery = searchInput.value.trim(); // Lấy từ ô tìm kiếm
+            renderTable(filterUsers(users).slice(0, usersPerPage)); // Render lại bảng với kết quả tìm kiếm
+            renderPagination();
+        });
+
+        // Khi chọn bộ lọc vai trò
+        filterSelect.addEventListener("change", function () {
+            selectedRole = filterSelect.value; // Lấy giá trị bộ lọc
+            renderTable(filterUsers(users).slice(0, usersPerPage)); // Render lại bảng với kết quả lọc
+            renderPagination();
+        });
+
         fetchUsers();
     });
 </script>
