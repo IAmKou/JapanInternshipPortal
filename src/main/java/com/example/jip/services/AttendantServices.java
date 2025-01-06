@@ -16,6 +16,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -83,13 +84,6 @@ public class AttendantServices {
     @Transactional
     public void updateAttendance(int classId, List<AttendantDTO> attendanceData) {
         LocalDate today = LocalDate.now();
-        LocalTime now = LocalTime.now();
-
-        // Prevent updates after midnight
-        if (now.isAfter(LocalTime.MIDNIGHT)) {
-            throw new IllegalStateException("Attendance updates are not allowed after midnight.");
-        }
-
         Date date = Date.valueOf(today);
 
         // Fetch schedules for the class and date
@@ -102,16 +96,22 @@ public class AttendantServices {
         }
         Schedule schedule = schedules.get(0);
 
+        List<Attendant> attendantsToUpdate = new ArrayList<>();
+
         for (AttendantDTO dto : attendanceData) {
             // Validate DTO
             if (dto.getDate() == null || !dto.getDate().toLocalDate().equals(today)) {
                 throw new IllegalArgumentException("Invalid or mismatched date in attendance record.");
             }
+            if (dto.isFinalized()) {
+                throw new IllegalArgumentException("Attendance record is finalized.");
+            }
 
             // Fetch existing attendance record or create a new one
             Attendant attendant = attendantRepository
                     .findByStudentIdAndScheduleIdAndDates(dto.getStudentId(), schedule.getId(), dto.getDate())
-                    .orElseGet(Attendant::new);
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "Attendance record not found for student ID " + dto.getStudentId() + ", schedule ID " + schedule.getId() + " and date " + dto.getDate()));
 
             // Fetch the student
             Student student = studentRepository.findById(dto.getStudentId())
@@ -122,21 +122,17 @@ public class AttendantServices {
             attendant.setSchedule(schedule);
             attendant.setStatus(dto.getStatus());
             attendant.setDate(dto.getDate());
+            attendant.setStartTime(Time.valueOf("13:30:00"));
+            attendant.setEndTime(Time.valueOf("17:00:00"));
+            attendant.setIsFinalized(dto.isFinalized());
+
+            attendantsToUpdate.add(attendant);
         }
 
-        // Batch save all attendants
-        attendantRepository.saveAll(attendanceData.stream()
-                .map(dto -> {
-                    Attendant attendant = new Attendant();
-                    attendant.setStudent(studentRepository.findById(dto.getStudentId())
-                            .orElseThrow(() -> new IllegalArgumentException("Student not found: " + dto.getStudentId())));
-                    attendant.setSchedule(schedule);
-                    attendant.setStatus(dto.getStatus());
-                    attendant.setDate(dto.getDate());
-                    return attendant;
-                })
-                .collect(Collectors.toList()));
+        // Save updated attendance records
+        attendantRepository.saveAll(attendantsToUpdate);
     }
+
 
 }
 

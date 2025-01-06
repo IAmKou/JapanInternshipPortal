@@ -25,7 +25,7 @@ public interface AttendantRepository extends JpaRepository<Attendant, Integer> {
     Optional<Attendant> findByStudentIdAndScheduleIdAndDates(int studentId, int scheduleId, Date date);
 
     @Query("SELECT new com.example.jip.dto.AttendantDTO( " +
-            "   a.id ,a.status,a.date,s.id,sch.id, s.fullname , s.mark ,s.img )" +
+            "   a.id ,a.status,a.date,s.id,sch.id, s.fullname , s.mark ,s.img ,a.isFinalized)" +
             "FROM \n" +
             "    Attendant a\n" +
             "JOIN \n" +
