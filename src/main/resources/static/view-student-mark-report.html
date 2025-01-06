@@ -25,6 +25,41 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        /* Container chính */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%; /* Bao phủ toàn bộ trang */
+        }
+        /* Footer nằm ở cuối */
+        .footer-wrap-layout1 {
+            background-color: #ec9006;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .footer-wrap-layout1 a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient-yellow {
+            background: linear-gradient(45deg, #ffcc00, #ff9900);
+            color: #fff;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -532,7 +567,7 @@
                             </tr>
                             </tbody>
                         </table>
-                        <button class="btn btn-primary" onclick="updateMarkReport()">Update Report</button>
+                        <button class="btn btn-gradient-yellow btn-search" onclick="updateMarkReport()" style="margin-top: 15px; margin-left: 8px">Update Report</button>
                     </div>
                 </div>
 
@@ -570,6 +605,18 @@
             </div>
         </div>
     </div>
+    <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+        <div style="background-color: #ec9006; padding: 15px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+                            rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 </div>
 <!-- Page Area End Here -->
