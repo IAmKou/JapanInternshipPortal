@@ -902,13 +902,13 @@
                         <div class="form-group col-md-6">
                             <label for="fullname_form1" class="font-weight-bold">Fullname <span class="text-danger">*</span></label>
                             <div class="input-icon">
-                                <input type="text" name="fullname" id="fullname_form1" class="form-control shadow-sm rounded" placeholder="Enter your name">
+                                <input type="text" name="fullname" id="fullname_form1" class="form-control shadow-sm rounded" placeholder="Enter your name" required>
                             </div>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="jname_form1" class="font-weight-bold">Japan Name <span class="text-danger">*</span></label>
                             <div class="input-icon">
-                                <input type="text" name="jname" id="jname_form1" class="form-control shadow-sm rounded" placeholder="Enter your Japan name">
+                                <input type="text" name="jname" id="jname_form1" class="form-control shadow-sm rounded" placeholder="Enter your Japan name" required>
                             </div>
                         </div>
                     </div>
@@ -916,11 +916,11 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="email_form1" class="font-weight-bold">Email <span class="text-danger">*</span></label>
-                            <input type="email" name="email" id="email_form1" class="form-control shadow-sm rounded" placeholder="ex: abc@gmail.com">
+                            <input type="email" name="email" id="email_form1" class="form-control shadow-sm rounded" placeholder="ex: abc@gmail.com" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="phone_form1" class="font-weight-bold">Phone Number <span class="text-danger">*</span></label>
-                            <input type="text" name="phoneNumber" id="phone_form1" class="form-control shadow-sm rounded" placeholder="ex: 012345678">
+                            <input type="text" name="phoneNumber" id="phone_form1" class="form-control shadow-sm rounded" placeholder="ex: 012345678" required>
                         </div>
                     </div>
 
@@ -946,7 +946,7 @@
 
                         <div class="form-group col-md-6">
                             <label for="img_form1" class="font-weight-bold">Profile Image <span class="text-danger">*</span></label>
-                            <input type="file" class="form-control-file shadow-sm" name="img" id="img_form1">
+                            <input type="file" class="form-control-file shadow-sm" name="img" id="img_form1" required>
                         </div>
                     </div>
 
@@ -1080,7 +1080,7 @@
             </div>
             <div class="modal-body text-center">
                 <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
-                <h4 class="text-success">Account was add successful!</h4>
+                <h4 class="text-success" id="modal-message">Account was added successfully!</h4> <!-- Sửa tại đây -->
             </div>
         </div>
     </div>
@@ -1304,27 +1304,13 @@
 <!-- fetch user -->
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    const roleTranslations = {
-        "en": {
-            "ADMIN": "Admin",
-            "TEACHER": "Teacher",
-            "STUDENT": "Student"
-        },
-        "ja": {
-            "ADMIN": "管理者",
-            "TEACHER": "教師",
-            "STUDENT": "学生"
-        }
-    };
+
     if (userDetails) {
         const userFullNameElements = document.querySelectorAll('.userFullName');
         const userRoleElements = document.querySelectorAll('.userRole');
 
         // Lấy ngôn ngữ hiện tại từ localStorage
-        const currentLanguage = localStorage.getItem('language') || 'en';  // Mặc định là 'en'
 
-        // Hiển thị thông tin người dùng với tên và vai trò dịch theo ngôn ngữ hiện tại
-        const translatedRoleName = roleTranslations[currentLanguage][userDetails.roleName] || userDetails.roleName;
 
         if (userDetails.roleName === "ADMIN") {
             // Hiển thị tên đăng nhập và vai trò cho ADMIN
@@ -1332,7 +1318,7 @@
                 element.textContent = userDetails.username;
             });
             userRoleElements.forEach(element => {
-                element.textContent = translatedRoleName;
+                element.textContent = userDetails.roleName;
             });
 
             // Ẩn các mục của người dùng khác (giáo viên và học sinh) vì ADMIN không cần
@@ -1344,7 +1330,7 @@
                 element.textContent = userDetails.fullName;
             });
             userRoleElements.forEach(element => {
-                element.textContent = translatedRoleName;
+                element.textContent = userDetails.roleName;
             });
 
             // Chỉ hiển thị mục của giáo viên, ẩn mục của học sinh
@@ -1357,7 +1343,7 @@
                 element.textContent = userDetails.fullName;
             });
             userRoleElements.forEach(element => {
-                element.textContent = translatedRoleName;
+                element.textContent = userDetails.roleName;
             });
 
             // Chỉ hiển thị mục của học sinh
@@ -1377,9 +1363,6 @@
     document.addEventListener("DOMContentLoaded", function () {
         const tableBody = document.querySelector(".table tbody");
         const paginationContainer = document.querySelector(".pagination");
-        const language = localStorage.getItem('language') || 'en';
-        getTranslation(language);
-
         const usersPerPage = 30;  // Số người dùng mỗi trang
         let currentPage = 1;  // Trang hiện tại
         let users = [];  // Mảng chứa tất cả người dùng
@@ -1637,7 +1620,7 @@
     });
 </script>
 <script>
-    document.getElementById('createForm').addEventListener('submit', function(event) {
+    document.getElementById('createForm').addEventListener('submit', function (event) {
         event.preventDefault(); // Ngăn chặn hành động submit mặc định
 
         const formData = new FormData(this);
@@ -1654,24 +1637,48 @@
         const maxFileSizeMB = 2;
         const gender = document.querySelector('input[name="gender"]:checked'); // Kiểm tra có chọn giới tính không
 
-        // Check email hợp lệ
-        if (!isValidEmail(email)) {
-            showMessageForm1('Please enter a valid email (e.g., abc@domain.com or abc@fpt.edu.vn).');
-            return;
-        }
-        if (!gender) {
-            showMessageForm1('Please select a gender.');
-            return;
-        }
-        // Check số điện thoại hợp lệ
-        if (!isValidPhoneNumber(phone)) {
-            showMessageForm1('Please enter a valid phone number starting with 0, containing 10 digits.');
+        // Reset lỗi trước khi kiểm tra
+        resetFormErrors();
+
+        // Kiểm tra trường email không để trống
+        if (email === '') {
+            showMessageForm1('email_form1', 'Email cannot be empty.');
             return;
         }
 
-        // Check hình ảnh hợp lệ
+        // Kiểm tra email hợp lệ
+        if (!isValidEmail(email)) {
+            showMessageForm1('email_form1', 'Please enter a valid email (e.g., abc@domain.com or abc@fpt.edu.vn).');
+            return;
+        }
+
+        // Kiểm tra trường số điện thoại không để trống
+        if (phone === '') {
+            showMessageForm1('phone_form1', 'Phone number cannot be empty.');
+            return;
+        }
+
+        // Check số điện thoại hợp lệ
+        if (!isValidPhoneNumber(phone)) {
+            showMessageForm1('phone_form1', 'Please enter a valid phone number starting with 0, containing 10 digits.');
+            return;
+        }
+
+        // Kiểm tra hình ảnh không trống
+        if (!imgInput.files.length) {
+            showMessageForm1('img_form1', 'Please select an image.');
+            return;
+        }
+
+        // Kiểm tra hình ảnh hợp lệ
         if (!validateImageFile('img_form1', allowedImageTypes, maxFileSizeMB)) {
-            showMessageForm1(`Invalid image. Allowed: JPEG/PNG up to ${maxFileSizeMB}MB.`);
+            showMessageForm1('img_form1', `Invalid image. Allowed: JPEG/PNG up to ${maxFileSizeMB}MB.`);
+            return;
+        }
+
+        // Kiểm tra có chọn giới tính không
+        if (!gender) {
+            showMessageForm1('gender_form1', 'Please select a gender.');
             return;
         }
 
@@ -1685,38 +1692,33 @@
                 console.log('Server response:', data);
 
                 if (data.includes("Error")) {
-                    showMessageForm1(data);  // Hiển thị thông báo lỗi nếu có
+                    showMessageForm1('global', data);  // Hiển thị thông báo lỗi chung
                 } else {
-                    // Đặt thông điệp cho modal thành công
-                    document.getElementById("modal-message").textContent = "Account was added successfully!";
-
-                    // Tạo đối tượng modal và hiển thị
-                    var myModal = new bootstrap.Modal(document.getElementById('success-modal1'));
-                    myModal.show();  // Hiển thị modal sau khi submit thành công
-
-                    // Gọi reload sau một thời gian để người dùng thấy thông báo
-                    setTimeout(() => {
-                        location.reload();  // Reload trang sau khi thành công
-                    }, 1000);  // Đợi 1 giây trước khi reload
+                    alert(data);  // Hiển thị thông báo thành công
+                    location.reload();  // Reload lại trang sau khi lưu dữ liệu thành công
                 }
             })
             .catch((error) => {
                 console.error('Error:', error);
-                showMessageForm1(error.message || 'Failed to create the account. Please try again later.');
+                showMessageForm1('global', error.message || 'Failed to create the account. Please try again later.');
             });
+
     });
 
-    // Function để hiển thị lỗi trong modal
-    function showMessageForm1(message) {
-        const messageDiv = document.getElementById('message_form1');
-
-        // Chắc chắn rằng message là chuỗi hợp lệ
-        if (!message || message.trim() === '') {
-            message = 'An unknown error occurred.';  // Default message
+    // Hiển thị lỗi dưới mỗi input
+    function showMessageForm1(inputId, message) {
+        const errorElement = document.getElementById(inputId + '_error');
+        if (errorElement) {
+            errorElement.classList.remove('d-none');
+            errorElement.textContent = message;
         }
+    }
 
-        messageDiv.classList.remove('d-none'); // Mở lại div thông báo
-        messageDiv.innerText = message;  // Hiển thị thông báo
+    // Reset tất cả thông báo lỗi
+    function resetFormErrors() {
+        document.querySelectorAll('#createForm .text-danger').forEach((errorElement) => {
+            errorElement.classList.add('d-none');
+        });
     }
 
     // Validates email
@@ -1753,11 +1755,15 @@
 
     // Reset thông báo khi người dùng tương tác lại với form
     document.querySelectorAll('#createForm input').forEach((input) => {
-        input.addEventListener('input', function() {
-            const messageDiv = document.getElementById('message_form1');
-            messageDiv.classList.add('d-none'); // Ẩn thông báo lỗi khi người dùng thay đổi input
+        input.addEventListener('input', function () {
+            const errorElement = document.getElementById(input.id + '_error');
+            if (errorElement) {
+                errorElement.classList.add('d-none'); // Ẩn thông báo lỗi khi người dùng thay đổi input
+            }
         });
     });
+
+
 
 
 </script>
