@@ -17,6 +17,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity
@@ -28,32 +30,37 @@ public class SecurityConfig {
     @Autowired
     private RoleRepository roleRepository;
 
+    private final LoginPageRedirectionFilter loginPageRedirectionFilter;
     private final CustomAuthenticationSuccessHandler successHandler;
     private final CustomUserDetailServices customUserDetailsService;
 
-    public SecurityConfig(CustomAuthenticationSuccessHandler successHandler, CustomUserDetailServices customUserDetailsService) {
+    public SecurityConfig(LoginPageRedirectionFilter loginPageRedirectionFilter, CustomAuthenticationSuccessHandler successHandler, CustomUserDetailServices customUserDetailsService) {
+        this.loginPageRedirectionFilter = loginPageRedirectionFilter;
         this.successHandler = successHandler;
         this.customUserDetailsService = customUserDetailsService;
     }
+
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin.html","/export.html").hasAuthority("ADMIN")
+                        .requestMatchers("/admin.html", "/export.html").hasAuthority("ADMIN")
                         .requestMatchers("/student.html", "list-student-assignment.html").hasAuthority("STUDENT")
                         .requestMatchers("/teacher.html", "add-assignment.html", "list-assignment.html").hasAuthority("TEACHER")
                         .requestMatchers("/manager.html").hasAuthority("MANAGER")
-                        .requestMatchers("/css/**", "/js/**", "/images/**","/img/**",
-                                "/webfonts/**","/fonts/**","/hts-cache/**","/style.css","/forgot-password.html",
-                                "/verify-code.html","/reset-password.html","/users/check","/users/verify","/users/reset-password")
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/img/**",
+                                "/webfonts/**", "/fonts/**", "/hts-cache/**", "/style.css",
+                                "/forgot-password.html", "/verify-code.html", "/reset-password.html",
+                                "/users/check", "/users/verify", "/users/reset-password")
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login.html")
                         .loginProcessingUrl("/perform_login")
-                        .failureUrl("/login.html?error=true")// Redirect on failure
-                        .successHandler(successHandler)//Redirect on success
+                        .failureUrl("/login.html?error=true")
+                        .successHandler(successHandler)
                         .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
@@ -61,8 +68,14 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll());
+
+        // Register the custom filter
+        http.addFilterBefore(loginPageRedirectionFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
+
+
 
 
     @Bean

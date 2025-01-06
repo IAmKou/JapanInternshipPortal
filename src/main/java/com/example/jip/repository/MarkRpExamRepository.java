@@ -21,6 +21,11 @@ public interface MarkRpExamRepository extends JpaRepository<MarkReportExam, Mark
     List<MarkReportExam> findAllByMarkRpId(int markRpId);
 
     @Query("SELECT DISTINCT mre FROM MarkReportExam mre  " +
+            "JOIN mre.exam e " +
+            "JOIN mre.markReport mr Where mr.id  = :markRpId and mre.exam.title = :examName")
+    MarkReportExam findByMarkRpIdAndExamName(int markRpId, String examName);
+
+    @Query("SELECT DISTINCT mre FROM MarkReportExam mre  " +
             "JOIN mre.markReport mr " +
             "JOIN Listt l on l.student.id = mr.student.id " +
             "WHERE l.clas.id = :classId")

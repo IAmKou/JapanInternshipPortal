@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.sql.Date;
 import java.sql.Time;
 @Entity
-@Table(name="Schedule")
+@Table(name="schedule")
 @Setter
 @Getter
 public class Schedule {

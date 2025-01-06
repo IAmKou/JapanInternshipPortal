@@ -99,21 +99,6 @@ CREATE TABLE Holiday (
                          date DATE NOT NULL UNIQUE
 );
 
--- Curriculum table
-CREATE TABLE Curriculum (
-                            id INT AUTO_INCREMENT PRIMARY KEY,
-                            subject VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-                            total_slot INT DEFAULT 52,
-                            total_time INT DEFAULT 536 -- Total time in hours
-);
-
-Create table Curriculum_information (
-                                        id Int auto_increment primary key,
-                                        curriculum_id int,
-                                        description LONGTEXT character set utf8mb4 COLLATE utf8mb4_unicode_ci,
-                                        foreign key (curriculum_id) references Curriculum(id) ON DELETE CASCADE
-);
-
 -- Schedule table
 CREATE TABLE Schedule (
                           id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -129,27 +114,30 @@ CREATE TABLE Schedule (
 );
 
 CREATE TABLE room_availability (
-                                  id INT AUTO_INCREMENT PRIMARY KEY,
-                                  room_id INT NOT NULL,
-                                  date DATE NOT NULL,
-                                  status ENUM('Available', 'Occupied') DEFAULT 'Available',
-                                  schedule_id BIGINT DEFAULT NULL,
-                                  FOREIGN KEY (room_id) REFERENCES Room(id) ON DELETE CASCADE,
-                                  FOREIGN KEY (schedule_id) REFERENCES Schedule(id) ON DELETE SET NULL,
-                                  UNIQUE (room_id, date)
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    room_id INT NOT NULL,
+    class_id INT default NULL,
+    date DATE NOT NULL,
+    status ENUM('Available', 'Occupied') DEFAULT 'Available',
+    schedule_id BIGINT DEFAULT NULL,
+    FOREIGN KEY (room_id) REFERENCES Room(id) ON DELETE CASCADE,
+    FOREIGN KEY (class_id) REFERENCES Class(id) ON DELETE SET NULL,
+    FOREIGN KEY (schedule_id) REFERENCES Schedule(id) ON DELETE SET NULL,
+    UNIQUE (room_id, date)
 );
 
 -- Attendant table
 CREATE TABLE Attendant (
                            Id INT AUTO_INCREMENT PRIMARY KEY,
-                           student_id INT,
+                           student_id INT null,
                            schedule_id BIGINT,
-                           status ENUM('Present', 'Absent', 'Late', 'Permitted') NOT NULL,
+                           status ENUM('Present', 'Absent', 'Late', 'Permitted')  NULL,
                            date DATE NOT NULL,
-                           curriculum_id INT NUll,
-                           FOREIGN KEY (student_id) REFERENCES Student(Id),
-                           FOREIGN KEY (schedule_id) REFERENCES Schedule(Id),
-                           FOREIGN KEY (curriculum_id) REFERENCES curriculum(id)
+                           start_time time default '13:30:00',
+                           end_time time default '17:00:00',
+                           isFinalized TINYINT(1) DEFAULT 0,
+                           FOREIGN KEY (student_id) REFERENCES Student(Id) ,
+                           FOREIGN KEY (schedule_id) REFERENCES Schedule(Id) On Delete cascade
 );
 
 
@@ -243,25 +231,6 @@ CREATE TABLE Thread (
                         FOREIGN KEY (creator_id) REFERENCES Account(Id)
 );
 
--- Post table (linked with Account)
-CREATE TABLE Post (
-                      Id INT AUTO_INCREMENT PRIMARY KEY,
-                      replies VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-                      date_created DATE NOT NULL,
-                      image BLOB,
-                      creator_id INT,
-                      FOREIGN KEY (creator_id) REFERENCES Account(Id)
-);
-
--- Comment table (linked with Account)
-CREATE TABLE Comment (
-                         Id INT AUTO_INCREMENT PRIMARY KEY,
-                         content TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-                         date DATE NOT NULL,
-                         creator_id INT,
-                         FOREIGN KEY (creator_id) REFERENCES Account(Id)
-);
-
 -- Application table (linked with Student and Teacher)
 CREATE TABLE Application (
                              Id INT AUTO_INCREMENT PRIMARY KEY,
@@ -290,11 +259,4 @@ CREATE TABLE Notification (
     FOREIGN KEY (recipient_account_id) REFERENCES Account(Id)
 );
 
--- Report table (linked with Account)
-CREATE TABLE Report (
-                        Id INT AUTO_INCREMENT PRIMARY KEY,
-                        Title VARCHAR(100),
-                        Content VARCHAR(100),
-                        reporter_id INT,
-                        FOREIGN KEY (reporter_id) REFERENCES Account(Id)
-);
+
