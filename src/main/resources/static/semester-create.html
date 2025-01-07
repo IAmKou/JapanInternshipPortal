@@ -1320,18 +1320,31 @@
                 })
                     .then(response => {
                         if (response.ok) {
-                            // Ẩn modal update
+                            // Ẩn modal update ngay lập tức
                             updateModalInstance.hide();
 
-                            // Sau khi ẩn modal, hiển thị modal thông báo thành công
-                            setTimeout(() => showSuccessModal("Semester updated successfully."), 300);
+                            // Hiển thị thông báo thành công sau khi modal cập nhật đã ẩn
+                            setTimeout(() => {
+                                // Hiển thị modal thông báo thành công
+                                showSuccessModal("Semester updated successfully.");
+                                const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+                                successModal.show();
+
+                                // Đợi 2 giây, đóng modal thông báo thành công và reload trang
+                                setTimeout(() => {
+                                    successModal.hide();  // Đóng success modal
+                                    window.location.reload();  // Reload trang sau 2 giây
+                                }, 2000);
+                            }, 300);  // Delay 300ms sau khi modal cập nhật bị ẩn
                         } else {
                             response.text().then(text => {
-                                // Ẩn modal update
+                                // Ẩn modal update nếu có lỗi
                                 updateModalInstance.hide();
 
-                                // Sau khi ẩn modal, hiển thị modal thông báo lỗi
-                                setTimeout(() => showErrorModal(`Error: ${text}`), 300);
+                                // Hiển thị thông báo lỗi nếu có lỗi trong quá trình cập nhật
+                                setTimeout(() => {
+                                    showErrorModal(`Error: ${text}`);
+                                }, 300);
                             });
                         }
                     })
@@ -1341,8 +1354,10 @@
                         // Ẩn modal update
                         updateModalInstance.hide();
 
-                        // Sau khi ẩn modal, hiển thị modal thông báo lỗi
-                        setTimeout(() => showErrorModal("Failed to update semester."), 300);
+                        // Hiển thị thông báo lỗi nếu không thể thực hiện cập nhật
+                        setTimeout(() => {
+                            showErrorModal("Failed to update semester.");
+                        }, 300);
                     });
             });
 
