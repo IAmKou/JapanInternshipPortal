@@ -107,7 +107,7 @@
         }
 
         #calendar {
-            max-width: 80%;
+            max-width: 100%;
             margin: 0 auto;
         }
     </style>
@@ -516,6 +516,7 @@
         const calendarEl = document.getElementById('calendar');
         const urlParams = new URLSearchParams(window.location.search);
         const classId = urlParams.get('classId');
+        const studentId = urlParams.get('studentId');
 
         if (!calendarEl) {
             console.error('The #calendar element is missing from the DOM.');
@@ -529,7 +530,7 @@
             },
             timeZone: 'UTC',
             events: function (fetchInfo, successCallback, failureCallback) {
-                fetch(`/schedule/get/class/${classId}`)
+                fetch(`/schedule/get/class/${classId}/student/${studentId}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Failed to fetch schedules');
@@ -538,14 +539,14 @@
                     })
                     .then(data => {
                         const events = data.map(schedule => ({
-                            id: schedule.id,
+                            id: schedule.scheduleId,
                             title: schedule.activity,
-                            start: schedule.date,
+                            start: schedule.scheduleDate,
                             backgroundColor: schedule.color,
                             borderColor: schedule.color,
                             extendedProps: {
                                 room: schedule.room,
-                                attendantStatus: schedule.attendantStatus
+                                attendantStatus: schedule.attendanceStatus
                             }
                         }));
                         successCallback(events);

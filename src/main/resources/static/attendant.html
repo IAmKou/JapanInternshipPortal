@@ -697,7 +697,7 @@
                         row.classList.remove('highlight');
                         attendanceData.push({
                             studentId: parseInt(studentId, 10),
-                            status: status,
+                            status: status.toUpperCase(),
                             date: new Date().toISOString().split('T')[0],
                         });
                     }

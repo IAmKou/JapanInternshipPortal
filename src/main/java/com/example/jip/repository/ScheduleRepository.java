@@ -56,25 +56,27 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     @Query("SELECT s FROM Schedule s WHERE s.clasz.id = :classId")
     List<Schedule> findByClaszId(@Param("classId") int classId);
 
-    @Query("""
-    SELECT new com.example.jip.dto.ScheduleAttendanceDTO(
-        s.id,
-        s.date,
-        s.day_of_week,
-        s.room,
-        s.activity,
-        st.id,
-        COALESCE(a.status, null),
-        COALESCE(a.date, null)
-    )
-    FROM Schedule s
-    JOIN s.clasz c
-    JOIN c.classLists cl
-    JOIN cl.student st
-    LEFT JOIN Attendant a ON a.schedule.id = s.id AND a.student.id = st.id
+    @Query(value = """
+    SELECT\s
+        CAST(s.id AS SIGNED) AS scheduleId,
+        s.date AS scheduleDate,
+        s.day_of_week AS dayOfWeek,
+        s.room AS room,
+        s.activity AS activity,
+        CAST(st.id AS SIGNED) AS studentId,
+        a.status AS attendanceStatus,
+        s.color AS color
+    FROM schedule s
+    JOIN class c ON s.class_id = c.id
+    JOIN list l ON c.id = l.class_id
+    JOIN student st ON l.student_id = st.id
+    LEFT JOIN attendant a ON a.schedule_id = s.id AND a.student_id = st.id
     WHERE c.id = :classId AND st.id = :studentId
-""")
-    List<ScheduleAttendanceDTO> findSchedulesWithAttendanceByClassId(@Param("classId") int classId, @Param("studentId") int studentId);
+""", nativeQuery = true)
+    List<Object[]> findSchedulesWithAttendanceByClassIdNative(
+            @Param("classId") int classId,
+            @Param("studentId") int studentId
+    );
 
 
     boolean existsBySemesterIdAndDateAndRoom(int semesterId, java.sql.Date date, String room);

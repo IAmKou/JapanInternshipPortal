@@ -10,17 +10,25 @@ import java.sql.Date;
 @Setter
 @Getter
 public class ScheduleAttendanceDTO {
-    private int scheduleId;
+    private Long scheduleId;
     private Date scheduleDate;
     private Schedule.dayOfWeek dayOfWeek;
     private String room;
     private String activity;
     private int studentId;
     private Attendant.Status attendanceStatus;
-    private Date attendanceDate;
+    private String color;
 
-    public ScheduleAttendanceDTO(int scheduleId, Date scheduleDate, Schedule.dayOfWeek dayOfWeek, String room, String activity
-            , int studentId, Attendant.Status attendanceStatus, Date attendanceDate) {
+    public ScheduleAttendanceDTO(
+            Long scheduleId,
+            Date scheduleDate,
+            Schedule.dayOfWeek dayOfWeek,
+            String room,
+            String activity,
+            int studentId,
+            Attendant.Status attendanceStatus,
+            String color
+    ) {
         this.scheduleId = scheduleId;
         this.scheduleDate = scheduleDate;
         this.dayOfWeek = dayOfWeek;
@@ -28,7 +36,8 @@ public class ScheduleAttendanceDTO {
         this.activity = activity;
         this.studentId = studentId;
         this.attendanceStatus = attendanceStatus;
-        this.attendanceDate = attendanceDate;
+        this.color = color;
     }
+
 
 }
