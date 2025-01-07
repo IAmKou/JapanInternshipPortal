@@ -203,12 +203,14 @@ public class AccountImportServices {
                 return;
             }
 
-            // Upload images to Cloudinary only after successful validation
-            String passportUrl = row.getCell(9).getStringCellValue();
-            String passport = uploadImageToS3(passportUrl, username, workbook);
-
             String imgPath = row.getCell(6).getStringCellValue();
             String imgUrl = uploadImageToS3(imgPath, username, workbook);
+
+            // Upload images to S3 only after successful validation
+            String passportUrl = row.getCell(9).getStringCellValue();
+            String passport = uploadImageToS32(passportUrl, username, workbook);
+
+
 
             // Find role
             int roleId = Integer.parseInt(dataFormatter.formatCellValue(row.getCell(2)).trim());
@@ -252,6 +254,29 @@ public class AccountImportServices {
         } catch (Exception e) {
             errors.add("Failed to process row: " + (row.getRowNum() + 1) + " due to: " + e.getMessage());
         }
+    }
+
+    private String uploadImageToS32(String imgPath, String userName, XSSFWorkbook workbook) {
+        try {
+            // If the image path is not a URL but embedded in the Excel, extract it.
+            if (imgPath != null && imgPath.startsWith("http")) {
+                return imgPath; // If it's a URL, return it directly.
+            }
+
+            String folderName = sanitizeFolderName("Account/Student/" + userName + "/Passport");
+
+            // Extract image from workbook if it's embedded
+            byte[] imageBytes = getImageBytesFromExcel(workbook);
+            if (imageBytes != null) {
+                MultipartFile imageFile = new MockMultipartFile("file", "image.jpg", "image/jpeg", imageBytes);
+                String response = s3Service.uploadFile(imageFile, folderName, imageFile.getOriginalFilename()); // Upload to Cloudinary and return URL
+                return response;
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Image extraction or upload failed: " + e.getMessage());
+        }
+        return null;
     }
 
     private String uploadImageToS3(String imgPath, String userName, XSSFWorkbook workbook) {
