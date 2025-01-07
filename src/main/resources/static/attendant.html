@@ -1,8 +1,5 @@
 <!doctype html>
 <html class="no-js" lang="">
-
-
-<!-- Mirrored from all-class-student.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -30,6 +27,23 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient-yellow {
+            background: linear-gradient(45deg, #ffcc00, #ff9900);
+            color: #fff;
+        }
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -101,11 +115,6 @@
             </div>
             <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
                 <ul class="navbar-nav">
-                    <li class="navbar-item header-search-bar">
-                        <div class="input-group stylish-input-group">
-
-                        </div>
-                    </li>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="navbar-item dropdown header-admin">
@@ -132,82 +141,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="navbar-item dropdown header-message">
-                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="far fa-envelope"></i>
-                            <div class="item-title d-md-none text-16 mg-l-10">Message</div>
-                            <span>5</span>
-                        </a>
 
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <div class="item-header">
-                                <h6 class="item-title">05 Message</h6>
-                            </div>
-                            <div class="item-content">
-                                <div class="media">
-                                    <div class="item-img bg-skyblue author-online">
-                                        <img src="img/figure/student11.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Maria Zaman</span> 
-                                                <span class="item-time">18:30</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-img bg-yellow author-online">
-                                        <img src="img/figure/student12.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Benny Roy</span> 
-                                                <span class="item-time">10:35</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-img bg-pink">
-                                        <img src="img/figure/student13.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Steven</span> 
-                                                <span class="item-time">02:35</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <div class="item-img bg-violet-blue">
-                                        <img src="img/figure/student11.png" alt="img">
-                                    </div>
-                                    <div class="media-body space-sm">
-                                        <div class="item-title">
-                                            <a href="#">
-                                                <span class="item-name">Joshep Joe</span> 
-                                                <span class="item-time">12:35</span> 
-                                            </a>  
-                                        </div>
-                                        <p>What is the reason of buy this item. 
-                                        Is it usefull for me.....</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
                     <li class="navbar-item dropdown header-notification">
                         <a id="notification-bell" class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                             <i class="far fa-bell"></i>
@@ -223,6 +157,7 @@
                             </div>
                         </div>
                     </li>
+
                     <li class="navbar-item dropdown header-language">
                         <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
@@ -364,36 +299,10 @@
                     <div class="card-body">
                         <div class="heading-layout1">
                             <div class="item-title">
-                                <h3>All Class Schedules</h3>
-                            </div>
-                           <div class="dropdown">
-                                <a class="dropdown-toggle" href="#" role="button" 
-                                data-toggle="dropdown" aria-expanded="false">...</a>
-        
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
-                                </div>
+                                <h3 style="margin-top: 15px">All Class Schedules</h3>
                             </div>
                         </div>
-                        <form class="mg-b-20">
-                            <div class="row gutters-8">
-                                <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                                    <input type="text" placeholder="Search by ID ..." class="form-control">
-                                </div>
-                                <div class="col-4-xxxl col-xl-4 col-lg-3 col-12 form-group">
-                                    <input type="text" placeholder="Search by Name ..." class="form-control">
-                                </div>
-                                <div class="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                                    <input type="text" placeholder="Search by Class ..." class="form-control">
-                                </div>
-                                <div class="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
-                                    <button type="submit" class="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                                </div>
-                            </div>
-                        </form>
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="margin-top: 15px">
                             <table class="table display text-nowrap">
                                 <thead>
                                     <tr>
@@ -412,7 +321,7 @@
                             </table>
                         </div>
                         <div class="d-flex justify-content-end">
-                        <button id="submitButton" class="login-btn">Submit Attendance</button>
+                        <button id="submitButton" class="btn btn-gradient-yellow btn-search">Submit Attendance</button>
                         </div>
                     </div>
                 </div>
@@ -433,6 +342,38 @@
             </div>
         </div>
     </footer>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-success" id="successModalLabel">
+                        <i class="fas fa-check-circle"></i> Success
+                    </h5>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-danger" id="errorModalLabel">
+                        <i class="fas fa-times-circle"></i> Error
+                    </h5>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- jquery-->
     <script src="js/jquery-3.3.1.min.js"></script>
     <!-- Plugins js -->
@@ -600,7 +541,7 @@
             // Function to handle errors
             function handleError(message) {
                 console.error(message);
-                alert(message);
+                showErrorModal(message);  // Sử dụng modal để hiển thị lỗi
             }
 
             if (classId) {
@@ -674,7 +615,7 @@
                             const dropdownMenu = document.createElement('div');
                             dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
                             dropdownMenu.innerHTML = `
-                    <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>`;
+                        <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>`;
                             dropdown.appendChild(dropdownMenu);
                             actionsCell.appendChild(dropdown);
                             row.appendChild(actionsCell);
@@ -731,7 +672,7 @@
 
                 if (!isValid) {
                     event.preventDefault();
-                    alert('Please check at least one checkbox for each student.');
+                    showErrorModal('Please check at least one checkbox for each student.');
                 } else {
                     submitButton.disabled = true;
                     fetch(`/attendant/save/${classId}`, {
@@ -748,7 +689,7 @@
                             return response.text();
                         })
                         .then(data => {
-                            alert(data);
+                            showSuccessModal(data);  // Hiển thị thông báo thành công
                         })
                         .catch(error => handleError('Error saving attendance: ' + error.message))
                         .finally(() => {
@@ -757,6 +698,21 @@
                 }
             });
         });
+
+        // Hàm hiển thị modal thông báo lỗi
+        function showErrorModal(message) {
+            const errorModal = new bootstrap.Modal(document.getElementById('error-modal'));
+            document.getElementById('errorModalLabel').innerText = message;
+            errorModal.show();
+        }
+
+        // Hàm hiển thị modal thông báo thành công
+        function showSuccessModal(message) {
+            const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+            document.getElementById('successModalLabel').innerText = message;
+            successModal.show();
+        }
+
     </script>
     <!-- fetch notification headbar-->
     <script>
@@ -861,10 +817,6 @@
                 console.error('Error fetching notifications:', error);
                 document.getElementById('notification-list').innerHTML = '<p>Failed to load notifications.</p>';
             });
-
     </script>
 </body>
-
-
-<!-- Mirrored from all-class-student.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>

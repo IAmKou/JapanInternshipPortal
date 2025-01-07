@@ -369,7 +369,6 @@
                                 <button type="button" id="submitRoomButton" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">
                                     Add Room
                                 </button>
-                                <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Clear Form</button>
                             </div>
                         </div>
                     </form>
@@ -394,6 +393,39 @@
         </div>
     </div>
 </footer>
+
+<!-- Success Modal -->
+<div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-success" id="successModalLabel">
+                    <i class="fas fa-check-circle"></i> Success
+                </h5>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-danger" id="errorModalLabel">
+                    <i class="fas fa-times-circle"></i> Error
+                </h5>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -486,12 +518,7 @@
             });
     }
 </script>
-
-
-
-
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
     if (userDetails) {
@@ -521,49 +548,73 @@
     }
 </script>
 <script>
-    document.getElementById('submitRoomButton').addEventListener('click', function (event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        // Get the input value
-        const roomName = document.getElementById('roomName').value;
+    document.addEventListener("DOMContentLoaded", function() {
+        const roomNameInput = document.getElementById('roomName');
+        const submitRoomButton = document.getElementById('submitRoomButton');
         const messageBox = document.getElementById('messageBox');
 
-        // Clear any previous message
-        messageBox.innerHTML = '';
+        // Giới hạn ký tự nhập vào không quá 50 ký tự
+        roomNameInput.addEventListener('input', function() {
+            if (roomNameInput.value.length > 50) {
+                roomNameInput.value = roomNameInput.value.substring(0, 50);
+            }
+        });
 
-        if (!roomName.trim()) {
-            messageBox.innerHTML = '<span style="color: red;">Room name is required!</span>';
-            return;
-        }
+        submitRoomButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Ngừng hành động gửi form mặc định
 
-        // Fetch request
-        fetch('/room/create', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name: roomName }),
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json(); // Parse JSON response if successful
-                } else {
-                    return response.text().then((text) => {
-                        throw new Error(text || 'Failed to create room');
-                    });
-                }
+            let roomName = roomNameInput.value.trim(); // Loại bỏ dấu cách
+
+            // Kiểm tra nếu trường phòng tên trống hoặc quá ngắn
+            if (!roomName) {
+                showErrorModal('Room name is required!');
+                return;
+            }
+
+            if (roomName.length < 6) {
+                showErrorModal('Room name must be at least 6 characters long!');
+                return;
+            }
+
+            // Fetch request gửi dữ liệu tới server
+            fetch('/room/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: roomName }),
             })
-            .then((data) => {
-                messageBox.innerHTML = `<span style="color: green;">${data.name} was created successfully!</span>`;
-            })
-            .catch((error) => {
-                messageBox.innerHTML = `<span style="color: red;">Error: ${error.message}</span>`;
-            });
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json(); // Phân tích cú pháp JSON nếu thành công
+                    } else {
+                        return response.text().then((text) => {
+                            throw new Error(text || 'Failed to create room');
+                        });
+                    }
+                })
+                .then((data) => {
+                    showSuccessModal(`${data.name} was created successfully!`);
+                })
+                .catch((error) => {
+                    showErrorModal(`Error: ${error.message}`);
+                });
+        });
     });
 
+    // Hàm hiển thị modal thông báo lỗi
+    function showErrorModal(message) {
+        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+        document.getElementById('errorModalLabel').innerText = message;
+        errorModal.show();
+    }
+
+    // Hàm hiển thị modal thông báo thành công
+    function showSuccessModal(message) {
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        document.getElementById('successModalLabel').innerText = message;
+        successModal.show();
+    }
 </script>
 </body>
-
-
-<!-- Mirrored from add-class.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>

@@ -1,8 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="">
 
-
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/JIP/JIP/users-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:41 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -262,121 +260,61 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="student.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span data-i18n="dashboard">Dashboard</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item">
+                                <a href="student.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Students</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="teacher.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="teacher">Teachers</span></a>
+                                <a href="list-student-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All Assignment</a>
                             </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-books"></i><span data-i18n="assignment">Assignment</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item" id="teacher-view12">
-                                <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i><span data-i18n="all_assignment">All
-                                    Assignment</span></a>
-                            </li>
-                            <li class="nav-item" id="teacher-view13">
-                                <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="add_new_assignment">Add New
-                                    Assignment</span></a>
-                            </li>
-                            <li class="nav-item" id="student-view11">
-                                <a href="list-student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i><span data-i18n="all_assignment">All Assignment</span></a>
-                            </li>
-                            <li class="nav-item" id="student-view12">
-                                <a href="list-submitted-assignments.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i><span data-i18n="all_submitted_assignment">All Submitted Assignment</span></a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="javascript:void(0);" class="nav-link" onclick="submitForm();" id="student-view15"><i
-                                class="flaticon-shopping-list"></i><span data-i18n="schedule">Schedule</span></a>
-                        <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();" id="teacher-view15"><i
-                                class="flaticon-shopping-list"></i><span data-i18n="schedule">Schedule</span></a>
-                    </li>
-                    <li class="nav-item sidebar-nav-item" id="teacher-view14">
-                        <a href="#" class="nav-link"><i
-                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span data-i18n="class">Class</span></a>
-                        <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
-                                    <i class="flaticon-menu"></i><span data-i18n="class_list">Class List</span>
-                                </a>
+                                <a href="list-submitted-assignments.html" class="nav-link"><i class="fas fa-angle-right"></i>All Submitted Assignment</a>
                             </li>
                         </ul>
                     </li>
-
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span data-i18n="exam">Exam</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item" id="teacher-view10">
-                                <a class="nav-link" href="list-mark.html"><i class="fas fa-angle-right"></i><span data-i18n="list_exam">List
-                                    Exam</span></a>
-                            </li>
-                            <li class="nav-item" id="teacher-view11">
-                                <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i><span data-i18n="create_exam">Create
-                                    Exam</span></a>
-                            </li>
-                            <li class="nav-item" id="student-view10">
-                                <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();">
-                                    <i class="fas fa-angle-right"></i><span data-i18n="personal_mark_report">Personal Mark Report</span></a>
-                            </li>
-                        </ul>
+                    <li class="nav-item">
+                        <a href="class-list-student.html" class="nav-link" onclick="toSchedule();"><i
+                                class="flaticon-shopping-list"></i><span>Class</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="javascript:void(0);" class="nav-link"><i class="flaticon-shopping-list"></i><span>Personal Mark Report</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span data-i18n="material">Material</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item" id="teacher-view1">
-                                <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="create_material">Create
-                                    Material</span></a>
-                            </li>
-                            <li class="nav-item" id="teacher-view">
-                                <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="list_materials">List
-                                    Materials</span></a>
-                            </li>
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item" id="student-view1">
-                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="list_materials">List
-                                    Materials</span></a>
+                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    Materials</a>
                             </li>
                             <li class="nav-item" id="student-view">
-                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="my_list_materials">My List
-                                    Materials</span></a>
-                            </li>
-
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span data-i18n="application">Application</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="send_application">Send
-                                    application</span></a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i><span data-i18n="my_application">My
-                                    application</span></a>
+                                <a href="View-list-personal-materials.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>My List
+                                    Materials</a>
                             </li>
                         </ul>
                     </li>
-
                     <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span data-i18n="thread">Thread</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i><span data-i18n="view_list_threads">View list
-                                    threads</span></a>
+                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                    application</a>
                             </li>
+
                             <li class="nav-item">
-                                <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i><span data-i18n="create_thread">Create
-                                    Thread</span></a>
+                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                    application</a>
                             </li>
                         </ul>
                     </li>
@@ -563,8 +501,6 @@
                 </div>
             </div>
 
-
-
         </div>
         <!-- Page Area End Here -->
     </div>
@@ -581,6 +517,8 @@
         </div>
     </div>
 </footer>
+
+
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -929,18 +867,28 @@
                     .then(response => response.text())
                     .then(data => {
                         if (data === "Xóa tài liệu thành công!") {
-                            alert('Xóa tài liệu thành công!');
-                            // Đóng modal xác nhận xóa
-                            $('#confirmationModal').modal('hide');
-                            // Chuyển hướng về trang danh sách hoặc trang khác
-                            window.location.href = 'View-list-materials.html';  // Thay đổi đường dẫn theo nhu cầu
+                            // Hiển thị modal thông báo thành công
+                            const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+                            successModal.show();
+                            // Đóng modal xác nhận xóa sau một khoảng thời gian và chuyển hướng
+                            setTimeout(() => {
+                                successModal.hide();
+                                $('#confirmationModal').modal('hide');
+                                window.location.href = 'View-list-materials.html';  // Thay đổi đường dẫn theo nhu cầu
+                            }, 2000); // 2 giây
                         } else {
-                            alert('Có lỗi xảy ra khi xóa tài liệu!');
+                            // Hiển thị modal thông báo lỗi
+                            const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+                            errorModal.show();
+                            document.getElementById('long-modal').querySelector('.modal-body').textContent = 'Có lỗi xảy ra khi xóa tài liệu!';
                         }
                     })
                     .catch(error => {
                         console.error('Lỗi khi xóa tài liệu:', error);
-                        alert('Có lỗi xảy ra. Vui lòng thử lại!');
+                        // Hiển thị modal thông báo lỗi
+                        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+                        errorModal.show();
+                        document.getElementById('long-modal').querySelector('.modal-body').textContent = 'Có lỗi xảy ra. Vui lòng thử lại!';
                     });
             } else {
                 console.error('Không tìm thấy Material ID trong URL.');

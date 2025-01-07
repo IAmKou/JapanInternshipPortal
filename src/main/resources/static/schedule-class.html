@@ -1,8 +1,5 @@
 <!doctype html>
 <html class="no-js" lang="">
-
-
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/JIP/JIP/semester-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -243,7 +240,7 @@
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
                                 <a href="add-class.html" class="nav-link"><i
                                         class="flaticon-multiple-users-silhouette"></i>Add New Class</a>
@@ -253,13 +250,24 @@
                                         class="flaticon-menu"></i><span>All Class</span></a>
                             </li>
                             <li class="nav-item">
-                                <a href="schedule-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Schedule List</span></a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="semester-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Semester List</span></a>
+                                <a href="schedule-list.html" class="nav-link menu-active"><i class="flaticon-calendar"></i><span>Schedule List</span></a>
                             </li>
                         </ul>
                     </li>
+
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i
+                                class="fas fa-calendar"></i><span>Semester</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="semester-create.html" class="nav-link"><i
+                                        class="flaticon-calendar"></i>Create Semester</a>
+                            <li class="nav-item">
+                                <a href="semester-list.html" class="nav-link"><i class="flaticon-menu"></i><span>Semester List</span></a>
+                            </li>
+                        </ul>
+                    </li>
+
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                         <ul class="nav sub-group-menu">
@@ -279,7 +287,8 @@
                     </li>
                 </ul>
             </div>
-        </div>        <!-- Sidebar Area End Here -->
+        </div>
+        <!-- Sidebar Area End Here -->
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
@@ -296,16 +305,11 @@
             <div class="row">
                 <div class="col-12-xxxl col-12">
                     <div class="card height-auto">
-                        <div class="card-body">
-
-                        </div>
                         <div id='wrap'>
                             <div id='calendar-wrap'>
                                 <div id='calendar'></div>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -495,6 +499,16 @@
                 });
         }
 
+        function showModal(type, message) {
+            const modalId = type === 'success' ? '#success-modal' : '#long-modal';
+            const modalTitle = type === 'success' ? 'Success' : 'Error';
+            const modalIcon = type === 'success' ? 'fas fa-check-circle text-success' : 'fas fa-times-circle text-danger';
+
+            document.querySelector(`${modalId} .modal-title`).textContent = modalTitle;
+            document.querySelector(`${modalId} .modal-body`).innerHTML = `<i class="${modalIcon} fa-5x mb-3"></i><p>${message}</p>`;
+            $(modalId).modal('show');
+        }
+
         fetch(`/semester/get/${semesterId}`)
             .then(response => {
                 if (!response.ok) {
@@ -553,12 +567,12 @@
                     },
                     dateClick: function (info) {
                         if (isPastDate(info.dateStr)) {
-                            alert('You cannot create events in the past.');
+                            showModal('error', 'You cannot create events in the past.');
                             return;
                         }
 
                         if (holidays.includes(info.dateStr)) {
-                            alert('You cannot create events on holidays.');
+                            showModal('error', 'You cannot create events on holidays.');
                             return;
                         }
 
@@ -591,14 +605,14 @@
                             })
                             .catch(error => {
                                 console.error('Error fetching room availability:', error);
-                                alert('Failed to fetch room availability.');
+                                showModal('error', 'Failed to fetch room availability.');
                             });
                     },
                     eventClick: function (info) {
                         const event = info.event;
 
                         if (isPastDate(event.startStr)) {
-                            alert('You cannot update events in the past.');
+                            showModal('error', 'You cannot update events in the past.');
                             return;
                         }
 
@@ -638,7 +652,7 @@
                             const updatedRoom = roomDropdown.value;
 
                             if (isPastDate(event.startStr)) {
-                                alert('You cannot update events in the past.');
+                                showModal('error', 'You cannot update events in the past.');
                                 return;
                             }
 
@@ -658,10 +672,13 @@
                             })
                                 .then(response => {
                                     if (!response.ok) throw new Error('Failed to update event');
-                                    alert('Event updated successfully!');
+                                    showModal('success', 'Event updated successfully!');
                                     $('#eventDetailModal').modal('hide');
                                 })
-                                .catch(error => console.error('Error updating event:', error));
+                                .catch(error => {
+                                    console.error('Error updating event:', error);
+                                    showModal('error', 'Failed to update event.');
+                                });
                         };
 
                         document.getElementById('delete-event').onclick = function () {
@@ -672,10 +689,13 @@
                                     .then(response => {
                                         if (!response.ok) throw new Error('Failed to delete event');
                                         event.remove();
-                                        alert('Event deleted successfully!');
+                                        showModal('success', 'Event deleted successfully!');
                                         $('#eventDetailModal').modal('hide');
                                     })
-                                    .catch(error => console.error('Error deleting event:', error));
+                                    .catch(error => {
+                                        console.error('Error deleting event:', error);
+                                        showModal('error', 'Failed to delete event.');
+                                    });
                             }
                         };
 
@@ -692,18 +712,18 @@
                     const clickedDate = document.getElementById('clicked-date').value;
 
                     if (isPastDate(clickedDate)) {
-                        alert('You cannot save events in the past.');
+                        showModal('error', 'You cannot save events in the past.');
                         return;
                     }
 
                     if (!title) {
-                        alert('Please provide a title.');
+                        showModal('error', 'Please provide a title.');
                         return;
                     }
 
                     if (title.toLowerCase().includes('test') &&
                         (new Date(clickedDate).getDay() === 0 || new Date(clickedDate).getDay() === 6)) {
-                        alert('Test events cannot be scheduled on weekends.');
+                        showModal('error', 'Test events cannot be scheduled on weekends.');
                         return;
                     }
 
@@ -732,7 +752,7 @@
                             return response.json();
                         })
                         .then(data => {
-                            alert(data.message || 'Event saved successfully.');
+                            showModal('success', data.message || 'Event saved successfully.');
                             calendar.addEvent({
                                 title,
                                 start: clickedDate,
@@ -743,13 +763,12 @@
                         })
                         .catch(error => {
                             console.error('Error saving schedule:', error);
-                            alert(error.message || 'An error occurred while saving the schedule.');
+                            showModal('error', error.message || 'An error occurred while saving the schedule.');
                         });
                 };
             })
             .catch(error => console.error('Error initializing calendar:', error));
     });
-
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
