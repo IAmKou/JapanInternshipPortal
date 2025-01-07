@@ -569,16 +569,13 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
-                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
-                    </li>
+
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
+                                <a href="javascript:void(0);" class="nav-link menu-active" onclick="submitForm();">
                                     <i class="flaticon-menu"></i><span>Class List</span>
                                 </a>
                             </li>
@@ -626,7 +623,6 @@
                             </li>
                         </ul>
                     </li>
-
                 </ul>
             </div>
         </div>
@@ -643,7 +639,6 @@
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
-
             <!-- Teacher Table Area Start Here -->
             <div class="card height-auto">
                 <div class="card-body">
@@ -793,10 +788,14 @@
     <td>${markrp.avg_exam_mark ?? '-'}</td>
     <td>${markrp.middle_exam ?? '-'}</td>
     <td>${markrp.final_exam ?? '-'}</td>
+    <td>${markrp.skill ?? '-'}</td>
     <td>${markrp.scriptPresentation ?? '-'}</td>
     <td>${markrp.presentation ?? '-'}</td>
+    <td>${markrp.softskill ?? '-'}</td>
+    <td>${markrp.assignment ?? '-'}</td>
+    <td>${markrp.attendant ?? '-'}</td>
     <td>${markrp.attitude ?? '-'}</td>
-    <td>${markrp.finalMark ?? '-'}</td>
+    <td>${markrp.final_mark ?? '-'}</td>
 
     `;
                 tableBody.appendChild(row);
@@ -809,7 +808,6 @@
 
     // Initialize the table with mark_reports on page load
     document.addEventListener('DOMContentLoaded', fetchAndDisplayMarks);
-    let currentMarkId = null;
 
     // Open and Close Modal Logic
     const modal = document.getElementById("import-modal");

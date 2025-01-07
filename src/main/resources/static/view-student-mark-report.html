@@ -367,16 +367,13 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
-                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
-                    </li>
+
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
+                                <a href="javascript:void(0);" class="nav-link menu-active" onclick="submitForm();">
                                     <i class="flaticon-menu"></i><span>Class List</span>
                                 </a>
                             </li>
@@ -424,7 +421,6 @@
                             </li>
                         </ul>
                     </li>
-
                 </ul>
             </div>
         </div>
@@ -798,7 +794,8 @@
             document.getElementById('script').value = markRp.scriptPresentation;
             document.getElementById('soft-skill').textContent = markRp.softskill;
             document.getElementById('assignment').textContent = markRp.assignment;
-            // document.getElementById('attendant').textContent = markRp.attendant;
+            document.getElementById('attendant').textContent = markRp.attendant;
+            document.getElementById('attitude').textContent = markRp.attitude;
             document.getElementById('final-mark').textContent = markRp.final_mark;
         } catch (error) {
             console.error('Error:', error);
@@ -826,11 +823,11 @@
                 const kanji = parseFloat(cells[2].value);
 
                 if (
-                    isNaN(bunpou) || bunpou < 0 || bunpou > 10 ||
-                    isNaN(kotoba) || kotoba < 0 || kotoba > 10 ||
-                    isNaN(kanji) || kanji < 0 || kanji > 10
+                    bunpou < 0 || bunpou > 10 ||
+                    kotoba < 0 || kotoba > 10 ||
+                    kanji < 0 || kanji > 10
                 ) {
-                    showErrorModal(`Invalid input for ${examName}: All fields must be a number between 0 and 10.`);
+                    showErrorModal(`Invalid input for ${examName}: All bunpou, kotoba, kanji must be a number between 0 and 10.`);
                     isValid = false;
                     return;
                 }
@@ -853,19 +850,15 @@
         const comment = document.getElementById('comment').value;
 
         if (
-            isNaN(middle_exam) || middle_exam < 0 || middle_exam > 10 ||
-            isNaN(final_exam) || final_exam < 0 || final_exam > 10 ||
-            isNaN(presentation) || presentation < 0 || presentation > 10 ||
-            isNaN(scriptPresentation) || scriptPresentation < 0 || scriptPresentation > 10
+            middle_exam < 0 || middle_exam > 10 ||
+            final_exam < 0 || final_exam > 10 ||
+            presentation < 0 || presentation > 10 ||
+            scriptPresentation < 0 || scriptPresentation > 10
         ) {
             showErrorModal("Invalid input: Middle Exam, Final Exam, Presentation, and Script must be a number between 0 and 10.");
-            isValid = false;
+            return;
         }
 
-        if (comment.trim() === "") {
-            showErrorModal("Comment cannot be empty.");
-            isValid = false;
-        }
 
         // Stop execution if validation fails
         if (!isValid) return;

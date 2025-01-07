@@ -505,10 +505,7 @@
 
     </style>
 </head>
-
 <body>
-
-
 <!-- Preloader Start Here -->
 <div id="preloader"></div>
 <!-- Preloader End Here -->
@@ -633,26 +630,19 @@
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="list-student-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All Assignment</a>
+                                <a href="list-student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
                             </li>
                             <li class="nav-item">
-                                <a href="list-submitted-assignments.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Submitted Assignment</a>
+                                <a href="list-submitted-assignments.html" class="nav-link"><i class="fas fa-angle-right"></i>All Submitted Assignment</a>
                             </li>
                         </ul>
                     </li>
-
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="javascript:void(0);" class="nav-link" onclick="submitForm();"><i
-                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
+                    <li class="nav-item">
+                        <a href="class-list-student.html" class="nav-link" onclick="toSchedule();"><i
+                                class="flaticon-shopping-list"></i><span>Class</span></a>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();">
-                                    <i class="fas fa-angle-right"></i>Personal Mark Report</a>
-                            </li>
-                        </ul>
+                    <li class="nav-item">
+                        <a href="javascript:void(0);" class="nav-link"><i class="flaticon-shopping-list"></i><span>Personal Mark Report</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
@@ -676,28 +666,14 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="View-my-application-student.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
                                     application</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="forum-student.html"><i class="fas fa-angle-right"></i>View list
-                                    threads</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="create-forum-student.html"><i class="fas fa-angle-right"></i>Create Thread</a>
                             </li>
                         </ul>
                     </li>
                 </ul>
             </div>
         </div>
-
         <!-- Sidebar Area End Here -->
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
@@ -710,77 +686,70 @@
                     <li>All Student Assignment</li>
                 </ul>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
+<!--            <div class="row">-->
+<!--                <div class="col-12">-->
+<!--                    <div class="card">-->
+<!--                        <div class="card-body">-->
+<!--                            <div class="d-flex align-items-center">-->
+<!--                                <label for="searchInput" class="text-primary font-weight-bold me-3 mb-0" data-i18n="search">-->
+<!--                                    Search-->
+<!--                                </label>-->
+<!--                                <label for="filterSelect" class="text-primary font-weight-bold mb-0"-->
+<!--                                       style="position: absolute; left: 53%; transform: translateX(-50%);" data-i18n="filter">-->
+<!--                                    Filter:-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <form style="padding-bottom: 20px; padding-top: 10px;" id="searchForm">-->
+<!--                                <div class="row mb-3 align-items-center gx-3">-->
+<!--                                    &lt;!&ndash; Search Input &ndash;&gt;-->
+<!--                                    <div class="col-lg-6">-->
+<!--                                        <div class="input-group shadow-sm">-->
+<!--                                            <input-->
+<!--                                                    type="text"-->
+<!--                                                    class="form-control search-input rounded-start"-->
+<!--                                                    id="searchInput"-->
+<!--                                                    name="searchInput"-->
+<!--                                                    style="border: 1px solid #ced4da; height: 45px; font-size: 1.5rem; padding-left: 10px;"-->
+<!--                                            />-->
+<!--                                            <button-->
+<!--                                                    type="submit"-->
+<!--                                                    class="btn btn-gradient-yellow btn-search rounded-end text-white fw-bold"-->
+<!--                                                    data-i18n="search"-->
+<!--                                                    style="background-color: #ffc107; border: none; height: 45px;">-->
+<!--                                                SEARCH-->
+<!--                                            </button>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
 
-                            <div class="d-flex align-items-center">
-                                <label for="searchInput" class="text-primary font-weight-bold me-3 mb-0" data-i18n="search">
-                                    Search
-                                </label>
-                                <label for="filterSelect" class="text-primary font-weight-bold mb-0"
-                                       style="position: absolute; left: 53%; transform: translateX(-50%);" data-i18n="filter">
-                                    Filter:
-                                </label>
-                            </div>
-                            <form style="padding-bottom: 20px; padding-top: 10px;" id="searchForm">
-                                <div class="row mb-3 align-items-center gx-3">
-                                    <!-- Search Input -->
-                                    <div class="col-lg-6">
-                                        <div class="input-group shadow-sm">
-                                            <input
-                                                    type="text"
-                                                    class="form-control search-input rounded-start"
-                                                    id="searchInput"
-                                                    name="searchInput"
-                                                    style="border: 1px solid #ced4da; height: 45px; font-size: 1.5rem; padding-left: 10px;"
-                                            />
-                                            <button
-                                                    type="submit"
-                                                    class="btn btn-gradient-yellow btn-search rounded-end text-white fw-bold"
-                                                    data-i18n="search"
-                                                    style="background-color: #ffc107; border: none; height: 45px;">
-                                                SEARCH
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Dropdown để chọn status -->
-                                    <div class="col-lg-2">
-                                        <div class="form-group">
-                                            <div class="position-relative ps-4"> <!-- Thêm padding trái bằng Bootstrap -->
-                                                <i class="fas fa-sort position-absolute" style="right: 12px; top: 50%; transform: translateY(-50%); color: #aaa;"></i>
-                                                <select class="form-control filter-select" id="filterSelect" name="filterSelect"
-                                                        style="padding-right: 35px; font-size: 1.25rem; height: 45px; padding-left: 10px; margin-top: 7px;">
-                                                    <option value="">Choose Status</option>
-                                                    <option value="open">Open</option>
-                                                    <option value="close">Close</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-
-
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!--                                    &lt;!&ndash; Dropdown để chọn status &ndash;&gt;-->
+<!--                                    <div class="col-lg-2">-->
+<!--                                        <div class="form-group">-->
+<!--                                            <div class="position-relative ps-4"> &lt;!&ndash; Thêm padding trái bằng Bootstrap &ndash;&gt;-->
+<!--                                                <i class="fas fa-sort position-absolute" style="right: 12px; top: 50%; transform: translateY(-50%); color: #aaa;"></i>-->
+<!--                                                <select class="form-control filter-select" id="filterSelect" name="filterSelect"-->
+<!--                                                        style="padding-right: 35px; font-size: 1.25rem; height: 45px; padding-left: 10px; margin-top: 7px;">-->
+<!--                                                    <option value="">Choose Status</option>-->
+<!--                                                    <option value="open">Open</option>-->
+<!--                                                    <option value="close">Close</option>-->
+<!--                                                </select>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </form>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
             <!-- Breadcubs Area End Here -->
-
             <!-- Teacher Table Area Start Here -->
             <div class="card height-auto">
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h2>All Assignment for Student</h2>
+                            <h2 style="margin-top: 15px">All Assignment for Student</h2>
                         </div>
-
                     </div>
-
                     <div class="table-responsive">
                         <table id="submittedAssignment_table" class="table display data-table text-nowrap">
                             <thead>
@@ -792,22 +761,13 @@
                             </tr>
                             </thead>
                             <tbody id="assignment_list">
-
-
                             </tbody>
                         </table>
                     </div>
-
                 </div>
-
             </div>
-
-
         </div>
-
-
     </div>
-
     <!-- Page Area End Here -->
 </div>
 <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">

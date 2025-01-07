@@ -1,8 +1,5 @@
 <!doctype html>
 <html class="no-js" lang="" xmlns="http://www.w3.org/1999/html">
-
-
-<!-- Mirrored from class-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -195,7 +192,7 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="manager.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="student.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
@@ -204,28 +201,38 @@
                         <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="manager.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Manager</a>
+                                <a href="student.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Students</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="all-student.html" class="nav-link"><i
-                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>All Student</span></a>
+                        <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="list-student-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>All Assignment</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="list-submitted-assignments.html" class="nav-link"><i class="fas fa-angle-right"></i>All Submitted Assignment</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="class-list-student.html" class="nav-link menu-active" onclick="toSchedule();"><i
+                                class="flaticon-shopping-list"></i><span>Class</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="javascript:void(0);" class="nav-link"><i class="flaticon-shopping-list"></i><span>Personal Mark Report</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i
-                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-                        <ul class="nav sub-group-menu sub-group-active">
-                            <li class="nav-item">
-                                <a href="add-class.html" class="nav-link"><i
-                                        class="flaticon-multiple-users-silhouette"></i>Add New Class</a>
+                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                        <ul class="nav sub-group-menu ">
+                            <li class="nav-item" id="student-view1">
+                                <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    Materials</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="class-list.html" class="nav-link menu-active"><i
-                                        class="flaticon-menu"></i><span>All Class</span></a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="semester-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Schedule List</span></a>
+                            <li class="nav-item" id="student-view">
+                                <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My List
+                                    Materials</a>
                             </li>
                         </ul>
                     </li>
@@ -233,12 +240,16 @@
                         <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="View-list-application.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                    application</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
                                     application</a>
                             </li>
                         </ul>
                     </li>
-
                 </ul>
             </div>
         </div>
@@ -349,13 +360,13 @@
 
                     // Add the "View Class Detail" option
                     dropdownMenu.innerHTML = `
-                        <a class="dropdown-item view-class" data-id="${clasz.id}">
-                            <i class="fas fa-info-circle text-primary"></i> View Class Detail
-                        </a>
-                        <a class="dropdown-item schedule-class" data-id="${clasz.id} " data-student-id="${studentId}" >
-                            <i class="fas fa-calendar-alt text-success"></i> Schedule
-                        </a>
-                    `;
+                    <a class="dropdown-item view-class" data-id="${clasz.id}">
+                        <i class="fas fa-info-circle text-primary"></i> View Class Detail
+                    </a>
+                    <a class="dropdown-item schedule-class" data-id="${clasz.id}" >
+                        <i class="fas fa-calendar-alt text-success"></i> Schedule
+                    </a>
+                `;
 
                     dropdown.appendChild(dropdownMenu);
                     actionsCell.appendChild(dropdown);
@@ -376,17 +387,28 @@
                 document.querySelectorAll('.schedule-class').forEach(button => {
                     button.addEventListener('click', function () {
                         const classId = this.getAttribute('data-id');
-                        const studentId = this.getAttribute('data-student-id');
+                        const studentId = this.getAttribute('data=sid');
                         window.location.href = `/schedule-student.html?classId=${classId}&studentId=${studentId}`;
                     });
                 });
             })
-            .catch(error => console.error('Error fetching class data:', error));
-    });
-</script>
+            .catch(error => {
+                // Show error modal on fetch failure
+                const errorModalBody = document.querySelector('#long-modal .modal-body');
+                errorModalBody.textContent = error.message;
+                $('#long-modal').modal('show');
+            });
 
-<!-- fetch teacher -->
-<script>
+        // Success function to display success modal
+        function showSuccessModal() {
+            $('#success-modal').modal('show');
+        }
+
+        // Example of triggering success modal
+        // You can call this function after successfully performing an operation
+        showSuccessModal();
+    });
+
     document.addEventListener('DOMContentLoaded', loadTeachers);
 
     function loadTeachers() {
@@ -412,8 +434,10 @@
                 });
             })
             .catch(error => {
-                console.error('Error fetching teachers:', error);
-                alert("There was an error fetching the teachers. Please try again.");
+                // Show error modal for teacher loading failure
+                const errorModalBody = document.querySelector('#long-modal .modal-body');
+                errorModalBody.textContent = 'There was an error fetching the teachers. Please try again.';
+                $('#long-modal').modal('show');
             });
     }
 </script>

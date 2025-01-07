@@ -1,577 +1,577 @@
 <!doctype html>
 <html class="no-js" lang="">
-
-
-<!-- Mirrored from teacher-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:48 GMT -->
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>JIP | Submitted Assignment Details</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Favicon -->
-  <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
-  <!-- Normalize CSS -->
-  <link rel="stylesheet" href="css/normalize.css">
-  <!-- Main CSS -->
-  <link rel="stylesheet" href="css/main.css">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <!-- Fontawesome CSS -->
-  <link rel="stylesheet" href="css/all.min.css">
-  <!-- Flaticon CSS -->
-  <link rel="stylesheet" href="fonts/flaticon.css">
-  <!-- Animate CSS -->
-  <link rel="stylesheet" href="css/animate.min.css">
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css">
-  <!-- Modernize js -->
-  <script src="js/modernizr-3.6.0.min.js"></script>
-  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <title>JIP | Submitted Assignment Details</title>
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <!-- Favicon -->
+    <link href="img/favicon.png" rel="shortcut icon" type="image/x-icon">
+    <!-- Normalize CSS -->
+    <link href="css/normalize.css" rel="stylesheet">
+    <!-- Main CSS -->
+    <link href="css/main.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fontawesome CSS -->
+    <link href="css/all.min.css" rel="stylesheet">
+    <!-- Flaticon CSS -->
+    <link href="fonts/flaticon.css" rel="stylesheet">
+    <!-- Animate CSS -->
+    <link href="css/animate.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="style.css" rel="stylesheet">
+    <!-- Modernize js -->
+    <script src="js/modernizr-3.6.0.min.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 </head>
 
 <style>
-  /* Chỉnh sửa kích thước chữ trong nội dung modal */
-  .modal-body {
-    font-size: 2rem;  /* Tăng kích thước chữ lên 2rem (hoặc px tùy theo mong muốn) */
-    font-weight: 600;   /* Đậm chữ thêm để nổi bật */
-  }
-
-  /* Chỉnh sửa kích thước chữ trong modal lỗi */
-  #long-modal .modal-body {
-    font-size: 2rem;  /* Kích thước chữ trong modal lỗi */
-  }
-
-  /* Chỉnh sửa kích thước chữ trong modal thành công */
-  #success-modal .modal-body {
-    font-size: 2rem;  /* Kích thước chữ trong modal thành công */
-  }
-
-  table td {
-    font-weight: bold;
-  }
-
-  /* Reduce the padding for table cells */
-  table td {
-    padding: 8px 12px;  /* You can adjust this value as needed */
-  }
-
-  /* Reduce the padding for the table overall */
-  table {
-    margin-bottom: 15px;  /* Keeps the space below the table */
-    width: 100%;
-  }
-
-  /* Optionally, reduce space between rows */
-  table tr {
-    margin-bottom: 5px;
-  }
-  /* Làm chữ title đậm và căn chúng cùng một hàng */
-  .item-title h3 {
-    font-weight: bold;
-    display: inline-block;
-    margin-right: 15px;  /* Đảm bảo khoảng cách giữa title và description */
-  }
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-      transform: translateY(-10px);
+    /* Chỉnh sửa kích thước chữ trong nội dung modal */
+    .modal-body {
+        font-size: 2rem; /* Tăng kích thước chữ lên 2rem (hoặc px tùy theo mong muốn) */
+        font-weight: 600; /* Đậm chữ thêm để nổi bật */
     }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
+
+    /* Chỉnh sửa kích thước chữ trong modal lỗi */
+    #long-modal .modal-body {
+        font-size: 2rem; /* Kích thước chữ trong modal lỗi */
     }
-  }
 
-  /* Custom Modal Styling */
-  #success-modal .modal-header {
-    background-color: #28a745; /* Màu nền của header */
-    color: #fff;
-    font-size: 1.25rem;
-  }
+    /* Chỉnh sửa kích thước chữ trong modal thành công */
+    #success-modal .modal-body {
+        font-size: 2rem; /* Kích thước chữ trong modal thành công */
+    }
 
-  #success-modal .modal-body {
-    font-size: 1.1rem;
-    padding: 30px;
-    background-color: #f8f9fa;
-    color: #333;
-  }
+    table td {
+        font-weight: bold;
+    }
 
-  #success-modal .modal-body .fas.fa-check-circle {
-    color: #28a745;
-  }
+    /* Reduce the padding for table cells */
+    table td {
+        padding: 8px 12px; /* You can adjust this value as needed */
+    }
 
-  #success-modal .btn-success {
-    font-size: 1rem;
-    padding: 10px 20px;
-    background-color: #28a745;
-    border-color: #28a745;
-  }
+    /* Reduce the padding for the table overall */
+    table {
+        margin-bottom: 15px; /* Keeps the space below the table */
+        width: 100%;
+    }
 
-  #success-modal .btn-close {
-    color: white;
-  }
+    /* Optionally, reduce space between rows */
+    table tr {
+        margin-bottom: 5px;
+    }
 
-  #success-modal .modal-body p {
-    font-size: 0.9rem;
-    color: #6c757d; /* Màu nhạt hơn cho mô tả */
-  }
+    /* Làm chữ title đậm và căn chúng cùng một hàng */
+    .item-title h3 {
+        font-weight: bold;
+        display: inline-block;
+        margin-right: 15px; /* Đảm bảo khoảng cách giữa title và description */
+    }
 
-  /* Custom Modal Styling for Error Modal */
-  #error-modal .modal-header {
-    background-color: #dc3545; /* Màu nền của header (Đỏ cho lỗi) */
-    color: #fff;
-    font-size: 1.25rem;
-  }
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
-  #error-modal .modal-body {
-    font-size: 1.1rem;
-    padding: 30px;
-    background-color: #f8f9fa;
-    color: #333;
-  }
+    /* Custom Modal Styling */
+    #success-modal .modal-header {
+        background-color: #28a745; /* Màu nền của header */
+        color: #fff;
+        font-size: 1.25rem;
+    }
 
-  #error-modal .modal-body .fas.fa-times-circle {
-    color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
-  }
+    #success-modal .modal-body {
+        font-size: 1.1rem;
+        padding: 30px;
+        background-color: #f8f9fa;
+        color: #333;
+    }
 
-  #error-modal .btn-danger {
-    font-size: 1rem;
-    padding: 10px 20px;
-    background-color: #dc3545; /* Màu đỏ cho nút lỗi */
-    border-color: #dc3545;
-  }
+    #success-modal .modal-body .fas.fa-check-circle {
+        color: #28a745;
+    }
 
-  #error-modal .btn-close {
-    color: white;
-  }
+    #success-modal .btn-success {
+        font-size: 1rem;
+        padding: 10px 20px;
+        background-color: #28a745;
+        border-color: #28a745;
+    }
 
-  #error-modal .modal-body p {
-    font-size: 0.9rem;
-    color: #6c757d; /* Màu nhạt hơn cho mô tả */
-  }
-  .item-content {
-    color: #000;  /* Chọn màu xám đậm cho tất cả văn bản trong .item-content */
-  }
+    #success-modal .btn-close {
+        color: white;
+    }
 
-  .item-content table {
-    width: 100%;
-  }
+    #success-modal .modal-body p {
+        font-size: 0.9rem;
+        color: #6c757d; /* Màu nhạt hơn cho mô tả */
+    }
 
-  .item-content td {
-    color: #333;  /* Tạo màu chữ tương phản cao với nền trắng */
-  }
+    /* Custom Modal Styling for Error Modal */
+    #error-modal .modal-header {
+        background-color: #dc3545; /* Màu nền của header (Đỏ cho lỗi) */
+        color: #fff;
+        font-size: 1.25rem;
+    }
 
-  .item-content td:first-child {
-    font-weight: bold;  /* Làm đậm các nhãn (label) */
-  }
+    #error-modal .modal-body {
+        font-size: 1.1rem;
+        padding: 30px;
+        background-color: #f8f9fa;
+        color: #333;
+    }
 
-  .item-content td:last-child {
-    color: #000;  /* Màu chữ đen cho các giá trị */
-  }
-  /* Áp dụng cho bảng có id 'submittedAssignment_table' */
-  #submittedAssignment_table {
-    table-layout: fixed;  /* Đảm bảo các cột có chiều rộng đều */
-    width: 100%;  /* Bảng chiếm hết chiều rộng */
-    border-collapse: collapse;  /* Loại bỏ khoảng cách giữa các ô */
-  }
+    #error-modal .modal-body .fas.fa-times-circle {
+        color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+    }
 
-  #submittedAssignment_table th, #submittedAssignment_table td {
-    padding: 10px;  /* Thêm khoảng cách trong mỗi ô */
-    text-align: center;  /* Căn giữa nội dung trong ô */
-    border: 1px solid #ddd;  /* Đặt đường viền mỏng cho các ô */
-    word-wrap: break-word;  /* Đảm bảo nội dung không tràn ra ngoài ô */
-  }
+    #error-modal .btn-danger {
+        font-size: 1rem;
+        padding: 10px 20px;
+        background-color: #dc3545; /* Màu đỏ cho nút lỗi */
+        border-color: #dc3545;
+    }
 
-  #submittedAssignment_table th {
-    background-color: #f8f8f8;  /* Màu nền cho tiêu đề */
-    font-weight: bold;  /* Đảm bảo tiêu đề nổi bật */
-  }
-  table {
-    width: 100%;  /* Đảm bảo bảng chiếm toàn bộ chiều rộng */
-    border-collapse: collapse;  /* Loại bỏ khoảng trống giữa các ô trong bảng */
-  }
+    #error-modal .btn-close {
+        color: white;
+    }
 
-  td {
-    padding: 4px 8px; /* Điều chỉnh giảm khoảng cách trái/phải và trên/dưới */
-    vertical-align: middle; /* Căn chỉnh dọc cho nội dung */
-    line-height: 1.2; /* Giảm chiều cao dòng để nội dung gần nhau hơn */
-  }
+    #error-modal .modal-body p {
+        font-size: 0.9rem;
+        color: #6c757d; /* Màu nhạt hơn cho mô tả */
+    }
 
-  td:first-child {
-    width: 12%; /* Thêm chiều rộng cho các thẻ tiêu đề */
-    font-weight: bold; /* Tiêu đề đậm */
-  }
+    .item-content {
+        color: #000; /* Chọn màu xám đậm cho tất cả văn bản trong .item-content */
+    }
 
-  input[name="description"] {
-    border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
-    border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
-  }
+    .item-content table {
+        width: 100%;
+    }
 
-  input[name="description"]:hover {
-    border-color: #28a745 !important;
-  }
-  /* Khi người dùng focus vào input */
-  input[name="description"]:focus {
-    border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
-    box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
-  }
+    .item-content td {
+        color: #333; /* Tạo màu chữ tương phản cao với nền trắng */
+    }
 
-  input[name="content"] {
-    border: 2px solid #007bff !important;  /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
-    border-radius: 5px;                    /* Thêm góc bo tròn nếu cần */
-  }
+    .item-content td:first-child {
+        font-weight: bold; /* Làm đậm các nhãn (label) */
+    }
 
-  input[name="content"]:hover {
-    border-color: #28a745 !important;
-  }
-  /* Khi người dùng focus vào input */
-  input[name="content"]:focus {
-    border-color: #ff6347; !important;  /* Giữ màu xanh khi focus */
-    box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm hiệu ứng bóng khi focus */
-  }
+    .item-content td:last-child {
+        color: #000; /* Màu chữ đen cho các giá trị */
+    }
 
-  #content {
-    border: 2px solid #007bff;  /* Đặt màu border là màu xanh dương */
-    border-radius: 5px;         /* Thêm góc bo tròn nếu cần */
-  }
+    /* Áp dụng cho bảng có id 'submittedAssignment_table' */
+    #submittedAssignment_table {
+        table-layout: fixed; /* Đảm bảo các cột có chiều rộng đều */
+        width: 100%; /* Bảng chiếm hết chiều rộng */
+        border-collapse: collapse; /* Loại bỏ khoảng cách giữa các ô */
+    }
 
-  /* Tạo hiệu ứng khi người dùng hover vào Quill editor */
-  #content:hover {
-    border-color: #28a745;      /* Chuyển màu border thành màu xanh lá khi hover */
-  }
+    #submittedAssignment_table th, #submittedAssignment_table td {
+        padding: 10px; /* Thêm khoảng cách trong mỗi ô */
+        text-align: center; /* Căn giữa nội dung trong ô */
+        border: 1px solid #ddd; /* Đặt đường viền mỏng cho các ô */
+        word-wrap: break-word; /* Đảm bảo nội dung không tràn ra ngoài ô */
+    }
 
-  /* Tạo hiệu ứng khi Quill editor có focus (khi người dùng click vào) */
-  #content:focus {
-    border-color: #ff6347;      /* Chuyển màu border thành màu cam khi có focus */
-    box-shadow: 0 0 5px rgba(255, 99, 71, 0.5);  /* Thêm bóng để nổi bật hơn */
-  }
+    #submittedAssignment_table th {
+        background-color: #f8f8f8; /* Màu nền cho tiêu đề */
+        font-weight: bold; /* Đảm bảo tiêu đề nổi bật */
+    }
+
+    table {
+        width: 100%; /* Đảm bảo bảng chiếm toàn bộ chiều rộng */
+        border-collapse: collapse; /* Loại bỏ khoảng trống giữa các ô trong bảng */
+    }
+
+    td {
+        padding: 4px 8px; /* Điều chỉnh giảm khoảng cách trái/phải và trên/dưới */
+        vertical-align: middle; /* Căn chỉnh dọc cho nội dung */
+        line-height: 1.2; /* Giảm chiều cao dòng để nội dung gần nhau hơn */
+    }
+
+    td:first-child {
+        width: 12%; /* Thêm chiều rộng cho các thẻ tiêu đề */
+        font-weight: bold; /* Tiêu đề đậm */
+    }
+
+    input[name="description"] {
+        border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+        border-radius: 5px; /* Thêm góc bo tròn nếu cần */
+    }
+
+    input[name="description"]:hover {
+        border-color: #28a745 !important;
+    }
+
+    /* Khi người dùng focus vào input */
+    input[name="description"]:focus {
+        border-color: #ff6347;
+    !important; /* Giữ màu xanh khi focus */
+        box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+    }
+
+    input[name="content"] {
+        border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+        border-radius: 5px; /* Thêm góc bo tròn nếu cần */
+    }
+
+    input[name="content"]:hover {
+        border-color: #28a745 !important;
+    }
+
+    /* Khi người dùng focus vào input */
+    input[name="content"]:focus {
+        border-color: #ff6347;
+    !important; /* Giữ màu xanh khi focus */
+        box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+    }
+
+    #content {
+        border: 2px solid #007bff; /* Đặt màu border là màu xanh dương */
+        border-radius: 5px; /* Thêm góc bo tròn nếu cần */
+    }
+
+    /* Tạo hiệu ứng khi người dùng hover vào Quill editor */
+    #content:hover {
+        border-color: #28a745; /* Chuyển màu border thành màu xanh lá khi hover */
+    }
+
+    /* Tạo hiệu ứng khi Quill editor có focus (khi người dùng click vào) */
+    #content:focus {
+        border-color: #ff6347; /* Chuyển màu border thành màu cam khi có focus */
+        box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm bóng để nổi bật hơn */
+    }
 </style>
 
 <body>
 <!-- Preloader Start Here -->
 <div id="preloader"></div>
 <!-- Preloader End Here -->
-<div id="wrapper" class="wrapper bg-ash">
-  <!-- Header Menu Area Start Here -->
-  <div id="google_translate_element"></div>
+<div class="wrapper bg-ash" id="wrapper">
+    <!-- Header Menu Area Start Here -->
+    <div id="google_translate_element"></div>
 
-  <div class="navbar navbar-expand-md header-menu-one bg-light">
-    <div class="nav-bar-header-one">
-      <div class="header-logo">
-        <a href="admin.html">
-          <div style="width: 180px; height: 70px; overflow: hidden;">
-            <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
-          </div>
-        </a>
-      </div>
-      <div class="toggle-button sidebar-toggle">
-        <button type="button" class="item-link">
+    <div class="navbar navbar-expand-md header-menu-one bg-light">
+        <div class="nav-bar-header-one">
+            <div class="header-logo">
+                <a href="admin.html">
+                    <div style="width: 180px; height: 70px; overflow: hidden;">
+                        <img alt="logo" src="img/JIP%20LOGO%20n.png"
+                             style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </a>
+            </div>
+            <div class="toggle-button sidebar-toggle">
+                <button class="item-link" type="button">
                         <span class="btn-icon-wrap">
                             <span></span>
                             <span></span>
                             <span></span>
                         </span>
-        </button>
-      </div>
-    </div>
-    <div class="d-md-none mobile-nav-bar">
-      <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse" data-target="#mobile-navbar" aria-expanded="false">
-        <i class="far fa-arrow-alt-circle-down"></i>
-      </button>
-      <button type="button" class="navbar-toggler sidebar-toggle-mobile">
-        <i class="fas fa-bars"></i>
-      </button>
-    </div>
-    <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
-      <ul class="navbar-nav">
-        <li class="navbar-item header-search-bar">
-          <div class="input-group stylish-input-group">
+                </button>
+            </div>
+        </div>
+        <div class="d-md-none mobile-nav-bar">
+            <button aria-expanded="false" class="navbar-toggler pulse-animation" data-target="#mobile-navbar"
+                    data-toggle="collapse" type="button">
+                <i class="far fa-arrow-alt-circle-down"></i>
+            </button>
+            <button class="navbar-toggler sidebar-toggle-mobile" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+            <ul class="navbar-nav">
+                <li class="navbar-item header-search-bar">
+                    <div class="input-group stylish-input-group">
 
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="navbar-item dropdown header-admin">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
+                        <div class="admin-title">
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
+                        </div>
+                        <div class="admin-img img">
+                            <img alt="Admin" src="" style="width: 50px; height: 50px">
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title userFullName"></h6>
+                        </div>
+                        <div class="item-content">
+                            <ul class="settings-list">
+                                <li><a href="users-profile-teacher.html"><i class="flaticon-user"></i>My Profile</a>
+                                </li>
+                                <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span
+                                        data-i18n="change_password">Change Password</span></a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="navbar-item dropdown header-notification">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       id="notification-bell" role="button">
+                        <i class="far fa-bell"></i>
+                        <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
+                        <span id="notification-count">0</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" id="notification-dropdown">
+                        <div class="item-header">
+                            <h6 class="item-title" id="notification-title">Notifications</h6>
+                        </div>
+                        <div class="item-content" id="notification-list">
+                            <!-- Notifications will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item dropdown header-language">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
+                        <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
+                            <img alt="English" src="img/figure/flag-anh.webp" style="width: 20px; height: 15px;">
+                            English
+                        </a>
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
+                            <img alt="Japanese" src="img/figure/Flag_of_Japan.svg.webp"
+                                 style="width: 20px; height: 15px;"> 日本語
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Header Menu Area End Here -->
+    <!-- Page Area Start Here -->
+    <div class="dashboard-page-one">
+      <!-- Sidebar Area Start Here -->
+      <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+        <div class="mobile-sidebar-header d-md-none">
+          <div class="header-logo">
+            <a href="student.html"><img src="img/logo1.png" alt="logo"></a>
           </div>
-        </li>
-      </ul>
-      <ul class="navbar-nav">
-        <li class="navbar-item dropdown header-admin">
-          <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-             aria-expanded="false">
-            <div class="admin-title">
-              <h5 class="item-title userFullName"></h5>
-              <span class="userRole"></span>
-            </div>
-            <div class="admin-img img">
-              <img src="" alt="Admin" style="width: 50px; height: 50px">
-            </div>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right">
-            <div class="item-header">
-              <h6 class="item-title userFullName"></h6>
-            </div>
-            <div class="item-content">
-              <ul class="settings-list">
-                <li><a href="users-profile-teacher.html"><i class="flaticon-user"></i>My Profile</a></li>
-                <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span data-i18n="change_password">Change Password</span></a></li>
-                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
+        </div>
+        <div class="sidebar-menu-content">
+          <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+            <li class="nav-item sidebar-nav-item">
+              <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+              <ul class="nav sub-group-menu sub-group-active">
+                <li class="nav-item">
+                  <a href="student.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Students</a>
+                </li>
               </ul>
-            </div>
-          </div>
-        </li>
+            </li>
+            <li class="nav-item sidebar-nav-item">
+              <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
+              <ul class="nav sub-group-menu sub-group-active">
+                <li class="nav-item">
+                  <a href="list-student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
+                </li>
+                <li class="nav-item">
+                  <a href="list-submitted-assignments.html" class="nav-link"><i class="fas fa-angle-right"></i>All Submitted Assignment</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a href="class-list-student.html" class="nav-link" onclick="toSchedule();"><i
+                      class="flaticon-shopping-list"></i><span>Class</span></a>
+            </li>
+            <li class="nav-item">
+              <a href="javascript:void(0);" class="nav-link"><i class="flaticon-shopping-list"></i><span>Personal Mark Report</span></a>
+            </li>
+            <li class="nav-item sidebar-nav-item">
+              <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+              <ul class="nav sub-group-menu ">
+                <li class="nav-item" id="student-view1">
+                  <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                    Materials</a>
+                </li>
+                <li class="nav-item" id="student-view">
+                  <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My List
+                    Materials</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item sidebar-nav-item">
+              <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+              <ul class="nav sub-group-menu">
+                <li class="nav-item">
+                  <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                    application</a>
+                </li>
 
-        <li class="navbar-item dropdown header-notification">
-          <a id="notification-bell" class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-            <i class="far fa-bell"></i>
-            <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
-            <span id="notification-count">0</span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" id="notification-dropdown">
-            <div class="item-header">
-              <h6 class="item-title" id="notification-title">Notifications</h6>
-            </div>
-            <div class="item-content" id="notification-list">
-              <!-- Notifications will be dynamically inserted here -->
-            </div>
-          </div>
-        </li>
-        <li class="navbar-item dropdown header-language">
-          <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
-              <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;"> English
-            </a>
-            <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
-              <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese" style="width: 20px; height: 15px;"> 日本語
-            </a>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <!-- Header Menu Area End Here -->
-  <!-- Page Area Start Here -->
-  <div class="dashboard-page-one">
-    <!-- Sidebar Area Start Here -->
-    <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
-    <div class="mobile-sidebar-header d-md-none">
-      <div class="header-logo">
-        <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                <li class="nav-item">
+                  <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                    application</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="sidebar-menu-content">
-      <ul class="nav nav-sidebar-menu sidebar-toggle-view">
-        <li class="nav-item sidebar-nav-item">
-          <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
-          <ul class="nav sub-group-menu sub-group-active">
-            <li class="nav-item">
-              <a href="student.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Students</a>
-            </li>
-          </ul>
-        </li>
-        <li class="nav-item sidebar-nav-item">
-          <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
-          <ul class="nav sub-group-menu">
-            <li class="nav-item">
-              <a href="list-student-assignment.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Assignment</a>
-            </li>
-            <li class="nav-item">
-              <a href="list-submitted-assignments.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>All Submitted Assignment</a>
-            </li>
-          </ul>
-        </li>
-        <li class="nav-item sidebar-nav-item">
-          <a href="javascript:void(0);" class="nav-link" onclick="submitForm();"><i
-                  class="flaticon-shopping-list"></i><span>Schedule</span></a>
-        </li>
-        <li class="nav-item">
-          <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
-        </li>
-        <li class="nav-item sidebar-nav-item">
-          <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-          <ul class="nav sub-group-menu">
-            <li class="nav-item">
-              <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();">
-                <i class="fas fa-angle-right"></i>Personal Mark Report</a>
-            </li>
-          </ul>
-        </li>
-        <li class="nav-item sidebar-nav-item">
-          <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
-          <ul class="nav sub-group-menu ">
-
-            <li class="nav-item" id="student-view1">
-              <a href="Add-material.html" class="nav-link"><i class="fas fa-angle-right"></i>List
-                Materials</a>
-            </li>
-            <li class="nav-item" id="student-view">
-              <a href="View-list-personal-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>My List
-                Materials</a>
-            </li>
-
-          </ul>
-        </li>
-        <li class="nav-item sidebar-nav-item">
-          <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
-          <ul class="nav sub-group-menu">
-            <li class="nav-item">
-              <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
-                application</a>
-            </li>
-
-            <li class="nav-item">
-              <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
-                application</a>
-            </li>
-          </ul>
-        </li>
-
-        <li class="nav-item sidebar-nav-item">
-          <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-          <ul class="nav sub-group-menu">
-            <li class="nav-item">
-              <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
-                threads</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create Thread</a>
-            </li>
-          </ul>
-        </li>
-
-      </ul>
-    </div>
-  </div>
-    <!-- Sidebar Area End Here -->
-    <div class="dashboard-content-one">
-      <!-- Breadcubs Area Start Here -->
-      <div class="breadcrumbs-area">
-        <h2>Assignment Detail</h2>
-        <ul>
-          <li>
-            <a href="list-submitted-assignments.html">All Submitted Assignments</a>
-          </li>
-          <li>Submitted Assignment Detail</li>
-        </ul>
-      </div>
-      <!-- Breadcubs Area End Here -->
-      <!-- Student Table Area Start Here -->
-      <div class="card height-auto">
-        <div class="card-body">
-          <div class="heading-layout1">
-            <div class="item-title">
-              <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Title:</h3>
-              <span id="assignment-description" style="display: inline; margin-left: 80px; font-weight: bold; color: #000;"></span>
+      <!-- Sidebar Area End Here -->
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <h2>Assignment Detail</h2>
+                <ul>
+                    <li>
+                        <a href="list-submitted-assignments.html">All Submitted Assignments</a>
+                    </li>
+                    <li>Submitted Assignment Detail</li>
+                </ul>
             </div>
-          </div>
-          &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
-          <div class="heading-layout1">
-            <div class="item-title">
-              <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Description:</h3>
-              <span id="assignment-content" style="display: inline; margin-left: 10px; font-weight: bold; color: #000;"></span>
+            <!-- Breadcubs Area End Here -->
+            <!-- Student Table Area Start Here -->
+            <div class="card height-auto">
+                <div class="card-body">
+                    <div class="heading-layout1">
+                        <div class="item-title">
+                            <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">
+                                Title:</h3>
+                            <span id="assignment-description"
+                                  style="display: inline; margin-left: 80px; font-weight: bold; color: #000;"></span>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
+                    <div class="heading-layout1">
+                        <div class="item-title">
+                            <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">
+                                Description:</h3>
+                            <span id="assignment-content"
+                                  style="display: inline; margin-left: 10px; font-weight: bold; color: #000;"></span>
+                        </div>
+                    </div>
+
+                    &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
+
+                    <div class="item-content">
+                        <table class="table text-nowrap">
+                            <tbody>
+                            <tr>
+                                <td>Start Date:</td>
+                                <td id="created-date"></td>
+                            </tr>
+                            <tr>
+                                <td>End Date:</td>
+                                <td id="end-date"></td>
+                            </tr>
+                            <tr>
+                                <td>For Class:</td>
+                                <td id="assignment-classes"></td>
+                            </tr>
+                            <tr>
+                                <td>File:</td>
+                                <td id="assignment-files"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-          </div>
 
-          &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
+            <div class="card height-auto">
+                <div class="card-body">
+                    <div class="heading-layout1">
+                        <div class="item-title">
+                            <h2 class="text-dark-medium font-medium">Your Submission</h2>
+                        </div>
+                    </div>
+                    <div class="single-info-details">
+                        <form action="javascript:void(0);" class="new-added-form" onsubmit="updateAssignment(event)">
+                            <div class="alert alert-danger" id="statusMessage" style="display: none;"></div>
+                            <div class="row">
+                                <div class="col-xl-8 col-lg-6 col-12 form-group">
+                                    <label for="description" style="color: #007bff; font-weight: bold;">Description
+                                        *</label>
+                                    <input class="form-control" id="description" name="description" required
+                                           type="text">
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-12 form-group">
+                                    <label for="content" style="color: #007bff; font-weight: bold;">Content *</label>
+                                    <div class="form-control" id="content" style="height: 200px;"></div>
+                                    <!-- Quill editor -->
+                                </div>
 
-          <div class="item-content">
-            <table class="table text-nowrap">
-              <tbody>
-              <tr>
-                <td>Start Date:</td>
-                <td id="created-date"></td>
-              </tr>
-              <tr>
-                <td>End Date:</td>
-                <td id="end-date"></td>
-              </tr>
-              <tr>
-                <td>For Class:</td>
-                <td id="assignment-classes"></td>
-              </tr>
-              <tr>
-                <td>File:</td>
-                <td id="assignment-files"></td>
-              </tr>
-              </tbody>
-            </table>
+                                <div class="col-xl-12 col-lg-12 col-12 form-group">
+                                    <label for="studentAssignment-files" style="color: #007bff; font-weight: bold;">Existed
+                                        Files:</label>
+                                    <div id="studentAssignment-files"></div>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-12 form-group">
+                                    <label for="img" style="color: #007bff; font-weight: bold;">File:</label>
+                                    <input id="img" multiple name="imgFile" type="file"/>
+                                </div>
+                                <div class="col-12 form-group mg-t-8">
+                                    <button class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" id="submitBtn"
+                                            onclick="updateAssignment(event)" type="submit">
+                                        Update
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      <!-- Success Modal -->
+      <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header border-0">
+              <h5 class="modal-title text-success" id="successModalLabel">
+                <i class="fas fa-check-circle"></i> Success
+              </h5>
+            </div>
+            <div class="modal-body text-center">
+              <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="card height-auto">
-        <div class="card-body">
-          <div class="heading-layout1">
-            <div class="item-title">
-              <h2 class="text-dark-medium font-medium">Your Submission</h2>
+      <!-- Error Modal -->
+      <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header border-0">
+              <h5 class="modal-title text-danger" id="errorModalLabel">
+                <i class="fas fa-times-circle"></i> Error
+              </h5>
             </div>
-          </div>
-          <div class="single-info-details">
-            <form class="new-added-form" action="javascript:void(0);" onsubmit="updateAssignment(event)">
-              <div id="statusMessage" class="alert alert-danger" style="display: none;"></div>
-              <div class="row">
-                <div class="col-xl-8 col-lg-6 col-12 form-group">
-                  <label for="description" style="color: #007bff; font-weight: bold;">Description *</label>
-                  <input type="text" class="form-control" name="description" id="description" required>
-                </div>
-                <div class="col-xl-12 col-lg-12 col-12 form-group">
-                  <label for="content" style="color: #007bff; font-weight: bold;">Content *</label>
-                  <div id="content" class="form-control" style="height: 200px;"></div> <!-- Quill editor -->
-                </div>
-
-                <div class="col-xl-12 col-lg-12 col-12 form-group">
-                <label for="studentAssignment-files" style="color: #007bff; font-weight: bold;">Existed Files:</label>
-                <div id="studentAssignment-files"></div>
-                </div>
-                <div class="col-xl-12 col-lg-12 col-12 form-group">
-                  <label for="img" style="color: #007bff; font-weight: bold;">File:</label>
-                  <input id="img" multiple name="imgFile" type="file"/>
-                </div>
-                <div class="col-12 form-group mg-t-8">
-                  <button type="submit" onclick="updateAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" id="submitBtn">Update</button>
-                </div>
-
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Success Modal -->
-    <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header border-0">
-            <h5 class="modal-title text-success" id="successModalLabel">
-              <i class="fas fa-check-circle"></i> Success
-            </h5>
-          </div>
-          <div class="modal-body text-center">
-            <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
-            <!-- Dòng thông báo sẽ hiển thị ở đây -->
+            <div class="modal-body">
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Error Modal -->
-    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header border-0">
-            <h5 class="modal-title text-danger" id="errorModalLabel">
-              <i class="fas fa-times-circle"></i> Error
-            </h5>
-          </div>
-          <div class="modal-body">
-            <!-- Dòng thông báo lỗi sẽ hiển thị ở đây -->
-          </div>
-        </div>
-      </div>
     </div>
-
-  </div>
-  <!-- Page Area End Here -->
+    <!-- Page Area End Here -->
 </div>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
@@ -586,102 +586,95 @@
 <!-- Custom Js -->
 <script src="js/main.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Kiểm tra và lấy ngôn ngữ đã lưu trong localStorage
-    let savedLanguage = localStorage.getItem('language');
+    document.addEventListener('DOMContentLoaded', function () {
+        // Kiểm tra và lấy ngôn ngữ đã lưu trong localStorage
+        let savedLanguage = localStorage.getItem('language');
 
-    // Nếu chưa có ngôn ngữ lưu, đặt mặc định là tiếng Anh
-    if (!savedLanguage) {
-      savedLanguage = 'en'; // Mặc định tiếng Anh
-      localStorage.setItem('language', 'en');
+        // Nếu chưa có ngôn ngữ lưu, đặt mặc định là tiếng Anh
+        if (!savedLanguage) {
+            savedLanguage = 'en'; // Mặc định tiếng Anh
+            localStorage.setItem('language', 'en');
+        }
+
+        // Cập nhật nhãn ngôn ngữ trên giao diện ngay khi trang tải
+        const languageLabel = document.getElementById('languageLabel');
+        if (languageLabel) {
+            languageLabel.innerText = savedLanguage === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
+        }
+
+        // Áp dụng ngôn ngữ khi trang tải
+        changeLanguage(savedLanguage, false); // false: Không cần tải lại trang
+    });
+
+    function changeLanguage(language, reload = true) {
+        const languageLabel = document.getElementById('languageLabel');
+        if (languageLabel) {
+            languageLabel.innerText = language === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
+        }
+
+        // Lưu ngôn ngữ vào localStorage
+        localStorage.setItem('language', language);
+
+        if (reload) {
+            if (language === 'en') {
+                window.location.reload(); // Tải lại trang nếu là tiếng Anh
+            } else {
+                // Nếu là tiếng Nhật, tự động dịch trang
+                translatePage(language);
+            }
+        }
     }
 
-    // Cập nhật nhãn ngôn ngữ trên giao diện ngay khi trang tải
-    const languageLabel = document.getElementById('languageLabel');
-    if (languageLabel) {
-      languageLabel.innerText = savedLanguage === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
-    }
+    // Hàm dịch trang
+    function translatePage(language) {
+        const pageContent = document.body.innerHTML;
 
-    // Áp dụng ngôn ngữ khi trang tải
-    changeLanguage(savedLanguage, false); // false: Không cần tải lại trang
-  });
+        // Các nội dung cần dịch (ví dụ: tên người dùng, vai trò người dùng)
+        const userFullName = document.querySelector('.userFullName')?.innerText || '';
+        const userRole = document.querySelector('.userRole')?.innerText || '';
 
-  function changeLanguage(language, reload = true) {
-    const languageLabel = document.getElementById('languageLabel');
-    if (languageLabel) {
-      languageLabel.innerText = language === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
-    }
-
-    // Lưu ngôn ngữ vào localStorage
-    localStorage.setItem('language', language);
-
-    if (reload) {
-      if (language === 'en') {
-        window.location.reload(); // Tải lại trang nếu là tiếng Anh
-      } else {
-        // Nếu là tiếng Nhật, tự động dịch trang
-        translatePage(language);
-      }
-    }
-  }
-
-  // Hàm dịch trang
-  function translatePage(language) {
-    const pageContent = document.body.innerHTML;
-
-    // Các nội dung cần dịch (ví dụ: tên người dùng, vai trò người dùng)
-    const userFullName = document.querySelector('.userFullName')?.innerText || '';
-    const userRole = document.querySelector('.userRole')?.innerText || '';
-
-    // Gửi yêu cầu dịch trang
-    fetch('/api/translate/whole-page', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify({
-        text: pageContent,
-        targetLanguage: language,
-        extraText: {
-          userFullName,
-          userRole,
-        },
-      }),
-    })
+        // Gửi yêu cầu dịch trang
+        fetch('/api/translate/whole-page', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                text: pageContent,
+                targetLanguage: language,
+                extraText: {
+                    userFullName,
+                    userRole,
+                },
+            }),
+        })
             .then(response => response.json())
             .then(data => {
-              if (data.translatedText) {
-                // Cập nhật toàn bộ nội dung trang với văn bản dịch
-                document.body.innerHTML = data.translatedText;
-              }
+                if (data.translatedText) {
+                    // Cập nhật toàn bộ nội dung trang với văn bản dịch
+                    document.body.innerHTML = data.translatedText;
+                }
             })
             .catch(error => {
-              console.error('Error translating page:', error);
+                console.error('Error translating page:', error);
             });
-  }
+    }
 </script>
 <!-- fetch user -->
 <script>
+  // Show success modal
+  function showSuccessModal(message) {
+    const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+    document.querySelector('#success-modal .modal-body').innerHTML = `<p>${message}</p>`;
+    successModal.show();
+  }
 
-  function formatDateTime(dateString) {
-    const date = new Date(dateString);
-
-    // Adjust for your timezone (if needed, e.g., UTC+7 for Vietnam)
-    date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
-
-    // Format the date and time in 12-hour format with AM/PM
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-
-    let hours = date.getHours();
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12; // Convert to 12-hour format, 0 becomes 12
-
-    return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+  // Show error modal
+  function showErrorModal(message) {
+    const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+    document.querySelector('#long-modal .modal-body').innerHTML = `<p>${message}</p>`;
+    errorModal.show();
   }
 
   async function fetchAssignmentDetails() {
@@ -690,7 +683,7 @@
 
     if (!studentAssignmentId) {
       console.error("StudentAssignment ID is missing in the URL.");
-      alert("Invalid access: No StudentAssignment ID provided.");
+      showErrorModal("Invalid access: No StudentAssignment ID provided.");
       return;
     }
 
@@ -747,26 +740,9 @@
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('An error occurred while fetching the assignment details. Please try again.');
+      showErrorModal('An error occurred while fetching the assignment details. Please try again.');
     }
   }
-
-  // Call the function on page load
-  fetchAssignmentDetails();
-
-  // Khởi tạo Quill
-  let quill = new Quill('#content', {
-    theme: 'snow',
-    placeholder: 'Content goes here...',
-    modules: {
-      toolbar: [
-        ['bold', 'italic', 'underline'],
-        [{'list': 'ordered'}, {'list': 'bullet'}],
-        [{'header': [1, 2, 3, false]}],
-        ['clean']
-      ]
-    }
-  });
 
   // Hàm để lấy chi tiết bài tập sinh viên
   async function fetchStudentAssignmentDetails() {
@@ -774,7 +750,7 @@
     const studentAssignmentId = urlParams.get('id');
 
     if (!studentAssignmentId) {
-      alert("Missing StudentAssignment ID in the URL.");
+      showErrorModal("Missing StudentAssignment ID in the URL.");
       return;
     }
 
@@ -842,65 +818,42 @@
 
     } catch (error) {
       console.error("Error loading StudentAssignment details:", error);
-      alert("Failed to load StudentAssignment details. Please try again.");
+      showErrorModal("Failed to load StudentAssignment details. Please try again.");
     }
   }
 
-  // Gọi hàm khi trang được tải
+  // Call the function on page load
   fetchStudentAssignmentDetails();
 
-  async function deleteFile(fileUrl, studentAssignmentId, fileRow) {
-    if (!confirm('Are you sure you want to delete this file?')) return;
-
-    try {
-      console.log("studentAssignmentId: " + studentAssignmentId);
-      const response = await fetch(`student-assignment/delete-file`, {
-        method: 'DELETE',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({fileUrl, studentAssignmentId})
-      });
-
-      if (response.ok) {
-        alert('File deleted successfully!');
-        fileRow.remove(); // Remove the file row from the DOM
-      } else {
-        alert('Failed to delete the file. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error deleting file:', error);
-    }
-  }
-
+  // Update assignment logic
   async function updateAssignment(event) {
-    event.preventDefault(); // Ngăn hành vi gửi form mặc định
+    event.preventDefault(); // Prevent default form submission
 
     // Lấy studentAssignmentId từ URL
     const urlParams = new URLSearchParams(window.location.search);
     const studentAssignmentId = urlParams.get('id');
 
-    // Chuẩn bị cho việc cập nhật khi form được gửi
     try {
-      // Lấy giá trị từ form và Quill editor
+      // Get values from form and Quill editor
       const description = document.getElementById('description').value.trim();
-      const content = quill.root.innerHTML.trim();  // Lấy nội dung từ Quill editor
+      const content = quill.root.innerHTML.trim();
       const currentDate = new Date().toISOString().split("T")[0];
       const imgFiles = document.getElementById('img').files;
 
-      // Kiểm tra dữ liệu đầu vào
+      // Validate input data
       if (!description || !content) {
         showErrorModal("Please fill in all required fields.");
         return;
       }
 
-      // Tạo FormData để gửi dữ liệu
       const formData = new FormData();
       formData.append("description", description);
       formData.append("content", content);
       formData.append("date", currentDate);
 
       for (let i = 0; i < imgFiles.length; i++) {
-        formData.append('imgFile', imgFiles[i]); // Kết nối trường ảnh với backend
-        const fileInput = document.querySelector('input[type="file"]'); // Find the file input
+        formData.append('imgFile', imgFiles[i]); // Connect image field with backend
+        const fileInput = document.querySelector('input[type="file"]');
         if (fileInput && fileInput.files.length > 0) {
           const file = fileInput.files[0];
           const fileSizeInMB = file.size / (1024 * 1024); // Convert bytes to MB
@@ -911,230 +864,199 @@
         }
       }
 
-      // Thực hiện PUT request để cập nhật StudentAssignment
       const response = await fetch(`student-assignment/update/${studentAssignmentId}`, {
         method: "PUT",
         body: formData,
       });
 
       if (response.ok) {
-        // Cập nhật thành công, hiển thị modal success
         showSuccessModal("StudentAssignment updated successfully.");
         setTimeout(() => {
           window.location.href = '/list-submitted-assignments.html';
-        }, 1500);  // Chờ 1.5s trước khi chuyển trang
+        }, 1500);
       } else if (response.status === 404) {
         showErrorModal("StudentAssignment not found.");
-      } else if (response.status === 400) {
+      } else {
         const errorMessage = await response.text();
         showErrorModal(`Failed to update StudentAssignment: ${errorMessage}`);
-      } else {
-        showErrorModal("An unexpected error occurred. Please try again.");
       }
     } catch (error) {
       console.error("Error updating StudentAssignment:", error);
       showErrorModal("An error occurred while updating the StudentAssignment. Please try again.");
     }
   }
-
-  // Hàm hiển thị modal thành công
-  function showSuccessModal(message) {
-    const successModalBody = document.querySelector('#success-modal .modal-body');
-    successModalBody.textContent = message;
-
-    // Tăng kích thước chữ trong modal thành công
-    successModalBody.style.fontSize = '18px';  // Cập nhật kích thước chữ
-
-    $('#success-modal').modal('show');
-  }
-
-  // Hàm hiển thị modal lỗi
-  function showErrorModal(message) {
-    const errorModalBody = document.querySelector('#long-modal .modal-body');
-    errorModalBody.textContent = message;
-
-    // Tăng kích thước chữ trong modal lỗi
-    errorModalBody.style.fontSize = '18px';  // Cập nhật kích thước chữ
-
-    $('#long-modal').modal('show');
-  }
-
-
 </script>
 <script>
-  (async function fetchUserData() {
-    try {
-      const response = await fetch('/user-detail');
-      if (response.ok) {
-        const userData = await response.json();
-        sessionStorage.setItem('userDetails', JSON.stringify(userData));
-        console.log("User data stored in sessionStorage:", userData);
-        getUserDetails(userData);
-        // Ensure that the fetch functions are called after userDetails are set
+    (async function fetchUserData() {
+        try {
+            const response = await fetch('/user-detail');
+            if (response.ok) {
+                const userData = await response.json();
+                sessionStorage.setItem('userDetails', JSON.stringify(userData));
+                console.log("User data stored in sessionStorage:", userData);
+                getUserDetails(userData);
+                // Ensure that the fetch functions are called after userDetails are set
 
-      } else {
-        console.error("Failed to fetch user details:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error fetching user details:", error);
-    }
-  })();
-
-  // Function to set user details in the UI
-  function getUserDetails(userDetails) {
-    if (userDetails) {
-      console.log("Setting user details:", userDetails);
-
-      document.querySelectorAll('.userFullName').forEach(element => {
-        element.textContent = userDetails.fullName || "Unknown Name";
-      });
-      document.querySelectorAll('.userRole').forEach(element => {
-        element.textContent = userDetails.roleName || "Unknown Role";
-      });
-      const userIdElement = document.getElementById('userId');
-      if (userIdElement) {
-        userIdElement.value = userDetails.id || "";
-      }
-
-      const imgContainers = document.querySelectorAll('.img');
-      imgContainers.forEach(container => {
-        const imgElement = container.querySelector('img');
-        if (imgElement) {
-          imgElement.src = userDetails.img
-                  ? `${userDetails.img}?v=${new Date().getTime()}`
-                  : '/path/to/default-passport.jpg';
-          console.log("Image source set to:", imgElement.src);
-        } else {
-          console.error("Image element not found in:", container);
+            } else {
+                console.error("Failed to fetch user details:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error fetching user details:", error);
         }
-      });
-    } else {
-      console.error("User details not found in sessionStorage");
+    })();
+
+    // Function to set user details in the UI
+    function getUserDetails(userDetails) {
+        if (userDetails) {
+            console.log("Setting user details:", userDetails);
+
+            document.querySelectorAll('.userFullName').forEach(element => {
+                element.textContent = userDetails.fullName || "Unknown Name";
+            });
+            document.querySelectorAll('.userRole').forEach(element => {
+                element.textContent = userDetails.roleName || "Unknown Role";
+            });
+            const userIdElement = document.getElementById('userId');
+            if (userIdElement) {
+                userIdElement.value = userDetails.id || "";
+            }
+
+            const imgContainers = document.querySelectorAll('.img');
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img');
+                if (imgElement) {
+                    imgElement.src = userDetails.img
+                        ? `${userDetails.img}?v=${new Date().getTime()}`
+                        : '/path/to/default-passport.jpg';
+                    console.log("Image source set to:", imgElement.src);
+                } else {
+                    console.error("Image element not found in:", container);
+                }
+            });
+        } else {
+            console.error("User details not found in sessionStorage");
+        }
     }
-  }
 
-  // Lấy dữ liệu userDetails từ sessionStorage và gọi hàm getUserDetails
-  const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-  getUserDetails(userDetails);
-
-  function submitForm() {
-    // Retrieve userDetails from sessionStorage
+    // Lấy dữ liệu userDetails từ sessionStorage và gọi hàm getUserDetails
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    getUserDetails(userDetails);
 
-    if (userDetails && userDetails.studentId) {
-      // Redirect to the appropriate URL with the teacherId
-      window.location.href = `schedule-list-student.html?studentId=${userDetails.studentId}`;
-    } else {
-      console.error("Teacher ID is missing or user details not found in sessionStorage");
+    function submitForm() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.studentId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `schedule-list-student.html?studentId=${userDetails.studentId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
     }
-  }
 
-  function toMarkReport() {
-    // Retrieve userDetails from sessionStorage
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    function toMarkReport() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
 
-    if (userDetails && userDetails.studentId) {
-      // Redirect to the appropriate URL with the teacherId
-      window.location.href = `personal-mark-report.html?studentId=${userDetails.studentId}`;
-    } else {
-      console.error("Teacher ID is missing or user details not found in sessionStorage");
+        if (userDetails && userDetails.studentId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `personal-mark-report.html?studentId=${userDetails.studentId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
     }
-  }
 </script>
 <script>
-  // Kiểm tra trạng thái khi trang được tải lại
-  window.onload = function() {
-    const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
-    const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
+    // Kiểm tra trạng thái khi trang được tải lại
+    window.onload = function () {
+        const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
+        const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
 
-    // Kiểm tra trạng thái đã bấm vào chuông thông báo chưa (lưu trong localStorage)
-    const hasSeenNotifications = localStorage.getItem('hasSeenNotifications');
+        // Kiểm tra trạng thái đã bấm vào chuông thông báo chưa (lưu trong localStorage)
+        const hasSeenNotifications = localStorage.getItem('hasSeenNotifications');
 
-    // Nếu đã bấm chuông trước đó và ẩn số lượng thông báo, thì không hiển thị số lượng nữa
-    if (hasSeenNotifications === 'true') {
-      notificationCount.style.display = 'none';
-    }
-  };
+        // Nếu đã bấm chuông trước đó và ẩn số lượng thông báo, thì không hiển thị số lượng nữa
+        if (hasSeenNotifications === 'true') {
+            notificationCount.style.display = 'none';
+        }
+    };
 
-  // Fetch và hiển thị thông báo trong phần thanh điều hướng
-  function fetchNotificationsInNavBar(recipientId) {
-    if (!recipientId) {
-      console.warn("Recipient ID chưa sẵn sàng, thử lại...");
-      setTimeout(() => fetchNotificationsInNavBar(JSON.parse(sessionStorage.getItem('userDetails'))?.id), 500);
-      return;
-    }
+    // Fetch và hiển thị thông báo trong phần thanh điều hướng
+    function fetchNotificationsInNavBar(recipientId) {
+        if (!recipientId) {
+            console.warn("Recipient ID chưa sẵn sàng, thử lại...");
+            setTimeout(() => fetchNotificationsInNavBar(JSON.parse(sessionStorage.getItem('userDetails'))?.id), 500);
+            return;
+        }
 
-    fetch(`/notification/get/${recipientId}`) // Truy cập đúng endpoint với recipientId
+        fetch(`/notification/get/${recipientId}`) // Truy cập đúng endpoint với recipientId
             .then(response => response.json())
             .then(data => {
-              // Loại bỏ thông báo mặc định có tiêu đề "Notification"
-              data = data.filter(notification => notification.title !== 'Notification' && notification.title.trim() !== '');
+                // Loại bỏ thông báo mặc định có tiêu đề "Notification"
+                data = data.filter(notification => notification.title !== 'Notification' && notification.title.trim() !== '');
 
-              // Sắp xếp dữ liệu từ mới nhất đến cũ nhất (sử dụng trường 'createdAt')
-              data.sort((a, b) => {
-                const dateA = new Date(a.createdAt || a.created || Date.now());
-                const dateB = new Date(b.createdAt || b.created || Date.now());
-                return dateB - dateA; // Sắp xếp giảm dần (mới nhất trước)
-              });
+                // Sắp xếp dữ liệu từ mới nhất đến cũ nhất (sử dụng trường 'createdAt')
+                data.sort((a, b) => {
+                    const dateA = new Date(a.createdAt || a.created || Date.now());
+                    const dateB = new Date(b.createdAt || b.created || Date.now());
+                    return dateB - dateA; // Sắp xếp giảm dần (mới nhất trước)
+                });
 
-              // Giả sử tất cả thông báo là chưa đọc (isRead = false) nếu không có trường này
-              data.forEach(notification => {
-                if (!notification.hasOwnProperty('isRead')) {
-                  notification.isRead = false; // Thêm trường isRead nếu không có
-                }
-              });
+                // Giả sử tất cả thông báo là chưa đọc (isRead = false) nếu không có trường này
+                data.forEach(notification => {
+                    if (!notification.hasOwnProperty('isRead')) {
+                        notification.isRead = false; // Thêm trường isRead nếu không có
+                    }
+                });
 
-              // Lọc các thông báo chưa đọc (isRead === false)
-              const unreadNotifications = data.filter(notification => notification.isRead === false);
+                // Lọc các thông báo chưa đọc (isRead === false)
+                const unreadNotifications = data.filter(notification => notification.isRead === false);
 
-              // Render thông báo vào trong thanh điều hướng
-              renderNotificationsInNavBar(unreadNotifications, data);
+                // Render thông báo vào trong thanh điều hướng
+                renderNotificationsInNavBar(unreadNotifications, data);
             })
             .catch(error => {
-              console.error('Error fetching notifications:', error);
-              const notificationList = document.getElementById('notification-list');
-              notificationList.innerHTML = '<p>Failed to load notifications.</p>';
+                console.error('Error fetching notifications:', error);
+                const notificationList = document.getElementById('notification-list');
+                notificationList.innerHTML = '<p>Failed to load notifications.</p>';
             });
-  }
+    }
 
-  // Render thông báo vào trong thanh điều hướng
-  function renderNotificationsInNavBar(unreadNotifications, allNotifications) {
-    const notificationCount = document.getElementById('notification-count');
-    const notificationList = document.getElementById('notification-list');
-    const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông
+    // Render thông báo vào trong thanh điều hướng
+    function renderNotificationsInNavBar(unreadNotifications, allNotifications) {
+        const notificationCount = document.getElementById('notification-count');
+        const notificationList = document.getElementById('notification-list');
+        const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông
 
-    // Cập nhật số lượng thông báo chưa đọc
-    notificationCount.textContent = unreadNotifications.length;
+        // Cập nhật số lượng thông báo chưa đọc
+        notificationCount.textContent = unreadNotifications.length;
 
-    // Hiển thị số lượng thông báo nếu có thông báo chưa đọc, nếu không thì ẩn
-    notificationCount.style.display = unreadNotifications.length > 0 ? 'inline' : 'none';
+        // Hiển thị số lượng thông báo nếu có thông báo chưa đọc, nếu không thì ẩn
+        notificationCount.style.display = unreadNotifications.length > 0 ? 'inline' : 'none';
 
-    // Xóa nội dung cũ và hiển thị thông báo trong thanh điều hướng
-    notificationList.innerHTML = ''; // Clear old notifications
-    unreadNotifications.slice(0, 7).forEach(notification => { // Hiển thị tối đa 7 thông báo mới nhất
-      const noticeDiv = document.createElement('div');
-      noticeDiv.classList.add('notification-item');
+        // Xóa nội dung cũ và hiển thị thông báo trong thanh điều hướng
+        notificationList.innerHTML = ''; // Clear old notifications
+        unreadNotifications.slice(0, 7).forEach(notification => { // Hiển thị tối đa 7 thông báo mới nhất
+            const noticeDiv = document.createElement('div');
+            noticeDiv.classList.add('notification-item');
 
-      const title = document.createElement('h6');
-      title.innerHTML = notification.title;
+            const title = document.createElement('h6');
+            title.innerHTML = notification.title;
 
-      noticeDiv.appendChild(title);
-      notificationList.appendChild(noticeDiv);
-    });
+            noticeDiv.appendChild(title);
+            notificationList.appendChild(noticeDiv);
+        });
 
-    // Thêm sự kiện click vào chuông thông báo để đánh dấu tất cả là đã đọc
-    notificationBell.addEventListener('click', () => {
-      notificationCount.style.display = 'none'; // Ẩn số lượng thông báo khi bấm chuông
-      // Lưu trạng thái "đã xem thông báo" vào localStorage
-      localStorage.setItem('hasSeenNotifications', 'true');
+        // Thêm sự kiện click vào chuông thông báo để đánh dấu tất cả là đã đọc
+        notificationBell.addEventListener('click', () => {
+            notificationCount.style.display = 'none'; // Ẩn số lượng thông báo khi bấm chuông
+            // Lưu trạng thái "đã xem thông báo" vào localStorage
+            localStorage.setItem('hasSeenNotifications', 'true');
 
-      // Đánh dấu tất cả thông báo là đã đọc (isRead = true)
-      allNotifications.forEach(notification => notification.isRead = true);
-    });
-  }
+            // Đánh dấu tất cả thông báo là đã đọc (isRead = true)
+            allNotifications.forEach(notification => notification.isRead = true);
+        });
+    }
 </script>
 </body>
-
-
-<!-- Mirrored from teacher-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:49 GMT -->
 </html>
