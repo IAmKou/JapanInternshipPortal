@@ -730,32 +730,35 @@
             </div>
         </div>
     </div>
-    <div class="modal" id="updateModal" style="display: none;">
-        <div class="modal-content">
+    <div class="modal" id="updateModal" style="display: none; width: 80%; max-width: 600px; margin: 0 auto;">
+        <div class="modal-content" style="max-height: 80vh; overflow: auto; padding: 20px;">
             <div class="modal-header">
                 <h5 class="modal-title" data-i18n="add_account">Update Semester</h5>
             </div>
             <form id="updateSemesterForm">
-                <label for="semesterName">Name:</label>
+                <label for="semesterName" style="color: #007bff; font-weight: bold;">Name <span
+                        style="color: red;">*</span></label>
                 <input type="text" maxlength="255" id="semesterName" required>
                 <span id="errorSemesterName1" style="color: red; font-size: 0.85em; display: none;">Semester name cannot be empty</span>
 
-                <label for="semesterStart">Start Date:</label>
+                <label for="semesterStart" style="color: #007bff; font-weight: bold;">Start Date <span
+                        style="color: red;">*</span></label>
                 <input type="date" id="semesterStart" required>
                 <span id="errorSemesterStart1" style="color: red; font-size: 0.85em; display: none;">Start date cannot be in the past</span>
 
-                <label for="semesterEnd">End Date:</label>
+                <label for="semesterEnd" style="color: #007bff; font-weight: bold;">End Date <span
+                        style="color: red;">*</span></label>
                 <input type="date" id="semesterEnd" required>
                 <span id="errorSemesterEnd1" style="color: red; font-size: 0.85em; display: none;">End date cannot be before the start date</span>
 
-
                 <div class="modal-footer">
-                    <button type="submit" class="btn update-btn">Update</button>
-                    <button type="button" class="btn cancel-btn" id="cancelButton">Cancel</button>
+                    <button type="submit" class="btn update-btn" style="font-size: 16px; width: 100px;">Update</button>
+
                 </div>
             </form>
         </div>
     </div>
+
 
     <!-- Success Modal -->
     <div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal" tabindex="-1">
