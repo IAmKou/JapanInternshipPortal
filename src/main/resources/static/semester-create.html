@@ -1429,6 +1429,7 @@
                                 window.location.reload();
                             }, 2000);  // Modal success sẽ hiển thị trong 2 giây trước khi ẩn
                         } else {
+                            deleteModal.hide();
                             response.text().then(text => showErrorModal(`Error: ${text}`));
                         }
                     }).catch(err => {
