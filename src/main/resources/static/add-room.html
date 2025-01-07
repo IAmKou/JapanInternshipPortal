@@ -373,7 +373,19 @@
                         </div>
                     </form>
                     <div id="messageBox" style="margin-top: 20px; font-weight: bold;"></div>
-
+                    <div class="table-responsive">
+                        <table class="table display text-nowrap">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Room Name</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <!-- Add Class Area End Here -->
@@ -615,6 +627,139 @@
         document.getElementById('successModalLabel').innerText = message;
         successModal.show();
     }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tableBody = document.querySelector('.table tbody');
+        const confirmationModal = document.querySelector('#confirmation-modal');
+        const confirmButton = confirmationModal.querySelector('.footer-btn.bg-linkedin');
+        const updateClassBtn = document.querySelector('#update-class-btn');
+
+        let currentClassId = null;
+
+        // Fetch classes and populate the table
+        fetch("/room/get")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch class data');
+                }
+                return response.json();
+            })
+            .then(room => {
+                room.forEach(room => {
+                    const row = document.createElement('tr');
+
+                    //Semester Name cell
+                    const roomNameCell = document.createElement('td');
+                    roomNameCell.textContent = room.name;
+                    row.appendChild(roomNameCell);
+
+                    // Actions cell with dropdown
+                    const actionsCell = document.createElement('td');
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'dropdown';
+
+                    const dropdownToggle = document.createElement('a');
+                    dropdownToggle.className = 'dropdown-toggle';
+                    dropdownToggle.setAttribute('data-toggle', 'dropdown');
+                    dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
+                    dropdown.appendChild(dropdownToggle);
+
+                    const dropdownMenu = document.createElement('div');
+                    dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
+                    dropdownMenu.innerHTML = `
+                    <a class="dropdown-item delete-class" data-id="${room.id}">
+                        <i></i> Delete Room
+                    </a>
+                    <a class="dropdown-item update-class" data-id="${room.id}" data-name="${room.name}""
+                        <i></i> Update Room
+                    </a>
+                `;
+                    dropdown.appendChild(dropdownMenu);
+                    actionsCell.appendChild(dropdown);
+                    row.appendChild(actionsCell);
+                    tableBody.appendChild(row);
+                });
+
+                // Attach event listeners for delete buttons
+                document.querySelectorAll('.delete-class').forEach(button => {
+                    button.addEventListener('click', function () {
+                        currentClassId = this.getAttribute('data-id');
+                        $('#confirmation-modal').modal('show'); // Show modal
+                    });
+                });
+
+                // Attach event listeners for update buttons
+                document.querySelectorAll('.update-class').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const roomId = this.getAttribute('data-id');
+                        const roomName = this.getAttribute('data-name');
+
+
+                        // Populate modal fields
+                        document.getElementById('roomId').value = roomId;
+                        document.getElementById('roomName').value = roomName;
+
+
+                        // Show modal
+                        $('#update-modal').modal('show');
+                    });
+                });
+            })
+            .catch(error => console.error('Error fetching class data:', error));
+
+        // Confirm delete action
+        confirmButton.addEventListener('click', function () {
+            if (currentClassId) {
+                fetch(`/class/delete/${currentClassId}`, {
+                    method: 'DELETE',
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Class deleted successfully!');
+                            location.reload(); // Refresh the page
+                        } else {
+                            throw new Error('Failed to delete class');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error deleting class:', error);
+                    });
+            }
+        });
+
+        // Handle class update via JSON
+        updateClassBtn.addEventListener('click', function () {
+            const classId = document.getElementById('classId').value;
+            const className = document.getElementById('className').value;
+            const teacherId = document.getElementById('teacherId').value;
+
+            fetch('/class/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: classId,
+                    name: className,
+                    teacher: {
+                        id: teacherId
+                    }
+                }),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Class updated successfully!');
+                        location.reload(); // Refresh the page
+                    } else {
+                        throw new Error('Failed to update class');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating class:', error);
+                });
+        });
+    });
 </script>
 </body>
 </html>

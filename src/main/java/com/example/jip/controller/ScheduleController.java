@@ -1,6 +1,7 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.ClassScheduleDTO;
+import com.example.jip.dto.ScheduleAttendanceDTO;
 import com.example.jip.dto.ScheduleDTO;
 import com.example.jip.entity.*;
 import com.example.jip.entity.Class;
@@ -222,7 +223,7 @@ public class ScheduleController {
             Attendant attendant = new Attendant();
             attendant.setStudent(student);
             attendant.setSchedule(schedule);
-            attendant.setStatus(null); // Default to null
+            attendant.setStatus(null);
             attendant.setDate(schedule.getDate());
             attendant.setStartTime(Time.valueOf("13:30:00"));
             attendant.setEndTime(Time.valueOf("17:00:00"));
@@ -265,11 +266,19 @@ public class ScheduleController {
         }
     }
 
-    @GetMapping("/get/class/{classId}")
-    public List<ScheduleDTO> getClassSchedule(@PathVariable int classId) {
-        return scheduleRepository.findByClaszId(classId).stream()
-                .map(ScheduleDTO::new)
-                .collect(Collectors.toList());
+    @GetMapping("/get/class/{classId}/student/{studentId}")
+    public List<ScheduleAttendanceDTO> getScheduleWithAttendance(@PathVariable int classId, @PathVariable int studentId) {
+        List<Object[]> results = scheduleRepository.findSchedulesWithAttendanceByClassIdNative(classId, studentId);
+        return results.stream().map(record -> new ScheduleAttendanceDTO(
+                ((Number) record[0]).longValue(),                      // scheduleId
+                (Date) record[1],                     // scheduleDate
+                Schedule.dayOfWeek.valueOf((String) record[2]), // dayOfWeek
+                (String) record[3],                   // room
+                (String) record[4],                   // activity
+                ((Number) record[5]).intValue(),                      // studentId
+                record[6] != null ? Attendant.Status.valueOf((String) record[6]) : null, // attendanceStatus
+                (String) record[7]
+        )).collect(Collectors.toList());
     }
 
     @GetMapping("/getRoomForClass/{classId}")
