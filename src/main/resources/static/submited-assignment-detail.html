@@ -677,6 +677,22 @@
     errorModal.show();
   }
 
+  function formatDateTime(dateString) {
+      const date = new Date(dateString);
+      date.setTime(date.getTime() + 7 * 60 * 60 * 1000);  // Điều chỉnh theo múi giờ Việt Nam
+
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+
+      let hours = date.getHours();
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12;
+
+      return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+  }
+
   async function fetchAssignmentDetails() {
     const urlParams = new URLSearchParams(window.location.search);
     const studentAssignmentId = urlParams.get('id'); // Get the StudentAssignment ID from the URL
@@ -743,6 +759,8 @@
       showErrorModal('An error occurred while fetching the assignment details. Please try again.');
     }
   }
+
+  fetchAssignmentDetails()
 
   // Hàm để lấy chi tiết bài tập sinh viên
   async function fetchStudentAssignmentDetails() {
