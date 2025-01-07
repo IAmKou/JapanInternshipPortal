@@ -806,7 +806,7 @@
                 </div>
                 <div class="modal-footer">
                     <!-- 2 nút có cùng kích thước mà không dùng CSS riêng biệt -->
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="font-size: 18px; width: 150px; padding: 10px;">Cancel</button>
+
                     <button type="button" class="btn btn-danger" id="confirmDeleteButton" style="font-size: 18px; width: 150px; padding: 10px;">Delete</button>
 
                 </div>
@@ -991,6 +991,10 @@
         // Validate tên học kỳ
         if (!semesterName) {
             errorSemesterName.textContent = 'Semester Name cannot be empty.';
+            errorSemesterName.style.display = 'block';
+            hasError = true;
+        } else if (semesterName.length > 40) {
+            errorSemesterName.textContent = 'Semester Name cannot exceed 255 characters.';
             errorSemesterName.style.display = 'block';
             hasError = true;
         }
@@ -1394,8 +1398,8 @@
             // Update modal with the semester name to delete
             const modalBody = document.querySelector('#deleteModal .modal-body');
             modalBody.innerHTML = `
-  <span style="font-size: 18px;">Are you sure you want to delete the semester: </span>
-  <strong style="font-size: 18px;">${semester.semesterName}</strong><span style="font-size: 18px;">?</span>`;
+        <span style="font-size: 18px;">Are you sure you want to delete the semester: </span>
+        <strong style="font-size: 18px;">${semester.semesterName}</strong><span style="font-size: 18px;">?</span>`;
 
             // Show the modal
             deleteModal.show();
@@ -1411,26 +1415,28 @@
                 })
                     .then(response => {
                         if (response.ok) {
+                            // Ẩn modal "delete" trước khi hiển thị modal thành công
+                            deleteModal.hide();
+
+                            // Hiển thị thông báo thành công sau khi modal "delete" đóng
                             showSuccessModal("Semester deleted successfully.");
+                            const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+                            successModal.show();
+
                             setTimeout(() => {
-                                const successModal = bootstrap.Modal.getInstance(document.getElementById('success-modal'));
-                                successModal.hide();
-                                location.reload(); // Reload the page
-                            }, 2000);
+                                successModal.hide(); // Đóng success modal sau 2 giây
+                                // Đảm bảo rằng trang reload sau khi modal thành công đã đóng
+                                window.location.reload();
+                            }, 2000);  // Modal success sẽ hiển thị trong 2 giây trước khi ẩn
                         } else {
                             response.text().then(text => showErrorModal(`Error: ${text}`));
                         }
-
-                        // Hide the modal
-                        deleteModal.hide();
-                    })
-                    .catch(error => {
-                        console.error("Error deleting semester:", error);
-                        showErrorModal("Failed to delete semester.");
-                        deleteModal.hide();
-                    });
+                    }).catch(err => {
+                    console.error("Error:", err);
+                });
             });
         }
+
 
 
         fetchSemesters();
@@ -1527,5 +1533,6 @@
             document.getElementById('notification-list').innerHTML = '<p>Failed to load notifications.</p>';
         });
 </script>
+<script></script>
 </body>
 </html>
