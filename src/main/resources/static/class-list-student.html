@@ -363,7 +363,7 @@
                     <a class="dropdown-item view-class" data-id="${clasz.id}">
                         <i class="fas fa-info-circle text-primary"></i> View Class Detail
                     </a>
-                    <a class="dropdown-item schedule-class" data-id="${clasz.id}" >
+                    <a class="dropdown-item schedule-class" data-id="${clasz.id}" data-student-id="${studentId}">
                         <i class="fas fa-calendar-alt text-success"></i> Schedule
                     </a>
                 `;
@@ -387,7 +387,7 @@
                 document.querySelectorAll('.schedule-class').forEach(button => {
                     button.addEventListener('click', function () {
                         const classId = this.getAttribute('data-id');
-                        const studentId = this.getAttribute('data=sid');
+                        const studentId = this.getAttribute('data-student-id');
                         window.location.href = `/schedule-student.html?classId=${classId}&studentId=${studentId}`;
                     });
                 });
