@@ -64,4 +64,6 @@ public interface AttendantRepository extends JpaRepository<Attendant, Integer> {
     List<Attendant> findByScheduleId(int id);
 
     boolean existsByScheduleIdAndIsFinalizedTrue(int id);
+
+    List<Attendant> findByDate(Date date);
 }

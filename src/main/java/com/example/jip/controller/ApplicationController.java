@@ -4,9 +4,11 @@ import com.example.jip.dto.ApplicationDTO;
 import com.example.jip.dto.StudentDTO;
 import com.example.jip.dto.TeacherDTO;
 import com.example.jip.entity.Application;
+import com.example.jip.entity.Attendant;
 import com.example.jip.entity.Student;
 import com.example.jip.entity.Teacher;
 import com.example.jip.repository.ApplicationRepository;
+import com.example.jip.repository.AttendantRepository;
 import com.example.jip.repository.StudentRepository;
 import com.example.jip.repository.TeacherRepository;
 import com.example.jip.services.ApplicationServices;
@@ -19,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.sql.Time;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,6 +44,9 @@ public class ApplicationController {
 
     @Autowired
     private S3Service s3Service;
+
+    @Autowired
+    private AttendantRepository attendantRepository;
 
     @PostMapping("/create")
     public RedirectView createApplication(
@@ -290,6 +297,25 @@ public class ApplicationController {
         if (payload.containsKey("reply")) {
             application.setReply((String) payload.get("reply"));
         }
+
+        if (application.getCategory().equals("Edit Attendance")) {
+            LocalDate today = LocalDate.now();
+            java.sql.Date date = java.sql.Date.valueOf(today);
+
+            // Fetch all attendants for the given date
+            List<Attendant> attendants = attendantRepository.findByDate(date);
+
+            if (!attendants.isEmpty()) {
+                attendants.forEach(attendant -> {
+                    attendant.setEndTime(Time.valueOf("24:00:00"));
+                    attendant.setIsFinalized(false);
+                });
+
+                // Save updated attendants
+                attendantRepository.saveAll(attendants);
+            }
+        }
+
 
         Student student = studentRepository.findById(application.getStudent().getId()).orElse(null);
         student.setMark(true);
