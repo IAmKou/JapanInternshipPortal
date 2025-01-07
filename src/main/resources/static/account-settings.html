@@ -683,7 +683,7 @@
                                                     <i class="fas fa-file-import text-green"></i> Import Users
                                                 </a>
                                                 <a class="dropdown-item" href="/template/import%20account%20template%20(9)%20-%20Copy.xlsx" download>
-                                                    <i class="fas fa-file-import text-green"></i> Import Account Template
+                                                    <i class="fas fa-file-import text-green"></i> Export Account Template
                                                 </a>
                                             </div>
                                         </div>
@@ -1196,9 +1196,14 @@
                 loadingModal.hide();
 
                 if (result.status) {
-                    // Hiển thị modal thành công
                     const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
                     successModal.show();
+
+// Đợi 3 giây trước khi reload trang
+                    setTimeout(() => {
+                        successModal.hide();  // Ẩn modal sau khi chờ 3 giây
+                        location.reload();    // Reload trang
+                    }, 3000);  // 3000 milliseconds = 3 seconds
                 } else {
                     // Hiển thị modal lỗi
                     const errorModalElement = document.getElementById('long-modal');
