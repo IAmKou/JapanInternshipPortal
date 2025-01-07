@@ -24,8 +24,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.google.cloud:google-cloud-translate:2.0.5'
 
+
+    implementation 'com.google.cloud:google-cloud-translate:2.0.5'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-json'
     implementation 'org.json:json:20210307'
