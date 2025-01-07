@@ -5,6 +5,7 @@ import com.example.jip.dto.ScheduleDTO;
 import com.example.jip.entity.*;
 import com.example.jip.entity.Class;
 import com.example.jip.repository.*;
+import com.example.jip.services.EmailServices;
 import com.example.jip.services.ScheduleServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,8 @@ public class ScheduleController {
     @Autowired
     private AttendantRepository attendantRepository;
 
+    @Autowired
+    private EmailServices emailServices;
 
     @DeleteMapping("/delete/{id}")
     public boolean deleteSchedule(@PathVariable int id) {
@@ -323,6 +326,22 @@ public class ScheduleController {
             existingSchedule.setRoom(scheduleDTO.getRoom());
             existingSchedule.setColor(scheduleDTO.getColor());
             scheduleRepository.save(existingSchedule);
+
+            Class clas = existingSchedule.getClasz();
+            if (clas != null) {
+                String teacherEmail = clas.getTeacher().getEmail();
+
+                Set<String> studentEmails = clas.getClassLists().stream()
+                        .map(list -> list.getStudent().getEmail())
+                        .collect(Collectors.toSet());
+
+                if (teacherEmail != null) {
+                    emailServices.sendScheduleUpdate(teacherEmail, existingSchedule.getDate());
+                }
+                for (String email : studentEmails) {
+                    emailServices.sendScheduleUpdate(email, existingSchedule.getDate());
+                }
+            }
 
             return ResponseEntity.ok(Map.of("message", "Event updated successfully!"));
         } catch (Exception e) {

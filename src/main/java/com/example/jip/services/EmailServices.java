@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.Properties;
 
 @Slf4j
@@ -174,7 +175,7 @@ public class EmailServices {
         }
     }
 
-    public void sendEmailApplication(String recipientEmail) {
+    public void sendScheduleUpdate(String recipientEmail, Date date) {
         // Email configuration
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -195,10 +196,14 @@ public class EmailServices {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(senderEmail));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
-            message.setSubject("Your Account Details");
+            message.setSubject("Change In Schedule");
 
             // Email body
-            String emailBody = "There is a new application send check it out.";
+            String emailBody = String.format(
+                    "There is a change in the schedule at day: %s\n " +
+                            "Go check it out.",
+                    date
+            );
 
             message.setText(emailBody);
 

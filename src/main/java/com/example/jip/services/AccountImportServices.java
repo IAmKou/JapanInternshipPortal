@@ -38,6 +38,10 @@ public class AccountImportServices {
     private MarkRpExamRepository markRpExamRepository;
     @Autowired
     private EmailServices emailServices;
+    @Autowired
+    private ExamService examService;
+    @Autowired
+    private SemesterRepository semesterRepository;
 
     public List<String> importAccounts(MultipartFile file) {
         List<String> errors = Collections.synchronizedList(new ArrayList<>());

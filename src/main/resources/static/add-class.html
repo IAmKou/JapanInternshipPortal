@@ -30,6 +30,16 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .pagination .page-link {
+            color: #2575fc;
+            border-radius: 50%;
+            padding: 5px 15px;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #2575fc;
+            color: white;
+        }
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -347,13 +357,6 @@
                                 <select id="semester" name="teacherId" class="select2">
                                 </select>
                             </div>
-                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label style="color: #007bff; font-weight: bold;">Add student</label>
-                                <button type="button" id="fetchStudentsButton" class="btn-fill-lg text-light bg-dodger-blue">
-                                    Get Students
-                                </button>
-                            </div>
-
                             <div id="studentList" class="table-responsive">
                                 <table class="table display data-table text-nowrap">
                                 </table>
@@ -488,7 +491,8 @@
         let currentPage = 1; // Current page number
         const studentsPerPage = 30; // Number of students per page
 
-        document.getElementById('fetchStudentsButton').addEventListener('click', fetchStudents);
+        // Automatically fetch students when the page loads
+        fetchStudents();
 
         function fetchStudents() {
             console.log("Fetching students...");
@@ -613,66 +617,64 @@
             }
         }
 
+        document.getElementById('createClassForm').addEventListener('submit', function (event) {
+            event.preventDefault();
 
-    document.getElementById('createClassForm').addEventListener('submit', function (event) {
-        event.preventDefault();
+            const className = document.getElementById("className").value;
+            const teacherId = parseInt(document.getElementById("teacher").value);
+            const semesterId = parseInt(document.getElementById("semester").value);
 
-        const className = document.getElementById("className").value;
-        const teacherId = parseInt(document.getElementById("teacher").value);
-        const semesterId = parseInt(document.getElementById("semester").value);
+            if (!className.trim() || !teacherId || !semesterId) {
+                alert("Please provide class name, teacher and semester.");
+                return;
+            }
 
-        if (!className.trim() || !teacherId || !semesterId) {
-            alert("Please provide class name, teacher and semester.");
-            return;
-        }
+            if (selectedStudentIds.length < 10 || selectedStudentIds.length > 30) {
+                alert("A class must have at least 10 students and at most 30 students. Please adjust your selection.");
+                return;
+            }
 
-        if (selectedStudentIds.length < 10 || selectedStudentIds.length > 30) {
-            alert("A class must have at least 10 students and at most 30 students. Please adjust your selection.");
-            return;
-        }
+            const data = {
+                name: className,
+                numberOfStudents: selectedStudentIds.length,
+                teacher: {
+                    id: teacherId
+                },
+                semesterId : semesterId,
+                studentIds: selectedStudentIds
+            };
 
-        const data = {
-            name: className,
-            numberOfStudents: selectedStudentIds.length,
-            teacher: {
-                id: teacherId
-            },
-            semesterId : semesterId,
-            studentIds: selectedStudentIds
-        };
-
-        fetch('/class/create', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to create class');
-                }
-                return response.text();
+            fetch('/class/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
             })
-            .then(data => {
-                alert(data);
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to create class');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    alert(data);
 
-                document.getElementById("createClassForm").reset();
+                    document.getElementById("createClassForm").reset();
 
-                const studentListDiv = document.getElementById('studentList');
-                studentListDiv.innerHTML = "";
-                const studentCountDiv = document.getElementById('studentCount');
-                studentCountDiv.textContent = "";
+                    const studentListDiv = document.getElementById('studentList');
+                    studentListDiv.innerHTML = "";
+                    const studentCountDiv = document.getElementById('studentCount');
+                    studentCountDiv.textContent = "";
 
-                // Clear selected students
-                selectedStudentIds = [];
-            })
-            .catch(error => alert("Error creating class: " + error));
+                    // Clear selected students
+                    selectedStudentIds = [];
+                })
+                .catch(error => alert("Error creating class: " + error));
+        });
     });
-    });
-    // Initial fetch to populate students
-
 </script>
+
 <!-- fetch teacher -->
 <script>
     document.addEventListener('DOMContentLoaded', loadTeachers);

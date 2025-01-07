@@ -33,6 +33,23 @@
         .dropdown-toggle::after {
             content: none !important;
         }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient-yellow {
+            background: linear-gradient(45deg, #ffcc00, #ff9900);
+            color: #fff;
+        }
         .btn.update-btn {
             background-color: #4CAF50; /* Màu xanh lá cây */
             color: white;
@@ -617,12 +634,12 @@
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h2>List Mark</h2>
+                <h2>Class List Mark</h2>
                 <ul>
                     <li>
                         <a href="teacher.html">Home</a>
                     </li>
-                    <li>List Mark</li>
+                    <li>Class List Mark</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
@@ -632,30 +649,35 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h2>List Mark</h2>
+                            <h2>Class List Mark</h2>
                         </div>
                         <h3>Class: <span id="className"></span></h3>
                     </div>
                     <!-- Main Button to Open Modal -->
-                    <button class="btn btn-gradient-yellow btn-search" id="open-modal-btn" style="margin-bottom: 15px">Import</button>
-                    <button class="btn btn-gradient-yellow btn-search" id="export-by-excel" style="margin-bottom: 15px">Export</button>
+                    <button class="btn btn-gradient-yellow btn-search" id="open-modal-btn" style="margin-bottom: 15px">Import Mark</button>
+                    <button class="btn btn-gradient-yellow btn-search" id="export-by-excel" style="margin-bottom: 15px">Export Mark</button>
                     <!-- Table -->
                     <div class="table-responsive">
                         <table class="table display text-nowrap">
                             <thead>
                             <tr>
                                 <th rowspan="2">Student Name</th>
-                                <th colspan="3">Skill (40%)</th>
-                                <th colspan="2">Soft Skill (30%)</th>
-                                <th rowspan="2">Attitude (30%)</th>
+                                <th colspan="4">Skill (40%)</th>
+                                <th colspan="3">Soft Skill (30%)</th>
+                                <th colspan="3">Attitude (30%)</th>
                                 <th rowspan="2">Course Total</th>
                             </tr>
                             <tr>
                                 <th>Avg Exam Mark (12%)</th>
                                 <th>Middle Exam (16%)</th>
                                 <th>Final Exam (12%)</th>
+                                <th>Total</th>
                                 <th>Script (15%)</th>
                                 <th>Presentation (15%)</th>
+                                <th>Total</th>
+                                <th>Assignment (15%)</th>
+                                <th>Attendant (15%)</th>
+                                <th>Total</th>
                             </tr>
                             </thead>
                             <tbody id="mark_list">

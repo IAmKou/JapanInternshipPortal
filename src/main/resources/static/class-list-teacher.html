@@ -32,72 +32,6 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
-        .card {
-            background-color: #ffffff;
-            border-radius: 10px;
-            border: 1px solid #eaeaea;
-            padding: 15px;
-        }
-
-        .card-title {
-            font-size: 2.5rem; /* Tăng kích thước tiêu đề */
-            font-weight: bold;
-            color: #333333;
-            margin-bottom: 15px;
-        }
-
-        .table {
-            margin-bottom: 0;
-            font-size: 2.5rem; /* Tăng kích thước chữ trong bảng */
-        }
-
-        .table-hover tbody tr:hover {
-            background-color: #f9f9f9;
-        }
-
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: #f8f8f8;
-        }
-
-        .table-dark {
-            background-color: #343a40;
-            color: #ffffff;
-            font-size: 1.5rem; /* Tăng kích thước chữ của tiêu đề bảng */
-        }
-
-        .table-dark th {
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-sm {
-            font-size: 1rem; /* Tăng kích thước chữ trên nút */
-            padding: 8px 15px;
-        }
-
-        .btn-outline-success {
-            border: 1px solid #28a745;
-            color: #28a745;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .btn-outline-success:hover {
-            background-color: #28a745;
-            color: #ffffff;
-        }
-
-        .btn-outline-danger {
-            border: 1px solid #dc3545;
-            color: #dc3545;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .btn-outline-danger:hover {
-            background-color: #dc3545;
-            color: #ffffff;
-        }
-
-
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -128,9 +62,6 @@
         .footer-wrap-layout1 a {
             color: #ffcc00;
             text-decoration: none;
-        }
-        .dropdown-toggle::after {
-            content: none !important;
         }
     </style>
 </head>
@@ -352,33 +283,30 @@
                     <li>
                         <a href="admin.html">Home</a>
                     </li>
-                    <li>List</li>
+                    <li>Class List</li>
                 </ul>
             </div>
             <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                        </div>
-                    </div>
-                </div>
             </div>
             <!-- Breadcubs Area End Here -->
             <!-- Class Routine Area Start Here -->
             <div class="row">
-                <div class="col-12">
-                    <div class="card shadow-sm border-0 rounded">
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h3 class="card-title mb-0">Class List</h3>
+                <div class="col-12-xxxl col-12">
+                    <div class="card height-auto">
+                        <div class="card-body">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3>Class List</h3>
+                                </div>
 
                             </div>
+
                             <div class="table-responsive">
-                                <table class="table table-hover table-striped text-center">
-                                    <thead class="table-dark">
+                                <table class="table display text-nowrap">
+                                    <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Class</th>
+                                        <th>Class Name</th>
                                         <th>Semester</th>
                                         <th>Teacher</th>
                                         <th>Number of Student</th>
@@ -398,7 +326,7 @@
     </div>
     <!-- Page Area End Here -->
     <!-- update modal -->
-    <div class="ui-modal-box">
+
         <div class="modal-box">
             <div class="modal sign-up-modal fade" id="update-modal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -430,7 +358,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- confirm modal -->
     <div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -976,7 +903,4 @@
     }
 </script>
 </body>
-
-
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/JIP/JIP/class-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>
