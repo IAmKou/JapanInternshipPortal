@@ -1,6 +1,7 @@
 package com.example.jip.repository;
 
 import com.example.jip.dto.ClassScheduleDTO;
+import com.example.jip.dto.ScheduleAttendanceDTO;
 import com.example.jip.entity.Schedule;
 import com.example.jip.entity.Semester;
 import jakarta.transaction.Transactional;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -53,6 +55,26 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 
     @Query("SELECT s FROM Schedule s WHERE s.clasz.id = :classId")
     List<Schedule> findByClaszId(@Param("classId") int classId);
+
+    @Query("""
+    SELECT new com.example.jip.dto.ScheduleAttendanceDTO(
+        s.id,
+        s.date,
+        s.day_of_week,
+        s.room,
+        s.activity,
+        st.id,
+        COALESCE(a.status, null),
+        COALESCE(a.date, null)
+    )
+    FROM Schedule s
+    JOIN s.clasz c
+    JOIN c.classLists cl
+    JOIN cl.student st
+    LEFT JOIN Attendant a ON a.schedule.id = s.id AND a.student.id = st.id
+    WHERE c.id = :classId AND st.id = :studentId
+""")
+    List<ScheduleAttendanceDTO> findSchedulesWithAttendanceByClassId(@Param("classId") int classId, @Param("studentId") int studentId);
 
 
     boolean existsBySemesterIdAndDateAndRoom(int semesterId, java.sql.Date date, String room);

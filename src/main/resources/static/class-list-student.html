@@ -1,0 +1,538 @@
+<!doctype html>
+<html class="no-js" lang="" xmlns="http://www.w3.org/1999/html">
+
+
+<!-- Mirrored from class-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>JIP | Class List</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+    <!-- Normalize CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="css/all.min.css">
+    <!-- Flaticon CSS -->
+    <link rel="stylesheet" href="fonts/flaticon.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="css/animate.min.css">
+    <!-- Select 2 CSS -->
+    <link rel="stylesheet" href="css/select2.min.css">
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Modernize js -->
+    <script src="js/modernizr-3.6.0.min.js"></script>
+    <style>
+        /* Đảm bảo trang bao phủ toàn bộ chiều cao */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* Container chính */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%; /* Bao phủ toàn bộ trang */
+        }
+
+        /* Nội dung bên trên */
+        .content {
+            flex: 1; /* Đẩy footer xuống */
+        }
+
+        /* Footer nằm ở cuối */
+        .footer-wrap-layout1 {
+            background-color: #ec9006;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .footer-wrap-layout1 a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<div id="wrapper" class="wrapper bg-ash">
+    <!-- Header Menu Area Start Here -->
+    <div class="navbar navbar-expand-md header-menu-one bg-light">
+        <div class="nav-bar-header-one">
+            <div class="header-logo">
+                <a href="manager.html">
+                    <div style="width: 180px; height: 70px; overflow: hidden;">
+                        <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </a>
+            </div>
+            <div class="toggle-button sidebar-toggle">
+                <button type="button" class="item-link">
+                        <span class="btn-icon-wrap">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                </button>
+            </div>
+        </div>
+        <div class="d-md-none mobile-nav-bar">
+            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse"
+                    data-target="#mobile-navbar" aria-expanded="false">
+                <i class="far fa-arrow-alt-circle-down"></i>
+            </button>
+            <button type="button" class="navbar-toggler sidebar-toggle-mobile">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+            <ul class="navbar-nav">
+                <li class="navbar-item header-search-bar">
+                    <div class="input-group stylish-input-group">
+
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="navbar-item dropdown header-admin">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <div class="admin-title">
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
+                        </div>
+                        <div class="admin-img img">
+                            <img src="" style="width: 50px; height: 50px" alt="Admin">
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title userFullName"></h6>
+                        </div>
+                        <div class="item-content">
+                            <ul class="settings-list">
+                                <li><a href="users-profile-manager.html"><i class="flaticon-user"></i>My Profile</a></li>
+                                <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span data-i18n="change_password">Change Password</span></a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="navbar-item dropdown header-notification">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <i class="far fa-bell"></i>
+                        <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
+                        <span>8</span>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title">03 Notifiacations</h6>
+                        </div>
+                        <div class="item-content">
+                            <div class="media">
+                                <div class="item-icon bg-skyblue">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Complete Today Task</div>
+                                    <span>1 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-orange">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Director Metting</div>
+                                    <span>20 Mins ago</span>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <div class="item-icon bg-violet-blue">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="media-body space-sm">
+                                    <div class="post-title">Update Password</div>
+                                    <span>45 Mins ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="navbar-item dropdown header-language">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button"
+                       data-toggle="dropdown" aria-expanded="false"><i class="fas fa-globe-americas"></i>EN</a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#">English</a>
+                        <a class="dropdown-item" href="#">Japanese</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Header Menu Area End Here -->
+    <!-- Page Area Start Here -->
+    <div class="dashboard-page-one">
+        <!-- Sidebar Area Start Here -->
+        <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+            <div class="mobile-sidebar-header d-md-none">
+                <div class="header-logo">
+                    <a href="manager.html"><img src="img/logo1.png" alt="logo"></a>
+                </div>
+            </div>
+            <div class="sidebar-menu-content">
+                <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item">
+                                <a href="manager.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Manager</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="all-student.html" class="nav-link"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>All Student</span></a>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item">
+                                <a href="add-class.html" class="nav-link"><i
+                                        class="flaticon-multiple-users-silhouette"></i>Add New Class</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="class-list.html" class="nav-link menu-active"><i
+                                        class="flaticon-menu"></i><span>All Class</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="semester-list.html" class="nav-link"><i class="flaticon-calendar"></i><span>Schedule List</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="View-list-application.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    application</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <!-- Sidebar Area End Here -->
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <h3>Class List</h3>
+                <ul>
+                    <li>
+                        <a href="manager.html">Home</a>
+                    </li>
+                    <li>Class List</li>
+                </ul>
+            </div>
+            <!-- Breadcubs Area End Here -->
+            <!-- Class Routine Area Start Here -->
+            <div class="row">
+                <div class="col-12-xxxl col-12">
+                    <div class="card height-auto">
+                        <div class="card-body">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3>Class List</h3>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table display text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Class</th>
+                                        <th>Teacher</th>
+                                        <th>Number of Student</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Class Routine Area End Here -->
+        </div>
+    </div>
+    <!-- Page Area End Here -->
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tableBody = document.querySelector('.table tbody');
+        const urlParams = new URLSearchParams(window.location.search);
+        const studentId = urlParams.get('studentId');
+
+        // Fetch classes by studentId and populate the table
+        fetch(`/class/student/${studentId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch class data');
+                }
+                return response.json();
+            })
+            .then(claszData => {
+                claszData.forEach(clasz => {
+                    const row = document.createElement('tr');
+
+                    // ID cell
+                    const idCell = document.createElement('td');
+                    idCell.textContent = clasz.id;
+                    row.appendChild(idCell);
+
+                    // Name cell
+                    const nameCell = document.createElement('td');
+                    const link = document.createElement('a');
+                    link.textContent = clasz.name;
+                    // Example link to a page showing all class details:
+                    link.href = `/all-class-student.html?classId=${clasz.id}`;
+                    nameCell.appendChild(link);
+                    row.appendChild(nameCell);
+
+                    // Teacher Name cell
+                    const teacherNameCell = document.createElement('td');
+                    teacherNameCell.textContent = clasz.teacherName;
+                    row.appendChild(teacherNameCell);
+
+                    // Number of Students cell
+                    const nos = document.createElement('td');
+                    nos.textContent = clasz.numberOfStudents;
+                    row.appendChild(nos);
+
+                    // Actions cell with dropdown
+                    const actionsCell = document.createElement('td');
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'dropdown';
+
+                    const dropdownToggle = document.createElement('a');
+                    dropdownToggle.href = '#';
+                    dropdownToggle.className = 'dropdown-toggle';
+                    dropdownToggle.setAttribute('data-toggle', 'dropdown');
+                    dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
+                    dropdown.appendChild(dropdownToggle);
+
+                    // Create the dropdown menu
+                    const dropdownMenu = document.createElement('div');
+                    dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
+
+                    // Add the "View Class Detail" option
+                    dropdownMenu.innerHTML = `
+                        <a class="dropdown-item view-class" data-id="${clasz.id}">
+                            <i class="fas fa-info-circle text-primary"></i> View Class Detail
+                        </a>
+                        <a class="dropdown-item schedule-class" data-id="${clasz.id}" >
+                            <i class="fas fa-calendar-alt text-success"></i> Schedule
+                        </a>
+                    `;
+
+                    dropdown.appendChild(dropdownMenu);
+                    actionsCell.appendChild(dropdown);
+                    row.appendChild(actionsCell);
+
+                    tableBody.appendChild(row);
+                });
+
+                // Attach event listener for "View Class Detail"
+                document.querySelectorAll('.view-class').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const classId = this.getAttribute('data-id');
+                        window.location.href = `/all-class-student.html?classId=${classId}`;
+                    });
+                });
+
+                // Attach event listener for "Schedule"
+                document.querySelectorAll('.schedule-class').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const classId = this.getAttribute('data-id');
+                        const studentId = this.getAttribute('data=sid');
+                        window.location.href = `/schedule-student.html?classId=${classId}&studentId=${studentId}`;
+                    });
+                });
+            })
+            .catch(error => console.error('Error fetching class data:', error));
+    });
+</script>
+
+<!-- fetch teacher -->
+<script>
+    document.addEventListener('DOMContentLoaded', loadTeachers);
+
+    function loadTeachers() {
+        fetch('/teachers')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load teachers');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const teacherSelect = document.getElementById('teacherId');
+                console.log(document.getElementById('teacherId'));
+                data.forEach(teacher => {
+                    const option = document.createElement('option');
+                    option.value = teacher.id;
+                    option.textContent = teacher.fullname;
+                    teacherSelect.appendChild(option);
+                });
+                $('#teacher').select2({
+                    placeholder: "Select a teacher",
+                    allowClear: true
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching teachers:', error);
+                alert("There was an error fetching the teachers. Please try again.");
+            });
+    }
+</script>
+<!-- fetch user -->
+<script>
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    if (userDetails) {
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        const userRoleElements = document.querySelectorAll('.userRole');
+
+        // Populate Name
+        userFullNameElements.forEach(element => {
+            element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
+        });
+
+        // Populate Role
+        userRoleElements.forEach(element => {
+            element.textContent = userDetails.roleName;
+        });
+
+        const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+
+        imgContainers.forEach(container => {
+            const imgElement = container.querySelector('img'); // Select the <img> inside the div
+            if (imgElement) {
+                imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
+            }
+        });
+    } else {
+        console.error("User details not found in sessionStorage");
+    }
+</script>
+<!-- jquery-->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Select 2 Js -->
+<script src="js/select2.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Data Table Js -->
+<script src="js/jquery.dataTables.min.js"></script>
+<!-- Custom Js -->
+<script src="js/main.js"></script>
+<footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+    <div style="background-color: #ec9006; padding: 15px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+                        rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- update modal -->
+<div class="ui-modal-box">
+    <div class="modal-box">
+        <div class="modal sign-up-modal fade" id="update-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="close-btn">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="item-logo">
+                            <img src="img/logo2.png" alt="logo">
+                        </div>
+                        <form id="update-class-form">
+                            <input type="hidden" name="classId" id="classId" value="">
+                            <div class="form-group col-12">
+                                <label for="teacherId">Teacher</label>
+                                <select id="teacherId" name="teacherId" class="select2"></select>
+                            </div>
+                            <div class="form-group col-12">
+                                <input type="text" id="className" name="name" placeholder="New class name" class="form-control">
+                            </div>
+                            <div class="form-group col-12">
+                                <button type="button" class="login-btn" id="update-class-btn">Update Class</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- confirm modal -->
+<div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog success-modal-content" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="success-message">
+                    <div class="item-icon">
+                        <i class="fas fa-exclamation"></i>
+                    </div>
+                    <h3 class="item-title">You want to delete this class?</h3>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="id" id="Cid">
+                <button type="button" id="confirm-delete" class="footer-btn bg-linkedin">Ok</button>
+                <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

@@ -16,5 +16,5 @@ public interface RoomAvailabilityRepository extends JpaRepository<RoomAvailabili
     Optional<RoomAvailability> findByRoomAndDate(Room room, Date date);
     @Query("SELECT ra.room FROM RoomAvailability ra WHERE ra.status = :status AND ra.date = :date")
     Optional<Room> findFirstAvailableRoomByStatusAndDate(@Param("status") RoomAvailability.Status status, @Param("date") Date date);
-
+    boolean existsByRoomIdAndStatus(Integer roomId, RoomAvailability.Status status);
 }

@@ -1,6 +1,7 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.ClassScheduleDTO;
+import com.example.jip.dto.ScheduleAttendanceDTO;
 import com.example.jip.dto.ScheduleDTO;
 import com.example.jip.entity.*;
 import com.example.jip.entity.Class;
@@ -265,11 +266,9 @@ public class ScheduleController {
         }
     }
 
-    @GetMapping("/get/class/{classId}")
-    public List<ScheduleDTO> getClassSchedule(@PathVariable int classId) {
-        return scheduleRepository.findByClaszId(classId).stream()
-                .map(ScheduleDTO::new)
-                .collect(Collectors.toList());
+    @GetMapping("/get/class/{classId}/student/{studentId}")
+    public List<ScheduleAttendanceDTO> getClassSchedule(@PathVariable int classId, @PathVariable int studentId) {
+        return scheduleRepository.findSchedulesWithAttendanceByClassId(classId, studentId);
     }
 
     @GetMapping("/getRoomForClass/{classId}")

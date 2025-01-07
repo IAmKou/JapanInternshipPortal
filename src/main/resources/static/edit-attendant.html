@@ -286,16 +286,10 @@
                                 <h3>All Class Schedules</h3>
                             </div>
                         </div>
-                        <form class="mg-b-20">
-                            <div class="row gutters-8">
-                                <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                                    <input type="text" placeholder="Search anything..." class="form-control">
-                                </div>
-                                <div class="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
-                                    <button type="submit" class="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                                </div>
-                            </div>
-                        </form>
+                        <div id="logContainer" style="border: 1px solid #ccc; padding: 10px; margin-top: 20px; max-height: 200px; overflow-y: auto;">
+                            <!-- Logs will appear here -->
+                        </div>
+
                         <div class="table-responsive">
                             <table class="table display text-nowrap">
                                 <thead>
@@ -554,7 +548,7 @@
                                 checkbox.classList.add('form-check-input');
                                 checkbox.value = status;
                                 checkbox.checked = student.status === status; // Check if the current status matches
-                                checkbox.disabled = (status === 'Permitted') || student.mark; // Disable "Permitted" or marked students
+                                checkbox.disabled = (status === 'PERMITTED') || student.mark; // Disable "Permitted" or marked students
                                 const label = document.createElement('label');
                                 label.classList.add('form-check-label');
                                 label.textContent = status;
@@ -646,21 +640,33 @@
                     },
                     body: JSON.stringify(attendanceData),
                 })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Failed to save attendance: ' + response.statusText);
-                        }
-                        return response.text();
-                    })
+                    .then(response => response.json())
                     .then(data => {
-                        console.log('Attendance saved successfully:', data);
-                        alert("Attendance saved successfully!");
-                        window.location.href = 'class-list-teacher';
+                        if (data.status === "success") {
+                            console.log("Attendance saved successfully.");
+                            console.log("Logs:", data.logs);
+                            alert("Attendance saved successfully!");
+                            window.location.href = 'class-list-teacher';
+                        } else {
+                            console.error("Error saving attendance:", data.logs);
+                            alert("Failed to save attendance. Check logs for details.");
+                            displayLogs(data.logs); // Function to display logs
+                        }
                     })
                     .catch(error => {
                         console.error('Error saving attendance:', error);
                         alert('Failed to save attendance.');
                     });
+            }
+
+            function displayLogs(logs) {
+                const logContainer = document.getElementById('logContainer');
+                logContainer.innerHTML = ""; // Clear previous logs
+                logs.forEach(log => {
+                    const logItem = document.createElement('div');
+                    logItem.textContent = log;
+                    logContainer.appendChild(logItem);
+                });
             }
         });
     </script>
