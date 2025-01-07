@@ -123,8 +123,8 @@ public class SemesterController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Semester not found");
         }
 
-        if (!semester.getSchedules().isEmpty() || !semester.getClasses().isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot delete semester. It is associated with schedules or classes.");
+        if (!semester.getClasses().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot delete semester. It is associated with classes.");
         }
 
         semesterRepository.delete(semester);
