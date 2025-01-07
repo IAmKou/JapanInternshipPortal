@@ -10,9 +10,7 @@ import com.example.jip.repository.ApplicationRepository;
 import com.example.jip.repository.StudentRepository;
 import com.example.jip.repository.TeacherRepository;
 import com.example.jip.services.ApplicationServices;
-import com.example.jip.services.CloudinaryService;
 import com.example.jip.services.S3Service;
-import com.example.jip.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +37,7 @@ public class ApplicationController {
 
     @Autowired
     private ApplicationServices applicationServices;
-    
+
     @Autowired
     private S3Service s3Service;
 

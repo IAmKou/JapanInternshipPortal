@@ -18,8 +18,6 @@ public class TeacherServices {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Autowired
-    private CloudinaryService cloudinaryService;
 
     @Autowired
     private S3Service s3Service;
@@ -38,7 +36,9 @@ public class TeacherServices {
             throw new IllegalArgumentException("Duplicate email or phone number found");
         }
 
-        String imgUrl = s3Service.uploadFile(img, "Account/Teacher/" + fullname, img.getOriginalFilename());
+        String folderName = sanitizeFolderName("Account/Teacher/" + accountOpt.get().getUsername());
+
+        String imgUrl = s3Service.uploadFile(img, folderName, img.getOriginalFilename());
 
         Teacher teacher = new Teacher();
         teacher.setFullname(fullname);
@@ -62,6 +62,10 @@ public class TeacherServices {
 
         return savedTeacher;
 
+    }
+
+    private String sanitizeFolderName(String folderName) {
+        return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim().replace(" ", "_");
     }
     private boolean isDuplicate(String email, String phoneNumber) {
         return teacherRepository.findByEmail(email).isPresent() || teacherRepository.findByPhoneNumber(phoneNumber).isPresent();

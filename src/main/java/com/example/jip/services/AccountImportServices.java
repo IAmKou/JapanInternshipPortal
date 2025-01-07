@@ -1,10 +1,8 @@
 package com.example.jip.services;
 
-import com.example.jip.dto.response.CloudinaryResponse;
 import com.example.jip.entity.*;
 import com.example.jip.entity.Student.Gender;
 import com.example.jip.repository.*;
-import org.apache.poi.ooxml.POIXMLDocumentPart;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +28,6 @@ public class AccountImportServices {
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private CloudinaryService cloudinaryService;
     @Autowired
     private S3Service s3Service;
     @Autowired
@@ -205,10 +201,10 @@ public class AccountImportServices {
 
             // Upload images to Cloudinary only after successful validation
             String passportUrl = row.getCell(9).getStringCellValue();
-            String passport = uploadImageToCloudinary(passportUrl, workbook);
+            String passport = uploadImageToS3(passportUrl, username, workbook);
 
             String imgPath = row.getCell(6).getStringCellValue();
-            String imgUrl = uploadImageToCloudinary(imgPath, workbook);
+            String imgUrl = uploadImageToS3(imgPath, username, workbook);
 
             // Find role
             int roleId = Integer.parseInt(dataFormatter.formatCellValue(row.getCell(2)).trim());
@@ -254,21 +250,20 @@ public class AccountImportServices {
         }
     }
 
-
-
-    private String uploadImageToCloudinary(String imgPath, XSSFWorkbook workbook) {
+    private String uploadImageToS3(String imgPath, String userName, XSSFWorkbook workbook) {
         try {
             // If the image path is not a URL but embedded in the Excel, extract it.
             if (imgPath != null && imgPath.startsWith("http")) {
                 return imgPath; // If it's a URL, return it directly.
             }
 
+            String folderName = sanitizeFolderName("Account/Student/" + userName);
+
             // Extract image from workbook if it's embedded
             byte[] imageBytes = getImageBytesFromExcel(workbook);
-            //Em luong co the check lai ham vs sua lai file excel nhe, e vinh test add dc vao file r
             if (imageBytes != null) {
                 MultipartFile imageFile = new MockMultipartFile("file", "image.jpg", "image/jpeg", imageBytes);
-                String response = s3Service.uploadFile(imageFile, "Account/", imageFile.getOriginalFilename()); // Upload to Cloudinary and return URL
+                String response = s3Service.uploadFile(imageFile, folderName, imageFile.getOriginalFilename()); // Upload to Cloudinary and return URL
                 return response;
             }
 
@@ -315,6 +310,10 @@ public class AccountImportServices {
             hasError = true;
         }
         return hasError;
+    }
+
+    private String sanitizeFolderName(String folderName) {
+        return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim().replace(" ", "_");
     }
 
     private boolean validateColumn(String username, String password, String email, String phoneNumber,

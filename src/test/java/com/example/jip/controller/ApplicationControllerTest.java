@@ -1,7 +1,6 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.ApplicationDTO;
-import com.example.jip.dto.response.CloudinaryResponse;
 import com.example.jip.entity.Application;
 import com.example.jip.entity.Student;
 import com.example.jip.entity.Teacher;
@@ -9,7 +8,6 @@ import com.example.jip.repository.ApplicationRepository;
 import com.example.jip.repository.StudentRepository;
 import com.example.jip.repository.TeacherRepository;
 import com.example.jip.services.ApplicationServices;
-import com.example.jip.services.CloudinaryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
@@ -53,8 +50,6 @@ public class ApplicationControllerTest {
     @Mock
     private ApplicationServices applicationServices;
 
-    @Mock
-    private CloudinaryService cloudinaryService;
 
     @InjectMocks
     private ApplicationController applicationController;
@@ -260,13 +255,7 @@ public class ApplicationControllerTest {
         teacher.setId(1);
         when(teacherRepository.findByAccount_id(teacherId)).thenReturn(Optional.of(teacher));
 
-        // Mock CloudinaryResponse
-        CloudinaryResponse uploadedFile = CloudinaryResponse.builder()
-                .url("https://cloudinary.com/sample.jpg")
-                .publicId("sample_public_id")
-                .folder("Materials/")
-                .build();
-        when(cloudinaryService.uploadFileToFolder(imgFile, "Materials/")).thenReturn(uploadedFile);
+
 
         // Mock ApplicationDTO and saved Application
         Application savedApplication = new Application();
@@ -282,7 +271,6 @@ public class ApplicationControllerTest {
 
         // Assertions
         assertEquals("/View-my-application.html", redirectView.getUrl());
-        verify(cloudinaryService, times(1)).uploadFileToFolder(imgFile, "Materials/");
         verify(applicationServices, times(1)).createApplication(any(ApplicationDTO.class));
         verify(teacherRepository, times(1)).findByAccount_id(teacherId);
     }
