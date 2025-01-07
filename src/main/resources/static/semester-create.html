@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>JIP | Notice Board</title>
+    <title>JIP | Semester</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -488,7 +488,7 @@
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
-                <a href="admin.html">
+                <a href="manager.html">
                     <div style="width: 180px; height: 70px; overflow: hidden;">
                         <img src="img/JIP%20LOGO%20n.png" alt="logo"
                              style="width: 100%; height: 100%; object-fit: contain;">
@@ -657,7 +657,7 @@
                 <h3>Semester Board</h3>
                 <ul>
                     <li>
-                        <a href="admin.html">Home</a>
+                        <a href="manager.html">Home</a>
                     </li>
                     <li>Semester</li>
                 </ul>
@@ -1065,9 +1065,13 @@
             })
             .catch(error => {
                 console.error('Error:', error);
+// Kiểm tra nếu lỗi là "Start time overlaps with an existing semester"
+                const errorText = error.message.includes("Start time overlaps")
+                    ? "The start time overlaps with an existing semester. Please choose a different start time."
+                    : (error.message || "An unexpected error occurred");
 
-                // Update error message and show modal
-                document.getElementById("errorMessage").innerText = error.message || "An unexpected error occurred";
+                // Hiển thị lỗi trên giao diện
+                document.getElementById("errorMessage").innerText = errorText;
                 const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
                 errorModal.show();
             });

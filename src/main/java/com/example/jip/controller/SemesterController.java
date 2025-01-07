@@ -83,7 +83,7 @@ public class SemesterController {
 
             // Return an error response with a proper JSON format
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"message\":\"Error occurred while creating semester: " + e.getMessage() + "\"}");
+                        .body("{\"message\":\"Error occurred while creating semester: " + e.getMessage() + "\"}");
         }
     }
 
