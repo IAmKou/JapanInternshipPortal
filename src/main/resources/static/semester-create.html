@@ -1132,6 +1132,9 @@
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = Math.min(startIndex + itemsPerPage, totalData.length);
 
+            // Lấy thời gian hiện tại
+            const currentDate = new Date();
+
             for (let i = startIndex; i < endIndex; i++) {
                 const semester = totalData[i];
                 const startDate = new Date(semester.semesterStart);
@@ -1150,28 +1153,28 @@
                 const startDateDiv = document.createElement('div');
                 startDateDiv.classList.add('date-item');
                 startDateDiv.innerHTML = `
-                <div class="calendar-icon" style="margin-right: 5px;">
-                    <div class="date-number">${startDate.getDate()}</div>
-                    <div class="date-month-year">${startDate.toLocaleDateString('en-GB', {
+            <div class="calendar-icon" style="margin-right: 5px;">
+                <div class="date-number">${startDate.getDate()}</div>
+                <div class="date-month-year">${startDate.toLocaleDateString('en-GB', {
                     month: 'short',
                     year: 'numeric'
                 })}</div>
-                </div>
-                <p><i class="fas fa-calendar-alt"></i><span style="font-weight: bold"> Start Date</span></p>
-            `;
+            </div>
+            <p><i class="fas fa-calendar-alt"></i><span style="font-weight: bold"> Start Date</span></p>
+        `;
 
                 const endDateDiv = document.createElement('div');
                 endDateDiv.classList.add('date-item');
                 endDateDiv.innerHTML = `
-                <div class="calendar-icon" style="margin-right: 5px;">
-                    <div class="date-number">${endDate.getDate()}</div>
-                    <div class="date-month-year">${endDate.toLocaleDateString('en-GB', {
+            <div class="calendar-icon" style="margin-right: 5px;">
+                <div class="date-number">${endDate.getDate()}</div>
+                <div class="date-month-year">${endDate.toLocaleDateString('en-GB', {
                     month: 'short',
                     year: 'numeric'
                 })}</div>
-                </div>
-                <p><i class="fas fa-calendar-alt"></i><span style="font-weight: bold"> End Date</span></p>
-            `;
+            </div>
+            <p><i class="fas fa-calendar-alt"></i><span style="font-weight: bold"> End Date</span></p>
+        `;
 
                 semesterDates.appendChild(startDateDiv);
                 semesterDates.appendChild(endDateDiv);
@@ -1179,34 +1182,35 @@
                 const actionsContainer = document.createElement('div');
                 actionsContainer.classList.add('semester-actions');
 
-// Tạo nút Update
-                const updateButton = document.createElement('button');
-                updateButton.classList.add('action-button', 'update-button');
-                updateButton.textContent = 'Update';
-                updateButton.addEventListener('click', () => {
-                    updateSemester(semester);
-                });
+                // Kiểm tra nếu kỳ học đã bắt đầu (startDate < currentDate)
+                if (startDate > currentDate) {
+                    // Chỉ hiển thị nút Update và Delete nếu kỳ học chưa bắt đầu
+                    const updateButton = document.createElement('button');
+                    updateButton.classList.add('action-button', 'update-button');
+                    updateButton.textContent = 'Update';
+                    updateButton.addEventListener('click', () => {
+                        updateSemester(semester);
+                    });
 
-// Tạo nút Delete
-                const deleteButton = document.createElement('button');
-                deleteButton.classList.add('action-button', 'delete-button1');
-                deleteButton.textContent = 'Delete';
-                deleteButton.addEventListener('click', () => {
-                    deleteSemester(semester);
-                });
+                    const deleteButton = document.createElement('button');
+                    deleteButton.classList.add('action-button', 'delete-button1');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.addEventListener('click', () => {
+                        deleteSemester(semester);
+                    });
 
-// Thêm các nút vào container
-                actionsContainer.appendChild(updateButton);
-                actionsContainer.appendChild(deleteButton);
+                    actionsContainer.appendChild(updateButton);
+                    actionsContainer.appendChild(deleteButton);
+                }
 
                 semesterDiv.appendChild(semesterName);
                 semesterDiv.appendChild(semesterDates);
                 semesterDiv.appendChild(actionsContainer);
 
                 noticeBoardWrap.appendChild(semesterDiv);
-
             }
         }
+
 
         function renderPagination() {
             pagination.innerHTML = ''; // Clear previous pagination
