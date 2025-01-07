@@ -8,7 +8,7 @@ import java.sql.Date;
 import java.sql.Time;
 
 @Entity
-@Table(name = "Attendant")
+@Table(name = "attendant")
 @Setter
 @Getter
 public class Attendant {

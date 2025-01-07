@@ -1,21 +1,16 @@
 package com.example.jip.controller;
 
-import com.example.jip.dto.response.CloudinaryResponse;
 import com.example.jip.entity.Material;
 import com.example.jip.repository.MaterialRepository;
-import com.example.jip.services.CloudinaryService;
-import com.example.jip.util.FileUploadUtil;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
-import static liquibase.util.Validate.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -27,11 +22,6 @@ class MaterialControllerTest {
     @Mock
     private MaterialRepository materialRepository;
 
-    @Mock
-    private CloudinaryService cloudinaryService;
-
-    @Mock
-    private FileUploadUtil fileUploadUtil;
 
     public MaterialControllerTest() {
         MockitoAnnotations.openMocks(this);
@@ -67,7 +57,7 @@ class MaterialControllerTest {
         // Verify interactions
         verify(materialRepository, times(1)).findById(materialId);
         verify(materialRepository, times(1)).save(material);
-        verify(cloudinaryService, never()).uploadFileToFolder(any(), any());
+
     }
 
     @Test
@@ -89,7 +79,7 @@ class MaterialControllerTest {
         // Verify interactions
         verify(materialRepository, times(1)).findById(materialId);
         verify(materialRepository, never()).save(any(Material.class));
-        verify(cloudinaryService, never()).uploadFileToFolder(any(), any());
+
     }
 
 }

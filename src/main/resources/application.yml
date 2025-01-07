@@ -45,10 +45,6 @@ application:
   file-paths:
     html-path: "src/main/resources/static/all-class-student.html"
 
-cloudinary:
-  cloud-name: dmlethtuv
-  api-key: 151443119214651
-  api-secret: LRXCKQiCmQNqx-GP4RFnOdf_xwY
 
 google:
   cloud:

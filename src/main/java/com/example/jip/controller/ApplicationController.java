@@ -10,8 +10,7 @@ import com.example.jip.repository.ApplicationRepository;
 import com.example.jip.repository.StudentRepository;
 import com.example.jip.repository.TeacherRepository;
 import com.example.jip.services.ApplicationServices;
-import com.example.jip.services.CloudinaryService;
-import com.example.jip.util.FileUploadUtil;
+import com.example.jip.services.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +39,7 @@ public class ApplicationController {
     private ApplicationServices applicationServices;
 
     @Autowired
-    private CloudinaryService cloudinaryService;
+    private S3Service s3Service;
 
     @PostMapping("/create")
     public RedirectView createApplication(
@@ -59,11 +58,7 @@ public class ApplicationController {
             applicationDTO.setCategory(category);
             applicationDTO.setContent(content);
 
-            // Upload image and set it to applicationDTO
-            if (imgFile != null) {
-                String img = cloudinaryService.uploadFileToFolder(imgFile, "Materials/").getUrl();
-                applicationDTO.setImg(img);
-            }
+
 
             // Kiểm tra và lấy teacher_id nếu có, nếu không thì lấy student_id
             if (teacherId != null) {
@@ -73,6 +68,13 @@ public class ApplicationController {
                     TeacherDTO teacherDTO = new TeacherDTO();
                     teacherDTO.setId(teacher.getId());
                     applicationDTO.setTeacher(teacherDTO);
+                    // Upload image and set it to applicationDTO
+                    if (imgFile != null && !imgFile.isEmpty()) {
+                        String folderName = sanitizeFolderName("Applications/" + name + "_" + teacherOptional.get().getFullname());
+                        MultipartFile[] imgFiles = { imgFile }; // Wrap single file into an array
+                        uploadFilesToFolder(imgFiles, folderName);
+                        applicationDTO.setImg(folderName); // Store folder name or image path as required
+                    }
                 } else {
                     redirectAttributes.addAttribute("error", "Teacher with ID " + teacherId + " not found.");
                     return new RedirectView("/Send-application.html");  // Chuyển hướng lại nếu lỗi
@@ -84,6 +86,13 @@ public class ApplicationController {
                     StudentDTO studentDTO = new StudentDTO();
                     studentDTO.setId(student.getId());
                     applicationDTO.setStudent(studentDTO);
+                    // Upload image and set it to applicationDTO
+                    if (imgFile != null && !imgFile.isEmpty()) {
+                        String folderName = sanitizeFolderName("Applications/" + name + "_" + studentOptional.get().getFullname());
+                        MultipartFile[] imgFiles = { imgFile }; // Wrap single file into an array
+                        uploadFilesToFolder(imgFiles, folderName);
+                        applicationDTO.setImg(folderName); // Store folder name or image path as required
+                    }
                 } else {
                     redirectAttributes.addAttribute("error", "Student with ID " + studentId + " not found.");
                     return new RedirectView("/Send-application.html");  // Chuyển hướng lại nếu lỗi
@@ -113,7 +122,6 @@ public class ApplicationController {
     }
 
 
-
     @GetMapping("/list")
     public ResponseEntity<List<ApplicationDTO>> getAllApplications(
             @RequestParam(value = "teacher_id", required = false) Integer teacherId,
@@ -139,7 +147,19 @@ public class ApplicationController {
                             dto.setContent(application.getContent());
                             dto.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
                             dto.setReplied_date(application.getReplied_date());
-                            dto.setImg(application.getImg());
+                            String folderName = application.getImg(); // Lấy tên thư mục từ database (imgUrl)
+                            try {
+                                List<String> fileUrls = s3Service.listFilesInFolder(folderName);
+                                if (fileUrls.isEmpty()) {
+                                    System.out.println("No files found for application with ID: " + application.getId());
+                                }
+                                dto.setFiles(fileUrls);  // Gọi phương thức để chuyển đổi List<String> thành String
+
+                            } catch (Exception e) {
+                                System.err.println("Error retrieving files for application with ID: " + application.getId());
+                                e.printStackTrace();
+                                dto.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
+                            }
                             return dto;
                         }).collect(Collectors.toList());
             }
@@ -161,7 +181,19 @@ public class ApplicationController {
                                     dto.setContent(application.getContent());
                                     dto.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
                                     dto.setReplied_date(application.getReplied_date());
-                                    dto.setImg(application.getImg());
+                            String folderName = application.getImg(); // Lấy tên thư mục từ database (imgUrl)
+                            try {
+                                List<String> fileUrls = s3Service.listFilesInFolder(folderName);
+                                if (fileUrls.isEmpty()) {
+                                    System.out.println("No files found for application with ID: " + application.getId());
+                                }
+                                dto.setFiles(fileUrls);  // Gọi phương thức để chuyển đổi List<String> thành String
+
+                            } catch (Exception e) {
+                                System.err.println("Error retrieving files for application with ID: " + application.getId());
+                                e.printStackTrace();
+                                dto.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
+                            }
                                     return dto;
                                 }).collect(Collectors.toList());
             }
@@ -180,18 +212,13 @@ public class ApplicationController {
                             dto.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
                             dto.setReplied_date(application.getReplied_date());
 
-                            // Lấy ảnh từ Cloudinary
                             String folderName = application.getImg(); // Lấy tên thư mục từ database (imgUrl)
                             try {
-                                List<Map<String, Object>> resources = cloudinaryService.getFilesFromFolder(folderName);
-                                List<String> fileUrls = resources.stream()
-                                        .map(resource -> (String) resource.get("url"))
-                                        .collect(Collectors.toList());
-
+                                List<String> fileUrls = s3Service.listFilesInFolder(folderName);
                                 if (fileUrls.isEmpty()) {
                                     System.out.println("No files found for application with ID: " + application.getId());
                                 }
-                                dto.setImgFromList(fileUrls);  // Gọi phương thức để chuyển đổi List<String> thành String
+                                dto.setFiles(fileUrls);  // Gọi phương thức để chuyển đổi List<String> thành String
 
                             } catch (Exception e) {
                                 System.err.println("Error retrieving files for application with ID: " + application.getId());
@@ -281,8 +308,8 @@ public class ApplicationController {
         for (MultipartFile file : files) {
             if (!file.isEmpty() && uploadedFiles.add(file.getOriginalFilename())) {
                 try {
-                    FileUploadUtil.assertAllowed(file, FileUploadUtil.IMAGE_PATTERN);
-                    cloudinaryService.uploadFileToFolder(file, folderName);
+                    String sanitizedFolderName = sanitizeFolderName(folderName);
+                    s3Service.uploadFile(file, sanitizedFolderName, file.getOriginalFilename());
                 } catch (Exception e) {
                     throw new RuntimeException("Error uploading file: " + file.getOriginalFilename(), e);
                 }

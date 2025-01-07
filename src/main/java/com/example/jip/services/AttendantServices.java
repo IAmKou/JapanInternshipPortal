@@ -70,13 +70,11 @@ public class AttendantServices {
         Attendant attendant = new Attendant();
         attendant.setStudent(studentOpt.get());
         attendant.setSchedule(matchingSchedule);
-        attendant.setStatus(Attendant.Status.valueOf(status));
+        attendant.setStatus(Attendant.Status.valueOf(status.toUpperCase()));
         attendant.setDate(date);
 
         return attendantRepository.save(attendant);
     }
-
-
 
 
 

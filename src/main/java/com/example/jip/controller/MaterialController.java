@@ -4,10 +4,8 @@ import com.example.jip.dto.MaterialDTO;
 import com.example.jip.dto.TeacherDTO;
 import com.example.jip.entity.*;
 import com.example.jip.repository.*;
-import com.example.jip.services.CloudinaryService;
 import com.example.jip.services.MaterialServices;
 import com.example.jip.services.S3Service;
-import com.example.jip.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +38,6 @@ public class MaterialController {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Autowired
-    private CloudinaryService cloudinaryService;
 
     @Autowired
     private PersonalMaterialRepository personalMaterialRepository;
@@ -270,19 +266,7 @@ public class MaterialController {
 
         return ResponseEntity.ok("Xóa tài liệu và các bản ghi liên quan thành công!");
     }
-    private void uploadFilesToFolder(MultipartFile[] files, String folderName) {
-        Set<String> uploadedFiles = new HashSet<>();
-        for (MultipartFile file : files) {
-            if (!file.isEmpty() && uploadedFiles.add(file.getOriginalFilename())) {
-                try {
-                    FileUploadUtil.assertAllowed(file, FileUploadUtil.IMAGE_PATTERN);
-                    cloudinaryService.uploadFileToFolder(file, folderName);
-                } catch (Exception e) {
-                    throw new RuntimeException("Error uploading file: " + file.getOriginalFilename(), e);
-                }
-            }
-        }
-    }
+
 
     private String sanitizeFolderName(String folderName) {
         return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim().replace(" ", "_");
