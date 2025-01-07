@@ -2,6 +2,7 @@
 <html class="no-js" lang="">
 
 <head>
+    <meta name="google" content="notranslate">
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>JIP | Admin</title>
@@ -28,6 +29,16 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .card-body {
+            font-size: 16px; /* Chắc chắn rằng font-size không thay đổi sau khi dịch */
+            padding: 15px;   /* Đảm bảo padding không thay đổi khi dịch */
+        }
+
+        #notice-board-wrap {
+            max-height: 300px; /* Giới hạn chiều cao nếu cần */
+            overflow-y: auto;  /* Đảm bảo nội dung không làm thay đổi layout */
+        }
+
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -196,21 +207,7 @@
                     </div>
                 </li>
                 <!--Notification-->
-                <li class="navbar-item dropdown header-notification">
-                    <a id="notification-bell" class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-                        <i class="far fa-bell"></i>
-                        <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
-                        <span id="notification-count">0</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" id="notification-dropdown">
-                        <div class="item-header">
-                            <h6 class="item-title" id="notification-title">Notifications</h6>
-                        </div>
-                        <div class="item-content" id="notification-list">
-                            <!-- Notifications will be dynamically inserted here -->
-                        </div>
-                    </div>
-                </li>
+
 
                 <li class="navbar-item dropdown header-language">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
@@ -267,7 +264,7 @@
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3 data-translate data-original="Admin Dashboard">Admin Dashboard</h3>
+                <h3  data-translate="管理者ダッシュボード">Admin Dashboard</h3>
                 <ul>
                     <li>
                         <a href="admin.html">Home</a>
@@ -280,7 +277,7 @@
             <div class="row gutters-20">
 
                 <!-- Phần Students, Teachers, Manager -->
-                <div class="col-lg-6 col-12">
+                <div class="col-lg-6 col-12" data-translate="管理者ダッシュボード">
                     <div class="row">
                         <div class="col-md-6 col-sm-12 col-12">  <!-- Đặt Students và Manager cùng trong cột -->
                             <div class="dashboard-summery-one mg-b-20">
