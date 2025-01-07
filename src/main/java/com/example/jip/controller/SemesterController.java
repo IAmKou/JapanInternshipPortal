@@ -55,9 +55,9 @@ public class SemesterController {
                         .body("{\"message\":\"Semester name already exists\"}");
             }
 
-            if (semesterService.isStartTimeWithinExistingSemester(semester.getStart_time())) {
+            if (semesterService.isTimeOverlap(semester.getStart_time(), semester.getEnd_time())) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
-                        .body("{\"message\":\"Start time overlaps with an existing semester\"}");
+                        .body("{\"message\":\"Created times overlap with an existing semester\"}");
             }
 
             // Save the semester
@@ -83,7 +83,7 @@ public class SemesterController {
 
             // Return an error response with a proper JSON format
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"message\":\"Error occurred while creating semester: " + e.getMessage() + "\"}");
+                        .body("{\"message\":\"Error occurred while creating semester: " + e.getMessage() + "\"}");
         }
     }
 
@@ -123,8 +123,8 @@ public class SemesterController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Semester not found");
         }
 
-        if (!semester.getSchedules().isEmpty() || !semester.getClasses().isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot delete semester. It is associated with schedules or classes.");
+        if (!semester.getClasses().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot delete semester. It is associated with classes.");
         }
 
         semesterRepository.delete(semester);
@@ -142,12 +142,10 @@ public class SemesterController {
         if (existingSemester.getStart_time().before(new java.util.Date())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot update semester. It has already started.");
         }
-        if (semesterService.isStartTimeWithinExistingSemester(existingSemester.getStart_time())) {
+
+        if (semesterService.isTimeOverlapping(updatedSemester.getStart_time(), updatedSemester.getEnd_time(), updatedSemester.getId())) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("{\"message\":\"Start time overlaps with an existing semester\"}");
-        } else if (semesterService.isEndTimeWithinExistingSemester(existingSemester.getEnd_time())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("{\"message\":\"End time overlaps with an existing semester\"}");
+                    .body("{\"message\":\"Updated times overlap with an existing semester\"}");
         }
 
         existingSemester.setName(updatedSemester.getName());
@@ -157,5 +155,7 @@ public class SemesterController {
         semesterRepository.save(existingSemester);
         return ResponseEntity.ok("Semester updated successfully");
     }
+
+
 
 }

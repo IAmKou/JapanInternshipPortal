@@ -1,8 +1,5 @@
 <!doctype html>
 <html class="no-js" lang="">
-
-
-<!-- Mirrored from all-class-student.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -30,6 +27,23 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient-yellow {
+            background: linear-gradient(45deg, #ffcc00, #ff9900);
+            color: #fff;
+        }
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -71,7 +85,6 @@
     <div id="wrapper" class="wrapper bg-ash">
          <!-- Header Menu Area Start Here -->
         <div id="google_translate_element"></div>
-
         <div class="navbar navbar-expand-md header-menu-one bg-light">
             <div class="nav-bar-header-one">
                 <div class="header-logo">
@@ -192,10 +205,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
-                                    class="flaticon-shopping-list"></i><span>Schedule</span></a>
-                        </li>
+
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i
                                     class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
@@ -204,19 +214,6 @@
                                     <a href="javascript:void(0);" class="nav-link menu-active" onclick="submitForm();">
                                         <i class="flaticon-menu"></i><span>Class List</span>
                                     </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="list-mark.html"><i class="fas fa-angle-right"></i>List
-                                        Exam</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
-                                        Exam</a>
                                 </li>
                             </ul>
                         </li>
@@ -286,16 +283,6 @@
                                 <h3>All Class Schedules</h3>
                             </div>
                         </div>
-                        <form class="mg-b-20">
-                            <div class="row gutters-8">
-                                <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                                    <input type="text" placeholder="Search anything..." class="form-control">
-                                </div>
-                                <div class="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
-                                    <button type="submit" class="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                                </div>
-                            </div>
-                        </form>
                         <div class="table-responsive">
                             <table class="table display text-nowrap">
                                 <thead>
@@ -315,7 +302,7 @@
                             </table>
                         </div>
                         <div class="d-flex justify-content-end">
-                        <button id="submitButton" class="login-btn">Submit Attendance</button>
+                        <button id="submitButton" class="btn btn-gradient-yellow btn-search">Submit Attendance</button>
                         </div>
                     </div>
                 </div>
@@ -336,6 +323,39 @@
             </div>
         </div>
     </footer>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-success" id="successModalLabel">
+                        <i class="fas fa-check-circle"></i> Success
+                    </h5>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-danger" id="errorModalLabel">
+                        <i class="fas fa-times-circle"></i> Error
+                    </h5>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
     <!-- jquery-->
     <script src="js/jquery-3.3.1.min.js"></script>
     <!-- Plugins js -->
@@ -428,55 +448,23 @@
     </script>
     <!-- fetch user -->
     <script>
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-        if (userDetails) {
-            const userFullNameElements = document.querySelectorAll('.userFullName');
-            const userRoleElements = document.querySelectorAll('.userRole');
+        function showModal(message, isSuccess = true) {
+            // Get the modal elements
+            const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+            const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
 
-            // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-            if (userDetails.roleName === "ADMIN") {
-                // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.username;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
+            // Get the modal body element
+            const modalBody = isSuccess ? document.querySelector('#success-modal .modal-body') : document.querySelector('#long-modal .modal-body');
 
-                // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "none";
-            } else if (userDetails.roleName === "TEACHER") {
-                // Hiển thị đầy đủ tên và vai trò cho giáo viên
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.fullName;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
+            // Set the message in the modal body
+            modalBody.innerHTML = `<p>${message}</p>`;
 
-                // Chỉ hiển thị mục của giáo viên
-                document.getElementById("teacher-view").style.display = "block";
-                document.getElementById("student-view").style.display = "none";
-                document.getElementById("student-view1").style.display = "none";
-            } else if (userDetails.roleName === "STUDENT") {
-                // Hiển thị đầy đủ tên và vai trò cho học sinh
-                userFullNameElements.forEach(element => {
-                    element.textContent = userDetails.fullName;
-                });
-                userRoleElements.forEach(element => {
-                    element.textContent = userDetails.roleName;
-                });
-
-                // Chỉ hiển thị mục của học sinh
-                document.getElementById("teacher-view").style.display = "none";
-                document.getElementById("student-view").style.display = "block";
-                document.getElementById("student-view1").style.display = "block";
+            // Show the corresponding modal
+            if (isSuccess) {
+                successModal.show();
             } else {
-                console.warn("Role not recognized: ", userDetails.roleName);
+                errorModal.show();
             }
-        } else {
-            console.error("User details not found in sessionStorage");
         }
 
         function submitForm() {
@@ -487,7 +475,7 @@
                 // Redirect to the appropriate URL with the teacherId
                 window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
             } else {
-                console.error("Teacher ID is missing or user details not found in sessionStorage");
+                showModal("Teacher ID is missing or user details not found in sessionStorage", false);
             }
         }
 
@@ -499,9 +487,10 @@
                 // Redirect to the appropriate URL with the teacherId
                 window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
             } else {
-                console.error("Teacher ID is missing or user details not found in sessionStorage");
+                showModal("Teacher ID is missing or user details not found in sessionStorage", false);
             }
         }
+
     </script>
     <!-- fetch class -->
     <script>
@@ -581,11 +570,11 @@
                     })
                     .catch(error => {
                         console.error('Error fetching students:', error);
-                        alert('Failed to load students. Please try again.');
+                        showErrorModal('Failed to load students. Please try again.');
                     });
             } else {
                 console.error("Class ID is missing from the URL.");
-                alert("Class ID is missing. Please check the URL and try again.");
+                showErrorModal("Class ID is missing. Please check the URL and try again.");
             }
 
             // Validation for ensuring at least one checkbox is checked in each row
@@ -607,7 +596,7 @@
 
                 if (!isValid) {
                     event.preventDefault(); // Prevent submission
-                    alert("Please select an attendance status for each student.");
+                    showErrorModal("Please select an attendance status for each student.");
                 } else {
                     submitAttendance();
                 }
@@ -635,7 +624,7 @@
                 });
 
                 if (attendanceData.length === 0) {
-                    alert("No attendance changes detected!");
+                    showErrorModal("No attendance changes detected!");
                     return;
                 }
 
@@ -654,13 +643,27 @@
                     })
                     .then(data => {
                         console.log('Attendance saved successfully:', data);
-                        alert("Attendance saved successfully!");
+                        showSuccessModal("Attendance saved successfully!");
                         window.location.href = 'class-list-teacher';
                     })
                     .catch(error => {
                         console.error('Error saving attendance:', error);
-                        alert('Failed to save attendance.');
+                        showErrorModal('Failed to save attendance.');
                     });
+            }
+
+            function showSuccessModal(message) {
+                const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+                const modalBody = document.querySelector('#success-modal .modal-body');
+                modalBody.innerHTML = `<i class="fas fa-check-circle fa-5x text-success mb-3"></i><p>${message}</p>`;
+                successModal.show();
+            }
+
+            function showErrorModal(message) {
+                const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+                const modalBody = document.querySelector('#long-modal .modal-body');
+                modalBody.innerHTML = `<p>${message}</p>`;
+                errorModal.show();
             }
         });
     </script>
@@ -901,7 +904,4 @@
         }
     </script>
 </body>
-
-
-<!-- Mirrored from all-class-student.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>

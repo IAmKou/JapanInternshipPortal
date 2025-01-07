@@ -1,8 +1,6 @@
 package com.example.jip.configuration;
 
-import com.example.jip.services.AccountServices;
-import com.example.jip.services.UserServices;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

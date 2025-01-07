@@ -6,6 +6,7 @@ import com.example.jip.entity.Schedule;
 import com.example.jip.repository.AttendantRepository;
 import com.example.jip.repository.ScheduleRepository;
 import com.example.jip.services.AttendantServices;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +16,12 @@ import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/attendant")
 public class AttendantController {
@@ -90,28 +94,46 @@ public class AttendantController {
     }
 
     @PostMapping("/update/{classId}")
-    public ResponseEntity<String> updateAttendance(
+    public ResponseEntity<Map<String, Object>> updateAttendance(
             @PathVariable("classId") int classId,
             @RequestBody List<AttendantDTO> attendanceData
     ) {
+        Map<String, Object> response = new HashMap<>();
+        List<String> logs = new ArrayList<>();
+
         try {
-            System.out.println("Received classId: " + classId);
-            System.out.println("Received attendance data: " + attendanceData);
+            logs.add("Starting attendance update for classId: " + classId);
+            logs.add("Received attendance data: " + attendanceData);
 
             // Validate and update attendance records
             attendantServices.updateAttendance(classId, attendanceData);
-            return ResponseEntity.ok("Attendance updated successfully!");
+            logs.add("Attendance updated successfully!");
+
+            response.put("status", "success");
+            response.put("logs", logs);
+            return ResponseEntity.ok(response);
+
         } catch (IllegalArgumentException e) {
-            System.out.println("Caught IllegalArgumentException: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            logs.add("Caught IllegalArgumentException: " + e.getMessage());
+            response.put("status", "error");
+            response.put("logs", logs);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+
         } catch (IllegalStateException e) {
-            System.out.println("Caught IllegalStateException: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+            logs.add("Caught IllegalStateException: " + e.getMessage());
+            response.put("status", "error");
+            response.put("logs", logs);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+
         } catch (Exception e) {
+            logs.add("Unexpected error: " + e.getMessage());
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update attendance: " + e.getMessage());
+            response.put("status", "error");
+            response.put("logs", logs);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
 
 
 

@@ -73,27 +73,44 @@ public class SemesterServices {
         return semesterRepository.existsByName(name);
     }
 
-    public boolean isStartTimeWithinExistingSemester(Date startTime) {
-        List<Semester> existingSemesters = semesterRepository.findAll();
-        for (Semester existingSemester : existingSemesters) {
-            if (!startTime.before(existingSemester.getStart_time()) &&
-                    !startTime.after(existingSemester.getEnd_time())) {
-                return true;
+    public boolean isTimeOverlapping(Date startTime, Date endTime, int currentSemesterId) {
+        List<Semester> semesters = semesterRepository.findAll();
+
+        for (Semester semester : semesters) {
+            if (semester.getId() == currentSemesterId) {
+                continue;
+            }
+
+            if ((startTime.before(semester.getEnd_time()) && !startTime.before(semester.getStart_time())) ||
+                    (endTime.after(semester.getStart_time()) && !endTime.after(semester.getEnd_time()))) {
+                return true; // Overlap detected
+            }
+
+            if (endTime.after(semester.getStart_time()) && endTime.before(semester.getEnd_time())) {
+                return true; // Overlap detected
             }
         }
-        return false;
+        return false; // No overlap
     }
 
-    public boolean isEndTimeWithinExistingSemester(Date endTime) {
-        List<Semester> existingSemesters = semesterRepository.findAll();
-        for (Semester existingSemester : existingSemesters) {
-            if (!endTime.before(existingSemester.getStart_time()) &&
-                    !endTime.after(existingSemester.getEnd_time())) {
-                return true;
+    public boolean isTimeOverlap(Date startTime, Date endTime) {
+        List<Semester> semesters = semesterRepository.findAll();
+
+        for (Semester semester : semesters) {
+
+            if ((startTime.before(semester.getEnd_time()) && !startTime.before(semester.getStart_time())) ||
+                    (endTime.after(semester.getStart_time()) && !endTime.after(semester.getEnd_time()))) {
+                return true; // Overlap detected
+            }
+
+            if (endTime.after(semester.getStart_time()) && endTime.before(semester.getEnd_time())) {
+                return true; // Overlap detected
             }
         }
-        return false;
+        return false; // No overlap
     }
+
+
 
 
     private Schedule.dayOfWeek getDayOfWeekFromDate(java.sql.Date date) {
