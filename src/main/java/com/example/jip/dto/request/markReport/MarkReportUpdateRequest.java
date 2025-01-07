@@ -16,6 +16,7 @@ public class MarkReportUpdateRequest {
     BigDecimal final_exam;
     BigDecimal presentation;
     BigDecimal scriptPresentation;
+    String comment;
     List<MarkReportExamUpdateRequest> exams;
 }
 

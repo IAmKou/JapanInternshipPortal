@@ -798,7 +798,8 @@
             document.getElementById('script').value = markRp.scriptPresentation;
             document.getElementById('soft-skill').textContent = markRp.softskill;
             document.getElementById('assignment').textContent = markRp.assignment;
-            // document.getElementById('attendant').textContent = markRp.attendant;
+            document.getElementById('attendant').textContent = markRp.attendant;
+            document.getElementById('attitude').textContent = markRp.attitude;
             document.getElementById('final-mark').textContent = markRp.final_mark;
         } catch (error) {
             console.error('Error:', error);
@@ -826,11 +827,11 @@
                 const kanji = parseFloat(cells[2].value);
 
                 if (
-                    isNaN(bunpou) || bunpou < 0 || bunpou > 10 ||
-                    isNaN(kotoba) || kotoba < 0 || kotoba > 10 ||
-                    isNaN(kanji) || kanji < 0 || kanji > 10
+                    bunpou < 0 || bunpou > 10 ||
+                    kotoba < 0 || kotoba > 10 ||
+                    kanji < 0 || kanji > 10
                 ) {
-                    showErrorModal(`Invalid input for ${examName}: All fields must be a number between 0 and 10.`);
+                    showErrorModal(`Invalid input for ${examName}: All bunpou, kotoba, kanji must be a number between 0 and 10.`);
                     isValid = false;
                     return;
                 }
@@ -853,19 +854,15 @@
         const comment = document.getElementById('comment').value;
 
         if (
-            isNaN(middle_exam) || middle_exam < 0 || middle_exam > 10 ||
-            isNaN(final_exam) || final_exam < 0 || final_exam > 10 ||
-            isNaN(presentation) || presentation < 0 || presentation > 10 ||
-            isNaN(scriptPresentation) || scriptPresentation < 0 || scriptPresentation > 10
+            middle_exam < 0 || middle_exam > 10 ||
+            final_exam < 0 || final_exam > 10 ||
+            presentation < 0 || presentation > 10 ||
+            scriptPresentation < 0 || scriptPresentation > 10
         ) {
             showErrorModal("Invalid input: Middle Exam, Final Exam, Presentation, and Script must be a number between 0 and 10.");
-            isValid = false;
+            return;
         }
 
-        if (comment.trim() === "") {
-            showErrorModal("Comment cannot be empty.");
-            isValid = false;
-        }
 
         // Stop execution if validation fails
         if (!isValid) return;

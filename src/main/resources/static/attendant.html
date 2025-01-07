@@ -638,7 +638,7 @@
                             row.appendChild(nameCell);
 
                             // Attendance checkboxes
-                            const statuses = ['Present', 'Late', 'Absent', 'Permitted'];
+                            const statuses = ['PRESENT', 'LATE', 'ABSENT', 'PERMITTED'];
                             statuses.forEach((status, index) => {
                                 const cell = document.createElement('td');
                                 const formCheck = document.createElement('div');
@@ -647,8 +647,8 @@
                                 checkbox.type = 'checkbox';
                                 checkbox.value = status;
                                 checkbox.className = 'form-check-input checkAll';
-                                checkbox.disabled = status === 'Permitted' || student.mark === true;
-                                if (status === 'Permitted' && student.mark === true) {
+                                checkbox.disabled = status === 'PERMITTED' || student.mark === true;
+                                if (status === 'PERMITTED' && student.mark === true) {
                                     checkbox.checked = true;
                                 }
                                 const label = document.createElement('label');
