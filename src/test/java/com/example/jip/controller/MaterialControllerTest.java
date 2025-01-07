@@ -2,7 +2,6 @@ package com.example.jip.controller;
 
 import com.example.jip.entity.Material;
 import com.example.jip.repository.MaterialRepository;
-import com.example.jip.util.FileUploadUtil;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,9 +22,6 @@ class MaterialControllerTest {
     @Mock
     private MaterialRepository materialRepository;
 
-
-    @Mock
-    private FileUploadUtil fileUploadUtil;
 
     public MaterialControllerTest() {
         MockitoAnnotations.openMocks(this);
