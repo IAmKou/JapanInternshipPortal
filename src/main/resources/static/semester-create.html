@@ -530,8 +530,8 @@
                             <h5 class="item-title userFullName"></h5>
                             <span class="userRole"></span>
                         </div>
-                        <div class="admin-img">
-                            <img src="img/figure/admin.jpg" alt="Admin">
+                        <div class="admin-img img">
+                            <img src="" style="width: 50px; height: 50px" alt="Admin">
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -680,16 +680,22 @@
                                         <label style="color: #007bff; font-weight: bold;">Semester Name <span
                                                 style="color: red;">*</span></label>
                                         <input type="text" placeholder="" maxlength="255" class="form-control" name="name" required>
+                                        <span id="errorSemesterName" style="color: red; font-size: 0.85em; display: none;">Semester Name cannot be empty </span>
+
                                     </div>
                                     <div class="col-12-xxxl col-lg-6 col-12 form-group">
                                         <label style="color: #007bff; font-weight: bold;">Start Time <span
                                                 style="color: red;">*</span></label>
                                         <input type="date" placeholder="" class="form-control" name="st" required>
+                                        <span id="errorStartTime" style="color: red; font-size: 0.85em; display: none;">Start time cannot be in the past.</span>
+
                                     </div>
                                     <div class="col-12-xxxl col-lg-6 col-12 form-group">
                                         <label style="color: #007bff; font-weight: bold;">End Time <span
                                                 style="color: red;">*</span></label>
                                         <input type="date" placeholder="" class="form-control" name="et" required>
+                                        <span id="errorEndTime" style="color: red; font-size: 0.85em; display: none;">End time cannot be before the start time.</span>
+
                                     </div>
                                     <div class="col-12 form-group mg-t-8">
                                         <button type="submit"
@@ -731,13 +737,17 @@
             </div>
             <form id="updateSemesterForm">
                 <label for="semesterName">Name:</label>
-                <input type="text" maxlength="255"  id="semesterName" required>
+                <input type="text" maxlength="255" id="semesterName" required>
+                <span id="errorSemesterName1" style="color: red; font-size: 0.85em; display: none;">Semester name cannot be empty</span>
 
                 <label for="semesterStart">Start Date:</label>
                 <input type="date" id="semesterStart" required>
+                <span id="errorSemesterStart1" style="color: red; font-size: 0.85em; display: none;">Start date cannot be in the past</span>
 
                 <label for="semesterEnd">End Date:</label>
                 <input type="date" id="semesterEnd" required>
+                <span id="errorSemesterEnd1" style="color: red; font-size: 0.85em; display: none;">End date cannot be before the start date</span>
+
 
                 <div class="modal-footer">
                     <button type="submit" class="btn update-btn">Update</button>
@@ -758,11 +768,12 @@
                 </div>
                 <div class="modal-body text-center">
                     <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
-                    <h4 class="text-success">Account import was successful!</h4>
+                    <h4 class="text-success" id="successMessage">Semester created successfully with holidays in the schedule!</h4>
                 </div>
             </div>
         </div>
     </div>
+
 
 
     <!-- Error Modal -->
@@ -774,12 +785,14 @@
                         <i class="fas fa-times-circle"></i> Error
                     </h5>
                 </div>
-                <div class="modal-body">
-
+                <div class="modal-body text-center">
+                    <i class="fas fa-times-circle fa-5x text-danger mb-3"></i>
+                    <h4 class="text-danger" id="errorMessage">Error occurred while creating semester!</h4>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- Modal Xác Nhận Xóa -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -897,89 +910,117 @@
 </script>
 
 <script>
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    if (userDetails) {
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
-        const userId = userDetails.id;
-        document.getElementById("hiddenUserId").value = userId;
+    (async function fetchUserData() {
+        try {
+            const response = await fetch('/user-detail');
+            if (response.ok) {
+                const userData = await response.json();
+                sessionStorage.setItem('userDetails', JSON.stringify(userData));
+                console.log("User data stored in sessionStorage:", userData);
 
-        // Hiển thị thông tin khác nhau tùy vào vai trò người dùng
-        if (userDetails.roleName === "ADMIN") {
-            // Chỉ hiển thị tên đăng nhập và vai trò cho ADMIN
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.username;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
 
-            // Ẩn cả hai mục vì ADMIN không cần xem danh sách này
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "TEACHER") {
-            // Hiển thị đầy đủ tên và vai trò cho giáo viên
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Chỉ hiển thị mục của giáo viên
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
-            document.getElementById("student-view1").style.display = "none";
-        } else if (userDetails.roleName === "STUDENT") {
-            // Hiển thị đầy đủ tên và vai trò cho học sinh
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            // Chỉ hiển thị mục của học sinh
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
-        } else {
-            console.warn("Role not recognized: ", userDetails.roleName);
+                getUserDetails(userData);
+            } else {
+                console.error("Failed to fetch user details:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error fetching user details:", error);
         }
-    } else {
-        console.error("User details not found in sessionStorage");
+    })();
+
+    function getUserDetails(userDetails) {
+        if (userDetails) {
+            console.log("Setting user details:", userDetails);
+
+
+            document.querySelectorAll('.userFullName').forEach(element => {
+                element.textContent = userDetails.fullName || "Unknown Name";
+            });
+            document.querySelectorAll('.userRole').forEach(element => {
+                element.textContent = userDetails.roleName || "Unknown Role";
+            });
+
+            const userIdElement = document.getElementById('userId');
+            if (userIdElement) {
+                userIdElement.value = userDetails.id || "";
+            }
+
+
+            const imgContainers = document.querySelectorAll('.img');
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img');
+                if (imgElement) {
+                    imgElement.src = userDetails.img
+                        ? `${userDetails.img}?v=${new Date().getTime()}`
+                        : '/path/to/default-passport.jpg';
+                    console.log("Image source set to:", imgElement.src);
+                } else {
+                    console.error("Image element not found in:", container);
+                }
+            });
+
+        } else {
+            console.error("User details not found in sessionStorage");
+        }
+
     }
 
 </script>
 <script>
     document.querySelector('form.new-added-form').addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault(); // Ngăn form gửi yêu cầu mặc định
 
-        // Get the values from the form
-        const semesterName = document.querySelector('input[name="name"]').value;
+        // Lấy giá trị từ form
+        const semesterName = document.querySelector('input[name="name"]').value.trim();
         const startTime = document.querySelector('input[name="st"]').value;
         const endTime = document.querySelector('input[name="et"]').value;
 
-        // Convert the values to Date objects for validation
+        // Thẻ hiển thị lỗi
+        const errorSemesterName = document.getElementById('errorSemesterName');
+        const errorStartTime = document.getElementById('errorStartTime');
+        const errorEndTime = document.getElementById('errorEndTime');
+
+        // Cờ lỗi
+        let hasError = false;
+
+        // Xóa các thông báo lỗi cũ
+        errorSemesterName.style.display = 'none';
+        errorStartTime.style.display = 'none';
+        errorEndTime.style.display = 'none';
+
+        // Validate tên học kỳ
+        if (!semesterName) {
+            errorSemesterName.textContent = 'Semester Name cannot be empty.';
+            errorSemesterName.style.display = 'block';
+            hasError = true;
+        }
+
+        // Chuyển đổi giá trị ngày thành Date object
         const startDate = new Date(startTime);
         const endDate = new Date(endTime);
         const currentDate = new Date();
 
-        // Validate start time: it should not be in the past
+        // Validate start time
         if (startDate < currentDate) {
-            alert('Start time cannot be in the past.');
-            return;
+            errorStartTime.textContent = 'Start time cannot be in the past.';
+            errorStartTime.style.display = 'block';
+            hasError = true;
         }
 
-        // Validate end time: it should not be before the start time
+        // Validate end time
         if (endDate < startDate) {
-            alert('End time cannot be before the start time.');
+            errorEndTime.textContent = 'End time cannot be before the start time.';
+            errorEndTime.style.display = 'block';
+            hasError = true;
+        }
+
+        // Nếu có lỗi, dừng việc gửi form
+        if (hasError) {
             return;
         }
 
         // Set status based on the difference between current date and start time
         let status = 'Inactive'; // Default status
-
         const timeDiff = startDate - currentDate;
         const daysToStart = timeDiff / (1000 * 3600 * 24); // Convert milliseconds to days
 
@@ -1012,14 +1053,26 @@
                 return response.json();
             })
             .then(data => {
-                alert(data.message);
-                window.location.reload();
+                // Update success message and show modal
+                document.getElementById("successMessage").innerText = data.message || "Operation successful!";
+                const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+                successModal.show();
+
+                // Optional: reload the page after 2 seconds
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert(error.message);
+
+                // Update error message and show modal
+                document.getElementById("errorMessage").innerText = error.message || "An unexpected error occurred";
+                const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+                errorModal.show();
             });
     });
+
 </script>
 
 <script>
@@ -1207,37 +1260,44 @@
             form.addEventListener('submit', (event) => {
                 event.preventDefault();
 
-                // Retrieve updated values from the form
-                const updatedSemesterName = document.getElementById('semesterName').value;
+                // Reset error messages
+                document.getElementById('errorSemesterName1').style.display = 'none';
+                document.getElementById('errorSemesterStart1').style.display = 'none';
+                document.getElementById('errorSemesterEnd1').style.display = 'none';
+
+                const updatedSemesterName = document.getElementById('semesterName').value.trim();
                 const updatedSemesterStart = document.getElementById('semesterStart').value;
                 const updatedSemesterEnd = document.getElementById('semesterEnd').value;
 
-                // Validation
-                if (!updatedSemesterName || !updatedSemesterStart || !updatedSemesterEnd) {
-                    updateModalInstance.hide(); // Hide the modal first
-                    setTimeout(() => showErrorModal("All fields are required."), 300);
-                    return;
+                let hasError = false;
+
+                // Validation for semester name
+                if (!updatedSemesterName) {
+                    document.getElementById('errorSemesterName1').style.display = 'inline';
+                    hasError = true;
                 }
 
+                // Validation for start date
                 const today = new Date();
                 today.setHours(0, 0, 0, 0); // Normalize today's date to 00:00:00
 
                 const startDate = new Date(updatedSemesterStart);
                 startDate.setHours(0, 0, 0, 0); // Normalize the start date to 00:00:00
 
-                if (startDate < today) {
-                    updateModalInstance.hide(); // Hide the modal first
-                    setTimeout(() => showErrorModal("Start date cannot be in the past."), 300);
-                    return;
+                if (!updatedSemesterStart || startDate < today) {
+                    document.getElementById('errorSemesterStart1').style.display = 'inline';
+                    hasError = true;
                 }
 
-                if (new Date(updatedSemesterEnd) < new Date(updatedSemesterStart)) {
-                    updateModalInstance.hide(); // Hide the modal first
-                    setTimeout(() => showErrorModal("End date cannot be before the start date."), 300);
-                    return;
+                // Validation for end date
+                if (!updatedSemesterEnd || new Date(updatedSemesterEnd) < new Date(updatedSemesterStart)) {
+                    document.getElementById('errorSemesterEnd1').style.display = 'inline';
+                    hasError = true;
                 }
 
-                // Send updated data to the backend
+                if (hasError) return;
+
+                // Send updated data to the backend if all validations pass
                 fetch('semester/update', {
                     method: 'POST',
                     headers: {
@@ -1252,21 +1312,32 @@
                 })
                     .then(response => {
                         if (response.ok) {
-                            updateModalInstance.hide(); // Hide the modal first
+                            // Ẩn modal update
+                            updateModalInstance.hide();
+
+                            // Sau khi ẩn modal, hiển thị modal thông báo thành công
                             setTimeout(() => showSuccessModal("Semester updated successfully."), 300);
                         } else {
                             response.text().then(text => {
-                                updateModalInstance.hide(); // Hide the modal first
+                                // Ẩn modal update
+                                updateModalInstance.hide();
+
+                                // Sau khi ẩn modal, hiển thị modal thông báo lỗi
                                 setTimeout(() => showErrorModal(`Error: ${text}`), 300);
                             });
                         }
                     })
                     .catch(error => {
                         console.error("Error updating semester:", error);
-                        updateModalInstance.hide(); // Hide the modal first
+
+                        // Ẩn modal update
+                        updateModalInstance.hide();
+
+                        // Sau khi ẩn modal, hiển thị modal thông báo lỗi
                         setTimeout(() => showErrorModal("Failed to update semester."), 300);
                     });
             });
+
         }
 
 
