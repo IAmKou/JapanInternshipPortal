@@ -145,10 +145,11 @@ public class SemesterController {
         if (semesterService.isStartTimeWithinExistingSemester(existingSemester.getStart_time())) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body("{\"message\":\"Start time overlaps with an existing semester\"}");
-        } else if (semesterService.isEndTimeWithinExistingSemester(existingSemester.getEnd_time())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("{\"message\":\"End time overlaps with an existing semester\"}");
         }
+//        else if (semesterService.isEndTimeWithinExistingSemester(existingSemester.getEnd_time())) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT)
+//                    .body("{\"message\":\"End time overlaps with an existing semester\"}");
+//        }
 
         existingSemester.setName(updatedSemester.getName());
         existingSemester.setStart_time(updatedSemester.getStart_time());
