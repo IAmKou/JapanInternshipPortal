@@ -637,6 +637,8 @@
         }
     }
 
+    fetchAssignmentDetails();
+
     async function fetchStudentAssignmentDetails() {
         const urlParams = new URLSearchParams(window.location.search);
         const studentAssignmentId = urlParams.get('id');
@@ -692,6 +694,8 @@
             showErrorModal("Failed to load StudentAssignment details. Please try again.");
         }
     }
+
+    fetchStudentAssignmentDetails();
 
     async function submitGrade() {
         const mark = parseFloat(document.getElementById('markInput').value);
