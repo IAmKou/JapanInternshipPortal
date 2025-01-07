@@ -203,7 +203,7 @@ public class AccountImportServices {
                 return;
             }
 
-            // Upload images to Cloudinary only after successful validation
+            // Upload images to  only after successful validation
             String passportUrl = row.getCell(9).getStringCellValue();
             String passport = uploadImageToS3(passportUrl, username, workbook);
 
@@ -267,7 +267,7 @@ public class AccountImportServices {
             byte[] imageBytes = getImageBytesFromExcel(workbook);
             if (imageBytes != null) {
                 MultipartFile imageFile = new MockMultipartFile("file", "image.jpg", "image/jpeg", imageBytes);
-                String response = s3Service.uploadFile(imageFile, folderName, imageFile.getOriginalFilename()); // Upload to Cloudinary and return URL
+                String response = s3Service.uploadFile(imageFile, folderName, imageFile.getOriginalFilename());
                 return response;
             }
 
