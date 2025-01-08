@@ -31,6 +31,29 @@
     <script type="text/javascript"
             src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <style>
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%; /* Bao phủ toàn bộ trang */
+        }
+
+        /* Nội dung bên trên */
+        .content {
+            flex: 1; /* Đẩy footer xuống */
+        }
+
+        /* Footer nằm ở cuối */
+        .footer-wrap-layout1 {
+            background-color: #ec9006;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .footer-wrap-layout1 a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
         .status-open {
             color: green;
             font-weight: bold;
@@ -991,7 +1014,18 @@
             </div>
         </div>
     </div>
-
+    <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+        <div style="background-color: #ec9006; padding: 15px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+                            rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
     <!-- Page Area End Here -->
 </div>
 <!-- jquery-->
@@ -1159,10 +1193,10 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
-                            <i class="fas fa-times text-orange-red"></i><span>Delete</span>
+                            <i></i><span>Delete</span>
                         </a>
                         <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
-                            <i class="fas fa-cogs text-dark-pastel-green"></i><span>Update</span>
+                            <i></i><span>Update</span>
                         </a>
                     </div>
                 </div>
@@ -1218,6 +1252,9 @@
         // Bắt đầu thực hiện ngay lập tức khi DOM tải xong
         fetchAssignmentsData();
     });
+
+
+
 
 
 
@@ -1374,20 +1411,16 @@
             return; // Exit the function if validation fails
         }
 
-        // Parse dates and truncate time precision for comparison
+        // Check if the Create Date is after the current date
         const currentDate = new Date();
-        currentDate.setSeconds(0, 0);
         const createdDateObj = new Date(createDate);
-        createdDateObj.setSeconds(0, 0);
-        const endDateObj = new Date(endDate);
-        endDateObj.setSeconds(0, 0);
-
-
         if (createdDateObj < currentDate) {
             alert('Create Date must be after the Current Date.');
             return;
         }
 
+        // Check if the End Date is after the Current Date
+        const endDateObj = new Date(endDate);
         if (endDateObj < currentDate) {
             alert('End Date must be after the Current Date.');
             return;
@@ -1427,9 +1460,6 @@
                 }
             }
         }
-
-
-
         try {
             const response = await fetch(`${API_BASE_URL}/update/${currentAssignmentId}`, {
                 method: 'PUT',
