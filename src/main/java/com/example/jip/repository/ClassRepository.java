@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface ClassRepository extends JpaRepository<Class,Integer> {
     List<Class> findByTeacher_Id(Integer teacherId);
     Optional<Class> findById(Integer id);
-    boolean existsByName(String name);
+    boolean existsByNameAndStatus(String name, Class.status status);
     @Modifying
     @Query("UPDATE Class c SET c.status = 'Active' WHERE c.semester.id = :semesterId")
     void activateClassesBySemester(int semesterId);

@@ -594,9 +594,16 @@
             theme: 'snow',
             modules: {
                 toolbar: [
-                    ['bold', 'italic', 'underline'], // Các công cụ định dạng cơ bản
-                    [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Các công cụ danh sách
-                    ['link', 'image'] // Các công cụ thêm liên kết và hình ảnh
+                    // Phần định dạng văn bản cơ bản
+                    ['bold', 'italic', 'underline'], // Đậm, Nghiêng, Gạch chân, Gạch ngang
+                    // Căn chỉnh và link
+                    ['link'],
+                    // Các loại danh sách
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    // Blockquote hoặc Header cho tiêu đề
+                    ['blockquote', { 'header': [1, 2, 3, false] }],
+                    // Xóa định dạng hoặc undo/redo nếu cần
+
                 ]
             }
         });

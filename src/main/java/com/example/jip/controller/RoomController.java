@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/room")
@@ -72,25 +73,38 @@ public class RoomController {
         return roomRepository.findAll();
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteRoom(@RequestParam int id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Map<String, String>> deleteRoom(@PathVariable int id) {
         if (!roomRepository.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Room not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("status", "error", "message", "Room not found."));
         }
 
         boolean hasOccupiedStatus = roomAvailabilityRepository.existsByRoomIdAndStatus(id, RoomAvailability.Status.Occupied);
         if (hasOccupiedStatus) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Room cannot be deleted as it is occupied on some days.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("status", "error", "message", "Room cannot be deleted as it is occupied on some days."));
         }
 
-        // Proceed to delete the room
         roomRepository.deleteById(id);
-        return ResponseEntity.ok("Room deleted successfully.");
+        return ResponseEntity.ok(Map.of("status", "success", "message", "Room deleted successfully."));
     }
 
 
-//    @PutMapping("/update/{roomId}")
-//    public ResponseEntity<?> updateRoom(@PathVariable int roomId, @RequestParam String roomName) {
-//
-//    }
+
+    @PutMapping("/update/{roomId}")
+    public ResponseEntity<?> updateRoom(@PathVariable int roomId, @RequestParam String roomName) {
+        try {
+            roomName = roomName.trim();
+            if (roomName.isEmpty()) {
+                return ResponseEntity.badRequest().body(Map.of("status", "error", "message", "Room name cannot be empty."));
+            }
+            Room updatedRoom = roomServices.updateRoom(roomId, roomName);
+            return ResponseEntity.ok(Map.of("status", "success", "message", "Room updated successfully!", "room", updatedRoom));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("status", "error", "message", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("status", "error", "message", "An unexpected error occurred."));
+        }
+    }
 }

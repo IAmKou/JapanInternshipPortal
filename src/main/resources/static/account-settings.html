@@ -958,11 +958,7 @@
                             <span class="text-danger" id="img_error1"></span>
                         </div>
 
-                        <div class="form-group col-md-6">
-                            <label for="passport" class="font-weight-bold">Passport Image <span class="text-danger">*</span></label>
-                            <input type="file" name="passport_img" id="passport" class="form-control-file shadow-sm">
-                            <span class="text-danger" id="passport_error1"></span>
-                        </div>
+
                     </div>
                     <div id="error-message2" style="color: red; font-weight: bold; margin-top: 10px;"></div>
                     <div class="text-center mt-4">
@@ -1681,7 +1677,7 @@
         const email = document.getElementById('email').value.trim();
         const phone = document.getElementById('phone').value.trim();
         const imgInput = document.getElementById('img');
-        const passportInput = document.getElementById('passport');
+
         const allowedImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
         const maxFileSizeMB = 2;
         const gender = document.querySelector('input[name="gender"]:checked'); // Kiểm tra có chọn giới tính không
@@ -1741,13 +1737,8 @@
             clearError('img_error');
         }
 
-        // Validate image file (passport)
-        if (!validateImageFile('passport', allowedImageTypes, maxFileSizeMB)) {
-            showError('passport_error', `Invalid image. Allowed: JPEG/PNG up to ${maxFileSizeMB}MB.`);
-            hasError = true;
-        } else {
-            clearError('passport_error1');
-        }
+
+
 
         // Validate date of birth (age)
         if (!isValidDateOfBirth(dob)) {

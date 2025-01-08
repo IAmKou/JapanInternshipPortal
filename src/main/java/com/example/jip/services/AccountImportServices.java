@@ -134,7 +134,7 @@ public class AccountImportServices {
         }
 
         String[] requiredHeaders = {
-                "Username", "Password", "Role ID", "Full Name", "Japan Name",
+                "Full Name", "Japan Name",
                 "Date of Birth", "Image", "Gender", "Phone Number", "Passport", "Email"
         };
 
@@ -158,17 +158,14 @@ public class AccountImportServices {
         try {
             DataFormatter dataFormatter = new DataFormatter(); // Ensure consistent parsing of cell data
 
-            // Validate basic fields
-            String username = dataFormatter.formatCellValue(row.getCell(0)).trim();
-            String password = dataFormatter.formatCellValue(row.getCell(1)).trim();
-            String fullName = dataFormatter.formatCellValue(row.getCell(3)).trim();
-            String japanName = dataFormatter.formatCellValue(row.getCell(4)).trim();
-            String phoneNumber = dataFormatter.formatCellValue(row.getCell(8)).trim();
-            String email = dataFormatter.formatCellValue(row.getCell(10)).trim();
+            String fullName = dataFormatter.formatCellValue(row.getCell(0)).trim();
+            String japanName = dataFormatter.formatCellValue(row.getCell(1)).trim();
+            String phoneNumber = dataFormatter.formatCellValue(row.getCell(5)).trim();
+            String email = dataFormatter.formatCellValue(row.getCell(6)).trim();
 
             // Validate date of birth
             LocalDate dob = null;
-            Cell dobCell = row.getCell(5);
+            Cell dobCell = row.getCell(2);
             if (dobCell != null) {
                 if (dobCell.getCellType() == CellType.NUMERIC) {
                     dob = dobCell.getLocalDateTimeCellValue().toLocalDate();
@@ -184,7 +181,7 @@ public class AccountImportServices {
             }
 
             // Validate gender
-            String genderStr = dataFormatter.formatCellValue(row.getCell(7)).trim();
+            String genderStr = dataFormatter.formatCellValue(row.getCell(4)).trim();
             Gender gender;
             try {
                 gender = Gender.valueOf(genderStr);
@@ -194,33 +191,29 @@ public class AccountImportServices {
             }
 
             // Basic validations
-            if (validateColumn(username, password, email, phoneNumber, genderStr, fullName, japanName, errors, row.getRowNum())) {
+            if (validateColumn(email, phoneNumber, genderStr, fullName, japanName, errors, row.getRowNum())) {
                 return;
             }
 
             // Check for duplicates
-            if (isDuplicate(username, email, phoneNumber, errors, row.getRowNum())) {
+            if (isDuplicate(email, phoneNumber, errors, row.getRowNum())) {
                 return;
             }
 
-            // Upload images to  only after successful validation
-            String passportUrl = row.getCell(9).getStringCellValue();
-            String passport = uploadImageToS3(passportUrl, username, workbook);
 
-            String imgPath = row.getCell(6).getStringCellValue();
-            String imgUrl = uploadImageToS3(imgPath, username, workbook);
+            String imgPath = row.getCell(3).getStringCellValue();
+            String imgUrl = uploadImageToS3(imgPath, email, workbook).toString();
 
-            // Find role
-            int roleId = Integer.parseInt(dataFormatter.formatCellValue(row.getCell(2)).trim());
-            Optional<Role> roleOpt = roleRepository.findById(roleId);
+
+            Optional<Role> roleOpt = roleRepository.findById(2);
             if (roleOpt.isEmpty()) {
-                errors.add("Role ID " + roleId + " does not exist for user " + username);
+                errors.add("Role ID " + 2 + " does not exist for user " + email);
                 return;
             }
+            String password = generateVerifyCode();
 
-            // Save account and student after all validations and image uploads
             Account account = new Account();
-            account.setUsername(username);
+            account.setUsername(email);
             account.setPassword(passwordEncoder.encode(password));
             account.setRole(roleOpt.get());
             accountRepository.save(account);
@@ -229,7 +222,6 @@ public class AccountImportServices {
             student.setFullname(fullName);
             student.setJapanname(japanName);
             student.setDob(Date.valueOf(dob));
-            student.setPassport(passport);
             student.setGender(gender);
             student.setPhoneNumber(phoneNumber);
             student.setImg(imgUrl);
@@ -248,10 +240,15 @@ public class AccountImportServices {
                 MarkReportExam markRpExam = new MarkReportExam(markReport, exam);
                 markRpExamRepository.save(markRpExam);
             }
-            emailServices.sendEmail(email,username,password);
+            emailServices.sendEmail(email, email, password);
         } catch (Exception e) {
             errors.add("Failed to process row: " + (row.getRowNum() + 1) + " due to: " + e.getMessage());
         }
+    }
+
+    private String generateVerifyCode() {
+        int code = (int) (Math.random() * 1000000);  // Generates a 6-digit random code
+        return String.format("%06d", code);  // Ensure it's always 6 digits
     }
 
     private String uploadImageToS3(String imgPath, String userName, XSSFWorkbook workbook) {
@@ -267,10 +264,9 @@ public class AccountImportServices {
             byte[] imageBytes = getImageBytesFromExcel(workbook);
             if (imageBytes != null) {
                 MultipartFile imageFile = new MockMultipartFile("file", "image.jpg", "image/jpeg", imageBytes);
-                String response = s3Service.uploadFile(imageFile, folderName, imageFile.getOriginalFilename());
+                String response = s3Service.uploadFile(imageFile, folderName, imageFile.getOriginalFilename()); // Upload to Cloudinary and return URL
                 return response;
             }
-
         } catch (Exception e) {
             throw new RuntimeException("Image extraction or upload failed: " + e.getMessage());
         }
@@ -299,12 +295,8 @@ public class AccountImportServices {
         return true;
     }
 
-    private boolean isDuplicate(String username, String email, String phoneNumber, List<String> errors, int row) {
+    private boolean isDuplicate(String email, String phoneNumber, List<String> errors, int row) {
         boolean hasError = false;
-        if (accountRepository.findByUsername(username).isPresent()) {
-            errors.add("Duplicate username: " + username + " found at row: " + row );
-            hasError = true;
-        }
         if (studentRepository.findByEmail(email).isPresent()) {
             errors.add("Duplicate email: " + email + " found at row: " + row);
             hasError = true;
@@ -320,24 +312,13 @@ public class AccountImportServices {
         return folderName.replaceAll("[^a-zA-Z0-9_/\\- ]", "").trim().replace(" ", "_");
     }
 
-    private boolean validateColumn(String username, String password, String email, String phoneNumber,
+    private boolean validateColumn(String email, String phoneNumber,
                                    String gender, String fullname, String japanname, List<String> errors, int rowNum) {
         boolean isValid = false;
 
-        // Validate username
-        if (username == null || username.isEmpty()) {
-            errors.add("Row " + rowNum + ": Username cannot be null or empty.");
-            isValid = true;
-        }
-
-        // Validate password
-        if (password == null || password.length() < 6) {
-            errors.add("Row " + rowNum + ": Password must be at least 6 characters long.");
-            isValid = true;
-        }
 
         // Validate email
-        if (email == null ) {
+        if (email == null) {
             errors.add("Row " + rowNum + ": Email can't be null");
             isValid = true;
         } else if (!email.matches("^[\\w.%+-]+@(gmail\\.com|fpt\\.edu\\.vn)$")) {

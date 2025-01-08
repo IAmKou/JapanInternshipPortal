@@ -281,6 +281,13 @@ public class ScheduleController {
         )).collect(Collectors.toList());
     }
 
+    @GetMapping("/get/class/{classId}")
+    public List<ScheduleDTO> getClassSchedule(@PathVariable int classId) {
+        return scheduleRepository.findByClaszId(classId).stream()
+                .map(ScheduleDTO::new)
+                .collect(Collectors.toList());
+    }
+
     @GetMapping("/getRoomForClass/{classId}")
     public List<ScheduleDTO> getRoomClassSchedule(@PathVariable int classId) {
         return scheduleRepository.findByClaszId(classId).stream()

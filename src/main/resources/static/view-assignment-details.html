@@ -627,6 +627,7 @@
 
             return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
         }
+
         const urlParams = new URLSearchParams(window.location.search);
         const assignmentId = urlParams.get('id');
 
@@ -651,15 +652,18 @@
             document.getElementById('assignment-description').textContent = assignment.description || "No description provided";
             document.getElementById('assignment-description').style.fontSize = "18px";
 
+            // If content is present, handle block tags such as <p> and <div>
             if (assignment.content) {
-                // Replace block tags like <p> and <div> with newline characters
-                var sanitizedContent = assignment.content.replace(/<\/?(p|div)[^>]*>/gi, '\n');
+                var sanitizedContent = assignment.content;
                 document.getElementById('assignment-content').innerHTML = sanitizedContent;
                 document.getElementById('assignment-content').style.fontSize = "18px";
+                document.getElementById('assignment-content').style.display = "inline-block"; // Đảm bảo hiển thị giống h3
             } else {
                 document.getElementById('assignment-content').textContent = "No content provided";
                 document.getElementById('assignment-content').style.fontSize = "18px";
+                document.getElementById('assignment-content').style.display = "inline-block"; // Đảm bảo hiển thị giống h3
             }
+
 
             document.getElementById('created-date').textContent = createdDateFormatted || "N/A";
             document.getElementById('end-date').textContent = endDateFormatted || "N/A";

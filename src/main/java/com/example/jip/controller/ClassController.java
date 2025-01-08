@@ -62,9 +62,9 @@ public class ClassController {
             throw new IllegalArgumentException("Class name is required");
         }
 
-        boolean classExists = classRepository.existsByName(classDTO.getName());
+        boolean classExists = classRepository.existsByNameAndStatus(classDTO.getName(), Class.status.Active);
         if (classExists) {
-            return "A class with the name [" + classDTO.getName() + "] already exists.";
+            return "A class with the name [" + classDTO.getName() + "] is already active.";
         }
 
         if (classDTO.getTeacher() == null || classDTO.getTeacher().getId() == 0) {
@@ -85,19 +85,34 @@ public class ClassController {
         }
     }
 
-   @PostMapping("/update")
-   public ResponseEntity<ClassDTO> updateClass(@RequestBody ClassDTO classDTO) {
-       // Update the class and handle exceptions
-       try {
-           ClassDTO updatedClass = classServices.updateClass(classDTO.getId(), classDTO);
-           return ResponseEntity.ok(updatedClass); // Return 200 with the updated data
-       } catch (NoSuchElementException ex) {
-           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Return 404 if the class or teacher is not found
-       } catch (Exception ex) {
-           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Return 500 for other errors
-       }
+    @PostMapping("/update")
+    public ResponseEntity<?> updateClass(@RequestBody ClassDTO classDTO) {
+        try {
+            // Check if the teacher is already assigned to the maximum number of classes for the semester
+            int classCount = classRepository.countClassesByTeacherAndSemester(classDTO.getTeacher().getId(), classDTO.getSemesterId());
+            if (classCount >= 3) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("This teacher is already assigned to the maximum number of classes (3) for this semester.");
+            }
 
-   }
+            // Check if a class with the same name and active status already exists
+            boolean classExists = classRepository.existsByNameAndStatus(classDTO.getName(), Class.status.Active);
+            if (classExists) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("A class with the name [" + classDTO.getName() + "] is already active.");
+            }
+
+            // Update the class
+            ClassDTO updatedClass = classServices.updateClass(classDTO.getId(), classDTO);
+            return ResponseEntity.ok(updatedClass); // Return 200 with the updated data
+        } catch (NoSuchElementException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("The class or associated teacher was not found.");
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unexpected error occurred while updating the class.");
+        }
+    }
 
     @GetMapping("/get")
     public List<ClassDTO> getClasses() {
