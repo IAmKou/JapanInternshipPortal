@@ -45,11 +45,11 @@ public class AttendantStatusScheduler {
         }
     }
 
-    @Scheduled(cron = "0 0 * * * ?") // Runs every hour
+    @Scheduled(cron = "0 0 0 * * ?")
     public void finalizeSchedule() {
         System.out.println("Starting schedule finalization scheduler at " + LocalDate.now());
 
-        List<Schedule> schedules = scheduleRepository.findAllByDate(LocalDate.now());
+        List<Schedule> schedules = scheduleRepository.findAllByDateLessThanEqual(LocalDate.now());
 
         for (Schedule schedule : schedules) {
             System.out.println("Processing schedule ID: " + schedule.getId());

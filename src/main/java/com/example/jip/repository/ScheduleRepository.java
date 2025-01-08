@@ -82,4 +82,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     boolean existsBySemesterIdAndDateAndRoom(int semesterId, java.sql.Date date, String room);
 
     List<Schedule> findAllByDate(LocalDate now);
+
+    List<Schedule> findAllByDateLessThanEqual(LocalDate date);
 }

@@ -436,7 +436,33 @@
         </div>
     </div>
 </div>
+<div class="ui-modal-box">
+    <div class="modal-box">
+        <div class="modal sign-up-modal fade" id="update-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="close-btn">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form id="update-class-form">
+                            <input type="hidden" name="roomId" id="roomId" value="">
+                            <div class="form-group col-12">
+                                <input type="text" id="roomNam" name="name" class="form-control">
+                            </div>
+                            <div class="form-group col-12">
+                                <button type="button" id="update-class-btn">Update Room</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
@@ -588,7 +614,6 @@
                 return;
             }
 
-            // Fetch request gửi dữ liệu tới server
             fetch('/room/create', {
                 method: 'POST',
                 headers: {
@@ -641,7 +666,7 @@
         fetch("/room/get")
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Failed to fetch class data');
+                    throw new Error('Failed to fetch room data');
                 }
                 return response.json();
             })
@@ -730,33 +755,29 @@
 
         // Handle class update via JSON
         updateClassBtn.addEventListener('click', function () {
-            const classId = document.getElementById('classId').value;
-            const className = document.getElementById('className').value;
-            const teacherId = document.getElementById('teacherId').value;
+            const roomId = document.getElementById('roomId').value;
+            const roomName = document.getElementById('roomNam').value.trim(); // Trim input
 
-            fetch('/class/update', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    id: classId,
-                    name: className,
-                    teacher: {
-                        id: teacherId
-                    }
-                }),
+            if (!roomName) {
+                alert('Room name cannot be empty.');
+                return;
+            }
+
+            fetch(`/room/update/${roomId}?roomName=${roomName}`, {
+                method: 'PUT',
             })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Class updated successfully!');
+                .then(response => response.json()) // Parse JSON response
+                .then(data => {
+                    if (data.status === "success") {
+                        alert(data.message); // Show success message
                         location.reload(); // Refresh the page
-                    } else {
-                        throw new Error('Failed to update class');
+                    } else if (data.status === "error") {
+                        alert(data.message); // Show error message
                     }
                 })
                 .catch(error => {
-                    console.error('Error updating class:', error);
+                    console.error('Error updating room:', error);
+                    alert("An error occurred while communicating with the server.");
                 });
         });
     });

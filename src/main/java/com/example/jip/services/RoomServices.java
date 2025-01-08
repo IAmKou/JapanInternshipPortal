@@ -14,4 +14,16 @@ public class RoomServices {
     public Room createRoom(Room room) {
         return roomRepository.save(room);
     }
+
+    public Room updateRoom(int roomId, String roomName) {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("Room not found with ID: " + roomId));
+
+        if (roomRepository.existsByName(roomName)) {
+            throw new IllegalArgumentException("Room name already exists: " + roomName);
+        }
+
+        room.setName(roomName);
+        return roomRepository.save(room);
+    }
 }
