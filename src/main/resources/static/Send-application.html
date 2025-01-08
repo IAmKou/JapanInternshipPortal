@@ -686,34 +686,7 @@
 </script>
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    const roleTranslations = {
-        "en": {
-            "ADMIN": "Admin",
-            "TEACHER": "Teacher",
-            "STUDENT": "Student"
-        },
-        "ja": {
-            "ADMIN": "管理者",
-            "TEACHER": "教師",
-            "STUDENT": "学生"
-        }
-    };
-    const applicationTranslations = {
-        en: {
-            absent: "Absent Application",
-            internship: "Internship Application",
-            others: "Others Application",
-            "schedule-change": "Schedule Changing Application",
-            "change_teacher": "Teacher Change Application"
-        },
-        ja: {
-            absent: "欠席申請",
-            internship: "インターンシップ申請",
-            others: "その他の申請",
-            "schedule-change": "スケジュール変更申請",
-            "change_teacher": "教師変更申請"
-        }
-    };
+    
 
     if (userDetails) {
         const currentLanguage = localStorage.getItem('language') || 'en'; // Lấy ngôn ngữ hiện tại
