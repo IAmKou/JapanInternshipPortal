@@ -1254,11 +1254,6 @@
     });
 
 
-
-
-
-
-
     function formatDateTimeForInput(dateString) {
         const date = new Date(dateString);
 
@@ -1276,7 +1271,8 @@
     }
     // Function to open the update popup async
     let quill;
-
+    let createdDateFormatted = null;
+    let endDateFormatted = null;
     async function openUpdatePopup(assignmentId) {
         try {
             // Fetch assignment details
@@ -1323,8 +1319,8 @@
                 classSelect.appendChild(option);
             });
 
-            const createdDateFormatted = formatDateTimeForInput(assignment.created_date);
-            const endDateFormatted = formatDateTimeForInput(assignment.end_date);
+            createdDateFormatted = formatDateTimeForInput(assignment.created_date);
+            endDateFormatted = formatDateTimeForInput(assignment.end_date);
 
             // Chỉ khởi tạo Quill nếu chưa có một instance nào
             if (!quill) {
@@ -1412,23 +1408,34 @@
         }
 
         // Check if the Create Date is after the current date
-        const currentDate = new Date();
+        // Parse input dates
         const createdDateObj = new Date(createDate);
-        if (createdDateObj < currentDate) {
-            alert('Create Date must be after the Current Date.');
-            return;
-        }
-
-        // Check if the End Date is after the Current Date
         const endDateObj = new Date(endDate);
-        if (endDateObj < currentDate) {
-            alert('End Date must be after the Current Date.');
+
+        // Parse database dates
+        const dbCreateDate = new Date(createdDateFormatted); // Value fetched during the `openUpdatePopup` call
+        const dbEndDate = new Date(endDateFormatted); // Value fetched during the `openUpdatePopup` call
+        createdDateObj.setSeconds(0)
+        dbCreateDate.setSeconds(0);
+
+        console.log('Input Create Date:', createdDateObj);
+        console.log('Database Create Date:', dbCreateDate);
+        // Validation: Check if the Create Date is before the End Date
+        if (createdDateObj > endDateObj) {
+            showErrorModal('End Date must be after the Create Date.');
             return;
         }
 
-        // Check if the Create Date is before the End Date
-        if (createdDateObj > endDateObj) {
-            alert('End Date must be after the Create Date.');
+        // Validation: Check if input dates are after the database dates
+        if (createdDateObj < dbCreateDate) {
+            showErrorModal('Create Date must be after the original Create Date from the database.');
+            return;
+        }
+
+        // Validation: Check if the time difference between Create Date and End Date is at least 30 minutes
+        const timeDifference = (endDateObj - createdDateObj) / (1000 * 60); // Difference in minutes
+        if (timeDifference < 30) {
+            showErrorModal('The time difference between Create Date and End Date must be at least 30 minutes.');
             return;
         }
 
