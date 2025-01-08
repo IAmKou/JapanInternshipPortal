@@ -74,19 +74,22 @@ public class RoomController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteRoom(@PathVariable int id) {
+    public ResponseEntity<Map<String, String>> deleteRoom(@PathVariable int id) {
         if (!roomRepository.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Room not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("status", "error", "message", "Room not found."));
         }
 
         boolean hasOccupiedStatus = roomAvailabilityRepository.existsByRoomIdAndStatus(id, RoomAvailability.Status.Occupied);
         if (hasOccupiedStatus) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Room cannot be deleted as it is occupied on some days.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("status", "error", "message", "Room cannot be deleted as it is occupied on some days."));
         }
 
         roomRepository.deleteById(id);
-        return ResponseEntity.ok("Room deleted successfully.");
+        return ResponseEntity.ok(Map.of("status", "success", "message", "Room deleted successfully."));
     }
+
 
 
     @PutMapping("/update/{roomId}")

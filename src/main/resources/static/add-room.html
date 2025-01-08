@@ -737,7 +737,7 @@
                 // Attach event listeners for delete buttons
                 document.querySelectorAll('.delete-class').forEach(button => {
                     button.addEventListener('click', function () {
-                        currentClassId = this.getAttribute('data-id');
+                        currentRoomId = this.getAttribute('data-id');
                         $('#confirmation-modal').modal('show'); // Show modal
                     });
                 });
@@ -767,16 +767,18 @@
                 fetch(`/room/delete/${currentRoomId}`, {
                     method: 'DELETE',
                 })
-                    .then(response => {
+                    .then(response => response.json()) // Parse JSON response
+                    .then(data => {
                         if (response.ok) {
-                            alert('Room deleted successfully!');
+                            alert(data.message); // Display success message
                             location.reload(); // Refresh the page
                         } else {
-                            throw new Error('Failed to delete class');
+                            alert(data.message); // Display error message
                         }
                     })
                     .catch(error => {
-                        console.error('Error deleting class:', error);
+                        console.error('Error deleting room:', error);
+                        alert("An error occurred while communicating with the server.");
                     });
             }
         });
