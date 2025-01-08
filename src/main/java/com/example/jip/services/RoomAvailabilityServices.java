@@ -119,4 +119,8 @@ public class RoomAvailabilityServices {
 
         roomAvailabilityRepository.saveAll(availabilityList);
     }
+
+    public List<RoomAvailability> getRoomAvailability(String roomName, Date date, RoomAvailability.Status status) {
+        return roomAvailabilityRepository.findRoomAvailability(roomName, date, status);
+    }
 }
