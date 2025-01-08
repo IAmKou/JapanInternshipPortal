@@ -161,7 +161,7 @@ public class AccountImportServices {
             String fullName = dataFormatter.formatCellValue(row.getCell(0)).trim();
             String japanName = dataFormatter.formatCellValue(row.getCell(1)).trim();
             String phoneNumber = dataFormatter.formatCellValue(row.getCell(5)).trim();
-            String email = dataFormatter.formatCellValue(row.getCell(7)).trim();
+            String email = dataFormatter.formatCellValue(row.getCell(6)).trim();
 
             // Validate date of birth
             LocalDate dob = null;
@@ -200,9 +200,7 @@ public class AccountImportServices {
                 return;
             }
 
-            // Upload images to Cloudinary only after successful validation
-            String passportUrl = row.getCell(6).getStringCellValue();
-            String passport = uploadImageToS3(passportUrl, email, workbook).toString();
+
             String imgPath = row.getCell(3).getStringCellValue();
             String imgUrl = uploadImageToS3(imgPath, email, workbook).toString();
 
@@ -253,48 +251,38 @@ public class AccountImportServices {
         return String.format("%06d", code);  // Ensure it's always 6 digits
     }
 
-    private List<String> uploadImageToS3(String imgPath, String userName, XSSFWorkbook workbook) {
-        List<String> uploadedUrls = new ArrayList<>();
+    private String uploadImageToS3(String imgPath, String userName, XSSFWorkbook workbook) {
         try {
+            // If the image path is not a URL but embedded in the Excel, extract it.
             if (imgPath != null && imgPath.startsWith("http")) {
-                uploadedUrls.add(imgPath); // If it's a URL, add it to the list directly.
-                return uploadedUrls;
+                return imgPath; // If it's a URL, return it directly.
             }
 
             String folderName = sanitizeFolderName("Account/Student/" + userName);
 
-            List<byte[]> imageBytesList = getAllImageBytesFromExcel(workbook);
-            if (!imageBytesList.isEmpty()) {
-                int imageIndex = 1; // To give each image a unique name
-                for (byte[] imageBytes : imageBytesList) {
-                    MultipartFile imageFile = new MockMultipartFile(
-                            "file",
-                            "image_" + imageIndex + ".jpg", // Unique file name
-                            "image/jpeg",
-                            imageBytes
-                    );
-                    String response = s3Service.uploadFile(imageFile, folderName, imageFile.getOriginalFilename());
-                    uploadedUrls.add(response);
-                    imageIndex++;
-                }
+            // Extract image from workbook if it's embedded
+            byte[] imageBytes = getImageBytesFromExcel(workbook);
+            if (imageBytes != null) {
+                MultipartFile imageFile = new MockMultipartFile("file", "image.jpg", "image/jpeg", imageBytes);
+                String response = s3Service.uploadFile(imageFile, folderName, imageFile.getOriginalFilename()); // Upload to Cloudinary and return URL
+                return response;
             }
         } catch (Exception e) {
             throw new RuntimeException("Image extraction or upload failed: " + e.getMessage());
         }
-        return uploadedUrls; // Return list of uploaded image URLs
+        return null;
     }
 
 
-    private List<byte[]> getAllImageBytesFromExcel(XSSFWorkbook workbook) {
-        List<byte[]> imageBytesList = new ArrayList<>();
+    private byte[] getImageBytesFromExcel(XSSFWorkbook workbook) {
         for (XSSFPictureData pictureData : workbook.getAllPictures()) {
             try {
-                imageBytesList.add(pictureData.getData());
+                return pictureData.getData();  // Return first image found
             } catch (Exception e) {
                 throw new RuntimeException("Failed to extract image: " + e.getMessage());
             }
         }
-        return imageBytesList; // Return list of all image data
+        return null;  // If no image is found
     }
 
 
