@@ -73,8 +73,8 @@ public class RoomController {
         return roomRepository.findAll();
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteRoom(@RequestParam int id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteRoom(@PathVariable int id) {
         if (!roomRepository.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Room not found.");
         }
@@ -84,7 +84,6 @@ public class RoomController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Room cannot be deleted as it is occupied on some days.");
         }
 
-        // Proceed to delete the room
         roomRepository.deleteById(id);
         return ResponseEntity.ok("Room deleted successfully.");
     }
