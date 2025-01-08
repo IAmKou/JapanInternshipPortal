@@ -949,7 +949,7 @@
                             showSuccessModal(result.message || 'Events saved successfully!');
                             eventsToSave = [];
                             calendar.refetchEvents();
-                            window.location.href = 'schedule-class.html';
+                            window.location.href = 'schedule-list.html';
                         })
                         .catch(error => {
                             console.error('Error saving events:', error);

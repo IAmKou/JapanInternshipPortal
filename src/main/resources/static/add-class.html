@@ -698,6 +698,8 @@
 
                     // Clear selected students
                     selectedStudentIds = [];
+
+                    window.location.href = 'class-list.html';
                 })
                 .catch(error => showErrorModal("Error creating class: " + error));
         });

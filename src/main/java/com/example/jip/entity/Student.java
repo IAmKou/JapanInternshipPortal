@@ -28,9 +28,6 @@ public class Student {
     @Column(name = "DoB", nullable = false)
     private Date dob;
 
-    @Column(name = "Passport_url")
-    private String passport;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "Gender", nullable = false)
     private Gender gender;
@@ -63,7 +60,7 @@ public class Student {
 
     // Custom constructor
     public Student(String fullname, String japanname, Date dob, Gender gender, String phoneNumber,
-                   String email, String img, String passport, Account account) {
+                   String email, String img, Account account) {
         this.fullname = fullname;
         this.japanname = japanname;
         this.dob = dob;
@@ -71,7 +68,6 @@ public class Student {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.img = img;
-        this.passport = passport;
         this.account = account;
     }
 }

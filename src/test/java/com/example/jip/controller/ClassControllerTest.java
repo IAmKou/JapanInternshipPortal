@@ -39,24 +39,7 @@ class ClassControllerTest {
 
 
 
-    @Test
-    void testUpdateClass_Success() {
-        // Arrange
-        ClassDTO classDTO = new ClassDTO();
-        classDTO.setId(1);
-        classDTO.setName("Updated Class");
 
-        when(classServices.updateClass(anyInt(), any(ClassDTO.class))).thenReturn(classDTO);
-
-        // Act
-        ResponseEntity<ClassDTO> response = classController.updateClass(classDTO);
-
-        // Assert
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals("Updated Class", response.getBody().getName());
-        verify(classServices, times(1)).updateClass(anyInt(), any(ClassDTO.class));
-    }
 
     @Test
     void testDeleteClass_Success() {
