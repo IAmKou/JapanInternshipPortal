@@ -165,7 +165,7 @@ public class AssignmentServices {
                             assignmentStudentRepository.save(new AssignmentStudent(savedAssignment, student));
 
                             notificationServices.createAutoNotificationForAssignment(
-                                    "New assignment created" + assignment.getDescription(),
+                                    "New assignment created " + assignment.getDescription(),
                                     teacher.getAccount().getId(),
                                     student.getAccount().getId()
                             );
