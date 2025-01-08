@@ -299,7 +299,7 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="teacher.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
@@ -316,21 +316,16 @@
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i
-                                        class="fas fa-angle-right"></i>All
+                                <a href="javascript:void(0);" class="nav-link menu-active" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
                                     Assignment</a>
                             </li>
                             <li class="nav-item">
-                                <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
-                                    New
+                                <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
                                     Assignment</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
-                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
-                    </li>
+
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
@@ -339,22 +334,6 @@
                                 <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
                                     <i class="flaticon-menu"></i><span>Class List</span>
                                 </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendance</span></a>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="list-mark.html"><i class="fas fa-angle-right"></i>List
-                                    Exam</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
-                                    Exam</a>
                             </li>
                         </ul>
                     </li>
@@ -624,8 +603,30 @@
         errorModal.show();
     }
 
+
+
     // Fetch assignment details
     async function fetchAssignmentDetails() {
+        // Utility function to format date and time
+        function formatDateTime(dateString) {
+            const date = new Date(dateString);
+
+            // Adjust for your timezone (e.g., UTC+7 for Vietnam)
+            date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
+
+            // Format the date and time in 12-hour format with AM/PM
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+
+            let hours = date.getHours();
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12; // Convert to 12-hour format, 0 becomes 12
+
+            return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+        }
         const urlParams = new URLSearchParams(window.location.search);
         const assignmentId = urlParams.get('id');
 
@@ -647,23 +648,20 @@
             const endDateFormatted = formatDateTime(assignment.end_date);
 
             // Populate description and content
-            // Cập nhật nội dung của description và content với cỡ chữ lớn hơn
             document.getElementById('assignment-description').textContent = assignment.description || "No description provided";
-            document.getElementById('assignment-description').style.fontSize = "18px";  // Tăng cỡ chữ cho description
+            document.getElementById('assignment-description').style.fontSize = "18px";
 
             if (assignment.content) {
-                // Loại bỏ thẻ block như <p>, <div>, thay thế bằng newline '\n'
+                // Replace block tags like <p> and <div> with newline characters
                 var sanitizedContent = assignment.content.replace(/<\/?(p|div)[^>]*>/gi, '\n');
-
-                // Hiển thị nội dung trong HTML, giữ các thẻ inline như <strong>, <em>...
                 document.getElementById('assignment-content').innerHTML = sanitizedContent;
-                document.getElementById('assignment-content').style.fontSize = "18px";  // Tăng cỡ chữ cho content
+                document.getElementById('assignment-content').style.fontSize = "18px";
             } else {
                 document.getElementById('assignment-content').textContent = "No content provided";
-                document.getElementById('assignment-content').style.fontSize = "18px";  // Tăng cỡ chữ khi không có nội dung
+                document.getElementById('assignment-content').style.fontSize = "18px";
             }
 
-            document.getElementById('created-date').textContent = createdDateFormatted  || "N/A";
+            document.getElementById('created-date').textContent = createdDateFormatted || "N/A";
             document.getElementById('end-date').textContent = endDateFormatted || "N/A";
 
             // Display class names
@@ -695,27 +693,7 @@
     }
 
     // Call the function on page load
-    fetchAssignmentDetails();
-
-    function formatDateTime(dateString) {
-        const date = new Date(dateString);
-
-        // Adjust for your timezone (if needed, e.g., UTC+7 for Vietnam)
-        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
-
-        // Format the date and time in 12-hour format with AM/PM
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-
-        let hours = date.getHours();
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12 || 12; // Convert to 12-hour format, 0 becomes 12
-
-        return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
-    }
+    document.addEventListener('DOMContentLoaded', fetchAssignmentDetails);
 
     // Fetch and display submitted assignments
     async function fetchAndDisplaySubmittedAssignments() {
@@ -748,7 +726,7 @@
                 row.innerHTML = `
 <td>${submittedAssignment.studentName || "N/A"}</td> <!-- Hiển thị tên học sinh thay vì status -->
                 <td>
-                    <a href="/submitted-assignment-detail-teacher.html?id=${submittedAssignment.id}" target="_blank">
+                    <a href="/submitted-assignment-detail-teacher.html?id=${submittedAssignment.id}">
                         ${submittedAssignment.description}
                     </a>
                 </td>

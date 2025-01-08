@@ -2,7 +2,9 @@ package com.example.jip.controller;
 
 import com.example.jip.dto.RoomAvailabilityDTO;
 import com.example.jip.entity.Room;
+import com.example.jip.entity.RoomAvailability;
 import com.example.jip.entity.Semester;
+import com.example.jip.repository.RoomAvailabilityRepository;
 import com.example.jip.repository.RoomRepository;
 import com.example.jip.repository.SemesterRepository;
 import com.example.jip.services.RoomAvailabilityServices;
@@ -31,6 +33,9 @@ public class RoomController {
 
     @Autowired
     private SemesterRepository semesterRepository;
+
+    @Autowired
+    private RoomAvailabilityRepository roomAvailabilityRepository;
 
 
 
@@ -62,4 +67,30 @@ public class RoomController {
         return ResponseEntity.ok(createdRoom);
     }
 
+    @GetMapping("/get")
+    public List<Room> getRooms() {
+        return roomRepository.findAll();
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteRoom(@RequestParam int id) {
+        if (!roomRepository.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Room not found.");
+        }
+
+        boolean hasOccupiedStatus = roomAvailabilityRepository.existsByRoomIdAndStatus(id, RoomAvailability.Status.Occupied);
+        if (hasOccupiedStatus) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Room cannot be deleted as it is occupied on some days.");
+        }
+
+        // Proceed to delete the room
+        roomRepository.deleteById(id);
+        return ResponseEntity.ok("Room deleted successfully.");
+    }
+
+
+//    @PutMapping("/update/{roomId}")
+//    public ResponseEntity<?> updateRoom(@PathVariable int roomId, @RequestParam String roomName) {
+//
+//    }
 }

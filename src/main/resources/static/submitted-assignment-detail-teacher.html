@@ -28,6 +28,23 @@
 </head>
 
 <style>
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-gradient-yellow {
+        background: linear-gradient(45deg, #ffcc00, #ff9900);
+        color: #fff;
+    }
     #content {
         height: 200px; /* Thay đổi chiều cao tùy ý */
     }
@@ -210,7 +227,7 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="teacher.html"><img src="img/logo1.png" alt="logo"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
@@ -225,9 +242,9 @@
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
+                                <a href="javascript:void(0);" class="nav-link menu-active" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
                                     Assignment</a>
                             </li>
                             <li class="nav-item">
@@ -236,22 +253,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="fas fa-angle-right"></i>View list threads</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>Create
-                                    Thread</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
-                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
-                    </li>
+
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
@@ -260,22 +262,6 @@
                                 <a href="javascript:void(0);" class="nav-link" onclick="submitForm();">
                                     <i class="flaticon-menu"></i><span>Class List</span>
                                 </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="student-attendence.html" class="nav-link"><i class="flaticon-checklist"></i><span>Attendence</span></a>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="list-mark.html"><i class="fas fa-angle-right"></i>List
-                                    Exam</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
-                                    Exam</a>
                             </li>
                         </ul>
                     </li>
@@ -426,7 +412,7 @@
                     </div>
                     <!-- Grade Button -->
                     <div class="text-right">
-                        <button type="button" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark" data-toggle="modal" data-target="#gradeModal">
+                        <button type="button" class="btn btn-gradient-yellow btn-search" data-toggle="modal" data-target="#gradeModal">
                             Grade Assignment
                         </button>
                     </div>
@@ -434,8 +420,6 @@
             </div>
         </div>
     </div>
-
-
 
     <!-- Modal for Grading -->
     <div class="modal fade" id="gradeModal" tabindex="-1" role="dialog" aria-labelledby="gradeModalLabel" aria-hidden="true">
@@ -464,6 +448,38 @@
     </div>
     <!-- Page Area End Here -->
 </div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-success" id="successModalLabel">
+                    <i class="fas fa-check-circle"></i> Success
+                </h5>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-danger" id="errorModalLabel">
+                    <i class="fas fa-times-circle"></i> Error
+                </h5>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -554,43 +570,31 @@
 </script>
 <!-- fetch user -->
 <script>
-
-
     let currentAssignmentId = null;
 
-    function formatDateTime(dateString) {
-        const date = new Date(dateString);
-
-        // Adjust for your timezone (if needed, e.g., UTC+7 for Vietnam)
-        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
-
-        // Format the date and time in 12-hour format with AM/PM
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-
-        let hours = date.getHours();
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12 || 12; // Convert to 12-hour format, 0 becomes 12
-
-        return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+    function showSuccessModal(message) {
+        const modalBody = document.querySelector('#success-modal .modal-body');
+        modalBody.innerHTML = `<i class="fas fa-check-circle fa-5x text-success mb-3"></i><p>${message}</p>`;
+        $('#success-modal').modal('show');
     }
 
+    function showErrorModal(message) {
+        const modalBody = document.querySelector('#long-modal .modal-body');
+        modalBody.innerHTML = `<i class="fas fa-times-circle fa-5x text-danger mb-3"></i><p>${message}</p>`;
+        $('#long-modal').modal('show');
+    }
 
     async function fetchAssignmentDetails() {
         const urlParams = new URLSearchParams(window.location.search);
-        const studentAssignmentId = urlParams.get('id'); // Get the StudentAssignment ID from the URL
+        const studentAssignmentId = urlParams.get('id');
 
         if (!studentAssignmentId) {
             console.error("StudentAssignment ID is missing in the URL.");
-            alert("Invalid access: No StudentAssignment ID provided.");
+            showErrorModal("Invalid access: No StudentAssignment ID provided.");
             return;
         }
 
         try {
-            // Fetch the assignment details using the studentAssignmentId
             const response = await fetch(`/assignment/detailByAS/${studentAssignmentId}`);
 
             if (!response.ok) {
@@ -601,27 +605,27 @@
             console.log('Assignment details:', assignment);
             const createdDateFormatted = formatDateTime(assignment.created_date);
             const endDateFormatted = formatDateTime(assignment.end_date);
-            // Populate the form fields with the fetched assignment details
-            document.getElementById('assignment-description').textContent = assignment.description || ""; // Populate description field
-            document.getElementById('assignment-content').textContent = assignment.content || ""; // Populate content field
-            document.getElementById('created-date').textContent =createdDateFormatted  || "N/A"; // Populate created date
-            document.getElementById('end-date').textContent = endDateFormatted || "N/A"; // Display end date
+
+            document.getElementById('assignment-description').textContent = assignment.description || "";
+            document.getElementById('assignment-content').textContent = assignment.content || "";
+            document.getElementById('created-date').textContent = createdDateFormatted || "N/A";
+            document.getElementById('end-date').textContent = endDateFormatted || "N/A";
             currentAssignmentId = assignment.id;
-            // Optionally display classes and files (if needed for reference)
+
             const classes = assignment.classes || [];
             document.getElementById('assignment-classes').textContent =
                 classes.length > 0 ? classes.join(", ") : "No classes assigned";
 
             const files = assignment.files || [];
             const filesContainer = document.getElementById('assignment-files');
-            filesContainer.innerHTML = ""; // Clear any existing content
+            filesContainer.innerHTML = "";
             if (files.length > 0) {
                 files.forEach(fileUrl => {
                     const link = document.createElement('a');
                     link.href = fileUrl;
-                    link.textContent = fileUrl.split('/').pop(); // Display the file name
+                    link.textContent = fileUrl.split('/').pop();
                     link.target = '_blank';
-                    link.style.display = 'block'; // Show each file on a new line
+                    link.style.display = 'block';
                     filesContainer.appendChild(link);
                 });
             } else {
@@ -629,62 +633,56 @@
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while fetching the assignment details. Please try again.');
+            showErrorModal('An error occurred while fetching the assignment details. Please try again.');
         }
     }
 
-    // Call the function on page load
     fetchAssignmentDetails();
 
     async function fetchStudentAssignmentDetails() {
-        // Get the studentAssignmentId from the URL
         const urlParams = new URLSearchParams(window.location.search);
         const studentAssignmentId = urlParams.get('id');
 
         if (!studentAssignmentId) {
-            alert("Missing StudentAssignment ID in the URL.");
+            showErrorModal("Missing StudentAssignment ID in the URL.");
             return;
         }
 
         try {
-            // Fetch the StudentAssignment details
             const response = await fetch(`student-assignment/detail?studentAssignmentId=${studentAssignmentId}`);
             if (!response.ok) {
                 throw new Error('Error fetching StudentAssignment:' + response.statusText);
             }
 
             const studentAssignment = await response.json();
-            console.log("Fetched Assignment:", studentAssignment); // Debugging log
+            console.log("Fetched Assignment:", studentAssignment);
 
-            // Populate form fields with the fetched data
             document.getElementById('submitted-assignment-description').textContent = studentAssignment.description;
             document.getElementById('submitted-assignment-content').textContent = studentAssignment.content;
-            if (studentAssignment.content) {
-                // Loại bỏ thẻ block như <p>, <div>, thay thế bằng newline '\n'
-                var sanitizedContent = assignment.content.replace(/<\/?(p|div)[^>]*>/gi, '\n');
 
-                // Hiển thị nội dung trong HTML, giữ các thẻ inline như <strong>, <em>...
+            if (studentAssignment.content) {
+                var sanitizedContent = studentAssignment.content.replace(/<\/?(p|div)[^>]*>/gi, '\n');
                 document.getElementById('submitted-assignment-content').innerHTML = sanitizedContent;
-                document.getElementById('submitted-assignment-content').style.fontSize = "18px";  // Tăng cỡ chữ cho content
+                document.getElementById('submitted-assignment-content').style.fontSize = "18px";
             } else {
                 document.getElementById('submitted-assignment-content').textContent = "No content provided";
-                document.getElementById('submitted-assignment-content').style.fontSize = "18px";  // Tăng cỡ chữ khi không có nội dung
+                document.getElementById('submitted-assignment-content').style.fontSize = "18px";
             }
-            document.getElementById('submitted-assignment-student-name').textContent = studentAssignment.studentName;
 
+            document.getElementById('submitted-assignment-student-name').textContent = studentAssignment.studentName;
             const formattedDate = new Date(studentAssignment.date).toISOString().split("T")[0];
             document.getElementById('submitted-created-date').textContent = formattedDate;
 
             const files = studentAssignment.files || [];
             const filesContainer = document.getElementById('submitted-assignment-file');
-            filesContainer.innerHTML = ""; // Clear any existing content
+            filesContainer.innerHTML = "";
             if (files.length > 0) {
                 files.forEach(fileUrl => {
                     const link = document.createElement('a');
                     link.href = fileUrl;
-                    link.textContent = fileUrl.split('/').pop(); // Display the file name
+                    link.textContent = fileUrl.split('/').pop();
                     link.target = '_blank';
-                    link.style.display = 'block'; // Show each file on a new line
+                    link.style.display = 'block';
                     filesContainer.appendChild(link);
                 });
             } else {
@@ -693,60 +691,49 @@
 
         } catch (error) {
             console.error("Error loading StudentAssignment details:", error);
-            alert("Failed to load StudentAssignment details. Please try again.");
+            showErrorModal("Failed to load StudentAssignment details. Please try again.");
         }
     }
 
-    fetchStudentAssignmentDetails()
+    fetchStudentAssignmentDetails();
 
     async function submitGrade() {
-        const mark = parseFloat(document.getElementById('markInput').value); // Parse as float
+        const mark = parseFloat(document.getElementById('markInput').value);
         const status = "MARKED";
-
-
         const urlParams = new URLSearchParams(window.location.search);
-        const submittedAssignmentId = urlParams.get('id'); // Get the Submitted Assignment ID from the URL
+        const submittedAssignmentId = urlParams.get('id');
 
         if (!submittedAssignmentId) {
-            alert('Submitted Assignment ID is missing in the URL.');
+            showErrorModal('Submitted Assignment ID is missing in the URL.');
             return;
         }
 
-        // Validate the input
         if (mark === "" || isNaN(mark) || mark < 0 || mark > 10) {
-            alert("Please enter a valid mark between 0 and 10.");
+            showErrorModal("Please enter a valid mark between 0 and 10.");
             return;
         }
 
         try {
-            // Call the backend API to update the submitted assignment
             const response = await fetch(`/student-assignment/grade-submitted-assignment?studentAssignmentId=${submittedAssignmentId}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    mark: mark,
-                    status: status
-                })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mark: mark, status: status })
             });
 
             if (response.ok) {
-                alert('Grade submitted successfully!');
+                showSuccessModal('Grade submitted successfully!');
                 setTimeout(() => {
                     window.location.href = `view-assignment-details.html?id=${currentAssignmentId}`;
                 }, 2000);
-
             } else {
                 const errorData = await response.json();
-                alert(`Failed to submit grade: ${errorData.message || response.statusText}`);
+                showErrorModal(`Failed to submit grade: ${errorData.message || response.statusText}`);
             }
         } catch (error) {
             console.error('Error grading assignment:', error);
-            alert('An error occurred while submitting the grade. Please try again.');
+            showErrorModal('An error occurred while submitting the grade. Please try again.');
         }
     }
-
 </script>
 <script>
     (async function fetchUserData() {

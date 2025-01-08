@@ -24,6 +24,13 @@ public interface AttendantRepository extends JpaRepository<Attendant, Integer> {
     @Query("SELECT a FROM Attendant a WHERE a.student.id = :studentId AND a.schedule.id = :scheduleId AND a.date = :date")
     Optional<Attendant> findByStudentIdAndScheduleIdAndDates(int studentId, int scheduleId, Date date);
 
+
+    @Query("SELECT COUNT(a) FROM Attendant a WHERE a.student.id = :studentId AND a.status = :status")
+    int countByStudentIdAndStatus(@Param("studentId") int studentId, @Param("status") Attendant.Status status);
+
+    @Query("SELECT COUNT(a) FROM Attendant a WHERE a.student.id = :studentId")
+    int countByStudentId(@Param("studentId") int studentId);
+
     @Query("SELECT new com.example.jip.dto.AttendantDTO( " +
             "   a.id ,a.status,a.date,s.id,sch.id, s.fullname , s.mark ,s.img ,a.isFinalized)" +
             "FROM \n" +
@@ -57,4 +64,6 @@ public interface AttendantRepository extends JpaRepository<Attendant, Integer> {
     List<Attendant> findByScheduleId(int id);
 
     boolean existsByScheduleIdAndIsFinalizedTrue(int id);
+
+    List<Attendant> findByDate(Date date);
 }

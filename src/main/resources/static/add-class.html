@@ -367,7 +367,6 @@
                             <div class="col-12 form-group mg-t-8">
                                 <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Create Class
                                 </button>
-                                <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Clear Form</button>
                             </div>
                         </div>
                     </form>
@@ -390,6 +389,36 @@
         </div>
     </div>
 </footer>
+
+<!-- Success Modal -->
+<div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-success" id="successModalLabel">
+                    <i class="fas fa-check-circle"></i> Success
+                </h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-danger" id="errorModalLabel">
+                    <i class="fas fa-times-circle"></i> Error
+                </h5>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -513,7 +542,7 @@
                 })
                 .catch(error => {
                     console.error("Error fetching students:", error);
-                    alert("There was an error fetching students");
+                    showErrorModal("There was an error fetching students.");
                 });
         }
 
@@ -625,12 +654,12 @@
             const semesterId = parseInt(document.getElementById("semester").value);
 
             if (!className.trim() || !teacherId || !semesterId) {
-                alert("Please provide class name, teacher and semester.");
+                showErrorModal("Please provide class name, teacher, and semester.");
                 return;
             }
 
             if (selectedStudentIds.length < 10 || selectedStudentIds.length > 30) {
-                alert("A class must have at least 10 students and at most 30 students. Please adjust your selection.");
+                showErrorModal("A class must have at least 10 students and at most 30 students. Please adjust your selection.");
                 return;
             }
 
@@ -640,7 +669,7 @@
                 teacher: {
                     id: teacherId
                 },
-                semesterId : semesterId,
+                semesterId: semesterId,
                 studentIds: selectedStudentIds
             };
 
@@ -658,7 +687,7 @@
                     return response.text();
                 })
                 .then(data => {
-                    alert(data);
+                    showSuccessModal(data);
 
                     document.getElementById("createClassForm").reset();
 
@@ -670,8 +699,20 @@
                     // Clear selected students
                     selectedStudentIds = [];
                 })
-                .catch(error => alert("Error creating class: " + error));
+                .catch(error => showErrorModal("Error creating class: " + error));
         });
+
+        function showSuccessModal(message) {
+            const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+            document.getElementById('successModalLabel').innerText = message;
+            successModal.show();
+        }
+
+        function showErrorModal(message) {
+            const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+            document.getElementById('errorModalLabel').innerText = message;
+            errorModal.show();
+        }
     });
 </script>
 
@@ -708,7 +749,7 @@
             })
             .catch(error => {
                 console.error('Error fetching teachers:', error);
-                alert("There was an error fetching the teachers. Please try again.");
+                showErrorModal("There was an error fetching the teachers. Please try again.");
             });
     }
 </script>
@@ -732,8 +773,8 @@
                 // Populate the dropdown with data
                 data.forEach(semester => {
                     const option = document.createElement('option');
-                    option.value = semester.semesterId; // Assuming the semester object has an `id` field
-                    option.textContent = semester.semesterName; // Assuming the semester object has a `name` field
+                    option.value = semester.semesterId; // Assuming the semester object has a `semesterId` field
+                    option.textContent = semester.semesterName; // Assuming the semester object has a `semesterName` field
                     semesterSelect.appendChild(option);
                 });
 
@@ -745,7 +786,7 @@
             })
             .catch(error => {
                 console.error('Error fetching semesters:', error);
-                alert("There was an error fetching the semesters. Please try again.");
+                showErrorModal("There was an error fetching the semesters. Please try again.");
             });
     }
 </script>

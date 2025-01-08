@@ -369,12 +369,23 @@
                                 <button type="button" id="submitRoomButton" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">
                                     Add Room
                                 </button>
-                                <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Clear Form</button>
                             </div>
                         </div>
                     </form>
                     <div id="messageBox" style="margin-top: 20px; font-weight: bold;"></div>
-
+                    <div class="table-responsive">
+                        <table class="table display text-nowrap">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Room Name</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <!-- Add Class Area End Here -->
@@ -394,6 +405,39 @@
         </div>
     </div>
 </footer>
+
+<!-- Success Modal -->
+<div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-success" id="successModalLabel">
+                    <i class="fas fa-check-circle"></i> Success
+                </h5>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-danger" id="errorModalLabel">
+                    <i class="fas fa-times-circle"></i> Error
+                </h5>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -486,12 +530,7 @@
             });
     }
 </script>
-
-
-
-
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
     if (userDetails) {
@@ -521,49 +560,206 @@
     }
 </script>
 <script>
-    document.getElementById('submitRoomButton').addEventListener('click', function (event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        // Get the input value
-        const roomName = document.getElementById('roomName').value;
+    document.addEventListener("DOMContentLoaded", function() {
+        const roomNameInput = document.getElementById('roomName');
+        const submitRoomButton = document.getElementById('submitRoomButton');
         const messageBox = document.getElementById('messageBox');
 
-        // Clear any previous message
-        messageBox.innerHTML = '';
+        // Giới hạn ký tự nhập vào không quá 50 ký tự
+        roomNameInput.addEventListener('input', function() {
+            if (roomNameInput.value.length > 50) {
+                roomNameInput.value = roomNameInput.value.substring(0, 50);
+            }
+        });
 
-        if (!roomName.trim()) {
-            messageBox.innerHTML = '<span style="color: red;">Room name is required!</span>';
-            return;
-        }
+        submitRoomButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Ngừng hành động gửi form mặc định
 
-        // Fetch request
-        fetch('/room/create', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name: roomName }),
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json(); // Parse JSON response if successful
-                } else {
-                    return response.text().then((text) => {
-                        throw new Error(text || 'Failed to create room');
-                    });
-                }
+            let roomName = roomNameInput.value.trim(); // Loại bỏ dấu cách
+
+            // Kiểm tra nếu trường phòng tên trống hoặc quá ngắn
+            if (!roomName) {
+                showErrorModal('Room name is required!');
+                return;
+            }
+
+            if (roomName.length < 6) {
+                showErrorModal('Room name must be at least 6 characters long!');
+                return;
+            }
+
+            // Fetch request gửi dữ liệu tới server
+            fetch('/room/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: roomName }),
             })
-            .then((data) => {
-                messageBox.innerHTML = `<span style="color: green;">${data.name} was created successfully!</span>`;
-            })
-            .catch((error) => {
-                messageBox.innerHTML = `<span style="color: red;">Error: ${error.message}</span>`;
-            });
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json(); // Phân tích cú pháp JSON nếu thành công
+                    } else {
+                        return response.text().then((text) => {
+                            throw new Error(text || 'Failed to create room');
+                        });
+                    }
+                })
+                .then((data) => {
+                    showSuccessModal(`${data.name} was created successfully!`);
+                })
+                .catch((error) => {
+                    showErrorModal(`Error: ${error.message}`);
+                });
+        });
     });
 
+    // Hàm hiển thị modal thông báo lỗi
+    function showErrorModal(message) {
+        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+        document.getElementById('errorModalLabel').innerText = message;
+        errorModal.show();
+    }
+
+    // Hàm hiển thị modal thông báo thành công
+    function showSuccessModal(message) {
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        document.getElementById('successModalLabel').innerText = message;
+        successModal.show();
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tableBody = document.querySelector('.table tbody');
+        const confirmationModal = document.querySelector('#confirmation-modal');
+        const confirmButton = confirmationModal.querySelector('.footer-btn.bg-linkedin');
+        const updateClassBtn = document.querySelector('#update-class-btn');
+
+        let currentClassId = null;
+
+        // Fetch classes and populate the table
+        fetch("/room/get")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch class data');
+                }
+                return response.json();
+            })
+            .then(room => {
+                room.forEach(room => {
+                    const row = document.createElement('tr');
+
+                    //Semester Name cell
+                    const roomNameCell = document.createElement('td');
+                    roomNameCell.textContent = room.name;
+                    row.appendChild(roomNameCell);
+
+                    // Actions cell with dropdown
+                    const actionsCell = document.createElement('td');
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'dropdown';
+
+                    const dropdownToggle = document.createElement('a');
+                    dropdownToggle.className = 'dropdown-toggle';
+                    dropdownToggle.setAttribute('data-toggle', 'dropdown');
+                    dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
+                    dropdown.appendChild(dropdownToggle);
+
+                    const dropdownMenu = document.createElement('div');
+                    dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
+                    dropdownMenu.innerHTML = `
+                    <a class="dropdown-item delete-class" data-id="${room.id}">
+                        <i></i> Delete Room
+                    </a>
+                    <a class="dropdown-item update-class" data-id="${room.id}" data-name="${room.name}""
+                        <i></i> Update Room
+                    </a>
+                `;
+                    dropdown.appendChild(dropdownMenu);
+                    actionsCell.appendChild(dropdown);
+                    row.appendChild(actionsCell);
+                    tableBody.appendChild(row);
+                });
+
+                // Attach event listeners for delete buttons
+                document.querySelectorAll('.delete-class').forEach(button => {
+                    button.addEventListener('click', function () {
+                        currentClassId = this.getAttribute('data-id');
+                        $('#confirmation-modal').modal('show'); // Show modal
+                    });
+                });
+
+                // Attach event listeners for update buttons
+                document.querySelectorAll('.update-class').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const roomId = this.getAttribute('data-id');
+                        const roomName = this.getAttribute('data-name');
+
+
+                        // Populate modal fields
+                        document.getElementById('roomId').value = roomId;
+                        document.getElementById('roomName').value = roomName;
+
+
+                        // Show modal
+                        $('#update-modal').modal('show');
+                    });
+                });
+            })
+            .catch(error => console.error('Error fetching class data:', error));
+
+        // Confirm delete action
+        confirmButton.addEventListener('click', function () {
+            if (currentClassId) {
+                fetch(`/class/delete/${currentClassId}`, {
+                    method: 'DELETE',
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Class deleted successfully!');
+                            location.reload(); // Refresh the page
+                        } else {
+                            throw new Error('Failed to delete class');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error deleting class:', error);
+                    });
+            }
+        });
+
+        // Handle class update via JSON
+        updateClassBtn.addEventListener('click', function () {
+            const classId = document.getElementById('classId').value;
+            const className = document.getElementById('className').value;
+            const teacherId = document.getElementById('teacherId').value;
+
+            fetch('/class/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: classId,
+                    name: className,
+                    teacher: {
+                        id: teacherId
+                    }
+                }),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Class updated successfully!');
+                        location.reload(); // Refresh the page
+                    } else {
+                        throw new Error('Failed to update class');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating class:', error);
+                });
+        });
+    });
 </script>
 </body>
-
-
-<!-- Mirrored from add-class.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 </html>

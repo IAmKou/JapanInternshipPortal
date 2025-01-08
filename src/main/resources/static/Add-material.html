@@ -28,7 +28,25 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
 </head>
+<style>
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 100%; /* Bao phủ toàn bộ trang */
+    }
+    /* Footer nằm ở cuối */
+    .footer-wrap-layout1 {
+        background-color: #ec9006;
+        color: white;
+        padding: 15px 0;
+        text-align: center;
+    }
 
+    .footer-wrap-layout1 a {
+        color: #ffcc00;
+        text-decoration: none;
+    }
+</style>
 <body>
     <!-- Preloader Start Here -->
     <div id="preloader"></div>
@@ -293,6 +311,51 @@
         </div>
         <!-- Page Area End Here -->
     </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-success" id="successModalLabel">
+                        <i class="fas fa-check-circle"></i> Success
+                    </h5>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-danger" id="errorModalLabel">
+                        <i class="fas fa-times-circle"></i> Error
+                    </h5>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+        <div style="background-color: #ec9006; padding: 15px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+                            rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <!-- jquery-->
     <script src="js/jquery-3.3.1.min.js"></script>
     <!-- Plugins js -->
@@ -438,33 +501,28 @@
     </script>
     <script>
         function addMaterial(material) {
-            // Lấy studentId từ phần tử ẩn có id là 'userId'
             const studentId = document.getElementById('userId').value;
-            const materialLink = `View-material-details.html?id=${material.id}`;  // Sử dụng material.id chính xác
+            const materialLink = `View-material-details.html?id=${material.id}`;
 
             console.log("Student ID:", studentId);
             console.log("Material ID:", material.id);
 
-            // Kiểm tra nếu studentId hoặc material.id bị thiếu
             if (!studentId || !material.id) {
-                alert('Không thể thêm material vì thiếu thông tin student ID hoặc material ID.');
+                showErrorModal('Không thể thêm material vì thiếu thông tin student ID hoặc material ID.');
                 return;
             }
 
-            // Trước khi gửi, kiểm tra xem liệu material đã được thêm chưa.
             fetch(`/studentMaterials/checkExistence?studentId=${studentId}&materialLink=${materialLink}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.exists) {
-                        alert('Material này đã tồn tại cho học sinh này!');
+                        showErrorModal('Material này đã tồn tại cho học sinh này!');
                     } else {
-                        // Tạo dữ liệu URLSearchParams cho POST request
                         const requestData = new URLSearchParams();
                         requestData.append('student_id', studentId);
                         requestData.append('material_link', materialLink);
                         requestData.append('material_id', material.id);
 
-                        // Gửi yêu cầu thêm material
                         fetch('/studentMaterials/add', {
                             method: 'POST',
                             headers: {
@@ -474,113 +532,104 @@
                         })
                             .then(response => {
                                 if (response.ok) {
-                                    alert('Add Material Successfully.');
+                                    showSuccessModal('Add Material Successfully.');
                                 } else {
                                     throw new Error('Có lỗi xảy ra khi thêm material');
                                 }
                             })
                             .catch(error => {
                                 console.error('Error adding material:', error);
-                                alert('Material đã tồn tại');
+                                showErrorModal('Material đã tồn tại');
                             });
                     }
                 })
                 .catch(error => {
                     console.error('Error checking material existence:', error);
+                    showErrorModal('Lỗi khi kiểm tra sự tồn tại của material.');
                 });
         }
 
-        // Hàm lấy danh sách materials từ API và hiển thị
         function fetchMaterials() {
-            const studentId = document.getElementById('userId').value;  // Lấy studentId từ phần tử ẩn
+            const studentId = document.getElementById('userId').value;
 
             fetch('/materials/list1')
                 .then(response => response.json())
                 .then(data => {
                     const materialList = document.getElementById('material-list');
-                    materialList.innerHTML = '';  // Xóa nội dung hiện tại
+                    materialList.innerHTML = '';
 
-                    // Tạo mảng rows để chứa dữ liệu cho DataTable
                     let rows = [];
 
-                    // Hiển thị từng material trong danh sách
                     data.forEach(material => {
                         const row = document.createElement('tr');
-                        const materialLink = `View-material-details.html?id=${material.id}`;  // Lấy link của material
+                        const materialLink = `View-material-details.html?id=${material.id}`;
 
-                        // Kiểm tra xem material đã tồn tại cho học sinh chưa
                         fetch(`/studentMaterials/checkExistence?studentId=${studentId}&materialLink=${materialLink}`)
                             .then(response => response.json())
                             .then(data => {
-                                // Nếu material đã tồn tại, không hiển thị
-                                if (data.exists) {
-                                    return;  // Bỏ qua bước thêm vào danh sách
-                                }
+                                if (data.exists) return;
 
-                                // Nếu chưa tồn tại, hiển thị nút "Add material"
                                 row.innerHTML = `
-                        <td class="text-left">
-        <span style="display: flex; align-items: center; gap: 8px;">
-            <i class="flaticon-script" style="font-size: 20px;"></i>
-            <a href="View-material-details.html?id=${material.id}" style=" color:  #007bff;">
-                ${material.title}
-            </a>
-        </span>
-    </td>
-                        <td>
-                            <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow"
-                                    style="padding: 8px 16px; font-size: 14px;"
-                                    onclick="addMaterial({ id: '${material.id}',title: '${material.title}'})">Add material</button>
-                        </td>
-                    `;
+                            <td class="text-left">
+                                <span style="display: flex; align-items: center; gap: 8px;">
+                                    <i class="flaticon-script" style="font-size: 20px;"></i>
+                                    <a href="${materialLink}" style="color: #007bff;">
+                                        ${material.title}
+                                    </a>
+                                </span>
+                            </td>
+                            <td>
+                                <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow"
+                                        style="padding: 8px 16px; font-size: 14px;"
+                                        onclick="addMaterial({ id: '${material.id}', title: '${material.title}' })">Add material</button>
+                            </td>
+                        `;
                                 materialList.appendChild(row);
-
-                                // Thêm row vào mảng rows
                                 rows.push(row);
                             })
                             .catch(error => console.error('Error checking material existence:', error));
                     });
 
-                    // Khởi tạo hoặc cập nhật DataTable
                     setTimeout(function () {
                         if ($.fn.dataTable.isDataTable('.data-table')) {
                             var table = $('.data-table').DataTable();
                             table.clear();
-                            table.rows.add(rows);  // Dùng mảng rows chứa dữ liệu
+                            table.rows.add(rows);
                             table.draw();
                         } else {
                             $('.data-table').DataTable({
-                                "bSort": true,  // Bật sắp xếp
+                                "bSort": true,
                                 "bPaginate": false,
                                 "bInfo": false,
                                 "bFilter": false,
                                 "autoWidth": false,
                                 "columnDefs": [{ "targets": 'no-sort', "orderable": false }],
-                                "ordering": true,  // Cho phép sắp xếp
+                                "ordering": true,
                                 "scrollY": "300px",
                                 "scrollCollapse": true,
                                 "paging": false,
-                                "order": [[0, 'asc']]  // Sắp xếp theo cột đầu tiên (có thể thay đổi cột khác)
+                                "order": [[0, 'asc']]
                             });
                         }
-                    }, 100); // Đảm bảo DataTable hoạt động sau khi dữ liệu được thêm vào
+                    }, 100);
                 })
-                .catch(error => console.error('Error fetching materials:', error));
+                .catch(error => {
+                    console.error('Error fetching materials:', error);
+                    showErrorModal('Lỗi khi tải danh sách materials.');
+                });
         }
 
-        // Gọi hàm fetchMaterials khi trang được tải
-        document.addEventListener('DOMContentLoaded', function () {
-            const thead = document.querySelector('.data-table thead');
-            if (thead) {
-                thead.style.display = 'none';  // Ẩn phần tiêu đề nếu cần
-            }
+        function showErrorModal(message) {
+            const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+            document.getElementById('errorModalLabel').innerText = message;
+            errorModal.show();
+        }
 
-            // Gọi hàm fetchMaterials để tải dữ liệu
-            fetchMaterials();
-        });
+        function showSuccessModal(message) {
+            const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+            document.getElementById('successModalLabel').innerText = message;
+            successModal.show();
+        }
     </script>
 </body>
-
-
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/JIP/JIP/Add-material.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:37:49 GMT -->
 </html>

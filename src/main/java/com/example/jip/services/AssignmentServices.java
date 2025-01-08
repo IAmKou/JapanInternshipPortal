@@ -77,7 +77,7 @@ public class AssignmentServices {
                 .collect(Collectors.toList());
     }
 
-    @PreAuthorize("hasAuthority('STUDENT')")
+
     public List<AssignmentResponse> getAssignmentsForStudent(int studentId) {
         log.info("Fetching assignments for student ID: {}", studentId);
         List<Assignment> allAssignments = assignmentRepository.findAssignmentsByStudentId(studentId);
