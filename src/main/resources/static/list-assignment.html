@@ -26,6 +26,8 @@
     <link href="style.css" rel="stylesheet">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <script type="text/javascript"
             src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <style>
@@ -1220,9 +1222,6 @@
 
 
 
-
-
-
     function formatDateTimeForInput(dateString) {
         const date = new Date(dateString);
 
@@ -1375,16 +1374,20 @@
             return; // Exit the function if validation fails
         }
 
-        // Check if the Create Date is after the current date
+        // Parse dates and truncate time precision for comparison
         const currentDate = new Date();
+        currentDate.setSeconds(0, 0);
         const createdDateObj = new Date(createDate);
+        createdDateObj.setSeconds(0, 0);
+        const endDateObj = new Date(endDate);
+        endDateObj.setSeconds(0, 0);
+
+
         if (createdDateObj < currentDate) {
             alert('Create Date must be after the Current Date.');
             return;
         }
 
-        // Check if the End Date is after the Current Date
-        const endDateObj = new Date(endDate);
         if (endDateObj < currentDate) {
             alert('End Date must be after the Current Date.');
             return;
