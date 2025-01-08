@@ -36,7 +36,7 @@ public class StudentServices {
     @Autowired
     private MarkRpExamRepository markRpExamRepository;
 
-    public Student createStudent(String fullname, String japanname, Date dob, String gender, String phoneNumber, String email, MultipartFile img, MultipartFile passport, int accountId) {
+    public Student createStudent(String fullname, String japanname, Date dob, String gender, String phoneNumber, String email, MultipartFile img, int accountId) {
         Optional<Account> accountOpt = accountRepository.findById(accountId);
         if (!accountOpt.isPresent()) {
             throw new IllegalArgumentException("No account found with id: " + accountId);
@@ -52,7 +52,6 @@ public class StudentServices {
 
         // Upload image and passport
         String imgUrl = s3Service.uploadFile(img, folderName, img.getOriginalFilename());
-        String passUrl =  s3Service.uploadFile(passport, folderNameP, img.getOriginalFilename());
 
         // Create a new Student object
         Student student = new Student();
@@ -69,7 +68,6 @@ public class StudentServices {
         student.setPhoneNumber(phoneNumber);
         student.setEmail(email);
         student.setImg(imgUrl);
-        student.setPassport(passUrl);
         student.setAccount(accountOpt.get());
         student.setMark(false);
         

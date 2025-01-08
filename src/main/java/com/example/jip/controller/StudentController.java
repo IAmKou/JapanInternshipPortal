@@ -51,7 +51,6 @@ public class StudentController {
             @RequestParam String email,
             @RequestParam String phoneNumber,
             @RequestParam(required = false) MultipartFile img,
-            @RequestParam(required = false) MultipartFile passport_img,
             @RequestParam int account_id) {
 
         try {
@@ -67,7 +66,7 @@ public class StudentController {
             }
 
             // Call the service to create the student
-            studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, passport_img, account_id);
+            studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, account_id);
 
             // Return success response
             return ResponseEntity.ok("Student saved successfully!");

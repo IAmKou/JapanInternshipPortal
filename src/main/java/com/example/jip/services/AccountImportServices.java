@@ -224,7 +224,6 @@ public class AccountImportServices {
             student.setFullname(fullName);
             student.setJapanname(japanName);
             student.setDob(Date.valueOf(dob));
-            student.setPassport(passport);
             student.setGender(gender);
             student.setPhoneNumber(phoneNumber);
             student.setImg(imgUrl);
@@ -265,7 +264,7 @@ public class AccountImportServices {
             String folderName = sanitizeFolderName("Account/Student/" + userName);
 
             List<byte[]> imageBytesList = getAllImageBytesFromExcel(workbook);
-            if (imageBytesList != null && !imageBytesList.isEmpty()) {
+            if (!imageBytesList.isEmpty()) {
                 int imageIndex = 1; // To give each image a unique name
                 for (byte[] imageBytes : imageBytesList) {
                     MultipartFile imageFile = new MockMultipartFile(

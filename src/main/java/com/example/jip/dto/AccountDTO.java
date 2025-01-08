@@ -20,7 +20,6 @@ public class AccountDTO extends Account {
     private int studentId;
     private int teacherId;
     private String img;
-    private String passport;
     private boolean mark;
 
     public AccountDTO(Account account) {
@@ -70,14 +69,6 @@ public class AccountDTO extends Account {
 
     public void setImg(String img) {
         this.img = img;
-    }
-
-    public String getPassport() {
-        return passport;
-    }
-
-    public void setPassport(String passport) {
-        this.passport = passport;
     }
 
     public boolean isMark() {
