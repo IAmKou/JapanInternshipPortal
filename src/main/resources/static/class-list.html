@@ -31,6 +31,23 @@
 </head>
 
 <style>
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-gradient-yellow {
+        background: linear-gradient(45deg, #ffcc00, #ff9900);
+        color: #fff;
+    }
     /* Đảm bảo trang bao phủ toàn bộ chiều cao */
     html, body {
         margin: 0;
@@ -297,14 +314,16 @@
                                 <form id="update-class-form">
                                     <input type="hidden" name="classId" id="classId" value="">
                                     <div class="form-group col-12">
-                                        <label for="teacherId">Teacher</label>
+                                        <label>Teacher</label>
                                         <select id="teacherId" name="teacherId" class="select2"></select>
                                     </div>
                                     <div class="form-group col-12">
-                                        <input type="text" id="className" name="name" class="form-control">
+                                        <label>Class Name</label>
+                                        <input type="text" id="className" name="name" class="form-control" maxlength="255">
+                                        <small id="classNameError" class="text-danger d-none">Class Name is required.</small>
                                     </div>
                                     <div class="form-group col-12">
-                                        <button type="button" id="update-class-btn">Update Class</button>
+                                        <button type="button" id="updateClassBtn" class="btn btn-gradient-yellow btn-search">Update Class</button>
                                     </div>
                                 </form>
                             </div>
@@ -340,6 +359,40 @@
                 </div>
             </div>
         </div>
+
+        <!-- Success Modal -->
+        <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title text-success" id="successModalLabel">
+                            <i class="fas fa-check-circle"></i> Success
+                        </h5>
+                    </div>
+                    <div class="modal-body text-center">
+                        <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                        <p>Class updated successfully!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Modal -->
+        <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="error-modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title text-danger" id="errorModalLabel">
+                            <i class="fas fa-times-circle"></i> Error
+                        </h5>
+                    </div>
+                    <div class="modal-body text-center">
+                        <i class="fas fa-times-circle fa-5x text-danger mb-3"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
@@ -469,7 +522,7 @@
                 })
                     .then(response => {
                         if (response.ok) {
-                            alert('Class deleted successfully!');
+                            showErrorModal('Class deleted successfully!');
                             location.reload(); // Refresh the page
                         } else {
                             throw new Error('Failed to delete class');
@@ -481,11 +534,20 @@
             }
         });
 
-        // Handle class update via JSON
-        updateClassBtn.addEventListener('click', function () {
+        document.getElementById('updateClassBtn').addEventListener('click', function () {
             const classId = document.getElementById('classId').value;
-            const className = document.getElementById('className').value;
+            const classNameInput = document.getElementById('className');
             const teacherId = document.getElementById('teacherId').value;
+            const className = classNameInput.value.trim();
+            const classNameError = document.getElementById('classNameError');
+
+            // Validate class name input
+            if (className === "") {
+                classNameError.classList.remove('d-none');
+                return;
+            } else {
+                classNameError.classList.add('d-none');
+            }
 
             fetch('/class/update', {
                 method: 'POST',
@@ -502,19 +564,21 @@
             })
                 .then(response => {
                     if (response.ok) {
-                        alert('Class updated successfully!');
-                        location.reload(); // Refresh the page
+                        // Show success modal
+                        $('#success-modal').modal('show');
+                        setTimeout(() => location.reload(), 2000); // Refresh after delay
                     } else {
                         throw new Error('Failed to update class');
                     }
                 })
                 .catch(error => {
                     console.error('Error updating class:', error);
+                    // Show error modal
+                    $('#error-modal').modal('show');
                 });
         });
     });
 </script>
-
 
 <!-- fetch teacher -->
 <script>
