@@ -50,7 +50,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
             "FROM Schedule s " +
             "JOIN s.clasz c " +
             "JOIN s.semester sem " +
-            "GROUP BY c.id, c.name")
+            "GROUP BY c.id, c.name, sem.id")
     List<ClassScheduleDTO> findUniqueClassSchedule();
 
     @Query("SELECT s FROM Schedule s WHERE s.clasz.id = :classId")
