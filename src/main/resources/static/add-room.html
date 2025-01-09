@@ -30,6 +30,23 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .modal-header {
+
+            color: white;
+        }
+        .modal-footer .btn {
+
+            color: white;
+        }
+        .btn-hover-bluedark:hover {
+            background-color: #0056b3;
+        }
+        .btn-fill-lg {
+            padding: 10px 20px;
+        }
+        .mg-t-8 {
+            margin-top: 8px;
+        }
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -355,24 +372,35 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title" style="padding-bottom: 10px">
-                            <h3>Add New Room</h3>
+                            <h3>Room Management</h3>
                         </div>
                     </div>
-                    <form id="createRoomForm" class="new-added-form">
-                        <div class="row">
-                            <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label for="roomName" style="color: #007bff; font-weight: bold;">Room Name</label>
-                                <input type="text" id="roomName" placeholder="Enter room name" required minlength="6" maxlength="50" name="roomName" class="form-control">
-                            </div>
-                            <div class="col-md-6 form-group"></div>
-                            <div class="col-12 form-group mg-t-8">
-                                <button type="button" id="submitRoomButton" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">
-                                    Add Room
-                                </button>
+                    <button type="button" id="modalCreateRoom" class="btn-fill-lg btn-gradient-yellow" data-toggle="modal" data-target="#roomModal">Create Room</button>
+                    <div class="modal fade" id="roomModal" tabindex="-1" role="dialog" aria-labelledby="roomModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="roomModalLabel">Create Room</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="createRoomForm" class="new-added-form">
+                                        <div class="form-group">
+                                            <label for="roomName" style="font-weight: bold;">Room Name</label>
+                                            <input type="text" id="roomName" placeholder="Enter room name" required minlength="6" maxlength="50" name="roomName" class="form-control">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="submitRoomButton" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Add Room</button>
+                                </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                     <div id="messageBox" style="margin-top: 20px; font-weight: bold;"></div>
+                    <h3>Room List</h3>
                     <div class="table-responsive">
                         <table class="table display text-nowrap">
                             <thead>
@@ -488,7 +516,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
