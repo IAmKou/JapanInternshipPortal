@@ -493,7 +493,6 @@
                 </h5>
             </div>
             <div class="modal-body text-center">
-                <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
             </div>
         </div>
     </div>
@@ -714,7 +713,6 @@
         function showErrorModal(message) {
             // Set error message to modal
             document.querySelector('.modal-body').innerHTML = `
-            <i class="fas fa-times-circle fa-5x text-danger mb-3"></i>
             <p>${message}</p>
         `;
             const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
@@ -724,7 +722,6 @@
         // Success modal show function
         function showSuccessModal(message) {
             document.querySelector('.modal-body').innerHTML = `
-            <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
             <p>${message}</p>
         `;
             const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
