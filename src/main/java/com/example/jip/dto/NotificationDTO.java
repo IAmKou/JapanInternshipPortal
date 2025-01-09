@@ -6,6 +6,7 @@ import io.opencensus.common.Timestamp;
 import java.util.Date;
 
 public class NotificationDTO {
+    private int id;
     private Date created;
     private String title;
     private int senderId;
@@ -20,9 +21,18 @@ public class NotificationDTO {
     }
 
     public NotificationDTO(Notification notification) {
+        this.id = notification.getId();
         this.title = notification.getTitle();
-        this.senderId = notification.getAccount().getId();  // Assuming Account has a getId() method
+        this.senderId = notification.getAccount().getId();
         this.created = notification.getCreatedAt();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Date getCreated() {

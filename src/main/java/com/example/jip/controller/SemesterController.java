@@ -139,10 +139,6 @@ public class SemesterController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Semester not found");
         }
 
-        if (existingSemester.getStart_time().before(new java.util.Date())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot update semester. It has already started.");
-        }
-
         if (semesterService.isTimeOverlapping(updatedSemester.getStart_time(), updatedSemester.getEnd_time(), updatedSemester.getId())) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body("{\"message\":\"Updated times overlap with an existing semester\"}");

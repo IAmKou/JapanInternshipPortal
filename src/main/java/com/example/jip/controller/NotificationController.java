@@ -56,11 +56,16 @@ public class NotificationController {
                 .map(NotificationDTO::new)
                 .collect(Collectors.toList());
     }
-    @PostMapping("/test-notification")
-    public ResponseEntity<String> testNotification() {
-        notificationServices.createAutoNotificationForAssignment("Test notification", 1, 71);
-        return ResponseEntity.ok("Notification created successfully!");
+
+    @DeleteMapping("/delete?{id}")
+    public boolean deleteNotification(@PathVariable int id) {
+        if(notificationRepository.existsById(id)) {
+            notificationRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
+
 
     @GetMapping("/getAll")
     public List<NotificationDTO> getAllNotifications() {
