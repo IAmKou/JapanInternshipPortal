@@ -447,32 +447,57 @@
     </script>
     <!-- fetch user -->
     <script>
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-        if (userDetails) {
-            document.getElementById('userId').value = userDetails.id;
-            const userFullNameElements = document.querySelectorAll('.userFullName');
-            const userRoleElements = document.querySelectorAll('.userRole');
-
-            // Populate Name
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
-            });
-
-            // Populate Role
-            userRoleElements.forEach(element => {
-                element.textContent = userDetails.roleName;
-            });
-
-            const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
-
-            imgContainers.forEach(container => {
-                const imgElement = container.querySelector('img'); // Select the <img> inside the div
-                if (imgElement) {
-                    imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
+        // Fetch user data and store it in sessionStorage
+        (async function fetchUserData() {
+            try {
+                const response = await fetch('/user-detail');
+                if (response.ok) {
+                    const userData = await response.json();
+                    sessionStorage.setItem('userDetails', JSON.stringify(userData));
+                    console.log("User data stored in sessionStorage:", userData);
+                    getUserDetails(userData);
+                    // Ensure that the fetch functions are called after userDetails are set
+                    fetchTotalStudents(userData.teacherId);
+                    fetchClasses(userData.teacherId);
+                } else {
+                    console.error("Failed to fetch user details:", response.statusText);
                 }
-            });
-        } else {
-            console.error("User details not found in sessionStorage");
+            } catch (error) {
+                console.error("Error fetching user details:", error);
+            }
+        })();
+
+        // Function to set user details in the UI
+        function getUserDetails(userDetails) {
+            if (userDetails) {
+                console.log("Setting user details:", userDetails);
+
+                document.querySelectorAll('.userFullName').forEach(element => {
+                    element.textContent = userDetails.fullName || "Unknown Name";
+                });
+                document.querySelectorAll('.userRole').forEach(element => {
+                    element.textContent = userDetails.roleName || "Unknown Role";
+                });
+                const userIdElement = document.getElementById('userId');
+                if (userIdElement) {
+                    userIdElement.value = userDetails.id || "";
+                }
+
+                const imgContainers = document.querySelectorAll('.img');
+                imgContainers.forEach(container => {
+                    const imgElement = container.querySelector('img');
+                    if (imgElement) {
+                        imgElement.src = userDetails.img
+                            ? `${userDetails.img}?v=${new Date().getTime()}`
+                            : '/path/to/default-passport.jpg';
+                        console.log("Image source set to:", imgElement.src);
+                    } else {
+                        console.error("Image element not found in:", container);
+                    }
+                });
+            } else {
+                console.error("User details not found in sessionStorage");
+            }
         }
         function submitForm() {
             // Retrieve userDetails from sessionStorage

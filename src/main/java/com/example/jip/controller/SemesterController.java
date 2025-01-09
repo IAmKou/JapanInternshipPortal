@@ -117,10 +117,15 @@ public class SemesterController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Semester ID is missing");
         }
 
+
         Semester semester = semesterRepository.findById(sid).orElse(null);
 
         if (semester == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Semester not found");
+        }
+
+        if (semester.getStart_time().before(new java.util.Date())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot delete semester. It has already started.");
         }
 
         if (!semester.getClasses().isEmpty()) {
@@ -137,10 +142,6 @@ public class SemesterController {
 
         if (existingSemester == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Semester not found");
-        }
-
-        if (existingSemester.getStart_time().before(new java.util.Date())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot update semester. It has already started.");
         }
 
         if (semesterService.isTimeOverlapping(updatedSemester.getStart_time(), updatedSemester.getEnd_time(), updatedSemester.getId())) {
