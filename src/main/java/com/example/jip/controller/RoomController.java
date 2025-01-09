@@ -107,4 +107,14 @@ public class RoomController {
             return ResponseEntity.status(500).body(Map.of("status", "error", "message", "An unexpected error occurred."));
         }
     }
+
+    @GetMapping("/getRoomAvailability")
+    public ResponseEntity<List<RoomAvailability>> getRoomAvailability(
+            @RequestParam(required = false) String roomName,
+            @RequestParam(required = false) Date date,
+            @RequestParam(required = false) RoomAvailability.Status status) {
+        List<RoomAvailability> availabilities = roomAvailabilityServices.getRoomAvailability(roomName, date, status);
+        return ResponseEntity.ok(availabilities);
+    }
+
 }

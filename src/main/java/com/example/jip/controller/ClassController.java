@@ -48,15 +48,8 @@ public class ClassController {
         System.out.println(semesterId);
         Semester semester = semesterRepository.findById(semesterId).
                 orElseThrow(() -> new NoSuchElementException("semester not found"));
-        Date st = semester.getStart_time();
-        Date ed = semester.getEnd_time();
-        LocalDate semesterStart = st.toLocalDate();
-        LocalDate semesterEnd = ed.toLocalDate();
-        LocalDate currentDate = LocalDate.now();
 
-        if (!currentDate.isBefore(semesterStart) && !currentDate.isAfter(semesterEnd)) {
-            return "Cannot create a class as the semester has already started.";
-        }
+
 
         if (classDTO.getName() == null || classDTO.getName().isEmpty()) {
             throw new IllegalArgumentException("Class name is required");

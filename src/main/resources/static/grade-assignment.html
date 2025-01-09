@@ -412,7 +412,6 @@
                 </h5>
             </div>
             <div class="modal-body text-center">
-                <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
             </div>
         </div>
     </div>
@@ -648,14 +647,14 @@
     // Function to show success modal
     function showSuccessModal(message) {
         const modalBody = document.querySelector('#success-modal .modal-body');
-        modalBody.innerHTML = `<i class="fas fa-check-circle fa-5x text-success mb-3"></i><p>${message}</p>`;
+        modalBody.innerHTML = `<p>${message}</p>`;
         $('#success-modal').modal('show');
     }
 
     // Function to show error modal
     function showErrorModal(message) {
         const modalBody = document.querySelector('#long-modal .modal-body');
-        modalBody.innerHTML = `<i class="fas fa-times-circle fa-5x text-danger mb-3"></i><p>${message}</p>`;
+        modalBody.innerHTML = `<p>${message}</p>`;
         $('#long-modal').modal('show');
     }
 </script>

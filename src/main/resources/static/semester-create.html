@@ -736,26 +736,23 @@
                 <h5 class="modal-title" data-i18n="add_account">Update Semester</h5>
             </div>
             <form id="updateSemesterForm">
-                <label for="semesterName" style="color: #007bff; font-weight: bold;">Name <span
-                        style="color: red;">*</span></label>
+                <label for="semesterName" style="color: #007bff; font-weight: bold;">Name <span style="color: red;">*</span></label>
                 <input type="text" maxlength="255" id="semesterName" required>
                 <span id="errorSemesterName1" style="color: red; font-size: 0.85em; display: none;">Semester name cannot be empty</span>
 
-                <label for="semesterStart" style="color: #007bff; font-weight: bold;">Start Date <span
-                        style="color: red;">*</span></label>
+                <label for="semesterStart" style="color: #007bff; font-weight: bold;">Start Date <span style="color: red;">*</span></label>
                 <input type="date" id="semesterStart" required>
                 <span id="errorSemesterStart1" style="color: red; font-size: 0.85em; display: none;">Start date cannot be in the past</span>
 
-                <label for="semesterEnd" style="color: #007bff; font-weight: bold;">End Date <span
-                        style="color: red;">*</span></label>
+                <label for="semesterEnd" style="color: #007bff; font-weight: bold;">End Date <span style="color: red;">*</span></label>
                 <input type="date" id="semesterEnd" required>
                 <span id="errorSemesterEnd1" style="color: red; font-size: 0.85em; display: none;">End date cannot be before the start date</span>
 
                 <div class="modal-footer">
                     <button type="submit" class="btn update-btn" style="font-size: 16px; width: 100px;">Update</button>
-
                 </div>
             </form>
+
         </div>
     </div>
 
@@ -770,7 +767,6 @@
                     </h5>
                 </div>
                 <div class="modal-body text-center">
-                    <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
                     <h4 class="text-success" id="successMessage">Semester created successfully with holidays in the schedule!</h4>
                 </div>
             </div>
@@ -789,7 +785,6 @@
                     </h5>
                 </div>
                 <div class="modal-body text-center">
-                    <i class="fas fa-times-circle fa-5x text-danger mb-3"></i>
                     <h4 class="text-danger" id="errorMessage">Error occurred while creating semester!</h4>
                 </div>
             </div>
@@ -997,7 +992,7 @@
             errorSemesterName.style.display = 'block';
             hasError = true;
         } else if (semesterName.length > 40) {
-            errorSemesterName.textContent = 'Semester Name cannot exceed 255 characters.';
+            errorSemesterName.textContent = 'Semester Name cannot exceed 40 characters.';
             errorSemesterName.style.display = 'block';
             hasError = true;
         }
@@ -1183,6 +1178,7 @@
                 actionsContainer.classList.add('semester-actions');
 
                 // Kiểm tra nếu kỳ học đã bắt đầu (startDate < currentDate)
+                // Kiểm tra nếu kỳ học đã bắt đầu hoặc chưa
                 if (startDate > currentDate) {
                     // Chỉ hiển thị nút Update và Delete nếu kỳ học chưa bắt đầu
                     const updateButton = document.createElement('button');
@@ -1201,7 +1197,18 @@
 
                     actionsContainer.appendChild(updateButton);
                     actionsContainer.appendChild(deleteButton);
+                } else {
+                    // Kỳ học đã bắt đầu, chỉ hiển thị nút Update
+                    const updateButton = document.createElement('button');
+                    updateButton.classList.add('action-button', 'update-button');
+                    updateButton.textContent = 'Update';
+                    updateButton.addEventListener('click', () => {
+                        updateSemester(semester);
+                    });
+
+                    actionsContainer.appendChild(updateButton);
                 }
+
 
                 semesterDiv.appendChild(semesterName);
                 semesterDiv.appendChild(semesterDates);
@@ -1255,24 +1262,21 @@
         }
 
         function updateSemester(semester) {
-            // Populate the modal form with the current semester data
-            document.getElementById('semesterName').value = semester.semesterName;
-            document.getElementById('semesterStart').value = semester.semesterStart;
-            document.getElementById('semesterEnd').value = semester.semesterEnd;
+            // Populate the form fields with existing data
+            document.getElementById('semesterName').value = semester.semesterName || '';
+            document.getElementById('semesterStart').value = semester.semesterStart || '';
+            document.getElementById('semesterEnd').value = semester.semesterEnd || '';
 
-            // Display the modal
+            // Show modal
             const modal = document.getElementById('updateModal');
             const updateModalInstance = new bootstrap.Modal(modal);
             updateModalInstance.show();
 
-            // Attach event listeners for buttons
-            const cancelButton = document.getElementById('cancelButton');
-            cancelButton.addEventListener('click', () => {
-                updateModalInstance.hide(); // Hide the update modal
-            });
-
+            // Get form and set event listener
             const form = document.getElementById('updateSemesterForm');
-            form.addEventListener('submit', (event) => {
+
+            // Ensure only one submit listener is active
+            form.onsubmit = (event) => {
                 event.preventDefault();
 
                 // Reset error messages
@@ -1280,31 +1284,26 @@
                 document.getElementById('errorSemesterStart1').style.display = 'none';
                 document.getElementById('errorSemesterEnd1').style.display = 'none';
 
+                // Get updated values
                 const updatedSemesterName = document.getElementById('semesterName').value.trim();
                 const updatedSemesterStart = document.getElementById('semesterStart').value;
                 const updatedSemesterEnd = document.getElementById('semesterEnd').value;
 
+                // Validate form data
                 let hasError = false;
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
 
-                // Validation for semester name
                 if (!updatedSemesterName) {
                     document.getElementById('errorSemesterName1').style.display = 'inline';
                     hasError = true;
                 }
 
-                // Validation for start date
-                const today = new Date();
-                today.setHours(0, 0, 0, 0); // Normalize today's date to 00:00:00
-
-                const startDate = new Date(updatedSemesterStart);
-                startDate.setHours(0, 0, 0, 0); // Normalize the start date to 00:00:00
-
-                if (!updatedSemesterStart || startDate < today) {
+                if (!updatedSemesterStart || new Date(updatedSemesterStart) < today) {
                     document.getElementById('errorSemesterStart1').style.display = 'inline';
                     hasError = true;
                 }
 
-                // Validation for end date
                 if (!updatedSemesterEnd || new Date(updatedSemesterEnd) < new Date(updatedSemesterStart)) {
                     document.getElementById('errorSemesterEnd1').style.display = 'inline';
                     hasError = true;
@@ -1312,8 +1311,8 @@
 
                 if (hasError) return;
 
-                // Send updated data to the backend if all validations pass
-                fetch('semester/update', {
+                // Send data to backend
+                fetch('/semester/update', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1322,52 +1321,30 @@
                         id: semester.semesterId,
                         name: updatedSemesterName,
                         start_time: updatedSemesterStart,
-                        end_time: updatedSemesterEnd
-                    })
+                        end_time: updatedSemesterEnd,
+                    }),
                 })
-                    .then(response => {
+                    .then((response) => {
                         if (response.ok) {
-                            // Ẩn modal update ngay lập tức
                             updateModalInstance.hide();
-
-                            // Hiển thị thông báo thành công sau khi modal cập nhật đã ẩn
                             setTimeout(() => {
-                                // Hiển thị modal thông báo thành công
                                 showSuccessModal("Semester updated successfully.");
-                                const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
-                                successModal.show();
-
-                                // Đợi 2 giây, đóng modal thông báo thành công và reload trang
-                                setTimeout(() => {
-                                    successModal.hide();  // Đóng success modal
-                                    window.location.reload();  // Reload trang sau 2 giây
-                                }, 2000);
-                            }, 300);  // Delay 300ms sau khi modal cập nhật bị ẩn
+                                setTimeout(() => window.location.reload(), 2000);
+                            }, 300);
                         } else {
-                            response.text().then(text => {
-                                // Ẩn modal update nếu có lỗi
+                            response.text().then((text) => {
+                                console.error("Error response:", text);
                                 updateModalInstance.hide();
-
-                                // Hiển thị thông báo lỗi nếu có lỗi trong quá trình cập nhật
-                                setTimeout(() => {
-                                    showErrorModal(`Error: ${text}`);
-                                }, 300);
+                                setTimeout(() => showErrorModal(`Error: ${text}`), 300);
                             });
                         }
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         console.error("Error updating semester:", error);
-
-                        // Ẩn modal update
                         updateModalInstance.hide();
-
-                        // Hiển thị thông báo lỗi nếu không thể thực hiện cập nhật
-                        setTimeout(() => {
-                            showErrorModal("Failed to update semester.");
-                        }, 300);
+                        setTimeout(() => showErrorModal("Failed to update semester."), 300);
                     });
-            });
-
+            };
         }
 
 

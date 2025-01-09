@@ -101,7 +101,7 @@ CREATE TABLE Holiday (
 
 -- Schedule table
 CREATE TABLE Schedule (
-                          id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                          id int AUTO_INCREMENT PRIMARY KEY,
                           date DATE NOT NULL,
                           day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
                           class_id INT DEFAULT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE room_availability (
     class_id INT default NULL,
     date DATE NOT NULL,
     status ENUM('Available', 'Occupied') DEFAULT 'Available',
-    schedule_id BIGINT DEFAULT NULL,
+    schedule_id int DEFAULT NULL,
     FOREIGN KEY (room_id) REFERENCES Room(id) ON DELETE CASCADE,
     FOREIGN KEY (class_id) REFERENCES Class(id) ON DELETE SET NULL,
     FOREIGN KEY (schedule_id) REFERENCES Schedule(id) ON DELETE SET NULL,
@@ -130,12 +130,12 @@ CREATE TABLE room_availability (
 CREATE TABLE Attendant (
                            Id INT AUTO_INCREMENT PRIMARY KEY,
                            student_id INT null,
-                           schedule_id BIGINT,
-                           status ENUM('Present', 'Absent', 'Late', 'Permitted')  NULL,
+                           schedule_id int,
+                           status ENUM('PRESENT', 'ABSENT', 'LATE', 'PERMITTED')  NULL,
                            date DATE NOT NULL,
                            start_time time default '13:30:00',
                            end_time time default '17:00:00',
-                           isFinalized TINYINT(1) DEFAULT 0,
+                           is_finalized TINYINT(1) DEFAULT 0,
                            FOREIGN KEY (student_id) REFERENCES Student(Id) ,
                            FOREIGN KEY (schedule_id) REFERENCES Schedule(Id) On Delete cascade
 );

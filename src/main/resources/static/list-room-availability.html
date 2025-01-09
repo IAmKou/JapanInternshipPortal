@@ -1,0 +1,1069 @@
+<!doctype html>
+<html class="no-js" lang="" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <title>JIP | Account Setting</title>
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Favicon -->
+    <link href="img/favicon.png" rel="shortcut icon" type="image/x-icon">
+    <!-- Normalize CSS -->
+    <link href="css/normalize.css" rel="stylesheet">
+    <!-- Main CSS -->
+    <link href="css/main.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fontawesome CSS -->
+    <link href="css/all.min.css" rel="stylesheet">
+    <!-- Flaticon CSS -->
+    <link href="fonts/flaticon.css" rel="stylesheet">
+    <!-- Animate CSS -->
+    <link href="css/animate.min.css" rel="stylesheet">
+    <!-- Select 2 CSS -->
+    <link href="css/select2.min.css" rel="stylesheet">
+    <!-- Date Picker CSS -->
+    <link href="css/datepicker.min.css" rel="stylesheet">
+    <!-- Data Table CSS -->
+    <link href="css/jquery.dataTables.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="style.css" rel="stylesheet">
+    <!-- Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Modernize js -->
+    <script src="js/modernizr-3.6.0.min.js"></script>
+    <style>
+        .custom-filter-select {
+            padding-right: 2.5rem; /* Thêm khoảng cách cho icon bên phải */
+            font-size: 1rem; /* Kích thước chữ vừa phải */
+            height: 50px; /* Tăng chiều cao */
+            border: 1px solid #ddd; /* Đường viền nhẹ */
+            border-radius: 8px; /* Làm mềm góc */
+            transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Hiệu ứng hover */
+        }
+
+        .custom-filter-select:focus {
+            outline: none;
+            border-color: #2575fc; /* Viền xanh khi focus */
+            box-shadow: 0 0 5px rgba(37, 117, 252, 0.5); /* Hiệu ứng shadow */
+        }
+
+        .custom-filter-select:hover {
+            border-color: #007bff; /* Viền nổi bật khi hover */
+        }
+
+        .fas.fa-filter {
+            font-size: 1.2rem; /* Kích thước icon vừa phải */
+            color: #6c757d; /* Màu icon nhấn nhá */
+        }
+
+
+        .gradient-header {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            padding: 15px 20px;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .table {
+            border-collapse: separate;
+            border-spacing: 0 8px; /* Khoảng cách giữa các dòng */
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f5f8fa;
+        }
+
+        .table-primary th {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            color: white;
+            text-align: center;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .pagination .page-link {
+            color: #2575fc;
+            border-radius: 50%;
+            padding: 5px 15px;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #2575fc;
+            color: white;
+        }
+
+        .btn-outline-primary {
+            color: #2575fc;
+            border: 1px solid #2575fc;
+        }
+
+        .btn-outline-primary:hover {
+            background: #2575fc;
+            color: white;
+        }
+
+        .btn-outline-danger {
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+
+        .btn-outline-danger:hover {
+            background: #dc3545;
+            color: white;
+        }
+
+        .gradient-header {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            color: white;
+            padding: 15px 20px;
+            border-bottom: 0;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ccc;
+        }
+
+        .input-icon input {
+            padding-left: 35px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"] {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            padding: 10px;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="date"]:focus {
+            outline: none;
+            border-color: #2575fc;
+            box-shadow: 0 0 8px rgba(37, 117, 252, 0.3);
+        }
+
+        button.btn {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            border: none;
+            color: white;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        button.btn:hover {
+            background: linear-gradient(45deg, #2575fc, #6a11cb);
+        }
+
+
+        .input-group-text {
+            background-color: #f8f9fa; /* Nhẹ nhàng hơn với nền sáng */
+            border: 1px solid #ced4da; /* Đồng bộ viền */
+            border-right: none; /* Tránh trùng viền với field */
+        }
+
+        .form-control, .form-select {
+            border: 1px solid #ced4da;
+            border-left: none; /* Tránh trùng với input-group-text */
+            box-shadow: none; /* Xóa hiệu ứng shadow */
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Hiệu ứng focus nhẹ */
+        }
+
+        .input-group {
+            border-radius: 0.375rem; /* Làm mềm góc cạnh */
+            overflow: hidden; /* Tránh viền bị lệch */
+        }
+
+        .input-group-text i {
+            font-size: 2rem; /* Icon lớn hơn */
+        }
+
+        .form-control,
+        .form-select {
+            font-size: 1.5rem; /* Phông chữ lớn hơn cho input và dropdown */
+            padding: 1rem 1.25rem; /* Khoảng cách bên trong lớn hơn */
+        }
+
+        .btn {
+            font-size: 1.5rem; /* Phông chữ lớn hơn cho nút */
+            padding: 1rem 1.5rem; /* Nút lớn hơn */
+        }
+
+        .modal-title {
+            font-size: 2rem; /* Tiêu đề lớn hơn */
+        }
+
+        #accountForm {
+            gap: 1.5rem; /* Tăng khoảng cách giữa các trường */
+        }
+        #importForm {
+            gap: 1.5rem; /* Tăng khoảng cách giữa các trường */
+        }
+
+
+        /* Đảm bảo trang bao phủ toàn bộ chiều cao */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* Container chính */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%; /* Bao phủ toàn bộ trang */
+        }
+
+        /* Footer nằm ở cuối */
+        .footer-wrap-layout1 {
+            background-color: #ec9006;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .footer-wrap-layout1 a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+        .modal-content {
+            padding: 15px;
+        }
+
+        .pagination .page-link {
+            padding: 0.75rem 1.25rem; /* Increase padding for bigger buttons */
+            font-size: 1.25rem; /* Increase font size for larger text */
+            border-radius: 0.375rem; /* Optional: Make buttons slightly rounded */
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #007bff; /* Active button color */
+            border-color: #007bff; /* Active button border color */
+        }
+
+        .pagination .page-item:hover .page-link {
+            background-color: #0056b3; /* Hover effect color */
+            border-color: #0056b3;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-gradient-yellow {
+            background: linear-gradient(to right, #ffcc00, #ff9900);
+            border: none;
+            color: white;
+        }
+
+        .btn-gradient-yellow:hover {
+            background: linear-gradient(to right, #ff9900, #ff6600);
+        }
+
+        .table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .table img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        #successMessage {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 5px solid #28a745;
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom Search Input */
+        .search-input {
+            height: 50px; /* Tăng chiều cao của ô nhập */
+            font-size: 16px; /* Tăng kích thước chữ */
+            padding: 10px 15px; /* Tăng khoảng cách bên trong */
+            border-radius: 5px; /* Bo góc mềm mại */
+            border: 1px solid #000; /* Viền màu đen */
+            box-shadow: none; /* Loại bỏ bóng */
+        }
+
+        /* Custom Modal Styling */
+        #success-modal .modal-header {
+            background-color: #28a745; /* Màu nền của header */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #success-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #success-modal .modal-body .fas.fa-check-circle {
+            color: #28a745;
+        }
+
+        #success-modal .btn-success {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        #success-modal .btn-close {
+            color: white;
+        }
+
+        #success-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+
+        /* Custom Modal Styling for Error Modal */
+        #error-modal .modal-header {
+            background-color: #dc3545; /* Màu nền của header (Đỏ cho lỗi) */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #error-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #error-modal .modal-body .fas.fa-times-circle {
+            color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+        }
+
+        #error-modal .btn-danger {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #dc3545; /* Màu đỏ cho nút lỗi */
+            border-color: #dc3545;
+        }
+
+        #error-modal .btn-close {
+            color: white;
+        }
+
+        #error-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+
+        input[name="searchInput"] {
+            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px; /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="searchInput"]:hover {
+            border-color: #28a745 !important; /* Màu border khi hover */
+        }
+
+        input[name="searchInput"]:focus {
+            border-color: #28a745 !important; /* Giữ màu đỏ khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+        }
+
+        input[name="username"] {
+            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px; /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="username"]:hover {
+            border-color: #28a745 !important; /* Màu border khi hover */
+        }
+
+        input[name="username"]:focus {
+            border-color: #28a745 !important; /* Giữ màu đỏ khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+        }
+        select[name="role"] { /* Chỉnh sửa thuộc tính cho phần tử select */
+            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px; /* Thêm góc bo tròn */
+        }
+
+        select[name="role"]:hover { /* Khi di chuột vào select */
+            border-color: #28a745 !important; /* Màu viền khi hover */
+        }
+
+        select[name="role"]:focus { /* Khi focus vào select */
+            border-color: #28a745 !important; /* Màu viền khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+        }
+
+        select[name="filterSelect"] { /* Chỉnh sửa thuộc tính cho phần tử select */
+            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px; /* Thêm góc bo tròn */
+        }
+
+        select[name="filterSelect"]:hover { /* Khi di chuột vào select */
+            border-color: #28a745 !important; /* Màu viền khi hover */
+        }
+
+        select[name="filterSelect"]:focus { /* Khi focus vào select */
+            border-color: #28a745 !important; /* Màu viền khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+        }
+
+        /* Nút dropdown */
+        .btn-secondary.dropdown-toggle {
+            background-color: #007bff; /* Màu nền của nút */
+            color: white; /* Màu chữ của nút */
+            border: none; /* Xóa đường viền nếu cần */
+            border-radius: 5px; /* Thêm góc bo tròn */
+        }
+
+        .btn-secondary.dropdown-toggle:hover {
+            background-color: #0056b3; /* Màu nền khi hover */
+            color: white; /* Giữ màu chữ khi hover */
+        }
+
+        /* Phần menu dropdown */
+        .dropdown-menu {
+            background-color: #ffffff; /* Màu nền của dropdown */
+            border-radius: 5px; /* Thêm góc bo tròn */
+            border: 1px solid #dee2e6; /* Đường viền sáng cho dropdown */
+        }
+
+        /* Màu chữ các mục trong dropdown */
+        .dropdown-item {
+            color: #333; /* Màu chữ mặc định của các mục */
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa; /* Màu nền khi hover vào mục */
+            color: #007bff; /* Màu chữ khi hover */
+        }
+
+    </style>
+</head>
+
+<body>
+<!-- Preloader Start Here -->
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<div class="wrapper bg-ash" id="wrapper">
+    <!-- Header Menu Area Start Here -->
+    <div id="google_translate_element"></div>
+
+    <div class="navbar navbar-expand-md header-menu-one bg-light">
+        <div class="nav-bar-header-one">
+            <div class="header-logo">
+                <a href="admin.html">
+                    <div style="width: 180px; height: 70px; overflow: hidden;">
+                        <img alt="logo" src="img/JIP%20LOGO%20n.png"
+                             style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </a>
+            </div>
+            <div class="toggle-button sidebar-toggle">
+                <button class="item-link" type="button">
+                        <span class="btn-icon-wrap">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                </button>
+            </div>
+        </div>
+        <div class="d-md-none mobile-nav-bar">
+            <button aria-expanded="false" class="navbar-toggler pulse-animation" data-target="#mobile-navbar"
+                    data-toggle="collapse" type="button">
+                <i class="far fa-arrow-alt-circle-down"></i>
+            </button>
+            <button class="navbar-toggler sidebar-toggle-mobile" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+            <ul class="navbar-nav">
+                <li class="navbar-item header-search-bar">
+                    <div class="input-group stylish-input-group">
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="navbar-item dropdown header-admin">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
+                        <div class="admin-title">
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
+                        </div>
+                        <div class="admin-img">
+                            <img alt="Admin" src="img/figure/admin.jpg">
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title userFullName"></h6>
+                        </div>
+                        <div class="item-content">
+                            <ul class="settings-list">
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i><span
+                                        data-i18n="log_out">Log Out</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+
+                <!--Notification-->
+
+                <li class="navbar-item dropdown header-language">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
+                            <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;"> English
+                        </a>
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
+                            <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese" style="width: 20px; height: 15px;"> 日本語
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Header Menu Area End Here -->
+    <!-- Page Area Start Here -->
+    <div class="dashboard-page-one">
+        <!-- Sidebar Area Start Here -->
+        <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+            <div class="mobile-sidebar-header d-md-none">
+                <div class="header-logo">
+                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                </div>
+            </div>
+            <div class="sidebar-menu-content">
+                <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item">
+                                <a href="admin.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Admin</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="notice-board.html" class="nav-link">
+                            <i class="fas fa-bell"></i><span>Notification</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="account-settings.html" class="nav-link menu-active"><i
+                                class="flaticon-settings"></i><span>Account List</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="dashboard-content-one">
+            <div class="breadcrumbs-area">
+                <h3 data-i18n="account_setting">Account Setting</h3>
+                <ul class="breadcrumb">
+                    <li>
+                        <a data-i18n="home" href="admin.html">Home</a>
+                    </li>
+                    <li data-i18n="setting">Account List</li>
+                </ul>
+            </div>
+            <!-- Account Settings Area Start -->
+            <div class="row" style="height: 160px">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <h2 class="mb-0 fw-bold" data-i18n="user_list" style="padding-bottom: 10px">Room Availability</h2>
+                                    <!-- Filter Option và Dropdown -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-4">
+                                            <input type="text" id="filter-room-name" class="form-control" placeholder="Filter by room name">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="date" id="filter-date" class="form-control">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select id="filter-status" class="form-control">
+                                                <option value="">Filter by status</option>
+                                                <option value="Available">Available</option>
+                                                <option value="Occupied">Occupied</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow-lg rounded-4 border-0 overflow-hidden">
+                        <!-- Card Header -->
+                        <!-- Card Body -->
+                        <div class="card-body px-4 py-5 bg-light">
+                            <div class="table-responsive">
+                                <table class="table align-middle table-hover text-center table-borderless">
+                                    <thead class="bg-primary text-white">
+                                    <tr>
+                                        <th class="text-center" data-i18n="#">#</th>
+                                        <th class="text-center" data-i18n="image">Name</th>
+                                        <th class="text-center" data-i18n="name">Date</th>
+                                        <th class="text-center" data-i18n="j_name">Status</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+
+                                <div class="pagination-container">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item previous"><a class="page-link" href="#"><</a></li>
+                                        <!-- Các nút số trang sẽ được thêm vào đây động -->
+                                        <li class="page-item next"><a class="page-link" href="#">></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Page Area End Here -->
+
+
+
+<!-- Success Modal -->
+<div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-success" id="successModalLabel">
+                    <i class="fas fa-check-circle"></i> Success
+                </h5>
+
+            </div>
+            <div class="modal-body text-center">
+                <h4 class="text-success">Account import was successful!</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal 2-->
+<div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal1" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-success" id="successModalLabel1">
+                    <i class="fas fa-check-circle"></i> Success
+                </h5>
+
+            </div>
+            <div class="modal-body text-center">
+                <h4 class="text-success">Account created successful!</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Error Modal -->
+<div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-danger" id="errorModalLabel">
+                    <i class="fas fa-times-circle"></i> Error
+                </h5>
+
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+    <div style="background-color: #ec9006; padding: 15px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+                        rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- jquery-->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Select 2 Js -->
+<script src="js/select2.min.js"></script>
+<!-- Data Table Js -->
+<script src="js/jquery.dataTables.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Date Picker Js -->
+<script src="js/datepicker.min.js"></script>
+<!-- Custom Js -->
+<script src="js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Kiểm tra và lấy ngôn ngữ đã lưu trong localStorage
+        let savedLanguage = localStorage.getItem('language');
+
+        // Nếu chưa có ngôn ngữ lưu, đặt mặc định là tiếng Anh
+        if (!savedLanguage) {
+            savedLanguage = 'en'; // Mặc định tiếng Anh
+            localStorage.setItem('language', 'en');
+        }
+
+        // Cập nhật nhãn ngôn ngữ trên giao diện ngay khi trang tải
+        const languageLabel = document.getElementById('languageLabel');
+        if (languageLabel) {
+            languageLabel.innerText = savedLanguage === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
+        }
+
+        // Áp dụng ngôn ngữ khi trang tải
+        changeLanguage(savedLanguage, false); // false: Không cần tải lại trang
+    });
+
+    function changeLanguage(language, reload = true) {
+        const languageLabel = document.getElementById('languageLabel');
+        if (languageLabel) {
+            languageLabel.innerText = language === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
+        }
+
+        // Lưu ngôn ngữ vào localStorage
+        localStorage.setItem('language', language);
+
+        if (reload) {
+            if (language === 'en') {
+                window.location.reload(); // Tải lại trang nếu là tiếng Anh
+            } else {
+                // Nếu là tiếng Nhật, tự động dịch trang
+                translatePage(language);
+            }
+        }
+    }
+
+    // Hàm dịch trang
+    function translatePage(language) {
+        const pageContent = document.body.innerHTML;
+
+        // Các nội dung cần dịch (ví dụ: tên người dùng, vai trò người dùng)
+        const userFullName = document.querySelector('.userFullName')?.innerText || '';
+        const userRole = document.querySelector('.userRole')?.innerText || '';
+
+        // Gửi yêu cầu dịch trang
+        fetch('/api/translate/whole-page', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                text: pageContent,
+                targetLanguage: language,
+                extraText: {
+                    userFullName,
+                    userRole,
+                },
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.translatedText) {
+                    // Cập nhật toàn bộ nội dung trang với văn bản dịch
+                    document.body.innerHTML = data.translatedText;
+                }
+            })
+            .catch(error => {
+                console.error('Error translating page:', error);
+            });
+    }
+</script>
+
+<!-- fetch user -->
+<script>
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    const roleTranslations = {
+        "en": {
+            "ADMIN": "Admin",
+            "TEACHER": "Teacher",
+            "STUDENT": "Student"
+        },
+        "ja": {
+            "ADMIN": "管理者",
+            "TEACHER": "教師",
+            "STUDENT": "学生"
+        }
+    };
+    if (userDetails) {
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        const userRoleElements = document.querySelectorAll('.userRole');
+
+        // Lấy ngôn ngữ hiện tại từ localStorage
+        const currentLanguage = localStorage.getItem('language') || 'en';  // Mặc định là 'en'
+
+        // Hiển thị thông tin người dùng với tên và vai trò dịch theo ngôn ngữ hiện tại
+        const translatedRoleName = roleTranslations[currentLanguage][userDetails.roleName] || userDetails.roleName;
+
+        if (userDetails.roleName === "ADMIN") {
+            // Hiển thị tên đăng nhập và vai trò cho ADMIN
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.username;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = translatedRoleName;
+            });
+
+            // Ẩn các mục của người dùng khác (giáo viên và học sinh) vì ADMIN không cần
+            document.getElementById("teacher-view").style.display = "none";
+            document.getElementById("student-view").style.display = "none";
+        } else if (userDetails.roleName === "TEACHER") {
+            // Hiển thị tên đầy đủ và vai trò cho giáo viên
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = translatedRoleName;
+            });
+
+            // Chỉ hiển thị mục của giáo viên, ẩn mục của học sinh
+            document.getElementById("teacher-view").style.display = "block";
+            document.getElementById("student-view").style.display = "none";
+            document.getElementById("student-view1").style.display = "none";
+        } else if (userDetails.roleName === "STUDENT") {
+            // Hiển thị tên đầy đủ và vai trò cho học sinh
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.fullName;
+            });
+            userRoleElements.forEach(element => {
+                element.textContent = translatedRoleName;
+            });
+
+            // Chỉ hiển thị mục của học sinh
+            document.getElementById("teacher-view").style.display = "none";
+            document.getElementById("student-view").style.display = "block";
+            document.getElementById("student-view1").style.display = "block";
+        } else {
+            console.warn("Role not recognized: ", userDetails.roleName);
+        }
+    } else {
+        console.error("User details not found in sessionStorage");
+    }
+</script>
+
+
+<script>
+    // Define the API endpoint
+    const apiEndpoint = "/api/rooms/getRoomAvailability";
+
+    // Function to fetch data from the API and update the table
+    async function fetchRoomAvailability(filters = {}) {
+        const queryParams = new URLSearchParams(filters).toString();
+        const response = await fetch(`${apiEndpoint}?${queryParams}`);
+        const data = await response.json();
+        populateTable(data);
+    }
+
+    // Function to populate the table with data
+    function populateTable(data) {
+        const tableBody = document.querySelector("tbody");
+        tableBody.innerHTML = ""; // Clear existing data
+
+        if (data.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="4">No data available</td></tr>`;
+            return;
+        }
+
+        data.forEach((item, index) => {
+            const row = `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${item.room.name}</td>
+                    <td>${item.date}</td>
+                    <td>${item.status}</td>
+                </tr>`;
+            tableBody.insertAdjacentHTML("beforeend", row);
+        });
+    }
+
+    // Function to apply filters
+    function applyFilters() {
+        const roomName = document.getElementById("filter-room-name").value;
+        const date = document.getElementById("filter-date").value;
+        const status = document.getElementById("filter-status").value;
+
+        const filters = {};
+        if (roomName) filters.roomName = roomName;
+        if (date) filters.date = date;
+        if (status) filters.status = status;
+
+        fetchRoomAvailability(filters);
+    }
+
+    // Add event listeners to the filter inputs
+    document.getElementById("filter-room-name").addEventListener("input", applyFilters);
+    document.getElementById("filter-date").addEventListener("change", applyFilters);
+    document.getElementById("filter-status").addEventListener("change", applyFilters);
+
+    // Initial fetch to populate the table
+    fetchRoomAvailability();
+</script>
+
+
+<!-- fetch notification headbar-->
+<script>
+    // Kiểm tra trạng thái khi trang được tải lại
+    window.onload = function() {
+        const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
+        const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
+
+        // Kiểm tra trạng thái đã bấm vào chuông thông báo chưa (lưu trong localStorage)
+        const hasSeenNotifications = localStorage.getItem('hasSeenNotifications');
+
+        // Nếu đã bấm chuông trước đó và ẩn số lượng thông báo, thì không hiển thị số lượng nữa
+        if (hasSeenNotifications === 'true') {
+            notificationCount.style.display = 'none';
+        }
+    };
+
+    // Fetch notifications từ server
+    fetch('/notification/getAll')
+        .then(response => response.json()) // Parse dữ liệu JSON
+        .then(data => {
+            const notificationList = document.getElementById('notification-list'); // Container danh sách thông báo
+            const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
+            const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông
+
+            // Cập nhật số lượng thông báo
+            notificationCount.textContent = data.length;
+
+            // Nếu không có thông báo, hiển thị thông báo trống
+            if (data.length === 0) {
+                notificationList.innerHTML = '<p>No notifications available.</p>';
+                return;
+            }
+
+            // Clear các thông báo cũ
+            notificationList.innerHTML = '';
+
+            // Sắp xếp thông báo theo thời gian (mới nhất trước)
+            data.sort((a, b) => {
+                const dateA = new Date(a.createdAt || a.created || Date.now());
+                const dateB = new Date(b.createdAt || b.created || Date.now());
+                return dateB - dateA; // Sắp xếp giảm dần (mới nhất trước)
+            });
+
+            // Giới hạn hiển thị 7 thông báo mới nhất
+            const notificationsToDisplay = data.slice(0, 7);
+
+            // Thêm từng thông báo vào danh sách
+            notificationsToDisplay.forEach(notification => {
+                const noticeDiv = document.createElement('div');
+                noticeDiv.classList.add('notice-list');
+
+                const noticeTitle = document.createElement('h6');
+                noticeTitle.classList.add('notice-title');
+
+                const noticeLink = document.createElement('a');
+                noticeLink.href = "#"; // Thêm link nếu cần
+
+                // Set tiêu đề với nội dung HTML (bao gồm thẻ <a>)
+                noticeTitle.innerHTML = notification.title;
+
+                // Kiểm tra nếu tiêu đề có chứa các thẻ <a> (link)
+                const links = noticeTitle.getElementsByTagName('a');
+
+                // Nếu có bất kỳ thẻ <a> nào trong tiêu đề, style chúng
+                for (let link of links) {
+                    link.style.color = 'blue';  // Màu xanh cho các link
+                    link.style.textDecoration = 'underline';  // Gạch chân các link
+                }
+
+                // Thêm tiêu đề vào phần tử thông báo
+                noticeDiv.appendChild(noticeTitle);
+
+                // Thêm thông báo vào danh sách
+                notificationList.appendChild(noticeDiv);
+            });
+
+            // Ẩn số lượng thông báo khi người dùng bấm chuông
+            notificationBell.addEventListener('click', () => {
+                notificationCount.style.display = 'none'; // Ẩn số lượng thông báo khi bấm chuông
+                // Lưu trạng thái "đã xem thông báo" vào localStorage
+                localStorage.setItem('hasSeenNotifications', 'true');
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching notifications:', error);
+            document.getElementById('notification-list').innerHTML = '<p>Failed to load notifications.</p>';
+        });
+</script>
+
+</body>
+
+</html>
