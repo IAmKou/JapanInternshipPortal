@@ -161,19 +161,6 @@ public class AssignmentController {
     }
 
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteAssignment(@RequestParam("assignmentId") int assignmentId) {
-        try {
-            log.info("Deleting assignment with ID: {}", assignmentId);
-            assignmentServices.deleteAssignmentById(assignmentId);
-            return ResponseEntity.noContent().build(); // Return 204 No Content on success
-        } catch (NullPointerException e) {
-            log.error("Error deleting assignment: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Assignment not found with ID: " + assignmentId); // Return error message for debugging
-        }
-    }
-
 
     @GetMapping("/detail/{assignment_id}")
         public ResponseEntity<AssignmentResponse> getAssignmentById(@PathVariable("assignment_id") int assignmentId) {

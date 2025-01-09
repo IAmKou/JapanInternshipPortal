@@ -504,7 +504,7 @@
                             <div class="alert alert-danger" id="statusMessage" style="display: none;"></div>
                             <div class="row">
                                 <div class="col-xl-8 col-lg-6 col-12 form-group">
-                                    <label for="description" style="color: #007bff; font-weight: bold;">Description
+                                    <label for="description" style="color: #007bff; font-weight: bold;">Title
                                         *</label>
                                     <input class="form-control" id="description" name="description" required
                                            type="text">
@@ -772,6 +772,7 @@
 
   fetchAssignmentDetails()
 
+  let quill;
   // Hàm để lấy chi tiết bài tập sinh viên
   async function fetchStudentAssignmentDetails() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -794,6 +795,17 @@
       // Điền dữ liệu vào form
       document.getElementById('description').value = studentAssignment.description;
 
+        if (!quill) {
+            quill = new Quill('#content', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'], // Basic formatting tools
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }]// List tools
+                    ]
+                }
+            });
+        }
       // Cập nhật nội dung cho Quill
       quill.root.innerHTML = studentAssignment.content;
 
@@ -826,7 +838,14 @@
           deleteIcon.onclick = () => deleteFile(fileUrl, studentAssignmentId, fileRow);
 
           fileRow.appendChild(link);
-          fileRow.appendChild(deleteIcon);
+            // Disable delete icon if status is MARKED
+            if (status === 'MARKED') {
+                deleteIcon.style.cursor = 'not-allowed';
+                deleteIcon.onclick = null; // Remove click event
+                deleteIcon.style.color = 'gray'; // Optional: visually indicate disabled
+            } else {
+                fileRow.appendChild(deleteIcon);
+            }
           filesContainer.appendChild(fileRow);
         });
       } else {
@@ -840,8 +859,13 @@
         document.getElementById('description').disabled = true;
         quill.root.contentEditable = false; // Vô hiệu hóa Quill khi bài tập đã được đánh dấu
         document.getElementById('studentAssignment-files').disabled = true;
-        deleteIcon.disabled = true;
-        document.getElementById('submitBtn').disabled = true;
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.onclick = null; // Remove existing event listeners
+        submitBtn.classList.remove('btn-hover-bluedark');
+        submitBtn.classList.remove('btn-gradient-yellow');
+        submitBtn.classList.add('btn-gradient-gray')
+
       }
 
     } catch (error) {
@@ -851,7 +875,7 @@
   }
 
   // Call the function on page load
-  fetchStudentAssignmentDetails();
+  document.addEventListener('DOMContentLoaded', fetchStudentAssignmentDetails);
 
   // Update assignment logic
   async function updateAssignment(event) {

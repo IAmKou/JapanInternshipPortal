@@ -157,17 +157,18 @@ CREATE TABLE Assignment (
 );
 
 -- Student Assignment table (linked with Assignment and Student)
-CREATE TABLE Student_assignment (
-                                    Id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE student_assignment (
+                                    id INT AUTO_INCREMENT PRIMARY KEY,
                                     student_id INT,
                                     assignment_id INT,
                                     mark DECIMAL(5,2),
                                     description VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
                                     content LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-                                    file VARCHAR(255),
                                     date DATE NOT NULL,
-                                    FOREIGN KEY (student_id) REFERENCES Student(Id),
-                                    FOREIGN KEY (assignment_id) REFERENCES Assignment(Id)
+                                    file_url VARCHAR(255),
+                                    status ENUM('MARKED', 'SUBMITTED', 'NOTSUBMITTED'),
+                                    FOREIGN KEY (student_id) REFERENCES student(Id),
+                                    FOREIGN KEY (assignment_id) REFERENCES assignment(Id)
 );
 
 -- MarkReport table (linked with Student)

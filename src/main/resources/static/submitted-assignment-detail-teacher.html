@@ -366,14 +366,13 @@
                     </div>
                 </div>
             </div>
-            <!-- Message Placeholder -->
-            <div id="grading-expired-message" style="display: none; color: red; font-weight: bold; margin-bottom: 15px;">
-                Grading is no longer allowed as the assignment grading period has expired.
-            </div>
+
 
             <div class="card height-auto">
                 <div class="card-body">
+                    <div class="alert alert-danger" id="statusMessage" style="display: none;"></div>
                     <div class="heading-layout1">
+
                         <div class="item-title">
                             <h2 class="text-dark-medium font-medium">Student Submission</h2>
 
@@ -639,9 +638,13 @@
 
             // Check if grading period has expired
             if (currentDate > gradingExpiryDate) {
-                document.getElementById("grading-expired-message").style.display = "block";
+                document.getElementById("statusMessage").textContent = 'This assignment end date is expired';
+                document.getElementById('statusMessage').style.display = 'block';
                 document.getElementById("gradeButton").disabled = true;
+                document.getElementById("gradeButton").classList.remove('btn-gradient-yellow');
+                document.getElementById("gradeButton").classList.add('btn-gradient-gray');
             }
+
 
             currentAssignmentId = assignment.id;
 
@@ -691,6 +694,14 @@
 
             const studentAssignment = await response.json();
             console.log("Fetched Assignment:", studentAssignment);
+
+            if (studentAssignment.status === 'NOTSUBMITTED'){
+                document.getElementById("statusMessage").textContent = 'This assignment is expired';
+                document.getElementById('statusMessage').style.display = 'block';
+                document.getElementById("gradeButton").disabled = true;
+                document.getElementById("gradeButton").classList.remove('btn-gradient-yellow');
+                document.getElementById("gradeButton").classList.add('btn-gradient-gray');
+            }
 
             document.getElementById('submitted-assignment-description').textContent = studentAssignment.description;
             document.getElementById('submitted-assignment-content').textContent = studentAssignment.content;

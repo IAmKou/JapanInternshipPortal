@@ -968,19 +968,6 @@
                 </div>
             </div>
         </div>
-        <!-- Confirmation Modal -->
-        <div class="modal-background" id="deleteConfirmModal">
-            <div class="modal-content">
-                <h3>Delete Assignment</h3>
-                <p>Are you sure you want to delete this assignment?</p>
-
-                <!-- Modal Buttons -->
-                <div class="modal-buttons">
-                    <button class="confirm-btn" onclick="confirmDelete()" data-i18n="confirm">Confirm</button>
-                    <button class="cancel-btn" onclick="closeDeleteConfirmModal()" data-i18n="cancel">Cancel</button>
-                </div>
-            </div>
-        </div>
 
         <!-- Success Modal -->
         <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
@@ -1159,6 +1146,8 @@
         }
     }
 
+    fetchAssignmentsData();
+
     function displayPage(page) {
         currentPage = page;
 
@@ -1192,9 +1181,6 @@
                         <span class="flaticon-more-button-of-three-dots"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
-                            <i></i><span>Delete</span>
-                        </a>
                         <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
                             <i></i><span>Update</span>
                         </a>
@@ -1530,51 +1516,6 @@
     }
 
 
-    // Function to open the delete confirmation modal
-    function openDeleteConfirmModal(assignmentId) {
-        if (!assignmentId) {
-            console.error("Invalid assignment ID!");
-            return;
-        }
-
-        const modal = document.getElementById('deleteConfirmModal');
-        modal.dataset.assignmentId = assignmentId;
-        modal.style.display = 'flex';
-    }
-
-    // Function to close the delete confirmation modal
-    function closeDeleteConfirmModal() {
-        document.getElementById('deleteConfirmModal').style.display = 'none';
-    }
-
-    // Function to confirm delete
-    async function confirmDelete() {
-        const assignmentId = document.getElementById('deleteConfirmModal').dataset.assignmentId;
-
-        if (!assignmentId) {
-            alert('Assignment ID not found!');
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/delete?assignmentId=${assignmentId}`, {
-                method: 'DELETE',
-            });
-
-            if (response.ok) {
-                alert('Assignment deleted successfully!');
-                closeDeleteConfirmModal();
-                toListAssigment();
-            } else if (response.status === 404) {
-                const errorData = await response.text();
-                alert(`Error: ${errorData}`);
-            } else {
-                alert('Failed to delete assignment. Please try again.');
-            }
-        } catch (error) {
-            alert('An unexpected error occurred. Please try again.');
-        }
-    }
 
     // Initialize the table with assignments on page load
     document.addEventListener('DOMContentLoaded', fetchAndDisplayAssignments);
@@ -1731,9 +1672,7 @@
                         <span class="flaticon-more-button-of-three-dots"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" onclick="openDeleteConfirmModal(${assignment.id})">
-    <i class="fas fa-times text-orange-red"></i><span data-i18n="delete">Delete</span>
-</a>
+
 <a class="dropdown-item" onclick="openUpdatePopup(${assignment.id})">
     <i class="fas fa-cogs text-dark-pastel-green"></i><span data-i18n="update">Update</span>
 </a>

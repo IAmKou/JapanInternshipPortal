@@ -603,8 +603,6 @@
         errorModal.show();
     }
 
-
-
     // Fetch assignment details
     async function fetchAssignmentDetails() {
         // Utility function to format date and time
@@ -727,14 +725,18 @@
 
             submittedAssignments.forEach((submittedAssignment) => {
                 const row = document.createElement("tr");
+                // Check the mark value and display 0 if mark is 0, or "N/A" if it's null/undefined
+                const markDisplay = submittedAssignment.mark === null || submittedAssignment.mark === undefined
+                    ? "N/A"
+                    : submittedAssignment.mark;
                 row.innerHTML = `
-<td>${submittedAssignment.studentName || "N/A"}</td> <!-- Hiển thị tên học sinh thay vì status -->
+                <td>${submittedAssignment.studentName || "N/A"}</td> <!-- Hiển thị tên học sinh thay vì status -->
                 <td>
                     <a href="/submitted-assignment-detail-teacher.html?id=${submittedAssignment.id}">
                         ${submittedAssignment.description}
                     </a>
                 </td>
-                <td>${submittedAssignment.mark || "N/A"}</td>
+                <td>${markDisplay}</td>
                 <td>${new Date(submittedAssignment.date).toLocaleDateString()}</td>
 
             `;
