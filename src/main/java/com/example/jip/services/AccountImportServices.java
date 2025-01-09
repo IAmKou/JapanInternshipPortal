@@ -135,7 +135,7 @@ public class AccountImportServices {
 
         String[] requiredHeaders = {
                 "Full Name", "Japan Name",
-                "Date of Birth", "Image", "Gender", "Phone Number", "Passport", "Email"
+                "Date of Birth", "Image", "Gender", "Phone Number", "Email"
         };
 
         DataFormatter dataFormatter = new DataFormatter();
