@@ -115,7 +115,7 @@ public class ScheduleController {
             }
 
             return ResponseEntity.ok(Map.of(
-                    "message", "Schedules saved successfully as draft.",
+                    "message", "Schedules saved successfully.",
                     "semesterId", semesterId
             ));
         } catch (Exception e) {
@@ -130,7 +130,6 @@ public class ScheduleController {
     @PostMapping("/savePublic")
     public ResponseEntity<?> savePublic(@RequestBody List<ScheduleDTO> schedules) {
         try {
-            // Validate schedules
             if (schedules.isEmpty()) {
                 return ResponseEntity.badRequest().body("No schedules provided.");
             }
@@ -142,53 +141,47 @@ public class ScheduleController {
             Class clasz = classRepository.findById(classId)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid Class ID: " + classId));
 
-            boolean classHasSchedule = scheduleRepository.existsByClaszIdAndSemesterId(classId, semesterId);
-            if (classHasSchedule) {
-                return ResponseEntity.badRequest().body(Map.of(
-                        "message", "The class already has a schedule for this semester."
-                ));
-            }
-
             // Process each schedule
             for (ScheduleDTO scheduleDTO : schedules) {
                 try {
                     LocalDate localDate = LocalDate.parse(scheduleDTO.getDate()).plusDays(1);
                     java.sql.Date sqlDate = Date.valueOf(localDate);
 
-                    // Fetch and update draft schedules
+                    Schedule draftSchedule = null;
 
-                    Schedule schedule;
+                    // Check if the draft exists and retrieve it
                     if (scheduleDTO.getId() != null) {
-                        schedule = scheduleRepository.findById(scheduleDTO.getId())
+                        draftSchedule = scheduleRepository.findById(scheduleDTO.getId())
                                 .orElseThrow(() -> new IllegalArgumentException("Invalid Schedule ID: " + scheduleDTO.getId()));
-                    } else {
-                        schedule = new Schedule();
-                        schedule.setSemester(semester);
                     }
 
-                    schedule.setActivity(scheduleDTO.getActivity());
-                    schedule.setColor(scheduleDTO.getColor());
-                    schedule.setDate(sqlDate);
-                    schedule.setDay_of_week(getDayOfWeekFromDate(sqlDate));
-                    schedule.setSemester(semester);
-                    schedule.setClasz(clasz);
-                    schedule.setRoom(scheduleDTO.getRoom());
-                    schedule.setStatus(Schedule.status.Published);
+                    // Clone the draft schedule or create a new schedule for publishing
+                    Schedule publishedSchedule = new Schedule();
+                    publishedSchedule.setSemester(semester);
+                    publishedSchedule.setClasz(clasz);
+                    publishedSchedule.setActivity(scheduleDTO.getActivity());
+                    publishedSchedule.setColor(scheduleDTO.getColor());
+                    publishedSchedule.setDate(sqlDate);
+                    publishedSchedule.setDay_of_week(getDayOfWeekFromDate(sqlDate));
+                    publishedSchedule.setRoom(scheduleDTO.getRoom());
+                    publishedSchedule.setStatus(Schedule.status.Published);
 
-                    scheduleRepository.save(schedule);
+                    // Save the new published schedule
+                    scheduleRepository.save(publishedSchedule);
+
+                    // Optionally handle room availability and other related logic
                     if (scheduleDTO.getRoom() != null) {
                         Room availableRoom = roomRepository
                                 .findFirstAvailableRoomByStatusAndDate(String.valueOf(RoomAvailability.Status.Available), sqlDate)
                                 .orElseThrow(() -> new IllegalArgumentException("No available rooms for date: " + scheduleDTO.getDate()));
-                        schedule.setRoom(availableRoom.getName());
-                        // Update room availability
+                        publishedSchedule.setRoom(availableRoom.getName());
                         roomAvailabilityRepository.findByRoomAndDate(availableRoom, sqlDate).ifPresent(roomAvailability -> {
                             roomAvailability.setStatus(RoomAvailability.Status.Occupied);
-                            roomAvailability.setSchedule(schedule);
+                            roomAvailability.setSchedule(publishedSchedule);
                             roomAvailability.setClasz(clasz);
                             roomAvailabilityRepository.save(roomAvailability);
                         });
-                        createAttendantsForSchedule(schedule);
+                        createAttendantsForSchedule(publishedSchedule);
                     }
 
                 } catch (Exception ex) {
@@ -210,6 +203,7 @@ public class ScheduleController {
             ));
         }
     }
+
 
     private void createAttendantsForSchedule(Schedule schedule) {
         // Fetch students in the class
