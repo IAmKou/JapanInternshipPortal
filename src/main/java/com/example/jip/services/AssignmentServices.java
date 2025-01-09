@@ -467,7 +467,7 @@ class ScheduledTask {
     private AssignmentServices assignmentStatusService;
 
     // Run the task every minute to update assignment status
-    @Scheduled(fixedRate = Long.MAX_VALUE) // 60000 ms = 10 minute
+    @Scheduled(fixedRate = 60000) // 60000 ms = 10 minute
     public void updateAssignmentStatuses() {
         log.info("Scanning to update Assignment status...");
         assignmentStatusService.updateAssignmentStatus();

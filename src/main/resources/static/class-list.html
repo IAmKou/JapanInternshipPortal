@@ -332,33 +332,6 @@
                 </div>
             </div>
         </div>
-        <!-- confirm modal -->
-        <div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog success-modal-content" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="success-message">
-                            <div class="item-icon">
-                                <i class="fas fa-exclamation"></i>
-                            </div>
-                            <h3 class="item-title">You want to delete this class?</h3>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <input type="hidden" name="id" id="Cid">
-                        <button type="button" id="confirm-delete" class="footer-btn bg-linkedin">Ok</button>
-                        <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Success Modal -->
         <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
@@ -370,7 +343,6 @@
                         </h5>
                     </div>
                     <div class="modal-body text-center">
-                        <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
                         <p>Class updated successfully!</p>
                     </div>
                 </div>
@@ -387,11 +359,29 @@
                         </h5>
                     </div>
                     <div class="modal-body text-center">
-                        <i class="fas fa-times-circle fa-5x text-danger mb-3"></i>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Confirmation Modal -->
+        <div class="modal fade" id="confirmation-modal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title" id="confirmationModalLabel">Confirm Deletion</h5>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this class?
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger footer-btn bg-linkedin">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 </div>
@@ -413,7 +403,6 @@
         const tableBody = document.querySelector('.table tbody');
         const confirmationModal = document.querySelector('#confirmation-modal');
         const confirmButton = confirmationModal.querySelector('.footer-btn.bg-linkedin');
-        const updateClassBtn = document.querySelector('#update-class-btn');
 
         let currentClassId = null;
 
@@ -436,13 +425,13 @@
 
                     // Name cell
                     const nameCell = document.createElement('td');
-                    const link = document.createElement('a'); // Create an anchor element
-                    link.textContent = clasz.name; // Set the text of the link
-                    link.href = `/all-class-student.html?classId=${clasz.id}`; // Set the href attribute to the desired HTML page
-                    nameCell.appendChild(link); // Append the anchor element to the cell
+                    const link = document.createElement('a');
+                    link.textContent = clasz.name;
+                    link.href = `/all-class-student.html?classId=${clasz.id}`;
+                    nameCell.appendChild(link);
                     row.appendChild(nameCell);
 
-                    //Semester Name cell
+                    // Semester Name cell
                     const semesterNameCell = document.createElement('td');
                     semesterNameCell.textContent = clasz.semesterName;
                     row.appendChild(semesterNameCell);
@@ -474,7 +463,7 @@
                     <a class="dropdown-item delete-class" data-id="${clasz.id}">
                         <i></i> Delete Class
                     </a>
-                    <a class="dropdown-item update-class" data-id="${clasz.id}" data-name="${clasz.name}""
+                    <a class="dropdown-item update-class" data-id="${clasz.id}" data-name="${clasz.name}">
                         <i></i> Update Class
                     </a>
                 `;
@@ -488,7 +477,7 @@
                 document.querySelectorAll('.delete-class').forEach(button => {
                     button.addEventListener('click', function () {
                         currentClassId = this.getAttribute('data-id');
-                        $('#confirmation-modal').modal('show'); // Show modal
+                        $('#confirmation-modal').modal('show');
                     });
                 });
 
@@ -498,11 +487,9 @@
                         const classId = this.getAttribute('data-id');
                         const className = this.getAttribute('data-name');
 
-
                         // Populate modal fields
                         document.getElementById('classId').value = classId;
                         document.getElementById('className').value = className;
-
 
                         // Show modal
                         $('#update-modal').modal('show');
@@ -519,8 +506,9 @@
                 })
                     .then(response => {
                         if (response.ok) {
-                            showErrorModal('Class deleted successfully!');
-                            location.reload(); // Refresh the page
+                            $('#confirmation-modal').modal('hide');
+                            $('#success-modal').modal('show');
+                            setTimeout(() => location.reload(), 2000);
                         } else {
                             throw new Error('Failed to delete class');
                         }
