@@ -220,6 +220,7 @@
         #accountForm {
             gap: 1.5rem; /* Tăng khoảng cách giữa các trường */
         }
+
         #importForm {
             gap: 1.5rem; /* Tăng khoảng cách giữa các trường */
         }
@@ -251,6 +252,7 @@
             color: #ffcc00;
             text-decoration: none;
         }
+
         .modal-content {
             padding: 15px;
         }
@@ -421,6 +423,7 @@
             border-color: #28a745 !important; /* Giữ màu đỏ khi focus */
             box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
         }
+
         select[name="role"] { /* Chỉnh sửa thuộc tính cho phần tử select */
             border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
             border-radius: 5px; /* Thêm góc bo tròn */
@@ -555,15 +558,18 @@
                 <!--Notification-->
 
                 <li class="navbar-item dropdown header-language">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
                         <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
-                            <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;"> English
+                            <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;">
+                            English
                         </a>
                         <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
-                            <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese" style="width: 20px; height: 15px;"> 日本語
+                            <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese"
+                                 style="width: 20px; height: 15px;"> 日本語
                         </a>
                     </div>
                 </li>
@@ -604,44 +610,13 @@
         </div>
         <div class="dashboard-content-one">
             <div class="breadcrumbs-area">
-                <h3 data-i18n="account_setting">Account Setting</h3>
+                <h3 data-i18n="account_setting">List Room</h3>
                 <ul class="breadcrumb">
                     <li>
-                        <a data-i18n="home" href="admin.html">Home</a>
+                        <a data-i18n="home" href="manager.html">Home</a>
                     </li>
-                    <li data-i18n="setting">Account List</li>
+                    <li data-i18n="setting">List Room</li>
                 </ul>
-            </div>
-            <!-- Account Settings Area Start -->
-            <div class="row" style="height: 160px">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-
-                            <h2 class="mb-0 fw-bold" data-i18n="user_list" style="padding-bottom: 10px">Room Availability</h2>
-                                    <!-- Filter Option và Dropdown -->
-                                    <div class="row mb-4">
-                                        <div class="col-md-4">
-                                            <input type="text" id="filter-room-name" class="form-control" placeholder="Filter by room name">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <input type="date" id="filter-date" class="form-control">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <select id="filter-status" class="form-control">
-                                                <option value="">Filter by status</option>
-                                                <option value="Available">Available</option>
-                                                <option value="Occupied">Occupied</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="row">
@@ -649,36 +624,52 @@
                     <div class="card shadow-lg rounded-4 border-0 overflow-hidden">
                         <!-- Card Header -->
                         <!-- Card Body -->
-                        <div class="card-body px-4 py-5 bg-light">
-                            <div class="table-responsive">
-                                <table class="table align-middle table-hover text-center table-borderless">
-                                    <thead class="bg-primary text-white">
-                                    <tr>
-                                        <th class="text-center" data-i18n="#">#</th>
-                                        <th class="text-center" data-i18n="image">Name</th>
-                                        <th class="text-center" data-i18n="name">Date</th>
-                                        <th class="text-center" data-i18n="j_name">Status</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-
-                                <div class="pagination-container">
-                                    <ul class="pagination justify-content-center">
-                                        <li class="page-item previous"><a class="page-link" href="#"><</a></li>
-                                        <!-- Các nút số trang sẽ được thêm vào đây động -->
-                                        <li class="page-item next"><a class="page-link" href="#">></a></li>
-                                    </ul>
+                        <form class="mg-b-20">
+                            <div class="row gutters-8">
+                                <div class="col-lg-4 col-12 form-group">
+                                    <input type="text" placeholder="Search" class="form-control">
+                                </div>
+                                <div class="col-lg-3 col-12 form-group">
+                                    <input type="text" placeholder="Search by Class ..." class="form-control">
+                                </div>
+                                <div class="col-lg-2 col-12 form-group">
+                                    <button type="submit"
+                                            class="fw-btn-fill btn-gradient-yellow">SEARCH
+                                    </button>
                                 </div>
                             </div>
+                        </form>
+                        <div class="table-responsive">
+                            <table class="table display data-table text-nowrap">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Room Name</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                        <div class="pagination-container">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item previous"><a class="page-link" href="#"><</a></li>
+                                <!-- Các nút số trang sẽ được thêm vào đây động -->
+                                <li class="page-item next"><a class="page-link" href="#">></a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-<!-- Page Area End Here -->
+</div>
 
+<!-- Page Area End Here -->
 
 
 <!-- Success Modal -->
@@ -919,7 +910,7 @@
 
 <script>
     // Define the API endpoint
-    const apiEndpoint = "/api/rooms/getRoomAvailability";
+    const apiEndpoint = "/room/getRoomAvailability";
 
     // Function to fetch data from the API and update the table
     async function fetchRoomAvailability(filters = {}) {
@@ -943,7 +934,7 @@
             const row = `
                 <tr>
                     <td>${index + 1}</td>
-                    <td>${item.room.name}</td>
+                    <td>${item.roomName}</td>
                     <td>${item.date}</td>
                     <td>${item.status}</td>
                 </tr>`;
@@ -966,9 +957,9 @@
     }
 
     // Add event listeners to the filter inputs
-    document.getElementById("filter-room-name").addEventListener("input", applyFilters);
-    document.getElementById("filter-date").addEventListener("change", applyFilters);
-    document.getElementById("filter-status").addEventListener("change", applyFilters);
+    // document.getElementById("filter-room-name").addEventListener("input", applyFilters);
+    // document.getElementById("filter-date").addEventListener("change", applyFilters);
+    // document.getElementById("filter-status").addEventListener("change", applyFilters);
 
     // Initial fetch to populate the table
     fetchRoomAvailability();
@@ -978,7 +969,7 @@
 <!-- fetch notification headbar-->
 <script>
     // Kiểm tra trạng thái khi trang được tải lại
-    window.onload = function() {
+    window.onload = function () {
         const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
         const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
 
