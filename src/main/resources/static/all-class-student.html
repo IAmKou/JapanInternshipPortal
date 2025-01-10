@@ -365,6 +365,13 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Export Form -->
+                    <form action="/export-csv" id="exportForm" method="post" style="margin-top: 20px; display: none; margin-bottom: 30px">
+                        <input id="gradesData" name="gradesData" type="hidden"/>
+                        <div >
+                            <button class="btn btn-gradient-yellow btn-search" type="submit">Export</button>
+                        </div>
+                    </form>
                     <div class="table-responsive">
                         <table class="table display text-nowrap">
                             <thead>
@@ -378,14 +385,6 @@
                         </table>
                     </div>
                 </div>
-
-                <!-- Export Form -->
-                <form action="/export-csv" id="exportForm" method="post" style="margin-top: 20px; display: none; margin-bottom: 30px">
-                    <input id="gradesData" name="gradesData" type="hidden"/>
-                    <div >
-                        <button class="btn btn-gradient-yellow btn-search" type="submit">Export</button>
-                    </div>
-                </form>
             </div>
 
             <!-- Success Modal -->

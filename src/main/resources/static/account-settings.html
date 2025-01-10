@@ -55,13 +55,6 @@
         .custom-filter-select:hover {
             border-color: #007bff; /* Viền nổi bật khi hover */
         }
-
-        .fas.fa-filter {
-            font-size: 1.2rem; /* Kích thước icon vừa phải */
-            color: #6c757d; /* Màu icon nhấn nhá */
-        }
-
-
         .gradient-header {
             background: linear-gradient(45deg, #6a11cb, #2575fc);
             padding: 15px 20px;
@@ -95,26 +88,6 @@
 
         .pagination .page-link:hover {
             background-color: #2575fc;
-            color: white;
-        }
-
-        .btn-outline-primary {
-            color: #2575fc;
-            border: 1px solid #2575fc;
-        }
-
-        .btn-outline-primary:hover {
-            background: #2575fc;
-            color: white;
-        }
-
-        .btn-outline-danger {
-            color: #dc3545;
-            border: 1px solid #dc3545;
-        }
-
-        .btn-outline-danger:hover {
-            background: #dc3545;
             color: white;
         }
 
@@ -220,10 +193,6 @@
         #accountForm {
             gap: 1.5rem; /* Tăng khoảng cách giữa các trường */
         }
-        #importForm {
-            gap: 1.5rem; /* Tăng khoảng cách giữa các trường */
-        }
-
 
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
@@ -251,6 +220,7 @@
             color: #ffcc00;
             text-decoration: none;
         }
+
         .modal-content {
             padding: 15px;
         }
@@ -421,6 +391,7 @@
             border-color: #28a745 !important; /* Giữ màu đỏ khi focus */
             box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
         }
+
         select[name="role"] { /* Chỉnh sửa thuộc tính cho phần tử select */
             border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
             border-radius: 5px; /* Thêm góc bo tròn */
@@ -484,7 +455,6 @@
 
 <body>
 <!-- Preloader Start Here -->
-<!-- Preloader Start Here -->
 <div id="preloader"></div>
 <!-- Preloader End Here -->
 <div class="wrapper bg-ash" id="wrapper">
@@ -527,6 +497,7 @@
                     </div>
                 </li>
             </ul>
+
             <ul class="navbar-nav">
                 <li class="navbar-item dropdown header-admin">
                     <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
@@ -545,25 +516,27 @@
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
-                                <li><a href="/logout"><i class="flaticon-turn-off"></i><span
-                                        data-i18n="log_out">Log Out</span></a></li>
+                                <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span
+                                        data-i18n="change_password">Change Password</span></a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
                     </div>
                 </li>
-
                 <!--Notification-->
-
                 <li class="navbar-item dropdown header-language">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                       role="button">
                         <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
-                            <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;"> English
+                            <img alt="English" src="img/figure/flag-anh.webp" style="width: 20px; height: 15px;">
+                            English
                         </a>
                         <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
-                            <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese" style="width: 20px; height: 15px;"> 日本語
+                            <img alt="Japanese" src="img/figure/Flag_of_Japan.svg.webp"
+                                 style="width: 20px; height: 15px;"> 日本語
                         </a>
                     </div>
                 </li>
@@ -577,26 +550,26 @@
         <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
             <div class="mobile-sidebar-header d-md-none">
                 <div class="header-logo">
-                    <a href="admin.html"><img src="img/logo1.png" alt="logo"></a>
+                    <a href="admin.html"><img alt="logo" src="img/logo1.png"></a>
                 </div>
             </div>
             <div class="sidebar-menu-content">
                 <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                     <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <a class="nav-link" href="#"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
                         <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
-                                <a href="admin.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Admin</a>
+                                <a class="nav-link menu-active" href="admin.html"><i class="fas fa-angle-right"></i>Admin</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="notice-board.html" class="nav-link">
+                        <a class="nav-link" href="notice-board.html">
                             <i class="fas fa-bell"></i><span>Notification</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="account-settings.html" class="nav-link menu-active"><i
+                        <a class="nav-link menu-active" href="account-settings.html"><i
                                 class="flaticon-settings"></i><span>Account List</span></a>
                     </li>
                 </ul>
@@ -618,7 +591,8 @@
                     <div class="card">
                         <div class="card-body">
 
-                            <h2 class="mb-0 fw-bold" data-i18n="user_list" style="padding-bottom: 10px">Account List</h2>
+                            <h2 class="mb-0 fw-bold" data-i18n="user_list" style="padding-bottom: 10px">Account
+                                List</h2>
 
                             <div class="d-flex align-items-center">
 
@@ -642,9 +616,9 @@
                                                     class="form-control search-input rounded-start"
                                                     id="searchInput"
                                                     name="searchInput"
-                                                    type="text"
-
                                                     style="font-size: 1.5rem; padding: 10px 15px;"
+
+                                                    type="text"
                                             />
                                             <button
                                                     class="btn btn-gradient-yellow rounded-end text-white fw-bold"
@@ -658,11 +632,13 @@
                                     <!-- Filter Option và Dropdown -->
                                     <div class="col-lg-4 d-flex align-items-center">
                                         <!-- Filter Select -->
-                                        <div class="form-group d-flex flex-grow-1 align-items-center" style="padding-top: 8px">
+                                        <div class="form-group d-flex flex-grow-1 align-items-center"
+                                             style="padding-top: 8px">
                                             <div class="position-relative w-100">
 
-                                                <select class="form-select custom-filter-select" id="filterSelect" name="filterSelect">
-                                                    <option value="" selected>All Roles</option>
+                                                <select class="form-select custom-filter-select" id="filterSelect"
+                                                        name="filterSelect">
+                                                    <option selected value="">All Roles</option>
                                                     <option value="teacher">Teacher</option>
                                                     <option value="student">Student</option>
                                                     <option value="manager">Manager</option>
@@ -671,19 +647,27 @@
                                         </div>
 
                                         <!-- Dropdown -->
-                                        <div class="dropdown ms-3">
-                                            <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-i18n="add_import_users"
-                                               href="#" style="font-size: 16px; padding:11px 20px; position: relative; top: -3px;left: 250px;"> Add or Import Users
+                                        <div class="dropdown ms-3 col-lg-4">
+                                            <a class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                               data-i18n="add_import_users"
+                                               href="#"
+                                               style="font-size: 16px; padding:11px 20px; position: relative; top: -3px;">
+                                                Add or Import Users
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" data-i18n="add_new_user" href="#" data-bs-toggle="modal" data-bs-target="#createAccountModal">
+                                                <a class="dropdown-item" data-bs-target="#createAccountModal" data-bs-toggle="modal"
+                                                   data-i18n="add_new_user" href="#">
                                                     <i class="fas fa-plus text-orange-red"></i> Add New User
                                                 </a>
-                                                <a class="dropdown-item" data-bs-target="#standard-modal" data-bs-toggle="modal">
+                                                <a class="dropdown-item" data-bs-target="#standard-modal"
+                                                   data-bs-toggle="modal">
                                                     <i class="fas fa-file-import text-green"></i> Import Users
                                                 </a>
-                                                <a class="dropdown-item" href="/template/import%20account%20template%20-%20Copy.xlsx" download>
-                                                    <i class="fas fa-file-import text-green"></i> Export Account Template
+                                                <a class="dropdown-item"
+                                                   download
+                                                   href="/template/import%20account%20template%20-%20Copy.xlsx">
+                                                    <i class="fas fa-file-import text-green"></i> Export Account
+                                                    Template
                                                 </a>
                                             </div>
                                         </div>
@@ -760,7 +744,8 @@
 
 
 <!-- Modal Structure -->
-<div class="modal fade" id="createAccountModal" tabindex="-1" aria-labelledby="createAccountModalLabel" aria-hidden="true">
+<div aria-hidden="true" aria-labelledby="createAccountModalLabel" class="modal fade" id="createAccountModal"
+     tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content shadow-lg border-0">
             <div class="modal-header bg-primary text-white">
@@ -768,19 +753,21 @@
 
             </div>
             <div class="modal-body p-5">
-                <form id="accountForm" class="login-form">
+                <form class="login-form" id="accountForm">
 
                     <!-- Username Field -->
                     <div class="form-group input-group mb-5">
-                        <span class="input-group-text bg-light text-primary fs-3"><i class="bi bi-person-fill"></i></span>
-                        <input type="text" required placeholder="Enter your username"
-                               maxlength="100" name="username" class="form-control fs-4 p-3" id="username">
+                        <span class="input-group-text bg-light text-primary fs-3"><i
+                                class="bi bi-person-fill"></i></span>
+                        <input class="form-control fs-4 p-3" id="username" maxlength="100"
+                               name="username" placeholder="Enter your username" required type="text">
                     </div>
 
                     <!-- Role Dropdown -->
                     <div class="form-group input-group mb-5">
-                        <span class="input-group-text bg-light text-primary fs-3"><i class="bi bi-person-badge-fill"></i></span>
-                        <select name="role" id="role" class="form-select fs-4 p-3">
+                        <span class="input-group-text bg-light text-primary fs-3"><i
+                                class="bi bi-person-badge-fill"></i></span>
+                        <select class="form-select fs-4 p-3" id="role" name="role">
                             <option value="4">Manager</option>
                             <option value="3">Teacher</option>
                             <option value="2">Student</option>
@@ -788,11 +775,11 @@
                     </div>
 
                     <!-- Error Message -->
-                    <div id="error-message" class="text-danger mt-4 fs-4" style="display: none;"></div>
+                    <div class="text-danger mt-4 fs-4" id="error-message" style="display: none;"></div>
 
                     <!-- Submit Button -->
                     <div class="form-group d-grid">
-                        <button type="submit" class="btn btn-success fs-3 py-3" id="submit-btn">Next</button>
+                        <button class="btn btn-success fs-3 py-3" id="submit-btn" type="submit">Next</button>
                     </div>
 
                 </form>
@@ -802,12 +789,8 @@
 </div>
 
 
-
-
-
-
 <!-- Modal -->
-<div class="modal fade" id="createFormModal" tabindex="-1" aria-labelledby="createFormModalLabel" aria-hidden="true">
+<div aria-hidden="true" aria-labelledby="createFormModalLabel" class="modal fade" id="createFormModal" tabindex="-1">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content shadow-lg rounded">
             <div class="modal-header gradient-header">
@@ -815,21 +798,25 @@
 
             </div>
             <div class="modal-body px-4">
-                <form id="createForm" enctype="multipart/form-data">
-                    <input type="hidden" name="account_id" id="account_id_form1" value="${account_id}">
-                    <input type="hidden" name="role" id="role_form1" value="${role}">
+                <form enctype="multipart/form-data" id="createForm">
+                    <input id="account_id_form1" name="account_id" type="hidden" value="${account_id}">
+                    <input id="role_form1" name="role" type="hidden" value="${role}">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="fullname_form1" class="font-weight-bold">Fullname <span class="text-danger">*</span></label>
+                            <label class="font-weight-bold" for="fullname_form1">Fullname <span
+                                    class="text-danger">*</span></label>
                             <div class="input-icon">
-                                <input type="text" name="fullname" id="fullname_form1" class="form-control shadow-sm rounded" placeholder="Enter your name">
+                                <input class="form-control shadow-sm rounded" id="fullname_form1" name="fullname"
+                                       placeholder="Enter your name" type="text">
                                 <span class="text-danger" id="fullname_error"></span>
                             </div>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="jname_form1" class="font-weight-bold">Japan Name <span class="text-danger">*</span></label>
+                            <label class="font-weight-bold" for="jname_form1">Japan Name <span
+                                    class="text-danger">*</span></label>
                             <div class="input-icon">
-                                <input type="text" name="jname" id="jname_form1" class="form-control shadow-sm rounded" placeholder="Enter your Japan name">
+                                <input class="form-control shadow-sm rounded" id="jname_form1" name="jname" placeholder="Enter your Japan name"
+                                       type="text">
                                 <span class="text-danger" id="jname_error"></span>
                             </div>
                         </div>
@@ -837,33 +824,41 @@
                     <!-- Các trường nhập liệu khác và thông báo lỗi tương tự -->
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="email_form1" class="font-weight-bold">Email <span class="text-danger">*</span></label>
-                            <input type="email" name="email" id="email_form1" class="form-control shadow-sm rounded" placeholder="ex: abc@gmail.com">
+                            <label class="font-weight-bold" for="email_form1">Email <span
+                                    class="text-danger">*</span></label>
+                            <input class="form-control shadow-sm rounded" id="email_form1" name="email" placeholder="ex: abc@gmail.com"
+                                   type="email">
                             <span class="text-danger" id="email_error"></span>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="phone_form1" class="font-weight-bold">Phone Number <span class="text-danger">*</span></label>
-                            <input type="text" name="phoneNumber" id="phone_form1" class="form-control shadow-sm rounded" placeholder="ex: 012345678">
+                            <label class="font-weight-bold" for="phone_form1">Phone Number <span
+                                    class="text-danger">*</span></label>
+                            <input class="form-control shadow-sm rounded" id="phone_form1" name="phoneNumber"
+                                   placeholder="ex: 012345678" type="text">
                             <span class="text-danger" id="phone_error"></span>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label class="font-weight-bold d-inline-block">Gender <span class="text-danger">*</span></label>
+                            <label class="font-weight-bold d-inline-block">Gender <span
+                                    class="text-danger">*</span></label>
                             <div class="form-check form-check-inline">
-                                <input type="radio" name="gender" value="Male" id="male_form1" class="form-check-input" style="background-color: #ffffff;">
+                                <input class="form-check-input" id="male_form1" name="gender" style="background-color: #ffffff;" type="radio"
+                                       value="Male">
                                 <span for="male_form1">Male</span>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input type="radio" name="gender" value="Female" id="female_form1" class="form-check-input" style="background-color: #ffffff;">
+                                <input class="form-check-input" id="female_form1" name="gender" style="background-color: #ffffff;"
+                                       type="radio" value="Female">
                                 <span for="female_form1">Female</span>
                             </div>
 
                         </div>
                         <span class="text-danger" id="gender_error"></span>
                         <div class="form-group col-md-6">
-                            <label for="img_form1" class="font-weight-bold">Profile Image <span class="text-danger">*</span></label>
-                            <input type="file" class="form-control-file shadow-sm" name="img" id="img_form1">
+                            <label class="font-weight-bold" for="img_form1">Profile Image <span
+                                    class="text-danger">*</span></label>
+                            <input class="form-control-file shadow-sm" id="img_form1" name="img" type="file">
                             <span class="text-danger" id="img_error"></span>
                         </div>
 
@@ -873,10 +868,11 @@
                     <div id="error-message1" style="color: red; font-weight: bold; margin-top: 10px;"></div>
 
                     <div class="text-center mt-4">
-                        <button type="submit" id="submit-btn-form1" class="btn btn-primary btn-lg shadow px-5">Create Account</button>
+                        <button class="btn btn-primary btn-lg shadow px-5" id="submit-btn-form1" type="submit">Create
+                            Account
+                        </button>
                     </div>
                 </form>
-
 
 
             </div>
@@ -885,31 +881,38 @@
 </div>
 
 <!-- Modal student-->
-<div class="modal fade" id="create-account-student" tabindex="-1" role="dialog" aria-labelledby="createAccountStudentLabel" aria-hidden="true">
+<div aria-hidden="true" aria-labelledby="createAccountStudentLabel" class="modal fade" id="create-account-student"
+     role="dialog" tabindex="-1">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content shadow-lg rounded">
             <div class="modal-header gradient-header">
-                <h5 class="modal-title text-white font-weight-bold" id="createAccountStudentLabel"> Create Account - Student</h5>
+                <h5 class="modal-title text-white font-weight-bold" id="createAccountStudentLabel"> Create Account -
+                    Student</h5>
 
             </div>
             <div class="modal-body px-4">
-                <form id="createFormStudent" action="/student/save" method="post" class="login-form" enctype="multipart/form-data">
-                    <input type="hidden" name="account_id" id="account_id" value="${account_id}">
+                <form action="/student/save" class="login-form" enctype="multipart/form-data" id="createFormStudent"
+                      method="post">
+                    <input id="account_id" name="account_id" type="hidden" value="${account_id}">
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="fullname" class="font-weight-bold">Fullname <span class="text-danger">*</span></label>
+                            <label class="font-weight-bold" for="fullname">Fullname <span
+                                    class="text-danger">*</span></label>
                             <div class="input-icon">
 
-                                <input type="text" placeholder="Enter your name" name="fullname" required class="form-control shadow-sm rounded" id="fullname">
+                                <input class="form-control shadow-sm rounded" id="fullname" name="fullname" placeholder="Enter your name"
+                                       required type="text">
                                 <span class="text-danger" id="fullname_error1"></span>
                             </div>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="jname" class="font-weight-bold">Japan Name <span class="text-danger">*</span></label>
+                            <label class="font-weight-bold" for="jname">Japan Name <span
+                                    class="text-danger">*</span></label>
                             <div class="input-icon">
 
-                                <input type="text" placeholder="Enter your Japan name" name="japanname" required class="form-control shadow-sm rounded" id="jname">
+                                <input class="form-control shadow-sm rounded" id="jname" name="japanname" placeholder="Enter your Japan name"
+                                       required type="text">
                                 <span class="text-danger" id="jname_error1"></span>
                             </div>
                         </div>
@@ -917,43 +920,49 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="DoB" class="font-weight-bold">Date of Birth <span class="text-danger">*</span></label>
-                            <input type="date" name="dob" required class="form-control shadow-sm rounded" id="DoB">
+                            <label class="font-weight-bold" for="DoB">Date of Birth <span
+                                    class="text-danger">*</span></label>
+                            <input class="form-control shadow-sm rounded" id="DoB" name="dob" required type="date">
                             <span class="text-danger" id="DoB_error1"></span>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="email" class="font-weight-bold">Email <span class="text-danger">*</span></label>
-                            <input type="email" name="email" required placeholder="ex: abc@gmail.com" id="email" class="form-control shadow-sm rounded">
+                            <label class="font-weight-bold" for="email">Email <span class="text-danger">*</span></label>
+                            <input class="form-control shadow-sm rounded" id="email" name="email" placeholder="ex: abc@gmail.com" required
+                                   type="email">
                             <span class="text-danger" id="email_error1"></span>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="phone" class="font-weight-bold">Phone Number <span class="text-danger">*</span></label>
-                            <input type="text" name="phoneNumber" required placeholder="ex: 012345678" id="phone" class="form-control shadow-sm rounded">
+                            <label class="font-weight-bold" for="phone">Phone Number <span class="text-danger">*</span></label>
+                            <input class="form-control shadow-sm rounded" id="phone" name="phoneNumber" placeholder="ex: 012345678" required
+                                   type="text">
                             <span class="text-danger" id="phone_error1"></span>
                         </div>
                         <div class="form-group col-md-6">
-                            <label class="font-weight-bold d-inline-block">Gender <span class="text-danger">*</span></label>
+                            <label class="font-weight-bold d-inline-block">Gender <span
+                                    class="text-danger">*</span></label>
                             <div class="form-check form-check-inline">
-                                <input type="radio" name="gender" value="Male" id="male" class="form-check-input" style="background-color: #ffffff;">
-                                <span for="male" >Male</span>
+                                <input class="form-check-input" id="male" name="gender" style="background-color: #ffffff;" type="radio"
+                                       value="Male">
+                                <span for="male">Male</span>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input type="radio" name="gender" value="Female" id="female" class="form-check-input" style="background-color: #ffffff;">
-                                <span for="female" >Female</span>
+                                <input class="form-check-input" id="female" name="gender" style="background-color: #ffffff;" type="radio"
+                                       value="Female">
+                                <span for="female">Female</span>
                             </div>
                         </div>
                         <span class="text-danger" id="gender_error1"></span>
                     </div>
 
 
-
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="img" class="font-weight-bold">Profile Image <span class="text-danger">*</span></label>
-                            <input type="file" name="img" id="img" class="form-control-file shadow-sm">
+                            <label class="font-weight-bold" for="img">Profile Image <span
+                                    class="text-danger">*</span></label>
+                            <input class="form-control-file shadow-sm" id="img" name="img" type="file">
                             <span class="text-danger" id="img_error1"></span>
                         </div>
 
@@ -961,7 +970,9 @@
                     </div>
                     <div id="error-message2" style="color: red; font-weight: bold; margin-top: 10px;"></div>
                     <div class="text-center mt-4">
-                        <button type="submit" id="submit-btn1" class="btn btn-primary btn-lg shadow px-5"> Create Account</button>
+                        <button class="btn btn-primary btn-lg shadow px-5" id="submit-btn1" type="submit"> Create
+                            Account
+                        </button>
                     </div>
 
                 </form>
@@ -969,7 +980,6 @@
         </div>
     </div>
 </div>
-
 
 
 <!-- Success Modal -->
@@ -1024,7 +1034,7 @@
     </div>
 </div>
 
-<div class="modal" tabindex="-1" id="loading-modal">
+<div class="modal" id="loading-modal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body text-center">
@@ -1222,7 +1232,6 @@
                 alert('Có lỗi xảy ra trong quá trình xử lý.');
             });
     });
-
 
 
 </script>
@@ -1459,7 +1468,6 @@
 </script>
 
 
-
 <script>
     // Function to extract query parameter by name
     function getQueryParam(param) {
@@ -1477,7 +1485,7 @@
 </script>
 
 <script>
-    document.getElementById('accountForm').addEventListener('submit', function(event) {
+    document.getElementById('accountForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
         const formData = new FormData(this);
@@ -1525,138 +1533,140 @@
 </script>
 
 
-    <script>
-        document.getElementById('createForm').addEventListener('submit', function (event) {
-            event.preventDefault();
+<script>
+    document.getElementById('createForm').addEventListener('submit', function (event) {
+        event.preventDefault();
 
-            const formData = new FormData(this);
+        const formData = new FormData(this);
 
-            // Lấy giá trị từ các trường
-            const fullname = document.getElementById('fullname_form1').value.trim();
-            const jname = document.getElementById('jname_form1').value.trim();
-            const email = document.getElementById('email_form1').value.trim();
-            const phone = document.getElementById('phone_form1').value.trim();
-            const imgInput = document.getElementById('img_form1');
-            const gender = document.querySelector('input[name="gender"]:checked');
+        // Lấy giá trị từ các trường
+        const fullname = document.getElementById('fullname_form1').value.trim();
+        const jname = document.getElementById('jname_form1').value.trim();
+        const email = document.getElementById('email_form1').value.trim();
+        const phone = document.getElementById('phone_form1').value.trim();
+        const imgInput = document.getElementById('img_form1');
+        const gender = document.querySelector('input[name="gender"]:checked');
 
-            let hasError = false;
+        let hasError = false;
 
-            // Validate fullname
-            if (fullname === '') {
-                showError('fullname_error', 'Please enter your fullname.');
-                hasError = true;
-            } else {
-                clearError('fullname_error');
-            }
+        // Validate fullname
+        if (fullname === '') {
+            showError('fullname_error', 'Please enter your fullname.');
+            hasError = true;
+        } else {
+            clearError('fullname_error');
+        }
 
-            // Validate jname
-            if (jname === '') {
-                showError('jname_error', 'Please enter your Japan name.');
-                hasError = true;
-            } else {
-                clearError('jname_error');
-            }
+        // Validate jname
+        if (jname === '') {
+            showError('jname_error', 'Please enter your Japan name.');
+            hasError = true;
+        } else {
+            clearError('jname_error');
+        }
 
-            // Validate email
-            if (!isValidEmail(email)) {
-                showError('email_error', 'Please enter a valid email (e.g., abc@domain.com).');
-                hasError = true;
-            } else {
-                clearError('email_error');
-            }
+        // Validate email
+        if (!isValidEmail(email)) {
+            showError('email_error', 'Please enter a valid email (e.g., abc@domain.com).');
+            hasError = true;
+        } else {
+            clearError('email_error');
+        }
 
-            // Validate phone number
-            if (!isValidPhoneNumber(phone)) {
-                showError('phone_error', 'Please enter a valid phone number.');
-                hasError = true;
-            } else {
-                clearError('phone_error');
-            }
+        // Validate phone number
+        if (!isValidPhoneNumber(phone)) {
+            showError('phone_error', 'Please enter a valid phone number.');
+            hasError = true;
+        } else {
+            clearError('phone_error');
+        }
 
-            // Validate gender
-            if (!gender) {
-                showError('gender_error', 'Please select a gender.');
-                hasError = true;
-            } else {
-                clearError('gender_error');
-            }
+        // Validate gender
+        if (!gender) {
+            showError('gender_error', 'Please select a gender.');
+            hasError = true;
+        } else {
+            clearError('gender_error');
+        }
 
-            // Validate image file
-            if (!validateImageFile('img_form1', ['image/jpeg', 'image/png', 'image/jpg'], 2)) {
-                showError('img_error', 'Please select a valid image (JPEG/PNG) less than 2MB.');
-                hasError = true;
-            } else {
-                clearError('img_error');
-            }
+        // Validate image file
+        if (!validateImageFile('img_form1', ['image/jpeg', 'image/png', 'image/jpg'], 2)) {
+            showError('img_error', 'Please select a valid image (JPEG/PNG) less than 2MB.');
+            hasError = true;
+        } else {
+            clearError('img_error');
+        }
 
-            if (hasError) {
-                return;
-            }
+        if (hasError) {
+            return;
+        }
 
-            // Nếu không có lỗi, gửi form
-            fetch('/tm/save', {
-                method: 'POST',
-                body: formData,
+        // Nếu không có lỗi, gửi form
+        fetch('/tm/save', {
+            method: 'POST',
+            body: formData,
+        })
+            .then((response) => response.text())
+            .then((data) => {
+                console.log('Server response:', data);
+                if (data.includes("Error")) {
+                    showErrorMessage(data);
+                } else {
+                    // Ẩn modal tạo tài khoản (nếu có id modal là "createModal")
+                    $('#createFormModal').modal('hide'); // Đảm bảo rằng #createModal là id của modal tạo tài khoản
+
+                    // Hiển thị modal thông báo thành công
+                    $('#success-modal1').modal('show'); // Hiển thị modal thành công
+
+                    // Sau 2 giây, reload lại trang
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000); // 2000ms = 2 giây
+                }
             })
-                .then((response) => response.text())
-                .then((data) => {
-                    console.log('Server response:', data);
-                    if (data.includes("Error")) {
-                        showErrorMessage(data);
-                    } else {
-                        // Ẩn modal tạo tài khoản (nếu có id modal là "createModal")
-                        $('#createFormModal').modal('hide'); // Đảm bảo rằng #createModal là id của modal tạo tài khoản
+            .catch((error) => {
+                console.error('Error:', error);
+                showMessage(error.message || 'Failed to create the account.');
+            });
+    });
 
-                        // Hiển thị modal thông báo thành công
-                        $('#success-modal1').modal('show'); // Hiển thị modal thành công
+    function showErrorMessage(message) {
+        const errorMessageElement = document.getElementById('error-message1');
+        errorMessageElement.innerText = message;  // Hiển thị thông báo vào phần tử div#error-message
+    }
 
-                        // Sau 2 giây, reload lại trang
-                        setTimeout(function() {
-                            location.reload();
-                        }, 3000); // 2000ms = 2 giây
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    showMessage(error.message || 'Failed to create the account.');
-                });
-        });
-        function showErrorMessage(message) {
-            const errorMessageElement = document.getElementById('error-message1');
-            errorMessageElement.innerText = message;  // Hiển thị thông báo vào phần tử div#error-message
-        }
-        // Function để hiển thị thông báo lỗi
-        function showError(id, message) {
-            const errorElement = document.getElementById(id);
-            errorElement.innerText = message;
-        }
+    // Function để hiển thị thông báo lỗi
+    function showError(id, message) {
+        const errorElement = document.getElementById(id);
+        errorElement.innerText = message;
+    }
 
-        // Function để xóa thông báo lỗi
-        function clearError(id) {
-            const errorElement = document.getElementById(id);
-            errorElement.innerText = '';
-        }
+    // Function để xóa thông báo lỗi
+    function clearError(id) {
+        const errorElement = document.getElementById(id);
+        errorElement.innerText = '';
+    }
 
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
-            return emailRegex.test(email);
-        }
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+        return emailRegex.test(email);
+    }
 
-        function isValidPhoneNumber(phone) {
-            const phoneRegex = /^0\d{9}$/;
-            return phoneRegex.test(phone);
-        }
+    function isValidPhoneNumber(phone) {
+        const phoneRegex = /^0\d{9}$/;
+        return phoneRegex.test(phone);
+    }
 
-        function validateImageFile(inputId, allowedTypes, maxSizeMB) {
-            const fileInput = document.getElementById(inputId);
-            const file = fileInput.files[0];
-            if (!file) return false;
-            const fileType = file.type;
-            const maxSizeBytes = maxSizeMB * 1024 * 1024;
-            return allowedTypes.includes(fileType) && file.size <= maxSizeBytes;
-        }
+    function validateImageFile(inputId, allowedTypes, maxSizeMB) {
+        const fileInput = document.getElementById(inputId);
+        const file = fileInput.files[0];
+        if (!file) return false;
+        const fileType = file.type;
+        const maxSizeBytes = maxSizeMB * 1024 * 1024;
+        return allowedTypes.includes(fileType) && file.size <= maxSizeBytes;
+    }
 
-    </script>
+</script>
 
 <script>
     document.getElementById('createFormStudent').addEventListener('submit', function (event) {
@@ -1764,7 +1774,7 @@
                     $('#success-modal1').modal('show'); // Hiển thị modal thành công
 
                     // Sau 2 giây, reload lại trang
-                    setTimeout(function() {
+                    setTimeout(function () {
                         location.reload();
                     }, 3000); // 2000ms = 2 giây
                 }
@@ -1830,7 +1840,7 @@
 <!-- fetch notification headbar-->
 <script>
     // Kiểm tra trạng thái khi trang được tải lại
-    window.onload = function() {
+    window.onload = function () {
         const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
         const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
 
