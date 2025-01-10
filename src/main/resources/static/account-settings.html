@@ -484,7 +484,6 @@
 
 <body>
 <!-- Preloader Start Here -->
-<!-- Preloader Start Here -->
 <div id="preloader"></div>
 <!-- Preloader End Here -->
 <div class="wrapper bg-ash" id="wrapper">
@@ -527,16 +526,17 @@
                     </div>
                 </li>
             </ul>
+
             <ul class="navbar-nav">
                 <li class="navbar-item dropdown header-admin">
-                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                       role="button">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
                         <div class="admin-title">
-                            <h5 class="item-title userFullName"></h5>
+                            <h5 class="item-title userFullName"> </h5>
                             <span class="userRole"></span>
                         </div>
                         <div class="admin-img">
-                            <img alt="Admin" src="img/figure/admin.jpg">
+                            <img src="img/figure/admin.jpg" alt="Admin">
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -545,15 +545,13 @@
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
-                                <li><a href="/logout"><i class="flaticon-turn-off"></i><span
-                                        data-i18n="log_out">Log Out</span></a></li>
+                                <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span data-i18n="change_password">Change Password</span></a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
                     </div>
                 </li>
-
                 <!--Notification-->
-
                 <li class="navbar-item dropdown header-language">
                     <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
