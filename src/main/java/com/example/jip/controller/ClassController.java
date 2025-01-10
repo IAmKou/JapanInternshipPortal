@@ -5,6 +5,7 @@ import com.example.jip.dto.MarkReportDTO;
 import com.example.jip.dto.NotificationDTO;
 import com.example.jip.entity.Notification;
 import com.example.jip.entity.Semester;
+import com.example.jip.entity.Teacher;
 import com.example.jip.repository.*;
 import com.example.jip.services.AssignmentServices;
 import com.example.jip.services.NotificationServices;
@@ -20,6 +21,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -41,6 +43,8 @@ public class ClassController {
     @Autowired
     private MarkReportRepository markReportRepository;
 
+    @Autowired
+    private TeacherRepository teacherRepository;
 
     @PostMapping(value = "/create", consumes = "application/json", produces = "application/json")
     public String createClass(@RequestBody ClassDTO classDTO) {
@@ -150,6 +154,21 @@ public class ClassController {
         }
         List<MarkReportDTO> markReports = listRepository.getStudentsWithMarkReportsByClassId(classId);
         return markReports;
+    }
+
+    @GetMapping("/getCByAccId")
+    public List<ClassDTO> getClassByAid(@RequestParam("accountId") int accountId) {
+        Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(accountId);
+        return classRepository.findByTeacher_Id(teacherOpt.get().getId()).stream()
+                .map(ClassDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/getCByTid")
+    public List<ClassDTO> getClassByTid(@RequestParam("teacherId") int teacherId) {
+        return classRepository.findByTeacher_Id(teacherId).stream()
+                .map(ClassDTO::new)
+                .collect(Collectors.toList());
     }
 
 }

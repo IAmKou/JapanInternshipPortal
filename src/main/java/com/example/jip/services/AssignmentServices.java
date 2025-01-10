@@ -1,5 +1,6 @@
 package com.example.jip.services;
 
+import com.example.jip.dto.TeacherDTO;
 import com.example.jip.dto.request.assignment.AssignmentCreationRequest;
 import com.example.jip.dto.request.assignment.AssignmentUpdateRequest;
 import com.example.jip.dto.request.assignment.FileDeleteRequest;
@@ -47,8 +48,6 @@ public class AssignmentServices {
     EmailServices emailServices;
 
     NotificationServices notificationServices;
-
-    StudentAssignmentServices studentAssignmentServices;
 
     S3Service s3Service;
 
@@ -101,9 +100,10 @@ public class AssignmentServices {
 
     @PreAuthorize("hasAuthority('TEACHER')")
     @Transactional
-    public Assignment createAssignment(AssignmentCreationRequest request) {
-        Teacher teacher = teacherRepository.findById(request.getTeacher().getId())
-                .orElseThrow(() -> new RuntimeException("Teacher ID not found: " + request.getTeacher().getId()));
+    public Assignment createAssignment(AssignmentCreationRequest request, int teacherId) {
+        Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
+        Teacher teacher = teacherRepository.findById(teacherOpt.get().getId())
+                .orElseThrow();
         if (request.getCreated_date().after(request.getEnd_date())) {
             throw new IllegalArgumentException("Created date cannot be after end date.");
         }
@@ -190,7 +190,8 @@ public class AssignmentServices {
     }
 
     public boolean descriptionExists(String description, int teacherId) {
-        return assignmentRepository.existsByDescriptionAndByTeacherId(description, teacherId);
+        Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
+        return assignmentRepository.existsByDescriptionAndByTeacherId(description, teacherOpt.get().getId());
     }
 
     public void updateAssignmentStatus() {
