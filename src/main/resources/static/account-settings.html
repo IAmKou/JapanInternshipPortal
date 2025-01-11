@@ -801,90 +801,6 @@
     </div>
 </div>
 
-
-
-
-
-
-<!-- Modal -->
-<div class="modal fade" id="createFormModal" tabindex="-1" aria-labelledby="createFormModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content shadow-lg rounded">
-            <div class="modal-header gradient-header">
-                <h5 class="modal-title text-white font-weight-bold" id="createFormModalLabel">Create Account</h5>
-
-            </div>
-            <div class="modal-body px-4">
-                <form id="createForm" enctype="multipart/form-data">
-                    <input type="hidden" name="account_id" id="account_id_form1" value="${account_id}">
-                    <input type="hidden" name="role" id="role_form1" value="${role}">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="fullname_form1" class="font-weight-bold">Fullname <span class="text-danger">*</span></label>
-                            <div class="input-icon">
-                                <input type="text" name="fullname" id="fullname_form1" class="form-control shadow-sm rounded" placeholder="Enter your name">
-                                <span class="text-danger" id="fullname_error"></span>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="jname_form1" class="font-weight-bold">Japan Name <span class="text-danger">*</span></label>
-                            <div class="input-icon">
-                                <input type="text" name="jname" id="jname_form1" class="form-control shadow-sm rounded" placeholder="Enter your Japan name">
-                                <span class="text-danger" id="jname_error"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Các trường nhập liệu khác và thông báo lỗi tương tự -->
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="email_form1" class="font-weight-bold">Email <span class="text-danger">*</span></label>
-                            <input type="email" name="email" id="email_form1" class="form-control shadow-sm rounded" placeholder="ex: abc@gmail.com">
-                            <span class="text-danger" id="email_error"></span>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="phone_form1" class="font-weight-bold">Phone Number <span class="text-danger">*</span></label>
-                            <input type="text" name="phoneNumber" id="phone_form1" class="form-control shadow-sm rounded" placeholder="ex: 012345678">
-                            <span class="text-danger" id="phone_error"></span>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label class="font-weight-bold d-inline-block">Gender <span class="text-danger">*</span></label>
-                            <div class="form-check form-check-inline">
-                                <input type="radio" name="gender" value="Male" id="male_form1" class="form-check-input" style="background-color: #ffffff;">
-                                <span for="male_form1">Male</span>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input type="radio" name="gender" value="Female" id="female_form1" class="form-check-input" style="background-color: #ffffff;">
-                                <span for="female_form1">Female</span>
-                            </div>
-
-                        </div>
-                        <span class="text-danger" id="gender_error"></span>
-                        <div class="form-group col-md-6">
-                            <label for="img_form1" class="font-weight-bold">Profile Image <span class="text-danger">*</span></label>
-                            <input type="file" class="form-control-file shadow-sm" name="img" id="img_form1">
-                            <span class="text-danger" id="img_error"></span>
-                        </div>
-
-                    </div>
-
-                    <!-- Thêm phần hiển thị thông báo lỗi ở đây -->
-                    <div id="error-message1" style="color: red; font-weight: bold; margin-top: 10px;"></div>
-
-                    <div class="text-center mt-4">
-                        <button type="submit" id="submit-btn-form1" class="btn btn-primary btn-lg shadow px-5">Create Account</button>
-                    </div>
-                </form>
-
-
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal student-->
 <div class="modal fade" id="create-account-student" tabindex="-1" role="dialog" aria-labelledby="createAccountStudentLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content shadow-lg rounded">
@@ -969,6 +885,90 @@
         </div>
     </div>
 </div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="createFormModal" tabindex="-1" aria-labelledby="createFormModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content shadow-lg rounded">
+            <div class="modal-header gradient-header">
+                <h5 class="modal-title text-white font-weight-bold" id="createFormModalLabel">Create Account</h5>
+
+            </div>
+            <div class="modal-body px-4">
+                <form id="createForm" enctype="multipart/form-data">
+                    <input type="hidden" name="account_id" id="account_id_form1" value="${account_id}">
+                    <input type="hidden" name="role" id="role_form1" value="${role}">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="fullname_form1" class="font-weight-bold">Fullname <span class="text-danger">*</span></label>
+                            <div class="input-icon">
+                                <input type="text" name="fullname" id="fullname_form1" class="form-control shadow-sm rounded" placeholder="Enter your name">
+                                <span class="text-danger" id="fullname_error"></span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="jname_form1" class="font-weight-bold">Japan Name <span class="text-danger">*</span></label>
+                            <div class="input-icon">
+                                <input type="text" name="jname" id="jname_form1" class="form-control shadow-sm rounded" placeholder="Enter your Japan name">
+                                <span class="text-danger" id="jname_error"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Các trường nhập liệu khác và thông báo lỗi tương tự -->
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="email_form1" class="font-weight-bold">Email <span class="text-danger">*</span></label>
+                            <input type="email" name="email" id="email_form1" class="form-control shadow-sm rounded" placeholder="ex: abc@gmail.com">
+                            <span class="text-danger" id="email_error"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="phone_form1" class="font-weight-bold">Phone Number <span class="text-danger">*</span></label>
+                            <input type="text" name="phoneNumber" id="phone_form1" class="form-control shadow-sm rounded" placeholder="ex: 012345678">
+                            <span class="text-danger" id="phone_error"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-bold d-inline-block">Gender <span class="text-danger">*</span></label>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" name="gender" value="Male" id="male_form1" class="form-check-input" style="background-color: #ffffff;">
+                                <span for="male_form1">Male</span>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" name="gender" value="Female" id="female_form1" class="form-check-input" style="background-color: #ffffff;">
+                                <span for="female_form1">Female</span>
+                            </div>
+
+                        </div>
+                        <span class="text-danger" id="gender_error"></span>
+                        <div class="form-group col-md-6">
+                            <label for="img_form1" class="font-weight-bold">Profile Image <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control-file shadow-sm" name="img" id="img_form1">
+                            <span class="text-danger" id="img_error"></span>
+                        </div>
+
+                    </div>
+
+                    <!-- Thêm phần hiển thị thông báo lỗi ở đây -->
+                    <div id="error-message1" style="color: red; font-weight: bold; margin-top: 10px;"></div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" id="submit-btn-form1" class="btn btn-primary btn-lg shadow px-5">Create Account</button>
+                    </div>
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal student-->
+
 
 
 
