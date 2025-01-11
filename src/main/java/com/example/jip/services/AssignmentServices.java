@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -194,13 +195,46 @@ public class AssignmentServices {
 
     public void updateAssignmentStatus() {
         List<Assignment> assignments = assignmentRepository.findAll();
-
         Date currentDate = new Date();
+
         for (Assignment assignment : assignments) {
+            // Update the status of the assignment
             if (currentDate.after(assignment.getCreated_date()) && currentDate.before(assignment.getEnd_date())) {
                 assignment.setStatus(Assignment.Status.OPEN);
             } else {
                 assignment.setStatus(Assignment.Status.CLOSE);
+            }
+
+            // Check if the end date has passed
+            if (currentDate.after(assignment.getEnd_date())) {
+                // Find all students associated with this assignment
+                List<AssignmentStudent> assignmentStudents = assignmentStudentRepository.findByAssignmentId(assignment.getId());
+
+                // Get IDs of students who have already submitted the assignment
+                List<Integer> submittedStudentIds = studentAssignmentRepository.findByAssignmentId(assignment.getId())
+                        .stream()
+                        .map(sa -> sa.getStudent().getId())
+                        .collect(Collectors.toList());
+
+                // Iterate over all assignment students and assign a mark of 0 if they didn't submit
+                for (AssignmentStudent assignmentStudent : assignmentStudents) {
+                    Student student = assignmentStudent.getStudent();
+                    if (!submittedStudentIds.contains(student.getId())) {
+                        // Create a new StudentAssignment with 0 mark
+                        StudentAssignment studentAssignment = new StudentAssignment();
+                        studentAssignment.setAssignment(assignment);
+                        studentAssignment.setStudent(student);
+
+                        studentAssignment.setMark(BigDecimal.ZERO);
+                        studentAssignment.setDescription("Assignment not submitted.");
+                        studentAssignment.setContent(""); // No content
+                        studentAssignment.setDate(new Date());
+                        studentAssignment.setStatus(StudentAssignment.Status.NOTSUBMITTED); // Default to submitted
+
+                        // Save the new StudentAssignment
+                        studentAssignmentRepository.save(studentAssignment);
+                    }
+                }
             }
         }
 
@@ -288,34 +322,6 @@ public class AssignmentServices {
     }
 
 
-    @PreAuthorize("hasAuthority('TEACHER')")
-    @Transactional
-    public void deleteAssignmentById(int assignmentId) {
-        // Find assignment or throw exception if not found
-        Assignment assignment = assignmentRepository.findById(assignmentId)
-                .orElseThrow(() -> new RuntimeException("Assignment not found with ID: " + assignmentId));
-
-        // Delete related rows in dependent tables
-        assignmentStudentRepository.deleteByAssignmentId(assignmentId);
-        assignmentClassRepository.deleteByAssignmentId(assignmentId);
-        for(StudentAssignment studentAssignment : studentAssignmentRepository.findByAssignmentId(assignmentId)) {
-            studentAssignmentRepository.deleteByAssignmentId(assignmentId);
-            if(studentAssignment.getFile_url() != null) {
-                String folderPath = sanitizeFolderName(studentAssignment.getFile_url());
-                s3Service.deleteFolder(folderPath);
-            }
-        }
-
-        // Delete associated cloud resources if applicable
-        if(assignment.getImgUrl() != null) {
-            String folderPath = sanitizeFolderName(assignment.getImgUrl());
-            s3Service.deleteFolder(folderPath);
-        }
-
-        // Finally, delete the assignment
-        assignmentRepository.delete(assignment);
-    }
-
     private void uploadFilesToFolder(MultipartFile[] files, String folderName) {
         Set<String> uploadedFiles = new HashSet<>();
         for (MultipartFile file : files) {
@@ -341,6 +347,7 @@ public class AssignmentServices {
         Assignment assignment = assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new NoSuchElementException("Assignment id not found!"));
         Teacher teacher = assignment.getTeacher();
+
         if (request.getImgFile() != null) {
             MultipartFile[] newFiles = request.getImgFile();
             for (int i = 0; i < request.getImgFile().length; i++) {
@@ -385,14 +392,25 @@ public class AssignmentServices {
                 }
             }
         }
+
         // Update other fields
-        if (request.getCreated_date() != null){
+        if (request.getCreated_date() != null) {
             log.info("Updating start date: {}", request.getCreated_date());
             assignment.setCreated_date(request.getCreated_date());
         }
         if (request.getEnd_date() != null) {
-            log.info("Updating end date: " + request.getEnd_date());
+            log.info("Updating end date: {}", request.getEnd_date());
             assignment.setEnd_date(request.getEnd_date());
+
+            // **Handle deletion of NOTSUBMITTED student assignments**
+            if (new Date().after(request.getEnd_date())) {
+                log.info("Deleting NOTSUBMITTED student assignments for assignment ID: {}", assignmentId);
+                List<StudentAssignment> notSubmittedAssignments = studentAssignmentRepository
+                        .findByAssignmentIdAndStatus(assignmentId, StudentAssignment.Status.NOTSUBMITTED.toString().toUpperCase());
+
+                studentAssignmentRepository.deleteAll(notSubmittedAssignments);
+                log.info("Deleted {} NOTSUBMITTED student assignments.", notSubmittedAssignments.size());
+            }
         }
 
         Date currentDate = new Date();

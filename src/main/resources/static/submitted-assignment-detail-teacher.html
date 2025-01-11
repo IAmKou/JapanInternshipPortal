@@ -367,9 +367,12 @@
                 </div>
             </div>
 
+
             <div class="card height-auto">
                 <div class="card-body">
+                    <div class="alert alert-danger" id="statusMessage" style="display: none;"></div>
                     <div class="heading-layout1">
+
                         <div class="item-title">
                             <h2 class="text-dark-medium font-medium">Student Submission</h2>
 
@@ -412,7 +415,7 @@
                     </div>
                     <!-- Grade Button -->
                     <div class="text-right">
-                        <button type="button" class="btn btn-gradient-yellow btn-search" data-toggle="modal" data-target="#gradeModal">
+                        <button type="button" id="gradeButton" class="btn btn-gradient-yellow btn-search" data-toggle="modal" data-target="#gradeModal">
                             Grade Assignment
                         </button>
                     </div>
@@ -583,6 +586,22 @@
         $('#long-modal').modal('show');
     }
 
+    // Hàm định dạng thời gian (giữ nguyên)
+    function formatDateTime(dateString) {
+        const date = new Date(dateString);
+        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);  // Điều chỉnh múi giờ nếu cần (VD: UTC+7 cho Việt Nam)
+
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        let hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+
+        return `${day}/${month}/${year} ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+    }
+
     async function fetchAssignmentDetails() {
         const urlParams = new URLSearchParams(window.location.search);
         const studentAssignmentId = urlParams.get('id');
@@ -609,6 +628,23 @@
             document.getElementById('assignment-content').textContent = assignment.content || "";
             document.getElementById('created-date').textContent = createdDateFormatted || "N/A";
             document.getElementById('end-date').textContent = endDateFormatted || "N/A";
+
+            const endDate = assignment.end_date;
+
+            const gradingExpiryDate = new Date(endDate);
+            gradingExpiryDate.setDate(endDate + 1);
+            const currentDate = new Date();
+
+            // Check if grading period has expired
+            if (currentDate > gradingExpiryDate) {
+                document.getElementById("statusMessage").textContent = 'This assignment end date is expired';
+                document.getElementById('statusMessage').style.display = 'block';
+                document.getElementById("gradeButton").disabled = true;
+                document.getElementById("gradeButton").classList.remove('btn-gradient-yellow');
+                document.getElementById("gradeButton").classList.add('btn-gradient-gray');
+            }
+
+
             currentAssignmentId = assignment.id;
 
             const classes = assignment.classes || [];
@@ -636,7 +672,9 @@
         }
     }
 
-    fetchAssignmentDetails();
+    document.addEventListener("DOMContentLoaded", () => {
+        fetchAssignmentDetails();
+    });
 
     async function fetchStudentAssignmentDetails() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -655,6 +693,14 @@
 
             const studentAssignment = await response.json();
             console.log("Fetched Assignment:", studentAssignment);
+
+            if (studentAssignment.status === 'NOTSUBMITTED'){
+                document.getElementById("statusMessage").textContent = 'This assignment is expired';
+                document.getElementById('statusMessage').style.display = 'block';
+                document.getElementById("gradeButton").disabled = true;
+                document.getElementById("gradeButton").classList.remove('btn-gradient-yellow');
+                document.getElementById("gradeButton").classList.add('btn-gradient-gray');
+            }
 
             document.getElementById('submitted-assignment-description').textContent = studentAssignment.description;
             document.getElementById('submitted-assignment-content').textContent = studentAssignment.content;
