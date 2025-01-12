@@ -1,38 +1,81 @@
 @startuml
 actor Teacher
 activate Teacher
-Teacher -> GradeAssignmentPage : 1. Click "Grade Assignment Button"
-activate GradeAssignmentPage
+participant AssignmentController
+participant AssignmentService
+participant S3Service
+participant TeacherRepository
+participant AssignmentRepository
+participant ClassRepository
+participant AssignmentClassRepository
+participant AssignmentStudentRepository
+participant NotificationService
+participant EmailService
+participant S3Bucket
+participant ExternalEmailServer
+participant Database
 
-GradeAssignmentPage --> Teacher: 2. Display "Grade Assignment" pop up
+Teacher -> AssignmentController :1. POST /create
+activate AssignmentController
 
-Teacher -> GradeAssignmentPage: 3. Fill in form and click "Submit"
+AssignmentController -> AssignmentService :2. createAssignment(request, teacher_id)
+activate AssignmentService
 
-GradeAssignmentPage -> StudentAssignmentController: 4. Request
-activate StudentAssignmentController
-StudentAssignmentController -> StudentAssignmentService: 5. gradeSubmittedAssignment()
-activate StudentAssignmentService
-StudentAssignmentService -> StudentAssignmentRepository: 6. gradeSubmittedAssignment()
-activate StudentAssignmentRepository
-StudentAssignmentRepository -> MySql: 7. Execute query
-activate MySql
-MySql --> StudentAssignmentRepository: 8. Return result
-deactivate MySql
-StudentAssignmentRepository --> StudentAssignmentService:9. Message
+AssignmentService -> TeacherRepository :3. findByAccount_id(teacher_id)
+activate TeacherRepository
+TeacherRepository -> Database :3.1. Query Teacher by account_id
+activate Database
+Database --> TeacherRepository :3.2. Return Teacher entity
+TeacherRepository --> AssignmentService :4. Return Teacher entity
+deactivate TeacherRepository
+alt Teacher found
+    AssignmentService -> AssignmentService: Map request to Assignment
+    AssignmentService -> S3Service: uploadFilesToFolder(imgFiles, folderName)
+    activate S3Service
+    S3Service -> S3Bucket: Upload files
+    deactivate S3Service
+    activate S3Bucket
+    AssignmentService -> AssignmentRepository : save(assignment)
+    deactivate S3Bucket
+    activate AssignmentRepository
+    AssignmentRepository -> Database : Save Assignment
+    Database --> AssignmentRepository : Assignment Saved
+    AssignmentRepository --> AssignmentService : Return Saved Assignment
+    deactivate AssignmentRepository
+    AssignmentService -> ClassRepository : findById(classId)
+    activate ClassRepository
+    ClassRepository -> Database : Query Class by classId
+    Database --> ClassRepository : Return Class entity
+    ClassRepository --> AssignmentService : Return Class entity
+    deactivate ClassRepository
+    AssignmentService -> AssignmentClassRepository : save(AssignmentClass)
+    activate AssignmentClassRepository
+    AssignmentClassRepository -> Database: save AssignmentClass
+    deactivate AssignmentClassRepository
 
-alt StudentAssignment found
+    loop for each student in Class
+        AssignmentService -> AssignmentStudentRepository : save(AssignmentStudent)
+        activate AssignmentStudentRepository
+        AssignmentStudentRepository -> Database : Save AssignmentStudent
+        deactivate AssignmentStudentRepository
+        AssignmentService -> NotificationService : createAutoNotificationForAssignment
+        activate NotificationService
+        NotificationService -> Database : Save Notification
+        deactivate NotificationService
+        AssignmentService -> EmailService : sendEmailCreateAssignment(studentEmail, className)
+        activate EmailService
+        EmailService -> ExternalEmailServer : Email Sent
+        deactivate EmailService
 
-    deactivate StudentAssignmentRepository
-    StudentAssignmentService --> StudentAssignmentController : 10.1 Successful message
-    StudentAssignmentController --> GradeAssignmentPage: 11.1 Response
-    GradeAssignmentPage --> Teacher: 12.1 Display successful message and close popup
-else StudentAssignment not found
-    StudentAssignmentService --> StudentAssignmentController : 10.2 Unsuccessful message
-    deactivate StudentAssignmentService
-    StudentAssignmentController --> GradeAssignmentPage: 11.2 Response
-    deactivate StudentAssignmentController
-GradeAssignmentPage --> Teacher: 12.2 Display Unsuccessful message and close popup
+    end
+
+else Teacher not found
+    AssignmentService -> AssignmentService : throw IllegalArgumentException
 end
 
-deactivate StudentAssignmentController
+AssignmentService --> AssignmentController : Return ResponseEntity
+deactivate AssignmentService
+
+AssignmentController --> Teacher : Return ResponseEntity
+deactivate AssignmentController
 @enduml

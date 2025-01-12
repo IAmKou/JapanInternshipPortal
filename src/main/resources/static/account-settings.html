@@ -744,34 +744,91 @@
 
 
 <!-- Modal Structure -->
-<div aria-hidden="true" aria-labelledby="createAccountModalLabel" class="modal fade" id="createAccountModal"
-     tabindex="-1">
+<div aria-hidden="true" aria-labelledby="createAccountModalLabel" class="modal fade" id="createAccountModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content shadow-lg border-0">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title fs-2" id="createAccountModalLabel">Create A New Account</h5>
-
             </div>
             <div class="modal-body p-5">
                 <form class="login-form" id="accountForm">
 
                     <!-- Username Field -->
                     <div class="form-group input-group mb-5">
-                        <span class="input-group-text bg-light text-primary fs-3"><i
-                                class="bi bi-person-fill"></i></span>
-                        <input class="form-control fs-4 p-3" id="username" maxlength="100"
-                               name="username" placeholder="Enter your username" required type="text">
+                        <span class="input-group-text bg-light text-primary fs-3"><i class="bi bi-person-fill"></i></span>
+                        <input class="form-control fs-4 p-3" id="username" maxlength="100" name="username" placeholder="Enter your username" required type="text">
                     </div>
 
-                    <!-- Role Dropdown -->
+                    <!-- Role Dropdown (Mặc định là "Sinh viên") -->
                     <div class="form-group input-group mb-5">
-                        <span class="input-group-text bg-light text-primary fs-3"><i
-                                class="bi bi-person-badge-fill"></i></span>
-                        <select class="form-select fs-4 p-3" id="role" name="role">
+                        <span class="input-group-text bg-light text-primary fs-3"><i class="bi bi-person-badge-fill"></i></span>
+                        <select class="form-select fs-4 p-3" id="role" name="role" required>
                             <option value="4">Manager</option>
                             <option value="3">Teacher</option>
-                            <option value="2">Student</option>
+                            <option value="2" selected>Student</option> <!-- Mặc định là "Student" -->
                         </select>
+                    </div>
+
+                    <!-- Student Fields - Hiển thị mặc định -->
+                    <div id="studentFields">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold" for="fullname">Fullname <span class="text-danger">*</span></label>
+                                <div class="input-icon">
+                                    <input class="form-control shadow-sm rounded" id="fullname" name="fullname" placeholder="Enter your name" required type="text">
+                                    <span class="text-danger" id="fullname_error1"></span>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold" for="jname">Japan Name <span class="text-danger">*</span></label>
+                                <div class="input-icon">
+                                    <input class="form-control shadow-sm rounded" id="jname" name="japanname" placeholder="Enter your Japan name" required type="text">
+                                    <span class="text-danger" id="jname_error1"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <!-- Date of Birth (Sẽ bị ẩn khi chọn Manager hoặc Teacher) -->
+                            <div class="form-group col-md-6" id="dobContainer">
+                                <label class="font-weight-bold" for="DoB">Date of Birth <span class="text-danger">*</span></label>
+                                <input class="form-control shadow-sm rounded" id="DoB" name="dob" required type="date">
+                                <span class="text-danger" id="DoB_error1"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold" for="email">Email <span class="text-danger">*</span></label>
+                                <input class="form-control shadow-sm rounded" id="email" name="email" placeholder="ex: abc@gmail.com" required type="email">
+                                <span class="text-danger" id="email_error1"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold" for="phone">Phone Number <span class="text-danger">*</span></label>
+                                <input class="form-control shadow-sm rounded" id="phone" name="phoneNumber" placeholder="ex: 012345678" required type="text">
+                                <span class="text-danger" id="phone_error1"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold d-inline-block">Gender <span class="text-danger">*</span></label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" id="male" name="gender" style="background-color: #ffffff;" type="radio" value="Male">
+                                    <span for="male">Male</span>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" id="female" name="gender" style="background-color: #ffffff;" type="radio" value="Female">
+                                    <span for="female">Female</span>
+                                </div>
+                            </div>
+                            <span class="text-danger" id="gender_error1"></span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold" for="img">Profile Image <span class="text-danger">*</span></label>
+                                <input class="form-control-file shadow-sm" id="img" name="img" type="file">
+                                <span class="text-danger" id="img_error1"></span>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Error Message -->
@@ -787,6 +844,9 @@
         </div>
     </div>
 </div>
+
+
+
 
 
 <!-- Modal -->
@@ -843,12 +903,12 @@
                             <label class="font-weight-bold d-inline-block">Gender <span
                                     class="text-danger">*</span></label>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" id="male_form1" name="gender" style="background-color: #ffffff;" type="radio"
+                                <input class="form-check-input" id="male_form1" name="gender"  type="radio"
                                        value="Male">
                                 <span for="male_form1">Male</span>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" id="female_form1" name="gender" style="background-color: #ffffff;"
+                                <input class="form-check-input" id="female_form1" name="gender"
                                        type="radio" value="Female">
                                 <span for="female_form1">Female</span>
                             </div>
@@ -881,105 +941,7 @@
 </div>
 
 <!-- Modal student-->
-<div aria-hidden="true" aria-labelledby="createAccountStudentLabel" class="modal fade" id="create-account-student"
-     role="dialog" tabindex="-1">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content shadow-lg rounded">
-            <div class="modal-header gradient-header">
-                <h5 class="modal-title text-white font-weight-bold" id="createAccountStudentLabel"> Create Account -
-                    Student</h5>
 
-            </div>
-            <div class="modal-body px-4">
-                <form action="/student/save" class="login-form" enctype="multipart/form-data" id="createFormStudent"
-                      method="post">
-                    <input id="account_id" name="account_id" type="hidden" value="${account_id}">
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label class="font-weight-bold" for="fullname">Fullname <span
-                                    class="text-danger">*</span></label>
-                            <div class="input-icon">
-
-                                <input class="form-control shadow-sm rounded" id="fullname" name="fullname" placeholder="Enter your name"
-                                       required type="text">
-                                <span class="text-danger" id="fullname_error1"></span>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="font-weight-bold" for="jname">Japan Name <span
-                                    class="text-danger">*</span></label>
-                            <div class="input-icon">
-
-                                <input class="form-control shadow-sm rounded" id="jname" name="japanname" placeholder="Enter your Japan name"
-                                       required type="text">
-                                <span class="text-danger" id="jname_error1"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label class="font-weight-bold" for="DoB">Date of Birth <span
-                                    class="text-danger">*</span></label>
-                            <input class="form-control shadow-sm rounded" id="DoB" name="dob" required type="date">
-                            <span class="text-danger" id="DoB_error1"></span>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="font-weight-bold" for="email">Email <span class="text-danger">*</span></label>
-                            <input class="form-control shadow-sm rounded" id="email" name="email" placeholder="ex: abc@gmail.com" required
-                                   type="email">
-                            <span class="text-danger" id="email_error1"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label class="font-weight-bold" for="phone">Phone Number <span class="text-danger">*</span></label>
-                            <input class="form-control shadow-sm rounded" id="phone" name="phoneNumber" placeholder="ex: 012345678" required
-                                   type="text">
-                            <span class="text-danger" id="phone_error1"></span>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="font-weight-bold d-inline-block">Gender <span
-                                    class="text-danger">*</span></label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" id="male" name="gender" style="background-color: #ffffff;" type="radio"
-                                       value="Male">
-                                <span for="male">Male</span>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" id="female" name="gender" style="background-color: #ffffff;" type="radio"
-                                       value="Female">
-                                <span for="female">Female</span>
-                            </div>
-                        </div>
-                        <span class="text-danger" id="gender_error1"></span>
-                    </div>
-
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label class="font-weight-bold" for="img">Profile Image <span
-                                    class="text-danger">*</span></label>
-                            <input class="form-control-file shadow-sm" id="img" name="img" type="file">
-                            <span class="text-danger" id="img_error1"></span>
-                        </div>
-
-
-                    </div>
-                    <div id="error-message2" style="color: red; font-weight: bold; margin-top: 10px;"></div>
-                    <div class="text-center mt-4">
-                        <button class="btn btn-primary btn-lg shadow px-5" id="submit-btn1" type="submit"> Create
-                            Account
-                        </button>
-                    </div>
-
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <!-- Success Modal -->
@@ -1485,6 +1447,28 @@
 </script>
 
 <script>
+    document.getElementById('role').addEventListener('change', function () {
+        const role = this.value;
+        const dobContainer = document.getElementById('dobContainer');
+
+        if (role === '2') { // Student
+            dobContainer.style.display = 'block';  // Hiển thị Date of Birth
+        } else { // Teacher or Manager
+            dobContainer.style.display = 'none';   // Ẩn Date of Birth
+        }
+    });
+
+    // Nếu modal được mở và role là Student, Date of Birth sẽ được hiển thị mặc định
+    document.addEventListener('DOMContentLoaded', function() {
+        const role = document.getElementById('role').value;
+        const dobContainer = document.getElementById('dobContainer');
+
+        if (role === '2') {
+            dobContainer.style.display = 'block';
+        } else {
+            dobContainer.style.display = 'none';
+        }
+    });
     document.getElementById('accountForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
@@ -1506,22 +1490,9 @@
                 const role = formData.get('role');
                 if (role === '1') {
                     window.location.href = '/account-settings.html';
-                } else if (role === '2') {
-                    // Mở modal thay vì điều hướng đến trang mới
-
-                    document.getElementById('account_id').value = accountId;
-                    $('#createAccountModal').modal('hide');
-                    // Hiển thị modal
-                    const createAccountStudent = new bootstrap.Modal(document.getElementById('create-account-student'));
-                    createAccountStudent.show();
                 } else {
-                    // Gán giá trị cho các trường trong modal
-                    document.getElementById('account_id_form1').value = accountId;
-                    document.getElementById('role_form1').value = role;
-                    $('#createAccountModal').modal('hide');
-                    // Hiển thị modal
-                    const createFormModal = new bootstrap.Modal(document.getElementById('createFormModal'));
-                    createFormModal.show();
+                    // Chuyển trực tiếp sau khi tài khoản được tạo thành công
+                    alert('Account successfully created');
                 }
             })
             .catch(error => {
