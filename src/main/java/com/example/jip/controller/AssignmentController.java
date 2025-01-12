@@ -9,6 +9,7 @@ import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.dto.response.assignmentClass.AssignmentClassResponse;
 import com.example.jip.entity.Teacher;
 import com.example.jip.repository.AssignmentClassRepository;
+import com.example.jip.repository.AssignmentRepository;
 import com.example.jip.repository.ClassRepository;
 import com.example.jip.repository.TeacherRepository;
 import com.example.jip.services.AssignmentServices;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/assignment")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AssignmentController {
+public abstract class AssignmentController implements AssignmentRepository {
 
     AssignmentServices assignmentServices;
 

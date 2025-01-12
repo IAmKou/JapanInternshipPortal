@@ -37,10 +37,7 @@ import java.util.*;
 @RequestMapping("/mark-report")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class MarkReportController {
-
-    @Autowired
-    private ListRepository listRepository;
+    public class MarkReportController {
 
     MarkReportServices markReportServices;
     @PostMapping("/import")
@@ -126,12 +123,12 @@ public class MarkReportController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateAssignment(@RequestParam("markRpId") int markRp_id,
+    public ResponseEntity<?> updateMarkRp(@RequestParam("markRpId") int markRpId,
                                               @RequestBody MarkReportUpdateRequest request) {
         try {
             log.info("Received request: " + request);  // Log the incoming request for debugging
 
-            markReportServices.updateMarkRp(markRp_id, request);
+            markReportServices.updateMarkRp(markRpId, request);
             return ResponseEntity.noContent().build(); // Return 204 No Content on successful update
         } catch (NoSuchElementException e) {
             log.error("Assignment not found", e);
