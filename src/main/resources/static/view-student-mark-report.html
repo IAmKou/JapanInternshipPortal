@@ -858,6 +858,21 @@
             return;
         }
 
+        // Validate comment
+        if (comment) {
+            if (comment.length > 255) {
+                showErrorModal("Invalid input: Comment must not exceed 255 characters.");
+                return;
+            }
+
+            // // Regex to allow only alphanumeric characters, spaces, and basic punctuation
+            // const specialCharRegex = /^[a-zA-Z0-9 .,!?'"-]*$/;
+            // if (!specialCharRegex.test(comment)) {
+            //     showErrorModal("Invalid input: Comment contains invalid special characters.");
+            //     return;
+            // }
+        }
+
 
         // Stop execution if validation fails
         if (!isValid) return;

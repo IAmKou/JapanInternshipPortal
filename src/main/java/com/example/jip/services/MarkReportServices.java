@@ -119,7 +119,6 @@ public class MarkReportServices {
                         }
 
                         if(response.getAttendant() == null || response.getAssignment() == null || markReport.getSoftskill() == null || markReport.getSkill() == null) {
-                            markReport.setAttitude(null);
                             markReport.setFinal_mark(null);
                         } else {
                             // Combine assignmentCompletion and attendance to calculate attitude
@@ -144,6 +143,9 @@ public class MarkReportServices {
                         response.setAttendant(null); // No slots available
                         response.setAttitude(markReport.getAttitude());
                         response.setFinal_mark(markReport.getFinal_mark());
+                    }
+                    if(response.getAttendant() == null || response.getAssignment() == null){
+                        markReport.setAttitude(null);
                     }
                         response.setAttitude(markReport.getAttitude()); // Set attitude in db
                         response.setFinal_mark(markReport.getFinal_mark());
@@ -283,7 +285,6 @@ public class MarkReportServices {
                 }
 
                 if(response.getAttendant() == null || response.getAssignment() == null || markReport.getSoftskill() == null || markReport.getSkill() == null) {
-                    markReport.setAttitude(null);
                     markReport.setFinal_mark(null);
                 } else {
                     // Combine assignmentCompletion and attendance to calculate attitude
@@ -308,6 +309,9 @@ public class MarkReportServices {
                 response.setAttendant(null); // No slots available
                 response.setAttitude(markReport.getAttitude());
                 response.setFinal_mark(markReport.getFinal_mark());
+            }
+            if(response.getAttendant() == null || response.getAssignment() == null){
+                markReport.setAttitude(null);
             }
             response.setAttitude(markReport.getAttitude()); // Set attitude in db
             response.setFinal_mark(markReport.getFinal_mark());
@@ -399,7 +403,6 @@ public class MarkReportServices {
                 }
 
                 if(response.getAttendant() == null || response.getAssignment() == null || markReport.getSoftskill() == null || markReport.getSkill() == null) {
-                    markReport.setAttitude(null);
                     markReport.setFinal_mark(null);
                 } else {
                     // Combine assignmentCompletion and attendance to calculate attitude
@@ -424,6 +427,9 @@ public class MarkReportServices {
                 response.setAttendant(null); // No slots available
                 response.setAttitude(markReport.getAttitude());
                 response.setFinal_mark(markReport.getFinal_mark());
+            }
+            if(response.getAttendant() == null || response.getAssignment() == null){
+                markReport.setAttitude(null);
             }
             response.setAttitude(markReport.getAttitude()); // Set attitude in db
             response.setFinal_mark(markReport.getFinal_mark());
@@ -455,13 +461,13 @@ public class MarkReportServices {
 
                 try {
                     // Parse fixed columns
-                    String name = getStringCellValue(row.getCell(0), rowNumber, "Name");
-                    String email = getStringCellValue(row.getCell(1), rowNumber, "Email");
+                    String name = getStringCellValue(row.getCell(0), rowNumber, "Name", rowErrors);
+                    String email = getStringCellValue(row.getCell(1), rowNumber, "Email", rowErrors);
                     BigDecimal presentation = getNumericCellValue(row.getCell(2), rowNumber, "Presentation", rowErrors);
                     BigDecimal script = getNumericCellValue(row.getCell(3), rowNumber, "Script", rowErrors);
                     BigDecimal middleExam = getNumericCellValue(row.getCell(4), rowNumber, "Middle Exam", rowErrors);
                     BigDecimal finalExam = getNumericCellValue(row.getCell(5), rowNumber, "Final Exam", rowErrors);
-                    String comment = getStringCellValue(row.getCell(6), rowNumber, "Comment");
+                    String comment = getStringCellValue(row.getCell(6), rowNumber, "Comment", rowErrors);
 
                     // Validate required fields
                     if ((name == null || name.isEmpty()) || (email == null || email.isEmpty())) {
@@ -535,14 +541,22 @@ public class MarkReportServices {
         }
     }
 
-    private String getStringCellValue(Cell cell, int rowNumber, String columnName) {
+    private String getStringCellValue(Cell cell, int rowNumber, String columnName, List<String> errors) {
         if (cell == null) {
             return null; // Allow null value
         }
         try {
-            return cell.getStringCellValue().trim();
+            String value = cell.getStringCellValue().trim();
+
+            // Check if the value exceeds 255 characters
+            if (value.length() > 255) {
+                errors.add("Row " + rowNumber + ": " + columnName + " must not exceed 255 characters.\n");
+            }
+
+            return value;
         } catch (Exception e) {
             log.warn("Row " + rowNumber + ": " + columnName + " contains invalid data.");
+            errors.add("Row " + rowNumber + ": " + columnName + " contains invalid data.\n");
             return null;
         }
     }
@@ -588,20 +602,6 @@ public class MarkReportServices {
                 .map(request -> {
                     Student student = studentRepository.findByEmail(request.getEmail())
                             .orElseThrow();
-//                    Skill Calculation:
-//                    markReportExam = (kotoba + bunpou + kanji) /3
-//                    avg_exam_mark = sum of all markReportExam / total markReportExam
-//                    skill = (avg_exam_mark * 0.3) + (middle_exam * 0.4) + (final_exam * 0.3)
-//
-//                    Attitude Calculation:
-//                    attitude = ((completed_assignments / total_assignments) + (attended_slots / total_slots)) / 2.
-//
-//                    soft_skill = (presentation + script) / 2
-//
-//                    Final Mark Calculation:
-//                    final_mark = (soft_skill * 0.3) + (skill * 0.4) + (attitude * 0.3).
-
-
 
                     // Create the MarkReport
                     MarkReport markReport = markReportRepository.findByEmail(request.getEmail());
@@ -704,6 +704,9 @@ public class MarkReportServices {
     public void updateMarkRp(int markRpId, MarkReportUpdateRequest request){
         MarkReport markReport = markReportRepository.findById(markRpId);
 
+        if(markReport == null){
+            throw new IllegalStateException("Didn't find MarkReport with id: " + markRpId);
+        }
         // Update related exams
         for (MarkReportExamUpdateRequest examUpdate : request.getExams()) {
             MarkReportExam exam = markRpExamRepository.findByMarkRpIdAndExamName(examUpdate.getMarkRpId(), examUpdate.getExamName());
@@ -713,9 +716,6 @@ public class MarkReportServices {
             markRpExamRepository.save(exam);
         }
 
-        if(markReport == null){
-            throw new IllegalStateException("Didn't find MarkReport with id: " + markRpId);
-        }
 
         Student student = studentRepository.findById(markReport.getStudent().getId())
                 .orElseThrow();
@@ -821,29 +821,5 @@ public class MarkReportServices {
         markReportRepository.save(markReport);
     }
 
-    public void updateGrades(List<MarkReportDTO> gradeDTOs) {
-        for (MarkReportDTO dto : gradeDTOs) {
-            // We need to find the MarkReport for the student
-            MarkReport markReport = markReportRepository.findByStudentId(dto.getStudentId());
-
-            if (markReport != null) {
-                // If the MarkReport exists, update the grade data
-                markReportRepository.updateGrade(
-                        dto.getStudentId(),
-                        dto.getComment(),
-                        dto.getAttitude(),
-                        dto.getSoftskill(),
-                        dto.getSkill(),
-                        dto.getAvgExamMark(),
-                        dto.getMiddleExam(),
-                        dto.getFinalExam(),
-                        dto.getFinalMark());
-            } else {
-                // Optionally, handle the case where the MarkReport doesn't exist
-                // (for example, throw an exception or log a message)
-                System.out.println("MarkReport not found for student ID: " + dto.getStudentId());
-            }
-        }
-    }
 
 }

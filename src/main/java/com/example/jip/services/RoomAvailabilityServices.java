@@ -39,7 +39,8 @@ public class RoomAvailabilityServices {
         return availabilities.stream().map(availability -> new RoomAvailabilityDTO(
                 availability.getRoom().getId(),
                 availability.getRoom().getName(),
-                availability.getStatus().name()
+                availability.getDate(),
+                availability.getStatus()
         )).collect(Collectors.toList());
     }
 
@@ -120,7 +121,7 @@ public class RoomAvailabilityServices {
         roomAvailabilityRepository.saveAll(availabilityList);
     }
 
-    public List<RoomAvailability> getRoomAvailability(String roomName, Date date, RoomAvailability.Status status) {
+    public List<RoomAvailabilityDTO> getRoomAvailability(String roomName, Date date, RoomAvailability.Status status) {
         return roomAvailabilityRepository.findRoomAvailability(roomName, date, status);
     }
 }

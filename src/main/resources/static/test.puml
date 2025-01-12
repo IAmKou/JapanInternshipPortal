@@ -1,91 +1,81 @@
 @startuml
+actor Teacher
+activate Teacher
+participant AssignmentController
+participant AssignmentService
+participant S3Service
+participant TeacherRepository
+participant AssignmentRepository
+participant ClassRepository
+participant AssignmentClassRepository
+participant AssignmentStudentRepository
+participant NotificationService
+participant EmailService
+participant S3Bucket
+participant ExternalEmailServer
+participant Database
 
-actor User
-participant Controller as "SemesterController"
-participant Service as "SemesterService"
-participant HolidayService as "HolidayService"
-participant RoomAvailabilityService as "RoomAvailabilityService"
-participant Repository as "SemesterRepository"
-participant Database as "Database"
+Teacher -> AssignmentController :1. POST /create
+activate AssignmentController
 
-User -> Controller: POST /create (Semester)
-activate Controller
+AssignmentController -> AssignmentService :2. createAssignment(request, teacher_id)
+activate AssignmentService
 
-alt Missing start_time or end_time
-    Controller -> User: Return BAD_REQUEST ("Start time and end time must not be null")
-else Semester name exists
-    Controller -> Service: isSemesterNameExist(semester.getName())
-    activate Service
-    Service -> Repository: Check semester name
-    activate Repository
-    Repository -> Database: Query semester by name
-    activate Database
-    Database --> Repository: Exists
+AssignmentService -> TeacherRepository :3. findByAccount_id(teacher_id)
+activate TeacherRepository
+TeacherRepository -> Database :3.1. Query Teacher by account_id
+activate Database
+Database --> TeacherRepository :3.2. Return Teacher entity
+TeacherRepository --> AssignmentService :4. Return Teacher entity
+deactivate TeacherRepository
+alt Teacher found
+    AssignmentService -> AssignmentService: Map request to Assignment
+    AssignmentService -> S3Service: uploadFilesToFolder(imgFiles, folderName)
+    activate S3Service
+    S3Service -> S3Bucket: Upload files
+    deactivate S3Service
+    activate S3Bucket
+    AssignmentService -> AssignmentRepository : save(assignment)
+    deactivate S3Bucket
+    activate AssignmentRepository
+    AssignmentRepository -> Database : Save Assignment
+    Database --> AssignmentRepository : Assignment Saved
+    AssignmentRepository --> AssignmentService : Return Saved Assignment
+    deactivate AssignmentRepository
+    AssignmentService -> ClassRepository : findById(classId)
+    activate ClassRepository
+    ClassRepository -> Database : Query Class by classId
+    Database --> ClassRepository : Return Class entity
+    ClassRepository --> AssignmentService : Return Class entity
+    deactivate ClassRepository
+    AssignmentService -> AssignmentClassRepository : save(AssignmentClass)
+    activate AssignmentClassRepository
+    AssignmentClassRepository -> Database: save AssignmentClass
+    deactivate AssignmentClassRepository
 
-    Repository --> Service: Exists
-    deactivate Repository
-    deactivate Service
-    Controller -> User: Return CONFLICT ("Semester name already exists")
-else Time overlaps
-    Controller -> Service: isTimeOverlap(start_time, end_time, semester.getId())
-    activate Service
-    Service -> Repository: Check time overlap
-    activate Repository
-    Repository -> Database: Query semesters
-    Database --> Repository: List<Semesters>
-    Repository --> Service: Overlap detected
-    deactivate Repository
-    deactivate Service
-    Controller -> User: Return CONFLICT ("Created times overlap")
-else Valid semester
-    Controller -> Service: saveSemester(semester)
-    activate Service
-    Service -> Repository: Save semester
-    activate Repository
-    Repository -> Database: Save semester
-    Database --> Repository: Success
-    Repository --> Service: Success
-    deactivate Repository
-    deactivate Service
+    loop for each student in Class
+        AssignmentService -> AssignmentStudentRepository : save(AssignmentStudent)
+        activate AssignmentStudentRepository
+        AssignmentStudentRepository -> Database : Save AssignmentStudent
+        deactivate AssignmentStudentRepository
+        AssignmentService -> NotificationService : createAutoNotificationForAssignment
+        activate NotificationService
+        NotificationService -> Database : Save Notification
+        deactivate NotificationService
+        AssignmentService -> EmailService : sendEmailCreateAssignment(studentEmail, className)
+        activate EmailService
+        EmailService -> ExternalEmailServer : Email Sent
+        deactivate EmailService
 
-    Controller -> HolidayService: fetchHolidays("JP", year, startDate, endDate)
-    activate HolidayService
-    HolidayService -> Database: Query holidays from external API
-    Database --> HolidayService: List<Holidays>
-    HolidayService --> Controller: List<Holidays>
-    deactivate HolidayService
+    end
 
-    Controller -> Service: addHolidaysToSemester(holidays)
-    activate Service
-    Service -> Repository: Check and save holidays
-    activate Repository
-    Repository -> Database: Save new holidays
-    Database --> Repository: Success
-        Repository --> Service: Success
-deactivate Repository
-    deactivate Service
-
-    Controller -> Service: addHolidaysToSchedule(semester, holidays)
-    activate Service
-    Service -> Repository: Save holiday schedules
-    activate Repository
-    Repository -> Database: Save schedules
-    Database --> Repository: Success
-        Repository --> Service: Success
-deactivate Repository
-    deactivate Service
-
-    Controller -> RoomAvailabilityService: initializeRoomAvailabilityForSemester(semester.getId())
-    activate RoomAvailabilityService
-    RoomAvailabilityService -> Database: Initialize room availability
-    Database --> RoomAvailabilityService: Success
-    deactivate Database
-    deactivate RoomAvailabilityService
-
-    Controller -> User: Return CREATED ("Semester created successfully with holidays in the schedule!")
-    deactivate Controller
+else Teacher not found
+    AssignmentService -> AssignmentService : throw IllegalArgumentException
 end
 
+AssignmentService --> AssignmentController : Return ResponseEntity
+deactivate AssignmentService
 
-
+AssignmentController --> Teacher : Return ResponseEntity
+deactivate AssignmentController
 @enduml

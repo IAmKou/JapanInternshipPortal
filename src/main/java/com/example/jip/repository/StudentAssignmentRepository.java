@@ -20,11 +20,10 @@ public interface StudentAssignmentRepository extends JpaRepository<StudentAssign
 
     List<StudentAssignment> findAllByStudentId(int studentId);
 
+    @Query("SELECT sa FROM StudentAssignment sa WHERE sa.assignment.id = :assignmentId AND sa.status = :status")
+    List<StudentAssignment> findByAssignmentIdAndStatus(@Param("assignmentId") int assignmentId, @Param("status") String status);
+
     List<StudentAssignment> findByAssignmentId(int assignmentId);
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM StudentAssignment sa WHERE sa.assignment.id = :assignmentId")
-    void deleteByAssignmentId(int assignmentId);
 
     int countStudentAssignmentByStudentId(int studentId);
 }

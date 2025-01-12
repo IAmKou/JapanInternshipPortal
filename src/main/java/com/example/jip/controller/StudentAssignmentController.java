@@ -1,7 +1,6 @@
 package com.example.jip.controller;
 
 import com.example.jip.dto.StudentDTO;
-import com.example.jip.dto.request.assignment.FileDeleteRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentFileDeleteRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentGradeRequest;
 import com.example.jip.dto.request.studentAssignment.StudentAssignmentSubmitRequest;
@@ -15,7 +14,6 @@ import com.example.jip.repository.AssignmentRepository;
 import com.example.jip.repository.StudentAssignmentRepository;
 import com.example.jip.repository.StudentRepository;
 import com.example.jip.services.StudentAssignmentServices;
-import com.example.jip.services.StudentServices;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -38,8 +36,6 @@ public class StudentAssignmentController {
 
     StudentAssignmentServices studentAssignmentServices;
 
-    StudentServices studentServices;
-
     StudentRepository studentRepository;
 
     AssignmentRepository assignmentRepository;
@@ -50,7 +46,8 @@ public class StudentAssignmentController {
 
     @GetMapping("/get-student-id")
     public ResponseEntity<Integer> getStudentId(@RequestParam int accountId) {
-        int studentId = studentServices.getStudentIdByAccountId(accountId);
+        Student student= studentRepository.findByAccount_id(accountId).orElseThrow();
+        int studentId = student.getId();
         return ResponseEntity.ok(studentId);
     }
 

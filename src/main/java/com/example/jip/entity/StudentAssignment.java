@@ -48,7 +48,8 @@ public class StudentAssignment {
 
     public enum Status {
         SUBMITTED, // Editable/Deletable
-        MARKED     // Not editable/deletable
+        MARKED,     // Not editable/deletable
+        NOTSUBMITTED //
     }
 
 }

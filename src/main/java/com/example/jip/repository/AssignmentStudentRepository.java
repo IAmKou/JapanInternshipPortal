@@ -8,12 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
 @Repository
 public interface AssignmentStudentRepository extends JpaRepository<AssignmentStudent, Student> {
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM AssignmentStudent ast WHERE ast.assignment.id = :assignmentId")
-    void deleteByAssignmentId(@Param("assignmentId") int assignmentId);
 
     int countByStudentId(int studentId);
+
+    List<AssignmentStudent> findByAssignmentId(int assignmentId);
 }

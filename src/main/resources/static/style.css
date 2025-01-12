@@ -4273,6 +4273,10 @@ ul {
 .btn-gradient-yellow {
   background-color: #ffae01;
 }
+
+.btn-gradient-gray {
+  background-color: dimgray;
+}
 .gradient-dodger-blue {
   background: -webkit-gradient(linear, left top, right top, from(#2196f3), to(#21bff3));
   background: -webkit-linear-gradient(left, #2196f3, #21bff3);

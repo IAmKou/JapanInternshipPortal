@@ -342,17 +342,11 @@ public class AccountImportServices {
         if (fullname == null || fullname.isEmpty()) {
             errors.add("Row " + rowNum + ": Full name cannot be null or empty.");
             isValid = true;
-        } else if (!fullname.matches("^[a-zA-Z\\s]+$")) { // Allows only letters and spaces
-            errors.add("Row " + rowNum + ": Full name cannot contain special characters or numbers.");
-            isValid = true;
         }
 
         // Validate Japanese name
         if (japanname == null || japanname.isEmpty()) {
             errors.add("Row " + rowNum + ": Japanese name cannot be null or empty.");
-            isValid = true;
-        } else if (!japanname.matches("^[a-zA-Z\\s]+$")) { // Allows only letters and spaces
-            errors.add("Row " + rowNum + ": Japanese name cannot contain special characters or numbers.");
             isValid = true;
         }
 

@@ -109,11 +109,11 @@ public class RoomController {
     }
 
     @GetMapping("/getRoomAvailability")
-    public ResponseEntity<List<RoomAvailability>> getRoomAvailability(
+    public ResponseEntity<List<RoomAvailabilityDTO>> getRoomAvailability(
             @RequestParam(required = false) String roomName,
             @RequestParam(required = false) Date date,
             @RequestParam(required = false) RoomAvailability.Status status) {
-        List<RoomAvailability> availabilities = roomAvailabilityServices.getRoomAvailability(roomName, date, status);
+        List<RoomAvailabilityDTO> availabilities = roomAvailabilityServices.getRoomAvailability(roomName, date, status);
         return ResponseEntity.ok(availabilities);
     }
 

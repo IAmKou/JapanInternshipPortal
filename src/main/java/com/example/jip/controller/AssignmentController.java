@@ -9,6 +9,7 @@ import com.example.jip.dto.response.assignment.AssignmentResponse;
 import com.example.jip.dto.response.assignmentClass.AssignmentClassResponse;
 import com.example.jip.entity.Teacher;
 import com.example.jip.repository.AssignmentClassRepository;
+import com.example.jip.repository.AssignmentRepository;
 import com.example.jip.repository.ClassRepository;
 import com.example.jip.repository.TeacherRepository;
 import com.example.jip.services.AssignmentServices;
@@ -31,17 +32,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/assignment")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AssignmentController {
+public abstract class AssignmentController implements AssignmentRepository {
 
     AssignmentServices assignmentServices;
-
-    TeacherRepository teacherRepository;
-
-    ClassRepository classRepository;
-
-    AssignmentClassRepository assignmentClassRepository;
-
-    NotificationServices notificationServices;
 
     @GetMapping("/list")
     public ResponseEntity<List<AssignmentResponse>> getAllAssignments(@RequestParam("teacherId") int teacherId) {
@@ -72,13 +65,7 @@ public class AssignmentController {
             log.info("Received request: " + request);
             log.info("Received classIds: " + request.getClassIds());
 
-            Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
-            TeacherDTO teacherDTO = new TeacherDTO();
-            teacherDTO.setId(teacherOpt.get().getId());
-            request.setTeacher(teacherDTO);
-
-            assignmentServices.createAssignment(request);
-
+            assignmentServices.createAssignment(request, teacherId);
 
             log.info("Assignment create successfully.");
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -92,43 +79,12 @@ public class AssignmentController {
     @GetMapping("/exists")
     public ResponseEntity<Boolean> checkIfDescriptionExists(@RequestParam("description") String description, @RequestParam("teacherId") int teacherId) {
         log.info("teacherId: {}", teacherId);
-        Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
-        boolean exists = assignmentServices.descriptionExists(description, teacherOpt.get().getId());
+
+        boolean exists = assignmentServices.descriptionExists(description, teacherId);
         return ResponseEntity.ok(exists);
     }
 
-    @GetMapping("/getCByTid")
-    public List<ClassDTO> getClassByTid(@RequestParam("teacherId") Integer teacherId) {
-
-        Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
-
-        return classRepository.findByTeacher_Id(teacherOpt.get().getId()).stream()
-                .map(ClassDTO::new)
-                .collect(Collectors.toList());
-    }
-
-    @GetMapping("/getCByTid2")
-    public List<ClassDTO> getClassByTid2(@RequestParam("teacherId") Integer teacherId) {
-        return classRepository.findByTeacher_Id(teacherId).stream()
-                .map(ClassDTO::new)
-                .collect(Collectors.toList());
-    }
-
-
-    @GetMapping("/getCByAid")
-    public List<AssignmentClassResponse> getClassByAssignmentId(@RequestParam("assignmentId") Integer assignmentId) {
-
-        return assignmentClassRepository.findAllByAssignmentId(assignmentId).stream()
-                .map(assignmentClass -> {
-                    AssignmentClassResponse response = new AssignmentClassResponse();
-                    response.setAssignmentId(assignmentClass.getAssignment().getId());
-                    response.setClassName(assignmentClass.getClas().getName());
-                    response.setClassId(assignmentClass.getClas().getId());
-                    log.info("Received response: " + response);
-                    return response;
-                })
-                .collect(Collectors.toList());
-    }
+    
 
     @GetMapping("/detailByAS/{studentAssignmentId}")
     public ResponseEntity<AssignmentResponse> getAssignmentByStudentAssignmentId(
@@ -161,19 +117,6 @@ public class AssignmentController {
     }
 
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteAssignment(@RequestParam("assignmentId") int assignmentId) {
-        try {
-            log.info("Deleting assignment with ID: {}", assignmentId);
-            assignmentServices.deleteAssignmentById(assignmentId);
-            return ResponseEntity.noContent().build(); // Return 204 No Content on success
-        } catch (NullPointerException e) {
-            log.error("Error deleting assignment: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Assignment not found with ID: " + assignmentId); // Return error message for debugging
-        }
-    }
-
 
     @GetMapping("/detail/{assignment_id}")
         public ResponseEntity<AssignmentResponse> getAssignmentById(@PathVariable("assignment_id") int assignmentId) {
@@ -188,7 +131,7 @@ public class AssignmentController {
     }
 
     @PutMapping("/update/{assignment_id}")
-        public ResponseEntity<?> updateAssignment(@PathVariable("assignment_id") int assignment_id,
+        public ResponseEntity<?> updateAssignment(@PathVariable("assignment_id") int assignmentId,
                                                   @ModelAttribute AssignmentUpdateRequest request) {
             try {
                 log.info("Received request: " + request);  // Log the incoming request for debugging
@@ -203,7 +146,7 @@ public class AssignmentController {
                 }
 
                 log.info("Received classIds: " + request.getClassIds());
-                assignmentServices.updateAssignment(assignment_id, request);
+                assignmentServices.updateAssignment(assignmentId, request);
                 return ResponseEntity.noContent().build(); // Return 204 No Content on successful update
             } catch (NoSuchElementException e) {
                 log.error("Assignment not found", e);
