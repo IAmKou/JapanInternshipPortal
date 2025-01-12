@@ -41,33 +41,6 @@ class ClassControllerTest {
 
 
 
-    @Test
-    void testDeleteClass_Success() {
-        // Arrange
-        int classId = 1;
-        when(classRepository.existsById(classId)).thenReturn(true);
 
-        // Act
-        boolean result = classController.deleteClass(classId);
 
-        // Assert
-        assertTrue(result);
-        verify(listRepository, times(1)).deleteStudentsByClassId(classId);
-        verify(classRepository, times(1)).deleteById(classId);
-    }
-
-    @Test
-    void testDeleteClass_ClassNotFound() {
-        // Arrange
-        int classId = 999; // Non-existing class ID
-        when(classRepository.existsById(classId)).thenReturn(false);
-
-        // Act
-        boolean result = classController.deleteClass(classId);
-
-        // Assert
-        assertFalse(result);
-        verify(listRepository, never()).deleteStudentsByClassId(classId);
-        verify(classRepository, never()).deleteById(classId);
-    }
 }

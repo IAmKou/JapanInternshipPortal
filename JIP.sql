@@ -296,7 +296,7 @@ CREATE TABLE Application (
 -- Notification table (linked with Account)
 CREATE TABLE Notification (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    Title TEXT NOT NULL,  -- Thay kiểu VARCHAR(100) thành TEXT
+    Title TEXT NOT NULL,
     Created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     account_id INT,
     recipient_account_id INT DEFAULT NULL,

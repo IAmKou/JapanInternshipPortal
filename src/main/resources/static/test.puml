@@ -1,38 +1,91 @@
 @startuml
-actor Teacher
-activate Teacher
-Teacher -> GradeAssignmentPage : 1. Click "Grade Assignment Button"
-activate GradeAssignmentPage
 
-GradeAssignmentPage --> Teacher: 2. Display "Grade Assignment" pop up
+actor User
+participant Controller as "SemesterController"
+participant Service as "SemesterService"
+participant HolidayService as "HolidayService"
+participant RoomAvailabilityService as "RoomAvailabilityService"
+participant Repository as "SemesterRepository"
+participant Database as "Database"
 
-Teacher -> GradeAssignmentPage: 3. Fill in form and click "Submit"
+User -> Controller: POST /create (Semester)
+activate Controller
 
-GradeAssignmentPage -> StudentAssignmentController: 4. Request
-activate StudentAssignmentController
-StudentAssignmentController -> StudentAssignmentService: 5. gradeSubmittedAssignment()
-activate StudentAssignmentService
-StudentAssignmentService -> StudentAssignmentRepository: 6. gradeSubmittedAssignment()
-activate StudentAssignmentRepository
-StudentAssignmentRepository -> MySql: 7. Execute query
-activate MySql
-MySql --> StudentAssignmentRepository: 8. Return result
-deactivate MySql
-StudentAssignmentRepository --> StudentAssignmentService:9. Message
+alt Missing start_time or end_time
+    Controller -> User: Return BAD_REQUEST ("Start time and end time must not be null")
+else Semester name exists
+    Controller -> Service: isSemesterNameExist(semester.getName())
+    activate Service
+    Service -> Repository: Check semester name
+    activate Repository
+    Repository -> Database: Query semester by name
+    activate Database
+    Database --> Repository: Exists
 
-alt StudentAssignment found
+    Repository --> Service: Exists
+    deactivate Repository
+    deactivate Service
+    Controller -> User: Return CONFLICT ("Semester name already exists")
+else Time overlaps
+    Controller -> Service: isTimeOverlap(start_time, end_time, semester.getId())
+    activate Service
+    Service -> Repository: Check time overlap
+    activate Repository
+    Repository -> Database: Query semesters
+    Database --> Repository: List<Semesters>
+    Repository --> Service: Overlap detected
+    deactivate Repository
+    deactivate Service
+    Controller -> User: Return CONFLICT ("Created times overlap")
+else Valid semester
+    Controller -> Service: saveSemester(semester)
+    activate Service
+    Service -> Repository: Save semester
+    activate Repository
+    Repository -> Database: Save semester
+    Database --> Repository: Success
+    Repository --> Service: Success
+    deactivate Repository
+    deactivate Service
 
-    deactivate StudentAssignmentRepository
-    StudentAssignmentService --> StudentAssignmentController : 10.1 Successful message
-    StudentAssignmentController --> GradeAssignmentPage: 11.1 Response
-    GradeAssignmentPage --> Teacher: 12.1 Display successful message and close popup
-else StudentAssignment not found
-    StudentAssignmentService --> StudentAssignmentController : 10.2 Unsuccessful message
-    deactivate StudentAssignmentService
-    StudentAssignmentController --> GradeAssignmentPage: 11.2 Response
-    deactivate StudentAssignmentController
-GradeAssignmentPage --> Teacher: 12.2 Display Unsuccessful message and close popup
+    Controller -> HolidayService: fetchHolidays("JP", year, startDate, endDate)
+    activate HolidayService
+    HolidayService -> Database: Query holidays from external API
+    Database --> HolidayService: List<Holidays>
+    HolidayService --> Controller: List<Holidays>
+    deactivate HolidayService
+
+    Controller -> Service: addHolidaysToSemester(holidays)
+    activate Service
+    Service -> Repository: Check and save holidays
+    activate Repository
+    Repository -> Database: Save new holidays
+    Database --> Repository: Success
+        Repository --> Service: Success
+deactivate Repository
+    deactivate Service
+
+    Controller -> Service: addHolidaysToSchedule(semester, holidays)
+    activate Service
+    Service -> Repository: Save holiday schedules
+    activate Repository
+    Repository -> Database: Save schedules
+    Database --> Repository: Success
+        Repository --> Service: Success
+deactivate Repository
+    deactivate Service
+
+    Controller -> RoomAvailabilityService: initializeRoomAvailabilityForSemester(semester.getId())
+    activate RoomAvailabilityService
+    RoomAvailabilityService -> Database: Initialize room availability
+    Database --> RoomAvailabilityService: Success
+    deactivate Database
+    deactivate RoomAvailabilityService
+
+    Controller -> User: Return CREATED ("Semester created successfully with holidays in the schedule!")
+    deactivate Controller
 end
 
-deactivate StudentAssignmentController
+
+
 @enduml

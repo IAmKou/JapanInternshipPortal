@@ -38,7 +38,7 @@ public class Attendant {
     @Column(name = "end_time", nullable = false)
     private Time endTime;
 
-    @Column(name = "isFinalized", nullable = false)
+    @Column(name = "is_finalized", nullable = false)
     private Boolean isFinalized;
 
     public enum Status {

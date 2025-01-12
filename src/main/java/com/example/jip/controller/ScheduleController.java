@@ -63,7 +63,7 @@ public class ScheduleController {
     public List<ScheduleDTO> getSchedule(@PathVariable int semesterId) {
         List<Schedule> schedules = scheduleRepository.findBySemesterIdAndStatus(semesterId, Schedule.status.valueOf("Draft"));
         if (schedules == null) {
-            return new ArrayList<>(); // Return an empty list if no data
+            return new ArrayList<>();
         }
         return schedules.stream()
                 .map(ScheduleDTO::new)

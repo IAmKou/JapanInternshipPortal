@@ -92,6 +92,10 @@ public class AttendantServices {
         if (schedules.size() > 1) {
             throw new IllegalStateException("Multiple schedules found for class ID " + classId + " and date " + date);
         }
+        LocalTime now = LocalTime.now();
+        if (now.isBefore(LocalTime.of(13, 30)) || now.isAfter(LocalTime.of(17, 0))) {
+            throw new IllegalArgumentException("Attendance can only be edit between 13:30 and 17:00.");
+        }
         Schedule schedule = schedules.get(0);
 
         List<Attendant> attendantsToUpdate = new ArrayList<>();
@@ -101,7 +105,7 @@ public class AttendantServices {
             if (dto.getDate() == null || !dto.getDate().toLocalDate().equals(today)) {
                 throw new IllegalArgumentException("Invalid or mismatched date in attendance record.");
             }
-            if (dto.isFinalized()) {
+            if (!dto.isFinalized()) {
                 throw new IllegalArgumentException("Attendance record is finalized.");
             }
 

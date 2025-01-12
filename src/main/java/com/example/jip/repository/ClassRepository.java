@@ -14,7 +14,10 @@ import java.util.Optional;
 public interface ClassRepository extends JpaRepository<Class,Integer> {
     List<Class> findByTeacher_Id(Integer teacherId);
     Optional<Class> findById(Integer id);
-    boolean existsByNameAndStatus(String name, Class.status status);
+    @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END " +
+            "FROM Class c WHERE c.name = :name AND c.semester.id = :semesterId")
+    boolean existsByNameAndSemesterId(@Param("name") String name, @Param("semesterId") int semesterId);
+
     @Modifying
     @Query("UPDATE Class c SET c.status = 'Active' WHERE c.semester.id = :semesterId")
     void activateClassesBySemester(int semesterId);

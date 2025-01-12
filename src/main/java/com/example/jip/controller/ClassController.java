@@ -18,8 +18,10 @@ import com.example.jip.entity.Class;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -55,7 +57,7 @@ public class ClassController {
             throw new IllegalArgumentException("Class name is required");
         }
 
-        boolean classExists = classRepository.existsByNameAndStatus(classDTO.getName(), Class.status.Active);
+        boolean classExists = classRepository.existsByNameAndSemesterId(classDTO.getName(), semester.getId());
         if (classExists) {
             return "A class with the name [" + classDTO.getName() + "] is already active.";
         }
@@ -89,7 +91,7 @@ public class ClassController {
             }
 
             // Check if a class with the same name and active status already exists
-            boolean classExists = classRepository.existsByNameAndStatus(classDTO.getName(), Class.status.Active);
+            boolean classExists = classRepository.existsByNameAndSemesterId(classDTO.getName(), classDTO.getSemesterId());
             if (classExists) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
                         .body("A class with the name [" + classDTO.getName() + "] is already active.");
@@ -122,14 +124,32 @@ public class ClassController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public boolean deleteClass(@PathVariable int id) {
+    public ResponseEntity<String> deleteClass(@PathVariable int id) {
         if (classRepository.existsById(id)) {
-            listRepository.deleteStudentsByClassId(id);
-            classRepository.deleteById(id);
-            return true;
+            Optional<Class> optionalClass = classRepository.findById(id);
+
+            if (optionalClass.isPresent()) {
+                Class clasz = optionalClass.get();
+                LocalDate startDate = clasz.getSemester().getStart_time().toLocalDate();
+                LocalDate today = LocalDate.now();
+
+                if (today.isAfter(startDate)) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                            .body("Cannot delete class that have already started");
+                }
+
+                // Proceed to delete students and class
+                listRepository.deleteStudentsByClassId(id);
+                classRepository.deleteById(id);
+                return ResponseEntity.ok("Class deleted successfully.");
+            }
         }
-        return false;
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("Class not found.");
     }
+
+
 
     @GetMapping("/student/{studentId}")
     public List<ClassDTO> getClassesByStudentId(@PathVariable int studentId) {
