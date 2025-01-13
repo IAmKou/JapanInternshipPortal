@@ -186,7 +186,7 @@ public class AssignmentServices {
 
 
         // Save the assignment
-        return savedAssignment;
+        return assignmentRepository.save(assignment);
     }
 
     public boolean descriptionExists(String description, int teacherId) {
@@ -384,12 +384,12 @@ public class AssignmentServices {
                     Student student = listEntry.getStudent();
 
                     assignmentStudentRepository.save(new AssignmentStudent(assignment, student));
-                    notificationServices.createAutoNotificationForAssignment(assignment.getDescription() +
-                            "has been updated",
+                    notificationServices.createAutoNotificationForAssignment(
+                            "New assignment created",
                             teacher.getAccount().getId(),
                             student.getAccount().getId()
                     );
-                    emailServices.sendEmailCreateAssignment(student.getEmail(),clas.getName());
+//                    emailServices.sendEmailCreateAssignment(student.getEmail(),clas.getName());
                 }
             }
         }

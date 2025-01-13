@@ -602,6 +602,20 @@ public class MarkReportServices {
                 .map(request -> {
                     Student student = studentRepository.findByEmail(request.getEmail())
                             .orElseThrow();
+//                    Skill Calculation:
+//                    markReportExam = (kotoba + bunpou + kanji) /3
+//                    avg_exam_mark = sum of all markReportExam / total markReportExam
+//                    skill = (avg_exam_mark * 0.3) + (middle_exam * 0.4) + (final_exam * 0.3)
+//
+//                    Attitude Calculation:
+//                    attitude = ((completed_assignments / total_assignments) + (attended_slots / total_slots)) / 2.
+//
+//                    soft_skill = (presentation + script) / 2
+//
+//                    Final Mark Calculation:
+//                    final_mark = (soft_skill * 0.3) + (skill * 0.4) + (attitude * 0.3).
+
+
 
                     // Create the MarkReport
                     MarkReport markReport = markReportRepository.findByEmail(request.getEmail());
@@ -704,9 +718,6 @@ public class MarkReportServices {
     public void updateMarkRp(int markRpId, MarkReportUpdateRequest request){
         MarkReport markReport = markReportRepository.findById(markRpId);
 
-        if(markReport == null){
-            throw new IllegalStateException("Didn't find MarkReport with id: " + markRpId);
-        }
         // Update related exams
         for (MarkReportExamUpdateRequest examUpdate : request.getExams()) {
             MarkReportExam exam = markRpExamRepository.findByMarkRpIdAndExamName(examUpdate.getMarkRpId(), examUpdate.getExamName());
@@ -716,6 +727,9 @@ public class MarkReportServices {
             markRpExamRepository.save(exam);
         }
 
+        if(markReport == null){
+            throw new IllegalStateException("Didn't find MarkReport with id: " + markRpId);
+        }
 
         Student student = studentRepository.findById(markReport.getStudent().getId())
                 .orElseThrow();
