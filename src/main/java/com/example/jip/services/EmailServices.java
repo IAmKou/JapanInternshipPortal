@@ -134,46 +134,6 @@ public class EmailServices {
         }
     }
 
-    public void sendEmailSubmittedAssignment(String recipientEmail, String studentName, String className) {
-        // Email configuration
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-
-        // Authenticate
-        Session session = Session.getInstance(props, new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(senderEmail, senderPassword);
-            }
-        });
-
-        try {
-            // Create the email content
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(senderEmail));
-            message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
-            message.setSubject("Your Account Details");
-
-            // Email body
-            String emailBody = String.format(
-                    "There is a new submitted assignment in your class: %s\n of: %s\n\n" +
-                            "Go check it out.",
-                    className, studentName
-            );
-
-            message.setText(emailBody);
-
-            // Send the email
-            Transport.send(message);
-
-        } catch (MessagingException e) {
-            e.printStackTrace();
-
-        }
-    }
 
     public void sendScheduleUpdate(String recipientEmail, Date date) {
         // Email configuration

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class ManagerServices {
@@ -38,7 +39,9 @@ public class ManagerServices {
 
         String folderName = sanitizeFolderName("Account/Manager/" + accountOpt.get().getUsername());
 
-        String imgUrl = s3Service.uploadFile(img, folderName, img.getOriginalFilename());
+        CompletableFuture<String> imgUrlFuture = CompletableFuture.supplyAsync(() ->
+                s3Service.uploadFile(img, folderName, img.getOriginalFilename())
+        );
 
         Manager manager = new Manager();
         manager.setFullname(fullname);
@@ -46,19 +49,23 @@ public class ManagerServices {
         manager.setEmail(email);
         manager.setPhoneNumber(phoneNumber);
         manager.setGender(Manager.Gender.valueOf(gender));
-        manager.setImg(imgUrl);
         manager.setAccount(accountOpt.get());
         Manager savedManager = managerRepository.save(manager);
 
-        String account = accountOpt.get().getUsername();
-
-        String emailStatus = emailServices.sendEmail(password, account);
-        if (emailStatus == null) {
-            System.out.println("Failed to send email to: " + email);
-        } else {
-            System.out.println("Email sent successfully to: " + email);
+        try {
+            manager.setImg(imgUrlFuture.get());
+        } catch (Exception e) {
+            throw new RuntimeException("Image upload failed", e);
         }
 
+        CompletableFuture.runAsync(() -> {
+            String emailStatus = emailServices.sendEmail(password, accountOpt.get().getUsername());
+            if (emailStatus == null) {
+                System.out.println("Failed to send email to: " + email);
+            } else {
+                System.out.println("Email sent successfully to: " + email);
+            }
+        });
         return savedManager;
 
     }
