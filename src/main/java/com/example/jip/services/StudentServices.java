@@ -36,21 +36,18 @@ public class StudentServices {
     @Autowired
     private MarkRpExamRepository markRpExamRepository;
 
-    public Student createStudent(String fullname, String japanname, Date dob, String gender, String phoneNumber, String email, MultipartFile img, int accountId) {
+    public Student createStudent(String fullname, String japanname, Date dob, String gender, String phoneNumber, String email, MultipartFile img, int accountId, String password) {
         Optional<Account> accountOpt = accountRepository.findById(accountId);
         if (!accountOpt.isPresent()) {
             throw new IllegalArgumentException("No account found with id: " + accountId);
         }
 
-        // Check for duplicate email or phone number
         if (isDuplicate(email, phoneNumber)) {
             throw new IllegalArgumentException("Duplicate email or phone number found");
         }
 
         String folderName = sanitizeFolderName("Account/Student/" + accountOpt.get().getUsername());
-        String folderNameP = sanitizeFolderName("Account/Student/" + accountOpt.get().getUsername() + "/Passport");
 
-        // Upload image and passport
         String imgUrl = s3Service.uploadFile(img, folderName, img.getOriginalFilename());
 
         // Create a new Student object
@@ -90,8 +87,7 @@ public class StudentServices {
         }
 
         String account = accountOpt.get().getUsername();
-        String password = accountOpt.get().getPassword();
-        String emailStatus = emailServices.sendEmail(email, password, account);
+        String emailStatus = emailServices.sendEmail(password, account);
         if (emailStatus == null) {
             System.out.println("Failed to send email to: " + email);
         } else {

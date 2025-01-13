@@ -61,7 +61,7 @@ public class EmailServices {
         return verifyCode;
     }
 
-    public String sendEmail(String recipientEmail, String accountUsername, String plainPassword) {
+    public String sendEmail(String recipientEmail, String plainPassword) {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -82,9 +82,9 @@ public class EmailServices {
             message.setSubject("Your Account Details");
 
             String emailBody = String.format(
-                    "Your account username: %s\nYour temporary password: %s\n\n" +
+                    "Your account username is your email Your temporary password: %s\n" +
                             "Please log in and change your password immediately for security.",
-                    accountUsername, plainPassword
+                    plainPassword
             );
 
             message.setText(emailBody);
