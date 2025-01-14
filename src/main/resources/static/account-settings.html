@@ -1432,6 +1432,29 @@
 </script>
 <!-- create account -->
 <script>
+    document.getElementById('role').addEventListener('change', function () {
+        const role = this.value;
+        const dobContainer = document.getElementById('dobContainer');
+
+        if (role === '2') { // Role là Student
+            dobContainer.style.display = 'block'; // Hiển thị Date of Birth
+        } else { // Role là Teacher hoặc Manager
+            dobContainer.style.display = 'none'; // Ẩn Date of Birth
+        }
+    });
+
+    // Kiểm tra khi modal được mở
+    document.addEventListener('DOMContentLoaded', function () {
+        const role = document.getElementById('role').value;
+        const dobContainer = document.getElementById('dobContainer');
+
+        if (role === '2') {
+            dobContainer.style.display = 'block'; // Hiển thị Date of Birth
+        } else {
+            dobContainer.style.display = 'none'; // Ẩn Date of Birth
+        }
+    });
+
     document.getElementById('accountForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
@@ -1443,13 +1466,15 @@
         document.getElementById('email_error1').textContent = '';
         document.getElementById('phone_error1').textContent = '';
         document.getElementById('DoB_error1').textContent = ''; // Reset lỗi dob
+        document.getElementById('gender_error1').textContent = ''; // Reset lỗi giới tính
 
-        // Kiểm tra fullname, japanname, email, phone
+        // Kiểm tra fullname, japanname, email, phone, gender
         const fullname = formData.get('fullname').trim();
         const jname = formData.get('japanname').trim();
         const email = formData.get('email').trim();
         const phone = formData.get('phoneNumber').trim();
         const dob = formData.get('dob'); // Lấy giá trị ngày sinh (dob)
+        const gender = formData.get('gender'); // Lấy giá trị giới tính
         let isValid = true;
 
         // Kiểm tra full name
@@ -1498,11 +1523,17 @@
             const currentYear = today.getFullYear();  // Lấy năm hiện tại
 
             if (currentYear - birthYear < 18) {
-                document.getElementById('DoB_error1').textContent = 'You must be at least 18 years old.';
+                document.getElementById('DoB_error1').textContent = 'Must be at least 18 years old.';
                 isValid = false;
             }
         } else {
             document.getElementById('DoB_error1').textContent = 'Date of Birth is required.';
+            isValid = false;
+        }
+
+        // Kiểm tra giới tính (không có giới tính nào được chọn)
+        if (!gender) {
+            document.getElementById('gender_error1').textContent = 'Gender is required.';
             isValid = false;
         }
 
@@ -1546,6 +1577,7 @@
                 submitBtn.disabled = false; // Enable the submit button
             });
     });
+
 
 </script>
 <!-- notif -->
