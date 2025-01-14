@@ -37,19 +37,22 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            min-height: 72px; /* Thiết lập chiều cao tối thiểu của mỗi dòng */
+            align-items: flex-start; /* Đảm bảo các phần tử căn chỉnh ở đầu dòng */
+        }
+
+        .form-group {
+            flex: 1; /* Đảm bảo các trường chiếm đủ không gian có sẵn */
+        }
         .custom-filter-select {
             padding-right: 2.5rem; /* Thêm khoảng cách cho icon bên phải */
             font-size: 1rem; /* Kích thước chữ vừa phải */
-            height: 50px; /* Tăng chiều cao */
             border: 1px solid #ddd; /* Đường viền nhẹ */
             border-radius: 8px; /* Làm mềm góc */
             transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Hiệu ứng hover */
-        }
-
-        .custom-filter-select:focus {
-            outline: none;
-            border-color: #2575fc; /* Viền xanh khi focus */
-            box-shadow: 0 0 5px rgba(37, 117, 252, 0.5); /* Hiệu ứng shadow */
         }
 
         .custom-filter-select:hover {
@@ -64,10 +67,6 @@
         .table {
             border-collapse: separate;
             border-spacing: 0 8px; /* Khoảng cách giữa các dòng */
-        }
-
-        .table-hover tbody tr:hover {
-            background-color: #f5f8fa;
         }
 
         .table-primary th {
@@ -752,14 +751,6 @@
             </div>
             <div class="modal-body p-5">
                 <form class="login-form" id="accountForm">
-
-                    <!-- Username Field -->
-                    <div class="form-group input-group mb-5">
-                        <span class="input-group-text bg-light text-primary fs-3"><i class="bi bi-person-fill"></i></span>
-                        <input class="form-control fs-4 p-3" id="username" maxlength="100" name="username" placeholder="Enter your username" required type="text">
-                    </div>
-
-                    <!-- Role Dropdown (Mặc định là "Sinh viên") -->
                     <div class="form-group input-group mb-5">
                         <span class="input-group-text bg-light text-primary fs-3"><i class="bi bi-person-badge-fill"></i></span>
                         <select class="form-select fs-4 p-3" id="role" name="role" required>
@@ -775,14 +766,14 @@
                             <div class="form-group col-md-6">
                                 <label class="font-weight-bold" for="fullname">Fullname <span class="text-danger">*</span></label>
                                 <div class="input-icon">
-                                    <input class="form-control shadow-sm rounded" id="fullname" name="fullname" placeholder="Enter your name" required type="text">
+                                    <input class="form-control shadow-sm rounded" id="fullname" name="fullname" placeholder="Enter Fullname" required type="text">
                                     <span class="text-danger" id="fullname_error1"></span>
                                 </div>
                             </div>
                             <div class="form-group col-md-6">
                                 <label class="font-weight-bold" for="jname">Japan Name <span class="text-danger">*</span></label>
                                 <div class="input-icon">
-                                    <input class="form-control shadow-sm rounded" id="jname" name="japanname" placeholder="Enter your Japan name" required type="text">
+                                    <input class="form-control shadow-sm rounded" id="jname" name="japanname" placeholder="Enter Japan name" required type="text">
                                     <span class="text-danger" id="jname_error1"></span>
                                 </div>
                             </div>
@@ -792,21 +783,13 @@
                             <!-- Date of Birth (Sẽ bị ẩn khi chọn Manager hoặc Teacher) -->
                             <div class="form-group col-md-6" id="dobContainer">
                                 <label class="font-weight-bold" for="DoB">Date of Birth <span class="text-danger">*</span></label>
-                                <input class="form-control shadow-sm rounded" id="DoB" name="dob" required type="date">
+                                <input class="form-control shadow-sm rounded" id="DoB" name="dob" type="date">
                                 <span class="text-danger" id="DoB_error1"></span>
                             </div>
                             <div class="form-group col-md-6">
                                 <label class="font-weight-bold" for="email">Email <span class="text-danger">*</span></label>
                                 <input class="form-control shadow-sm rounded" id="email" name="email" placeholder="ex: abc@gmail.com" required type="email">
                                 <span class="text-danger" id="email_error1"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label class="font-weight-bold" for="phone">Phone Number <span class="text-danger">*</span></label>
-                                <input class="form-control shadow-sm rounded" id="phone" name="phoneNumber" placeholder="ex: 012345678" required type="text">
-                                <span class="text-danger" id="phone_error1"></span>
                             </div>
                             <div class="form-group col-md-6">
                                 <label class="font-weight-bold d-inline-block">Gender <span class="text-danger">*</span></label>
@@ -818,6 +801,14 @@
                                     <input class="form-check-input" id="female" name="gender" style="background-color: #ffffff;" type="radio" value="Female">
                                     <span for="female">Female</span>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold" for="phone">Phone Number <span class="text-danger">*</span></label>
+                                <input class="form-control shadow-sm rounded" id="phone" name="phoneNumber" placeholder="ex: 012345678" required type="text">
+                                <span class="text-danger" id="phone_error1"></span>
                             </div>
                             <span class="text-danger" id="gender_error1"></span>
                         </div>
@@ -836,7 +827,7 @@
 
                     <!-- Submit Button -->
                     <div class="form-group d-grid">
-                        <button class="btn btn-success fs-3 py-3" id="submit-btn" type="submit">Next</button>
+                        <button class="btn btn-success fs-3 py-3" id="submit-btn" type="submit" style="margin-top: 15px">Next</button>
                     </div>
 
                 </form>
@@ -1121,8 +1112,7 @@
             });
     }
 </script>
-
-<!-- modal -->
+<!-- import -->
 <script>
     document.getElementById('import').addEventListener('submit', function (event) {
         event.preventDefault(); // Ngăn chặn reload trang
@@ -1197,7 +1187,6 @@
 
 
 </script>
-
 <!-- fetch user -->
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
@@ -1268,8 +1257,7 @@
         console.error("User details not found in sessionStorage");
     }
 </script>
-
-
+<!-- pagination -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const tableBody = document.querySelector(".table tbody");
@@ -1428,10 +1416,8 @@
         fetchUsers();
     });
 </script>
-
-
+<!-- search -->
 <script>
-    // Function to extract query parameter by name
     function getQueryParam(param) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(param);
@@ -1445,7 +1431,7 @@
         successMessageElement.style.display = "block";  // Make the message visible
     }
 </script>
-
+<!-- create account -->
 <script>
     document.getElementById('role').addEventListener('change', function () {
         const role = this.value;
@@ -1502,313 +1488,7 @@
             });
     });
 </script>
-
-
-<script>
-    document.getElementById('createForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        const formData = new FormData(this);
-
-        // Lấy giá trị từ các trường
-        const fullname = document.getElementById('fullname_form1').value.trim();
-        const jname = document.getElementById('jname_form1').value.trim();
-        const email = document.getElementById('email_form1').value.trim();
-        const phone = document.getElementById('phone_form1').value.trim();
-        const imgInput = document.getElementById('img_form1');
-        const gender = document.querySelector('input[name="gender"]:checked');
-
-        let hasError = false;
-
-        // Validate fullname
-        if (fullname === '') {
-            showError('fullname_error', 'Please enter your fullname.');
-            hasError = true;
-        } else {
-            clearError('fullname_error');
-        }
-
-        // Validate jname
-        if (jname === '') {
-            showError('jname_error', 'Please enter your Japan name.');
-            hasError = true;
-        } else {
-            clearError('jname_error');
-        }
-
-        // Validate email
-        if (!isValidEmail(email)) {
-            showError('email_error', 'Please enter a valid email (e.g., abc@domain.com).');
-            hasError = true;
-        } else {
-            clearError('email_error');
-        }
-
-        // Validate phone number
-        if (!isValidPhoneNumber(phone)) {
-            showError('phone_error', 'Please enter a valid phone number.');
-            hasError = true;
-        } else {
-            clearError('phone_error');
-        }
-
-        // Validate gender
-        if (!gender) {
-            showError('gender_error', 'Please select a gender.');
-            hasError = true;
-        } else {
-            clearError('gender_error');
-        }
-
-        // Validate image file
-        if (!validateImageFile('img_form1', ['image/jpeg', 'image/png', 'image/jpg'], 2)) {
-            showError('img_error', 'Please select a valid image (JPEG/PNG) less than 2MB.');
-            hasError = true;
-        } else {
-            clearError('img_error');
-        }
-
-        if (hasError) {
-            return;
-        }
-
-        // Nếu không có lỗi, gửi form
-        fetch('/tm/save', {
-            method: 'POST',
-            body: formData,
-        })
-            .then((response) => response.text())
-            .then((data) => {
-                console.log('Server response:', data);
-                if (data.includes("Error")) {
-                    showErrorMessage(data);
-                } else {
-                    // Ẩn modal tạo tài khoản (nếu có id modal là "createModal")
-                    $('#createFormModal').modal('hide'); // Đảm bảo rằng #createModal là id của modal tạo tài khoản
-
-                    // Hiển thị modal thông báo thành công
-                    $('#success-modal1').modal('show'); // Hiển thị modal thành công
-
-                    // Sau 2 giây, reload lại trang
-                    setTimeout(function () {
-                        location.reload();
-                    }, 3000); // 2000ms = 2 giây
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                showMessage(error.message || 'Failed to create the account.');
-            });
-    });
-
-    function showErrorMessage(message) {
-        const errorMessageElement = document.getElementById('error-message1');
-        errorMessageElement.innerText = message;  // Hiển thị thông báo vào phần tử div#error-message
-    }
-
-    // Function để hiển thị thông báo lỗi
-    function showError(id, message) {
-        const errorElement = document.getElementById(id);
-        errorElement.innerText = message;
-    }
-
-    // Function để xóa thông báo lỗi
-    function clearError(id) {
-        const errorElement = document.getElementById(id);
-        errorElement.innerText = '';
-    }
-
-    function isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
-        return emailRegex.test(email);
-    }
-
-    function isValidPhoneNumber(phone) {
-        const phoneRegex = /^0\d{9}$/;
-        return phoneRegex.test(phone);
-    }
-
-    function validateImageFile(inputId, allowedTypes, maxSizeMB) {
-        const fileInput = document.getElementById(inputId);
-        const file = fileInput.files[0];
-        if (!file) return false;
-        const fileType = file.type;
-        const maxSizeBytes = maxSizeMB * 1024 * 1024;
-        return allowedTypes.includes(fileType) && file.size <= maxSizeBytes;
-    }
-
-</script>
-
-<script>
-    document.getElementById('createFormStudent').addEventListener('submit', function (event) {
-        event.preventDefault(); // Ngăn chặn hành động submit mặc định
-
-        const formData = new FormData(this);
-
-        // Lấy giá trị từ hidden inputs
-        const account_id = document.getElementById('account_id').value;
-
-        // Validate dữ liệu
-        const dob = document.getElementById('DoB').value.trim();
-        const fullname = document.getElementById('fullname').value.trim();
-        const jname = document.getElementById('jname').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const phone = document.getElementById('phone').value.trim();
-        const imgInput = document.getElementById('img');
-
-        const allowedImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-        const maxFileSizeMB = 2;
-        const gender = document.querySelector('input[name="gender"]:checked'); // Kiểm tra có chọn giới tính không
-
-        let hasError = false;
-        if (fullname === '') {
-            showError('fullname_error1', 'Please enter your fullname.');
-            hasError = true;
-        } else {
-            clearError('fullname_error1');
-        }
-
-        // Validate jname
-        if (jname === '') {
-            showError('jname_error1', 'Please enter your Japan name.');
-            hasError = true;
-        } else {
-            clearError('jname_error1');
-        }
-        // Validate dob
-        if (!dob) {
-            showError('DoB_error1', 'Please enter your date of birth.');
-            hasError = true;
-        } else {
-            clearError('DoB_error1');
-        }
-
-        // Validate email
-        if (!isValidEmail(email)) {
-            showError('email_error1', 'Please enter a valid email (e.g., abc@domain.com or abc@fpt.edu.vn).');
-            hasError = true;
-        } else {
-            clearError('email_error1');
-        }
-
-        // Validate phone number
-        if (!isValidPhoneNumber(phone)) {
-            showError('phone_error1', 'Please enter a valid phone number starting with 0, containing 10 digits.');
-            hasError = true;
-        } else {
-            clearError('phone_error1');
-        }
-
-        // Validate gender
-        if (!gender) {
-            showError('gender_error1', 'Please select a gender.');
-            hasError = true;
-        } else {
-            clearError('gender_error1');
-        }
-
-        // Validate image file (img)
-        if (!validateImageFile('img', allowedImageTypes, maxFileSizeMB)) {
-            showError('img_error1', `Invalid image. Allowed: JPEG/PNG up to ${maxFileSizeMB}MB.`);
-            hasError = true;
-        } else {
-            clearError('img_error');
-        }
-
-        // Validate date of birth (age)
-        if (!isValidDateOfBirth(dob)) {
-            showError('DoB_error1', 'Please enter a date that age >=18.');
-            hasError = true;
-        } else {
-            clearError('DoB_error1');
-        }
-
-        if (hasError) {
-            return; // Nếu có lỗi, không gửi form
-        }
-
-        // Nếu không có lỗi, gửi form
-        fetch('/student/save', {
-            method: 'POST',
-            body: formData,
-        })
-            .then((response) => response.text())  // Sử dụng .text() nếu phản hồi là HTML hoặc thông báo dưới dạng văn bản
-            .then((data) => {
-                console.log('Server response:', data);
-                if (data.includes("Error")) {
-                    showErrorMessage2(data);
-                } else {
-                    // Ẩn modal tạo tài khoản (nếu có id modal là "createModal")
-                    $('#create-account-student').modal('hide'); // Đảm bảo rằng #createModal là id của modal tạo tài khoản
-
-                    // Hiển thị modal thông báo thành công
-                    $('#success-modal1').modal('show'); // Hiển thị modal thành công
-
-                    // Sau 2 giây, reload lại trang
-                    setTimeout(function () {
-                        location.reload();
-                    }, 3000); // 2000ms = 2 giây
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                showMessage(error.message || 'Failed to create the account.');
-            });
-    });
-
-    // Function để hiển thị thông báo lỗi
-    function showError(id, message) {
-        const errorElement = document.getElementById(id);
-        errorElement.innerText = message;
-    }
-
-    // Function để xóa thông báo lỗi
-    function clearError(id) {
-        const errorElement = document.getElementById(id);
-        errorElement.innerText = '';
-    }
-
-    function showErrorMessage2(message) {
-        const errorMessageElement = document.getElementById('error-message2');
-        errorMessageElement.innerText = message;  // Hiển thị thông báo vào phần tử div#error-message
-    }
-
-    function isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const eduEmailRegex = /^[^\s@]+@fpt\.edu\.vn$/;
-        return emailRegex.test(email) || eduEmailRegex.test(email);
-    }
-
-    function isValidPhoneNumber(phone) {
-        const phoneRegex = /^0\d{9}$/;
-        return phoneRegex.test(phone);
-    }
-
-    function validateImageFile(inputId, allowedTypes, maxSizeMB) {
-        const fileInput = document.getElementById(inputId);
-        const file = fileInput.files[0];
-        if (!file) return false;
-        const fileType = file.type;
-        const maxSizeBytes = maxSizeMB * 1024 * 1024;
-        return allowedTypes.includes(fileType) && file.size <= maxSizeBytes;
-    }
-
-    function isValidDateOfBirth(date) {
-        const today = new Date();
-        const dob = new Date(date);
-        if (dob > today) {
-            return false;
-        }
-        let age = today.getFullYear() - dob.getFullYear();
-        const monthDifference = today.getMonth() - dob.getMonth();
-        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < dob.getDate())) {
-            age--;
-        }
-        return age >= 18;
-    }
-</script>
-
-<!-- fetch notification headbar-->
+<!-- notif -->
 <script>
     // Kiểm tra trạng thái khi trang được tải lại
     window.onload = function () {

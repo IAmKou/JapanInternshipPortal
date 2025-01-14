@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class TeacherServices {
@@ -26,7 +27,7 @@ public class TeacherServices {
     private EmailServices emailServices;
 
 
-    public Teacher createTeacher(String fullname, String jname, String email, String phoneNumber, String gender, MultipartFile img, int account_id) {
+    public Teacher createTeacher(String fullname, String jname, String email, String phoneNumber, String gender, MultipartFile img, int account_id, String password) {
         Optional<Account> accountOpt = accountRepository.findById(account_id);
         if (!accountOpt.isPresent()) {
             throw new IllegalArgumentException("No account found with id: " + account_id);
@@ -40,6 +41,8 @@ public class TeacherServices {
 
         String imgUrl = s3Service.uploadFile(img, folderName, img.getOriginalFilename());
 
+
+
         Teacher teacher = new Teacher();
         teacher.setFullname(fullname);
         teacher.setJname(jname);
@@ -50,15 +53,16 @@ public class TeacherServices {
         teacher.setAccount(accountOpt.get());
         Teacher savedTeacher = teacherRepository.save(teacher);
 
-        String account = accountOpt.get().getUsername();
-        String password = accountOpt.get().getPassword();
 
-//        String emailStatus = emailServices.sendEmail(email, password, account);
-//        if (emailStatus == null) {
-//            System.out.println("Failed to send email to: " + email);
-//        } else {
-//            System.out.println("Email sent successfully to: " + email);
-//        }
+
+        CompletableFuture.runAsync(() -> {
+            String emailStatus = emailServices.sendEmail(email,password);
+            if (emailStatus == null) {
+                System.out.println("Failed to send email to: " + email);
+            } else {
+                System.out.println("Email sent successfully to: " + email);
+            }
+        });
 
         return savedTeacher;
 

@@ -643,7 +643,7 @@
                     .then(data => {
                         console.log('Attendance saved successfully:', data);
                         showSuccessModal("Attendance saved successfully!");
-                        window.location.href = 'class-list-teacher';
+                        window.location.href = `class-list-teacher.html?classId=${classId}`;
                     })
                     .catch(error => {
                         console.error('Error saving attendance:', error);

@@ -61,7 +61,7 @@ public class EmailServices {
         return verifyCode;
     }
 
-    public String sendEmail(String recipientEmail, String accountUsername, String plainPassword) {
+    public String sendEmail(String recipientEmail, String plainPassword) {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -82,9 +82,10 @@ public class EmailServices {
             message.setSubject("Your Account Details");
 
             String emailBody = String.format(
-                    "Your account username: %s\nYour temporary password: %s\n\n" +
+                    "Your account username: " + recipientEmail +
+                            "Your temporary password: %s\n" +
                             "Please log in and change your password immediately for security.",
-                    accountUsername, plainPassword
+                    plainPassword
             );
 
             message.setText(emailBody);
@@ -134,46 +135,6 @@ public class EmailServices {
         }
     }
 
-    public void sendEmailSubmittedAssignment(String recipientEmail, String studentName, String className) {
-        // Email configuration
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-
-        // Authenticate
-        Session session = Session.getInstance(props, new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(senderEmail, senderPassword);
-            }
-        });
-
-        try {
-            // Create the email content
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(senderEmail));
-            message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
-            message.setSubject("Your Account Details");
-
-            // Email body
-            String emailBody = String.format(
-                    "There is a new submitted assignment in your class: %s\n of: %s\n\n" +
-                            "Go check it out.",
-                    className, studentName
-            );
-
-            message.setText(emailBody);
-
-            // Send the email
-            Transport.send(message);
-
-        } catch (MessagingException e) {
-            e.printStackTrace();
-
-        }
-    }
 
     public void sendScheduleUpdate(String recipientEmail, Date date) {
         // Email configuration

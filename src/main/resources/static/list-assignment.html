@@ -1272,14 +1272,14 @@
             const teacherId = urlParams.get('teacherId');
 
             // Fetch all classes taught by the teacher
-            const classResponse = await fetch(`${API_BASE_URL}/getCByTid2?teacherId=${teacherId}`);
+            const classResponse = await fetch(`/class/getCByTid?teacherId=${teacherId}`);
             if (!classResponse.ok) {
                 throw new Error('Error fetching classes: ' + classResponse.statusText);
             }
             const classes = await classResponse.json();
 
             // Fetch all classes already assigned to this assignment
-            const classAssignmentResponse = await fetch(`${API_BASE_URL}/getCByAid?assignmentId=${assignmentId}`);
+            const classAssignmentResponse = await fetch(`assignmentClass/getCByAid?assignmentId=${assignmentId}`);
             if (!classAssignmentResponse.ok) {
                 throw new Error('Error fetching assigned classes: ' + classAssignmentResponse.statusText);
             }

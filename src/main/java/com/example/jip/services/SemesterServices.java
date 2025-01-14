@@ -90,11 +90,13 @@ public class SemesterServices {
     }
 
 
-    public boolean isTimeOverlap(Date startTime, Date endTime) {
+    public boolean isTimeOverlap(Date startTime, Date endTime, int currentSemesterId) {
         List<Semester> semesters = semesterRepository.findAll();
 
         for (Semester semester : semesters) {
-
+            if (semester.getId() == currentSemesterId) {
+                continue; // Skip the current semester being updated
+            }
             if (startTime.before(semester.getEnd_time()) && endTime.after(semester.getStart_time())) {
                 return true; // Overlap detected
             }

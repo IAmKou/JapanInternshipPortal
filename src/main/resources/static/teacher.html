@@ -746,7 +746,7 @@
     // Fetch total students count based on teacherId
     async function fetchTotalStudents(teacherId) {
         try {
-            const response = await fetch(`/assignment/getCByTid2?teacherId=${teacherId}`);
+            const response = await fetch(`/class/getCByTid?teacherId=${teacherId}`);
             console.log('Response Classes received:', response);
             if (!response.ok) {
                 throw new Error('Failed to fetch classes');
@@ -763,7 +763,7 @@
     async function fetchClasses(teacherId) {
         try {
             console.log('Fetching classes...');
-            const response = await fetch(`/assignment/getCByTid2?teacherId=${teacherId}`);
+            const response = await fetch(`/class/getCByTid?teacherId=${teacherId}`);
             console.log('Response received:', response);
             if (!response.ok) {
                 throw new Error('Error fetching classes: ' + response.statusText);

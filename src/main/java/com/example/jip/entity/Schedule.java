@@ -3,6 +3,8 @@ package com.example.jip.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -42,6 +44,7 @@ public class Schedule {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="semester_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Semester semester;
 
     public Schedule() {}
