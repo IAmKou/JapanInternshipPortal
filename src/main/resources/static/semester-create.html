@@ -730,23 +730,23 @@
             </div>
         </div>
     </div>
-    <div class="modal" id="updateModal" style="display: none; width: 80%; max-width: 600px; margin: 0 auto;">
-        <div class="modal-content" style="max-height: 80vh; overflow: auto; padding: 20px;">
+    <div class="modal" id="updateModal" style="display: none; width: 80%; max-width: 600px; margin: 0 auto; overflow: hidden;max-height: 630px">
+        <div class="modal-content" style="padding: 20px; overflow: hidden; max-height: 500px">
             <div class="modal-header">
                 <h5 class="modal-title" data-i18n="add_account">Update Semester</h5>
             </div>
             <form id="updateSemesterForm">
-                <label for="semesterName" style="color: #007bff; font-weight: bold;">Name <span style="color: red;">*</span></label>
+                <label for="semesterName" style="color: #007bff; font-weight: bold;">Semester Name <span style="color: red;">*</span></label>
                 <input type="text" maxlength="255" id="semesterName" required>
                 <span id="errorSemesterName1" style="color: red; font-size: 0.85em; display: none;">Semester name cannot be empty</span>
 
-                <div style="margin-bottom: 20px;"></div> <!-- Thêm khoảng trống giữa các nhóm input -->
+                <div style="margin-bottom: 10px;"></div>
 
                 <label for="semesterStart" style="color: #007bff; font-weight: bold;">Start Date <span style="color: red;">*</span></label>
                 <input type="date" id="semesterStart" required>
                 <span id="errorSemesterStart1" style="color: red; font-size: 0.85em; display: none;">Start date cannot be in the past</span>
 
-                <div style="margin-bottom: 20px;"></div> <!-- Thêm khoảng trống giữa các nhóm input -->
+                <div style="margin-bottom: 10px;"></div>
 
                 <label for="semesterEnd" style="color: #007bff; font-weight: bold;">End Date <span style="color: red;">*</span></label>
                 <input type="date" id="semesterEnd" required>
@@ -754,10 +754,13 @@
 
                 <div class="modal-footer">
                     <button type="submit" class="btn update-btn" style="font-size: 16px; width: 100px;">Update</button>
+                    
+
                 </div>
             </form>
         </div>
     </div>
+
 
 
     <!-- Success Modal -->
@@ -1559,6 +1562,38 @@
         let formattedDate = formatDateToDisplay(e.target.value, 'yyyy/mm/dd');
         alert(`Ngày kết thúc: ${formattedDate}`); // Ví dụ hiển thị alert
     });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const semesterStart = document.getElementById('semesterStart');
+        const semesterEnd = document.getElementById('semesterEnd');
+
+        // Hàm chuyển đổi định dạng ngày
+        function convertToDDMMYYYY(dateString) {
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        // Khi giá trị bắt đầu được chọn, chuyển đổi và hiển thị
+        semesterStart.addEventListener('change', function () {
+            const startDate = semesterStart.value;
+            const formattedStartDate = convertToDDMMYYYY(startDate);
+            // Bạn có thể làm gì đó với ngày đã chuyển định dạng, ví dụ, hiển thị bên ngoài
+            console.log(formattedStartDate);
+        });
+
+        // Khi giá trị kết thúc được chọn, chuyển đổi và hiển thị
+        semesterEnd.addEventListener('change', function () {
+            const endDate = semesterEnd.value;
+            const formattedEndDate = convertToDDMMYYYY(endDate);
+            // Bạn có thể làm gì đó với ngày đã chuyển định dạng, ví dụ, hiển thị bên ngoài
+            console.log(formattedEndDate);
+        });
+    });
+
 </script>
 </body>
 </html>
