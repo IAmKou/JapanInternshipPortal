@@ -53,7 +53,7 @@ public class CreateAccountController {
             @RequestParam MultipartFile img
     ) {
         if (accountRepository.existsByUsername(email)) {
-            return ResponseEntity.badRequest().body("Username already exists");
+            return ResponseEntity.badRequest().body("Email already exist");
         }
         try {
             Role roles = roleRepository.findById(role)
