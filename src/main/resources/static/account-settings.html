@@ -1556,6 +1556,10 @@
                         // Kiểm tra nếu lỗi là "Email already exists"
                         if (errorMessage.includes('Email already exists')) {
                             document.getElementById('email_error1').textContent = 'Email already exists.';
+                        }
+                        // Kiểm tra nếu lỗi là "Phone number already exists"
+                        else if (errorMessage.includes('Phone number already exists')) {
+                            document.getElementById('phone_error1').textContent = 'Phone number already exists.';
                         } else {
                             document.getElementById('error-message').textContent = errorMessage;
                             document.getElementById('error-message').style.display = 'block';
@@ -1565,7 +1569,8 @@
                 }
                 return response.json();
             })
-            .then(accountId => {
+
+                .then(accountId => {
                 const role = formData.get('role');
                 const successModal = new bootstrap.Modal(document.getElementById('success-modal1'));
 
