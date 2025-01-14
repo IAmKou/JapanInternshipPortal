@@ -298,24 +298,6 @@ public class ApplicationController {
             application.setReply((String) payload.get("reply"));
         }
 
-        if (application.getCategory().equals("Edit Attendance")) {
-            LocalDate today = LocalDate.now();
-            java.sql.Date date = java.sql.Date.valueOf(today);
-
-            // Fetch all attendants for the given date
-            List<Attendant> attendants = attendantRepository.findByDate(date);
-
-            if (!attendants.isEmpty()) {
-                attendants.forEach(attendant -> {
-                    attendant.setEndTime(Time.valueOf("24:00:00"));
-                    attendant.setIsFinalized(false);
-                });
-
-                // Save updated attendants
-                attendantRepository.saveAll(attendants);
-            }
-        }
-
 
         Student student = studentRepository.findById(application.getStudent().getId()).orElse(null);
         student.setMark(true);
