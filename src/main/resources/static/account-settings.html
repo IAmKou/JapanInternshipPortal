@@ -37,19 +37,22 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            min-height: 72px; /* Thiết lập chiều cao tối thiểu của mỗi dòng */
+            align-items: flex-start; /* Đảm bảo các phần tử căn chỉnh ở đầu dòng */
+        }
+
+        .form-group {
+            flex: 1; /* Đảm bảo các trường chiếm đủ không gian có sẵn */
+        }
         .custom-filter-select {
             padding-right: 2.5rem; /* Thêm khoảng cách cho icon bên phải */
             font-size: 1rem; /* Kích thước chữ vừa phải */
-            height: 50px; /* Tăng chiều cao */
             border: 1px solid #ddd; /* Đường viền nhẹ */
             border-radius: 8px; /* Làm mềm góc */
             transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Hiệu ứng hover */
-        }
-
-        .custom-filter-select:focus {
-            outline: none;
-            border-color: #2575fc; /* Viền xanh khi focus */
-            box-shadow: 0 0 5px rgba(37, 117, 252, 0.5); /* Hiệu ứng shadow */
         }
 
         .custom-filter-select:hover {
@@ -64,10 +67,6 @@
         .table {
             border-collapse: separate;
             border-spacing: 0 8px; /* Khoảng cách giữa các dòng */
-        }
-
-        .table-hover tbody tr:hover {
-            background-color: #f5f8fa;
         }
 
         .table-primary th {
@@ -767,14 +766,14 @@
                             <div class="form-group col-md-6">
                                 <label class="font-weight-bold" for="fullname">Fullname <span class="text-danger">*</span></label>
                                 <div class="input-icon">
-                                    <input class="form-control shadow-sm rounded" id="fullname" name="fullname" placeholder="Enter your name" required type="text">
+                                    <input class="form-control shadow-sm rounded" id="fullname" name="fullname" placeholder="Enter Fullname" required type="text">
                                     <span class="text-danger" id="fullname_error1"></span>
                                 </div>
                             </div>
                             <div class="form-group col-md-6">
                                 <label class="font-weight-bold" for="jname">Japan Name <span class="text-danger">*</span></label>
                                 <div class="input-icon">
-                                    <input class="form-control shadow-sm rounded" id="jname" name="japanname" placeholder="Enter your Japan name" required type="text">
+                                    <input class="form-control shadow-sm rounded" id="jname" name="japanname" placeholder="Enter Japan name" required type="text">
                                     <span class="text-danger" id="jname_error1"></span>
                                 </div>
                             </div>
@@ -792,14 +791,6 @@
                                 <input class="form-control shadow-sm rounded" id="email" name="email" placeholder="ex: abc@gmail.com" required type="email">
                                 <span class="text-danger" id="email_error1"></span>
                             </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label class="font-weight-bold" for="phone">Phone Number <span class="text-danger">*</span></label>
-                                <input class="form-control shadow-sm rounded" id="phone" name="phoneNumber" placeholder="ex: 012345678" required type="text">
-                                <span class="text-danger" id="phone_error1"></span>
-                            </div>
                             <div class="form-group col-md-6">
                                 <label class="font-weight-bold d-inline-block">Gender <span class="text-danger">*</span></label>
                                 <div class="form-check form-check-inline">
@@ -810,6 +801,14 @@
                                     <input class="form-check-input" id="female" name="gender" style="background-color: #ffffff;" type="radio" value="Female">
                                     <span for="female">Female</span>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="font-weight-bold" for="phone">Phone Number <span class="text-danger">*</span></label>
+                                <input class="form-control shadow-sm rounded" id="phone" name="phoneNumber" placeholder="ex: 012345678" required type="text">
+                                <span class="text-danger" id="phone_error1"></span>
                             </div>
                             <span class="text-danger" id="gender_error1"></span>
                         </div>
@@ -828,7 +827,7 @@
 
                     <!-- Submit Button -->
                     <div class="form-group d-grid">
-                        <button class="btn btn-success fs-3 py-3" id="submit-btn" type="submit">Next</button>
+                        <button class="btn btn-success fs-3 py-3" id="submit-btn" type="submit" style="margin-top: 15px">Next</button>
                     </div>
 
                 </form>
