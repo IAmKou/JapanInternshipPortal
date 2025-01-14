@@ -1536,6 +1536,29 @@
             document.getElementById('notification-list').innerHTML = '<p>Failed to load notifications.</p>';
         });
 </script>
-<script></script>
+<script>
+    // Hàm để định dạng ngày thành dd/mm/yyyy hoặc yyyy/mm/dd
+    function formatDateToDisplay(date, format = 'dd/mm/yyyy') {
+        const d = new Date(date);
+        let day = d.getDate().toString().padStart(2, '0');
+        let month = (d.getMonth() + 1).toString().padStart(2, '0');
+        let year = d.getFullYear();
+        if (format === 'yyyy/mm/dd') {
+            return `${year}/${month}/${day}`;
+        }
+        return `${day}/${month}/${year}`;
+    }
+
+    // Gán sự kiện khi người dùng chọn ngày
+    document.querySelector('#startTime').addEventListener('change', function (e) {
+        let formattedDate = formatDateToDisplay(e.target.value, 'dd/mm/yyyy');
+        alert(`Ngày bắt đầu: ${formattedDate}`); // Ví dụ hiển thị alert
+    });
+
+    document.querySelector('#endTime').addEventListener('change', function (e) {
+        let formattedDate = formatDateToDisplay(e.target.value, 'yyyy/mm/dd');
+        alert(`Ngày kết thúc: ${formattedDate}`); // Ví dụ hiển thị alert
+    });
+</script>
 </body>
 </html>
