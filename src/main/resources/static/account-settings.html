@@ -1553,7 +1553,14 @@
             .then(response => {
                 if (!response.ok) {
                     return response.text().then(errorMessage => {
-                        throw new Error(errorMessage);
+                        // Kiểm tra nếu lỗi là "Email already exists"
+                        if (errorMessage.includes('Email already exists')) {
+                            document.getElementById('email_error1').textContent = 'Email already exists.';
+                        } else {
+                            document.getElementById('error-message').textContent = errorMessage;
+                            document.getElementById('error-message').style.display = 'block';
+                        }
+                        throw new Error(errorMessage); // Ném lỗi ra để dừng tiếp
                     });
                 }
                 return response.json();
