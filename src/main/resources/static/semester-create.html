@@ -730,23 +730,24 @@
             </div>
         </div>
     </div>
-    <div class="modal" id="updateModal" style="display: none; width: 80%; max-width: 600px; margin: 0 auto;">
-        <div class="modal-content" style="max-height: 80vh; overflow: auto; padding: 20px;">
+
+    <div class="modal" id="updateModal" style="display: none; width: 80%; max-width: 600px; margin: 0 auto; overflow: hidden; max-height: 630px;" data-bs-backdrop="false" data-bs-keyboard="false">
+        <div class="modal-content" style="padding: 20px; overflow: hidden; max-height: 500px;">
             <div class="modal-header">
                 <h5 class="modal-title" data-i18n="add_account">Update Semester</h5>
             </div>
             <form id="updateSemesterForm">
-                <label for="semesterName" style="color: #007bff; font-weight: bold;">Name <span style="color: red;">*</span></label>
+                <label for="semesterName" style="color: #007bff; font-weight: bold;">Semester Name <span style="color: red;">*</span></label>
                 <input type="text" maxlength="255" id="semesterName" required>
                 <span id="errorSemesterName1" style="color: red; font-size: 0.85em; display: none;">Semester name cannot be empty</span>
 
-                <div style="margin-bottom: 20px;"></div> <!-- Thêm khoảng trống giữa các nhóm input -->
+                <div style="margin-bottom: 10px;"></div>
 
                 <label for="semesterStart" style="color: #007bff; font-weight: bold;">Start Date <span style="color: red;">*</span></label>
                 <input type="date" id="semesterStart" required>
                 <span id="errorSemesterStart1" style="color: red; font-size: 0.85em; display: none;">Start date cannot be in the past</span>
 
-                <div style="margin-bottom: 20px;"></div> <!-- Thêm khoảng trống giữa các nhóm input -->
+                <div style="margin-bottom: 10px;"></div>
 
                 <label for="semesterEnd" style="color: #007bff; font-weight: bold;">End Date <span style="color: red;">*</span></label>
                 <input type="date" id="semesterEnd" required>
@@ -758,6 +759,10 @@
             </form>
         </div>
     </div>
+
+
+
+
 
 
     <!-- Success Modal -->
@@ -971,8 +976,9 @@
     document.querySelector('form.new-added-form').addEventListener('submit', function (event) {
         event.preventDefault(); // Ngăn form gửi yêu cầu mặc định
 
-        // Lấy giá trị từ form
-        const semesterName = document.querySelector('input[name="name"]').value.trim();
+        // Lấy giá trị từ form mà không chỉnh sửa khoảng trắng
+        const semesterName = document.querySelector('input[name="name"]').value;
+
         const startTime = document.querySelector('input[name="st"]').value;
         const endTime = document.querySelector('input[name="et"]').value;
 
@@ -990,7 +996,7 @@
         errorEndTime.style.display = 'none';
 
         // Validate tên học kỳ
-        if (!semesterName) {
+        if (!semesterName.trim()) {
             errorSemesterName.textContent = 'Semester Name cannot be empty.';
             errorSemesterName.style.display = 'block';
             hasError = true;
@@ -1035,7 +1041,7 @@
 
         // Prepare the semester data with the calculated status
         const semesterData = {
-            name: semesterName,
+            name: semesterName, // Giữ nguyên tên người dùng nhập
             start_time: startTime,
             end_time: endTime,
             status: status
@@ -1070,7 +1076,7 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-// Kiểm tra nếu lỗi là "Start time overlaps with an existing semester"
+                // Kiểm tra nếu lỗi là "Start time overlaps with an existing semester"
                 const errorText = error.message.includes("Start time overlaps")
                     ? "The start time overlaps with an existing semester. Please choose a different start time."
                     : (error.message || "An unexpected error occurred");
@@ -1081,6 +1087,7 @@
                 errorModal.show();
             });
     });
+
 
 </script>
 
@@ -1180,38 +1187,42 @@
                 const actionsContainer = document.createElement('div');
                 actionsContainer.classList.add('semester-actions');
 
-                // Kiểm tra nếu kỳ học đã bắt đầu (startDate < currentDate)
-                // Kiểm tra nếu kỳ học đã bắt đầu hoặc chưa
-                if (startDate > currentDate) {
-                    // Chỉ hiển thị nút Update và Delete nếu kỳ học chưa bắt đầu
-                    const updateButton = document.createElement('button');
-                    updateButton.classList.add('action-button', 'update-button');
-                    updateButton.textContent = 'Update';
-                    updateButton.addEventListener('click', () => {
-                        updateSemester(semester);
-                    });
-
-                    const deleteButton = document.createElement('button');
-                    deleteButton.classList.add('action-button', 'delete-button1');
-                    deleteButton.textContent = 'Delete';
-                    deleteButton.addEventListener('click', () => {
-                        deleteSemester(semester);
-                    });
-
-                    actionsContainer.appendChild(updateButton);
-                    actionsContainer.appendChild(deleteButton);
+                // Kiểm tra nếu kỳ học đã kết thúc (endDate < currentDate)
+                if (endDate < currentDate) {
+                    // Kỳ học đã kết thúc, không hiển thị nút Update hoặc Delete
+                    // Không làm gì cả ở đây, bỏ qua việc thêm nút
                 } else {
-                    // Kỳ học đã bắt đầu, chỉ hiển thị nút Update
-                    const updateButton = document.createElement('button');
-                    updateButton.classList.add('action-button', 'update-button');
-                    updateButton.textContent = 'Update';
-                    updateButton.addEventListener('click', () => {
-                        updateSemester(semester);
-                    });
+                    // Kỳ học chưa kết thúc, hiển thị các nút hành động
+                    if (startDate > currentDate) {
+                        // Chỉ hiển thị nút Update và Delete nếu kỳ học chưa bắt đầu
+                        const updateButton = document.createElement('button');
+                        updateButton.classList.add('action-button', 'update-button');
+                        updateButton.textContent = 'Update';
+                        updateButton.addEventListener('click', () => {
+                            updateSemester(semester);
+                        });
 
-                    actionsContainer.appendChild(updateButton);
+                        const deleteButton = document.createElement('button');
+                        deleteButton.classList.add('action-button', 'delete-button1');
+                        deleteButton.textContent = 'Delete';
+                        deleteButton.addEventListener('click', () => {
+                            deleteSemester(semester);
+                        });
+
+                        actionsContainer.appendChild(updateButton);
+                        actionsContainer.appendChild(deleteButton);
+                    } else {
+                        // Kỳ học đã bắt đầu, chỉ hiển thị nút Update
+                        const updateButton = document.createElement('button');
+                        updateButton.classList.add('action-button', 'update-button');
+                        updateButton.textContent = 'Update';
+                        updateButton.addEventListener('click', () => {
+                            updateSemester(semester);
+                        });
+
+                        actionsContainer.appendChild(updateButton);
+                    }
                 }
-
 
                 semesterDiv.appendChild(semesterName);
                 semesterDiv.appendChild(semesterDates);
@@ -1220,6 +1231,7 @@
                 noticeBoardWrap.appendChild(semesterDiv);
             }
         }
+
 
 
         function renderPagination() {
@@ -1297,16 +1309,24 @@
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
 
+                // Validate semester name - check if empty and exceed 40 characters
                 if (!updatedSemesterName) {
+                    document.getElementById('errorSemesterName1').textContent = 'Semester Name cannot be empty';
+                    document.getElementById('errorSemesterName1').style.display = 'inline';
+                    hasError = true;
+                } else if (updatedSemesterName.length > 40) {
+                    document.getElementById('errorSemesterName1').textContent = 'Semester Name cannot exceed 40 characters';
                     document.getElementById('errorSemesterName1').style.display = 'inline';
                     hasError = true;
                 }
 
+                // Validate start time
                 if (!updatedSemesterStart || new Date(updatedSemesterStart) < today) {
                     document.getElementById('errorSemesterStart1').style.display = 'inline';
                     hasError = true;
                 }
 
+                // Validate end time
                 if (!updatedSemesterEnd || new Date(updatedSemesterEnd) < new Date(updatedSemesterStart)) {
                     document.getElementById('errorSemesterEnd1').style.display = 'inline';
                     hasError = true;
@@ -1559,6 +1579,56 @@
         let formattedDate = formatDateToDisplay(e.target.value, 'yyyy/mm/dd');
         alert(`Ngày kết thúc: ${formattedDate}`); // Ví dụ hiển thị alert
     });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const semesterStart = document.getElementById('semesterStart');
+        const semesterEnd = document.getElementById('semesterEnd');
+
+        // Hàm chuyển đổi định dạng ngày
+        function convertToDDMMYYYY(dateString) {
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        // Khi giá trị bắt đầu được chọn, chuyển đổi và hiển thị
+        semesterStart.addEventListener('change', function () {
+            const startDate = semesterStart.value;
+            const formattedStartDate = convertToDDMMYYYY(startDate);
+            // Bạn có thể làm gì đó với ngày đã chuyển định dạng, ví dụ, hiển thị bên ngoài
+            console.log(formattedStartDate);
+        });
+
+        // Khi giá trị kết thúc được chọn, chuyển đổi và hiển thị
+        semesterEnd.addEventListener('change', function () {
+            const endDate = semesterEnd.value;
+            const formattedEndDate = convertToDDMMYYYY(endDate);
+            // Bạn có thể làm gì đó với ngày đã chuyển định dạng, ví dụ, hiển thị bên ngoài
+            console.log(formattedEndDate);
+        });
+    });
+
+</script>
+<script>
+    const modalElement = document.getElementById('updateModal');
+    const modal = new bootstrap.Modal(modalElement, {
+        backdrop: 'false',  // Tắt backdrop
+        keyboard: false      // Tắt việc đóng bằng phím ESC
+    });
+
+    // Để mở modal mà không có backdrop
+    function openModal() {
+        modal.show();
+    }
+
+    // Để đóng modal
+    function closeModal() {
+        modal.hide();
+    }
+
 </script>
 </body>
 </html>

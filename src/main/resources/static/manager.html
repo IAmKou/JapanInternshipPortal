@@ -344,7 +344,6 @@
                                                             <th>Purpose</th>
                                                             <th>Create Date</th>
                                                             <th>Process Note</th>
-                                                            <th>File</th>
                                                             <th>Status</th>
                                                             <th>Time Response</th>
                                                             <th>Action</th> <!-- Thêm tiêu đề cột Action -->
@@ -596,9 +595,6 @@
                         <td style="font-weight: bold;">${formattedContent}</td>
                         <td style="font-weight: bold;">${application.created_date ? new Date(application.created_date).toLocaleDateString() : 'N/A'}</td>
                         <td style="font-weight: bold;">${formattedReply || 'N/A'}</td>
-                        <td style="font-weight: bold;">
-                            ${application.img ? `<a href="${application.img}" target="_blank">File</a>` : 'N/A'}
-                        </td>
                         <td style="font-weight: bold;">${application.status || 'N/A'}</td>
                         <td style="font-weight: bold;">
                             ${
