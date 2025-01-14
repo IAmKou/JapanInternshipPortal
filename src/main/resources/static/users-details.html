@@ -686,7 +686,7 @@
                 ${user.dob ? `<tr><td class="font-medium text-dark-medium" data-i18n="date_of_birth">Date of Birth:</td>
                     <td><input type="date" required value="${user.dob.split('T')[0]}" id="dob-input" class="input-text"></td></tr>` : ''}
                 <tr><td class="font-medium text-dark-medium" data-i18n="email">Email:</td>
-                    <td><input type="email" required value="${user.email}" id="email-input" class="input-text"></td></tr>
+                    <td><input type="email" readonly value="${user.email}" id="email-input" class="form-control-plaintext"></td></tr>
                 <tr><td class="font-medium text-dark-medium" data-i18n="phone_number">Phone Number:</td>
                     <td><input type="text" required value="${user.phoneNumber}" id="phone-input" class="input-text"></td></tr>
             `;
@@ -717,7 +717,7 @@
             const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
             successModal.show();  // Mở modal
 
-            // Set timeout to reload page after 2 seconds
+
             setTimeout(() => {
                 window.location.reload();
             }, 2000);
@@ -736,7 +736,6 @@
             const dob = document.getElementById('dob-input')?.value.trim();
             const email = document.getElementById('email-input').value.trim();
             const phoneNumber = document.getElementById('phone-input').value.trim();
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|fpt\.edu\.vn)$/;
 
             if (!fullName) {
                 showErrorModal('Name cannot be empty.');
@@ -754,7 +753,7 @@
                 showErrorModal('Please select a gender.');
                 return;
             }
-            if (currentUser.role === 'STUDENT') {
+            if (currentUser.rname === 'STUDENT') {
                 if (!dob) {
                     showErrorModal('Date of Birth cannot be empty for this role.');
                     return;
@@ -787,14 +786,6 @@
                     }
                 }
             }
-            if (!email) {
-                showErrorModal('Email cannot be empty.');
-                return;
-            }
-            if (!emailRegex.test(email)) {
-                showErrorModal('Invalid email.');
-                return;
-            }
             if (!phoneNumber) {
                 showErrorModal('Phone Number cannot be empty.');
                 return;
@@ -811,7 +802,7 @@
                 jname,
                 rname,
                 gender,
-                dob : currentUser.role === 'STUDENT' ?  dob : currentUser.dob,
+                dob : currentUser.rname === 'STUDENT' ?  dob : dob,
                 email,
                 phoneNumber
             };

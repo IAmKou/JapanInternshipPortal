@@ -52,21 +52,12 @@ public class CreateAccountController {
             @RequestParam(required = false) String dob, // for Students
             @RequestParam MultipartFile img
     ) {
-
-        Role roleEntity = roleRepository.findById(role)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
-
-        // Check if there are already 3 admins
-        if (roleEntity.getName().equals("ADMIN") && accountRepository.countByRole(roleEntity) >= 3) {
-            return ResponseEntity.badRequest().body("Cannot create more than 3 admin accounts");
+        if (accountRepository.existsByUsername(email)) {
+            return ResponseEntity.badRequest().body("Username already exists");
         }
         try {
             Role roles = roleRepository.findById(role)
                     .orElseThrow(() -> new RuntimeException("Role not found"));
-
-            if (roles.getName().equals("ADMIN") && accountRepository.countByRole(roleEntity) >= 3) {
-                return ResponseEntity.badRequest().body("Cannot create more than 3 admin accounts");
-            }
 
             String password = generateVerifyCode();
 
