@@ -54,7 +54,7 @@ public class ManagerServices {
 
 
         CompletableFuture.runAsync(() -> {
-            String emailStatus = emailServices.sendEmail(password, accountOpt.get().getUsername());
+            String emailStatus = emailServices.sendEmail(email, password);
             if (emailStatus == null) {
                 System.out.println("Failed to send email to: " + email);
             } else {
