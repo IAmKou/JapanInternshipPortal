@@ -1,8 +1,7 @@
 package com.example.jip.controller;
 
 import com.example.jip.entity.Role;
-import com.example.jip.repository.AccountRepository;
-import com.example.jip.repository.RoleRepository;
+import com.example.jip.repository.*;
 import com.example.jip.services.AccountServices;
 import com.example.jip.services.ManagerServices;
 import com.example.jip.services.StudentServices;
@@ -41,6 +40,15 @@ public class CreateAccountController {
     @Autowired
     private ManagerServices managerServices;
 
+    @Autowired
+    private TeacherRepository teacherRepository;
+
+    @Autowired
+    private ManagerRepository managerRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
+
     @PostMapping("/create")
     public ResponseEntity<?> createAccount(
             @RequestParam int role,
@@ -74,7 +82,6 @@ public class CreateAccountController {
             return ResponseEntity.badRequest().body("Email already exists");
         }
 
-        // Validate phone number
         if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
             return ResponseEntity.badRequest().body("Phone number is required");
         }
@@ -82,7 +89,12 @@ public class CreateAccountController {
             return ResponseEntity.badRequest().body("Invalid phone number format");
         }
 
-        // Validate gender
+        if (studentRepository.existsByPhoneNumber(phoneNumber) ||
+                teacherRepository.existsByPhoneNumber(phoneNumber) ||
+                managerRepository.existsByPhoneNumber(phoneNumber)) {
+            return ResponseEntity.badRequest().body("Phone number already exists");
+        }
+
         if (gender == null || gender.trim().isEmpty()) {
             return ResponseEntity.badRequest().body("Gender is required");
         }

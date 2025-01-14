@@ -10,5 +10,5 @@ public interface ManagerRepository extends CrudRepository<Manager, Integer> {
     Optional<Manager> findById(Integer id);
     Optional<Manager> findByEmail(String email);
     Optional<Manager> findByPhoneNumber(String phoneNumber);
-
+    boolean existsByPhoneNumber(String phoneNumber);
 }
