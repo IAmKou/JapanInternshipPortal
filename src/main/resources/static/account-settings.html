@@ -37,6 +37,27 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+
+        .form-control {
+            font-size: 1.5rem; /* Kích thước chữ lớn hơn */
+            padding: 1.2rem; /* Tăng kích thước khoảng cách bên trong */
+            height: 4.5rem; /* Tăng chiều cao tổng thể */
+        }
+
+        .form-select {
+            font-size: 1.5rem; /* Tăng kích thước chữ trong danh sách */
+            padding: 1.2rem;
+            height: 4.5rem;
+        }
+
+        .form-group label {
+            font-size: 1.3rem; /* Kích thước chữ trong nhãn */
+        }
+
+        .btn {
+            font-size: 1.6rem; /* Kích thước chữ lớn hơn trên nút */
+            padding: 1.5rem; /* Tăng khoảng cách trong nút */
+        }
         .form-row {
             display: flex;
             flex-wrap: wrap;
@@ -448,7 +469,71 @@
             background-color: #f8f9fa; /* Màu nền khi hover vào mục */
             color: #007bff; /* Màu chữ khi hover */
         }
+        input[name="fullname"] {
+            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px; /* Thêm góc bo tròn nếu cần */
+        }
 
+        input[name="fullname"]:hover {
+            border-color: #28a745 !important; /* Màu border khi hover */
+        }
+
+        input[name="fullname"]:focus {
+            border-color: #28a745 !important; /* Giữ màu đỏ khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+        }
+        input[name="japanname"] {
+            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px; /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="japanname"]:hover {
+            border-color: #28a745 !important; /* Màu border khi hover */
+        }
+
+        input[name="japanname"]:focus {
+            border-color: #28a745 !important; /* Giữ màu đỏ khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+        }
+        input[name="dob"] {
+            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px; /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="dob"]:hover {
+            border-color: #28a745 !important; /* Màu border khi hover */
+        }
+
+        input[name="dob"]:focus {
+            border-color: #28a745 !important; /* Giữ màu đỏ khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+        }
+        input[name="email"] {
+            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px; /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="email"]:hover {
+            border-color: #28a745 !important; /* Màu border khi hover */
+        }
+
+        input[name="email"]:focus {
+            border-color: #28a745 !important; /* Giữ màu đỏ khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+        }
+        input[name="phoneNumber"] {
+            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px; /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="phoneNumber"]:hover {
+            border-color: #28a745 !important; /* Màu border khi hover */
+        }
+
+        input[name="phoneNumber"]:focus {
+            border-color: #28a745 !important; /* Giữ màu đỏ khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+        }
     </style>
 </head>
 
@@ -743,193 +828,107 @@
 
 
 <!-- Modal Structure -->
-<div aria-hidden="true" aria-labelledby="createAccountModalLabel" class="modal fade" id="createAccountModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content shadow-lg border-0">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title fs-2" id="createAccountModalLabel">Create A New Account</h5>
-            </div>
-            <div class="modal-body p-5">
-                <form class="login-form" id="accountForm">
-                    <div class="form-group input-group mb-5">
-                        <span class="input-group-text bg-light text-primary fs-3"><i class="bi bi-person-badge-fill"></i></span>
-                        <select class="form-select fs-4 p-3" id="role" name="role" required>
-                            <option value="4">Manager</option>
-                            <option value="3">Teacher</option>
-                            <option value="2" selected>Student</option> <!-- Mặc định là "Student" -->
-                        </select>
-                    </div>
+    <div aria-hidden="true" aria-labelledby="createAccountModalLabel" class="modal fade" id="createAccountModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content shadow-lg border-0">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fs-2" id="createAccountModalLabel">Create A New Account</h5>
+                </div>
+                <div class="modal-body p-5">
+                    <form class="login-form" id="accountForm">
+                        <!-- Vai trò -->
+                        <div class="form-group mb-4">
+                            <label for="role" class="font-weight-bold fs-4">Role <span class="text-danger">*</span></label>
+                            <select class="form-select fs-4 p-3" id="role" name="role" required>
+                                <option value="4">Manager</option>
+                                <option value="3">Teacher</option>
+                                <option value="2" selected>Student</option> <!-- Mặc định là "Student" -->
+                            </select>
+                        </div>
 
-                    <!-- Student Fields - Hiển thị mặc định -->
-                    <div id="studentFields">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label class="font-weight-bold" for="fullname">Fullname <span class="text-danger">*</span></label>
-                                <div class="input-icon">
+                        <!-- Student Fields -->
+                        <div id="studentFields">
+                            <!-- Họ tên và Tên tiếng Nhật -->
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label class="font-weight-bold" for="fullname">Fullname <span class="text-danger">*</span></label>
                                     <input class="form-control shadow-sm rounded" id="fullname" name="fullname" placeholder="Enter Fullname" required type="text">
                                     <span class="text-danger" id="fullname_error1"></span>
                                 </div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label class="font-weight-bold" for="jname">Japan Name <span class="text-danger">*</span></label>
-                                <div class="input-icon">
-                                    <input class="form-control shadow-sm rounded" id="jname" name="japanname" placeholder="Enter Japan name" required type="text">
+                                <div class="col-md-6">
+                                    <label class="font-weight-bold" for="jname">Japan Name <span class="text-danger">*</span></label>
+                                    <input class="form-control shadow-sm rounded" id="jname" name="japanname" placeholder="Enter Japan Name" required type="text">
                                     <span class="text-danger" id="jname_error1"></span>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="form-row">
-                            <!-- Date of Birth (Sẽ bị ẩn khi chọn Manager hoặc Teacher) -->
-                            <div class="form-group col-md-6" id="dobContainer">
-                                <label class="font-weight-bold" for="DoB">Date of Birth <span class="text-danger">*</span></label>
-                                <input class="form-control shadow-sm rounded" id="DoB" name="dob" type="date">
-                                <span class="text-danger" id="DoB_error1"></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label class="font-weight-bold" for="email">Email <span class="text-danger">*</span></label>
-                                <input class="form-control shadow-sm rounded" id="email" name="email" placeholder="ex: abc@gmail.com" required type="email">
-                                <span class="text-danger" id="email_error1"></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label class="font-weight-bold d-inline-block">Gender <span class="text-danger">*</span></label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" id="male" name="gender" style="background-color: #ffffff;" type="radio" value="Male">
-                                    <span for="male">Male</span>
+                            <!-- Ngày sinh và Email -->
+                            <div class="row mb-4">
+                                <div class="col-md-6" >
+                                    <label class="font-weight-bold" for="email">Email <span class="text-danger">*</span></label>
+                                    <input class="form-control shadow-sm rounded" id="email" name="email" placeholder="ex: abc@gmail.com" required type="email">
+                                    <span class="text-danger" id="email_error1"></span>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" id="female" name="gender" style="background-color: #ffffff;" type="radio" value="Female">
-                                    <span for="female">Female</span>
+                                <div class="col-md-6" id="dobContainer" >
+                                    <label class="font-weight-bold" for="DoB">Date of Birth <span class="text-danger">*</span></label>
+                                    <input class="form-control shadow-sm rounded" id="DoB" name="dob" type="date">
+                                    <span class="text-danger" id="DoB_error1"></span>
+                                </div>
+
+                            </div>
+
+                            <!-- Giới tính và Số điện thoại -->
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label class="font-weight-bold">Gender <span class="text-danger">*</span></label>
+                                    <div style="display: flex; gap: 10px;">
+                                        <div>
+                                            <input id="male" name="gender" type="radio" value="Male">
+                                            <span for="male">Male</span>
+                                        </div>
+                                        <div>
+                                            <input id="female" name="gender" type="radio" value="Female">
+                                            <span for="female">Female</span>
+                                        </div>
+                                    </div>
+
+                                    <span class="text-danger" id="gender_error1"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="font-weight-bold" for="phone">Phone Number <span class="text-danger">*</span></label>
+                                    <input class="form-control shadow-sm rounded" id="phone" name="phoneNumber" placeholder="ex: 012345678" required type="text">
+                                    <span class="text-danger" id="phone_error1"></span>
+                                </div>
+                            </div>
+
+                            <!-- Hình đại diện -->
+                            <div class="row mb-4">
+                                <div class="col-md-12">
+                                    <label class="font-weight-bold" for="img">Profile Image <span class="text-danger">*</span></label>
+                                    <input class="form-control-file shadow-sm" id="img" name="img" type="file">
+                                    <span class="text-danger" id="img_error1"></span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label class="font-weight-bold" for="phone">Phone Number <span class="text-danger">*</span></label>
-                                <input class="form-control shadow-sm rounded" id="phone" name="phoneNumber" placeholder="ex: 012345678" required type="text">
-                                <span class="text-danger" id="phone_error1"></span>
-                            </div>
-                            <span class="text-danger" id="gender_error1"></span>
+                        <!-- Error Message -->
+                        <div class="text-danger mt-4 fs-4" id="error-message" style="display: none;"></div>
+
+                        <!-- Submit Button -->
+                        <div class="form-group d-grid">
+                            <button class="btn btn-success fs-3 py-3" id="submit-btn" type="submit" style="margin-top: 15px">Create</button>
                         </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label class="font-weight-bold" for="img">Profile Image <span class="text-danger">*</span></label>
-                                <input class="form-control-file shadow-sm" id="img" name="img" type="file">
-                                <span class="text-danger" id="img_error1"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Error Message -->
-                    <div class="text-danger mt-4 fs-4" id="error-message" style="display: none;"></div>
-
-                    <!-- Submit Button -->
-                    <div class="form-group d-grid">
-                        <button class="btn btn-success fs-3 py-3" id="submit-btn" type="submit" style="margin-top: 15px">Next</button>
-                    </div>
-
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
 
 
 
-<!-- Modal -->
-<div aria-hidden="true" aria-labelledby="createFormModalLabel" class="modal fade" id="createFormModal" tabindex="-1">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content shadow-lg rounded">
-            <div class="modal-header gradient-header">
-                <h5 class="modal-title text-white font-weight-bold" id="createFormModalLabel">Create Account</h5>
 
-            </div>
-            <div class="modal-body px-4">
-                <form enctype="multipart/form-data" id="createForm">
-                    <input id="account_id_form1" name="account_id" type="hidden" value="${account_id}">
-                    <input id="role_form1" name="role" type="hidden" value="${role}">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label class="font-weight-bold" for="fullname_form1">Fullname <span
-                                    class="text-danger">*</span></label>
-                            <div class="input-icon">
-                                <input class="form-control shadow-sm rounded" id="fullname_form1" name="fullname"
-                                       placeholder="Enter your name" type="text">
-                                <span class="text-danger" id="fullname_error"></span>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="font-weight-bold" for="jname_form1">Japan Name <span
-                                    class="text-danger">*</span></label>
-                            <div class="input-icon">
-                                <input class="form-control shadow-sm rounded" id="jname_form1" name="jname" placeholder="Enter your Japan name"
-                                       type="text">
-                                <span class="text-danger" id="jname_error"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Các trường nhập liệu khác và thông báo lỗi tương tự -->
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label class="font-weight-bold" for="email_form1">Email <span
-                                    class="text-danger">*</span></label>
-                            <input class="form-control shadow-sm rounded" id="email_form1" name="email" placeholder="ex: abc@gmail.com"
-                                   type="email">
-                            <span class="text-danger" id="email_error"></span>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label class="font-weight-bold" for="phone_form1">Phone Number <span
-                                    class="text-danger">*</span></label>
-                            <input class="form-control shadow-sm rounded" id="phone_form1" name="phoneNumber"
-                                   placeholder="ex: 012345678" type="text">
-                            <span class="text-danger" id="phone_error"></span>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label class="font-weight-bold d-inline-block">Gender <span
-                                    class="text-danger">*</span></label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" id="male_form1" name="gender"  type="radio"
-                                       value="Male">
-                                <span for="male_form1">Male</span>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" id="female_form1" name="gender"
-                                       type="radio" value="Female">
-                                <span for="female_form1">Female</span>
-                            </div>
-
-                        </div>
-                        <span class="text-danger" id="gender_error"></span>
-                        <div class="form-group col-md-6">
-                            <label class="font-weight-bold" for="img_form1">Profile Image <span
-                                    class="text-danger">*</span></label>
-                            <input class="form-control-file shadow-sm" id="img_form1" name="img" type="file">
-                            <span class="text-danger" id="img_error"></span>
-                        </div>
-
-                    </div>
-
-                    <!-- Thêm phần hiển thị thông báo lỗi ở đây -->
-                    <div id="error-message1" style="color: red; font-weight: bold; margin-top: 10px;"></div>
-
-                    <div class="text-center mt-4">
-                        <button class="btn btn-primary btn-lg shadow px-5" id="submit-btn-form1" type="submit">Create
-                            Account
-                        </button>
-                    </div>
-                </form>
-
-
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Modal student-->
 
@@ -1433,32 +1432,88 @@
 </script>
 <!-- create account -->
 <script>
-    document.getElementById('role').addEventListener('change', function () {
-        const role = this.value;
-        const dobContainer = document.getElementById('dobContainer');
-
-        if (role === '2') { // Student
-            dobContainer.style.display = 'block';  // Hiển thị Date of Birth
-        } else { // Teacher or Manager
-            dobContainer.style.display = 'none';   // Ẩn Date of Birth
-        }
-    });
-
-    // Nếu modal được mở và role là Student, Date of Birth sẽ được hiển thị mặc định
-    document.addEventListener('DOMContentLoaded', function() {
-        const role = document.getElementById('role').value;
-        const dobContainer = document.getElementById('dobContainer');
-
-        if (role === '2') {
-            dobContainer.style.display = 'block';
-        } else {
-            dobContainer.style.display = 'none';
-        }
-    });
     document.getElementById('accountForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
         const formData = new FormData(this);
+
+        // Reset error messages trước khi gửi
+        document.getElementById('fullname_error1').textContent = '';
+        document.getElementById('jname_error1').textContent = '';
+        document.getElementById('email_error1').textContent = '';
+        document.getElementById('phone_error1').textContent = '';
+        document.getElementById('DoB_error1').textContent = ''; // Reset lỗi dob
+
+        // Kiểm tra fullname, japanname, email, phone
+        const fullname = formData.get('fullname').trim();
+        const jname = formData.get('japanname').trim();
+        const email = formData.get('email').trim();
+        const phone = formData.get('phoneNumber').trim();
+        const dob = formData.get('dob'); // Lấy giá trị ngày sinh (dob)
+        let isValid = true;
+
+        // Kiểm tra full name
+        const fullnameRegex = /^[A-Za-z\s]+$/;
+        if (!fullnameRegex.test(fullname)) {
+            document.getElementById('fullname_error1').textContent = 'Fullname cannot contain special characters or numbers.';
+            isValid = false;
+        } else if (fullname.length > 255) {
+            document.getElementById('fullname_error1').textContent = 'Fullname cannot exceed 255 characters.';
+            isValid = false;
+        }
+
+        const jnameRegex = /^[A-Za-z\s]+$/;
+        if (!jnameRegex.test(jname)) {
+            document.getElementById('jname_error1').textContent = 'Japan name cannot contain special characters or numbers.';
+            isValid = false;
+        } else if (jname.length > 255) {
+            document.getElementById('jname_error1').textContent = 'Japan name cannot exceed 255 characters.';
+            isValid = false;
+        }
+
+        // Kiểm tra email
+        if (email.length > 255) {
+            document.getElementById('email_error1').textContent = 'Email cannot exceed 255 characters.';
+            isValid = false;
+        } else {
+            // Kiểm tra định dạng email
+            const emailRegex = /@gmail\.com$|@fpt\.edu\.vn$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('email_error1').textContent = 'Email must be either @gmail.com or @fpt.edu.vn.';
+                isValid = false;
+            }
+        }
+
+        // Kiểm tra số điện thoại (phải có 10 số và bắt đầu bằng số 0)
+        const phoneRegex = /^0\d{9}$/;
+        if (!phoneRegex.test(phone)) {
+            document.getElementById('phone_error1').textContent = 'Phone number must be 10 digits and start with 0.';
+            isValid = false;
+        }
+
+        // Kiểm tra ngày sinh (tuổi phải lớn hơn hoặc bằng 18)
+        if (dob) {
+            const today = new Date();
+            const birthYear = new Date(dob).getFullYear();  // Lấy năm sinh
+            const currentYear = today.getFullYear();  // Lấy năm hiện tại
+
+            if (currentYear - birthYear < 18) {
+                document.getElementById('DoB_error1').textContent = 'You must be at least 18 years old.';
+                isValid = false;
+            }
+        } else {
+            document.getElementById('DoB_error1').textContent = 'Date of Birth is required.';
+            isValid = false;
+        }
+
+        // Nếu có lỗi, không gửi form
+        if (!isValid) {
+            return;
+        }
+
+        // Tiến hành gửi form nếu không có lỗi
+        const submitBtn = document.getElementById('submit-btn');
+        submitBtn.disabled = true; // Disable button to prevent multiple submits
 
         fetch('/accounts/create', {
             method: 'POST',
@@ -1474,19 +1529,24 @@
             })
             .then(accountId => {
                 const role = formData.get('role');
+                const successModal = new bootstrap.Modal(document.getElementById('success-modal1'));
+
                 if (role === '1') {
                     window.location.href = '/account-settings.html';
                 } else {
-                    // Chuyển trực tiếp sau khi tài khoản được tạo thành công
-                    alert('Account successfully created');
+                    successModal.show();  // Hiển thị modal thành công
                 }
             })
             .catch(error => {
                 const errorMessageElement = document.getElementById('error-message');
                 errorMessageElement.textContent = error.message;
                 errorMessageElement.style.display = 'block';
+            })
+            .finally(() => {
+                submitBtn.disabled = false; // Enable the submit button
             });
     });
+
 </script>
 <!-- notif -->
 <script>
