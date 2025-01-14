@@ -50,9 +50,7 @@ public class StudentServices {
 
         String folderName = sanitizeFolderName("Account/Student/" + accountOpt.get().getUsername());
 
-        CompletableFuture<String> imgUrlFuture = CompletableFuture.supplyAsync(() ->
-                s3Service.uploadFile(img, folderName, img.getOriginalFilename())
-        );
+        String imgUrl = s3Service.uploadFile(img, folderName, img.getOriginalFilename());
         // Create a new Student object
         Student student = new Student();
         student.setFullname(fullname);
@@ -67,6 +65,7 @@ public class StudentServices {
 
         student.setPhoneNumber(phoneNumber);
         student.setEmail(email);
+        student.setImg(imgUrl);
         student.setAccount(accountOpt.get());
         student.setMark(false);
         
@@ -88,11 +87,7 @@ public class StudentServices {
                 .collect(Collectors.toList());
         markRpExamRepository.saveAll(markReportExams);
 
-        try {
-            student.setImg(imgUrlFuture.get());
-        } catch (Exception e) {
-            throw new RuntimeException("Image upload failed", e);
-        }
+
 
         CompletableFuture.runAsync(() -> {
             String emailStatus = emailServices.sendEmail(password, accountOpt.get().getUsername());

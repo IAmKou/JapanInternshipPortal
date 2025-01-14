@@ -39,9 +39,7 @@ public class ManagerServices {
 
         String folderName = sanitizeFolderName("Account/Manager/" + accountOpt.get().getUsername());
 
-        CompletableFuture<String> imgUrlFuture = CompletableFuture.supplyAsync(() ->
-                s3Service.uploadFile(img, folderName, img.getOriginalFilename())
-        );
+        String imgUrl = s3Service.uploadFile(img, folderName, img.getOriginalFilename());
 
         Manager manager = new Manager();
         manager.setFullname(fullname);
@@ -49,14 +47,11 @@ public class ManagerServices {
         manager.setEmail(email);
         manager.setPhoneNumber(phoneNumber);
         manager.setGender(Manager.Gender.valueOf(gender));
+        manager.setImg(imgUrl);
         manager.setAccount(accountOpt.get());
         Manager savedManager = managerRepository.save(manager);
 
-        try {
-            manager.setImg(imgUrlFuture.get());
-        } catch (Exception e) {
-            throw new RuntimeException("Image upload failed", e);
-        }
+
 
         CompletableFuture.runAsync(() -> {
             String emailStatus = emailServices.sendEmail(password, accountOpt.get().getUsername());

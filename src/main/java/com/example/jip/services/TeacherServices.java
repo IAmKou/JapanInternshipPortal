@@ -39,9 +39,9 @@ public class TeacherServices {
 
         String folderName = sanitizeFolderName("Account/Teacher/" + accountOpt.get().getUsername());
 
-        CompletableFuture<String> imgUrlFuture = CompletableFuture.supplyAsync(() ->
-                s3Service.uploadFile(img, folderName, img.getOriginalFilename())
-        );
+        String imgUrl = s3Service.uploadFile(img, folderName, img.getOriginalFilename());
+
+
 
         Teacher teacher = new Teacher();
         teacher.setFullname(fullname);
@@ -49,14 +49,11 @@ public class TeacherServices {
         teacher.setEmail(email);
         teacher.setPhoneNumber(phoneNumber);
         teacher.setGender(Teacher.gender.valueOf(gender));
+        teacher.setImg(imgUrl);
         teacher.setAccount(accountOpt.get());
         Teacher savedTeacher = teacherRepository.save(teacher);
 
-        try {
-            teacher.setImg(imgUrlFuture.get());
-        } catch (Exception e) {
-            throw new RuntimeException("Image upload failed", e);
-        }
+
 
         CompletableFuture.runAsync(() -> {
             String emailStatus = emailServices.sendEmail(password, accountOpt.get().getUsername());
