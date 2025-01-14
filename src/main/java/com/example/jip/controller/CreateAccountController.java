@@ -52,6 +52,41 @@ public class CreateAccountController {
             @RequestParam(required = false) String dob, // for Students
             @RequestParam MultipartFile img
     ) {
+        if (fullname == null || fullname.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Full name is required");
+        }
+
+        // Validate Japan name
+        if (japanname == null || japanname.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Japan name is required");
+        }
+
+        // Validate email
+        if (email == null || email.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Email is required");
+        }
+        if (!isValidEmail(email)) {
+            return ResponseEntity.badRequest().body("Invalid email format");
+        }
+
+        // Check if email already exists
+        if (accountRepository.existsByUsername(email)) {
+            return ResponseEntity.badRequest().body("Email already exists");
+        }
+
+        // Validate phone number
+        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Phone number is required");
+        }
+        if (!isValidPhoneNumber(phoneNumber)) {
+            return ResponseEntity.badRequest().body("Invalid phone number format");
+        }
+
+        // Validate gender
+        if (gender == null || gender.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Gender is required");
+        }
+
         if (accountRepository.existsByUsername(email)) {
             return ResponseEntity.badRequest().body("Email already exist");
         }
@@ -94,5 +129,14 @@ public class CreateAccountController {
     private String generateVerifyCode() {
         int code = (int) (Math.random() * 1000000);  // Generates a 6-digit random code
         return String.format("%06d", code);  // Ensure it's always 6 digits
+    }
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return email != null && email.matches(emailRegex);
+    }
+
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        String phoneRegex = "^\\+?[0-9]{10,15}$"; // Adjust the regex based on phone number format
+        return phoneNumber != null && phoneNumber.matches(phoneRegex);
     }
 }
