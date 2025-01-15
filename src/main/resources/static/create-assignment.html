@@ -390,7 +390,7 @@
                         </div>
 
                     </div>
-                    <form class="new-added-form" action="/assignment/create" method="post" enctype="multipart/form-data" onsubmit="addAssignment(event)">
+                    <form class="new-added-form" action="/assignment/create" method="post" enctype="multipart/form-data">
                         <div class="row">
                             <input type="hidden" name="teacher_id" id="userId">
 
@@ -421,7 +421,7 @@
                                 <input type="file" class="form-control-file" name="imgFile" id="imgFile" multiple>
                             </div>
                             <div class="col-12 form-group mg-t-8">
-                                <button type="submit" onclick="addAssignment(event)" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Create Assignment</button>
+                                <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Create Assignment</button>
                                 <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Clear Form</button>
                             </div>
                         </div>
@@ -604,6 +604,22 @@
         }
     }
 
+    function formatDateTimeForInput(dateString) {
+        const date = new Date(dateString);
+
+        // Subtract 10 hours (10 hours * 60 minutes * 60 seconds * 1000 milliseconds)
+        date.setTime(date.getTime() - 7 * 60 * 60 * 1000);
+
+        // Convert to YYYY-MM-DDTHH:mm format
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
     document.addEventListener('DOMContentLoaded', async function () {
         // Initialize semester data before handling the form submission
         await getCurrentSemester();
@@ -664,10 +680,10 @@
             if (startDate > finishDate) return showErrorModal('End date must be greater than or equal to the start date.');
 
             // Check if dates are within the semester bounds
-            if (startDate < semesterStart || startDate > semesterEnd) {
+            if (startDate < formatDateTimeForInput(semesterStart) || startDate > formatDateTimeForInput(semesterEnd)) {
                 return showErrorModal(`Start date must be within the current semester (${semesterStart.toDateString()} - ${semesterEnd.toDateString()}).`);
             }
-            if (finishDate < semesterStart || finishDate > semesterEnd) {
+            if (finishDate < formatDateTimeForInput(semesterStart) || finishDate > formatDateTimeForInput(semesterEnd)) {
                 return showErrorModal(`End date must be within the current semester (${semesterStart.toDateString()} - ${semesterEnd.toDateString()}).`);
             }
 
