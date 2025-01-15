@@ -539,19 +539,18 @@
                         return response.json();
                     })
                     .then(data => {
-                    const events = data.map(schedule => ({
-                        id: schedule.scheduleId,
-                        title: schedule.activity,
-                        start: schedule.scheduleDate,
-                        backgroundColor: schedule.color,
-                        borderColor: schedule.color,
-                        extendedProps: {
-                            room: schedule.room,
-                            attendantStatus: schedule.attendanceStatus || "Not Yet"
-                        }
-                    }));
-                    successCallback(events);
-                })
+                        const events = data.map(schedule => ({
+                            id: schedule.scheduleId,
+                            title: `${schedule.activity} - ${schedule.attendanceStatus || "Not Yet"}`,
+                            start: schedule.scheduleDate,
+                            backgroundColor: schedule.color,
+                            borderColor: schedule.color,
+                            extendedProps: {
+                                room: schedule.room
+                            }
+                        }));
+                        successCallback(events);
+                    })
                     .catch(error => {
                         console.error('Error fetching schedules:', error);
                         failureCallback(error);
@@ -559,7 +558,7 @@
             },
             eventClick: function (info) {
                 const event = info.event;
-                const {room, attendantStatus} = event.extendedProps;
+                const { room, attendantStatus } = event.extendedProps;
                 alert(
                     `Event: ${event.title}\n` +
                     `Room: ${room}\n` +
@@ -570,6 +569,7 @@
         calendar.render();
     });
 </script>
+
 
 <!-- fetch notification -->
 <script>

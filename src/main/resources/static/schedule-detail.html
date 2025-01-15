@@ -714,15 +714,17 @@
                             });
                     },
                     eventClick: function (info) {
-                        // Get event details
+                        if (info.event.extendedProps.isHoliday) {
+                            showErrorModal('You cannot delete holiday events.');
+                            return;
+                        }
+
                         const eventTitle = info.event.title;
                         const eventId = info.event.id;
 
                         if (confirm(`Are you sure you want to delete the event: "${eventTitle}"?`)) {
-                            // Remove the event from the calendar
                             info.event.remove();
 
-                            // Only make a backend API call if the event has a valid ID (indicating it is saved in the database)
                             if (eventId) {
                                 fetch(`/schedule/delete/${eventId}`, {
                                     method: 'DELETE',
@@ -774,20 +776,17 @@
                                     roomDropdown.appendChild(option);
                                 });
 
-                                // Populate the clicked date and reset other fields
                                 document.getElementById('clicked-date').value = info.dateStr;
                                 document.getElementById('eventTitle').value = '';
                                 document.getElementById('eventColor').value = '#3788d8';
 
-                                // Show the modal
                                 $('#addEventModal').modal('show');
                             })
                             .catch(error => {
                                 console.error('Error fetching room availability:', error);
                                 showErrorModal('Failed to fetch room availability.');
                             });
-                    }
-
+                    },
                 });
                 calendar.render();
 
