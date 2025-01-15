@@ -1,5 +1,7 @@
 package com.example.jip.repository;
 
+import com.example.jip.entity.Assignment;
+import com.example.jip.entity.Student;
 import com.example.jip.entity.StudentAssignment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -21,7 +23,7 @@ public interface StudentAssignmentRepository extends JpaRepository<StudentAssign
     List<StudentAssignment> findAllByStudentId(int studentId);
 
     @Query("SELECT sa FROM StudentAssignment sa WHERE sa.assignment.id = :assignmentId AND sa.status = :status")
-    List<StudentAssignment> findByAssignmentIdAndStatus(@Param("assignmentId") int assignmentId, @Param("status") String status);
+    List<StudentAssignment> findByAssignmentIdAndStatus(@Param("assignmentId") int assignmentId, @Param("status") StudentAssignment.Status status);
 
     List<StudentAssignment> findByAssignmentId(int assignmentId);
 

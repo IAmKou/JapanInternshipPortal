@@ -1267,7 +1267,7 @@
                 throw new Error('Error fetching assignment for update: ' + response.statusText);
             }
             const assignment = await response.json();
-
+            await getCurrentSemester();
             const urlParams = new URLSearchParams(window.location.search);
             const teacherId = urlParams.get('teacherId');
 
@@ -1380,6 +1380,24 @@
         }
     }
 
+    let semesterStart, semesterEnd;
+
+    async function getCurrentSemester() {
+        try {
+            const response = await fetch('/semester/current');
+            if (!response.ok) throw new Error('Failed to fetch current semester.');
+
+            const semesterData = await response.json();
+            semesterStart = new Date(semesterData.semesterStart);
+            semesterEnd = new Date(semesterData.semesterEnd);
+            console.log("Current Semester Start:", semesterStart, "End:", semesterEnd);
+        } catch (error) {
+            console.error('Error fetching semester:', error);
+            showErrorModal('Unable to fetch current semester information. Please try again later.');
+            throw error; // Propagate the error if needed
+        }
+    }
+
     async function updateAssignment(event) {
         event.preventDefault();
 
@@ -1392,6 +1410,7 @@
             showErrorModal('Please fill in all the required fields!');
             return; // Exit the function if validation fails
         }
+
 
         // Check if the Create Date is after the current date
         // Parse input dates
@@ -1418,6 +1437,16 @@
             return;
         }
 
+        if (createdDateObj < semesterStart || createdDateObj > semesterEnd) {
+            showErrorModal(`Start date must be within the current semester (${semesterStart.toDateString()} - ${semesterEnd.toDateString()}).`);
+            return;
+        }
+
+        if (endDateObj  < semesterStart || endDateObj  > semesterEnd) {
+            showErrorModal(`End date must be within the current semester (${semesterStart.toDateString()} - ${semesterEnd.toDateString()}).`);
+            return;
+        }
+        
         // Validation: Check if the time difference between Create Date and End Date is at least 30 minutes
         const timeDifference = (endDateObj - createdDateObj) / (1000 * 60); // Difference in minutes
         if (timeDifference < 30) {

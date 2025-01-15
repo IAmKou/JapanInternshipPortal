@@ -45,9 +45,6 @@
         background: linear-gradient(45deg, #ffcc00, #ff9900);
         color: #fff;
     }
-    #content {
-        height: 200px; /* Thay đổi chiều cao tùy ý */
-    }
 
     table td {
         font-weight: bold;
@@ -317,13 +314,14 @@
                 <h2>Assignment Detail</h2>
                 <ul>
                     <li>
-                        <a href="/list-submitted-assignments.html">All Submitted Assignments</a>
+                        <a href="/list-submitted-assignments.html">All Assignment</a>
                     </li>
                     <li>Submitted Assignment Detail</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
-            <!-- Student Table Area Start Here -->
+
+            <!-- Phần 1 -->
             <div class="card height-auto">
                 <div class="card-body">
                     <div class="heading-layout1">
@@ -365,59 +363,50 @@
                         </table>
                     </div>
                 </div>
-            </div>
 
-
-            <div class="card height-auto">
-                <div class="card-body">
-                    <div class="alert alert-danger" id="statusMessage" style="display: none;"></div>
-                    <div class="heading-layout1">
-
-                        <div class="item-title">
-                            <h2 class="text-dark-medium font-medium">Student Submission</h2>
-
-                            <div class="heading-layout1" style="display: flex; margin-bottom: 10px; align-items: baseline;">
-                                <div class="item-title" style="display: flex; align-items: baseline;">
-                                    <h3 class="text-dark-medium font-medium" style="margin-bottom: 5px;">Title:</h3>
-                                    <span id="submitted-assignment-description" style="margin-left: 100px; font-weight: bold; color: #000;"></span>
-                                </div>
+                <!-- Phần 2 -->
+                <div class="card height-auto">
+                    <div class="card-body">
+                        <div class="alert alert-danger" id="statusMessage" style="display: none;"></div>
+                        <div class="heading-layout1">
+                            <div class="item-title">
+                                <h3 class="text-dark-medium font-medium" style="display: inline; margin-bottom: 5px;">Student Submission</h3>
                             </div>
-
-                            <div class="heading-layout1" style="display: flex; margin-bottom: 10px; align-items: baseline;">
-                                <div class="item-title" style="display: flex; align-items: baseline;">
-                                    <h3 class="text-dark-medium font-medium" style="margin-bottom: 5px;">Student Name:</h3>
-                                    <span id="submitted-assignment-student-name" style="margin-left: 5px; font-weight: bold; color: #000;"></span>
-                                </div>
-                            </div>
-
-                            <div class="heading-layout1" style="display: flex; margin-bottom: 10px; align-items: baseline;">
-                                <div class="item-title" style="display: flex; align-items: baseline;">
-                                    <h3 class="text-dark-medium font-medium" style="margin-bottom: 5px;">Date Created:</h3>
-                                    <span id="submitted-created-date" style="margin-left: 15px; font-weight: bold; color: #000;"></span>
-                                </div>
-                            </div>
-
-                            <div class="heading-layout1" style="display: flex; margin-bottom: 10px; align-items: baseline;">
-                                <div class="item-title" style="display: flex; align-items: baseline;">
-                                    <h3 class="text-dark-medium font-medium" style="margin-bottom: 5px;">Description:</h3>
-                                    <span id="submitted-assignment-content" style="margin-left: 28px; font-weight: bold; color: #000;"></span>
-                                </div>
-                            </div>
-                            <div class="heading-layout1" style="display: flex; margin-bottom: 10px; align-items: baseline;">
-                                <div class="item-title" style="display: flex; align-items: baseline;">
-                                    <h3 class="text-dark-medium font-medium" style="margin-bottom: 5px;">File:</h3>
-                                    <span id="submitted-assignment-file" style="margin-left: 28px; font-weight: bold; color: #000;"></span>
-                                </div>
-                            </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
                         </div>
-
-                    </div>
-                    <!-- Grade Button -->
-                    <div class="text-right">
-                        <button type="button" id="gradeButton" class="btn btn-gradient-yellow btn-search" data-toggle="modal" data-target="#gradeModal">
-                            Grade Assignment
-                        </button>
+                        &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
+                        <div class="item-content">
+                            <table class="table text-nowrap">
+                                <tbody>
+                                <tr>
+                                    <td>Title:</td>
+                                    <td id="submitted-assignment-description" style="font-weight: bold; color: #000; font-size: 18px"></td>
+                                </tr>
+                                <tr>
+                                    <td>Student Name:</td>
+                                    <td id="submitted-assignment-student-name" style="font-weight: bold; color: #000; font-size: 18px"></td>
+                                </tr>
+                                <tr>
+                                    <td>Date Created:</td>
+                                    <td id="submitted-created-date" style="font-weight: bold; color: #000; font-size: 18px"></td>
+                                </tr>
+                                <tr>
+                                    <td>Description:</td>
+                                    <td id="submitted-assignment-content" style="font-weight: bold; color: #000; font-size: 18px"></td>
+                                </tr>
+                                <tr>
+                                    <td>File:</td>
+                                    <td id="submitted-assignment-file" style="font-weight: bold; color: #000; font-size: 18px"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp; <!-- Chèn khoảng trắng không ngắt dòng -->
+                        <!-- Grade Button -->
+                        <div class="text-right">
+                            <button type="button" id="gradeButton" class="btn btn-gradient-yellow btn-search" data-toggle="modal" data-target="#gradeModal">
+                                Grade Assignment
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
