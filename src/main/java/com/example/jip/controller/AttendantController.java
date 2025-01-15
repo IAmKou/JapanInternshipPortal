@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -147,6 +148,14 @@ public class AttendantController {
         Date date = Date.valueOf(today);
         return attendantRepository.existsByClassIdAndDate(classId, date);
     }
+
+    @GetMapping("/getAll/{classId}")
+    public List<AttendantDTO> getAllAttendance(@PathVariable int classId) {
+        return attendantRepository.findAll().stream()
+                .map(AttendantDTO::new)
+                .collect(Collectors.toList());
+    }
+
 
 
 }

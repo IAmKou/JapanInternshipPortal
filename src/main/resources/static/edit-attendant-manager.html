@@ -1,0 +1,902 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>AKKHOR | All Classes</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+    <!-- Normalize CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="css/all.min.css">
+    <!-- Flaticon CSS -->
+    <link rel="stylesheet" href="fonts/flaticon.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="css/animate.min.css">
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Modernize js -->
+    <script src="js/modernizr-3.6.0.min.js"></script>
+    <style>
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient-yellow {
+            background: linear-gradient(45deg, #ffcc00, #ff9900);
+            color: #fff;
+        }
+        /* Đảm bảo trang bao phủ toàn bộ chiều cao */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* Container chính */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%; /* Bao phủ toàn bộ trang */
+        }
+
+        /* Nội dung bên trên */
+        .content {
+            flex: 1; /* Đẩy footer xuống */
+        }
+
+        /* Footer nằm ở cuối */
+        .footer-wrap-layout1 {
+            background-color: #ec9006;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .footer-wrap-layout1 a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Preloader Start Here -->
+    <div id="preloader"></div>
+    <!-- Preloader End Here -->
+    <div id="wrapper" class="wrapper bg-ash">
+         <!-- Header Menu Area Start Here -->
+        <div id="google_translate_element"></div>
+        <div class="navbar navbar-expand-md header-menu-one bg-light">
+            <div class="nav-bar-header-one">
+                <div class="header-logo">
+                    <a href="teacher.html">
+                        <div style="width: 180px; height: 70px; overflow: hidden;">
+                            <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                    </a>
+                </div>
+                  <div class="toggle-button sidebar-toggle">
+                    <button type="button" class="item-link">
+                        <span class="btn-icon-wrap">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="d-md-none mobile-nav-bar">
+               <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse" data-target="#mobile-navbar" aria-expanded="false">
+                    <i class="far fa-arrow-alt-circle-down"></i>
+                </button>
+                <button type="button" class="navbar-toggler sidebar-toggle-mobile">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+                <ul class="navbar-nav">
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="navbar-item dropdown header-admin">
+                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                            aria-expanded="false">
+                            <div class="admin-title">
+                                <h5 class="item-title userFullName"></h5>
+                                <span class="userRole"></span>
+                            </div>
+                            <div class="admin-img img">
+                                <img src="" style="width: 50px; height: 50px" alt="Admin">
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <div class="item-header">
+                                <h6 class="item-title userFullName"></h6>
+                            </div>
+                            <div class="item-content">
+                                <ul class="settings-list">
+                                    <li><a href="users-profile-teacher.html"><i class="flaticon-user"></i>My Profile</a></li>
+                                    <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span data-i18n="change_password">Change Password</span></a></li>
+                                    <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="navbar-item dropdown header-notification">
+                        <a id="notification-bell" class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                            <i class="far fa-bell"></i>
+                            <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
+                            <span id="notification-count">0</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" id="notification-dropdown">
+                            <div class="item-header">
+                                <h6 class="item-title" id="notification-title">Notifications</h6>
+                            </div>
+                            <div class="item-content" id="notification-list">
+                                <!-- Notifications will be dynamically inserted here -->
+                            </div>
+                        </div>
+                    </li>
+                    <li class="navbar-item dropdown header-language">
+                        <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
+                                <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;"> English
+                            </a>
+                            <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
+                                <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese" style="width: 20px; height: 15px;"> 日本語
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Header Menu Area End Here -->
+        <!-- Page Area Start Here -->
+        <div class="dashboard-page-one">
+            <!-- Sidebar Area Start Here -->
+            <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+                <div class="mobile-sidebar-header d-md-none">
+                    <div class="header-logo">
+                        <a href="teacher.html"><img src="img/logo1.png" alt="logo"></a>
+                    </div>
+                </div>
+                <div class="sidebar-menu-content">
+                    <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                            <ul class="nav sub-group-menu sub-group-active">
+                                <li class="nav-item">
+                                    <a href="teacher.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Teachers</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Assignment</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="javascript:void(0);" class="nav-link" onclick="toListAssigment();"><i class="fas fa-angle-right"></i>All
+                                        Assignment</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="create-assignment.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                        Assignment</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i
+                                    class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
+                            <ul class="nav sub-group-menu sub-group-active">
+                                <li class="nav-item">
+                                    <a href="javascript:void(0);" class="nav-link menu-active" onclick="submitForm();">
+                                        <i class="flaticon-menu"></i><span>Class List</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="Create-material.html" class="nav-link"><i class="fas fa-angle-right"></i>Create
+                                        Material</a>
+                                </li>
+                                <li class="nav-item" id="teacher-view">
+                                    <a href="View-list-materials.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                        Materials</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                        application</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                        application</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item sidebar-nav-item">
+                            <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list
+                                        threads</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create
+                                        Thread</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Sidebar Area End Here -->
+            <div class="dashboard-content-one">
+                <!-- Breadcubs Area Start Here -->
+                <div class="breadcrumbs-area">
+                    <h3>Classes</h3>
+                    <ul>
+                        <li>
+                            <a href="admin.html">Home</a>
+                        </li>
+                        <li>All Classes</li>
+                    </ul>
+                </div>
+                <!-- Breadcubs Area End Here -->
+                <!-- Class Table Area Start Here -->
+                <div class="card height-auto">
+                    <div class="card-body">
+                        <div class="heading-layout1">
+                            <div class="item-title">
+                                <h3>All Class Schedules</h3>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table display text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Photo</th>
+                                        <th>Name</th>
+                                        <th>Present</th>
+                                        <th>Absent</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                        <button id="submitButton" class="btn btn-gradient-yellow btn-search">Submit Attendance</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Class Table Area End Here -->
+            </div>
+        </div>
+        <!-- Page Area End Here -->
+    </div>
+    <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+        <div style="background-color: #ec9006; padding: 15px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+                            rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-success" id="successModalLabel">
+                        <i class="fas fa-check-circle"></i> Success
+                    </h5>
+                </div>
+                <div class="modal-body text-center">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-danger" id="errorModalLabel">
+                        <i class="fas fa-times-circle"></i> Error
+                    </h5>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- jquery-->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <!-- Plugins js -->
+    <script src="js/plugins.js"></script>
+    <!-- Popper js -->
+    <script src="js/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Scroll Up Js -->
+    <script src="js/jquery.scrollUp.min.js"></script>
+    <!-- Data Table Js -->
+    <script src="js/jquery.dataTables.min.js"></script>
+    <!-- Custom Js -->
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Kiểm tra và lấy ngôn ngữ đã lưu trong localStorage
+            let savedLanguage = localStorage.getItem('language');
+
+            // Nếu chưa có ngôn ngữ lưu, đặt mặc định là tiếng Anh
+            if (!savedLanguage) {
+                savedLanguage = 'en'; // Mặc định tiếng Anh
+                localStorage.setItem('language', 'en');
+            }
+
+            // Cập nhật nhãn ngôn ngữ trên giao diện ngay khi trang tải
+            const languageLabel = document.getElementById('languageLabel');
+            if (languageLabel) {
+                languageLabel.innerText = savedLanguage === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
+            }
+
+            // Áp dụng ngôn ngữ khi trang tải
+            changeLanguage(savedLanguage, false); // false: Không cần tải lại trang
+        });
+
+        function changeLanguage(language, reload = true) {
+            const languageLabel = document.getElementById('languageLabel');
+            if (languageLabel) {
+                languageLabel.innerText = language === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
+            }
+
+            // Lưu ngôn ngữ vào localStorage
+            localStorage.setItem('language', language);
+
+            if (reload) {
+                if (language === 'en') {
+                    window.location.reload(); // Tải lại trang nếu là tiếng Anh
+                } else {
+                    // Nếu là tiếng Nhật, tự động dịch trang
+                    translatePage(language);
+                }
+            }
+        }
+
+        // Hàm dịch trang
+        function translatePage(language) {
+            const pageContent = document.body.innerHTML;
+
+            // Các nội dung cần dịch (ví dụ: tên người dùng, vai trò người dùng)
+            const userFullName = document.querySelector('.userFullName')?.innerText || '';
+            const userRole = document.querySelector('.userRole')?.innerText || '';
+
+            // Gửi yêu cầu dịch trang
+            fetch('/api/translate/whole-page', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    text: pageContent,
+                    targetLanguage: language,
+                    extraText: {
+                        userFullName,
+                        userRole,
+                    },
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.translatedText) {
+                        // Cập nhật toàn bộ nội dung trang với văn bản dịch
+                        document.body.innerHTML = data.translatedText;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error translating page:', error);
+                });
+        }
+    </script>
+    <!-- fetch user -->
+    <script>
+        function showModal(message, isSuccess = true) {
+            // Get the modal elements
+            const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+            const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+
+            // Get the modal body element
+            const modalBody = isSuccess ? document.querySelector('#success-modal .modal-body') : document.querySelector('#long-modal .modal-body');
+
+            // Set the message in the modal body
+            modalBody.innerHTML = `<p>${message}</p>`;
+
+            // Show the corresponding modal
+            if (isSuccess) {
+                successModal.show();
+            } else {
+                errorModal.show();
+            }
+        }
+
+        function submitForm() {
+            // Retrieve userDetails from sessionStorage
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+            if (userDetails && userDetails.teacherId) {
+                // Redirect to the appropriate URL with the teacherId
+                window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
+            } else {
+                showModal("Teacher ID is missing or user details not found in sessionStorage", false);
+            }
+        }
+
+        function redirectSchedule() {
+            // Retrieve userDetails from sessionStorage
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+            if (userDetails && userDetails.teacherId) {
+                // Redirect to the appropriate URL with the teacherId
+                window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
+            } else {
+                showModal("Teacher ID is missing or user details not found in sessionStorage", false);
+            }
+        }
+
+    </script>
+    <!-- fetch class -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tableBody = document.querySelector('.table tbody');
+            const urlParams = new URLSearchParams(window.location.search);
+            const classId = urlParams.get('classId');
+
+            if (classId) {
+                fetch(`/attendant/${classId}/get`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch students: ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(students => {
+                        students.forEach(student => {
+                            const row = document.createElement('tr');
+
+                            // ID cell
+                            const idCell = document.createElement('td');
+                            idCell.textContent = student.studentId;
+                            row.appendChild(idCell);
+
+                            // Image cell
+                            const imgCell = document.createElement('td');
+                            const imgElement = document.createElement('img');
+                            imgElement.src = student.img || 'default_image.jpg'; // Default image if img is null
+                            imgElement.alt = "Student Image";
+                            imgElement.style.width = "50px";
+                            imgElement.style.height = "50px";
+                            imgElement.style.objectFit = "cover";
+                            imgCell.appendChild(imgElement);
+                            row.appendChild(imgCell);
+
+                            // Name cell
+                            const nameCell = document.createElement('td');
+                            nameCell.textContent = student.studentName;
+                            row.appendChild(nameCell);
+
+                            // Attendance status cells
+                            const statuses = ['Present', 'Late', 'Absent', 'Permitted'];
+                            statuses.forEach(status => {
+                                const statusCell = document.createElement('td');
+                                const formCheck = document.createElement('div');
+                                formCheck.classList.add('form-check');
+                                const checkbox = document.createElement('input');
+                                checkbox.type = 'checkbox';
+                                checkbox.classList.add('form-check-input');
+                                checkbox.value = status;
+                                checkbox.checked = student.status === status; // Check if the current status matches
+                                const label = document.createElement('label');
+                                label.classList.add('form-check-label');
+                                label.textContent = status;
+                                formCheck.appendChild(checkbox);
+                                formCheck.appendChild(label);
+                                statusCell.appendChild(formCheck);
+                                row.appendChild(statusCell);
+
+                                // Ensure only one checkbox is checked at a time
+                                checkbox.addEventListener('change', function () {
+                                    if (checkbox.checked) {
+                                        row.querySelectorAll('.form-check-input').forEach(otherCheckbox => {
+                                            if (otherCheckbox !== checkbox) {
+                                                otherCheckbox.checked = false;
+                                            }
+                                        });
+                                    }
+                                });
+                            });
+
+                            // Append row to table body
+                            tableBody.appendChild(row);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching students:', error);
+                        showErrorModal('Failed to load students. Please try again.');
+                    });
+            } else {
+                console.error("Class ID is missing from the URL.");
+                showErrorModal("Class ID is missing. Please check the URL and try again.");
+            }
+
+            // Validation for ensuring at least one checkbox is checked in each row
+            document.querySelector('#submitButton').addEventListener('click', function (event) {
+                let isValid = true;
+
+                const rows = tableBody.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const checkboxes = row.querySelectorAll('.form-check-input');
+                    const isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+                    if (!isChecked) {
+                        row.classList.add('highlight'); // Highlight row if validation fails
+                        isValid = false;
+                    } else {
+                        row.classList.remove('highlight');
+                    }
+                });
+
+                if (!isValid) {
+                    event.preventDefault(); // Prevent submission
+                    showErrorModal("Please select an attendance status for each student.");
+                } else {
+                    submitAttendance();
+                }
+            });
+
+            function submitAttendance() {
+                const attendanceData = [];
+                tableBody.querySelectorAll('tr').forEach(row => {
+                    const studentId = parseInt(row.querySelector('td:first-child').textContent.trim(), 10);
+                    let status = null;
+
+                    row.querySelectorAll('.form-check-input').forEach(checkbox => {
+                        if (checkbox.checked) {
+                            status = checkbox.value;
+                        }
+                    });
+
+                    if (status) {
+                        attendanceData.push({
+                            studentId: studentId,
+                            status: status.toUpperCase(),
+                            date: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
+                        });
+                    }
+                });
+
+                if (attendanceData.length === 0) {
+                    showErrorModal("No attendance changes detected!");
+                    return;
+                }
+
+                fetch(`/attendant/update/${classId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(attendanceData),
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to save attendance: ' + response.statusText);
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        console.log('Attendance saved successfully:', data);
+                        showSuccessModal("Attendance saved successfully!");
+                        window.location.href = `class-list-teacher.html?classId=${classId}`;
+                    })
+                    .catch(error => {
+                        console.error('Error saving attendance:', error);
+                        showErrorModal('Failed to save attendance.');
+                    });
+            }
+
+            function showSuccessModal(message) {
+                const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+                const modalBody = document.querySelector('#success-modal .modal-body');
+                modalBody.innerHTML = `<p>${message}</p>`;
+                successModal.show();
+            }
+
+            function showErrorModal(message) {
+                const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+                const modalBody = document.querySelector('#long-modal .modal-body');
+                modalBody.innerHTML = `<p>${message}</p>`;
+                errorModal.show();
+            }
+        });
+    </script>
+    <!-- fetch notification -->
+    <script>
+        let currentPage = 1; // Trang hiện tại
+        const itemsPerPage = 5; // Số thông báo trên mỗi trang
+        let recipientId = null; // Khởi tạo recipientId là null
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Lấy userDetails từ sessionStorage khi trang đã tải
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails')) || {};
+            recipientId = userDetails.id;  // Lưu recipientId vào biến toàn cục
+
+            if (!recipientId) {
+                console.error("Recipient ID không được tìm thấy trong sessionStorage.");
+            } else {
+                console.log("Recipient ID:", recipientId);
+                fetchNotificationsOnBoard(recipientId);  // Gọi hàm ngay khi nhận được recipientId cho trang chính
+                fetchNotificationsInNavBar(recipientId); // Gọi hàm cho thanh điều hướng
+            }
+        });
+
+        // Fetch và hiển thị thông báo trong phần trang chính
+        function fetchNotificationsOnBoard(recipientId) {
+            if (!recipientId) {
+                console.warn("Recipient ID chưa sẵn sàng, thử lại...");
+                setTimeout(() => fetchNotificationsOnBoard(JSON.parse(sessionStorage.getItem('userDetails'))?.id), 500);
+                return;
+            }
+
+            fetch(`/notification/get/${recipientId}`) // Truy cập đúng endpoint với recipientId
+                .then(response => response.json())
+                .then(data => {
+                    // Loại bỏ thông báo mặc định có tiêu đề "Notification"
+                    data = data.filter(notification => notification.title !== 'Notification' && notification.title.trim() !== '');
+
+                    // Sắp xếp dữ liệu từ mới nhất đến cũ nhất (sử dụng trường 'createdAt')
+                    data.sort((a, b) => {
+                        const dateA = new Date(a.createdAt || a.created || Date.now());
+                        const dateB = new Date(b.createdAt || b.created || Date.now());
+                        return dateB - dateA; // Sắp xếp giảm dần (mới nhất trước)
+                    });
+
+                    // Render thông báo vào trong khu vực trang chính
+                    renderNotificationsOnBoard(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching notifications:', error);
+                    const noticeBoardWrap = document.getElementById('notice-board-wrap');
+                    noticeBoardWrap.innerHTML = '<p>Failed to load notifications.</p>';
+                });
+        }
+
+        // Render thông báo vào trong khu vực trang chính
+        function renderNotificationsOnBoard(notifications) {
+            const noticeBoardWrap = document.getElementById('notice-board-wrap');
+
+            // Phân trang thông báo (đảm bảo lấy đúng các phần tử theo thứ tự)
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const currentNotifications = notifications.slice(startIndex, endIndex);
+
+            // Xóa nội dung cũ và hiển thị thông báo
+            noticeBoardWrap.innerHTML = '';
+            currentNotifications.forEach(notification => {
+                const noticeDiv = document.createElement('div');
+                noticeDiv.classList.add('notice-list');
+
+                const postDateDiv = document.createElement('div');
+                postDateDiv.classList.add('post-date', 'bg-light-sea-green');
+
+                // Lấy ngày tháng định dạng (mặc định là ngày hiện tại nếu thiếu)
+                const notificationDate = new Date(notification.createdAt || notification.created || Date.now());
+                const formattedDate = new Intl.DateTimeFormat('en-US', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                }).format(notificationDate);
+
+                postDateDiv.textContent = formattedDate;
+
+                const noticeTitle = document.createElement('h6');
+                noticeTitle.classList.add('notice-title');
+                noticeTitle.innerHTML = notification.title; // Tiêu đề chứa HTML
+
+                // Kiểm tra nếu tiêu đề chứa thẻ <a> (đường link)
+                const links = noticeTitle.getElementsByTagName('a');
+
+                // Nếu có bất kỳ thẻ <a> nào trong tiêu đề, thay đổi màu sắc thành màu xanh
+                for (let link of links) {
+                    link.style.color = 'blue';  // Màu xanh cho các đường link
+                    link.style.textDecoration = 'underline';  // Gạch chân các đường link
+                }
+
+                noticeDiv.appendChild(postDateDiv);
+                noticeDiv.appendChild(noticeTitle);
+                noticeBoardWrap.appendChild(noticeDiv);
+            });
+
+            // Cập nhật nút phân trang
+            updatePagination(notifications.length);
+        }
+
+        // Cập nhật trạng thái phân trang
+        function updatePagination(totalItems) {
+            const totalPages = Math.min(Math.ceil(totalItems / itemsPerPage), 3); // Giới hạn tối đa 3 trang
+            const pageNumbersElement = document.getElementById('page-numbers');
+            const prevButton = document.getElementById('prev-page');
+            const nextButton = document.getElementById('next-page');
+
+            // Cập nhật trạng thái nút
+            prevButton.disabled = currentPage === 1;
+            nextButton.disabled = currentPage === totalPages;
+
+            // Tạo các nút số trang
+            pageNumbersElement.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.classList.add('page-number');
+                if (i === currentPage) {
+                    pageButton.classList.add('active');
+                }
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    fetchNotificationsOnBoard(recipientId); // Gọi lại hàm với page mới
+                });
+                pageNumbersElement.appendChild(pageButton);
+            }
+        }
+
+        // Xử lý khi nhấn nút "Previous" hoặc "Next"
+        document.getElementById('prev-page').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchNotificationsOnBoard(recipientId);  // Truyền recipientId vào mỗi lần gọi
+            }
+        });
+
+        document.getElementById('next-page').addEventListener('click', () => {
+            currentPage++;
+            fetchNotificationsOnBoard(recipientId);  // Truyền recipientId vào mỗi lần gọi
+        });
+
+
+    </script>
+    <script>
+        // Kiểm tra trạng thái khi trang được tải lại
+        window.onload = function() {
+            const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
+            const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
+
+            // Kiểm tra trạng thái đã bấm vào chuông thông báo chưa (lưu trong localStorage)
+            const hasSeenNotifications = localStorage.getItem('hasSeenNotifications');
+
+            // Nếu đã bấm chuông trước đó và ẩn số lượng thông báo, thì không hiển thị số lượng nữa
+            if (hasSeenNotifications === 'true') {
+                notificationCount.style.display = 'none';
+            }
+        };
+
+        // Fetch và hiển thị thông báo trong phần thanh điều hướng
+        function fetchNotificationsInNavBar(recipientId) {
+            if (!recipientId) {
+                console.warn("Recipient ID chưa sẵn sàng, thử lại...");
+                setTimeout(() => fetchNotificationsInNavBar(JSON.parse(sessionStorage.getItem('userDetails'))?.id), 500);
+                return;
+            }
+
+            fetch(`/notification/get/${recipientId}`) // Truy cập đúng endpoint với recipientId
+                .then(response => response.json())
+                .then(data => {
+                    // Loại bỏ thông báo mặc định có tiêu đề "Notification"
+                    data = data.filter(notification => notification.title !== 'Notification' && notification.title.trim() !== '');
+
+                    // Sắp xếp dữ liệu từ mới nhất đến cũ nhất (sử dụng trường 'createdAt')
+                    data.sort((a, b) => {
+                        const dateA = new Date(a.createdAt || a.created || Date.now());
+                        const dateB = new Date(b.createdAt || b.created || Date.now());
+                        return dateB - dateA; // Sắp xếp giảm dần (mới nhất trước)
+                    });
+
+                    // Giả sử tất cả thông báo là chưa đọc (isRead = false) nếu không có trường này
+                    data.forEach(notification => {
+                        if (!notification.hasOwnProperty('isRead')) {
+                            notification.isRead = false; // Thêm trường isRead nếu không có
+                        }
+                    });
+
+                    // Lọc các thông báo chưa đọc (isRead === false)
+                    const unreadNotifications = data.filter(notification => notification.isRead === false);
+
+                    // Render thông báo vào trong thanh điều hướng
+                    renderNotificationsInNavBar(unreadNotifications, data);
+                })
+                .catch(error => {
+                    console.error('Error fetching notifications:', error);
+                    const notificationList = document.getElementById('notification-list');
+                    notificationList.innerHTML = '<p>Failed to load notifications.</p>';
+                });
+        }
+
+        // Render thông báo vào trong thanh điều hướng
+        function renderNotificationsInNavBar(unreadNotifications, allNotifications) {
+            const notificationCount = document.getElementById('notification-count');
+            const notificationList = document.getElementById('notification-list');
+            const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông
+
+            // Cập nhật số lượng thông báo chưa đọc
+            notificationCount.textContent = unreadNotifications.length;
+
+            // Hiển thị số lượng thông báo nếu có thông báo chưa đọc, nếu không thì ẩn
+            notificationCount.style.display = unreadNotifications.length > 0 ? 'inline' : 'none';
+
+            // Xóa nội dung cũ và hiển thị thông báo trong thanh điều hướng
+            notificationList.innerHTML = ''; // Clear old notifications
+            unreadNotifications.slice(0, 7).forEach(notification => { // Hiển thị tối đa 7 thông báo mới nhất
+                const noticeDiv = document.createElement('div');
+                noticeDiv.classList.add('notification-item');
+
+                const title = document.createElement('h6');
+                title.innerHTML = notification.title;
+
+                noticeDiv.appendChild(title);
+                notificationList.appendChild(noticeDiv);
+            });
+
+            // Thêm sự kiện click vào chuông thông báo để đánh dấu tất cả là đã đọc
+            notificationBell.addEventListener('click', () => {
+                notificationCount.style.display = 'none'; // Ẩn số lượng thông báo khi bấm chuông
+                // Lưu trạng thái "đã xem thông báo" vào localStorage
+                localStorage.setItem('hasSeenNotifications', 'true');
+
+                // Đánh dấu tất cả thông báo là đã đọc (isRead = true)
+                allNotifications.forEach(notification => notification.isRead = true);
+            });
+        }
+    </script>
+</body>
+</html>
