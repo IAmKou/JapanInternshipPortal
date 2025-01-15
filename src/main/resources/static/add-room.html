@@ -152,6 +152,9 @@
             text-align: center;  /* Căn giữa chữ */
             font-weight: bold;   /* Đậm chữ */
         }
+        .dropdown-toggle::after {
+            content: none !important;
+        }
     </style>
 </head>
 
@@ -666,22 +669,6 @@
                 });
         });
     });
-
-    // Hàm hiển thị modal thông báo lỗi
-    function showErrorModal(message) {
-        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
-        document.getElementById('errorModalLabel').innerText = message;
-        errorModal.show();
-    }
-
-    // Hàm hiển thị modal thông báo thành công
-    function showSuccessModal(message) {
-        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
-        document.getElementById('successModalLabel').innerText = message;
-        successModal.show();
-    }
-</script>
-<script>
     document.addEventListener('DOMContentLoaded', function () {
         const tableBody = document.querySelector('.table tbody');
         const confirmationModal = document.querySelector('#confirmation-modal');
