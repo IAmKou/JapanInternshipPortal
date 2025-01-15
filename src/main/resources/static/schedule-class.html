@@ -540,7 +540,7 @@
             const modalIcon = type === 'success' ? 'fas fa-check-circle text-success' : 'fas fa-times-circle text-danger';
 
             document.querySelector(`${modalId} .modal-title`).textContent = modalTitle;
-            document.querySelector(`${modalId} .modal-body`).innerHTML = `<i class="${modalIcon} fa-5x mb-3"></i><p>${message}</p>`;
+            document.querySelector(`${modalId} .modal-body`).innerHTML = `<p>${message}</p>`;
             $(modalId).modal('show');
         }
 
