@@ -547,13 +547,10 @@
                             // Main event for the activity
                             events.push({
                                 id: schedule.scheduleId,
-                                title: schedule.activity,
+                                title: `${schedule.activity} - ${schedule.room}`,
                                 start: schedule.scheduleDate,
                                 backgroundColor: schedule.color,
                                 borderColor: schedule.color,
-                                extendedProps: {
-                                    room: schedule.room,
-                                },
                             });
 
                             // Separate event for attendance status
@@ -575,9 +572,6 @@
                                 start: schedule.scheduleDate,
                                 backgroundColor: attendanceColor,
                                 borderColor: attendanceColor,
-                                extendedProps: {
-                                    relatedTo: schedule.scheduleId,
-                                },
                             });
                         });
 
@@ -587,21 +581,6 @@
                         console.error('Error fetching schedules:', error);
                         failureCallback(error);
                     });
-            },
-            eventClick: function (info) {
-                const event = info.event;
-                const { room, attendanceStatus } = event.extendedProps;
-
-                // Update modal content
-                const modalBody = document.querySelector('#long-modal .modal-body');
-                modalBody.innerHTML = `
-                    <p><strong>Event:</strong> ${event.title}</p>
-                    <p><strong>Room:</strong> ${room}</p>
-                    <p><strong>Attendance Status:</strong> ${attendanceStatus || "Not Yet"}</p>
-                `;
-
-                // Show the modal
-                errorModal.show();
             },
         });
         calendar.render();
