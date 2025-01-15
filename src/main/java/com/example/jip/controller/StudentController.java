@@ -41,43 +41,6 @@ public class StudentController {
     @Autowired
     private MarkReportRepository markReportRepository;
 
-
-    @PostMapping("/save")
-    public ResponseEntity<String> saveStudent(
-            @RequestParam String fullname,
-            @RequestParam String japanname,
-            @RequestParam String dob,
-            @RequestParam String gender,
-            @RequestParam String email,
-            @RequestParam String phoneNumber,
-            @RequestParam(required = false) MultipartFile img,
-            @RequestParam int account_id) {
-
-        try {
-            // Parse the date
-            LocalDate localDate;
-            Date date;
-            try {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                localDate = LocalDate.parse(dob, formatter);
-                date = Date.valueOf(localDate);
-            } catch (DateTimeParseException e) {
-                return ResponseEntity.badRequest().body("Invalid date format. Please use 'yyyy-MM-dd'.");
-            }
-
-            // Call the service to create the student
-            studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, account_id);
-
-            // Return success response
-            return ResponseEntity.ok("Student saved successfully!");
-
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred. Please try again.");
-        }
-    }
-
     @GetMapping("/get")
     public List<StudentDTO> getTopStudents() {
         return studentRepository.findTopUnassignedStudents();

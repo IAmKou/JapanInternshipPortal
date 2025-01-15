@@ -240,7 +240,7 @@ public class AccountImportServices {
                 MarkReportExam markRpExam = new MarkReportExam(markReport, exam);
                 markRpExamRepository.save(markRpExam);
             }
-            emailServices.sendEmail(email, email, password);
+            emailServices.sendEmail(email, password);
         } catch (Exception e) {
             errors.add("Failed to process row: " + (row.getRowNum() + 1) + " due to: " + e.getMessage());
         }

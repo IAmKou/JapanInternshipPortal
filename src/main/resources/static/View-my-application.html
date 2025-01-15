@@ -536,10 +536,11 @@
 <td class="td-bold">
     ${
                                 application.files && application.files.length > 0
-                                    ? application.files.map(file => `<a href="${file}" target="_blank">File </a>`).join('<br>')
+                                    ? application.files.map(file => `<a href="${file}" target="_blank">Link</a>`).join('<br>')
                                     : 'N/A'
                             }
 </td>
+
 <td class="td-bold ${application.status === 'Approved' ? 'approved' : application.status === 'Rejected' ? 'rejected' : ''}">
     ${application.status || 'N/A'}
 </td>

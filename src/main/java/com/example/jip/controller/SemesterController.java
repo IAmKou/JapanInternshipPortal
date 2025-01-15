@@ -56,7 +56,7 @@ public class SemesterController {
                         .body("{\"message\":\"Semester name already exists\"}");
             }
 
-            if (semesterService.isTimeOverlap(semester.getStart_time(), semester.getEnd_time(), semester.getId())) {
+            if (semesterService.isTimeOverlap(semester.getStart_time(), semester.getEnd_time())) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
                         .body("{\"message\":\"Created times overlap with an existing semester\"}");
             }
@@ -147,7 +147,7 @@ public class SemesterController {
 
         if (semesterService.isTimeOverlapping(updatedSemester.getStart_time(), updatedSemester.getEnd_time(), updatedSemester.getId())) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("{\"message\":\"Updated times overlap with an existing semester\"}");
+                    .body("Updated times overlap with an existing semester");
         }
 
         existingSemester.setName(updatedSemester.getName());

@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServices {
@@ -36,23 +38,19 @@ public class StudentServices {
     @Autowired
     private MarkRpExamRepository markRpExamRepository;
 
-    public Student createStudent(String fullname, String japanname, Date dob, String gender, String phoneNumber, String email, MultipartFile img, int accountId) {
+    public Student createStudent(String fullname, String japanname, Date dob, String gender, String phoneNumber, String email, MultipartFile img, int accountId, String password) {
         Optional<Account> accountOpt = accountRepository.findById(accountId);
         if (!accountOpt.isPresent()) {
             throw new IllegalArgumentException("No account found with id: " + accountId);
         }
 
-        // Check for duplicate email or phone number
         if (isDuplicate(email, phoneNumber)) {
             throw new IllegalArgumentException("Duplicate email or phone number found");
         }
 
         String folderName = sanitizeFolderName("Account/Student/" + accountOpt.get().getUsername());
-        String folderNameP = sanitizeFolderName("Account/Student/" + accountOpt.get().getUsername() + "/Passport");
 
-        // Upload image and passport
         String imgUrl = s3Service.uploadFile(img, folderName, img.getOriginalFilename());
-
         // Create a new Student object
         Student student = new Student();
         student.setFullname(fullname);
@@ -84,20 +82,21 @@ public class StudentServices {
             throw new IllegalStateException("No exams exist in the database.");
         }
 
-        for (Exam exam : examList) {
-            MarkReportExam markRpExam = new MarkReportExam(markReport, exam);
-            markRpExamRepository.save(markRpExam);
-        }
+        List<MarkReportExam> markReportExams = examList.stream()
+                .map(exam -> new MarkReportExam(markReport, exam))
+                .collect(Collectors.toList());
+        markRpExamRepository.saveAll(markReportExams);
 
-        String account = accountOpt.get().getUsername();
-        String password = accountOpt.get().getPassword();
-        String emailStatus = emailServices.sendEmail(email, password, account);
-        if (emailStatus == null) {
-            System.out.println("Failed to send email to: " + email);
-        } else {
-            System.out.println("Email sent successfully to: " + email);
-        }
 
+
+        CompletableFuture.runAsync(() -> {
+            String emailStatus = emailServices.sendEmail(email,password);
+            if (emailStatus == null) {
+                System.out.println("Failed to send email to: " + email);
+            } else {
+                System.out.println("Email sent successfully to: " + email);
+            }
+        });
         return savedStudent;
     }
 

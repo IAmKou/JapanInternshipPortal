@@ -76,11 +76,15 @@ public class ApplicationController {
                     teacherDTO.setId(teacher.getId());
                     applicationDTO.setTeacher(teacherDTO);
                     // Upload image and set it to applicationDTO
-                    if (imgFile != null && !imgFile.isEmpty()) {
-                        String folderName = sanitizeFolderName("Applications/" + name + "_" + teacherOptional.get().getFullname());
-                        MultipartFile[] imgFiles = { imgFile }; // Wrap single file into an array
-                        uploadFilesToFolder(imgFiles, folderName);
-                        applicationDTO.setImg(folderName); // Store folder name or image path as required
+                    if (imgFile != null) {
+                        String fileName = imgFile.getOriginalFilename(); // Lấy tên file gốc
+                        String folderName = "Applications/" + applicationDTO.getName(); // Đường dẫn thư mục tổng và con
+
+                        // Tải file lên S3
+                        String img = s3Service.uploadFile(imgFile, folderName, fileName);
+
+                        // Cập nhật URL ảnh vào materialDTO
+                        applicationDTO.setImg(img);
                     }
                 } else {
                     redirectAttributes.addAttribute("error", "Teacher with ID " + teacherId + " not found.");
@@ -94,11 +98,15 @@ public class ApplicationController {
                     studentDTO.setId(student.getId());
                     applicationDTO.setStudent(studentDTO);
                     // Upload image and set it to applicationDTO
-                    if (imgFile != null && !imgFile.isEmpty()) {
-                        String folderName = sanitizeFolderName("Applications/" + name + "_" + studentOptional.get().getFullname());
-                        MultipartFile[] imgFiles = { imgFile }; // Wrap single file into an array
-                        uploadFilesToFolder(imgFiles, folderName);
-                        applicationDTO.setImg(folderName); // Store folder name or image path as required
+                    if (imgFile != null) {
+                        String fileName = imgFile.getOriginalFilename(); // Lấy tên file gốc
+                        String folderName = "Applications/" + applicationDTO.getName(); // Đường dẫn thư mục tổng và con
+
+                        // Tải file lên S3
+                        String img = s3Service.uploadFile(imgFile, folderName, fileName);
+
+                        // Cập nhật URL ảnh vào materialDTO
+                        applicationDTO.setImg(img);
                     }
                 } else {
                     redirectAttributes.addAttribute("error", "Student with ID " + studentId + " not found.");
@@ -296,24 +304,6 @@ public class ApplicationController {
 
         if (payload.containsKey("reply")) {
             application.setReply((String) payload.get("reply"));
-        }
-
-        if (application.getCategory().equals("Edit Attendance")) {
-            LocalDate today = LocalDate.now();
-            java.sql.Date date = java.sql.Date.valueOf(today);
-
-            // Fetch all attendants for the given date
-            List<Attendant> attendants = attendantRepository.findByDate(date);
-
-            if (!attendants.isEmpty()) {
-                attendants.forEach(attendant -> {
-                    attendant.setEndTime(Time.valueOf("24:00:00"));
-                    attendant.setIsFinalized(false);
-                });
-
-                // Save updated attendants
-                attendantRepository.saveAll(attendants);
-            }
         }
 
 

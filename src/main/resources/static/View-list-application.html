@@ -400,7 +400,6 @@
                                     <th style="font-weight: bold;">Purpose</th>
                                     <th style="font-weight: bold;">Create Date</th>
                                     <th style="font-weight: bold;">Process Note</th>
-                                    <th style="font-weight: bold;">File</th>
                                     <th style="font-weight: bold;">Status</th>
                                     <th style="font-weight: bold;">Time Response</th>
                                 </tr>
@@ -681,9 +680,7 @@
                             <td class="td-bold">${formattedContent}</td>
                             <td class="td-bold">${application.created_date ? new Date(application.created_date).toLocaleDateString() : 'N/A'}</td>
                             <td class="td-bold">${formattedReply}</td>
-                            <td class="td-bold">
-                                ${application.img ? `<a href="${application.img}" target="_blank">File</a>` : 'N/A'}
-                            </td>
+
                             <td class="td-bold ${application.status === 'Approved' ? 'approved' : application.status === 'Rejected' ? 'rejected' : ''}">
                                 ${application.status || 'N/A'}
                             </td>

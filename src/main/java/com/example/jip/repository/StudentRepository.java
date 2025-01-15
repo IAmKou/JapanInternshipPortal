@@ -18,7 +18,7 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
     Optional<Student> findByEmail(String email);
     Optional<Student> findByPhoneNumber(String phoneNumber);
     Optional<Student> findByAccount_id(Integer account_id);
-
+    boolean existsByPhoneNumber(String phoneNumber);
     @Query("SELECT s.id FROM Student s WHERE s.account.id = :accountId")
     Optional<Integer> findStudentIdByAccountId(@Param("accountId") int accountId);
 

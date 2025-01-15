@@ -293,10 +293,7 @@
                                         <th>Photo</th>
                                         <th>Name</th>
                                         <th>Present</th>
-                                        <th>Late</th>
                                         <th>Absent</th>
-                                        <th>Permitted Absence</th>
-                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -561,7 +558,7 @@
                             row.appendChild(nameCell);
 
                             // Attendance checkboxes
-                            const statuses = ['PRESENT', 'LATE', 'ABSENT', 'PERMITTED'];
+                            const statuses = ['PRESENT', 'ABSENT'];
                             statuses.forEach((status, index) => {
                                 const cell = document.createElement('td');
                                 const formCheck = document.createElement('div');
@@ -570,10 +567,7 @@
                                 checkbox.type = 'checkbox';
                                 checkbox.value = status;
                                 checkbox.className = 'form-check-input checkAll';
-                                checkbox.disabled = status === 'PERMITTED' || student.mark === true;
-                                if (status === 'PERMITTED' && student.mark === true) {
-                                    checkbox.checked = true;
-                                }
+
                                 const label = document.createElement('label');
                                 label.className = 'form-check-label';
                                 label.textContent = status;
@@ -582,25 +576,6 @@
                                 cell.appendChild(formCheck);
                                 row.appendChild(cell);
                             });
-
-                            // Actions cell
-                            const actionsCell = document.createElement('td');
-                            const dropdown = document.createElement('div');
-                            dropdown.className = 'dropdown';
-                            const dropdownToggle = document.createElement('a');
-                            dropdownToggle.href = '#';
-                            dropdownToggle.className = 'dropdown-toggle';
-                            dropdownToggle.setAttribute('data-toggle', 'dropdown');
-                            dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
-                            dropdown.appendChild(dropdownToggle);
-
-                            const dropdownMenu = document.createElement('div');
-                            dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
-                            dropdownMenu.innerHTML = `
-                        <a class="dropdown-item" data-toggle="modal" data-target="#standard-modal"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>`;
-                            dropdown.appendChild(dropdownMenu);
-                            actionsCell.appendChild(dropdown);
-                            row.appendChild(actionsCell);
 
                             // Append the row to the table body
                             tableBody.appendChild(row);

@@ -520,7 +520,6 @@
         let currentPage = 1; // Current page number
         const studentsPerPage = 30; // Number of students per page
 
-        // Automatically fetch students when the page loads
         fetchStudents();
 
         function fetchStudents() {
@@ -550,6 +549,19 @@
             console.log("Rendering table for page:", currentPage);
             const studentListDiv = document.getElementById('studentList');
             let table = studentListDiv.querySelector('.data-table');
+
+            // Clear existing content in the student list
+            studentListDiv.innerHTML = "";
+
+            // Check if there are no students
+            if (students.length === 0) {
+                studentListDiv.innerHTML = "<p>No unassigned students available.</p>";
+                const studentCountDiv = document.getElementById('studentCount');
+                studentCountDiv.textContent = "No students available.";
+                return;
+            }
+
+            // Create or reuse the table
             if (!table) {
                 table = document.createElement('table');
                 table.className = 'data-table';
@@ -561,11 +573,6 @@
             const startIndex = (currentPage - 1) * studentsPerPage;
             const endIndex = Math.min(startIndex + studentsPerPage, students.length);
             const pageStudents = students.slice(startIndex, endIndex);
-
-            if (pageStudents.length === 0) {
-                studentListDiv.innerHTML = "<p>No unassigned students available.</p>";
-                return;
-            }
 
             // Create header row
             const headerRow = document.createElement('tr');
@@ -620,16 +627,21 @@
                 table.appendChild(row);
             });
 
+            studentListDiv.appendChild(table); // Ensure the table is displayed
             const studentCountDiv = document.getElementById('studentCount');
             studentCountDiv.textContent = `Showing ${startIndex + 1} to ${endIndex} of ${students.length} students`;
         }
 
         function renderPagination() {
             const paginationDiv = document.getElementById('pagination');
+            if (!paginationDiv) {
+                console.error('Pagination element not found');
+                return;
+            }
+
             paginationDiv.innerHTML = ""; // Clear previous pagination buttons
 
             const totalPages = Math.ceil(students.length / studentsPerPage);
-
             for (let i = 1; i <= totalPages; i++) {
                 const button = document.createElement('button');
                 button.textContent = i;
@@ -645,6 +657,7 @@
                 paginationDiv.appendChild(button);
             }
         }
+
 
         document.getElementById('createClassForm').addEventListener('submit', function (event) {
             event.preventDefault();

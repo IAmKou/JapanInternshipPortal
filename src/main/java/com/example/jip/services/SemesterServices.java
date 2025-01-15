@@ -82,7 +82,7 @@ public class SemesterServices {
             }
 
             // Check for any overlap
-            if (startTime.before(semester.getEnd_time()) && endTime.after(semester.getStart_time())) {
+            if (!(startTime.after(semester.getEnd_time()) || endTime.before(semester.getStart_time()))) {
                 return true; // Overlap detected
             }
         }
@@ -90,19 +90,27 @@ public class SemesterServices {
     }
 
 
-    public boolean isTimeOverlap(Date startTime, Date endTime, int currentSemesterId) {
+    public boolean isTimeOverlap(Date startTime, Date endTime) {
         List<Semester> semesters = semesterRepository.findAll();
 
         for (Semester semester : semesters) {
-            if (semester.getId() == currentSemesterId) {
-                continue; // Skip the current semester being updated
-            }
-            if (startTime.before(semester.getEnd_time()) && endTime.after(semester.getStart_time())) {
-                return true; // Overlap detected
+
+
+            // Check for any overlap or adjacent edge cases
+            boolean overlap =
+                    startTime.before(semester.getEnd_time()) && endTime.after(semester.getStart_time()) ||
+                            startTime.equals(semester.getEnd_time()) ||
+                            endTime.equals(semester.getStart_time());
+
+            if (overlap) {
+                return true;
             }
         }
-        return false; // No overlap
+        return false;
     }
+
+
+
 
 
 
