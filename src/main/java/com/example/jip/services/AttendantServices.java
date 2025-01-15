@@ -48,6 +48,7 @@ public class AttendantServices {
             throw new IllegalArgumentException("Schedule does not belong to the specified class.");
         }
 
+
         // Fetch the student
         Optional<Student> studentOpt = studentRepository.findById(studentId);
         if (!studentOpt.isPresent()) {
