@@ -905,14 +905,14 @@
                             <div class="row mb-4">
                                 <div class="col-md-12">
                                     <label class="font-weight-bold" for="img">Profile Image <span class="text-danger">*</span></label>
-                                    <input class="form-control-file shadow-sm" id="img" name="img" type="file">
+                                    <input class="form-control-file shadow-sm" id="img" name="img" type="file" required>
                                     <span class="text-danger" id="img_error1"></span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Error Message -->
-                        <div class="text-danger mt-4 fs-4" id="error-message" style="display: none;"></div>
+
 
                         <!-- Submit Button -->
                         <div class="form-group d-grid">
@@ -1221,8 +1221,7 @@
             });
 
             // Ẩn các mục của người dùng khác (giáo viên và học sinh) vì ADMIN không cần
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
+
         } else if (userDetails.roleName === "TEACHER") {
             // Hiển thị tên đầy đủ và vai trò cho giáo viên
             userFullNameElements.forEach(element => {
@@ -1233,9 +1232,7 @@
             });
 
             // Chỉ hiển thị mục của giáo viên, ẩn mục của học sinh
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
-            document.getElementById("student-view1").style.display = "none";
+
         } else if (userDetails.roleName === "STUDENT") {
             // Hiển thị tên đầy đủ và vai trò cho học sinh
             userFullNameElements.forEach(element => {
@@ -1246,9 +1243,7 @@
             });
 
             // Chỉ hiển thị mục của học sinh
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
+
         } else {
             console.warn("Role not recognized: ", userDetails.roleName);
         }
@@ -1467,6 +1462,7 @@
         document.getElementById('phone_error1').textContent = '';
         document.getElementById('DoB_error1').textContent = ''; // Reset lỗi dob
         document.getElementById('gender_error1').textContent = ''; // Reset lỗi giới tính
+        document.getElementById('img_error1').textContent = ''; // Reset lỗi ảnh
 
         // Kiểm tra fullname, japanname, email, phone, gender
         const fullname = formData.get('fullname').trim();
@@ -1475,6 +1471,8 @@
         const phone = formData.get('phoneNumber').trim();
         const dob = formData.get('dob'); // Lấy giá trị ngày sinh (dob)
         const gender = formData.get('gender'); // Lấy giá trị giới tính
+        const img = formData.get('img'); // Lấy giá trị ảnh
+
         let isValid = true;
 
         // Kiểm tra full name
@@ -1516,8 +1514,9 @@
             isValid = false;
         }
 
-        // Kiểm tra ngày sinh (tuổi phải lớn hơn hoặc bằng 18)
-        if (dob) {
+        // Kiểm tra ngày sinh chỉ khi role là Student
+        const role = formData.get('role');
+        if (role === '2' && dob) {
             const today = new Date();
             const birthYear = new Date(dob).getFullYear();  // Lấy năm sinh
             const currentYear = today.getFullYear();  // Lấy năm hiện tại
@@ -1526,7 +1525,7 @@
                 document.getElementById('DoB_error1').textContent = 'Must be at least 18 years old.';
                 isValid = false;
             }
-        } else {
+        } else if (role === '2' && !dob) {
             document.getElementById('DoB_error1').textContent = 'Date of Birth is required.';
             isValid = false;
         }
@@ -1534,6 +1533,12 @@
         // Kiểm tra giới tính (không có giới tính nào được chọn)
         if (!gender) {
             document.getElementById('gender_error1').textContent = 'Gender is required.';
+            isValid = false;
+        }
+
+        // Kiểm tra ảnh (không có ảnh được chọn)
+        if (!img) {
+            document.getElementById('img_error1').textContent = 'Profile Image is required.';
             isValid = false;
         }
 
@@ -1560,25 +1565,27 @@
                         // Kiểm tra nếu lỗi là "Phone number already exists"
                         else if (errorMessage.includes('Phone number already exists')) {
                             document.getElementById('phone_error1').textContent = 'Phone number already exists.';
-                        } else {
-                            document.getElementById('error-message').textContent = errorMessage;
-                            document.getElementById('error-message').style.display = 'block';
                         }
                         throw new Error(errorMessage); // Ném lỗi ra để dừng tiếp
                     });
                 }
                 return response.json();
             })
-
-                .then(accountId => {
+            .then(accountId => {
                 const role = formData.get('role');
                 const successModal = new bootstrap.Modal(document.getElementById('success-modal1'));
+                const inputModal = document.getElementById('createAccountModal');  // ID của modal chứa form input
 
-                if (role === '1') {
-                    window.location.href = '/account-settings.html';
-                } else {
-                    successModal.show();  // Hiển thị modal thành công
-                }
+                // Ẩn modal input
+                inputModal.style.display = 'none';
+
+                // Hiển thị modal success
+                successModal.show();
+
+                // Tự động reload lại trang sau khi modal success được hiển thị
+                setTimeout(() => {
+                    window.location.reload();  // Reload trang
+                }, 2000);  // Đợi 2 giây trước khi reload trang
             })
             .catch(error => {
                 const errorMessageElement = document.getElementById('error-message');
@@ -1589,6 +1596,7 @@
                 submitBtn.disabled = false; // Enable the submit button
             });
     });
+
 
 
 </script>

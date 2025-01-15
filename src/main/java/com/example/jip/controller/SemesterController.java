@@ -51,9 +51,19 @@ public class SemesterController {
                 throw new IllegalArgumentException("Start time and end time must not be null");
             }
 
+            if (semester.getStart_time().equals(semester.getEnd_time())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("{\"message\":\"Start time can't be equals end time\"}");
+            }
+
             if (semesterService.isSemesterNameExist(semester.getName())) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
                         .body("{\"message\":\"Semester name already exists\"}");
+            }
+
+            if (semesterService.isTimeAdjacent(semester.getStart_time(), semester.getEnd_time())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("{\"message\":\"Start time and end time is adjacent with an existing semester\"}");
             }
 
             if (semesterService.isTimeOverlap(semester.getStart_time(), semester.getEnd_time())) {

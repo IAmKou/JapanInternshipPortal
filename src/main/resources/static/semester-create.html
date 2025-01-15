@@ -29,6 +29,8 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+
+
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -244,8 +246,7 @@
             margin-top: 3px;
             padding: 10px;
             background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
@@ -618,6 +619,7 @@
                             </li>
                         </ul>
                     </li>
+
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i
                                 class="fas fa-calendar"></i><span>Semester</span></a>
@@ -630,6 +632,7 @@
                             </li>
                         </ul>
                     </li>
+
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                         <ul class="nav sub-group-menu">
@@ -644,6 +647,9 @@
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
                                 <a href="add-room.html" class="nav-link"><i class="fas fa-angle-right"></i>Add Room</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="list-room-availability.html" class="nav-link"><i class="fas fa-angle-right"></i>List Room Availability</a>
                             </li>
                         </ul>
                     </li>
@@ -754,6 +760,7 @@
                 <span id="errorSemesterEnd1" style="color: red; font-size: 0.85em; display: none;">End date cannot be before the start date</span>
 
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 16px; width: 100px;">Cancel</button>
                     <button type="submit" class="btn update-btn" style="font-size: 16px; width: 100px;">Update</button>
                 </div>
             </form>
@@ -1000,8 +1007,8 @@
             errorSemesterName.textContent = 'Semester Name cannot be empty.';
             errorSemesterName.style.display = 'block';
             hasError = true;
-        } else if (semesterName.length > 40) {
-            errorSemesterName.textContent = 'Semester Name cannot exceed 40 characters.';
+        } else if (semesterName.length > 35) {
+            errorSemesterName.textContent = 'Semester Name cannot exceed 35 characters.';
             errorSemesterName.style.display = 'block';
             hasError = true;
         }
@@ -1189,8 +1196,9 @@
 
                 // Kiểm tra nếu kỳ học đã kết thúc (endDate < currentDate)
                 if (endDate < currentDate) {
-                    // Kỳ học đã kết thúc, không hiển thị nút Update hoặc Delete
-                    // Không làm gì cả ở đây, bỏ qua việc thêm nút
+                    // Kỳ học đã kết thúc, không hiển thị nút Update hoặc Delete và ẩn actionsContainer
+                    semesterDiv.appendChild(semesterName);
+                    semesterDiv.appendChild(semesterDates);
                 } else {
                     // Kỳ học chưa kết thúc, hiển thị các nút hành động
                     if (startDate > currentDate) {
@@ -1222,11 +1230,12 @@
 
                         actionsContainer.appendChild(updateButton);
                     }
-                }
 
-                semesterDiv.appendChild(semesterName);
-                semesterDiv.appendChild(semesterDates);
-                semesterDiv.appendChild(actionsContainer);
+                    // Đưa các nút hành động vào semesterDiv
+                    semesterDiv.appendChild(semesterName);
+                    semesterDiv.appendChild(semesterDates);
+                    semesterDiv.appendChild(actionsContainer);
+                }
 
                 noticeBoardWrap.appendChild(semesterDiv);
             }
