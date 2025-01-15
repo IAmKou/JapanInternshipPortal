@@ -550,117 +550,114 @@
     </script>
 
     <script>
-            let selectedMaterialId;  // Biến để lưu materialId của tài liệu cần xóa
-            // Hàm lấy danh sách materials từ API và hiển thị trên frontend
-            function fetchMaterials() {
-                // Lấy teacher_id từ sessionStorage
-                const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-                const currentTeacherId = userDetails ? userDetails.id : null;
-                const language = localStorage.getItem('language') || 'en';  // Mặc định 'en'
-                getTranslation(language);  // Áp dụng ngôn ngữ ngay lập tức khi tải nhiệm vụ
-                console.log("Current Teacher ID: ", currentTeacherId);
+        let selectedMaterialId;  // Biến để lưu materialId của tài liệu cần xóa
 
-                // Fetch dữ liệu từ backend và lấy teacherId cùng với materials
-                fetch('/materials/list?accountId=' + currentTeacherId)  // Truyền accountId vào request
-                    .then(response => response.json())
-                    .then(data => {
-                        const teacherIdFromBackend = data.teacherId;  // Lấy teacherId từ backend
-                        console.log("Teacher ID from backend: ", teacherIdFromBackend);
+        // Hàm lấy danh sách materials từ API và hiển thị trên frontend
+        function fetchMaterials() {
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+            const currentTeacherId = userDetails ? userDetails.id : null;
+            const language = localStorage.getItem('language') || 'en';  // Mặc định 'en'
+            getTranslation(language);  // Áp dụng ngôn ngữ ngay lập tức khi tải nhiệm vụ
+            console.log("Current Teacher ID: ", currentTeacherId);
 
-                        // Duyệt qua tất cả materials để hiển thị
-                        const materialList = document.getElementById('material-list');
-                        materialList.innerHTML = '';  // Xóa nội dung hiện tại
+            // Fetch dữ liệu từ backend và lấy teacherId cùng với materials
+            fetch('/materials/list?accountId=' + currentTeacherId)
+                .then(response => response.json())
+                .then(data => {
+                    const teacherIdFromBackend = data.teacherId;  // Lấy teacherId từ backend
+                    console.log("Teacher ID from backend: ", teacherIdFromBackend);
 
-                        data.materials.forEach(material => {
-                            const row = document.createElement('tr');
-                            let dropdownHtml = '';
+                    const materialList = document.getElementById('material-list');
+                    materialList.innerHTML = '';  // Xóa nội dung hiện tại
 
-                            // Kiểm tra nếu teacher_id của material trùng với teacher_id của người dùng
-                            if (material.teacher.id === teacherIdFromBackend) {
-                                dropdownHtml = `
-                            <div class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <span class="flaticon-more-button-of-three-dots"></span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i><span data-i18n="close">Close</span></a>
-                                    <button type="button" class="dropdown-item" onclick="openDeleteModal('${material.id}')">
-                                        <i class="fas fa-trash text-orange-peel"></i><span data-i18n="delete">Delete</span>
-                                    </button>
-                                </div>
+                    data.materials.forEach(material => {
+                        const row = document.createElement('tr');
+                        let dropdownHtml = '';
+
+                        if (material.teacher.id === teacherIdFromBackend) {
+                            dropdownHtml = `
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <span class="flaticon-more-button-of-three-dots"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i><span data-i18n="close">Close</span></a>
+                                <button type="button" class="dropdown-item" onclick="openDeleteModal('${material.id}')">
+                                    <i class="fas fa-trash text-orange-peel"></i><span data-i18n="delete">Delete</span>
+                                </button>
                             </div>
-                        `;
-                            }
-
-                            row.innerHTML = `
-        <td class="text-left">
-            <span style="display: flex; align-items: center;">
-    <i class="flaticon-script" style="font-size: 20px; margin-right: 8px;"></i>
-    <a href="View-material-details.html?id=${material.id}" style="color: #007bff; font-size: 18px !important;">
-        ${material.title}
-    </a>
-</span>
-
-        </td>
-        <td>
-            ${dropdownHtml}
-        </td>
-    `;
-                            materialList.appendChild(row);
-                        });
-                        setTimeout(() => {
-                            getTranslation(language);
-                        }, 100);  // Gọi lại dịch sau 100ms để các phần tử được render và dịch
-                        // Cập nhật lại DataTable mà không phá hủy bảng cũ
-                        if ($.fn.dataTable.isDataTable('.data-table')) {
-                            var table = $('.data-table').DataTable();
-                            table.clear();  // Xóa dữ liệu cũ
-                            table.rows.add(materialList.rows);  // Thêm các dòng mới
-                            table.draw();  // Vẽ lại bảng
-                        } else {
-                            // Khởi tạo DataTable chỉ khi nó chưa được khởi tạo
-                            $('.data-table').DataTable({
-                                "bSort": false,
-                                "bPaginate": true,  // Đảm bảo phân trang được bật
-                                "bInfo": false,
-                                "bFilter": false,
-                                "autoWidth": false,
-                                "columnDefs": [{
-                                    "targets": 'no-sort',
-                                    "orderable": false
-                                }],
-                                "pageLength": 10,  // Cấu hình số lượng bản ghi trên mỗi trang là 10
-                                "language": {
-                                    "paginate": {
-                                        "first": i18n[lang].paginate.first,
-                                        "previous": i18n[lang].paginate.previous,
-                                        "next": i18n[lang].paginate.next,
-                                        "last": i18n[lang].paginate.last,
-                                    }
-                                },
-                                "header": false,
-                                "ordering": false,
-                                "scrollY": "300px",
-                                "scrollCollapse": true,
-                                "paging": true
-                            });
+                        </div>
+                    `;
                         }
-                    })
-                    .catch(error => console.error('Error fetching materials:', error));
-            }
 
-        // Hàm mở modal và lưu materialId của tài liệu cần xóa
-        function openDeleteModal(materialId) {
-            selectedMaterialId = materialId;  // Lưu lại ID của tài liệu cần xóa
-            $('#confirmationModal').modal('show');  // Hiển thị modal
+                        row.innerHTML = `
+                    <td class="text-left">
+                        <span style="display: flex; align-items: center;">
+                            <i class="flaticon-script" style="font-size: 20px; margin-right: 8px;"></i>
+                            <a href="View-material-details.html?id=${material.id}" style="color: #007bff; font-size: 18px !important;">
+                                ${material.title}
+                            </a>
+                        </span>
+                    </td>
+                    <td>
+                        ${dropdownHtml}
+                    </td>
+                `;
+                        materialList.appendChild(row);
+                    });
+
+                    setTimeout(() => {
+                        getTranslation(language);
+                    }, 100);
+
+                    if ($.fn.dataTable.isDataTable('.data-table')) {
+                        var table = $('.data-table').DataTable();
+                        table.clear();
+                        table.rows.add(materialList.rows);
+                        table.draw();
+                    } else {
+                        $('.data-table').DataTable({
+                            "bSort": false,
+                            "bPaginate": true,
+                            "bInfo": false,
+                            "bFilter": false,
+                            "autoWidth": false,
+                            "columnDefs": [{
+                                "targets": 'no-sort',
+                                "orderable": false
+                            }],
+                            "pageLength": 10,
+                            "language": {
+                                "paginate": {
+                                    "first": i18n[lang].paginate.first,
+                                    "previous": i18n[lang].paginate.previous,
+                                    "next": i18n[lang].paginate.next,
+                                    "last": i18n[lang].paginate.last,
+                                }
+                            },
+                            "header": false,
+                            "ordering": false,
+                            "scrollY": "300px",
+                            "scrollCollapse": true,
+                            "paging": true
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching materials:', error);
+                    showErrorModal('Error fetching materials. Please try again.');
+                });
         }
 
-        // Hàm xử lý khi người dùng xác nhận xóa
+        function openDeleteModal(materialId) {
+            selectedMaterialId = materialId;
+            $('#confirmationModal').modal('show');
+        }
+
         document.querySelector('#confirmationModal .btn-danger').addEventListener('click', function() {
-            deleteMaterial(selectedMaterialId);  // Gọi hàm xóa với ID đã lưu
+            deleteMaterial(selectedMaterialId);
         });
 
-        // Hàm xóa tài liệu
         function deleteMaterial(materialId) {
             fetch(`/materials/delete/${materialId}`, {
                 method: 'DELETE'
@@ -669,29 +666,31 @@
                     if (response.ok) {
                         const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
                         successModal.show();
-                        fetchMaterials(); // Tải lại danh sách sau khi xóa
+                        fetchMaterials();
                     } else {
-                        alert("Lỗi khi xóa tài liệu. Vui lòng thử lại.");
+                        showErrorModal('Failed to delete material. Please try again.');
                     }
                 })
                 .catch(error => {
                     console.error("Lỗi:", error);
-                    alert("Có lỗi xảy ra. Vui lòng thử lại.");
+                    showErrorModal('An error occurred. Please try again.');
                 })
                 .finally(() => {
-                    $('#confirmationModal').modal('hide'); // Ẩn modal sau khi hoàn tất
+                    $('#confirmationModal').modal('hide');
                 });
         }
 
-        // Gọi hàm fetchMaterials khi trang được tải
+        function showErrorModal(message) {
+            const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+            document.querySelector('#long-modal .modal-body').innerText = message;
+            errorModal.show();
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
-            // Ẩn phần <thead> nếu có trong bảng
             const thead = document.querySelector('.data-table thead');
             if (thead) {
-                thead.style.display = 'none';  // Ẩn phần thead
+                thead.style.display = 'none';
             }
-
-            // Gọi hàm fetchMaterials để tải dữ liệu
             fetchMaterials();
         });
     </script>

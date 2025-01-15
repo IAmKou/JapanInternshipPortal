@@ -1569,15 +1569,25 @@
         return `${day}/${month}/${year}`;
     }
 
+    // Hàm để hiển thị modal
+    function showModal(type, message) {
+        const modalId = type === 'success' ? '#success-modal' : '#long-modal';
+        const modalBody = document.querySelector(`${modalId} .modal-body`);
+        modalBody.textContent = message;
+
+        // Hiển thị modal
+        $(modalId).modal('show');
+    }
+
     // Gán sự kiện khi người dùng chọn ngày
     document.querySelector('#startTime').addEventListener('change', function (e) {
         let formattedDate = formatDateToDisplay(e.target.value, 'dd/mm/yyyy');
-        alert(`Ngày bắt đầu: ${formattedDate}`); // Ví dụ hiển thị alert
+        showModal('success', `Ngày bắt đầu: ${formattedDate}`);
     });
 
     document.querySelector('#endTime').addEventListener('change', function (e) {
         let formattedDate = formatDateToDisplay(e.target.value, 'yyyy/mm/dd');
-        alert(`Ngày kết thúc: ${formattedDate}`); // Ví dụ hiển thị alert
+        showModal('error', `Ngày kết thúc: ${formattedDate}`);
     });
 </script>
 <script>

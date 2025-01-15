@@ -43,9 +43,7 @@ public class Attendant {
 
     public enum Status {
         PRESENT,
-        ABSENT,
-        LATE,
-        PERMITTED
+        ABSENT
     }
 
     public Attendant(Integer id, Student student, Schedule schedule, Status status, Date date, Time startTime, Time endTime, Boolean isFinalized) {

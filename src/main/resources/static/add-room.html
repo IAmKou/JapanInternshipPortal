@@ -728,7 +728,7 @@
                 room.forEach(room => {
                     const row = document.createElement('tr');
 
-                    //Semester Name cell
+                    // Semester Name cell
                     const roomNameCell = document.createElement('td');
                     roomNameCell.textContent = room.name;
                     row.appendChild(roomNameCell);
@@ -750,7 +750,7 @@
                     <a class="dropdown-item delete-class" data-id="${room.id}">
                         <i></i> Delete Room
                     </a>
-                    <a class="dropdown-item update-class" data-id="${room.id}" data-name="${room.name}""
+                    <a class="dropdown-item update-class" data-id="${room.id}" data-name="${room.name}">
                         <i></i> Update Room
                     </a>
                 `;
@@ -774,11 +774,9 @@
                         const roomId = this.getAttribute('data-id');
                         const roomName = this.getAttribute('data-name');
 
-
                         // Populate modal fields
                         document.getElementById('roomId').value = roomId;
                         document.getElementById('roomName').value = roomName;
-
 
                         // Show modal
                         $('#update-modal').modal('show');
@@ -796,15 +794,15 @@
                     .then(response => response.json()) // Parse JSON response
                     .then(data => {
                         if (response.ok) {
-                            alert(data.message); // Display success message
+                            showSuccessModal(data.message);
                             location.reload(); // Refresh the page
                         } else {
-                            alert(data.message); // Display error message
+                            showErrorModal(data.message);
                         }
                     })
                     .catch(error => {
                         console.error('Error deleting room:', error);
-                        alert("An error occurred while communicating with the server.");
+                        showErrorModal("An error occurred while communicating with the server.");
                     });
             }
         });
@@ -812,10 +810,10 @@
         // Handle class update via JSON
         updateClassBtn.addEventListener('click', function () {
             const roomId = document.getElementById('roomId').value;
-            const roomName = document.getElementById('roomNam').value.trim(); // Trim input
+            const roomName = document.getElementById('roomName').value.trim(); // Trim input
 
             if (!roomName) {
-                alert('Room name cannot be empty.');
+                showErrorModal('Room name cannot be empty.');
                 return;
             }
 
@@ -825,17 +823,32 @@
                 .then(response => response.json()) // Parse JSON response
                 .then(data => {
                     if (data.status === "success") {
-                        alert(data.message); // Show success message
+                        showSuccessModal(data.message); // Show success message
                         location.reload(); // Refresh the page
                     } else if (data.status === "error") {
-                        alert(data.message); // Show error message
+                        showErrorModal(data.message); // Show error message
                     }
                 })
                 .catch(error => {
                     console.error('Error updating room:', error);
-                    alert("An error occurred while communicating with the server.");
+                    showErrorModal("An error occurred while communicating with the server.");
                 });
         });
+
+        // Functions to show modals
+        function showSuccessModal(message) {
+            const successModal = document.querySelector('#success-modal');
+            const successModalBody = successModal.querySelector('.modal-body');
+            successModalBody.textContent = message;
+            $('#success-modal').modal('show');
+        }
+
+        function showErrorModal(message) {
+            const errorModal = document.querySelector('#long-modal');
+            const errorModalBody = errorModal.querySelector('.modal-body');
+            errorModalBody.textContent = message;
+            $('#long-modal').modal('show');
+        }
     });
 </script>
 </body>

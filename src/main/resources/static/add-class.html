@@ -634,10 +634,14 @@
 
         function renderPagination() {
             const paginationDiv = document.getElementById('pagination');
+            if (!paginationDiv) {
+                console.error('Pagination element not found');
+                return;
+            }
+
             paginationDiv.innerHTML = ""; // Clear previous pagination buttons
 
             const totalPages = Math.ceil(students.length / studentsPerPage);
-
             for (let i = 1; i <= totalPages; i++) {
                 const button = document.createElement('button');
                 button.textContent = i;
@@ -653,6 +657,7 @@
                 paginationDiv.appendChild(button);
             }
         }
+
 
         document.getElementById('createClassForm').addEventListener('submit', function (event) {
             event.preventDefault();

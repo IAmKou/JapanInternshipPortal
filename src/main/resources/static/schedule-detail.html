@@ -1,8 +1,5 @@
 <!doctype html>
 <html class="no-js" lang="">
-
-
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/JIP/JIP/semester-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -65,12 +62,6 @@
             color: #ffcc00;
             text-decoration: none;
         }
-        body {
-            margin-top: 40px;
-            font-size: 14px;
-            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-        }
-
         #wrap {
             display: flex;
             justify-content: flex-start;
@@ -714,15 +705,17 @@
                             });
                     },
                     eventClick: function (info) {
-                        // Get event details
+                        if (info.event.extendedProps.isHoliday) {
+                            showErrorModal('You cannot delete holiday events.');
+                            return;
+                        }
+
                         const eventTitle = info.event.title;
                         const eventId = info.event.id;
 
                         if (confirm(`Are you sure you want to delete the event: "${eventTitle}"?`)) {
-                            // Remove the event from the calendar
                             info.event.remove();
 
-                            // Only make a backend API call if the event has a valid ID (indicating it is saved in the database)
                             if (eventId) {
                                 fetch(`/schedule/delete/${eventId}`, {
                                     method: 'DELETE',
@@ -774,20 +767,17 @@
                                     roomDropdown.appendChild(option);
                                 });
 
-                                // Populate the clicked date and reset other fields
                                 document.getElementById('clicked-date').value = info.dateStr;
                                 document.getElementById('eventTitle').value = '';
                                 document.getElementById('eventColor').value = '#3788d8';
 
-                                // Show the modal
                                 $('#addEventModal').modal('show');
                             })
                             .catch(error => {
                                 console.error('Error fetching room availability:', error);
                                 showErrorModal('Failed to fetch room availability.');
                             });
-                    }
-
+                    },
                 });
                 calendar.render();
 

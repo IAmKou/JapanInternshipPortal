@@ -68,11 +68,13 @@ public class AssignmentController {
 
             log.info("Assignment create successfully.");
             return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            log.error("Unexpected error during assignment creation", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error occurred.");
         }
-         catch (Exception e) {
-            log.error("Error creating assignment", e);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+
     }
 
     @GetMapping("/exists")

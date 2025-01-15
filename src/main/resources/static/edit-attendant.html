@@ -291,10 +291,7 @@
                                         <th>Photo</th>
                                         <th>Name</th>
                                         <th>Present</th>
-                                        <th>Late</th>
                                         <th>Absent</th>
-                                        <th>Permitted Absence</th>
-                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -542,7 +539,6 @@
                                 checkbox.classList.add('form-check-input');
                                 checkbox.value = status;
                                 checkbox.checked = student.status === status; // Check if the current status matches
-                                checkbox.disabled = (status === 'Permitted') || student.mark; // Disable "Permitted" or marked students
                                 const label = document.createElement('label');
                                 label.classList.add('form-check-label');
                                 label.textContent = status;
