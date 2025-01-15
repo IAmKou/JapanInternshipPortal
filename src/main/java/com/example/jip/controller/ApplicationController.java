@@ -299,7 +299,12 @@ public class ApplicationController {
         // Lấy giá trị từ payload
         if (payload.containsKey("status")) {
             String status = (String) payload.get("status");
-            application.setStatus(Application.Status.valueOf(status));  // Không kiểm tra hợp lệ, sử dụng trực tiếp
+            try {
+                application.setStatus(Application.Status.valueOf(status));
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("message", "Invalid status value"));
+            }
         }
 
         if (payload.containsKey("reply")) {
@@ -315,9 +320,11 @@ public class ApplicationController {
         applicationRepository.save(application);
 
         return ResponseEntity.ok(Map.of(
+                "status", "success",
                 "message", "Application reply success",
-                "redirect", "/View-list-application.html" // Đường dẫn cho giao diện
+                "redirect", "/View-list-application.html"
         ));
+
     }
     private void uploadFilesToFolder(MultipartFile[] files, String folderName) {
         Set<String> uploadedFiles = new HashSet<>();

@@ -30,6 +30,15 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            color: #000 !important; /* Ghi đè màu chữ */
+        }
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            color: #000 !important; /* Ghi đè màu chữ */
+        }
+        .select2-selection__clear {
+            display: none !important;
+        }
         .pagination .page-link {
             color: #2575fc;
             border-radius: 50%;
@@ -344,6 +353,8 @@
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label for="className" style="color: #007bff; font-weight: bold;">Class Name</label>
                                 <input type="text" id="className" placeholder="" name="className" class="form-control">
+                                <small id="classNameError" style="color: red; display: none;"></small> <!-- Thêm dòng này -->
+
                             </div>
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label for="teacher" style="color: #007bff; font-weight: bold;">Teacher</label>
@@ -662,15 +673,37 @@
         document.getElementById('createClassForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
-            const className = document.getElementById("className").value;
+            const classNameInput = document.getElementById("className");
+            const classNameError = document.getElementById("classNameError");
+
+            const className = classNameInput.value.trim(); // Loại bỏ khoảng trắng ở đầu và cuối
             const teacherId = parseInt(document.getElementById("teacher").value);
             const semesterId = parseInt(document.getElementById("semester").value);
 
-            if (!className.trim() || !teacherId || !semesterId) {
-                showErrorModal("Please provide class name, teacher, and semester.");
+            // Reset lỗi cũ
+            classNameError.style.display = "none";
+            classNameError.textContent = "";
+
+            // Validate className
+            if (!className) {
+                classNameError.style.display = "block";
+                classNameError.textContent = "Class name cannot be empty";
                 return;
             }
 
+            if (className.length > 40) {
+                classNameError.style.display = "block";
+                classNameError.textContent = "Class name cannot exceed 40 characters.";
+                return;
+            }
+
+            // Validate teacher and semester
+            if (!teacherId || !semesterId) {
+                showErrorModal("Please provide teacher and semester.");
+                return;
+            }
+
+            // Validate student selection
             if (selectedStudentIds.length < 10 || selectedStudentIds.length > 30) {
                 showErrorModal("A class must have at least 10 students and at most 30 students. Please adjust your selection.");
                 return;
@@ -693,29 +726,29 @@
                 },
                 body: JSON.stringify(data)
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to create class');
-                    }
-                    return response.text();
-                })
+                .then(response => response.text())
                 .then(data => {
-                    showSuccessModal(data);
+                    if (data.includes("already active") || data.includes("is required") || data.includes("maximum number of classes")) {
+                        showErrorModal(data);
+                    } else {
+                        showSuccessModal(data);
+                        setTimeout(() => {
+                            document.getElementById("createClassForm").reset();
 
-                    document.getElementById("createClassForm").reset();
+                            const studentListDiv = document.getElementById('studentList');
+                            studentListDiv.innerHTML = "";
+                            const studentCountDiv = document.getElementById('studentCount');
+                            studentCountDiv.textContent = "";
 
-                    const studentListDiv = document.getElementById('studentList');
-                    studentListDiv.innerHTML = "";
-                    const studentCountDiv = document.getElementById('studentCount');
-                    studentCountDiv.textContent = "";
-
-                    // Clear selected students
-                    selectedStudentIds = [];
-
-                    window.location.href = 'class-list.html';
+                            selectedStudentIds = [];
+                            window.location.href = 'class-list.html';
+                        }, 2000);
+                    }
                 })
                 .catch(error => showErrorModal("Error creating class: " + error));
         });
+
+
 
         function showSuccessModal(message) {
             const successModal = new bootstrap.Modal(document.getElementById('success-modal'));

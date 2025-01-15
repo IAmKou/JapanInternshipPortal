@@ -31,6 +31,9 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <style>
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            color: #000 !important; /* Ghi đè màu chữ */
+        }
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -524,22 +527,22 @@
                         <form class="new-added-form">
                             <div class="row">
                                 <div class="col-xl-2 col-lg-6 col-12 form-group">
-                                    <label for="status">Status *</label>
+                                    <label for="status">Status <span style="color: red !important;">*</span></label>
                                     <select id="status" name="status" class="select2">
-                                        <option value="">Please Select Status *</option>
+                                        <option value="">Please Select Status </option>
                                         <option value="Approved">Approved</option>
                                         <option value="Rejected">Rejected</option>
                                     </select>
                                 </div>
 
                                 <div class="col-lg-6 col-12 form-group">
-                                    <label for="reply">Respond *</label>
+                                    <label for="reply">Respond <span style="color: red !important;">*</span></label>
                                     <!-- Đặt một div để Quill editor thay cho textarea -->
                                     <div id="reply" class="form-control" style="height: 200px;"></div>
                                 </div>
 
                                 <div class="col-12 form-group mg-t-8">
-                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow" id="saveChanges">Save</button>
+                                    <button type="submit" class="btn-fill-lg btn-gradient-yellow" id="saveChanges">Reply</button>
                                 </div>
                             </div>
                         </form>
@@ -776,28 +779,28 @@
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Khởi tạo Quill với các tùy chọn, thay thế textarea bằng div với id "reply"
         var quill = new Quill('#reply', {
-            theme: 'snow',  // Chọn theme 'snow' hoặc 'bubble'
+            theme: 'snow',
             modules: {
                 toolbar: [
-                    ['bold', 'italic', 'underline'],    // Các nút định dạng văn bản
-                    ['link'],  // Chèn link
-                    [{ 'list': 'ordered'}, { 'list': 'bullet'}], // Các kiểu danh sách
-                    ['image']  // Chèn ảnh
+                    ['bold', 'italic', 'underline']
                 ]
             }
         });
 
-        // Khi bấm lưu thay đổi
-        document.getElementById("saveChanges").addEventListener("click", function(event) {
+        // Hiển thị logs để xác nhận quill đã khởi tạo và trả về nội dung
+        console.log(quill);
+
+        document.querySelector('.new-added-form').addEventListener('submit', function(event) {
             event.preventDefault(); // Ngừng reload trang
+            console.log("Form is being submitted"); // Kiểm tra khi submit form
 
             const applicationId = new URLSearchParams(window.location.search).get('id');
             let status = document.getElementById("status").value.trim();
 
             // Lấy nội dung từ Quill
             let reply = quill.root.innerHTML.trim();
+            console.log("Reply content:", reply); // In ra nội dung reply
 
             // Kiểm tra nếu có trường nào bị thiếu
             if (!status || !reply || reply === "<p><br></p>") {
@@ -819,23 +822,20 @@
                     reply: reply
                 })
             })
-                .then(response => response.json()) // Parse response as JSON
+                .then(response => response.json())
                 .then(data => {
+                    console.log("Response data:", data); // Kiểm tra dữ liệu trả về
+
                     if (data.redirect) {
-                        // Hiển thị thông báo thành công nếu có
                         const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
                         successModal.show();
 
-                        // Đợi 2 giây trước khi chuyển trang (2000 ms)
                         setTimeout(() => {
-                            // Chuyển hướng sang trang mới sau khi hiển thị modal trong 2 giây
                             window.location.href = data.redirect;
-                        }, 2000); // 2 giây là thời gian bạn muốn hiển thị modal thành công trước khi chuyển trang
+                        }, 2000);
                     }
-
                 })
                 .catch(error => {
-                    // Nếu có lỗi, hiển thị modal lỗi thay cho alert
                     console.error("Lỗi khi cập nhật:", error);
                     const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
                     const errorMessage = document.querySelector('#long-modal .modal-body');
@@ -845,9 +845,7 @@
         });
     });
 
-
-
-</script>
+    </script>
 <script>
     function formatContent(content) {
         // Tách nội dung thành các từ

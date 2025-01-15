@@ -51,37 +51,37 @@ public class ClassController {
     public String createClass(@RequestBody ClassDTO classDTO) {
         int semesterId = classDTO.getSemesterId();
         System.out.println(semesterId);
-        Semester semester = semesterRepository.findById(semesterId).
-                orElseThrow(() -> new NoSuchElementException("semester not found"));
-
-
+        Semester semester = semesterRepository.findById(semesterId)
+                .orElseThrow(() -> new NoSuchElementException("Error: semester not found"));
 
         if (classDTO.getName() == null || classDTO.getName().isEmpty()) {
-            throw new IllegalArgumentException("Class name is required");
+            throw new IllegalArgumentException("Error: Class name is required");
         }
 
         boolean classExists = classRepository.existsByNameAndSemesterId(classDTO.getName(), semester.getId());
+        System.out.println("Class exists: " + classExists);
+
         if (classExists) {
-            return "A class with the name [" + classDTO.getName() + "] is already active.";
+            return "Error: A class with the name [" + classDTO.getName() + "] is already active.";
         }
 
         if (classDTO.getTeacher() == null || classDTO.getTeacher().getId() == 0) {
-            throw new IllegalArgumentException("Teacher ID is required");
+            throw new IllegalArgumentException("Error: Teacher ID is required");
         }
-
 
         int classCount = classRepository.countClassesByTeacherAndSemester(classDTO.getTeacher().getId(), semesterId);
         if (classCount >= 3) {
-            return "This teacher is already assigned to the maximum number of classes (3) for this semester.";
+            return "Error: This teacher is already assigned to the maximum number of classes (3) for this semester.";
         }
 
         try {
             Class savedClass = classServices.saveClassWithStudents(classDTO, classDTO.getStudentIds(), semesterId);
-            return "Class " + savedClass.getName() + " created successfully";
+            return "Class " + savedClass.getName() + " created successfully.";
         } catch (IllegalArgumentException e) {
-            return e.getMessage(); // Return failure message if student list is empty
+            return "Error: " + e.getMessage(); // Return clear error message
         }
     }
+
 
     @PostMapping("/update")
     public ResponseEntity<?> updateClass(@RequestBody ClassDTO classDTO) {
