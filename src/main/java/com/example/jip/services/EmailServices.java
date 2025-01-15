@@ -84,7 +84,7 @@ public class EmailServices {
             String emailBody = String.format(
                     "Your account username: " + recipientEmail + "\n" +
                             "Your temporary password: %s\n" +
-                            "Please log in and change your password immediately for security.",
+                            "Please log in and change your password!",
                     plainPassword
             );
 
