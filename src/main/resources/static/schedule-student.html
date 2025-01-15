@@ -539,16 +539,46 @@
                         return response.json();
                     })
                     .then(data => {
-                        const events = data.map(schedule => ({
-                            id: schedule.scheduleId,
-                            title: `${schedule.activity} - ${schedule.attendanceStatus || "Not Yet"}`,
-                            start: schedule.scheduleDate,
-                            backgroundColor: schedule.color,
-                            borderColor: schedule.color,
-                            extendedProps: {
-                                room: schedule.room
+                        const events = [];
+
+                        data.forEach(schedule => {
+                            // Main event for the activity
+                            events.push({
+                                id: schedule.scheduleId,
+                                title: schedule.activity,
+                                start: schedule.scheduleDate,
+                                backgroundColor: schedule.color,
+                                borderColor: schedule.color,
+                                extendedProps: {
+                                    room: schedule.room,
+                                },
+                            });
+
+                            // Separate event for attendance status
+                            let attendanceColor;
+                            switch (schedule.attendanceStatus) {
+                                case 'PRESENT':
+                                    attendanceColor = '#28a745'; // Green
+                                    break;
+                                case 'ABSENT':
+                                    attendanceColor = '#dc3545'; // Red
+                                    break;
+                                default:
+                                    attendanceColor = '#6c757d'; // Gray (Not Yet)
                             }
-                        }));
+
+                            events.push({
+                                id: `${schedule.scheduleId}-attendance`,
+                                title: `${schedule.attendanceStatus || "Not Yet"}`,
+                                start: schedule.scheduleDate,
+                                backgroundColor: attendanceColor,
+                                borderColor: attendanceColor,
+                                extendedProps: {
+                                    relatedTo: schedule.scheduleId,
+                                },
+                            });
+                        });
+
                         successCallback(events);
                     })
                     .catch(error => {
@@ -558,17 +588,24 @@
             },
             eventClick: function (info) {
                 const event = info.event;
-                const { room, attendantStatus } = event.extendedProps;
-                alert(
-                    `Event: ${event.title}\n` +
-                    `Room: ${room}\n` +
-                    `Attendant Status: ${attendantStatus}`
-                );
+                const relatedTo = event.extendedProps.relatedTo;
+
+                if (relatedTo) {
+                    alert(`This is the attendance status for schedule ID: ${relatedTo}`);
+                } else {
+                    const { room } = event.extendedProps;
+                    alert(
+                        `Event: ${event.title}\n` +
+                        `Room: ${room}`
+                    );
+                }
             },
         });
         calendar.render();
     });
 </script>
+
+
 
 
 <!-- fetch notification -->
