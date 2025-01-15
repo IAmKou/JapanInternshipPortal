@@ -162,19 +162,8 @@ public class ApplicationController {
                             dto.setContent(application.getContent());
                             dto.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
                             dto.setReplied_date(application.getReplied_date());
-                            String folderName = application.getImg(); // Lấy tên thư mục từ database (imgUrl)
-                            try {
-                                List<String> fileUrls = s3Service.listFilesInFolder(folderName);
-                                if (fileUrls.isEmpty()) {
-                                    System.out.println("No files found for application with ID: " + application.getId());
-                                }
-                                dto.setFiles(fileUrls);  // Gọi phương thức để chuyển đổi List<String> thành String
+                            dto.setImg(application.getImg());; // Lấy tên thư mục từ database (imgUrl)
 
-                            } catch (Exception e) {
-                                System.err.println("Error retrieving files for application with ID: " + application.getId());
-                                e.printStackTrace();
-                                dto.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
-                            }
                             return dto;
                         }).collect(Collectors.toList());
             }
@@ -196,19 +185,7 @@ public class ApplicationController {
                                     dto.setContent(application.getContent());
                                     dto.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
                                     dto.setReplied_date(application.getReplied_date());
-                            String folderName = application.getImg(); // Lấy tên thư mục từ database (imgUrl)
-                            try {
-                                List<String> fileUrls = s3Service.listFilesInFolder(folderName);
-                                if (fileUrls.isEmpty()) {
-                                    System.out.println("No files found for application with ID: " + application.getId());
-                                }
-                                dto.setFiles(fileUrls);  // Gọi phương thức để chuyển đổi List<String> thành String
-
-                            } catch (Exception e) {
-                                System.err.println("Error retrieving files for application with ID: " + application.getId());
-                                e.printStackTrace();
-                                dto.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
-                            }
+                            dto.setImg(application.getImg());
                                     return dto;
                                 }).collect(Collectors.toList());
             }
@@ -227,19 +204,22 @@ public class ApplicationController {
                             dto.setStatus(ApplicationDTO.toDTOStatus(application.getStatus()));
                             dto.setReplied_date(application.getReplied_date());
 
-                            String folderName = application.getImg(); // Lấy tên thư mục từ database (imgUrl)
+                            String folderName = application.getImg();  // Lấy tên thư mục từ database (imgUrl)
                             try {
-                                List<String> fileUrls = s3Service.listFilesInFolder(folderName);
+                                // Giả sử 'folderName' có giá trị đầy đủ, và trong đó bao gồm đường dẫn thư mục đến S3
+                                List<String> fileUrls = s3Service.listFilesInFolder(folderName);  // Liệt kê các file trong thư mục đã lưu
+
                                 if (fileUrls.isEmpty()) {
                                     System.out.println("No files found for application with ID: " + application.getId());
                                 }
+                                // Cập nhật lại danh sách ảnh vào trong DTO
                                 dto.setFiles(fileUrls);  // Gọi phương thức để chuyển đổi List<String> thành String
-
                             } catch (Exception e) {
                                 System.err.println("Error retrieving files for application with ID: " + application.getId());
                                 e.printStackTrace();
-                                dto.setImgFromList(Collections.emptyList()); // Trả về danh sách rỗng nếu có lỗi
+                                dto.setImgFromList(Collections.emptyList());  // Trả về danh sách rỗng nếu có lỗi
                             }
+
 
                             return dto;
                         }).collect(Collectors.toList());
@@ -302,29 +282,32 @@ public class ApplicationController {
             try {
                 application.setStatus(Application.Status.valueOf(status));
             } catch (IllegalArgumentException e) {
+                System.out.println("Error: Invalid status value - " + status); // Log khi có lỗi ở status
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(Map.of("message", "Invalid status value"));
+                        .body(Map.of("message", "Trạng thái không hợp lệ!"));
             }
         }
 
         if (payload.containsKey("reply")) {
-            application.setReply((String) payload.get("reply"));
+            String reply = (String) payload.get("reply");
+            if (reply.trim().isEmpty()) {
+                System.out.println("Error: Reply field is empty!"); // Log nếu không có reply
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("message", "Trả lời không thể để trống!"));
+            }
+            application.setReply(reply);
         }
 
 
-        Student student = studentRepository.findById(application.getStudent().getId()).orElse(null);
-        student.setMark(true);
 
         application.setReplied_date(new Date());
-        studentRepository.save(student);
+
         applicationRepository.save(application);
 
         return ResponseEntity.ok(Map.of(
-                "status", "success",
                 "message", "Application reply success",
-                "redirect", "/View-list-application.html"
+                "redirect", "/View-list-application.html" // Đường dẫn cho giao diện
         ));
-
     }
     private void uploadFilesToFolder(MultipartFile[] files, String folderName) {
         Set<String> uploadedFiles = new HashSet<>();
