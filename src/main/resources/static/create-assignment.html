@@ -586,47 +586,52 @@
         errorModal.show();
     }
 
+    let semesterStart, semesterEnd;
 
-    document.addEventListener('DOMContentLoaded', function () {
-        // Khởi tạo Quill
+    async function getCurrentSemester() {
+        try {
+            const response = await fetch('/semester/current');
+            if (!response.ok) throw new Error('Failed to fetch current semester.');
+
+            const semesterData = await response.json();
+            semesterStart = new Date(semesterData.semesterStart);
+            semesterEnd = new Date(semesterData.semesterEnd);
+            console.log("Current Semester Start:", semesterStart, "End:", semesterEnd);
+        } catch (error) {
+            console.error('Error fetching semester:', error);
+            showErrorModal('Unable to fetch current semester information. Please try again later.');
+            throw error; // Propagate the error if needed
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', async function () {
+        // Initialize semester data before handling the form submission
+        await getCurrentSemester();
+
+        // Initialize Quill
         var quill = new Quill('#content', {
             theme: 'snow',
             modules: {
                 toolbar: [
-                    // Phần định dạng văn bản cơ bản
-                    ['bold', 'italic', 'underline'], // Đậm, Nghiêng, Gạch chân, Gạch ngang
-                    // Căn chỉnh và link
+                    ['bold', 'italic', 'underline'],
                     ['link'],
-                    // Các loại danh sách
                     [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                    // Blockquote hoặc Header cho tiêu đề
                     ['blockquote', { 'header': [1, 2, 3, false] }],
-                    // Xóa định dạng hoặc undo/redo nếu cần
-
                 ]
             }
         });
 
-        // Hàm xử lý việc thêm assignment
+        // Function to handle adding assignment
         async function addAssignment(event) {
-            event.preventDefault(); // Ngừng hành động submit mặc định của form
+            event.preventDefault(); // Prevent default form submission
             const form = event.target.closest('form');
             const formData = new FormData(form);
 
-            // Lấy nội dung từ Quill
-            const content = quill.root.innerHTML.trim(); // Lấy nội dung HTML từ Quill
-
-            // Thêm nội dung vào FormData
+            const content = quill.root.innerHTML.trim();
             formData.append('content', content);
 
-            // Lấy giá trị từ các input khác trong form
             const description = document.getElementById('description').value.trim();
-            const endDate = document.getElementById('end_date').value;
-            const createdDate = document.getElementById('created_date').value;
-            // Get the current date and time
-            const currentDate = new Date();
 
-            // Check for empty values and show errors if necessary
             if (!description) {
                 showErrorModal('Title is required.');
                 return;
@@ -638,83 +643,54 @@
                 return;
             }
 
-            if (content === '' || content === '<p><br></p>') {
-                showErrorModal('Description is required.');
-                return;
-            }
+            const endDate = document.getElementById('end_date').value;
+            const createdDate = document.getElementById('created_date').value;
 
-            // Check if the start date and end date are valid
-            if (!createdDate) {
-                showErrorModal('Start date is required.');
-                return;
-            }
+            // Validation checks
+            if (!description) return showErrorModal('Title is required.');
+            if (content === '' || content === '<p><br></p>') return showErrorModal('Description is required.');
+            if (!createdDate) return showErrorModal('Start date is required.');
+            if (!endDate) return showErrorModal('End date is required.');
 
-            if (!endDate) {
-                showErrorModal('End date is required.');
-                return;
-            }
-
-            // Convert createdDate and endDate to Date objects
             const startDate = new Date(createdDate);
             const finishDate = new Date(endDate);
-
+            const currentDate = new Date();
             currentDate.setSeconds(0, 0);
             startDate.setSeconds(0, 0);
             finishDate.setSeconds(0, 0);
 
-            if (startDate < currentDate) {
-                showErrorModal('Start date must be greater than or equal to the current date.');
-                return;
+            if (startDate < currentDate) return showErrorModal('Start date must be greater than or equal to the current date.');
+            if (finishDate < currentDate) return showErrorModal('End date must be greater than or equal to the current date.');
+            if (startDate > finishDate) return showErrorModal('End date must be greater than or equal to the start date.');
+
+            // Check if dates are within the semester bounds
+            if (startDate < semesterStart || startDate > semesterEnd) {
+                return showErrorModal(`Start date must be within the current semester (${semesterStart.toDateString()} - ${semesterEnd.toDateString()}).`);
+            }
+            if (finishDate < semesterStart || finishDate > semesterEnd) {
+                return showErrorModal(`End date must be within the current semester (${semesterStart.toDateString()} - ${semesterEnd.toDateString()}).`);
             }
 
-            if (finishDate < currentDate) {
-                showErrorModal('End date must be greater than or equal to the current date.');
-                return;
-            }
+            // Validation for time difference
+            const timeDifference = (finishDate - startDate) / (1000 * 60);
+            if (timeDifference < 30) return showErrorModal('The time difference between Create Date and End Date must be at least 30 minutes.');
 
-            if (startDate > finishDate) {
-                showErrorModal('End date must be greater than or equal to the start date.');
-                return;
-            }
-
-            // Validation: Check if the time difference between Create Date and End Date is at least 30 minutes
-            const timeDifference = (finishDate - startDate) / (1000 * 60); // Difference in minutes
-            if (timeDifference < 30) {
-                showErrorModal('The time difference between Create Date and End Date must be at least 30 minutes.');
-                return;
-            }
-
-            // Kiểm tra dung lượng file
-            const fileInput = document.querySelector('input[type="file"]'); // Find the file input
+            // File size and type validation
+            const fileInput = document.querySelector('input[type="file"]');
             if (fileInput && fileInput.files.length > 0) {
                 const file = fileInput.files[0];
-
-                // Check file size (max 125MB)
-                const fileSizeInMB = file.size / (1024 * 1024); // Convert bytes to MB
-                if (fileSizeInMB > 125) {
-                    showErrorModal('File size must not exceed 125MB.');
-                    return;
-                }
-
-                // Check file type (pdf, doc, png, jpg)
+                const fileSizeInMB = file.size / (1024 * 1024);
+                if (fileSizeInMB > 125) return showErrorModal('File size must not exceed 125MB.');
                 const allowedTypes = ['application/pdf', 'application/msword', 'image/png', 'image/jpeg'];
-                if (!allowedTypes.includes(file.type)) {
-                    showErrorModal('File type must be pdf, doc, png, or jpg.');
-                    return;
-                }
+                if (!allowedTypes.includes(file.type)) return showErrorModal('File type must be pdf, doc, png, or jpg.');
             }
 
-
-            // Gửi form qua Fetch API
+            // Submit form
             try {
-                const response = await fetch('/assignment/create', {
-                    method: 'POST',
-                    body: formData,
-                });
-
+                const response = await fetch('/assignment/create', { method: 'POST', body: formData });
                 if (response.ok) {
                     showSuccessModal('Assignment added successfully!');
-                    setTimeout(toListAssigment, 2000); // Quay lại trang danh sách assignment sau 2 giây
+                    setTimeout(toListAssigment, 2000);
                 } else {
                     const errorData = await response.json();
                     showErrorModal(`Failed to create assignment: ${errorData.message || 'Please try again.'}`);
@@ -725,9 +701,9 @@
             }
         }
 
-        // Gắn sự kiện submit vào form
         document.querySelector('form').addEventListener('submit', addAssignment);
     });
+
 
     async function checkDescriptionExists(description) {
         try {

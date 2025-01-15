@@ -1,5 +1,6 @@
 package com.example.jip.repository;
 
+import com.example.jip.dto.SemesterDTO;
 import com.example.jip.entity.Semester;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,7 +21,8 @@ public interface SemesterRepository extends JpaRepository<Semester, Integer> {
     List<Semester> findSemestersByCurrentDate();
     @Query("SELECT s FROM Semester s WHERE s.start_time = :startDate")
     List<Semester> findByStartDate(Date startDate);
-
+    @Query("SELECT s FROM Semester s WHERE s.status = :status")
+    Semester findByStatus(@Param("status") Semester.status status);
     // Find semesters ending on a specific date
     @Query("SELECT s FROM Semester s WHERE s.end_time = :endDate")
     List<Semester> findByEndDate(Date endDate);

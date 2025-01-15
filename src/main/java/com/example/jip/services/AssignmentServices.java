@@ -51,6 +51,7 @@ public class AssignmentServices {
 
     S3Service s3Service;
 
+    SemesterRepository semesterRepository;
 
 
     @PreAuthorize("hasAuthority('TEACHER')")
@@ -104,6 +105,7 @@ public class AssignmentServices {
         Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(teacherId);
         Teacher teacher = teacherRepository.findById(teacherOpt.get().getId())
                 .orElseThrow();
+
         if (request.getCreated_date().after(request.getEnd_date())) {
             throw new IllegalArgumentException("Created date cannot be after end date.");
         }
@@ -401,17 +403,27 @@ public class AssignmentServices {
         }
         if (request.getEnd_date() != null) {
             log.info("Updating end date: {}", request.getEnd_date());
-            assignment.setEnd_date(request.getEnd_date());
 
-            // **Handle deletion of NOTSUBMITTED student assignments**
-            if (new Date().after(request.getEnd_date())) {
-                log.info("Deleting NOTSUBMITTED student assignments for assignment ID: {}", assignmentId);
+            // If the assignment was previously expired but now extended, remove NOTSUBMITTED entries
+            if (assignment.getEnd_date().before(request.getEnd_date())) {
+                log.info("Extending the assignment end date. Removing outdated NOTSUBMITTED student assignments.");
                 List<StudentAssignment> notSubmittedAssignments = studentAssignmentRepository
-                        .findByAssignmentIdAndStatus(assignmentId, StudentAssignment.Status.NOTSUBMITTED.toString().toUpperCase());
+                        .findByAssignmentIdAndStatus(assignmentId, StudentAssignment.Status.NOTSUBMITTED);
 
                 studentAssignmentRepository.deleteAll(notSubmittedAssignments);
                 log.info("Deleted {} NOTSUBMITTED student assignments.", notSubmittedAssignments.size());
             }
+
+            assignment.setEnd_date(request.getEnd_date());
+        }
+
+       // Fetch current semester
+        Semester currentSemester = semesterRepository.findByStatus(Semester.status.Active);
+
+        // Validate assignment dates within semester
+        if (request.getCreated_date().before(currentSemester.getStart_time()) ||
+                request.getEnd_date().after(currentSemester.getEnd_time())) {
+            throw new IllegalArgumentException("Assignment dates must fall within the current semester");
         }
 
         Date currentDate = new Date();
@@ -486,7 +498,7 @@ class ScheduledTask {
     private AssignmentServices assignmentStatusService;
 
     // Run the task every minute to update assignment status
-    @Scheduled(fixedRate = 60000) // 60000 ms = 10 minute
+    @Scheduled(fixedRate = 1000) // 1000 milliseconds = 1 second
     public void updateAssignmentStatuses() {
         log.info("Scanning to update Assignment status...");
         assignmentStatusService.updateAssignmentStatus();

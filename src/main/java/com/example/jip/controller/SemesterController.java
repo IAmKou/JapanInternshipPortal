@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -155,6 +156,13 @@ public class SemesterController {
 
         semesterRepository.save(existingSemester);
         return ResponseEntity.ok("Semester updated successfully");
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<SemesterDTO> getCurrentSemester() {
+        Semester currentSemester = semesterRepository.findByStatus(Semester.status.Active);
+        SemesterDTO semesterDTO = new SemesterDTO(currentSemester);
+        return ResponseEntity.ok(semesterDTO);
     }
 
 
