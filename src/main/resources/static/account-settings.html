@@ -905,14 +905,14 @@
                             <div class="row mb-4">
                                 <div class="col-md-12">
                                     <label class="font-weight-bold" for="img">Profile Image <span class="text-danger">*</span></label>
-                                    <input class="form-control-file shadow-sm" id="img" name="img" type="file">
+                                    <input class="form-control-file shadow-sm" id="img" name="img" type="file" required>
                                     <span class="text-danger" id="img_error1"></span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Error Message -->
-                        <div class="text-danger mt-4 fs-4" id="error-message" style="display: none;"></div>
+
 
                         <!-- Submit Button -->
                         <div class="form-group d-grid">
@@ -1462,6 +1462,7 @@
         document.getElementById('phone_error1').textContent = '';
         document.getElementById('DoB_error1').textContent = ''; // Reset lỗi dob
         document.getElementById('gender_error1').textContent = ''; // Reset lỗi giới tính
+        document.getElementById('img_error1').textContent = ''; // Reset lỗi ảnh
 
         // Kiểm tra fullname, japanname, email, phone, gender
         const fullname = formData.get('fullname').trim();
@@ -1470,6 +1471,8 @@
         const phone = formData.get('phoneNumber').trim();
         const dob = formData.get('dob'); // Lấy giá trị ngày sinh (dob)
         const gender = formData.get('gender'); // Lấy giá trị giới tính
+        const img = formData.get('img'); // Lấy giá trị ảnh
+
         let isValid = true;
 
         // Kiểm tra full name
@@ -1533,6 +1536,12 @@
             isValid = false;
         }
 
+        // Kiểm tra ảnh (không có ảnh được chọn)
+        if (!img) {
+            document.getElementById('img_error1').textContent = 'Profile Image is required.';
+            isValid = false;
+        }
+
         // Nếu có lỗi, không gửi form
         if (!isValid) {
             return;
@@ -1556,9 +1565,6 @@
                         // Kiểm tra nếu lỗi là "Phone number already exists"
                         else if (errorMessage.includes('Phone number already exists')) {
                             document.getElementById('phone_error1').textContent = 'Phone number already exists.';
-                        } else {
-                            document.getElementById('error-message').textContent = errorMessage;
-                            document.getElementById('error-message').style.display = 'block';
                         }
                         throw new Error(errorMessage); // Ném lỗi ra để dừng tiếp
                     });

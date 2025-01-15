@@ -29,6 +29,8 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+
+
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -244,8 +246,7 @@
             margin-top: 3px;
             padding: 10px;
             background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
@@ -1005,8 +1006,8 @@
             errorSemesterName.textContent = 'Semester Name cannot be empty.';
             errorSemesterName.style.display = 'block';
             hasError = true;
-        } else if (semesterName.length > 40) {
-            errorSemesterName.textContent = 'Semester Name cannot exceed 40 characters.';
+        } else if (semesterName.length > 35) {
+            errorSemesterName.textContent = 'Semester Name cannot exceed 35 characters.';
             errorSemesterName.style.display = 'block';
             hasError = true;
         }
@@ -1194,8 +1195,9 @@
 
                 // Kiểm tra nếu kỳ học đã kết thúc (endDate < currentDate)
                 if (endDate < currentDate) {
-                    // Kỳ học đã kết thúc, không hiển thị nút Update hoặc Delete
-                    // Không làm gì cả ở đây, bỏ qua việc thêm nút
+                    // Kỳ học đã kết thúc, không hiển thị nút Update hoặc Delete và ẩn actionsContainer
+                    semesterDiv.appendChild(semesterName);
+                    semesterDiv.appendChild(semesterDates);
                 } else {
                     // Kỳ học chưa kết thúc, hiển thị các nút hành động
                     if (startDate > currentDate) {
@@ -1227,11 +1229,12 @@
 
                         actionsContainer.appendChild(updateButton);
                     }
-                }
 
-                semesterDiv.appendChild(semesterName);
-                semesterDiv.appendChild(semesterDates);
-                semesterDiv.appendChild(actionsContainer);
+                    // Đưa các nút hành động vào semesterDiv
+                    semesterDiv.appendChild(semesterName);
+                    semesterDiv.appendChild(semesterDates);
+                    semesterDiv.appendChild(actionsContainer);
+                }
 
                 noticeBoardWrap.appendChild(semesterDiv);
             }
