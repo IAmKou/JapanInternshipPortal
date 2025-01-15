@@ -51,6 +51,11 @@ public class SemesterController {
                 throw new IllegalArgumentException("Start time and end time must not be null");
             }
 
+            if (semester.getStart_time().equals(semester.getEnd_time())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("{\"message\":\"Start time can't be equals end time\"}");
+            }
+
             if (semesterService.isSemesterNameExist(semester.getName())) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
                         .body("{\"message\":\"Semester name already exists\"}");
