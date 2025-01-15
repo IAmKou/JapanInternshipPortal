@@ -56,6 +56,11 @@ public class SemesterController {
                         .body("{\"message\":\"Semester name already exists\"}");
             }
 
+            if (semesterService.isTimeAdjacent(semester.getStart_time(), semester.getEnd_time())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("{\"message\":\"Start time and end time is adjacent with an existing semester\"}");
+            }
+
             if (semesterService.isTimeOverlap(semester.getStart_time(), semester.getEnd_time())) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
                         .body("{\"message\":\"Created times overlap with an existing semester\"}");
