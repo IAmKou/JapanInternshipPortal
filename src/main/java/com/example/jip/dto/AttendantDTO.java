@@ -35,6 +35,11 @@ public class AttendantDTO {
         this.isFinalized = attendant.getIsFinalized();
     }
 
+    public AttendantDTO(int attendantId, Date date) {
+        this.attendantId = attendantId;
+        this.date = date;
+    }
+
     public AttendantDTO(int attendantId, Attendant.Status status, Date date, int studentId, int scheduleId, String studentName, boolean mark, String img, boolean isFinalized) {
         this.attendantId = attendantId;
         this.status = status;

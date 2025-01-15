@@ -31,9 +31,9 @@ public class AttendantStatusScheduler {
                 for (Attendant attendant : attendants) {
                     if (attendant.getStatus() == null) {
                         attendant.setStatus(Attendant.Status.ABSENT);
-                    }
-                    if (attendant.getEndTime().toLocalTime().isAfter(LocalTime.of(17, 0))) {
                         attendant.setIsFinalized(true);
+                        System.out.println("Set isFinalized to true for attendant ID: " + attendant.getId());
+
                     }
                 }
                 attendantRepository.saveAll(attendants);

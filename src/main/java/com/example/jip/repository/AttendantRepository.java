@@ -48,6 +48,17 @@ public interface AttendantRepository extends JpaRepository<Attendant, Integer> {
             @Param("date") Date date,
             @Param("classId") int classId );
 
+    @Query("SELECT new com.example.jip.dto.AttendantDTO( " +
+            "   MIN(a.id),  a.date) " +
+            "FROM Attendant a " +
+            "JOIN a.schedule sch " +
+            "JOIN sch.clasz c " +
+            "WHERE c.id = :classId " +
+            "GROUP BY a.date")
+    List<AttendantDTO> findByClassId(@Param("classId") int classId);
+
+
+
     @Query("SELECT CASE WHEN COUNT(a) > 0 THEN TRUE ELSE FALSE END " +
             "FROM Attendant a " +
             "JOIN Schedule s ON a.schedule.id = s.id " +

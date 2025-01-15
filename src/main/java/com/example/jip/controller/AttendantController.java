@@ -94,6 +94,11 @@ public class AttendantController {
         return attendantRepository.findByDateAndClassId(date,classId);
     }
 
+    @GetMapping("/{classId}/get/{date}")
+    public List<AttendantDTO> getAttendanceManager(@PathVariable int classId, @PathVariable Date date) {
+        return attendantRepository.findByDateAndClassId(date,classId);
+    }
+
     @PostMapping("/update/{classId}")
     public ResponseEntity<Map<String, Object>> updateAttendance(
             @PathVariable("classId") int classId,
@@ -135,7 +140,47 @@ public class AttendantController {
         }
     }
 
+    @PostMapping("/update/{classId}/date/{date}")
+    public ResponseEntity<Map<String, Object>> updateAttendanceManager(
+            @PathVariable("classId") int classId,
+            @PathVariable("date") Date date,
+            @RequestBody List<AttendantDTO> attendanceData
+    ) {
+        Map<String, Object> response = new HashMap<>();
+        List<String> logs = new ArrayList<>();
 
+        try {
+            logs.add("Starting attendance update for classId: " + classId);
+            logs.add("Received attendance data: " + attendanceData);
+
+            // Validate and update attendance records
+            attendantServices.updateAttendanceManager(classId,date, attendanceData);
+            logs.add("Attendance updated successfully!");
+
+            response.put("status", "success");
+            response.put("logs", logs);
+            return ResponseEntity.ok(response);
+
+        } catch (IllegalArgumentException e) {
+            logs.add("Caught IllegalArgumentException: " + e.getMessage());
+            response.put("status", "error");
+            response.put("logs", logs);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+
+        } catch (IllegalStateException e) {
+            logs.add("Caught IllegalStateException: " + e.getMessage());
+            response.put("status", "error");
+            response.put("logs", logs);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+
+        } catch (Exception e) {
+            logs.add("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
+            response.put("status", "error");
+            response.put("logs", logs);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
 
     @GetMapping("/{classId}/attendanceStatus")
@@ -151,9 +196,7 @@ public class AttendantController {
 
     @GetMapping("/getAll/{classId}")
     public List<AttendantDTO> getAllAttendance(@PathVariable int classId) {
-        return attendantRepository.findAll().stream()
-                .map(AttendantDTO::new)
-                .collect(Collectors.toList());
+        return attendantRepository.findByClassId(classId);
     }
 
 

@@ -494,9 +494,10 @@
             const tableBody = document.querySelector('.table tbody');
             const urlParams = new URLSearchParams(window.location.search);
             const classId = urlParams.get('classId');
+            const updateDate = urlParams.get('date');
 
             if (classId) {
-                fetch(`/attendant/${classId}/get`)
+                fetch(`/attendant/${classId}/get/${updateDate}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Failed to fetch students: ' + response.statusText);
@@ -529,7 +530,7 @@
                             row.appendChild(nameCell);
 
                             // Attendance status cells
-                            const statuses = ['Present', 'Late', 'Absent', 'Permitted'];
+                            const statuses = ['Present', 'Absent'];
                             statuses.forEach(status => {
                                 const statusCell = document.createElement('td');
                                 const formCheck = document.createElement('div');
@@ -537,8 +538,8 @@
                                 const checkbox = document.createElement('input');
                                 checkbox.type = 'checkbox';
                                 checkbox.classList.add('form-check-input');
-                                checkbox.value = status;
-                                checkbox.checked = student.status === status; // Check if the current status matches
+                                checkbox.value = status; // "Present" or "Absent"
+                                checkbox.checked = student.status && student.status.toLowerCase() === status.toLowerCase();
                                 const label = document.createElement('label');
                                 label.classList.add('form-check-label');
                                 label.textContent = status;
@@ -558,6 +559,7 @@
                                     }
                                 });
                             });
+
 
                             // Append row to table body
                             tableBody.appendChild(row);
@@ -613,7 +615,7 @@
                         attendanceData.push({
                             studentId: studentId,
                             status: status.toUpperCase(),
-                            date: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
+                            date: updateDate,
                         });
                     }
                 });
@@ -623,7 +625,7 @@
                     return;
                 }
 
-                fetch(`/attendant/update/${classId}`, {
+                fetch(`/attendant/update/${classId}/date/${updateDate}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -639,7 +641,7 @@
                     .then(data => {
                         console.log('Attendance saved successfully:', data);
                         showSuccessModal("Attendance saved successfully!");
-                        window.location.href = `class-list-teacher.html?classId=${classId}`;
+                        window.location.href = `attendant-list.html`;
                     })
                     .catch(error => {
                         console.error('Error saving attendance:', error);

@@ -449,12 +449,16 @@
                     <a class="dropdown-item update-class" data-id="${clasz.id}" data-name="${clasz.name}">
                         <i></i> Update Class
                     </a>
+                    <a class="dropdown-item" href="/attendant-list.html?classId=${clasz.id}"><i class="fas fa-calendar-alt text-dark-pastel-green"></i>
+                    View Attendant List</a>
+
                 `;
                     dropdown.appendChild(dropdownMenu);
                     actionsCell.appendChild(dropdown);
                     row.appendChild(actionsCell);
                     tableBody.appendChild(row);
                 });
+
 
                 // Attach event listeners for delete buttons
                 document.querySelectorAll('.delete-class').forEach(button => {
