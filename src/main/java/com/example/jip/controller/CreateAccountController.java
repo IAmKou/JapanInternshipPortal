@@ -100,37 +100,49 @@ public class CreateAccountController {
             return ResponseEntity.badRequest().body("Gender is required");
         }
 
-        if (accountRepository.existsByUsername(email)) {
-            return ResponseEntity.badRequest().body("Email already exist");
-        }
         try {
+            // Kiểm tra role có hợp lệ không
             Role roles = roleRepository.findById(role)
                     .orElseThrow(() -> new RuntimeException("Role not found"));
 
-            String password = generateVerifyCode();
+            // Kiểm tra DOB nếu role là Student
+            if (role == 1 && (dob == null || dob.trim().isEmpty())) {
+                return ResponseEntity.badRequest().body("Date of Birth is required for Student role");
+            }
 
+            String password = generateVerifyCode();
             int accountId = accountServices.createAccount(email, password, role);
 
-            // Save role-specific information
+            // Lưu thông tin theo từng role
             switch (roles.getName()) {
                 case "STUDENT":
-                    LocalDate localDate;
-                    Date date;
-                    try {
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                        localDate = LocalDate.parse(dob, formatter);
-                        date = Date.valueOf(localDate);
-                    } catch (DateTimeParseException e) {
-                        return ResponseEntity.badRequest().body("Invalid date format. Please use 'yyyy-MM-dd'.");
+                    // Chuyển đổi ngày sinh nếu là Student
+                    if (dob != null) {
+                        LocalDate localDate;
+                        Date date;
+                        try {
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                            localDate = LocalDate.parse(dob, formatter);
+                            date = Date.valueOf(localDate);
+                        } catch (DateTimeParseException e) {
+                            return ResponseEntity.badRequest().body("Invalid date format. Please use 'yyyy-MM-dd'.");
+                        }
+                        studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, accountId, password);
+                    } else {
+                        return ResponseEntity.badRequest().body("Date of Birth is required for Student role");
                     }
-                    studentServices.createStudent(fullname, japanname, date, gender, phoneNumber, email, img, accountId, password);
                     break;
+
                 case "TEACHER":
                     teacherServices.createTeacher(fullname, japanname, email, phoneNumber, gender, img, accountId, password);
                     break;
+
                 case "MANAGER":
                     managerServices.createManager(fullname, japanname, email, phoneNumber, gender, img, accountId, password);
                     break;
+
+                default:
+                    return ResponseEntity.badRequest().body("Invalid role specified.");
             }
 
             return ResponseEntity.ok(accountId);
@@ -138,6 +150,7 @@ public class CreateAccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating account: " + e.getMessage());
         }
     }
+
 
     private String generateVerifyCode() {
         int code = (int) (Math.random() * 1000000);  // Generates a 6-digit random code

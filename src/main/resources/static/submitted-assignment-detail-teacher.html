@@ -614,7 +614,16 @@
             const endDateFormatted = formatDateTime(assignment.end_date);
 
             document.getElementById('assignment-description').textContent = assignment.description || "";
-            document.getElementById('assignment-content').textContent = assignment.content || "";
+            if (assignment.content) {
+                var sanitizedContent = assignment.content;
+                document.getElementById('assignment-content').innerHTML = sanitizedContent;
+                document.getElementById('assignment-content').style.fontSize = "18px";
+                document.getElementById('assignment-content').style.display = "inline-block"; // Đảm bảo hiển thị giống h3
+            } else {
+                document.getElementById('assignment-content').textContent = "No content provided";
+                document.getElementById('assignment-content').style.fontSize = "18px";
+                document.getElementById('assignment-content').style.display = "inline-block"; // Đảm bảo hiển thị giống h3
+            }
             document.getElementById('created-date').textContent = createdDateFormatted || "N/A";
             document.getElementById('end-date').textContent = endDateFormatted || "N/A";
 
