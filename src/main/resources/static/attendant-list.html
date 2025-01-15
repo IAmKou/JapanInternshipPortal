@@ -1,0 +1,673 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+
+<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/JIP/JIP/semester-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>JIP | Class Schedule</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+    <!-- Normalize CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="css/all.min.css">
+    <!-- Flaticon CSS -->
+    <link rel="stylesheet" href="fonts/flaticon.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="css/animate.min.css">
+    <!-- Select 2 CSS -->
+    <link rel="stylesheet" href="css/select2.min.css">
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Modernize js -->
+    <script src="js/modernizr-3.6.0.min.js"></script>
+    <style>
+        .dropdown-toggle::after {
+            content: none !important;
+        }
+
+        /* Đảm bảo trang bao phủ toàn bộ chiều cao */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* Container chính */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%; /* Bao phủ toàn bộ trang */
+        }
+
+        /* Nội dung bên trên */
+        .content {
+            flex: 1; /* Đẩy footer xuống */
+        }
+
+        /* Footer nằm ở cuối */
+        .footer-wrap-layout1 {
+            background-color: #ec9006;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .footer-wrap-layout1 a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Preloader Start Here -->
+<div id="preloader"></div>
+<!-- Preloader End Here -->
+<div id="wrapper" class="wrapper bg-ash">
+    <!-- Header Menu Area Start Here -->
+    <div id="google_translate_element"></div>
+
+    <div class="navbar navbar-expand-md header-menu-one bg-light">
+        <div class="nav-bar-header-one">
+            <div class="header-logo">
+                <a href="manager.html">
+                    <div style="width: 180px; height: 70px; overflow: hidden;">
+                        <img src="img/JIP%20LOGO%20n.png" alt="logo"
+                             style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </a>
+            </div>
+            <div class="toggle-button sidebar-toggle">
+                <button type="button" class="item-link">
+                        <span class="btn-icon-wrap">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                </button>
+            </div>
+        </div>
+        <div class="d-md-none mobile-nav-bar">
+            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse"
+                    data-target="#mobile-navbar" aria-expanded="false">
+                <i class="far fa-arrow-alt-circle-down"></i>
+            </button>
+            <button type="button" class="navbar-toggler sidebar-toggle-mobile">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
+            <ul class="navbar-nav">
+                <li class="navbar-item header-search-bar">
+                    <div class="input-group stylish-input-group">
+
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="navbar-item dropdown header-admin">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <div class="admin-title">
+                            <h5 class="item-title userFullName"></h5>
+                            <span class="userRole"></span>
+                        </div>
+                        <div class="admin-img img">
+                            <img src="" alt="Admin" style="width: 50px; height: 50px">
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="item-header">
+                            <h6 class="item-title userFullName"></h6>
+                        </div>
+                        <div class="item-content">
+                            <ul class="settings-list">
+                                <li><a href="users-profile-manager.html"><i class="flaticon-user"></i>My Profile</a>
+                                </li>
+                                <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span
+                                        data-i18n="change_password">Change Password</span></a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="navbar-item dropdown header-notification">
+                    <a id="notification-bell" class="navbar-nav-link dropdown-toggle" href="#" role="button"
+                       data-toggle="dropdown" aria-expanded="false">
+                        <i class="far fa-bell"></i>
+                        <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
+                        <span id="notification-count">0</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" id="notification-dropdown">
+                        <div class="item-header">
+                            <h6 class="item-title" id="notification-title">Notifications</h6>
+                        </div>
+                        <div class="item-content" id="notification-list">
+                            <!-- Notifications will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </li>
+
+                <li class="navbar-item dropdown header-language">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
+                            <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;">
+                            English
+                        </a>
+                        <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
+                            <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese"
+                                 style="width: 20px; height: 15px;"> 日本語
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Header Menu Area End Here -->
+    <!-- Page Area Start Here -->
+    <div class="dashboard-page-one">
+        <!-- Sidebar Area Start Here -->
+        <div class="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+            <div class="mobile-sidebar-header d-md-none">
+                <div class="header-logo">
+                    <a href="manager.html"><img src="img/logo1.png" alt="logo"></a>
+                </div>
+            </div>
+            <div class="sidebar-menu-content">
+                <ul class="nav nav-sidebar-menu sidebar-toggle-view">
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item">
+                                <a href="manager.html" class="nav-link menu-active"><i class="fas fa-angle-right"></i>Manager</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i
+                                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
+                        <ul class="nav sub-group-menu sub-group-active">
+                            <li class="nav-item">
+                                <a href="add-class.html" class="nav-link"><i
+                                        class="flaticon-multiple-users-silhouette"></i>Add New Class</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="class-list.html" class="nav-link"><i
+                                        class="flaticon-menu"></i><span>All Class</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="schedule-list.html" class="nav-link menu-active"><i
+                                        class="flaticon-calendar"></i><span>Schedule List</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i
+                                class="fas fa-calendar"></i><span>Semester</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="semester-create.html" class="nav-link"><i
+                                        class="flaticon-calendar"></i>Create Semester</a>
+                            <li class="nav-item">
+                                <a href="semester-list.html" class="nav-link"><i class="flaticon-menu"></i><span>Semester List</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="View-list-application.html" class="nav-link"><i class="fas fa-angle-right"></i>List
+                                    application</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item sidebar-nav-item">
+                        <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Room Management</span></a>
+                        <ul class="nav sub-group-menu">
+                            <li class="nav-item">
+                                <a href="add-room.html" class="nav-link"><i class="fas fa-angle-right"></i>Add Room</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Sidebar Area End Here -->
+        <div class="dashboard-content-one">
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <h3>Attendant List</h3>
+                <ul>
+                    <li>
+                        <a href="manager.html">Home</a>
+                    </li>
+                    <li>Attendant List</li>
+                </ul>
+            </div>
+            <!-- Breadcubs Area End Here -->
+            <!-- Class Routine Area Start Here -->
+            <div class="row">
+                <div class="col-12-xxxl col-12">
+                    <div class="card height-auto">
+                        <div class="card-body">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3 style="margin-bottom: 15px;margin-top: 15px">Class Attendant</h3>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table display text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Date</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">Errors</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+    <div style="background-color: #ec9006; padding: 15px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+                        rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- jquery-->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Plugins js -->
+<script src="js/plugins.js"></script>
+<!-- Popper js -->
+<script src="js/popper.min.js"></script>
+<!-- Bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Select 2 Js -->
+<script src="js/select2.min.js"></script>
+<!-- Scroll Up Js -->
+<script src="js/jquery.scrollUp.min.js"></script>
+<!-- Data Table Js -->
+<script src="js/jquery.dataTables.min.js"></script>
+<!-- Custom Js -->
+<script src="js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Kiểm tra và lấy ngôn ngữ đã lưu trong localStorage
+        let savedLanguage = localStorage.getItem('language');
+
+        // Nếu chưa có ngôn ngữ lưu, đặt mặc định là tiếng Anh
+        if (!savedLanguage) {
+            savedLanguage = 'en'; // Mặc định tiếng Anh
+            localStorage.setItem('language', 'en');
+        }
+
+        // Cập nhật nhãn ngôn ngữ trên giao diện ngay khi trang tải
+        const languageLabel = document.getElementById('languageLabel');
+        if (languageLabel) {
+            languageLabel.innerText = savedLanguage === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
+        }
+
+        // Áp dụng ngôn ngữ khi trang tải
+        changeLanguage(savedLanguage, false); // false: Không cần tải lại trang
+    });
+
+    function changeLanguage(language, reload = true) {
+        const languageLabel = document.getElementById('languageLabel');
+        if (languageLabel) {
+            languageLabel.innerText = language === 'en' ? 'EN' : 'JA'; // Cập nhật nhãn ngôn ngữ
+        }
+
+        // Lưu ngôn ngữ vào localStorage
+        localStorage.setItem('language', language);
+
+        if (reload) {
+            if (language === 'en') {
+                window.location.reload(); // Tải lại trang nếu là tiếng Anh
+            } else {
+                // Nếu là tiếng Nhật, tự động dịch trang
+                translatePage(language);
+            }
+        }
+    }
+
+    // Hàm dịch trang
+    function translatePage(language) {
+        const pageContent = document.body.innerHTML;
+
+        // Các nội dung cần dịch (ví dụ: tên người dùng, vai trò người dùng)
+        const userFullName = document.querySelector('.userFullName')?.innerText || '';
+        const userRole = document.querySelector('.userRole')?.innerText || '';
+
+        // Gửi yêu cầu dịch trang
+        fetch('/api/translate/whole-page', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                text: pageContent,
+                targetLanguage: language,
+                extraText: {
+                    userFullName,
+                    userRole,
+                },
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.translatedText) {
+                    // Cập nhật toàn bộ nội dung trang với văn bản dịch
+                    document.body.innerHTML = data.translatedText;
+                }
+            })
+            .catch(error => {
+                console.error('Error translating page:', error);
+            });
+    }
+</script>
+<script>
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+    if (userDetails) {
+        const userFullNameElements = document.querySelectorAll('.userFullName');
+        const userRoleElements = document.querySelectorAll('.userRole');
+
+        // Populate Name
+        userFullNameElements.forEach(element => {
+            element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
+        });
+
+        // Populate Role
+        userRoleElements.forEach(element => {
+            element.textContent = userDetails.roleName;
+        });
+
+        const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+
+        imgContainers.forEach(container => {
+            const imgElement = container.querySelector('img'); // Select the <img> inside the div
+            if (imgElement) {
+                imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
+            }
+        });
+    } else {
+        console.error("User details not found in sessionStorage");
+    }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const classId = urlParams.get('classId');
+        const recordsPerPage = 10; // Number of records per page
+        let currentPage = 1;
+        let data = [];
+
+        // Fetch data from the server
+        fetch(`/attendant/getAll/${classId}`)
+            .then(response => response.json())
+            .then(responseData => {
+                data = responseData;
+                renderTable();
+                renderPagination();
+            })
+            .catch(error => console.error("Error fetching data:", error));
+
+        // Function to render the table
+        function renderTable() {
+            const tableBody = document.querySelector("table tbody");
+            tableBody.innerHTML = ""; // Clear existing rows
+
+            const startIndex = (currentPage - 1) * recordsPerPage;
+            const endIndex = Math.min(startIndex + recordsPerPage, data.length);
+
+            for (let i = startIndex; i < endIndex; i++) {
+                const item = data[i];
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                    <td>${i + 1}</td> <!-- Row number -->
+                    <td>${item.date}</td>
+                `;
+
+                // Create actions cell with dropdown
+                const actionsCell = document.createElement('td');
+                const dropdown = document.createElement('div');
+                dropdown.className = 'dropdown';
+
+                const dropdownToggle = document.createElement('a');
+                dropdownToggle.href = '#';
+                dropdownToggle.className = 'dropdown-toggle';
+                dropdownToggle.setAttribute('data-toggle', 'dropdown');
+                dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
+                dropdown.appendChild(dropdownToggle);
+
+                const dropdownMenu = document.createElement('div');
+                dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
+                dropdownMenu.innerHTML = `
+                    <a class="dropdown-item" href="/edit-attendant-manager?classId=${classId}&date=${item.date}">
+                        <i class="fas fa-glasses text-dark-pastel-green"></i> Edit Attendant
+                    </a>
+                `;
+                dropdown.appendChild(dropdownMenu);
+                actionsCell.appendChild(dropdown);
+                row.appendChild(actionsCell);
+
+                // Append the row to the table body
+                tableBody.appendChild(row);
+            }
+        }
+
+        // Function to render pagination controls
+        function renderPagination() {
+            const totalPages = Math.ceil(data.length / recordsPerPage);
+            const paginationContainer = document.createElement('div');
+            paginationContainer.className = 'pagination-container';
+
+            const pagination = document.createElement('ul');
+            pagination.className = 'pagination';
+
+            // Previous button
+            const prev = document.createElement('li');
+            prev.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+            prev.innerHTML = `<a class="page-link" href="#">Previous</a>`;
+            prev.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderTable();
+                    renderPagination();
+                }
+            });
+            pagination.appendChild(prev);
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const page = document.createElement('li');
+                page.className = `page-item ${currentPage === i ? 'active' : ''}`;
+                page.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                page.addEventListener('click', () => {
+                    currentPage = i;
+                    renderTable();
+                    renderPagination();
+                });
+                pagination.appendChild(page);
+            }
+
+            // Next button
+            const next = document.createElement('li');
+            next.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+            next.innerHTML = `<a class="page-link" href="#">Next</a>`;
+            next.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderTable();
+                    renderPagination();
+                }
+            });
+            pagination.appendChild(next);
+
+            paginationContainer.appendChild(pagination);
+
+            // Clear and append pagination to the DOM
+            const cardBody = document.querySelector('.card-body');
+            const existingPagination = cardBody.querySelector('.pagination-container');
+            if (existingPagination) {
+                existingPagination.remove();
+            }
+            cardBody.appendChild(paginationContainer);
+        }
+    });
+</script>
+
+<!-- fetch notification headbar-->
+<script>
+    window.onload = function () {
+        const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
+        const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
+
+        // Kiểm tra trạng thái khi trang được tải lại hoặc khi chuyển sang trang mới
+        const hasSeenNotifications = localStorage.getItem('hasSeenNotifications');
+        if (hasSeenNotifications === 'true') {
+            notificationCount.style.display = 'none'; // Nếu đã xem thông báo, ẩn số lượng
+        }
+    };
+
+    // Fetch notifications từ server
+    fetch('/notification/getAll')
+        .then(response => response.json()) // Parse dữ liệu JSON
+        .then(data => {
+            const notificationList = document.getElementById('notification-list'); // Container danh sách thông báo
+            const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
+            const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông
+
+            // Kiểm tra dữ liệu nhận được
+            console.log(data);
+
+            // Giả sử tất cả thông báo là chưa đọc (isRead = false) nếu không có trường này
+            data.forEach(notification => {
+                if (!notification.hasOwnProperty('isRead')) {
+                    notification.isRead = false; // Thêm trường isRead nếu không có
+                }
+            });
+
+            // Lọc các thông báo chưa đọc (isRead === false)
+            const unreadNotifications = data.filter(notification => notification.isRead === false);
+
+            // Cập nhật số lượng thông báo chưa đọc
+            notificationCount.textContent = unreadNotifications.length;
+
+            // Hiển thị số lượng thông báo nếu có thông báo chưa đọc, nếu không thì ẩn
+            notificationCount.style.display = unreadNotifications.length > 0 ? 'inline' : 'none';
+
+            // Nếu không có thông báo, hiển thị thông báo trống
+            if (data.length === 0) {
+                notificationList.innerHTML = '<p>No notifications available.</p>';
+                return;
+            }
+
+            // Clear các thông báo cũ
+            notificationList.innerHTML = '';
+
+            // Sắp xếp thông báo theo thời gian (mới nhất trước)
+            data.sort((a, b) => {
+                const dateA = new Date(a.createdAt || a.created || Date.now());
+                const dateB = new Date(b.createdAt || b.created || Date.now());
+                return dateB - dateA; // Sắp xếp giảm dần (mới nhất trước)
+            });
+
+            // Giới hạn hiển thị 7 thông báo mới nhất
+            const notificationsToDisplay = data.slice(0, 7);
+
+            // Thêm từng thông báo vào danh sách
+            notificationsToDisplay.forEach(notification => {
+                const noticeDiv = document.createElement('div');
+                noticeDiv.classList.add('notice-list');
+
+                const noticeTitle = document.createElement('h6');
+                noticeTitle.classList.add('notice-title');
+
+                // Set tiêu đề với nội dung HTML (bao gồm thẻ <a>)
+                noticeTitle.innerHTML = notification.title;
+
+                // Kiểm tra nếu tiêu đề có chứa các thẻ <a> (link)
+                const links = noticeTitle.getElementsByTagName('a');
+
+                // Nếu có bất kỳ thẻ <a> nào trong tiêu đề, style chúng
+                for (let link of links) {
+                    link.style.color = 'blue';  // Màu xanh cho các link
+                    link.style.textDecoration = 'underline';  // Gạch chân các link
+                }
+
+                // Thêm tiêu đề vào phần tử thông báo
+                noticeDiv.appendChild(noticeTitle);
+
+                // Thêm thông báo vào danh sách
+                notificationList.appendChild(noticeDiv);
+            });
+
+            // Ẩn số lượng thông báo khi người dùng bấm chuông
+            notificationBell.addEventListener('click', () => {
+                notificationCount.style.display = 'none'; // Ẩn số lượng thông báo khi bấm chuông
+                // Lưu trạng thái "đã xem thông báo" vào localStorage
+                localStorage.setItem('hasSeenNotifications', 'true');
+
+                // Đánh dấu tất cả thông báo là đã đọc (isRead = true)
+                data.forEach(notification => notification.isRead = true);
+
+                // Lưu lại trạng thái thông báo đã đọc vào localStorage (tùy vào yêu cầu của bạn)
+                localStorage.setItem('notifications', JSON.stringify(data));
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching notifications:', error);
+            document.getElementById('notification-list').innerHTML = '<p>Failed to load notifications.</p>';
+        });
+
+</script>
+</body>
+</html>

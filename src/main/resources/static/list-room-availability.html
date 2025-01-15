@@ -27,7 +27,7 @@
     <!-- Date Picker CSS -->
     <link href="css/datepicker.min.css" rel="stylesheet">
     <!-- Data Table CSS -->
-    <link href="css/jquery.dataTables.min.css" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link href="style.css" rel="stylesheet">
     <!-- Font Awesome CDN -->
@@ -37,6 +37,9 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .dataTables_paginate {
+            display: none;
+        }
         .custom-filter-select {
             padding-right: 2.5rem; /* Thêm khoảng cách cho icon bên phải */
             font-size: 1rem; /* Kích thước chữ vừa phải */
@@ -624,21 +627,43 @@
                     <div class="card shadow-lg rounded-4 border-0 overflow-hidden">
                         <!-- Card Header -->
                         <!-- Card Body -->
-                        <form class="mg-b-20">
-                            <div class="row gutters-8">
-                                <div class="col-lg-4 col-12 form-group">
-                                    <input type="text" placeholder="Search" class="form-control">
+                        <form id="searchForm" style="padding-bottom: 20px; padding-top: 10px;">
+                            <div class="row mb-3 align-items-center gx-3">
+                                <!-- Search Input -->
+                                <div class="col-lg-6">
+                                    <div class="input-group shadow-lg rounded">
+                                        <input
+                                                class="form-control search-input rounded-start"
+                                                id="searchInput"
+                                                name="searchInput"
+                                                style="font-size: 1.5rem; padding: 10px 15px;"
+                                                type="text"
+                                                placeholder="Search Room Name or Date"
+                                        />
+                                        <button
+                                                class="btn btn-gradient-yellow rounded-end text-white fw-bold"
+                                                id="searchButton"
+                                                type="button">
+                                            <i class="fas fa-search me-2"></i> SEARCH
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="col-lg-3 col-12 form-group">
-                                    <input type="text" placeholder="Search by Class ..." class="form-control">
-                                </div>
-                                <div class="col-lg-2 col-12 form-group">
-                                    <button type="submit"
-                                            class="fw-btn-fill btn-gradient-yellow">SEARCH
-                                    </button>
+
+                                <!-- Filter Option và Dropdown -->
+                                <div class="col-lg-4 d-flex align-items-center">
+                                    <div class="form-group d-flex flex-grow-1 align-items-center" style="padding-top: 8px;">
+                                        <div class="position-relative w-100">
+                                            <select class="form-select custom-filter-select" id="filterSelect" name="filterSelect">
+                                                <option value="" selected>All Status</option>
+                                                <option value="Available">Available</option>
+                                                <option value="Occupied">Occupied</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </form>
+
                         <div class="table-responsive">
                             <table class="table display data-table text-nowrap">
                                 <thead>
@@ -652,21 +677,23 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                            <div class="pagination-container">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item previous"><a class="page-link" href="#"><</a></li>
+                                    <!-- Các nút số trang sẽ được thêm vào đây động -->
+                                    <li class="page-item next"><a class="page-link" href="#">></a></li>
+                                </ul>
+                            </div>
                         </div>
 
 
-                        <div class="pagination-container">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item previous"><a class="page-link" href="#"><</a></li>
-                                <!-- Các nút số trang sẽ được thêm vào đây động -->
-                                <li class="page-item next"><a class="page-link" href="#">></a></li>
-                            </ul>
-                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="ma" style="margin-bottom: 20px"></div>
 </div>
 
 <!-- Page Area End Here -->
@@ -909,61 +936,155 @@
 
 
 <script>
-    // Define the API endpoint
-    const apiEndpoint = "/room/getRoomAvailability";
+    let currentPage = 1;
+    let pageSize = 10; // Mỗi trang sẽ hiển thị bao nhiêu mục
+    let allData = []; // Dữ liệu tổng quát từ API
+    let filteredData = []; // Dữ liệu sau khi áp dụng bộ lọc và tìm kiếm
 
-    // Function to fetch data from the API and update the table
+    // Fetch data từ API và xử lý
     async function fetchRoomAvailability(filters = {}) {
         const queryParams = new URLSearchParams(filters).toString();
-        const response = await fetch(`${apiEndpoint}?${queryParams}`);
-        const data = await response.json();
-        populateTable(data);
+        console.log("Query String Sent to API:", queryParams);
+
+        try {
+            const response = await fetch(`/room/getRoomAvailability?${queryParams}`);
+            if (!response.ok) {
+                console.error("API Error:", response.status, response.statusText);
+                populateTable([]); // Populate table with no data if API fails
+                return;
+            }
+
+            allData = await response.json();
+            // Sau khi fetch xong, áp dụng bộ lọc
+            filteredData = applyFilters(allData, filters); // Lọc dữ liệu sau khi nhận từ API
+            console.log("API Response Data:", allData);
+
+            updatePagination(Math.ceil(filteredData.length / pageSize)); // Cập nhật phân trang sau khi lọc
+            populateTable(filteredData); // Hiển thị dữ liệu đã lọc
+        } catch (error) {
+            console.error("Fetch Error:", error);
+            populateTable([]); // Populate table with no data if an error occurs
+        }
     }
 
-    // Function to populate the table with data
+    // Lọc dữ liệu theo các bộ lọc và tìm kiếm
+    function applyFilters(data, filters) {
+        if (filters.roomName) {
+            data = data.filter(item => item.roomName.toLowerCase().includes(filters.roomName.toLowerCase()));
+        }
+        if (filters.date) {
+            data = data.filter(item => item.date && item.date.includes(filters.date));
+        }
+        if (filters.status) {
+            data = data.filter(item => item.status === filters.status);
+        }
+        return data;
+    }
+
+    // Hiển thị bảng dữ liệu theo phân trang
     function populateTable(data) {
         const tableBody = document.querySelector("tbody");
-        tableBody.innerHTML = ""; // Clear existing data
+        tableBody.innerHTML = ""; // Xóa các dòng cũ trước khi thêm mới
 
-        if (data.length === 0) {
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+        const paginatedData = data.slice(startIndex, endIndex); // Chỉ lấy dữ liệu của trang hiện tại
+
+        if (paginatedData.length === 0) {
             tableBody.innerHTML = `<tr><td colspan="4">No data available</td></tr>`;
             return;
         }
 
-        data.forEach((item, index) => {
+        paginatedData.forEach((item, index) => {
             const row = `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td>${item.roomName}</td>
-                    <td>${item.date}</td>
-                    <td>${item.status}</td>
-                </tr>`;
+        <tr>
+            <td>${startIndex + index + 1}</td>
+            <td>${item.roomName}</td>
+            <td>${item.date}</td>
+            <td>${item.status}</td>
+        </tr>`;
             tableBody.insertAdjacentHTML("beforeend", row);
         });
     }
 
-    // Function to apply filters
-    function applyFilters() {
-        const roomName = document.getElementById("filter-room-name").value;
-        const date = document.getElementById("filter-date").value;
-        const status = document.getElementById("filter-status").value;
-
-        const filters = {};
-        if (roomName) filters.roomName = roomName;
-        if (date) filters.date = date;
-        if (status) filters.status = status;
-
-        fetchRoomAvailability(filters);
+    // Cập nhật các nút phân trang
+    function updatePagination(totalPages) {
+        const pagination = document.querySelector(".pagination");
+        pagination.innerHTML = `
+    <li class="page-item previous"><a class="page-link" href="#" onclick="changePage(currentPage - 1)"><</a></li>
+    ${generatePaginationButtons(totalPages)}
+    <li class="page-item next"><a class="page-link" href="#" onclick="changePage(currentPage + 1)">></a></li>
+    `;
     }
 
-    // Add event listeners to the filter inputs
-    // document.getElementById("filter-room-name").addEventListener("input", applyFilters);
-    // document.getElementById("filter-date").addEventListener("change", applyFilters);
-    // document.getElementById("filter-status").addEventListener("change", applyFilters);
+    // Tạo các nút phân trang (Số trang)
+    function generatePaginationButtons(totalPages) {
+        let buttons = '';
+        for (let i = 1; i <= totalPages; i++) {
+            buttons += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                </li>`;
+        }
+        return buttons;
+    }
 
-    // Initial fetch to populate the table
+    // Chuyển sang trang khác
+    function changePage(page) {
+        if (page < 1 || page > Math.ceil(filteredData.length / pageSize)) return; // Prevent invalid pages
+        currentPage = page;
+        populateTable(filteredData); // Hiển thị dữ liệu của trang mới
+        updatePagination(Math.ceil(filteredData.length / pageSize)); // Cập nhật lại phân trang
+    }
+
+    // Xử lý tìm kiếm
+    function handleSearch() {
+        const searchValue = document.getElementById("searchInput").value.trim().toLowerCase();
+        const filters = {};
+
+        if (searchValue) {
+            if (searchValue.includes(",")) {
+                const [roomName, date] = searchValue.split(",").map(item => item.trim().toLowerCase());
+                if (roomName) filters.roomName = roomName;
+                if (date) filters.date = date;
+            } else {
+                if (isNaN(Date.parse(searchValue))) {
+                    filters.roomName = searchValue;
+                } else {
+                    filters.date = searchValue;
+                }
+            }
+        }
+
+        console.log("Search Filters:", filters);
+        fetchRoomAvailability(filters); // Gửi bộ lọc đến API
+    }
+
+    // Xử lý lọc trạng thái
+    function handleFilter() {
+        const status = document.getElementById("filterSelect").value;
+        const filters = {};
+
+        if (status) filters.status = status; // Nếu chọn lọc trạng thái
+
+        console.log("Filter Select:", filters);
+        fetchRoomAvailability(filters); // Gửi bộ lọc đến API
+    }
+
+    // Các sự kiện gắn với các nút
+    document.getElementById("searchButton").addEventListener("click", handleSearch);
+    document.getElementById("filterSelect").addEventListener("change", handleFilter);
+
+    // Gọi khi tải trang lần đầu để lấy toàn bộ dữ liệu
     fetchRoomAvailability();
+
+
 </script>
+
+
+
+
+
+
 
 
 <!-- fetch notification headbar-->
@@ -1054,6 +1175,19 @@
             document.getElementById('notification-list').innerHTML = '<p>Failed to load notifications.</p>';
         });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Đảm bảo chỉ chạy khi các th đã được tải và áp dụng.
+        setTimeout(function () {
+            // Loại bỏ các lớp "sorting" và "sorting_asc" nếu tồn tại trên th
+            const thElements = document.querySelectorAll('th.sorting, th.sorting_asc');
+            thElements.forEach(function (thElement) {
+                thElement.classList.remove('sorting', 'sorting_asc');
+            });
+        }, 100);  // Điều chỉnh thời gian đợi cho phù hợp
+    });
+</script>
+
 
 </body>
 
