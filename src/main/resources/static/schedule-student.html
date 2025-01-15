@@ -518,11 +518,13 @@
         const urlParams = new URLSearchParams(window.location.search);
         const classId = urlParams.get('classId');
         const studentId = urlParams.get('studentId');
+        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
 
         if (!calendarEl) {
             console.error('The #calendar element is missing from the DOM.');
             return;
         }
+
         let calendar = new FullCalendar.Calendar(calendarEl, {
             headerToolbar: {
                 left: 'prev,next',
@@ -558,17 +560,25 @@
             },
             eventClick: function (info) {
                 const event = info.event;
-                const { room, attendantStatus } = event.extendedProps;
-                alert(
-                    `Event: ${event.title}\n` +
-                    `Room: ${room}\n` +
-                    `Attendant Status: ${attendantStatus}`
-                );
+                const { room, attendanceStatus } = event.extendedProps;
+
+                // Update modal content
+                const modalBody = document.querySelector('#long-modal .modal-body');
+                modalBody.innerHTML = `
+                    <p><strong>Event:</strong> ${event.title}</p>
+                    <p><strong>Room:</strong> ${room}</p>
+                    <p><strong>Attendance Status:</strong> ${attendanceStatus || "Not Yet"}</p>
+                `;
+
+                // Show the modal
+                errorModal.show();
             },
         });
+
         calendar.render();
     });
 </script>
+
 
 
 <!-- fetch notification -->
