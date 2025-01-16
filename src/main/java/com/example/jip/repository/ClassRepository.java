@@ -18,6 +18,15 @@ public interface ClassRepository extends JpaRepository<Class,Integer> {
             "FROM Class c WHERE c.name = :name AND c.semester.id = :semesterId")
     boolean existsByNameAndSemesterId(@Param("name") String name, @Param("semesterId") int semesterId);
 
+    @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END " +
+            "FROM Class c WHERE c.name = :name AND c.semester.id = :semesterId AND c.id != :id")
+    boolean existsByNameAndSemesterIdAndIdNot(@Param("name") String name,
+                                              @Param("semesterId") int semesterId,
+                                              @Param("id") int id);
+    @Query("SELECT c FROM Class c WHERE c.name = :name AND c.semester.id = :semesterId")
+    Class findByNameAndSemesterId(@Param("name") String name, @Param("semesterId") int semesterId);
+
+
     @Modifying
     @Query("UPDATE Class c SET c.status = 'Active' WHERE c.semester.id = :semesterId")
     void activateClassesBySemester(int semesterId);

@@ -69,7 +69,7 @@ public class ClassServices {
     }
 
 
-    public ClassDTO updateClass (int id, ClassDTO classDTO) {
+    public ClassDTO updateClass(int id, ClassDTO classDTO) {
         Class newClass = classRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Class not found with id " + id));
         if (classDTO.getName() != null && !classDTO.getName().isEmpty()) {
@@ -87,6 +87,21 @@ public class ClassServices {
 
         return new ClassDTO(newClass);
     }
+
+    public boolean isNameExist(String name, int semesterId, int excludeClassId) {
+        List<Class> clasz = classRepository.findAll();
+        for (Class c : clasz) {
+            // Skip the class being updated (exclude it from the check)
+            if (c.getId() == excludeClassId) {
+                continue;
+            }
+            if (c.getName().equals(name) && c.getSemester().getId() == semesterId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public List<Class> getClassByStudentId(int studentId) {
         return classRepository.findClassesByStudentId(studentId);

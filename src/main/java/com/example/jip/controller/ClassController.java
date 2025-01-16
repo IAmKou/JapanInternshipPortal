@@ -59,8 +59,6 @@ public class ClassController {
         }
 
         boolean classExists = classRepository.existsByNameAndSemesterId(classDTO.getName(), semester.getId());
-        System.out.println("Class exists: " + classExists);
-
         if (classExists) {
             return "Error: A class with the name [" + classDTO.getName() + "] is already active.";
         }
@@ -94,8 +92,8 @@ public class ClassController {
             }
 
             // Check if a class with the same name and active status already exists
-            boolean classExists = classRepository.existsByNameAndSemesterId(classDTO.getName(), classDTO.getSemesterId());
-            if (classExists) {
+
+            if (classServices.isNameExist(classDTO.getName(),classDTO.getSemesterId(),classDTO.getId())) {
                 return ResponseEntity.status(HttpStatus.CONFLICT)
                         .body("A class with the name [" + classDTO.getName() + "] is already active.");
             }
