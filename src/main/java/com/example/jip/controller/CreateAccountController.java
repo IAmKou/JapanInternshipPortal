@@ -64,12 +64,14 @@ public class CreateAccountController {
             return ResponseEntity.badRequest().body("Full name is required");
         }
 
-        // Validate Japan name
         if (japanname == null || japanname.trim().isEmpty()) {
             return ResponseEntity.badRequest().body("Japan name is required");
         }
 
-        // Validate email
+        if (img == null ){
+            return ResponseEntity.badRequest().body("Image is required");
+        }
+
         if (email == null || email.trim().isEmpty()) {
             return ResponseEntity.badRequest().body("Email is required");
         }
@@ -77,7 +79,6 @@ public class CreateAccountController {
             return ResponseEntity.badRequest().body("Invalid email format");
         }
 
-        // Check if email already exists
         if (accountRepository.existsByUsername(email)) {
             return ResponseEntity.badRequest().body("Email already exists");
         }

@@ -136,6 +136,41 @@ public class AttendantServices {
         attendantRepository.saveAll(attendantsToUpdate);
     }
 
+    @Transactional
+    public void updateAttendanceManager(int classId, Date date,List<AttendantDTO> attendanceData) {
+
+        List<Schedule> schedules = scheduleRepository.findByClassIdAndDate(classId, date);
+
+        List<Attendant> attendantsToUpdate = new ArrayList<>();
+        Schedule schedule = schedules.get(0);
+
+        for (AttendantDTO dto : attendanceData) {
+
+            Attendant attendant = attendantRepository
+                    .findByStudentIdAndScheduleIdAndDates(dto.getStudentId(), schedule.getId(), dto.getDate())
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "Attendance record not found for student ID " + dto.getStudentId() + ", schedule ID " + schedule.getId() + " and date " + dto.getDate()));
+
+            // Fetch the student
+            Student student = studentRepository.findById(dto.getStudentId())
+                    .orElseThrow(() -> new IllegalArgumentException("Student not found: " + dto.getStudentId()));
+
+            // Update the attendance record
+            attendant.setStudent(student);
+            attendant.setSchedule(schedule);
+            attendant.setStatus(dto.getStatus());
+            attendant.setDate(dto.getDate());
+            attendant.setStartTime(Time.valueOf("13:30:00"));
+            attendant.setEndTime(Time.valueOf("17:00:00"));
+            attendant.setIsFinalized(dto.isFinalized());
+
+            attendantsToUpdate.add(attendant);
+        }
+
+        // Save updated attendance records
+        attendantRepository.saveAll(attendantsToUpdate);
+    }
+
 
 }
 

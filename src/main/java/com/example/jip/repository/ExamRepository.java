@@ -7,4 +7,5 @@ import java.util.List;
 
 @Repository
 public interface ExamRepository extends JpaRepository<Exam, Integer> {
+    Exam findByTitle(String title);
 }

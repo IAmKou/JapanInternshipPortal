@@ -815,7 +815,8 @@
 
             if (response.ok) {
                 showSuccessModal('Assignment submitted successfully!');
-                window.location.href = '/list-submitted-assignments.html';
+                setTimeout(() => {window.location.href = `list-submitted-assignments.html`;}
+                    , 2000); // 2 seconds delay
             } else {
                 const errorData = await response.json();
                 showErrorModal(`Failed to submit assignment: ${errorData.message || 'Please try again.'}`);
@@ -832,7 +833,10 @@
     // Function to show success modal
     function showSuccessModal(message) {
         const modalBody = document.querySelector("#success-modal .modal-body");
-        modalBody.querySelector("h4").textContent = message;
+
+        // Clear any previous message and set the new success message
+        modalBody.textContent = message;
+
         const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
         successModal.show();
     }

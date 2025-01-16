@@ -28,4 +28,11 @@ public interface StudentAssignmentRepository extends JpaRepository<StudentAssign
     List<StudentAssignment> findByAssignmentId(int assignmentId);
 
     int countStudentAssignmentByStudentId(int studentId);
+
+    @Query("SELECT COUNT(sa) FROM StudentAssignment sa where sa.student.id = :studentId " +
+            "AND sa.status = :status " +
+            "AND sa.mark IS NOT NULL " +
+            "AND sa.mark > 0")
+    int countStudentAssignmentsWithValidMark(@Param("studentId") int studentId,
+                                             @Param("status") StudentAssignment.Status status);
 }

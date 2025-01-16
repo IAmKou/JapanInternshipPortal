@@ -490,13 +490,14 @@
                     const dropdownMenu = document.createElement('div');
                     dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
                     dropdownMenu.innerHTML = `
-                <a class="dropdown-item delete-class" data-id="${clasz.id}">
-                    <i></i> Delete Class
-                </a>
-                <a class="dropdown-item update-class" data-id="${clasz.id}" data-name="${clasz.name}">
-                    <i></i> Update Class
-                </a>
-            `;
+                    <a class="dropdown-item delete-class" data-id="${clasz.id}">
+                        <i></i> Delete Class
+                    </a>
+                    <a class="dropdown-item update-class" data-id="${clasz.id}" data-name="${clasz.name}">
+                        <i></i> Update Class
+                    </a>
+
+                `;
                     dropdown.appendChild(dropdownMenu);
                     actionsCell.appendChild(dropdown);
                     row.appendChild(actionsCell);
@@ -610,11 +611,11 @@
                 })
                 .catch(error => {
                     console.error('Error updating class:', error);
+                    // Show error modal
                     $('#error-modal').modal('show');
                 });
         });
     });
-
 </script>
 
 <!-- fetch teacher -->

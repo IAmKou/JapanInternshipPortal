@@ -26,6 +26,13 @@ public interface SemesterRepository extends JpaRepository<Semester, Integer> {
     // Find semesters ending on a specific date
     @Query("SELECT s FROM Semester s WHERE s.end_time = :endDate")
     List<Semester> findByEndDate(Date endDate);
+    @Query("SELECT CASE WHEN COUNT(s) > 0 THEN true ELSE false END " +
+            "FROM Semester s WHERE s.end_time = :endTime")
+    boolean existsByEndTime(@Param("endTime") Date endTime);
+
+    @Query("SELECT CASE WHEN COUNT(s) > 0 THEN true ELSE false END " +
+            "FROM Semester s WHERE s.start_time = :startTime")
+    boolean existsByStartTime(@Param("startTime") Date startTime);
     @Query("SELECT s FROM Semester s WHERE s.end_time > :creationDate")
     List<Semester> findSemestersEndingAfter(@Param("creationDate") Date creationDate);
 

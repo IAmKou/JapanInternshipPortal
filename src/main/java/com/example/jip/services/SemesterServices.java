@@ -89,21 +89,25 @@ public class SemesterServices {
         return false; // No overlap
     }
 
+    public boolean isTimeAdjacent(Date startTime, Date endTime) {
+        // Check if any semester's end_time matches the given start_time
+        boolean hasEndMatchingStart = semesterRepository.existsByEndTime(startTime);
+
+        // Check if any semester's start_time matches the given end_time
+        boolean hasStartMatchingEnd = semesterRepository.existsByStartTime(endTime);
+
+        // Return true if either condition is satisfied
+        return hasEndMatchingStart || hasStartMatchingEnd;
+    }
+
+
 
     public boolean isTimeOverlap(Date startTime, Date endTime) {
         List<Semester> semesters = semesterRepository.findAll();
 
         for (Semester semester : semesters) {
-
-
-            // Check for any overlap or adjacent edge cases
-            boolean overlap =
-                    startTime.before(semester.getEnd_time()) && endTime.after(semester.getStart_time()) ||
-                            startTime.equals(semester.getEnd_time()) ||
-                            endTime.equals(semester.getStart_time());
-
-            if (overlap) {
-                return true;
+            if (!(startTime.after(semester.getEnd_time()) || endTime.before(semester.getStart_time()))) {
+                return true; // Overlap detected
             }
         }
         return false;

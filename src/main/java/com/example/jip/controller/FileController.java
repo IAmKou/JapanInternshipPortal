@@ -32,16 +32,16 @@ public class FileController {
                 writer.println("\"Student Name\",\"Teacher Comment\",\"Attitude\",\"Script\",\"Presentation\",\"Soft Skill\",\"Midterm Test\",\"Final Test\",\"Skill\",\"Course Final\"");
                 // Write rows
                 for (Map<String, String> grade : gradesList) {
-                    writer.println("\"" + grade.get("fullname") + "\",\""
-                            + grade.getOrDefault("comment", "N/A") + "\",\""
-                            + grade.getOrDefault("attitude", "N/A") + "\",\""
-                            + grade.getOrDefault("scriptPresentation", "N/A") + "\",\""
-                            + grade.getOrDefault("presentation", "N/A") + "\",\""
-                            + grade.getOrDefault("softskill", "N/A") + "\",\""
-                            + grade.getOrDefault("middleExam", "N/A") + "\",\""
-                            + grade.getOrDefault("finalExam", "N/A") + "\",\""
-                            + grade.getOrDefault("skill", "N/A") + "\",\""
-                            + grade.getOrDefault("finalMark", "N/A") + "\"");
+                    writer.println("\"" + handleNull(grade.get("fullname"), "N/A") + "\",\""
+                            + handleNull(grade.get("comment"), "none") + "\",\""
+                            + handleNull(grade.get("attitude"), "0") + "\",\""
+                            + handleNull(grade.get("scriptPresentation"), "0") + "\",\""
+                            + handleNull(grade.get("presentation"), "0") + "\",\""
+                            + handleNull(grade.get("softskill"), "0") + "\",\""
+                            + handleNull(grade.get("middleExam"), "0") + "\",\""
+                            + handleNull(grade.get("finalExam"), "0") + "\",\""
+                            + handleNull(grade.get("skill"), "0") + "\",\""
+                            + handleNull(grade.get("finalMark"), "0") + "\"");
                 }
             }
         } catch (Exception e) {
@@ -49,4 +49,10 @@ public class FileController {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
+
+    private String handleNull(String value, String defaultValue) {
+        return (value == null || value.isEmpty()) ? defaultValue : value;
+    }
 }
+
+
