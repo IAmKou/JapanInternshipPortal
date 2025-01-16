@@ -398,11 +398,12 @@ public class MarkReportServices {
                     // Parse fixed columns
                     String name = getStringCellValue(row.getCell(0), rowNumber, "Name", rowErrors);
                     String email = getStringCellValue(row.getCell(1), rowNumber, "Email", rowErrors);
-                    BigDecimal presentation = getNumericCellValue(row.getCell(2), rowNumber, "Presentation", rowErrors);
-                    BigDecimal script = getNumericCellValue(row.getCell(3), rowNumber, "Script", rowErrors);
-                    BigDecimal middleExam = getNumericCellValue(row.getCell(4), rowNumber, "Middle Exam", rowErrors);
-                    BigDecimal finalExam = getNumericCellValue(row.getCell(5), rowNumber, "Final Exam", rowErrors);
-                    String comment = getStringCellValue(row.getCell(6), rowNumber, "Comment", rowErrors);
+                    String comment = getStringCellValue(row.getCell(2), rowNumber, "Comment", rowErrors);
+                    BigDecimal presentation = getNumericCellValue(row.getCell(3), rowNumber, "Presentation", rowErrors);
+                    BigDecimal script = getNumericCellValue(row.getCell(4), rowNumber, "Script", rowErrors);
+                    BigDecimal middleExam = getNumericCellValue(row.getCell(5), rowNumber, "Middle Exam", rowErrors);
+                    BigDecimal finalExam = getNumericCellValue(row.getCell(6), rowNumber, "Final Exam", rowErrors);
+
 
                     // Validate required fields
                     if ((name == null || name.isEmpty()) || (email == null || email.isEmpty())) {

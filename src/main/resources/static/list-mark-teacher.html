@@ -871,11 +871,12 @@
                 const row = {
                     Name: item.studentName,
                     Email: item.studentEmail,
+                    Comment: item.comment || '',
                     Presentation: item.presentation || '',
                     Script: item.scriptPresentation || '',
                     "Middle Exam": item.middle_exam || '',
-                    "Final Exam": item.final_exam || '',
-                    Comment: item.comment || ''
+                    "Final Exam": item.final_exam || ''
+
                 };
 
                 // Find the MRE data for the current student
