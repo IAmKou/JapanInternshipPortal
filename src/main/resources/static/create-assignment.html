@@ -397,18 +397,26 @@
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label for="description" style="color: #007bff; font-weight: bold;">Assignment Title <span style="color: red !important;">*</span></label>
                                 <input type="text"  class="form-control" name="description" id="description" >
+                                <span id="title-error" class="error-text" style="color: red; font-size: 0.875rem;"></span>
+
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label for="created_date" style="color: #007bff; font-weight: bold;">Start Date <span style="color: red !important;">*</span></label>
                                 <input type="datetime-local" class="form-control" name="created_date" id="created_date" >
+                                <span id="created_date-error" class="error-text" style="color: red; font-size: 0.875rem;"></span>
+
                             </div>
                             <div class="col-xl-4 col-lg-12 col-12 form-group">
                                 <label for="end_date" style="color: #007bff; font-weight: bold;">End Date <span style="color: red !important;">*</span></label>
                                 <input type="datetime-local" class="form-control" name="end_date" id="end_date" >
+                                <span id="end_date-error" class="error-text" style="color: red; font-size: 0.875rem;"></span>
+
                             </div>
                             <div class="col-xl-6 col-lg-12 col-12 form-group">
                                 <label for="content" style="color: #007bff; font-weight: bold;">Description <span style="color: red !important;">*</span></label>
                                 <div id="content" class="form-control" style="height: 200px;"></div>
+                                <span id="description-error" class="error-text" style="color: red; font-size: 0.875rem;"></span>
+
                             </div>
                             <div class="col-xl-12 col-lg-24 col-12 form-group">
                                 <label  for="class_id" style="color: #007bff; font-weight: bold;">Select Class:</label>
@@ -622,75 +630,96 @@
         });
 
         // Function to handle adding assignment
-        async function addAssignment(event) {
-            event.preventDefault(); // Prevent default form submission
+        const addAssignment = async (event) => {
+            event.preventDefault();
+
+            // Reset lỗi cũ
+            document.querySelectorAll('.error-text').forEach(errorSpan => errorSpan.textContent = '');
+
             const form = event.target.closest('form');
             const formData = new FormData(form);
 
-            const content = quill.root.innerHTML.trim();
-            formData.append('content', content);
-
             const description = document.getElementById('description').value.trim();
+            const content = document.getElementById('content').value.trim();
+            const createdDateInput = document.getElementById('created_date');
+            const endDateInput = document.getElementById('end_date');
 
+            const createdDate = createdDateInput.value;
+            const endDate = endDateInput.value;
+
+            let hasError = false;
+
+            // Validate Title
             if (!description) {
-                showErrorModal('Title is required.');
+                document.getElementById('title-error').textContent = 'Assignment Title is required.';
+                hasError = true;
+            } else if (description.length > 35) {
+                document.getElementById('title-error').textContent = 'Title cannot exceed 35 characters.';
+                hasError = true;
+            }
+            if (!content) {
+                document.getElementById('description-error').textContent = 'Assignment Description is required.';
+                hasError = true;
+            } else if (content.length > 255) {
+                document.getElementById('description-error').textContent = 'Assignment Description cannot exceed 255 characters.';
+                hasError = true;
+            }
+
+            // Validate Start Date
+            if (!createdDate) {
+                document.getElementById('created_date-error').textContent = 'Start date is required.';
+                hasError = true;
+            }
+
+            // Validate End Date
+            if (!endDate) {
+                document.getElementById('end_date-error').textContent = 'End date is required.';
+                hasError = true;
+            }
+
+            // Nếu có lỗi, ngăn việc gửi form
+            if (hasError) {
                 return;
             }
 
-            const isDescriptionUnique = await checkDescriptionExists(description);
-            if (isDescriptionUnique) {
-                showErrorModal('Title already exists.');
-                return;
-            }
-
-            const endDate = document.getElementById('end_date').value;
-            const createdDate = document.getElementById('created_date').value;
-
-            // Validation checks
-            if (!description) return showErrorModal('Title is required.');
-            if (content === '' || content === '<p><br></p>') return showErrorModal('Description is required.');
-            if (!createdDate) return showErrorModal('Start date is required.');
-            if (!endDate) return showErrorModal('End date is required.');
-
+            // Chuyển đổi ngày để so sánh
             const startDate = new Date(createdDate);
             const finishDate = new Date(endDate);
             const currentDate = new Date();
+
             currentDate.setSeconds(0, 0);
             startDate.setSeconds(0, 0);
             finishDate.setSeconds(0, 0);
 
-            if (startDate < currentDate) return showErrorModal('Start date must be greater than or equal to the current date.');
-            if (finishDate < currentDate) return showErrorModal('End date must be greater than or equal to the current date.');
-            if (startDate > finishDate) return showErrorModal('End date must be greater than or equal to the start date.');
-
-            // Check if dates are within the semester bounds
-            if (startDate < semesterStart || startDate > semesterEnd) {
-                return showErrorModal(`Start date must be within the current semester (${semesterStart.toDateString()} - ${semesterEnd.toDateString()}).`);
-            }
-            if (finishDate < semesterStart || finishDate > semesterEnd) {
-                return showErrorModal(`End date must be within the current semester (${semesterStart.toDateString()} - ${semesterEnd.toDateString()}).`);
+            // Thêm các validate liên quan đến ngày
+            if (startDate < currentDate) {
+                document.getElementById('created_date-error').textContent =
+                    'Start date must be greater than or equal to the current date.';
+                return;
             }
 
-            // Validation for time difference
+            if (finishDate < startDate) {
+                document.getElementById('end_date-error').textContent =
+                    'End date must be greater than or equal to the start date.';
+                return;
+            }
+
             const timeDifference = (finishDate - startDate) / (1000 * 60);
-            if (timeDifference < 30) return showErrorModal('The time difference between Create Date and End Date must be at least 30 minutes.');
-
-            // File size and type validation
-            const fileInput = document.querySelector('input[type="file"]');
-            if (fileInput && fileInput.files.length > 0) {
-                const file = fileInput.files[0];
-                const fileSizeInMB = file.size / (1024 * 1024);
-                if (fileSizeInMB > 125) return showErrorModal('File size must not exceed 125MB.');
-                const allowedTypes = ['application/pdf', 'application/msword', 'image/png', 'image/jpeg'];
-                if (!allowedTypes.includes(file.type)) return showErrorModal('File type must be pdf, doc, png, or jpg.');
+            if (timeDifference < 30) {
+                document.getElementById('end_date-error').textContent =
+                    'The time difference between Create Date and End Date must be at least 30 minutes.';
+                return;
             }
 
             // Submit form
             try {
-                const response = await fetch('/assignment/create', { method: 'POST', body: formData });
+                const response = await fetch('/assignment/create', {
+                    method: 'POST',
+                    body: formData,
+                });
                 if (response.ok) {
                     showSuccessModal('Assignment added successfully!');
-                    setTimeout(toListAssigment, 2000);
+                    setTimeout(() => toListAssigment(), 2000);
                 } else {
                     const errorData = await response.json();
                     showErrorModal(`Failed to create assignment: ${errorData.message || 'Please try again.'}`);
@@ -699,7 +728,7 @@
                 console.error('Error:', error);
                 showErrorModal('An error occurred. Please try again.');
             }
-        }
+        };
 
         document.querySelector('form').addEventListener('submit', addAssignment);
     });

@@ -943,15 +943,19 @@
                     <form action="javascript:void(0);" class="new-added-form" onsubmit="updateAssignment(event)">
                         <label for="description" style="color: #007bff; font-weight: bold;">Title:</label>
                         <input id="description" name="description" required type="text"/>
+                        <span class="error-text" id="description-error" style="color: red; font-size: 0.85rem;"></span>
 
                         <label for="create_date" style="color: #007bff; font-weight: bold;">Start Date:</label>
                         <input id="create_date" name="create_date" required type="datetime-local"/>
+                        <span class="error-text" id="create_date-error" style="color: red; font-size: 0.85rem;"></span>
 
                         <label for="end_date" style="color: #007bff; font-weight: bold;">End Date:</label>
                         <input id="end_date" name="end_date" required type="datetime-local"/>
+                        <span class="error-text" id="end_date-error" style="color: red; font-size: 0.85rem;"></span>
 
                         <label for="content" style="color: #007bff; font-weight: bold;">Description:</label>
                         <div id="content" class="form-control" style="height: 200px;"></div>
+                        <span class="error-text" id="content-error" style="color: red; font-size: 0.85rem;"></span>
 
                         <label for="class_id" style="color: #007bff; font-weight: bold;">Class: </label>
                         <p id="classes"></p>
@@ -1401,11 +1405,32 @@
     async function updateAssignment(event) {
         event.preventDefault();
 
-        const description = document.getElementById('description').value;
+        const description = document.getElementById('description').value.trim();
         const createDate = document.getElementById('create_date').value;
         const endDate = document.getElementById('end_date').value;
-        const content = quill.root.innerHTML;  // Get content from Quill editor
+        const content = quill.root.innerHTML.trim();  // Get content from Quill editor
 
+        let hasError = false;
+        document.querySelectorAll('.error-text').forEach((span) => {
+            span.textContent = '';
+        });
+        if (!description) {
+            setError('description', 'Description cannot be empty or only contain spaces.');
+            hasError = true;
+        } else if (description.length > 50) {
+            setError('description', 'Assignment title cannot exceed 50 characters.');
+            hasError = true;
+        }
+        if (!content || content === '<p><br></p>') { // Nếu nội dung rỗng trong Quill
+            setError('content', 'Assignment description cannot be empty');
+            hasError = true;
+        } else if (content.length > 255) {
+            setError('content', 'Assignment description cannot exceed 255 characters.');
+            hasError = true;
+        }
+        if (hasError) {
+            return;
+        }
         if (!description.trim() || !endDate || !createDate || !content.trim()) {
             showErrorModal('Please fill in all the required fields!');
             return; // Exit the function if validation fails

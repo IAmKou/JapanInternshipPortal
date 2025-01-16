@@ -154,6 +154,72 @@
             text-align: center;  /* Căn giữa chữ */
             font-weight: bold;   /* Đậm chữ */
         }
+        #success-modal .modal-header {
+            background-color: #28a745; /* Màu nền của header */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #success-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #success-modal .modal-body .fas.fa-check-circle {
+            color: #28a745;
+        }
+
+        #success-modal .btn-success {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        #success-modal .btn-close {
+            color: white;
+        }
+
+        #success-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+
+        /* Custom Modal Styling for Error Modal */
+        #error-modal .modal-header {
+            background-color: #dc3545; /* Màu nền của header (Đỏ cho lỗi) */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #error-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #error-modal .modal-body .fas.fa-times-circle {
+            color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+        }
+
+        #error-modal .btn-danger {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #dc3545; /* Màu đỏ cho nút lỗi */
+            border-color: #dc3545;
+        }
+
+        #error-modal .btn-close {
+            color: white;
+        }
+
+        #error-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
     </style>
 </head>
 
@@ -354,20 +420,20 @@
                     <form action="class/create" class="new-added-form" method="post" id="createClassForm">
                         <div class="row">
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label for="className" style="color: #007bff; font-weight: bold;">Class Name</label>
+                                <label for="className" style="color: #007bff; font-weight: bold;">Class Name <span style="color: red !important;">*</span></label>
                                 <input type="text" id="className" placeholder="" name="className" class="form-control">
                                 <small id="classNameError" style="color: red; display: none;"></small> <!-- Thêm dòng này -->
 
                             </div>
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label for="teacher" style="color: #007bff; font-weight: bold;">Teacher</label>
+                                <label for="teacher" style="color: #007bff; font-weight: bold;">Teacher <span style="color: red !important;">*</span></label>
                                 <select id="teacher" name="teacherId" class="select2">
                                     <!-- Các option sẽ được thêm vào đây -->
                                 </select>
                             </div>
 
                             <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label for="semester" style="color: #007bff; font-weight: bold;">Semester</label>
+                                <label for="semester" style="color: #007bff; font-weight: bold;">Semester <span style="color: red !important;">*</span></label>
                                 <select id="semester" name="teacherId" class="select2">
                                 </select>
                             </div>
