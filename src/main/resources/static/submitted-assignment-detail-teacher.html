@@ -428,6 +428,8 @@
                         <div class="form-group">
                             <label for="markInput">Enter Mark (0-10):</label>
                             <input type="number" id="markInput" class="form-control" min="0" max="10" step="0.1" required>
+                            <span id="markError" class="text-danger"></span> <!-- Phần hiển thị lỗi -->
+
                         </div>
                     </form>
                 </div>
@@ -741,18 +743,29 @@
     fetchStudentAssignmentDetails();
 
     async function submitGrade() {
-        const mark = parseFloat(document.getElementById('markInput').value);
+        const markInput = document.getElementById('markInput');
+        const markError = document.getElementById('markError');
+        const mark = parseFloat(markInput.value);
         const status = "MARKED";
         const urlParams = new URLSearchParams(window.location.search);
         const submittedAssignmentId = urlParams.get('id');
 
+        // Reset thông báo lỗi
+        markError.textContent = '';
+        markError.style.display = 'none';
+
+        // Kiểm tra nếu thiếu ID
         if (!submittedAssignmentId) {
-            showErrorModal('Submitted Assignment ID is missing in the URL.');
+            markError.textContent = 'Submitted Assignment ID is missing in the URL.';
+            markError.style.display = 'block';
             return;
         }
 
-        if (mark === "" || isNaN(mark) || mark < 0 || mark > 10) {
-            showErrorModal("Please enter a valid mark between 0 and 10.");
+        // Kiểm tra giá trị nhập
+        if (markInput.value === "" || isNaN(mark) || mark < 0 || mark > 10) {
+            markError.textContent = "Please enter a valid mark between 0 and 10.";
+            markError.style.display = 'block';
+            markInput.focus();
             return;
         }
 
@@ -762,6 +775,9 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ mark: mark, status: status })
             });
+
+            // Ẩn modal trước khi xử lý tiếp
+            document.getElementById('gradeModal').style.display = 'none';
 
             if (response.ok) {
                 showSuccessModal('Grade submitted successfully!');
@@ -773,6 +789,9 @@
                 showErrorModal(`Failed to submit grade: ${errorData.message || response.statusText}`);
             }
         } catch (error) {
+            // Ẩn modal trước khi xử lý lỗi
+            document.getElementById('gradeModal').style.display = 'none';
+
             console.error('Error grading assignment:', error);
             showErrorModal('An error occurred while submitting the grade. Please try again.');
         }

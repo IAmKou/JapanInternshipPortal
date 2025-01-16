@@ -499,6 +499,7 @@
                     </h5>
                 </div>
                 <div class="modal-body text-center">
+                    <h4 class="text-success">Assignment submitted successfully!</h4>
                 </div>
             </div>
         </div>
@@ -810,7 +811,7 @@
             });
 
             if (response.ok) {
-                showSuccessModal('Assignment submitted successfully!');
+                showSuccessModal();
                 setTimeout(() => {window.location.href = `list-submitted-assignments.html`;}
                     , 2000); // 2 seconds delay
             } else {

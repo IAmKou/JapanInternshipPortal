@@ -418,13 +418,10 @@ public class AssignmentServices {
         }
 
        // Fetch current semester
-        Semester currentSemester = semesterRepository.findByStatus(Semester.status.Active);
+       
 
         // Validate assignment dates within semester
-        if (request.getCreated_date().before(currentSemester.getStart_time()) ||
-                request.getEnd_date().after(currentSemester.getEnd_time())) {
-            throw new IllegalArgumentException("Assignment dates must fall within the current semester");
-        }
+
 
         Date currentDate = new Date();
         if (currentDate.after(assignment.getCreated_date()) && currentDate.before(assignment.getEnd_date())) {
@@ -490,19 +487,19 @@ public class AssignmentServices {
 
 }
 
-@Component
-@EnableScheduling
-@Slf4j
-class ScheduledTask {
-    @Autowired
-    private AssignmentServices assignmentStatusService;
-
-    // Run the task every minute to update assignment status
-    @Scheduled(fixedRate = 1000) // 1000 milliseconds = 1 second
-    public void updateAssignmentStatuses() {
-        log.info("Scanning to update Assignment status...");
-        assignmentStatusService.updateAssignmentStatus();
-    }
-
-}
+////@Component
+////@EnableScheduling
+////@Slf4j
+////class ScheduledTask {
+////    @Autowired
+////    private AssignmentServices assignmentStatusService;
+////
+////    // Run the task every minute to update assignment status
+////    @Scheduled(fixedRate = 1000) // 1000 milliseconds = 1 second
+////    public void updateAssignmentStatuses() {
+////        log.info("Scanning to update Assignment status...");
+////        assignmentStatusService.updateAssignmentStatus();
+////    }
+//
+//}
 
