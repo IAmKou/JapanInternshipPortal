@@ -460,6 +460,8 @@
                                 <div class="col-xl-8 col-lg-6 col-12 form-group">
                                     <label for="description" style="color: #007bff; font-weight: bold;">Title <span style="color: red !important;">*</span></label>
                                     <input type="text"  class="form-control" name="description" id="description" required>
+                                    <span class="error-text" id="description-error" style="color: red; font-size: 0.85rem;"></span>
+
                                 </div>
 
                                 <div class="col-xl-12 col-lg-12 col-12 form-group">
@@ -467,6 +469,8 @@
                                     <div id="content" class="form-control" style="height: 200px;"></div>
                                     <!-- Thêm input ẩn để gửi nội dung của Quill -->
                                     <input type="hidden" name="content">
+                                    <span class="error-text" id="content-error" style="color: red; font-size: 0.85rem;"></span>
+
                                 </div>
 
 
@@ -749,14 +753,33 @@
         const formData = new FormData(form);  // Lấy tất cả dữ liệu trong form
 
         // Lấy giá trị từ các trường của form, trong đó có Quill
-        const description = formData.get('description');
-        const content = formData.get('content');  // Giá trị từ Quill dưới dạng HTML
+        const description = formData.get('description')?.trim();
+        const content = formData.get('content')?.trim();
+
+        let hasError = false;
+
+        document.querySelectorAll('.error-text').forEach((errorSpan) => (errorSpan.textContent = ''));
+
 
         // Kiểm tra xem các trường có hợp lệ không
-        if (!description.trim() || !content.trim()) {
-            showErrorModal('Please fill in all the required fields!');
-            return;  // Dừng hàm nếu có trường không hợp lệ
+        if (!description) {
+            setError('description', 'Title cannot be empty');
+            hasError = true;
+        } else if (description.length > 50) {
+            setError('description', 'Title cannot exceed 50 characters.');
+            hasError = true;
         }
+        if (!content) {
+            setError('content', 'Description cannot be empty');
+            hasError = true;
+        } else if (content.length > 255) {
+            setError('content', 'Description cannot exceed 255 characters.');
+            hasError = true;
+        }
+        if (hasError) {
+            return; // Ngừng gửi form nếu có lỗi
+        }
+
 
 
         // Kiểm tra ID của học sinh và bài tập có hợp lệ không
