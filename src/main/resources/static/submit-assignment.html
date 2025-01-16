@@ -350,10 +350,6 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="class-list-student.html" class="nav-link" onclick="toSchedule();"><i
-                                class="flaticon-shopping-list"></i><span>Class</span></a>
-                    </li>
-                    <li class="nav-item">
                         <a href="javascript:void(0);" class="nav-link"><i class="flaticon-shopping-list"></i><span>Personal Mark Report</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
@@ -503,6 +499,7 @@
                     </h5>
                 </div>
                 <div class="modal-body text-center">
+                    <h4 class="text-success">Assignment submitted successfully!</h4>
                 </div>
             </div>
         </div>
@@ -814,7 +811,7 @@
             });
 
             if (response.ok) {
-                showSuccessModal('Assignment submitted successfully!');
+                showSuccessModal();
                 setTimeout(() => {window.location.href = `list-submitted-assignments.html`;}
                     , 2000); // 2 seconds delay
             } else {

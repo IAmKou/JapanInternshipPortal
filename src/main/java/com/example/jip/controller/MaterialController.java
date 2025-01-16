@@ -100,7 +100,7 @@ public class MaterialController {
             redirectAttributes.addFlashAttribute("success", "Material '" + savedMaterial.getTitle() + "' created successfully!");
 
             // Redirect to View-material-details.html with the new material ID
-            return new RedirectView("/View-material-details.html?id=" + savedMaterial.getId());
+            return new RedirectView("/View-material-details-teacher.html?id=" + savedMaterial.getId());
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", "Failed to create material: " + e.getMessage());
             return new RedirectView("/materials/create");  // Chuyển hướng nếu có lỗi
@@ -228,29 +228,53 @@ public class MaterialController {
     }
     @GetMapping("/list1")
     public ResponseEntity<List<MaterialDTO>> getMaterials() {
+        System.out.println("INFO: Received request to /materials/list1");
+
         // Lấy tất cả các material
-        List<Material> materials = materialRepository.findAll();
+        List<Material> materials;
+        try {
+            materials = materialRepository.findAll();
+            System.out.println("INFO: Number of materials retrieved: " + materials.size());
+        } catch (Exception e) {
+            System.err.println("ERROR: Failed to fetch materials from database.");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
 
         // Chuyển đổi danh sách materials sang DTO
-        List<MaterialDTO> materialDTOs = materials.stream().map(material -> {
-            MaterialDTO dto = new MaterialDTO();
-            dto.setId(material.getId());
-            dto.setTitle(material.getTitle());
-            dto.setImg(material.getImg());
-            dto.setCreated_date(material.getCreated_date());
+        List<MaterialDTO> materialDTOs = new ArrayList<>();
+        for (Material material : materials) {
+            try {
+                System.out.println("INFO: Processing material with ID: " + material.getId());
+                MaterialDTO dto = new MaterialDTO();
+                dto.setId(material.getId());
+                dto.setTitle(material.getTitle());
+                dto.setImg(material.getImg());
+                dto.setCreated_date(material.getCreated_date());
+                System.out.println("INFO: Material title: " + material.getTitle());
 
-            if (material.getTeacher() != null) {
-                TeacherDTO teacherDTO = new TeacherDTO();
-                teacherDTO.setId(material.getTeacher().getId()); // Lấy teacher_id
-                dto.setTeacher(teacherDTO);
+                if (material.getTeacher() != null) {
+                    System.out.println("INFO: Material has a teacher with ID: " + material.getTeacher().getId());
+                    TeacherDTO teacherDTO = new TeacherDTO();
+                    teacherDTO.setId(material.getTeacher().getId()); // Lấy teacher_id
+                    dto.setTeacher(teacherDTO);
+                } else {
+                    System.out.println("WARN: Material with ID " + material.getId() + " does not have an associated teacher.");
+                }
+
+                materialDTOs.add(dto);
+            } catch (Exception e) {
+                System.err.println("ERROR: Failed to process material with ID: " + material.getId());
+                e.printStackTrace();
             }
+        }
 
-            return dto;
-        }).collect(Collectors.toList());
+        System.out.println("INFO: Number of materials converted to DTOs: " + materialDTOs.size());
 
         // Trả về danh sách DTO
         return ResponseEntity.ok(materialDTOs);
     }
+
     @Transactional
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteMaterial(@PathVariable("id") int materialId) {

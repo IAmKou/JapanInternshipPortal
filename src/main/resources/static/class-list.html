@@ -575,13 +575,6 @@
                 classNameError.classList.add('d-none');
             }
 
-            // Kiểm tra xem tên lớp đã tồn tại chưa
-            if (existingClassNames.includes(className)) {
-                classNameError.textContent = "Class Name is already taken.";
-                classNameError.classList.remove('d-none');
-                return;
-            }
-
             classNameError.classList.add('d-none');
 
             // Hide the modal before showing success/error modal

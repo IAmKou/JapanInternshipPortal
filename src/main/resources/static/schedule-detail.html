@@ -31,6 +31,9 @@
     <script src='/dist/index.global.js'></script>
 
     <style>
+        .select2-container .select2-selection--single .select2-selection__rendered {
+            color: #000 !important; /* Ghi đè màu chữ */
+        }
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -943,7 +946,11 @@
                             showSuccessModal(result.message || 'Events saved successfully!');
                             eventsToSave = [];
                             calendar.refetchEvents();
-                            window.location.href = 'schedule-list.html';
+
+                            // Đặt timeout 2s trước khi chuyển hướng
+                            setTimeout(() => {
+                                window.location.href = 'schedule-list.html';
+                            }, 2000); // 2000ms = 2s
                         })
                         .catch(error => {
                             console.error('Error saving events:', error);

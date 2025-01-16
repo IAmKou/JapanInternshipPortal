@@ -169,10 +169,6 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="class-list-student.html" class="nav-link" onclick="toSchedule();"><i
-                                    class="flaticon-shopping-list"></i><span>Class</span></a>
-                        </li>
-                        <li class="nav-item">
                             <a href="javascript:void(0);" class="nav-link"><i class="flaticon-shopping-list"></i><span>Personal Mark Report</span></a>
                         </li>
                         <li class="nav-item sidebar-nav-item">
@@ -665,6 +661,18 @@
                 allNotifications.forEach(notification => notification.isRead = true);
             });
         }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Đảm bảo chỉ chạy khi các th đã được tải và áp dụng.
+            setTimeout(function () {
+                // Loại bỏ các lớp "sorting" và "sorting_asc" nếu tồn tại trên th
+                const thElements = document.querySelectorAll('th.sorting, th.sorting_asc');
+                thElements.forEach(function (thElement) {
+                    thElement.classList.remove('sorting', 'sorting_asc');
+                });
+            }, 100);  // Điều chỉnh thời gian đợi cho phù hợp
+        });
     </script>
 </body>
 

@@ -623,13 +623,13 @@
         const messageBox = document.getElementById('messageBox');
 
         // Giới hạn ký tự nhập vào không quá 50 ký tự
-        roomNameInput.addEventListener('input', function() {
+        roomNameInput.addEventListener('input', function () {
             if (roomNameInput.value.length > 50) {
                 roomNameInput.value = roomNameInput.value.substring(0, 50);
             }
         });
 
-        submitRoomButton.addEventListener('click', function(event) {
+        submitRoomButton.addEventListener('click', function (event) {
             event.preventDefault(); // Ngừng hành động gửi form mặc định
 
             let roomName = roomNameInput.value.trim(); // Loại bỏ dấu cách
@@ -650,11 +650,11 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name: roomName }),
+                body: JSON.stringify({name: roomName}),
             })
                 .then((response) => {
                     if (response.ok) {
-                        return response.json(); // Phân tích cú pháp JSON nếu thành công
+                        return response.json(); // Parse JSON if the request is successful
                     } else {
                         return response.text().then((text) => {
                             throw new Error(text || 'Failed to create room');
@@ -662,54 +662,58 @@
                     }
                 })
                 .then((data) => {
-                    showSuccessModal(`${data.name} was created successfully!`);
+                    // Show success modal with the message from the backend
+                    showSuccessModal(`${data.message}`);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
                 })
                 .catch((error) => {
+                    // Show error modal if there is an error
                     showErrorModal(`Error: ${error.message}`);
                 });
         });
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-        const tableBody = document.querySelector('.table tbody');
-        const confirmationModal = document.querySelector('#confirmation-modal');
-        const confirmButton = confirmationModal.querySelector('.footer-btn.bg-linkedin');
-        const updateClassBtn = document.querySelector('#update-class-btn');
+        document.addEventListener('DOMContentLoaded', function () {
+            const tableBody = document.querySelector('.table tbody');
+            const confirmationModal = document.querySelector('#confirmation-modal');
+            const confirmButton = confirmationModal.querySelector('.footer-btn.bg-linkedin');
+            const updateClassBtn = document.querySelector('#update-class-btn');
 
-        let currentRoomId = null;
+            let currentRoomId = null;
 
-        // Fetch classes and populate the table
-        fetch("/room/get")
-            .then(response => {
-                console.log('Response status:', response.status);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch room data');
-                }
-                return response.json();
-            })
-            .then(room => {
-                console.log('Fetched rooms:', room);
-                room.forEach(room => {
-                    const row = document.createElement('tr');
+            // Fetch classes and populate the table
+            fetch("/room/get")
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch room data');
+                    }
+                    return response.json();
+                })
+                .then(room => {
+                    console.log('Fetched rooms:', room);
+                    room.forEach(room => {
+                        const row = document.createElement('tr');
 
-                    // Semester Name cell
-                    const roomNameCell = document.createElement('td');
-                    roomNameCell.textContent = room.name;
-                    row.appendChild(roomNameCell);
+                        // Semester Name cell
+                        const roomNameCell = document.createElement('td');
+                        roomNameCell.textContent = room.name;
+                        row.appendChild(roomNameCell);
 
-                    // Actions cell with dropdown
-                    const actionsCell = document.createElement('td');
-                    const dropdown = document.createElement('div');
-                    dropdown.className = 'dropdown';
+                        // Actions cell with dropdown
+                        const actionsCell = document.createElement('td');
+                        const dropdown = document.createElement('div');
+                        dropdown.className = 'dropdown';
 
-                    const dropdownToggle = document.createElement('a');
-                    dropdownToggle.className = 'dropdown-toggle';
-                    dropdownToggle.setAttribute('data-toggle', 'dropdown');
-                    dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
-                    dropdown.appendChild(dropdownToggle);
+                        const dropdownToggle = document.createElement('a');
+                        dropdownToggle.className = 'dropdown-toggle';
+                        dropdownToggle.setAttribute('data-toggle', 'dropdown');
+                        dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
+                        dropdown.appendChild(dropdownToggle);
 
-                    const dropdownMenu = document.createElement('div');
-                    dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
-                    dropdownMenu.innerHTML = `
+                        const dropdownMenu = document.createElement('div');
+                        dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
+                        dropdownMenu.innerHTML = `
                     <a class="dropdown-item delete-class" data-id="${room.id}">
                         <i></i> Delete Room
                     </a>
@@ -717,101 +721,102 @@
                         <i></i> Update Room
                     </a>
                 `;
-                    dropdown.appendChild(dropdownMenu);
-                    actionsCell.appendChild(dropdown);
-                    row.appendChild(actionsCell);
-                    tableBody.appendChild(row);
-                });
-
-                // Attach event listeners for delete buttons
-                document.querySelectorAll('.delete-class').forEach(button => {
-                    button.addEventListener('click', function () {
-                        currentRoomId = this.getAttribute('data-id');
-                        $('#confirmation-modal').modal('show'); // Show modal
+                        dropdown.appendChild(dropdownMenu);
+                        actionsCell.appendChild(dropdown);
+                        row.appendChild(actionsCell);
+                        tableBody.appendChild(row);
                     });
-                });
 
-                // Attach event listeners for update buttons
-                document.querySelectorAll('.update-class').forEach(button => {
-                    button.addEventListener('click', function () {
-                        const roomId = this.getAttribute('data-id');
-                        const roomName = this.getAttribute('data-name');
-
-                        // Populate modal fields
-                        document.getElementById('roomId').value = roomId;
-                        document.getElementById('roomName').value = roomName;
-
-                        // Show modal
-                        $('#update-modal').modal('show');
+                    // Attach event listeners for delete buttons
+                    document.querySelectorAll('.delete-class').forEach(button => {
+                        button.addEventListener('click', function () {
+                            currentRoomId = this.getAttribute('data-id');
+                            $('#confirmation-modal').modal('show'); // Show modal
+                        });
                     });
-                });
-            })
-            .catch(error => console.error('Error fetching room data:', error));
 
-        // Confirm delete action
-        confirmButton.addEventListener('click', function () {
-            if (currentRoomId) {
-                fetch(`/room/delete/${currentRoomId}`, {
-                    method: 'DELETE',
+                    // Attach event listeners for update buttons
+                    document.querySelectorAll('.update-class').forEach(button => {
+                        button.addEventListener('click', function () {
+                            const roomId = this.getAttribute('data-id');
+                            const roomName = this.getAttribute('data-name');
+
+                            // Populate modal fields
+                            document.getElementById('roomId').value = roomId;
+                            document.getElementById('roomName').value = roomName;
+
+                            // Show modal
+                            $('#update-modal').modal('show');
+                        });
+                    });
+                })
+                .catch(error => console.error('Error fetching room data:', error));
+
+            // Confirm delete action
+            confirmButton.addEventListener('click', function () {
+                if (currentRoomId) {
+                    fetch(`/room/delete/${currentRoomId}`, {
+                        method: 'DELETE',
+                    })
+                        .then(response => response.json()) // Parse JSON response
+                        .then(data => {
+                            if (response.ok) {
+                                showSuccessModal(data.message);
+                                location.reload(); // Refresh the page
+                            } else {
+                                showErrorModal(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error deleting room:', error);
+                            showErrorModal("An error occurred while communicating with the server.");
+                        });
+                }
+            });
+
+            // Handle class update via JSON
+            updateClassBtn.addEventListener('click', function () {
+                const roomId = document.getElementById('roomId').value;
+                const roomName = document.getElementById('roomName').value.trim(); // Trim input
+
+                if (!roomName) {
+                    showErrorModal('Room name cannot be empty.');
+                    return;
+                }
+
+                fetch(`/room/update/${roomId}?roomName=${roomName}`, {
+                    method: 'PUT',
                 })
                     .then(response => response.json()) // Parse JSON response
                     .then(data => {
-                        if (response.ok) {
-                            showSuccessModal(data.message);
+                        if (data.status === "success") {
+                            showSuccessModal(data.message); // Show success message
                             location.reload(); // Refresh the page
-                        } else {
-                            showErrorModal(data.message);
+                        } else if (data.status === "error") {
+                            showErrorModal(data.message); // Show error message
                         }
                     })
                     .catch(error => {
-                        console.error('Error deleting room:', error);
+                        console.error('Error updating room:', error);
                         showErrorModal("An error occurred while communicating with the server.");
                     });
-            }
-        });
+            });
 
-        // Handle class update via JSON
-        updateClassBtn.addEventListener('click', function () {
-            const roomId = document.getElementById('roomId').value;
-            const roomName = document.getElementById('roomName').value.trim(); // Trim input
-
-            if (!roomName) {
-                showErrorModal('Room name cannot be empty.');
-                return;
+            // Functions to show modals
+            function showSuccessModal(message) {
+                const successModal = document.querySelector('#success-modal');
+                const successModalBody = successModal.querySelector('.modal-body');
+                successModalBody.textContent = message;
+                $('#success-modal').modal('show');
             }
 
-            fetch(`/room/update/${roomId}?roomName=${roomName}`, {
-                method: 'PUT',
-            })
-                .then(response => response.json()) // Parse JSON response
-                .then(data => {
-                    if (data.status === "success") {
-                        showSuccessModal(data.message); // Show success message
-                        location.reload(); // Refresh the page
-                    } else if (data.status === "error") {
-                        showErrorModal(data.message); // Show error message
-                    }
-                })
-                .catch(error => {
-                    console.error('Error updating room:', error);
-                    showErrorModal("An error occurred while communicating with the server.");
-                });
+            function showErrorModal(message) {
+                const errorModal = document.querySelector('#long-modal');
+                const errorModalBody = errorModal.querySelector('.modal-body');
+                errorModalBody.textContent = message;
+                $('#long-modal').modal('show');
+            }
         });
-
-        // Functions to show modals
-        function showSuccessModal(message) {
-            const successModal = document.querySelector('#success-modal');
-            const successModalBody = successModal.querySelector('.modal-body');
-            successModalBody.textContent = message;
-            $('#success-modal').modal('show');
-        }
-
-        function showErrorModal(message) {
-            const errorModal = document.querySelector('#long-modal');
-            const errorModalBody = errorModal.querySelector('.modal-body');
-            errorModalBody.textContent = message;
-            $('#long-modal').modal('show');
-        }
     });
 </script>
 <script>

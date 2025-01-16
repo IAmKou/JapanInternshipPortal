@@ -68,8 +68,13 @@ public class CreateAccountController {
             return ResponseEntity.badRequest().body("Japan name is required");
         }
 
-        if (img == null ){
+        if (img == null) {
             return ResponseEntity.badRequest().body("Image is required");
+        }
+
+        String contentType = img.getContentType();
+        if (contentType == null || (!contentType.equals("image/png") && !contentType.equals("image/jpeg") && !contentType.equals("image/jpg"))) {
+            return ResponseEntity.badRequest().body("Invalid image type. Only PNG, JPG, and JPEG are allowed.");
         }
 
         if (email == null || email.trim().isEmpty()) {
@@ -86,10 +91,12 @@ public class CreateAccountController {
         if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
             return ResponseEntity.badRequest().body("Phone number is required");
         }
+
         if (!isValidPhoneNumber(phoneNumber)) {
             return ResponseEntity.badRequest().body("Invalid phone number format");
         }
 
+        // Check if the phone number already exists across roles (Student, Teacher, Manager)
         if (studentRepository.existsByPhoneNumber(phoneNumber) ||
                 teacherRepository.existsByPhoneNumber(phoneNumber) ||
                 managerRepository.existsByPhoneNumber(phoneNumber)) {
@@ -106,7 +113,7 @@ public class CreateAccountController {
                     .orElseThrow(() -> new RuntimeException("Role not found"));
 
             // Kiểm tra DOB nếu role là Student
-            if (role == 1 && (dob == null || dob.trim().isEmpty())) {
+            if (role == 2 && (dob == null || dob.trim().isEmpty())) {
                 return ResponseEntity.badRequest().body("Date of Birth is required for Student role");
             }
 
@@ -150,6 +157,7 @@ public class CreateAccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating account: " + e.getMessage());
         }
     }
+
 
 
     private String generateVerifyCode() {

@@ -65,7 +65,12 @@ public class RoomController {
                 roomAvailabilityServices.initializeRoomAvailabilityForSemesterAndRoom(semester.getId(), createdRoom);
         }
 
-        return ResponseEntity.ok(createdRoom);
+        return ResponseEntity.ok(Map.of(
+                "status", "success",
+                "message", "Room created successfully!",
+                "room", room
+        ));
+
     }
 
     @GetMapping("/get")

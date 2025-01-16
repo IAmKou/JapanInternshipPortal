@@ -749,7 +749,7 @@
                                                 </a>
                                                 <a class="dropdown-item"
                                                    download
-                                                   href="/template/import%20account%20template%20-%20Copy.xlsx">
+                                                   href="/img/Import%20Account%20Template.xlsx">
                                                     <i class="fas fa-file-import text-green"></i> Export Account
                                                     Template
                                                 </a>
@@ -840,7 +840,7 @@
                         <div class="form-group mb-4">
                             <label for="role" class="font-weight-bold fs-4">Role <span class="text-danger">*</span></label>
                             <select class="form-select fs-4 p-3" id="role" name="role" required>
-                                <option value="4">Manager</option>
+                                <option value="1">Manager</option>
                                 <option value="3">Teacher</option>
                                 <option value="2" selected>Student</option> <!-- Mặc định là "Student" -->
                             </select>
@@ -1449,9 +1449,22 @@
             dobContainer.style.display = 'none'; // Ẩn Date of Birth
         }
     });
+    document.getElementById('createAccountModal').addEventListener('hidden.bs.modal', function () {
+        const accountForm = document.getElementById('accountForm');
+        accountForm.reset(); // Reset tất cả các trường trong form
 
+        // Xóa thông báo lỗi
+        document.getElementById('fullname_error1').textContent = '';
+        document.getElementById('jname_error1').textContent = '';
+        document.getElementById('email_error1').textContent = '';
+        document.getElementById('phone_error1').textContent = '';
+        document.getElementById('DoB_error1').textContent = '';
+        document.getElementById('gender_error1').textContent = '';
+        document.getElementById('img_error1').textContent = '';
+    });
     document.getElementById('accountForm').addEventListener('submit', function (event) {
         event.preventDefault();
+        form.reset();
 
         const formData = new FormData(this);
 
@@ -1480,8 +1493,8 @@
         if (!fullnameRegex.test(fullname)) {
             document.getElementById('fullname_error1').textContent = 'Fullname cannot contain special characters or numbers.';
             isValid = false;
-        } else if (fullname.length > 255) {
-            document.getElementById('fullname_error1').textContent = 'Fullname cannot exceed 255 characters.';
+        } else if (fullname.length > 100) {
+            document.getElementById('fullname_error1').textContent = 'Fullname cannot exceed 100 characters.';
             isValid = false;
         }
 
@@ -1495,8 +1508,8 @@
         }
 
         // Kiểm tra email
-        if (email.length > 255) {
-            document.getElementById('email_error1').textContent = 'Email cannot exceed 255 characters.';
+        if (email.length > 100) {
+            document.getElementById('email_error1').textContent = 'Email cannot exceed 100 characters.';
             isValid = false;
         } else {
             // Kiểm tra định dạng email
@@ -1540,6 +1553,13 @@
         if (!img) {
             document.getElementById('img_error1').textContent = 'Profile Image is required.';
             isValid = false;
+        } else {
+            // Kiểm tra định dạng ảnh là .png hoặc .jpg
+            const imgType = img.type.toLowerCase();
+            if (imgType !== 'image/png' && imgType !== 'image/jpeg') {
+                document.getElementById('img_error1').textContent = 'Profile Image must be a PNG or JPG file.';
+                isValid = false;
+            }
         }
 
         // Nếu có lỗi, không gửi form
@@ -1596,6 +1616,7 @@
                 submitBtn.disabled = false; // Enable the submit button
             });
     });
+
 
 
 

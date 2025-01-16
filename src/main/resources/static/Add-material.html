@@ -243,7 +243,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="View-my-application-student.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                    <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
                                         application</a>
                                 </li>
                             </ul>
@@ -447,57 +447,33 @@
     </script>
     <!-- fetch user -->
     <script>
-        // Fetch user data and store it in sessionStorage
-        (async function fetchUserData() {
-            try {
-                const response = await fetch('/user-detail');
-                if (response.ok) {
-                    const userData = await response.json();
-                    sessionStorage.setItem('userDetails', JSON.stringify(userData));
-                    console.log("User data stored in sessionStorage:", userData);
-                    getUserDetails(userData);
-                    // Ensure that the fetch functions are called after userDetails are set
-                    fetchTotalStudents(userData.teacherId);
-                    fetchClasses(userData.teacherId);
-                } else {
-                    console.error("Failed to fetch user details:", response.statusText);
+        // Lấy dữ liệu userDetails từ sessionStorage và gọi hàm getUserDetails
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails) {
+            document.getElementById('userId').value = userDetails.id;
+            const userFullNameElements = document.querySelectorAll('.userFullName');
+            const userRoleElements = document.querySelectorAll('.userRole');
+
+            // Populate Name
+            userFullNameElements.forEach(element => {
+                element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
+            });
+
+            // Populate Role
+            userRoleElements.forEach(element => {
+                element.textContent = userDetails.roleName;
+            });
+
+            const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
+
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img'); // Select the <img> inside the div
+                if (imgElement) {
+                    imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
                 }
-            } catch (error) {
-                console.error("Error fetching user details:", error);
-            }
-        })();
-
-        // Function to set user details in the UI
-        function getUserDetails(userDetails) {
-            if (userDetails) {
-                console.log("Setting user details:", userDetails);
-
-                document.querySelectorAll('.userFullName').forEach(element => {
-                    element.textContent = userDetails.fullName || "Unknown Name";
-                });
-                document.querySelectorAll('.userRole').forEach(element => {
-                    element.textContent = userDetails.roleName || "Unknown Role";
-                });
-                const userIdElement = document.getElementById('userId');
-                if (userIdElement) {
-                    userIdElement.value = userDetails.id || "";
-                }
-
-                const imgContainers = document.querySelectorAll('.img');
-                imgContainers.forEach(container => {
-                    const imgElement = container.querySelector('img');
-                    if (imgElement) {
-                        imgElement.src = userDetails.img
-                            ? `${userDetails.img}?v=${new Date().getTime()}`
-                            : '/path/to/default-passport.jpg';
-                        console.log("Image source set to:", imgElement.src);
-                    } else {
-                        console.error("Image element not found in:", container);
-                    }
-                });
-            } else {
-                console.error("User details not found in sessionStorage");
-            }
+            });
+        } else {
+            console.error("User details not found in sessionStorage");
         }
         function submitForm() {
             // Retrieve userDetails from sessionStorage
@@ -525,28 +501,33 @@
     </script>
     <script>
         function addMaterial(material) {
+            // Lấy studentId từ phần tử ẩn có id là 'userId'
             const studentId = document.getElementById('userId').value;
-            const materialLink = `View-material-details.html?id=${material.id}`;
+            const materialLink = `View-material-details.html?id=${material.id}`;  // Sử dụng material.id chính xác
 
             console.log("Student ID:", studentId);
             console.log("Material ID:", material.id);
 
+            // Kiểm tra nếu studentId hoặc material.id bị thiếu
             if (!studentId || !material.id) {
-                showErrorModal('Không thể thêm material vì thiếu thông tin student ID hoặc material ID.');
+                alert('Không thể thêm material vì thiếu thông tin student ID hoặc material ID.');
                 return;
             }
 
+            // Trước khi gửi, kiểm tra xem liệu material đã được thêm chưa.
             fetch(`/studentMaterials/checkExistence?studentId=${studentId}&materialLink=${materialLink}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.exists) {
-                        showErrorModal('Material này đã tồn tại cho học sinh này!');
+                        alert('Material này đã tồn tại cho học sinh này!');
                     } else {
+                        // Tạo dữ liệu URLSearchParams cho POST request
                         const requestData = new URLSearchParams();
                         requestData.append('student_id', studentId);
                         requestData.append('material_link', materialLink);
                         requestData.append('material_id', material.id);
 
+                        // Gửi yêu cầu thêm material
                         fetch('/studentMaterials/add', {
                             method: 'POST',
                             headers: {
@@ -556,104 +537,122 @@
                         })
                             .then(response => {
                                 if (response.ok) {
-                                    showSuccessModal('Add Material Successfully.');
+                                    alert('Add Material Successfully.');
                                 } else {
                                     throw new Error('Có lỗi xảy ra khi thêm material');
                                 }
                             })
                             .catch(error => {
                                 console.error('Error adding material:', error);
-                                showErrorModal('Material đã tồn tại');
+                                alert('Material đã tồn tại');
                             });
                     }
                 })
                 .catch(error => {
                     console.error('Error checking material existence:', error);
-                    showErrorModal('Lỗi khi kiểm tra sự tồn tại của material.');
                 });
         }
 
+        // Hàm lấy danh sách materials từ API và hiển thị
         function fetchMaterials() {
-            const studentId = document.getElementById('userId').value;
+            const studentId = document.getElementById('userId').value;  // Lấy studentId từ phần tử ẩn
 
             fetch('/materials/list1')
                 .then(response => response.json())
                 .then(data => {
                     const materialList = document.getElementById('material-list');
-                    materialList.innerHTML = '';
+                    materialList.innerHTML = '';  // Xóa nội dung hiện tại
 
+                    // Tạo mảng rows để chứa dữ liệu cho DataTable
                     let rows = [];
 
+                    // Hiển thị từng material trong danh sách
                     data.forEach(material => {
                         const row = document.createElement('tr');
-                        const materialLink = `View-material-details.html?id=${material.id}`;
+                        const materialLink = `View-material-details.html?id=${material.id}`;  // Lấy link của material
 
+                        // Kiểm tra xem material đã tồn tại cho học sinh chưa
                         fetch(`/studentMaterials/checkExistence?studentId=${studentId}&materialLink=${materialLink}`)
                             .then(response => response.json())
                             .then(data => {
-                                if (data.exists) return;
+                                // Nếu material đã tồn tại, không hiển thị
+                                if (data.exists) {
+                                    return;  // Bỏ qua bước thêm vào danh sách
+                                }
 
+                                // Nếu chưa tồn tại, hiển thị nút "Add material"
                                 row.innerHTML = `
-                            <td class="text-left">
-                                <span style="display: flex; align-items: center; gap: 8px;">
-                                    <i class="flaticon-script" style="font-size: 20px;"></i>
-                                    <a href="${materialLink}" style="color: #007bff;">
-                                        ${material.title}
-                                    </a>
-                                </span>
-                            </td>
-                            <td>
-                                <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow"
-                                        style="padding: 8px 16px; font-size: 14px;"
-                                        onclick="addMaterial({ id: '${material.id}', title: '${material.title}' })">Add material</button>
-                            </td>
-                        `;
+                        <td class="text-left">
+        <span style="display: flex; align-items: center; gap: 8px;">
+            <i class="flaticon-script" style="font-size: 20px;"></i>
+            <a href="View-material-details.html?id=${material.id}" style=" color:  #007bff;">
+                ${material.title}
+            </a>
+        </span>
+    </td>
+                        <td>
+                            <button type="button" class="btn-fill-lg font-normal radius-4 text-light btn-gradient-yellow"
+                                    style="padding: 8px 16px; font-size: 14px;"
+                                    onclick="addMaterial({ id: '${material.id}',title: '${material.title}'})">Add material</button>
+                        </td>
+                    `;
                                 materialList.appendChild(row);
+
+                                // Thêm row vào mảng rows
                                 rows.push(row);
                             })
                             .catch(error => console.error('Error checking material existence:', error));
                     });
 
+                    // Khởi tạo hoặc cập nhật DataTable
                     setTimeout(function () {
                         if ($.fn.dataTable.isDataTable('.data-table')) {
                             var table = $('.data-table').DataTable();
                             table.clear();
-                            table.rows.add(rows);
+                            table.rows.add(rows);  // Dùng mảng rows chứa dữ liệu
                             table.draw();
                         } else {
                             $('.data-table').DataTable({
-                                "bSort": true,
+                                "bSort": true,  // Bật sắp xếp
                                 "bPaginate": false,
                                 "bInfo": false,
                                 "bFilter": false,
                                 "autoWidth": false,
                                 "columnDefs": [{ "targets": 'no-sort', "orderable": false }],
-                                "ordering": true,
+                                "ordering": true,  // Cho phép sắp xếp
                                 "scrollY": "300px",
                                 "scrollCollapse": true,
                                 "paging": false,
-                                "order": [[0, 'asc']]
+                                "order": [[0, 'asc']]  // Sắp xếp theo cột đầu tiên (có thể thay đổi cột khác)
                             });
                         }
-                    }, 100);
+                    }, 100); // Đảm bảo DataTable hoạt động sau khi dữ liệu được thêm vào
                 })
-                .catch(error => {
-                    console.error('Error fetching materials:', error);
-                    showErrorModal('Lỗi khi tải danh sách materials.');
+                .catch(error => console.error('Error fetching materials:', error));
+        }
+
+        // Gọi hàm fetchMaterials khi trang được tải
+        document.addEventListener('DOMContentLoaded', function () {
+            const thead = document.querySelector('.data-table thead');
+            if (thead) {
+                thead.style.display = 'none';  // Ẩn phần tiêu đề nếu cần
+            }
+
+            // Gọi hàm fetchMaterials để tải dữ liệu
+            fetchMaterials();
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Đảm bảo chỉ chạy khi các th đã được tải và áp dụng.
+            setTimeout(function () {
+                // Loại bỏ các lớp "sorting" và "sorting_asc" nếu tồn tại trên th
+                const thElements = document.querySelectorAll('th.sorting, th.sorting_asc');
+                thElements.forEach(function (thElement) {
+                    thElement.classList.remove('sorting', 'sorting_asc');
                 });
-        }
-
-        function showErrorModal(message) {
-            const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
-            document.getElementById('errorModalLabel').innerText = message;
-            errorModal.show();
-        }
-
-        function showSuccessModal(message) {
-            const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
-            document.getElementById('successModalLabel').innerText = message;
-            successModal.show();
-        }
+            }, 100);  // Điều chỉnh thời gian đợi cho phù hợp
+        });
     </script>
 </body>
 </html>

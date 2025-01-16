@@ -29,19 +29,23 @@ public class FileController {
             // Write CSV data
             try (PrintWriter writer = response.getWriter()) {
                 // Write headers
-                writer.println("\"Student Name\",\"Teacher Comment\",\"Attitude\",\"Script\",\"Presentation\",\"Soft Skill\",\"Midterm Test\",\"Final Test\",\"Skill\",\"Course Final\"");
+                writer.println("\"Student Name\",\"Comment\",\"Avg Exam Mark\",\"Middle Exam\",\"Final Exam\",\"Skill\",\"Script\",\"Presentation\",\"Soft Skill\",\"Assignment\",\"Attendant\",\"Attitude\",\"Course Total\"");
+
                 // Write rows
                 for (Map<String, String> grade : gradesList) {
-                    writer.println("\"" + handleNull(grade.get("fullname"), "N/A") + "\",\""
+                    writer.println("\"" + handleNull(grade.get("studentName"), "N/A") + "\",\""
                             + handleNull(grade.get("comment"), "none") + "\",\""
-                            + handleNull(grade.get("attitude"), "0") + "\",\""
+                            + handleNull(grade.get("avg_exam_mark"), "0") + "\",\""
+                            + handleNull(grade.get("middle_exam"), "0") + "\",\""
+                            + handleNull(grade.get("final_exam"), "0") + "\",\""
+                            + handleNull(grade.get("skill"), "0") + "\",\""
                             + handleNull(grade.get("scriptPresentation"), "0") + "\",\""
                             + handleNull(grade.get("presentation"), "0") + "\",\""
                             + handleNull(grade.get("softskill"), "0") + "\",\""
-                            + handleNull(grade.get("middleExam"), "0") + "\",\""
-                            + handleNull(grade.get("finalExam"), "0") + "\",\""
-                            + handleNull(grade.get("skill"), "0") + "\",\""
-                            + handleNull(grade.get("finalMark"), "0") + "\"");
+                            + handleNull(grade.get("assignment"), "0") + "\",\""
+                            + handleNull(grade.get("attendant"), "0") + "\",\""
+                            + handleNull(grade.get("attitude"), "0") + "\",\""
+                            + handleNull(grade.get("final_mark"), "0") + "\"");
                 }
             }
         } catch (Exception e) {

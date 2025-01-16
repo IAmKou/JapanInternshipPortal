@@ -29,6 +29,17 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .semester-name {
+            white-space: nowrap;           /* Không xuống dòng */
+            overflow: hidden;              /* Ẩn phần tràn */
+            text-overflow: ellipsis;       /* Hiển thị dấu ba chấm khi văn bản quá dài */
+            max-width: 200px;              /* Giới hạn chiều rộng, có thể điều chỉnh theo nhu cầu */
+            transition: all 0.3s ease;     /* Hiệu ứng chuyển động khi hover */
+            white-space: normal;
+        }
+
+
+
 
 
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
@@ -737,7 +748,7 @@
         </div>
     </div>
 
-    <div class="modal" id="updateModal" style="display: none; width: 80%; max-width: 600px; margin: 0 auto; overflow: hidden; max-height: 630px;" data-bs-backdrop="false" data-bs-keyboard="false">
+    <div class="modal" id="updateModal" style="display: none; width: 80%; max-width: 600px; margin: 0 auto; overflow: hidden; max-height: 350px;" data-bs-backdrop="false" data-bs-keyboard="false">
             <form id="updateSemesterForm">
                 <label for="semesterName" style="color: #007bff; font-weight: bold;">Semester Name <span style="color: red;">*</span></label>
                 <input type="text" maxlength="255" id="semesterName" required>
@@ -819,6 +830,18 @@
 
 
 </div>
+<footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
+    <div style="background-color: #ec9006; padding: 15px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p style="color: #ffffff;">© Copyright <a href="#" style="color: #ffcc00;">FPT</a> 2024. All
+                        rights reserved. Designed by <a href="#" style="color: #ffcc00;">HE170478</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -997,8 +1020,8 @@
             errorSemesterName.textContent = 'Semester Name cannot be empty.';
             errorSemesterName.style.display = 'block';
             hasError = true;
-        } else if (semesterName.length > 35) {
-            errorSemesterName.textContent = 'Semester Name cannot exceed 35 characters.';
+        } else if (semesterName.length > 50) {
+            errorSemesterName.textContent = 'Semester Name cannot exceed 50 characters.';
             errorSemesterName.style.display = 'block';
             hasError = true;
         }
@@ -1313,8 +1336,8 @@
                     document.getElementById('errorSemesterName1').textContent = 'Semester Name cannot be empty';
                     document.getElementById('errorSemesterName1').style.display = 'inline';
                     hasError = true;
-                } else if (updatedSemesterName.length > 40) {
-                    document.getElementById('errorSemesterName1').textContent = 'Semester Name cannot exceed 40 characters';
+                } else if (updatedSemesterName.length > 50) {
+                    document.getElementById('errorSemesterName1').textContent = 'Semester Name cannot exceed 50 characters';
                     document.getElementById('errorSemesterName1').style.display = 'inline';
                     hasError = true;
                 }

@@ -648,14 +648,18 @@
                         </div>
                         <h3>Class: <span id="className"></span></h3>
                     </div>
-                    <!-- Main Button to Open Modal -->
-                    <button class="btn btn-gradient-yellow btn-search" id="export-by-csv" style="margin-bottom: 15px">Export Mark</button>
+                    <form action="/export-csv" id="exportForm" method="post" style="margin-top: 20px; display: none; margin-bottom: 30px">
+                        <input type="hidden" id="gradesData" name="gradesData">
+                        <button class="btn btn-gradient-yellow btn-search" type="submit">Export Mark</button>
+                    </form>
+<!--                    <button class="btn btn-gradient-yellow btn-search" id="viewClassButton" style="margin-left: 15px">Class Info</button>-->
                     <!-- Table -->
                     <div class="table-responsive">
                         <table class="table display text-nowrap">
                             <thead>
                             <tr>
                                 <th rowspan="2">Student Name</th>
+                                <th rowspan="2">Comment</th>
                                 <th colspan="4">Skill (40%)</th>
                                 <th colspan="3">Soft Skill (30%)</th>
                                 <th colspan="3">Attitude (30%)</th>
@@ -715,15 +719,42 @@
             </div>
         </div>
 
-        <!-- Import Modal -->
-        <div id="import-modal" style="display: none;">
-            <div class="modal-content">
-                <span id="close-modal" class="close-button">&times;</span>
-                <h2>Import Excel File</h2>
-                <input type="file" id="xlsx-file" accept=".xlsx">
-                <button id="import-xlsx">Import</button>
+<!--        &lt;!&ndash; Comment Modal &ndash;&gt;-->
+<!--        <div class="modal fade" id="comment-modal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">-->
+<!--            <div class="modal-dialog">-->
+<!--                <div class="modal-content">-->
+<!--                    <div class="modal-header">-->
+<!--                        <h5 class="modal-title" id="commentModalLabel">Full Comment</h5>-->
+<!--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                    </div>-->
+<!--                    <div class="modal-body">-->
+<!--                        &lt;!&ndash; Full comment will be dynamically inserted here &ndash;&gt;-->
+<!--                    </div>-->
+<!--                    <div class="modal-footer">-->
+<!--                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <!-- Comment Detail Modal -->
+        <div aria-hidden="true" aria-labelledby="commentModalLabel" class="modal fade" id="comment-modal"
+             tabindex="-1">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title text-primary" id="commentModalLabel">
+                            <i class="fas fa-comments"></i> Comment Detail
+                        </h5>
+                    </div>
+                    <div class="modal-body text-wrap">
+                        <!-- Full comment content will be injected here -->
+                    </div>
+                </div>
             </div>
         </div>
+
+
     </div>
     <!-- Page Area End Here -->
 </div>
@@ -739,19 +770,15 @@
         </div>
     </div>
 </footer>
-<script>
-    // Function to show the success modal
-    function showSuccessModal(message) {
-        document.getElementById('success-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
-        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
-        successModal.show();
-    }
 
-    // Function to show the error modal
-    function showErrorModal(message) {
-        document.getElementById('long-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
-        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
-        errorModal.show();
+<script>
+
+
+    // Function to show a modal with the full comment
+    function showCommentModal(fullComment) {
+        document.getElementById('comment-modal').querySelector('.modal-body').innerHTML = `<p>${fullComment}</p>`;
+        const commentModal = new bootstrap.Modal(document.getElementById('comment-modal'));
+        commentModal.show();
     }
 
     const API_BASE_URL = '/mark-report';
@@ -760,6 +787,9 @@
         const urlParams = new URLSearchParams(window.location.search);
         const classId = urlParams.get('classId');
         try {
+            const exportForm = document.getElementById('exportForm');
+            exportForm.style.display = 'block';
+
             console.log('Fetching mark reports...');
             const response = await fetch(`${API_BASE_URL}/list?classId=${classId}`);
             console.log('Class Id: ', classId);
@@ -776,13 +806,18 @@
             const mark_reports = await response.json();
             console.log('mark reports data:', mark_reports);
 
+            // Store the grades data for export
+            document.getElementById('gradesData').value = JSON.stringify(mark_reports);
+
             // Clear existing rows in the table
             const tableBody = document.getElementById('mark_list');
             tableBody.innerHTML = '';
             mark_reports.forEach(markrp => {
+                const truncatedComment = markrp.comment ? markrp.comment.substring(0, 10) + (markrp.comment.length > 10 ? '...' : '') : '-';
                 const row = document.createElement('tr');
                 row.innerHTML = `
-    <td>${markrp.studentName}</a></td>
+    <td><a href="javascript:void(0);" onclick="showCommentModal('${markrp.comment}')">${markrp.studentName}</a></td>
+    <td><a href="javascript:void(0);" onclick="showCommentModal('${markrp.comment}')">${truncatedComment}</a></td>
     <td>${markrp.avg_exam_mark ?? '-'}</td>
     <td>${markrp.middle_exam ?? '-'}</td>
     <td>${markrp.final_exam ?? '-'}</td>
@@ -794,8 +829,7 @@
     <td>${markrp.attendant ?? '-'}</td>
     <td>${markrp.attitude ?? '-'}</td>
     <td>${markrp.final_mark ?? '-'}</td>
-
-    `;
+                `;
                 tableBody.appendChild(row);
             });
 
@@ -803,14 +837,21 @@
             console.error('Error:', error);
         }
     }
-
     // Initialize the table with mark_reports on page load
     document.addEventListener('DOMContentLoaded', fetchAndDisplayMarks);
 
-    // Function to export the data as an CSV file
-
-
+    const viewClassButton = document.getElementById('viewGradesButton');
+    viewClassButton.addEventListener('click', toMarkClassManage);
+    function toMarkClassManage(){
+        if (!classId) {
+            console.error("classId is missing from the URL.");
+            return;
+        }
+        window.location.href=`/all-class-student.html?classId=${classId}`;
+    }
 </script>
+
+
 <!-- fetch user -->
 <script>
     // Fetch user data and store it in sessionStorage
