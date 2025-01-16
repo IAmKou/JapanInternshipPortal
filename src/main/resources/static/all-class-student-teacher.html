@@ -356,8 +356,18 @@
                         <div class="item-title">
                             <h3>All Class Student</h3>
                         </div>
-                            <button class="btn btn-gradient-yellow btn-search" id="viewGradesButton" style="margin-bottom: 15px">Grades Info</button>
+                        <div class="dropdown" style="margin-right: 99px;padding-bottom:10px;padding-left:10px">
+                            <button class="btn btn-gradient-yellow btn-search">Class Info</button>
+                            <div class="dropdown-content">
+                                <button class="btn btn-gradient-yellow btn-search" id="viewInfoButton">VIEW STUDENT
+                                    INFO
+                                </button>
+                                <button class="btn btn-gradient-yellow btn-search" id="viewGradesButton">VIEW STUDENT
+                                    GRADES
+                                </button>
+                            </div>
                         </div>
+                    </div>
                     <!-- Export Form -->
                     <form action="/export-csv" id="exportForm" method="post" style="margin-top: 20px; display: none; margin-bottom: 30px">
                         <input id="gradesData" name="gradesData" type="hidden"/>
@@ -594,7 +604,7 @@
                     }
                 })
                 .catch(error => console.error('Error fetching grades:', error));
-            }
+        }
 
         // Render grades table
         function renderGrades(grades) {
@@ -629,12 +639,12 @@
             return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
         }
 
-        function toMarkClassManage(){
+        function toMarkClassTeacher(){
             if (!classId) {
                 console.error("classId is missing from the URL.");
                 return;
             }
-            window.location.href=`/list-mark-manager.html?classId=${classId}`;
+            window.location.href=`/list-mark-teacher.html?classId=${classId}`;
         }
 
 
@@ -658,7 +668,7 @@
         }
 
         // Event listeners to fetch list grade
-        viewGradesButton.addEventListener('click', toMarkClassManage);
+        viewGradesButton.addEventListener('click', toMarkClassTeacher);
         viewInfoButton.addEventListener('click', function () {
             isGradesViewInitialized = false;
             exportForm.style.display = 'none';
