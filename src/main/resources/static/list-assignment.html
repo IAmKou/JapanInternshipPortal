@@ -1447,7 +1447,7 @@
         if (hasError) {
             return;
         }
-        if (!description.trim() || !endDate || !createDate || !content.trim()) {
+        if ( !endDate || !createDate ) {
             showErrorModal('Please fill in all the required fields!');
             return; // Exit the function if validation fails
         }
