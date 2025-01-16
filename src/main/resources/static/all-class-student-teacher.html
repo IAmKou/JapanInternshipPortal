@@ -639,12 +639,12 @@
             return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
         }
 
-        function toMarkClassManage(){
+        function toMarkClassTeacher(){
             if (!classId) {
                 console.error("classId is missing from the URL.");
                 return;
             }
-            window.location.href=`/list-mark-manager.html?classId=${classId}`;
+            window.location.href=`/list-mark-teacher.html?classId=${classId}`;
         }
 
 
@@ -668,7 +668,7 @@
         }
 
         // Event listeners to fetch list grade
-        viewGradesButton.addEventListener('click', toMarkClassManage);
+        viewGradesButton.addEventListener('click', toMarkClassTeacher);
         viewInfoButton.addEventListener('click', function () {
             isGradesViewInitialized = false;
             exportForm.style.display = 'none';

@@ -1,12 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="" xmlns="http://www.w3.org/1999/html">
+<html class="no-js" lang="">
 
 
-<!-- Mirrored from class-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 24 Sep 2024 13:38:50 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>JIP | Class List</title>
+    <title>JIP | Mark List</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -23,15 +22,47 @@
     <link rel="stylesheet" href="fonts/flaticon.css">
     <!-- Animate CSS -->
     <link rel="stylesheet" href="css/animate.min.css">
-    <!-- Select 2 CSS -->
-    <link rel="stylesheet" href="css/select2.min.css">
     <!-- Data Table CSS -->
     <link rel="stylesheet" href="css/jquery.dataTables.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
+        .dropdown-toggle::after {
+            content: none !important;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient-yellow {
+            background: linear-gradient(45deg, #ffcc00, #ff9900);
+            color: #fff;
+        }
+        .btn.update-btn {
+            background-color: #4CAF50; /* Màu xanh lá cây */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn.update-btn:hover {
+            background-color: #45a049; /* Màu khi hover */
+        }
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -63,13 +94,345 @@
             color: #ffcc00;
             text-decoration: none;
         }
-        .dropdown-toggle::after {
-            content: none !important;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            text-align: center;
+            padding: 8px;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .average-header {
+            text-align: center;
+            font-weight: bold;
+            background-color: #d4ebf2;
+        }
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Popup container */
+        .popup {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            padding: 20px;
+            position: relative;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Popup content */
+        .popup-content {
+            text-align: center;
+        }
+
+        /* Close button */
+        .popup .close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* Form styling */
+        form.new-added-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        form.new-added-form label {
+            text-align: left;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        form.new-added-form input,
+        form.new-added-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        form.new-added-form textarea {
+            resize: none;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .button-group .btn {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-group .submit-btn {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .button-group .submit-btn:hover {
+            background-color: #45a049;
+        }
+
+        .button-group .cancel-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .button-group .cancel-btn:hover {
+            background-color: #e53935;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Overlay */
+        .overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Black background with 70% transparency */
+            z-index: 8; /* Behind the popup */
+        }
+
+        /* Popup container */
+        .popup {
+            display: none; /* Hidden by default */
+            position: fixed; /* Fixed positioning for proper centering */
+            z-index: 9; /* In front of the overlay */
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%; /* Adjust width for responsiveness */
+            max-width: 600px; /* Maximum width */
+            max-height: 90%; /* Prevent overflow of the screen */
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden; /* Hide overflow by default */
+        }
+
+        /* Popup content */
+        .popup-content {
+            width: 100%;
+            max-height: 100%;
+            overflow-y: auto; /* Enable vertical scrolling */
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        /* Close button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+
+        /* Form styling */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            margin-top: 10px;
+        }
+
+        form input, form textarea, form select {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        /* Button styling */
+        .btn {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Modal Content Box */
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 350px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        /* Basic modal overlay */
+        #import-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Dark overlay */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure modal is above other content */
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Modal content box */
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            animation: slideUp 0.3s ease-in-out;
+        }
+
+        /* Title styles */
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Close button styles */
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-button:hover {
+            color: #f44336; /* Red color on hover */
+        }
+
+        /* File input styling */
+        #xlsx-file {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Import button styling */
+        #import-xlsx {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #import-xlsx:hover {
+            background-color: #45a049;
+        }
+
+        /* Centering content properly */
+        .modal-content input[type="file"],
+        .modal-content button {
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Slide-up animation for modal */
+        @keyframes slideUp {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
     </style>
 </head>
 
 <body>
+
+
 <!-- Preloader Start Here -->
 <div id="preloader"></div>
 <!-- Preloader End Here -->
@@ -80,9 +443,10 @@
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
-                <a href="teacher.html">
+                <a href="manager.html">
                     <div style="width: 180px; height: 70px; overflow: hidden;">
-                        <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
+                        <img src="img/JIP%20LOGO%20n.png" alt="logo"
+                             style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                 </a>
             </div>
@@ -122,7 +486,7 @@
                             <span class="userRole"></span>
                         </div>
                         <div class="admin-img img">
-                            <img src="" alt="Admin" style="width: 50px; height: 50px">
+                            <img src="" style="height: 50px; width: 50px" alt="Admin">
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -131,8 +495,9 @@
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
-                                <li><a href="users-profile-teacher.html"><i class="flaticon-user"></i>My Profile</a></li>
-                                <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span data-i18n="change_password">Change Password</span></a></li>
+                                <li><a href="users-profile-teacher.html"><i class="flaticon-user"></i>My Profile</a>
+                                </li>
+                                <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
                                 <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
@@ -171,6 +536,7 @@
         </div>
     </div>
     <!-- Header Menu Area End Here -->
+
     <!-- Page Area Start Here -->
     <div class="dashboard-page-one">
         <!-- Sidebar Area Start Here -->
@@ -203,10 +569,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="javascript:void(0);" class="nav-link" onclick="redirectSchedule();"><i
-                                class="flaticon-shopping-list"></i><span>Schedule</span></a>
-                    </li>
+
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i
                                 class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
@@ -215,19 +578,6 @@
                                 <a href="javascript:void(0);" class="nav-link menu-active" onclick="submitForm();">
                                     <i class="flaticon-menu"></i><span>Class List</span>
                                 </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item sidebar-nav-item">
-                        <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                        <ul class="nav sub-group-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="list-mark.html"><i class="fas fa-angle-right"></i>List
-                                    Exam</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="create-exam.html"><i class="fas fa-angle-right"></i>Create
-                                    Exam</a>
                             </li>
                         </ul>
                     </li>
@@ -273,7 +623,6 @@
                             </li>
                         </ul>
                     </li>
-
                 </ul>
             </div>
         </div>
@@ -281,114 +630,102 @@
         <div class="dashboard-content-one">
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
-                <h3>Class List</h3>
+                <h2>Class List Mark</h2>
                 <ul>
                     <li>
-                        <a href="admin.html">Home</a>
+                        <a href="teacher.html">Home</a>
                     </li>
-                    <li>Class List</li>
+                    <li>Class List Mark</li>
                 </ul>
             </div>
-            <div class="row">
-            </div>
             <!-- Breadcubs Area End Here -->
-            <!-- Class Routine Area Start Here -->
-            <div class="row">
-                <div class="col-12-xxxl col-12">
-                    <div class="card height-auto">
-                        <div class="card-body">
-                            <div class="heading-layout1">
-                                <div class="item-title">
-                                    <h3>Class List</h3>
-                                </div>
-
-                            </div>
-
-                            <div class="table-responsive">
-                                <table class="table display text-nowrap">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Class Name</th>
-                                        <th>Semester</th>
-                                        <th>Teacher</th>
-                                        <th>Number of Student</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
+            <!-- Teacher Table Area Start Here -->
+            <div class="card height-auto">
+                <div class="card-body">
+                    <div class="heading-layout1">
+                        <div class="item-title">
+                            <h2>Class List Mark</h2>
                         </div>
+                        <h3>Class: <span id="className"></span></h3>
+                    </div>
+                    <!-- Main Button to Open Modal -->
+                    <button class="btn btn-gradient-yellow btn-search" id="export-by-csv" style="margin-bottom: 15px">Export Mark</button>
+                    <!-- Table -->
+                    <div class="table-responsive">
+                        <table class="table display text-nowrap">
+                            <thead>
+                            <tr>
+                                <th rowspan="2">Student Name</th>
+                                <th colspan="4">Skill (40%)</th>
+                                <th colspan="3">Soft Skill (30%)</th>
+                                <th colspan="3">Attitude (30%)</th>
+                                <th rowspan="2">Course Total</th>
+                            </tr>
+                            <tr>
+                                <th>Avg Exam Mark (12%)</th>
+                                <th>Middle Exam (16%)</th>
+                                <th>Final Exam (12%)</th>
+                                <th>Total</th>
+                                <th>Script (15%)</th>
+                                <th>Presentation (15%)</th>
+                                <th>Total</th>
+                                <th>Assignment (15%)</th>
+                                <th>Attendant (15%)</th>
+                                <th>Total</th>
+                            </tr>
+                            </thead>
+                            <tbody id="mark_list">
+                            <!-- Rows will be dynamically generated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Table Ends-->
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Success Modal -->
+        <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title text-success" id="successModalLabel">
+                            <i class="fas fa-check-circle"></i> Success
+                        </h5>
+                    </div>
+                    <div class="modal-body text-center">
                     </div>
                 </div>
             </div>
-            <!-- Class Routine Area End Here -->
+        </div>
+
+        <!-- Error Modal -->
+        <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title text-danger" id="errorModalLabel">
+                            <i class="fas fa-times-circle"></i> Error
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Import Modal -->
+        <div id="import-modal" style="display: none;">
+            <div class="modal-content">
+                <span id="close-modal" class="close-button">&times;</span>
+                <h2>Import Excel File</h2>
+                <input type="file" id="xlsx-file" accept=".xlsx">
+                <button id="import-xlsx">Import</button>
+            </div>
         </div>
     </div>
     <!-- Page Area End Here -->
-    <!-- update modal -->
-
-        <div class="modal-box">
-            <div class="modal sign-up-modal fade" id="update-modal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <div class="close-btn">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="item-logo">
-                                <img src="img/logo2.png" alt="logo">
-                            </div>
-                            <form id="update-class-form">
-                                <input type="hidden" name="classId" id="classId" value="">
-                                <div class="form-group col-12">
-                                    <label for="teacherId">Teacher</label>
-                                    <select id="teacherId" name="teacherId" class="select2"></select>
-                                </div>
-                                <div class="form-group col-12">
-                                    <input type="text" id="className" name="name" placeholder="New class name" class="form-control">
-                                </div>
-                                <div class="form-group col-12">
-                                    <button type="button" class="login-btn" id="update-class-btn">Update Class</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    <!-- confirm modal -->
-    <div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog success-modal-content" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="success-message">
-                        <div class="item-icon">
-                            <i class="fas fa-exclamation"></i>
-                        </div>
-                        <h3 class="item-title">You want to delete this class?</h3>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <input type="hidden" name="id" id="Cid">
-                    <button type="button" id="confirm-delete" class="footer-btn bg-linkedin">Ok</button>
-                    <button type="button" class="footer-btn bg-dark-low" data-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
     <div style="background-color: #ec9006; padding: 15px;">
@@ -402,6 +739,171 @@
         </div>
     </div>
 </footer>
+<script>
+    // Function to show the success modal
+    function showSuccessModal(message) {
+        document.getElementById('success-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
+        const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
+        successModal.show();
+    }
+
+    // Function to show the error modal
+    function showErrorModal(message) {
+        document.getElementById('long-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
+        const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
+        errorModal.show();
+    }
+
+    const API_BASE_URL = '/mark-report';
+
+    async function fetchAndDisplayMarks() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const classId = urlParams.get('classId');
+        try {
+            console.log('Fetching mark reports...');
+            const response = await fetch(`${API_BASE_URL}/list?classId=${classId}`);
+            console.log('Class Id: ', classId);
+            console.log('Response received:', response);
+
+            const clasRp = await fetch(`/class/getCById?classId=${classId}`);
+            const clas = await clasRp.json();
+            console.log('Class: ', clas);
+            document.getElementById('className').textContent = clas.name;
+
+            if (!response.ok) {
+                throw new Error('Error fetching mark reports: ' + response.statusText);
+            }
+            const mark_reports = await response.json();
+            console.log('mark reports data:', mark_reports);
+
+            // Clear existing rows in the table
+            const tableBody = document.getElementById('mark_list');
+            tableBody.innerHTML = '';
+            mark_reports.forEach(markrp => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+    <td>${markrp.studentName}</a></td>
+    <td>${markrp.avg_exam_mark ?? '-'}</td>
+    <td>${markrp.middle_exam ?? '-'}</td>
+    <td>${markrp.final_exam ?? '-'}</td>
+    <td>${markrp.skill ?? '-'}</td>
+    <td>${markrp.scriptPresentation ?? '-'}</td>
+    <td>${markrp.presentation ?? '-'}</td>
+    <td>${markrp.softskill ?? '-'}</td>
+    <td>${markrp.assignment ?? '-'}</td>
+    <td>${markrp.attendant ?? '-'}</td>
+    <td>${markrp.attitude ?? '-'}</td>
+    <td>${markrp.final_mark ?? '-'}</td>
+
+    `;
+                tableBody.appendChild(row);
+            });
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    // Initialize the table with mark_reports on page load
+    document.addEventListener('DOMContentLoaded', fetchAndDisplayMarks);
+
+    // Function to export the data as an CSV file
+
+
+</script>
+<!-- fetch user -->
+<script>
+    // Fetch user data and store it in sessionStorage
+    (async function fetchUserData() {
+        try {
+            const response = await fetch('/user-detail');
+            if (response.ok) {
+                const userData = await response.json();
+                sessionStorage.setItem('userDetails', JSON.stringify(userData));
+                console.log("User data stored in sessionStorage:", userData);
+                getUserDetails(userData);
+
+            } else {
+                console.error("Failed to fetch user details:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error fetching user details:", error);
+        }
+    })();
+
+    // Function to set user details in the UI
+    function getUserDetails(userDetails) {
+        if (userDetails) {
+            console.log("Setting user details:", userDetails);
+
+            document.querySelectorAll('.userFullName').forEach(element => {
+                element.textContent = userDetails.fullName || "Unknown Name";
+            });
+            document.querySelectorAll('.userRole').forEach(element => {
+                element.textContent = userDetails.roleName || "Unknown Role";
+            });
+            const userIdElement = document.getElementById('userId');
+            if (userIdElement) {
+                userIdElement.value = userDetails.id || "";
+            }
+
+            const imgContainers = document.querySelectorAll('.img');
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img');
+                if (imgElement) {
+                    imgElement.src = userDetails.img
+                        ? `${userDetails.img}?v=${new Date().getTime()}`
+                        : '/path/to/default-passport.jpg';
+                    console.log("Image source set to:", imgElement.src);
+                } else {
+                    console.error("Image element not found in:", container);
+                }
+            });
+        } else {
+            console.error("User details not found in sessionStorage");
+        }
+    }
+
+
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+    function submitForm() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+
+    function toListAssigment() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+
+    function redirectSchedule() {
+        // Retrieve userDetails from sessionStorage
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+
+        if (userDetails && userDetails.teacherId) {
+            // Redirect to the appropriate URL with the teacherId
+            window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
+        } else {
+            console.error("Teacher ID is missing or user details not found in sessionStorage");
+        }
+    }
+
+</script>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
@@ -410,14 +912,13 @@
 <script src="js/popper.min.js"></script>
 <!-- Bootstrap js -->
 <script src="js/bootstrap.min.js"></script>
-<!-- Select 2 Js -->
-<script src="js/select2.min.js"></script>
 <!-- Scroll Up Js -->
 <script src="js/jquery.scrollUp.min.js"></script>
 <!-- Data Table Js -->
 <script src="js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Kiểm tra và lấy ngôn ngữ đã lưu trong localStorage
@@ -492,181 +993,6 @@
             .catch(error => {
                 console.error('Error translating page:', error);
             });
-    }
-</script>
-
-
-
-
-<!-- fetch teacher class -->
-<script>
-    document.addEventListener('DOMContentLoaded', async function () {
-        const tableBody = document.querySelector('.table tbody');
-        const urlParams = new URLSearchParams(window.location.search);
-        const teacherId = urlParams.get('teacherId');  // Get the teacherId from the URL
-
-        // Function to fetch attendance status and update the dropdown menu
-        async function updateDropdownMenu(clasz) {
-            try {
-                const response = await fetch(`/attendant/${clasz.id}/attendanceStatus`);
-                const attendanceTaken = await response.json();
-
-                const dropdownMenu = document.createElement('div');
-                dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
-
-                if (attendanceTaken) {
-                    // If attendance is already taken, show 'Edit' + 'Schedule'
-                    dropdownMenu.innerHTML = `
-                        <a class="dropdown-item" href="/edit-attendant.html?classId=${clasz.id}">
-                            <i class="fas fa-edit text-dark-pastel-green"></i> Edit
-                        </a>
-                        <a class="dropdown-item" href="/schedule-teacher.html?classId=${clasz.id}">
-                            <i class="fas fa-calendar-alt text-dark-pastel-green"></i> Schedule
-                        </a>
-                    `;
-                } else {
-                    // If attendance is not taken, show 'Attendant' + 'Schedule'
-                    dropdownMenu.innerHTML = `
-                        <a class="dropdown-item" href="/attendant.html?classId=${clasz.id}">
-                            <i class="fas fa-glasses text-dark-pastel-green"></i> Attendant
-                        </a>
-                        <a class="dropdown-item" href="/schedule-teacher.html?classId=${clasz.id}">
-                            <i class="fas fa-calendar-alt text-dark-pastel-green"></i> Schedule
-                        </a>
-                    `;
-                }
-
-                return dropdownMenu;
-            } catch (error) {
-                console.error('Error fetching attendance status:', error);
-            }
-        }
-
-        // Check if teacherId is present in the URL
-        if (teacherId) {
-            try {
-                // Fetch classes for the given teacherId and populate the table
-                const response = await fetch(`/class/getByTid/${teacherId}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch class data');
-                }
-                const claszList = await response.json();
-
-                // Populate the table rows
-                for (const clasz of claszList) {
-                    const row = document.createElement('tr');
-
-                    // ID cell
-                    const idCell = document.createElement('td');
-                    idCell.textContent = clasz.id;
-                    row.appendChild(idCell);
-
-                    // Name cell
-                    const nameCell = document.createElement('td');
-                    const link = document.createElement('a');
-                    link.textContent = clasz.name;
-                    link.href = `/all-class-student-teacher.html?classId=${clasz.id}`;
-                    nameCell.appendChild(link);
-                    row.appendChild(nameCell);
-
-
-                    //Semester Name cell
-                    const semesterNameCell = document.createElement('td');
-                    semesterNameCell.textContent = clasz.semesterName;
-                    row.appendChild(semesterNameCell);
-
-                    // Teacher Name cell
-                    const teacherNameCell = document.createElement('td');
-                    teacherNameCell.textContent = clasz.teacherName;
-                    row.appendChild(teacherNameCell);
-
-                    // Number of Students cell
-                    const nos = document.createElement('td');
-                    nos.textContent = clasz.numberOfStudents;
-                    row.appendChild(nos);
-
-                    // Actions cell with dropdown
-                    const actionsCell = document.createElement('td');
-                    const dropdown = document.createElement('div');
-                    dropdown.className = 'dropdown';
-
-                    const dropdownToggle = document.createElement('a');
-                    dropdownToggle.href = '#';
-                    dropdownToggle.className = 'dropdown-toggle';
-                    dropdownToggle.setAttribute('data-toggle', 'dropdown');
-                    dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
-                    dropdown.appendChild(dropdownToggle);
-
-                    // Fetch and update dropdown menu
-                    const dropdownMenu = await updateDropdownMenu(clasz);
-                    dropdown.appendChild(dropdownMenu);
-
-                    actionsCell.appendChild(dropdown);
-                    row.appendChild(actionsCell);
-
-                    tableBody.appendChild(row);
-                }
-            } catch (error) {
-                console.error('Error fetching class data:', error);
-            }
-        } else {
-            console.error('teacherId is missing in the URL');
-        }
-    });
-</script>
-
-
-
-<!-- fetch user -->
-<script>
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    if (userDetails) {
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
-
-        userFullNameElements.forEach(element => {
-            element.textContent = userDetails.roleName === "ADMIN" ? userDetails.username : userDetails.fullName;
-        });
-
-        // Populate Role
-        userRoleElements.forEach(element => {
-            element.textContent = userDetails.roleName;
-        });
-
-        const imgContainers = document.querySelectorAll('.img'); // Select all parent divs with class 'img'
-
-        imgContainers.forEach(container => {
-            const imgElement = container.querySelector('img'); // Select the <img> inside the div
-            if (imgElement) {
-                imgElement.src = userDetails.img || 'default-passport.jpg'; // Set the src of the <img>
-            }
-        });
-    } else {
-        console.error("User details not found in sessionStorage");
-    }
-
-    function submitForm() {
-        // Retrieve userDetails from sessionStorage
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-
-        if (userDetails && userDetails.teacherId) {
-            // Redirect to the appropriate URL with the teacherId
-            window.location.href = `class-list-teacher.html?teacherId=${userDetails.teacherId}`;
-        } else {
-            console.error("Teacher ID is missing or user details not found in sessionStorage");
-        }
-    }
-
-    function toListAssigment() {
-        // Retrieve userDetails from sessionStorage
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-
-        if (userDetails && userDetails.teacherId) {
-            // Redirect to the appropriate URL with the teacherId
-            window.location.href = `list-assignment.html?teacherId=${userDetails.teacherId}`;
-        } else {
-            console.error("Teacher ID is missing or user details not found in sessionStorage");
-        }
     }
 </script>
 <!-- fetch notification -->
