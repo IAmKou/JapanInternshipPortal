@@ -27,8 +27,29 @@
   <!-- Modernize js -->
   <script src="js/modernizr-3.6.0.min.js"></script>
   <style>
-    .thread-box{
+    /* Container chính */
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%; /* Bao phủ toàn bộ trang */
+    }
 
+    /* Nội dung bên trên */
+    .content {
+      flex: 1; /* Đẩy footer xuống */
+    }
+
+    /* Footer nằm ở cuối */
+    .footer-wrap-layout1 {
+      background-color: #ec9006;
+      color: white;
+      padding: 15px 0;
+      text-align: center;
+    }
+
+    .footer-wrap-layout1 a {
+      color: #ffcc00;
+      text-decoration: none;
     }
     .item-title {
       display: flex;
