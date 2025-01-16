@@ -697,7 +697,13 @@
                 const file = fileInput.files[0];
                 const fileSizeInMB = file.size / (1024 * 1024);
                 if (fileSizeInMB > 125) return showErrorModal('File size must not exceed 125MB.');
-                const allowedTypes = ['application/pdf', 'application/msword', 'image/png', 'image/jpeg'];
+                const allowedTypes = [
+                    'application/pdf',
+                    'application/msword',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Hỗ trợ .docx
+                    'image/png',
+                    'image/jpeg'
+                ];
                 if (!allowedTypes.includes(file.type)) return showErrorModal('File type must be pdf, doc, png, or jpg.');
             }
 

@@ -618,31 +618,8 @@
         document.getElementById('deleteConfirmModal').style.display = 'none';
     }
 
-    // Function to confirm delete
-    async function confirmDelete() {
-        const submittedAssignmentId = document.getElementById('deleteConfirmModal').dataset.submittedAssignmentId;
 
-        try {
-            const response = await fetch(`student-assignment/delete/${submittedAssignmentId}`, {
-                method: 'DELETE'
-            });
 
-            if (response.ok) {
-                showSuccessModal('Assignment deleted successfully!');
-                fetchAndDisplaySubmittedAssignments()
-                closeDeleteConfirmModal();
-            } else if (response.status === 404) {
-                showErrorModal('Assignment not found!');
-                closeDeleteConfirmModal();
-            } else {
-                console.error('Error deleting assignment:', response.statusText);
-                showErrorModal('Failed to delete assignment. Please try again later.');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            showErrorModal('Failed to delete assignment. Please try again later.');
-        }
-    }
 
     // Function to show success modal
     function showSuccessModal(message) {

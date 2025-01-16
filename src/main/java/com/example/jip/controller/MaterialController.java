@@ -100,7 +100,7 @@ public class MaterialController {
             redirectAttributes.addFlashAttribute("success", "Material '" + savedMaterial.getTitle() + "' created successfully!");
 
             // Redirect to View-material-details.html with the new material ID
-            return new RedirectView("/View-material-details.html?id=" + savedMaterial.getId());
+            return new RedirectView("/View-material-details-teacher.html?id=" + savedMaterial.getId());
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("error", "Failed to create material: " + e.getMessage());
             return new RedirectView("/materials/create");  // Chuyển hướng nếu có lỗi
