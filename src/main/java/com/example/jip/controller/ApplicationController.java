@@ -110,7 +110,7 @@ public class ApplicationController {
                     }
                 } else {
                     redirectAttributes.addAttribute("error", "Student with ID " + studentId + " not found.");
-                    return new RedirectView("/Send-application.html");  // Chuyển hướng lại nếu lỗi
+                    return new RedirectView("/Send-application-student.html");  // Chuyển hướng lại nếu lỗi
                 }
             }
 
@@ -128,7 +128,7 @@ public class ApplicationController {
 
             // Trả về redirect với thông báo thành công
             redirectAttributes.addAttribute("message", "Application '" + applicationDTO.getCategory() + "' created successfully with ID: " + savedApplication.getId());
-            return new RedirectView("/View-my-application.html");  // Chuyển hướng thành công
+            return new RedirectView("/View-my-application-student.html");  // Chuyển hướng thành công
 
         } catch (RuntimeException e) {
             redirectAttributes.addAttribute("error", "Failed to create application: " + e.getMessage());
