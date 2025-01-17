@@ -9,6 +9,7 @@ import com.example.jip.repository.HolidayRepository;
 import com.example.jip.repository.RoomAvailabilityRepository;
 import com.example.jip.repository.RoomRepository;
 import com.example.jip.repository.SemesterRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 public class RoomAvailabilityServices {
 
@@ -91,14 +92,16 @@ public class RoomAvailabilityServices {
                 .orElseThrow(() -> new IllegalArgumentException("Semester not found with ID: " + semesterId));
 
         List<Room> rooms = roomRepository.findAll();
+
         List<Date> holidays = holidayRepository.findByDateBetween(
                 semester.getStart_time(), semester.getEnd_time()
         ).stream().map(Holiday::getDate).toList();
 
-        // Find all existing availability entries within a wide date range (past, present, and future)
-        List<RoomAvailability> existingAvailability = roomAvailabilityRepository.findAll();
+        // Fetch availability for the specific semester
+        List<RoomAvailability> existingAvailability = roomAvailabilityRepository.findBySemesterIdIncludingUnlinked(
+                semesterId, semester.getStart_time(), semester.getEnd_time());
+        log.info("Existing room availability for semester {}: {}", semesterId, existingAvailability);
 
-        // Prepare a set of valid dates for the updated semester
         Set<Date> validDates = new HashSet<>();
         Date currentDate = semester.getStart_time();
         while (!currentDate.after(semester.getEnd_time())) {
@@ -112,11 +115,22 @@ public class RoomAvailabilityServices {
             currentDate = Date.valueOf(localDate.plusDays(1));
         }
 
+        log.info("Valid dates for semester {}: {}", semesterId, validDates);
+
+        // Identify and delete outdated room availability
         List<RoomAvailability> toRemove = existingAvailability.stream()
                 .filter(ra -> !validDates.contains(ra.getDate()))
                 .toList();
-        roomAvailabilityRepository.deleteAll(toRemove);
+        log.info("RoomAvailabilities to remove: {}", toRemove);
 
+        if (!toRemove.isEmpty()) {
+            roomAvailabilityRepository.deleteAll(toRemove);
+            log.info("Deleted {} RoomAvailability records for semester {}", toRemove.size(), semesterId);
+        } else {
+            log.info("No RoomAvailability records to remove for semester {}", semesterId);
+        }
+
+        // Add missing entries for all rooms
         List<RoomAvailability> toAdd = new ArrayList<>();
         for (Date validDate : validDates) {
             for (Room room : rooms) {
@@ -130,8 +144,10 @@ public class RoomAvailabilityServices {
             }
         }
 
+        log.info("RoomAvailabilities to add: {}", toAdd);
         roomAvailabilityRepository.saveAll(toAdd);
     }
+
 
     public void initializeRoomAvailabilityForSemesterAndRoom(int semesterId, Room room) {
         Semester semester = semesterRepository.findById(semesterId)
