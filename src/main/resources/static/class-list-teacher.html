@@ -373,6 +373,24 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="noSlotModal" tabindex="-1" role="dialog" aria-labelledby="noSlotModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="noSlotModalLabel">No Attendance Slot</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                There is no attendance slot scheduled for today.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <footer class="footer-wrap-layout1" style="width: 100%; padding: 0; margin: 0;">
     <div style="background-color: #ec9006; padding: 15px;">
         <div class="container">
@@ -501,7 +519,7 @@
                     // If attendance is already taken, show 'Edit' + 'Schedule'
                     dropdownMenu.innerHTML = `
                         <a class="dropdown-item" href="/edit-attendant.html?classId=${clasz.id}">
-                            <i class="fas fa-edit text-dark-pastel-green"></i> Edit
+                            <i class="fas fa-edit text-dark-pastel-green"></i> Attendant
                         </a>
                         <a class="dropdown-item" href="/schedule-teacher.html?classId=${clasz.id}">
                             <i class="fas fa-calendar-alt text-dark-pastel-green"></i> Schedule
@@ -510,9 +528,6 @@
                 } else {
                     // If attendance is not taken, show 'Attendant' + 'Schedule'
                     dropdownMenu.innerHTML = `
-                        <a class="dropdown-item" href="/attendant.html?classId=${clasz.id}">
-                            <i class="fas fa-glasses text-dark-pastel-green"></i> Attendant
-                        </a>
                         <a class="dropdown-item" href="/schedule-teacher.html?classId=${clasz.id}">
                             <i class="fas fa-calendar-alt text-dark-pastel-green"></i> Schedule
                         </a>
