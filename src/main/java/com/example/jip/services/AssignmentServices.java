@@ -492,14 +492,13 @@ public class AssignmentServices {
 @Slf4j
 class ScheduledTask {
     @Autowired
-    private AssignmentServices assignmentStatusService;
+   private AssignmentServices assignmentStatusService;
 
-    // Run the task every minute to update assignment status
-    @Scheduled(fixedRate = 1000) // 1000 milliseconds = 1 second
-    public void updateAssignmentStatuses() {
-        log.info("Scanning to update Assignment status...");
-        assignmentStatusService.updateAssignmentStatus();
-    }
+//    // Run the task every minute to update assignment status
+   @Scheduled(fixedRate = 1000) // 1000 milliseconds = 1 second
+   public void updateAssignmentStatuses() {
+       log.info("Scanning to update Assignment status...");
+   }
 
 }
 

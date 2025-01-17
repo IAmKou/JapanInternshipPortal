@@ -339,7 +339,14 @@
                         <label for="event-title">Title</label>
                         <input id="event-title" type="text" class="form-control" placeholder="Enter event title">
                     </div>
-
+                    <div class="form-group">
+                        <label for="event-start">Start Time</label>
+                        <input type="time" name="start" id="event-start">
+                    </div>
+                    <div class="form-group">
+                        <label for="event-end">End Time</label>
+                        <input type="time" name="end" id="event-end">
+                    </div>
                     <div class="form-group">
                         <label for="event-color">Event Color</label>
                         <input id="event-color" type="color" class="form-control">
@@ -417,6 +424,14 @@
                         <select class="form-control" id="roomDropdown" required>
                             <option value="">Select a room</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="start">Start Time</label>
+                        <input type="time" name="start" id="start">
+                    </div>
+                    <div class="form-group">
+                        <label for="end">End Time</label>
+                        <input type="time" name="end" id="end">
                     </div>
                     <div class="form-group">
                         <label for="eventColor">Event Color</label>
@@ -592,6 +607,8 @@
                                     extendedProps: {
                                         room: schedule.room,
                                         isHoliday: holidays.includes(schedule.date),
+                                        startTime: schedule.start,
+                                        endTime: schedule.end,
                                     },
                                 }));
                                 successCallback(events);
@@ -685,6 +702,8 @@
                         document.getElementById('update-event').onclick = function () {
                             const updatedTitle = document.getElementById('event-title').value;
                             const updatedColor = document.getElementById('event-color').value;
+                            const updatedStart = document.getElementById('event-start').value;
+                            const updatedEnd = document.getElementById('event-end').value;
                             const updatedRoom = roomDropdown.value;
 
                             if (isPastDate(event.startStr)) {
@@ -704,6 +723,8 @@
                                     activity: updatedTitle,
                                     color: updatedColor,
                                     room: updatedRoom,
+                                    start: start,
+                                    end: end,
                                 }),
                             })
                                 .then(response => {
@@ -746,6 +767,8 @@
                     const room = roomDropdown.value;
                     const color = document.getElementById('eventColor').value;
                     const clickedDate = document.getElementById('clicked-date').value;
+                    const start = document.getElementById('start').value;
+                    const end = document.getElementById('end').value;
 
                     if (isPastDate(clickedDate)) {
                         showModal('error', 'You cannot save events in the past.');
@@ -770,6 +793,8 @@
                         color: color,
                         semesterId: semesterId,
                         classId: classId,
+                        start: start,
+                        end: end,
                     };
 
                     fetch('/schedule/saveDraft', {
@@ -793,7 +818,7 @@
                                 title,
                                 start: clickedDate,
                                 backgroundColor: color,
-                                extendedProps: { room },
+                                extendedProps: { room, start, end },
                             });
                             $('#addEventModal').modal('hide');
                         })

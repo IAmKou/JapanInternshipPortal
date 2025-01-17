@@ -332,7 +332,6 @@
         </div>
     </div>
 </div>
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const tableBody = document.querySelector('.table tbody');
@@ -348,6 +347,18 @@
                 return response.json();
             })
             .then(claszData => {
+                if (claszData.length === 0) {
+                    // If no classes, display a "No class available" message
+                    const noClassRow = document.createElement('tr');
+                    const noClassCell = document.createElement('td');
+                    noClassCell.colSpan = 5; // Adjust this based on your table's column count
+                    noClassCell.textContent = 'No classes available.';
+                    noClassCell.className = 'text-center text-muted';
+                    noClassRow.appendChild(noClassCell);
+                    tableBody.appendChild(noClassRow);
+                    return;
+                }
+
                 claszData.forEach(clasz => {
                     const row = document.createElement('tr');
 
@@ -415,9 +426,10 @@
                 });
             })
             .catch(error => {
-                // Show error modal on fetch failure
+                // Log error to console for debugging
+                console.error('Error:', error.message);
                 const errorModalBody = document.querySelector('#long-modal .modal-body');
-                errorModalBody.textContent = error.message;
+                errorModalBody.textContent = 'There was an error fetching the class data.';
                 $('#long-modal').modal('show');
             });
     });
@@ -434,7 +446,6 @@
             })
             .then(data => {
                 const teacherSelect = document.getElementById('teacherId');
-                console.log(document.getElementById('teacherId'));
                 data.forEach(teacher => {
                     const option = document.createElement('option');
                     option.value = teacher.id;
@@ -454,6 +465,7 @@
             });
     }
 </script>
+
 <!-- fetch user -->
 <script>
     const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));

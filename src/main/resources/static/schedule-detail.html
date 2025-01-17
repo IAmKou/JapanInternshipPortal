@@ -376,6 +376,14 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="start">Start Time</label>
+                        <input type="time" name="start" id="start">
+                    </div>
+                    <div class="form-group">
+                        <label for="end">End Time</label>
+                        <input type="time" name="end" id="end">
+                    </div>
+                    <div class="form-group">
                         <label for="eventColor">Event Color</label>
                         <input type="color" class="form-control" id="eventColor" value="#3788d8"/>
                     </div>
@@ -700,7 +708,9 @@
                                     editable: !holidays.includes(schedule.date), // Make holiday events non-editable
                                     extendedProps: {
                                         room: schedule.room,
-                                        isHoliday: holidays.includes(schedule.date), // Mark as holiday
+                                        isHoliday: holidays.includes(schedule.date),
+                                        startTime: schedule.start,
+                                        endTime: schedule.end,// Mark as holiday
                                     },
                                 }));
                                 successCallback(events);
@@ -857,6 +867,8 @@
                     const roomDropdown = document.getElementById('roomDropdown');
                     const room = roomDropdown.value;
                     const color = document.getElementById('eventColor').value;
+                    const start = document.getElementById('start').value;
+                    const end = document.getElementById('end').value;
                     const clickedDate = document.getElementById('clicked-date').value; // Get the clicked date
 
                     // Validation: Ensure title is provided
@@ -871,6 +883,14 @@
                         showErrorModal('Test events cannot be scheduled on weekends.');
                         return;
                     }
+                    if (!start) {
+                        showErrorModal('Please provide start time.');
+                        return;
+                    }
+                    if (!end) {
+                        showErrorModal('Please provide end time.');
+                        return;
+                    }
 
                     // Prepare the new event
                     const newEvent = {
@@ -878,6 +898,8 @@
                         date: clickedDate,
                         room,
                         color,
+                        start,
+                        end,
                     };
 
                     // Validate the activities (Pass an array)
@@ -892,7 +914,7 @@
                         title,
                         start: clickedDate,
                         backgroundColor: color,
-                        extendedProps: { room },
+                        extendedProps: { room, start, end },
                     });
 
                     eventsToSave.push(newEvent);
@@ -929,6 +951,8 @@
                         semesterId: semesterId,
                         classId: isPublic ? selectedClass : null,
                         isHoliday: event.extendedProps.isHoliday || false,
+                        start: event.start,
+                        end: event.end,
                     }));
 
                     fetch(endpoint, {

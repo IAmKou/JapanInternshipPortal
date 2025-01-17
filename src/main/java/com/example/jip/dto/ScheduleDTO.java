@@ -1,8 +1,10 @@
 package com.example.jip.dto;
 
 
+import com.example.jip.configuration.TimeDeserializer;
 import com.example.jip.entity.Schedule;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 
 import java.sql.Date;
@@ -22,11 +24,15 @@ public class ScheduleDTO {
     private Date startTime;
     private Date endTime;
     private int classId;
+    @JsonDeserialize(using = TimeDeserializer.class)
+    private Time start;
+    @JsonDeserialize(using = TimeDeserializer.class)
+    private Time end;
 
     public ScheduleDTO() {
     }
 
-    public ScheduleDTO(int id, String date, Schedule.dayOfWeek dayOfWeek, String class_name, String color, String room, String activity, String semesterName, Schedule.status status, int semesterId, Date startTime, Date endTime) {
+    public ScheduleDTO(Integer id, String date, Schedule.dayOfWeek dayOfWeek, String class_name, String color, String room, String activity, String semesterName, Schedule.status status, int semesterId, Date startTime, Date endTime, int classId, Time start, Time end) {
         this.id = id;
         this.date = date;
         this.dayOfWeek = dayOfWeek;
@@ -39,6 +45,9 @@ public class ScheduleDTO {
         this.semesterId = semesterId;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.classId = classId;
+        this.start = start;
+        this.end = end;
     }
 
     public ScheduleDTO(Schedule schedule) {
@@ -55,6 +64,22 @@ public class ScheduleDTO {
         this.startTime = schedule.getSemester().getStart_time();
         this.endTime = schedule.getSemester().getEnd_time();
         this.classId = (schedule.getClasz() != null) ? schedule.getClasz().getId() : 0;
+    }
+
+    public Time getStart() {
+        return start;
+    }
+
+    public void setStart(Time start) {
+        this.start = start;
+    }
+
+    public Time getEnd() {
+        return end;
+    }
+
+    public void setEnd(Time end) {
+        this.end = end;
     }
 
     public int getClassId() {

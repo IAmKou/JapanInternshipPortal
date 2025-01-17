@@ -115,7 +115,7 @@ public class ScheduleController {
 
 
                 scheduleRepository.save(schedule);
-                createAttendantsForSchedule(schedule);
+                createAttendantsForSchedule(schedule, scheduleDTO.getStart(), scheduleDTO.getEnd());
                 sendScheduleUpdateNotifications(clasz, sqlDate);
             }
 
@@ -222,7 +222,7 @@ public class ScheduleController {
                             roomAvailability.setClasz(clasz);
                             roomAvailabilityRepository.save(roomAvailability);
                         });
-                        createAttendantsForSchedule(publishedSchedule);
+                        createAttendantsForSchedule(publishedSchedule,scheduleDTO.getStart(),scheduleDTO.getEnd());
                     }
 
                 } catch (Exception ex) {
@@ -246,7 +246,7 @@ public class ScheduleController {
     }
 
 
-    private void createAttendantsForSchedule(Schedule schedule) {
+    private void createAttendantsForSchedule(Schedule schedule, Time startTime, Time endTime) {
         // Fetch students in the class
         Class clasz = schedule.getClasz();
         List<Student> students = clasz.getClassLists().stream()
@@ -260,8 +260,8 @@ public class ScheduleController {
             attendant.setSchedule(schedule);
             attendant.setStatus(null);
             attendant.setDate(schedule.getDate());
-            attendant.setStartTime(Time.valueOf("13:30:00"));
-            attendant.setEndTime(Time.valueOf("17:00:00"));
+            attendant.setStartTime(startTime);
+            attendant.setEndTime(endTime);
             attendant.setIsFinalized(false);
 
             attendantRepository.save(attendant);
