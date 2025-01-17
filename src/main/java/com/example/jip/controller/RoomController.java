@@ -16,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -116,10 +119,25 @@ public class RoomController {
     @GetMapping("/getRoomAvailability")
     public ResponseEntity<List<RoomAvailabilityDTO>> getRoomAvailability(
             @RequestParam(required = false) String roomName,
-            @RequestParam(required = false) Date date,
+            @RequestParam(required = false) String date, // Accept date as String
             @RequestParam(required = false) RoomAvailability.Status status) {
-        List<RoomAvailabilityDTO> availabilities = roomAvailabilityServices.getRoomAvailability(roomName, date, status);
+
+        // Parse the date string to a java.sql.Date object if it's not null or empty
+        java.sql.Date parsedDate = null;
+        if (date != null && !date.isEmpty()) {
+            try {
+                java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(date); // Adjust format if needed
+                parsedDate = new java.sql.Date(utilDate.getTime()); // Convert java.util.Date to java.sql.Date
+            } catch (ParseException e) {
+                return ResponseEntity.badRequest().body(Collections.emptyList()); // Handle invalid date format gracefully
+            }
+        }
+
+        // Pass parsedDate to the service
+        List<RoomAvailabilityDTO> availabilities = roomAvailabilityServices.getRoomAvailability(roomName, parsedDate, status);
         return ResponseEntity.ok(availabilities);
     }
+
+
 
 }

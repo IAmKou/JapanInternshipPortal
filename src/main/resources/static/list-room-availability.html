@@ -675,7 +675,7 @@
                         <form id="searchForm" style="padding-bottom: 20px; padding-top: 10px;">
                             <div class="row mb-3 align-items-center gx-3">
                                 <!-- Search Input -->
-                                <div class="col-lg-6">
+                                <div class="col-lg-3">
                                     <div class="input-group shadow-lg rounded">
                                         <input
                                                 class="form-control search-input rounded-start"
@@ -683,19 +683,25 @@
                                                 name="searchInput"
                                                 style="font-size: 1.5rem; padding: 10px 15px;"
                                                 type="text"
-                                                placeholder="Search Room Name or Date"
+                                                placeholder="Search Room Name"
                                         />
-                                        <button
-                                                class="btn btn-gradient-yellow rounded-end text-white fw-bold"
-                                                id="searchButton"
-                                                type="button">
-                                            <i class="fas fa-search me-2"></i> SEARCH
-                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="input-group shadow-lg rounded">
+                                        <input
+                                                class="form-control search-input rounded-start"
+                                                id="searchDate"
+                                                name="searchDate"
+                                                style="font-size: 1.5rem; padding: 10px 15px;"
+                                                type="date"
+                                        placeholder="Search Date"
+                                        />
                                     </div>
                                 </div>
 
                                 <!-- Filter Option và Dropdown -->
-                                <div class="col-lg-4 d-flex align-items-center">
+                                <div class="col-lg-3 d-flex align-items-center">
                                     <div class="form-group d-flex flex-grow-1 align-items-center" style="padding-top: 8px;">
                                         <div class="position-relative w-100">
                                             <select class="form-select custom-filter-select" id="filterSelect" name="filterSelect">
@@ -705,6 +711,14 @@
                                             </select>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-lg-3 d-flex align-items-center">
+                                <button
+                                        class="btn btn-gradient-yellow rounded-end text-white fw-bold"
+                                        id="searchButton"
+                                        type="button">
+                                    <i class="fas fa-search me-2"></i> SEARCH
+                                </button>
                                 </div>
                             </div>
                         </form>
@@ -986,7 +1000,6 @@
     let allData = []; // Dữ liệu tổng quát từ API
     let filteredData = []; // Dữ liệu sau khi áp dụng bộ lọc và tìm kiếm
 
-    // Fetch data từ API và xử lý
     async function fetchRoomAvailability(filters = {}) {
         const queryParams = new URLSearchParams(filters).toString();
         console.log("Query String Sent to API:", queryParams);
@@ -1000,12 +1013,11 @@
             }
 
             allData = await response.json();
-            // Sau khi fetch xong, áp dụng bộ lọc
-            filteredData = applyFilters(allData, filters); // Lọc dữ liệu sau khi nhận từ API
+            filteredData = applyFilters(allData, filters); // Apply filters after fetching data
             console.log("API Response Data:", allData);
 
-            updatePagination(Math.ceil(filteredData.length / pageSize)); // Cập nhật phân trang sau khi lọc
-            populateTable(filteredData); // Hiển thị dữ liệu đã lọc
+            updatePagination(Math.ceil(filteredData.length / pageSize)); // Update pagination
+            populateTable(filteredData); // Display filtered data
         } catch (error) {
             console.error("Fetch Error:", error);
             populateTable([]); // Populate table with no data if an error occurs
@@ -1083,43 +1095,23 @@
 
     // Xử lý tìm kiếm
     function handleSearch() {
-        const searchValue = document.getElementById("searchInput").value.trim().toLowerCase();
-        const filters = {};
+        const roomName = document.getElementById("searchInput").value.trim();
+        const date = document.getElementById("searchDate").value.trim(); // Use a dedicated date input
+        const status = document.getElementById("filterSelect").value;
 
-        if (searchValue) {
-            if (searchValue.includes(",")) {
-                const [roomName, date] = searchValue.split(",").map(item => item.trim().toLowerCase());
-                if (roomName) filters.roomName = roomName;
-                if (date) filters.date = date;
-            } else {
-                if (isNaN(Date.parse(searchValue))) {
-                    filters.roomName = searchValue;
-                } else {
-                    filters.date = searchValue;
-                }
-            }
-        }
+        const filters = {};
+        if (roomName) filters.roomName = roomName;
+        if (date) filters.date = date; // Include date only if it exists
+        if (status) filters.status = status;
 
         console.log("Search Filters:", filters);
-        fetchRoomAvailability(filters); // Gửi bộ lọc đến API
-    }
-
-    // Xử lý lọc trạng thái
-    function handleFilter() {
-        const status = document.getElementById("filterSelect").value;
-        const filters = {};
-
-        if (status) filters.status = status; // Nếu chọn lọc trạng thái
-
-        console.log("Filter Select:", filters);
-        fetchRoomAvailability(filters); // Gửi bộ lọc đến API
+        fetchRoomAvailability(filters); // Fetch with updated filters
     }
 
     // Các sự kiện gắn với các nút
     document.getElementById("searchButton").addEventListener("click", handleSearch);
     document.getElementById("filterSelect").addEventListener("change", handleFilter);
 
-    // Gọi khi tải trang lần đầu để lấy toàn bộ dữ liệu
     fetchRoomAvailability();
 
 
