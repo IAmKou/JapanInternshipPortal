@@ -27,4 +27,5 @@ public interface RoomAvailabilityRepository extends JpaRepository<RoomAvailabili
     List<RoomAvailabilityDTO> findRoomAvailability(@Param("roomName") String roomName,
                                                    @Param("date") Date date,
                                                    @Param("status") RoomAvailability.Status status);
+    List<RoomAvailability> findByDateBetween(Date startDate, Date endDate);
 }

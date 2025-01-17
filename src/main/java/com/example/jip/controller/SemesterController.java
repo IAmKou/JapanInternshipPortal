@@ -163,6 +163,7 @@ public class SemesterController {
         existingSemester.setName(updatedSemester.getName());
         existingSemester.setStart_time(updatedSemester.getStart_time());
         existingSemester.setEnd_time(updatedSemester.getEnd_time());
+        roomAvailabilityServices.initializeRoomAvailabilityForSemester(updatedSemester.getId());
 
         semesterRepository.save(existingSemester);
         return ResponseEntity.ok("Semester updated successfully");
