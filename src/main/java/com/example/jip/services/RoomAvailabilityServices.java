@@ -85,6 +85,7 @@ public class RoomAvailabilityServices {
 
         roomAvailabilityRepository.saveAll(availabilityList);
     }
+
     public void initializeRoomAvailabilityForUpdateSemester(int semesterId) {
         Semester semester = semesterRepository.findById(semesterId)
                 .orElseThrow(() -> new IllegalArgumentException("Semester not found with ID: " + semesterId));
@@ -94,19 +95,16 @@ public class RoomAvailabilityServices {
                 semester.getStart_time(), semester.getEnd_time()
         ).stream().map(Holiday::getDate).toList();
 
-        // Get all existing RoomAvailability entries for this semester
-        List<RoomAvailability> existingAvailability = roomAvailabilityRepository.findByDateBetween(
-                semester.getStart_time(), semester.getEnd_time()
-        );
+        // Find all existing availability entries within a wide date range (past, present, and future)
+        List<RoomAvailability> existingAvailability = roomAvailabilityRepository.findAll();
 
-        // Create a set of valid dates for the updated semester
+        // Prepare a set of valid dates for the updated semester
         Set<Date> validDates = new HashSet<>();
         Date currentDate = semester.getStart_time();
         while (!currentDate.after(semester.getEnd_time())) {
             LocalDate localDate = currentDate.toLocalDate();
             DayOfWeek dayOfWeek = localDate.getDayOfWeek();
 
-            // Skip Saturdays, Sundays, and holidays
             if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY && !holidays.contains(currentDate)) {
                 validDates.add(currentDate);
             }
