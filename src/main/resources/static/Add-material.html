@@ -29,11 +29,102 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
 </head>
 <style>
+    #successMessage {
+        background-color: #d4edda;
+        color: #155724;
+        border-left: 5px solid #28a745;
+        animation: fadeIn 1s;
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    #success-modal .modal-header {
+        background-color: #28a745; /* Màu nền của header */
+        color: #fff;
+        font-size: 1.25rem;
+    }
+
+    #success-modal .modal-body {
+        font-size: 1.1rem;
+        padding: 30px;
+        background-color: #f8f9fa;
+        color: #333;
+    }
+
+    #success-modal .modal-body .fas.fa-check-circle {
+        color: #28a745;
+    }
+
+    #success-modal .btn-success {
+        font-size: 1rem;
+        padding: 10px 20px;
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    #success-modal .btn-close {
+        color: white;
+    }
+
+    #success-modal .modal-body p {
+        font-size: 0.9rem;
+        color: #6c757d; /* Màu nhạt hơn cho mô tả */
+    }
+
+    /* Custom Modal Styling for Error Modal */
+    #error-modal .modal-header {
+        background-color: #dc3545; /* Màu nền của header (Đỏ cho lỗi) */
+        color: #fff;
+        font-size: 1.25rem;
+    }
+
+    #error-modal .modal-body {
+        font-size: 1.1rem;
+        padding: 30px;
+        background-color: #f8f9fa;
+        color: #333;
+    }
+
+    #error-modal .modal-body .fas.fa-times-circle {
+        color: #dc3545; /* Màu đỏ cho biểu tượng lỗi */
+    }
+
+    #error-modal .btn-danger {
+        font-size: 1rem;
+        padding: 10px 20px;
+        background-color: #dc3545; /* Màu đỏ cho nút lỗi */
+        border-color: #dc3545;
+    }
+
+    #error-modal .btn-close {
+        color: white;
+    }
+
+    #error-modal .modal-body p {
+        font-size: 0.9rem;
+        color: #6c757d; /* Màu nhạt hơn cho mô tả */
+    }
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    /* Container chính */
     .wrapper {
         display: flex;
         flex-direction: column;
         min-height: 100%; /* Bao phủ toàn bộ trang */
     }
+
     /* Footer nằm ở cuối */
     .footer-wrap-layout1 {
         background-color: #ec9006;
@@ -45,6 +136,10 @@
     .footer-wrap-layout1 a {
         color: #ffcc00;
         text-decoration: none;
+    }
+
+    .modal-content {
+        padding: 15px;
     }
 </style>
 <body>
@@ -312,20 +407,22 @@
         <!-- Page Area End Here -->
     </div>
 
-    <!-- Success Modal -->
-    <div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div aria-hidden="true" aria-labelledby="successModalLabel" class="modal fade" id="success-modal1" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header border-0">
-                    <h5 class="modal-title text-success" id="successModalLabel">
+                    <h5 class="modal-title text-success" id="successModalLabel1">
                         <i class="fas fa-check-circle"></i> Success
                     </h5>
+
                 </div>
                 <div class="modal-body text-center">
+                    <h4 class="text-success">Account created successful!</h4>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- Error Modal -->
     <div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
@@ -335,8 +432,10 @@
                     <h5 class="modal-title text-danger" id="errorModalLabel">
                         <i class="fas fa-times-circle"></i> Error
                     </h5>
+
                 </div>
                 <div class="modal-body">
+
                 </div>
             </div>
         </div>
@@ -537,14 +636,30 @@
                         })
                             .then(response => {
                                 if (response.ok) {
-                                    alert('Add Material Successfully.');
+                                    // Hiển thị modal thành công
+                                    const successModal = document.getElementById('success-modal1');
+                                    const successMessage = successModal.querySelector('.modal-body h4');
+                                    successMessage.textContent = 'Add Material Successfully.';
+                                    const bootstrapModal = new bootstrap.Modal(successModal);
+                                    bootstrapModal.show();
+
+                                    // Đặt setTimeout để chuyển hướng sau 3 giây
+                                    setTimeout(() => {
+                                        window.location.href = 'View-list-personal-materials.html';
+                                    }, 2000); // 3000ms = 3 giây
                                 } else {
                                     throw new Error('Có lỗi xảy ra khi thêm material');
                                 }
                             })
                             .catch(error => {
                                 console.error('Error adding material:', error);
-                                alert('Material đã tồn tại');
+
+                                // Hiển thị modal lỗi
+                                const errorModal = document.getElementById('long-modal');
+                                const errorMessage = errorModal.querySelector('.modal-body');
+                                errorMessage.textContent = 'Material already exists.';
+                                const bootstrapModal = new bootstrap.Modal(errorModal);
+                                bootstrapModal.show();
                             });
                     }
                 })

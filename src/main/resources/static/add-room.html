@@ -30,6 +30,9 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .d-none {
+            display: none !important;
+        }
         .modal-header {
 
             color: white;
@@ -364,11 +367,13 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <div class="modal-body">
+                                <div class="modal-body" id="createRoomModal">
                                     <form id="createRoomForm" class="new-added-form">
                                         <div class="form-group">
                                             <label for="roomName" style="font-weight: bold;">Room Name</label>
-                                            <input type="text" id="roomName" placeholder="Enter room name" required minlength="6" maxlength="50" name="roomName" class="form-control">
+                                            <input type="text" id="roomName" placeholder="Enter room name" required minlength="6" maxlength="30" name="roomName" class="form-control">
+                                            <div class="text-danger" style="display: none;"></div>
+
                                         </div>
                                     </form>
                                 </div>
@@ -620,28 +625,31 @@
     document.addEventListener("DOMContentLoaded", function() {
         const roomNameInput = document.getElementById('roomName');
         const submitRoomButton = document.getElementById('submitRoomButton');
-        const messageBox = document.getElementById('messageBox');
+        const errorContainer = roomNameInput.nextElementSibling; // Lấy container thông báo lỗi bên dưới ô input
+        const modal = document.getElementById('roomModal'); // Thêm dòng này để truy cập modal
 
-        // Giới hạn ký tự nhập vào không quá 50 ký tự
         roomNameInput.addEventListener('input', function () {
             if (roomNameInput.value.length > 50) {
                 roomNameInput.value = roomNameInput.value.substring(0, 50);
             }
+            errorContainer.style.display = 'none'; // Ẩn lỗi khi người dùng nhập
         });
 
         submitRoomButton.addEventListener('click', function (event) {
             event.preventDefault(); // Ngừng hành động gửi form mặc định
 
-            let roomName = roomNameInput.value.trim(); // Loại bỏ dấu cách
+            let roomName = roomNameInput.value.trim();
+            errorContainer.style.display = 'none'; // Reset hiển thị lỗi
 
-            // Kiểm tra nếu trường phòng tên trống hoặc quá ngắn
             if (!roomName) {
-                showErrorModal('Room name is required!');
+                errorContainer.textContent = 'Room name is required!';
+                errorContainer.style.display = 'block'; // Hiển thị lỗi
                 return;
             }
 
-            if (roomName.length < 6) {
-                showErrorModal('Room name must be at least 6 characters long!');
+            if (roomName.length < 6 || roomName.length > 30) {
+                errorContainer.textContent = 'Room name must be at least 6 characters long and must not exceed 30 characters!';
+                errorContainer.style.display = 'block'; // Hiển thị lỗi
                 return;
             }
 
@@ -654,7 +662,7 @@
             })
                 .then((response) => {
                     if (response.ok) {
-                        return response.json(); // Parse JSON if the request is successful
+                        return response.json();
                     } else {
                         return response.text().then((text) => {
                             throw new Error(text || 'Failed to create room');
@@ -662,17 +670,26 @@
                     }
                 })
                 .then((data) => {
-                    // Show success modal with the message from the backend
-                    showSuccessModal(`${data.message}`);
+                    modal.style.display = 'none'; // Ẩn modal sau khi tạo phòng thành công
+
+                    showSuccessModal(data.message);  // Hiển thị thông báo thành công
+
                     setTimeout(() => {
                         window.location.reload();
                     }, 2000);
                 })
                 .catch((error) => {
-                    // Show error modal if there is an error
-                    showErrorModal(`Error: ${error.message}`);
+                    errorContainer.textContent = `Error: ${error.message}`;
+                    errorContainer.style.display = 'block'; // Hiển thị lỗi
                 });
         });
+        function showSuccessModal(message) {
+            const successModal = document.querySelector('#success-modal');
+            const successModalBody = successModal.querySelector('.modal-body');
+            successModalBody.textContent = message;
+            $('#success-modal').modal('show');
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const tableBody = document.querySelector('.table tbody');
             const confirmationModal = document.querySelector('#confirmation-modal');
