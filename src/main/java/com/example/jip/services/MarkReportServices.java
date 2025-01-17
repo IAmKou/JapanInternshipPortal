@@ -44,26 +44,42 @@ public class MarkReportServices {
 
     public List<MarkReportResponse> getListMarkReport(int classId) {
         List<MarkReport> results = markReportRepository.findAllByClassId(classId);
+        Date semesterEndDate = semesterRepository.findSemesterByClassId(classId).getEnd_time();
+        Date currentDate = new Date();
+
         return results.stream()
                 .map(markReport -> {
-                        // Map MarkReport to MarkReportResponse
-                        MarkReportResponse response = new MarkReportResponse();
-                        response.setId(markReport.getId());
-                        response.setStudentName(markReport.getStudent().getFullname());
-                        response.setStudentEmail(markReport.getStudent().getEmail());
-                        response.setSoftskill(markReport.getSoftskill());
-                        response.setAvg_exam_mark(markReport.getAvg_exam_mark());
-                        response.setMiddle_exam(markReport.getMiddle_exam());
-                        response.setFinal_exam(markReport.getFinal_exam());
-                        response.setScriptPresentation(markReport.getScript_presentation());
-                        response.setPresentation(markReport.getPresentation());
-                        response.setSkill(markReport.getSkill());
+                    // Map MarkReport to MarkReportResponse
+                    MarkReportResponse response = new MarkReportResponse();
+                    response.setId(markReport.getId());
+                    response.setStudentName(markReport.getStudent().getFullname());
+                    response.setStudentEmail(markReport.getStudent().getEmail());
+                    response.setSoftskill(markReport.getSoftskill());
+                    response.setAvg_exam_mark(markReport.getAvg_exam_mark());
+                    response.setMiddle_exam(markReport.getMiddle_exam());
+                    response.setFinal_exam(markReport.getFinal_exam());
+                    response.setScriptPresentation(markReport.getScript_presentation());
+                    response.setPresentation(markReport.getPresentation());
+                    response.setSkill(markReport.getSkill());
 
-                    // Calculate attitude
+                    if (currentDate.before(semesterEndDate)) {
+                        // If before semester end date, set assignment and attendant marks to null
+                        response.setAssignment(null);
+                        response.setAttendant(null);
+                        response.setAttitude(null);
+                        response.setFinal_mark(null);
+                        return response;
+                    }
+
+                    // Calculate assignment completion
                     BigDecimal assignmentCompletion = BigDecimal.ZERO;
                     int totalAssignments = assignmentStudentRepository.countByStudentId(markReport.getStudent().getId());
-                    if(totalAssignments > 0){
-                        int totalSubmittedAssignments = studentAssignmentRepository.countStudentAssignmentsWithValidMark(markReport.getStudent().getId(), StudentAssignment.Status.MARKED);
+
+                    if (totalAssignments > 0) {
+                        int totalSubmittedAssignments = studentAssignmentRepository.countStudentAssignmentsWithValidMark(
+                                markReport.getStudent().getId(),
+                                StudentAssignment.Status.MARKED
+                        );
                         if (totalSubmittedAssignments >= 0) {
                             assignmentCompletion = new BigDecimal(totalSubmittedAssignments)
                                     .divide(new BigDecimal(totalAssignments), 2, RoundingMode.HALF_UP)
@@ -76,35 +92,31 @@ public class MarkReportServices {
                         response.setAssignment(null); // No assignments available
                     }
 
-
+                    // Calculate attendance
                     int totalSlots = attendantRepository.countByStudentId(markReport.getStudent().getId());
-
                     if (totalSlots > 0) {
-                        // Count attended slots where the student status is 'Present'
                         int attendedSlots = attendantRepository.countByStudentIdAndStatus(
                                 markReport.getStudent().getId(),
-                                Attendant.Status.PRESENT // Assuming Attendant.Status is an enum
+                                Attendant.Status.PRESENT
                         );
 
                         BigDecimal attendance = BigDecimal.ZERO;
-                        if(attendedSlots >= 0) {
-                            // Calculate attendance as a percentage
+                        if (attendedSlots >= 0) {
                             attendance = new BigDecimal(attendedSlots)
-                                    .divide(new BigDecimal(totalSlots), 2, RoundingMode.HALF_UP).multiply(new BigDecimal(10));
-                            // Add attendance value to the response
+                                    .divide(new BigDecimal(totalSlots), 2, RoundingMode.HALF_UP)
+                                    .multiply(new BigDecimal(10));
                             response.setAttendant(attendance);
                         } else {
-                            response.setAttendant(null); // No slots available
+                            response.setAttendant(null);
                         }
 
-                        if(response.getAttendant() == null || response.getAssignment() == null || markReport.getSoftskill() == null || markReport.getSkill() == null) {
+                        if (response.getAttendant() == null || response.getAssignment() == null || markReport.getSoftskill() == null || markReport.getSkill() == null) {
                             markReport.setFinal_mark(null);
                         } else {
-                            // Combine assignmentCompletion and attendance to calculate attitude
                             BigDecimal attitude = assignmentCompletion.add(attendance)
                                     .divide(new BigDecimal(2), 2, RoundingMode.HALF_UP);
-                            // set attitude for this markRp
                             markReport.setAttitude(attitude);
+
                             BigDecimal softSkillWeight = markReport.getSoftskill().multiply(new BigDecimal("0.3"));
                             BigDecimal skillWeight = markReport.getSkill().multiply(new BigDecimal("0.4"));
                             BigDecimal attitudeWeight = attitude.multiply(new BigDecimal("0.3"));
@@ -113,23 +125,21 @@ public class MarkReportServices {
                             markReport.setFinal_mark(finalMark);
                             response.setFinal_mark(markReport.getFinal_mark());
                         }
-                        // Save the updated mark report
+
                         markReportRepository.save(markReport);
                     } else {
                         markReport.setAttitude(null);
                         markReport.setFinal_mark(null);
                         markReportRepository.save(markReport);
-                        response.setAttendant(null); // No slots available
+                        response.setAttendant(null);
                         response.setAttitude(markReport.getAttitude());
                         response.setFinal_mark(markReport.getFinal_mark());
                     }
-                    if(response.getAttendant() == null || response.getAssignment() == null){
-                        markReport.setAttitude(null);
-                    }
-                        response.setAttitude(markReport.getAttitude()); // Set attitude in db
-                        response.setFinal_mark(markReport.getFinal_mark());
-                        response.setComment(markReport.getComment());
-                        return response;
+
+                    response.setAttitude(markReport.getAttitude());
+                    response.setFinal_mark(markReport.getFinal_mark());
+                    response.setComment(markReport.getComment());
+                    return response;
 
                 })
                 .filter(Objects::nonNull) // Filter out null responses
@@ -184,96 +194,8 @@ public class MarkReportServices {
 
     public MarkReportResponse getMarkReportById(int markRpId) {
         MarkReport markReport = markReportRepository.findById(markRpId);
-
         if (markReport != null) {
-            Class clas = listRepository.getClassByStudentId(markReport.getStudent().getId());
-            String className = clas.getName();
-            String semester = semesterRepository.findSemesterByClassId(clas.getId()).getName();
-
-            MarkReportResponse response = new MarkReportResponse();
-            response.setSemester(semester);
-            response.setId(markReport.getId());
-            response.setStudentName(markReport.getStudent().getFullname());
-            response.setStudentClass(className);
-            response.setComment(markReport.getComment());
-            response.setSoftskill(markReport.getSoftskill());
-            response.setAvg_exam_mark(markReport.getAvg_exam_mark());
-            response.setMiddle_exam(markReport.getMiddle_exam());
-            response.setFinal_exam(markReport.getFinal_exam());
-            response.setScriptPresentation(markReport.getScript_presentation()); // Thêm
-            response.setPresentation(markReport.getPresentation()); // Thêm
-            response.setSkill(markReport.getSkill());
-
-            // Calculate attitude
-            BigDecimal assignmentCompletion = BigDecimal.ZERO;
-            int totalAssignments = assignmentStudentRepository.countByStudentId(markReport.getStudent().getId());
-            if(totalAssignments > 0){
-                int totalSubmittedAssignments = studentAssignmentRepository.countStudentAssignmentsWithValidMark(markReport.getStudent().getId(), StudentAssignment.Status.MARKED);
-                if (totalSubmittedAssignments >= 0) {
-                    assignmentCompletion = new BigDecimal(totalSubmittedAssignments)
-                            .divide(new BigDecimal(totalAssignments), 2, RoundingMode.HALF_UP)
-                            .multiply(new BigDecimal(10));
-                    response.setAssignment(assignmentCompletion);
-                } else {
-                    response.setAssignment(null);
-                }
-            } else {
-                response.setAssignment(null); // No assignments available
-            }
-
-            int totalSlots = attendantRepository.countByStudentId(markReport.getStudent().getId());
-
-            if (totalSlots > 0) {
-                // Count attended slots where the student status is 'Present'
-                int attendedSlots = attendantRepository.countByStudentIdAndStatus(
-                        markReport.getStudent().getId(),
-                        Attendant.Status.PRESENT // Assuming Attendant.Status is an enum
-                );
-
-                BigDecimal attendance = BigDecimal.ZERO;
-                if(attendedSlots >= 0) {
-                    // Calculate attendance as a percentage
-                    attendance = new BigDecimal(attendedSlots)
-                            .divide(new BigDecimal(totalSlots), 2, RoundingMode.HALF_UP).multiply(new BigDecimal(10));
-                    // Add attendance value to the response
-                    response.setAttendant(attendance);
-                } else {
-                    response.setAttendant(null); // No slots available
-                }
-
-                if(response.getAttendant() == null || response.getAssignment() == null || markReport.getSoftskill() == null || markReport.getSkill() == null) {
-                    markReport.setFinal_mark(null);
-                } else {
-                    // Combine assignmentCompletion and attendance to calculate attitude
-                    BigDecimal attitude = assignmentCompletion.add(attendance)
-                            .divide(new BigDecimal(2), 2, RoundingMode.HALF_UP);
-                    // set attitude for this markRp
-                    markReport.setAttitude(attitude);
-                    BigDecimal softSkillWeight = markReport.getSoftskill().multiply(new BigDecimal("0.3"));
-                    BigDecimal skillWeight = markReport.getSkill().multiply(new BigDecimal("0.4"));
-                    BigDecimal attitudeWeight = attitude.multiply(new BigDecimal("0.3"));
-                    BigDecimal finalMark = softSkillWeight.add(skillWeight).add(attitudeWeight);
-
-                    markReport.setFinal_mark(finalMark);
-                    response.setFinal_mark(markReport.getFinal_mark());
-                }
-                // Save the updated mark report
-                markReportRepository.save(markReport);
-            }else {
-                markReport.setAttitude(null);
-                markReport.setFinal_mark(null);
-                markReportRepository.save(markReport);
-                response.setAttendant(null); // No slots available
-                response.setAttitude(markReport.getAttitude());
-                response.setFinal_mark(markReport.getFinal_mark());
-            }
-            if(response.getAttendant() == null || response.getAssignment() == null){
-                markReport.setAttitude(null);
-            }
-            response.setAttitude(markReport.getAttitude()); // Set attitude in db
-            response.setFinal_mark(markReport.getFinal_mark());
-            response.setComment(markReport.getComment());
-            return response;
+            return buildMarkReportResponse(markReport);
         } else {
             throw new NoSuchElementException("Mark report not found");
         }
@@ -281,98 +203,108 @@ public class MarkReportServices {
 
     public MarkReportResponse getMarkReportByStudentId(int studentId) {
         MarkReport markReport = markReportRepository.findByStudentId(studentId);
-
-        if(markReport != null){
-            Class clas = listRepository.getClassByStudentId(markReport.getStudent().getId());
-            String className = clas.getName();
-            String semester = semesterRepository.findSemesterByClassId(clas.getId()).getName();
-            MarkReportResponse response = new MarkReportResponse();
-            response.setSemester(semester);
-            response.setId(markReport.getId());
-            response.setStudentName(markReport.getStudent().getFullname());
-            response.setStudentClass(className);
-            response.setComment(markReport.getComment());
-            response.setSoftskill(markReport.getSoftskill());
-            response.setAvg_exam_mark(markReport.getAvg_exam_mark());
-            response.setMiddle_exam(markReport.getMiddle_exam());
-            response.setFinal_exam(markReport.getFinal_exam());
-            response.setScriptPresentation(markReport.getScript_presentation()); // Thêm
-            response.setPresentation(markReport.getPresentation()); // Thêm
-            response.setSkill(markReport.getSkill());
-
-            // Calculate attitude
-            BigDecimal assignmentCompletion = BigDecimal.ZERO;
-            int totalAssignments = assignmentStudentRepository.countByStudentId(markReport.getStudent().getId());
-            if(totalAssignments > 0){
-                int totalSubmittedAssignments = studentAssignmentRepository.countStudentAssignmentsWithValidMark(markReport.getStudent().getId(), StudentAssignment.Status.MARKED);
-                if (totalSubmittedAssignments >= 0) {
-                    assignmentCompletion = new BigDecimal(totalSubmittedAssignments)
-                            .divide(new BigDecimal(totalAssignments), 2, RoundingMode.HALF_UP)
-                            .multiply(new BigDecimal(10));
-                    response.setAssignment(assignmentCompletion);
-                } else {
-                    response.setAssignment(null);
-                }
-            } else {
-                response.setAssignment(null); // No assignments available
-            }
-
-            int totalSlots = attendantRepository.countByStudentId(markReport.getStudent().getId());
-
-            if (totalSlots > 0) {
-                // Count attended slots where the student status is 'Present'
-                int attendedSlots = attendantRepository.countByStudentIdAndStatus(
-                        markReport.getStudent().getId(),
-                        Attendant.Status.PRESENT // Assuming Attendant.Status is an enum
-                );
-
-                BigDecimal attendance = BigDecimal.ZERO;
-                if(attendedSlots >= 0) {
-                    // Calculate attendance as a percentage
-                    attendance = new BigDecimal(attendedSlots)
-                            .divide(new BigDecimal(totalSlots), 2, RoundingMode.HALF_UP).multiply(new BigDecimal(10));
-                    // Add attendance value to the response
-                    response.setAttendant(attendance);
-                } else {
-                    response.setAttendant(null); // No slots available
-                }
-
-                if(response.getAttendant() == null || response.getAssignment() == null || markReport.getSoftskill() == null || markReport.getSkill() == null) {
-                    markReport.setFinal_mark(null);
-                } else {
-                    // Combine assignmentCompletion and attendance to calculate attitude
-                    BigDecimal attitude = assignmentCompletion.add(attendance)
-                            .divide(new BigDecimal(2), 2, RoundingMode.HALF_UP);
-                    // set attitude for this markRp
-                    markReport.setAttitude(attitude);
-                    BigDecimal softSkillWeight = markReport.getSoftskill().multiply(new BigDecimal("0.3"));
-                    BigDecimal skillWeight = markReport.getSkill().multiply(new BigDecimal("0.4"));
-                    BigDecimal attitudeWeight = attitude.multiply(new BigDecimal("0.3"));
-                    BigDecimal finalMark = softSkillWeight.add(skillWeight).add(attitudeWeight);
-
-                    markReport.setFinal_mark(finalMark);
-                    response.setFinal_mark(markReport.getFinal_mark());
-                }
-                // Save the updated mark report
-                markReportRepository.save(markReport);
-            }else {
-                markReport.setAttitude(null);
-                markReport.setFinal_mark(null);
-                markReportRepository.save(markReport);
-                response.setAttendant(null); // No slots available
-                response.setAttitude(markReport.getAttitude());
-                response.setFinal_mark(markReport.getFinal_mark());
-            }
-            if(response.getAttendant() == null || response.getAssignment() == null){
-                markReport.setAttitude(null);
-            }
-            response.setAttitude(markReport.getAttitude()); // Set attitude in db
-            response.setFinal_mark(markReport.getFinal_mark());
-            response.setComment(markReport.getComment());
-            return response;
+        if (markReport != null) {
+            return buildMarkReportResponse(markReport);
         } else {
             throw new NoSuchElementException("Mark report not found");
         }
+    }
+
+    // Helper method to build MarkReportResponse
+    private MarkReportResponse buildMarkReportResponse(MarkReport markReport) {
+        Class clas = listRepository.getClassByStudentId(markReport.getStudent().getId());
+        String className = clas.getName();
+        String semester = semesterRepository.findSemesterByClassId(clas.getId()).getName();
+        Date semesterEndDate = semesterRepository.findSemesterByClassId(clas.getId()).getEnd_time();
+        Date currentDate = new Date();
+
+
+        MarkReportResponse response = new MarkReportResponse();
+        response.setSemester(semester);
+        response.setId(markReport.getId());
+        response.setStudentName(markReport.getStudent().getFullname());
+        response.setStudentClass(className);
+        response.setComment(markReport.getComment());
+        response.setSoftskill(markReport.getSoftskill());
+        response.setAvg_exam_mark(markReport.getAvg_exam_mark());
+        response.setMiddle_exam(markReport.getMiddle_exam());
+        response.setFinal_exam(markReport.getFinal_exam());
+        response.setScriptPresentation(markReport.getScript_presentation());
+        response.setPresentation(markReport.getPresentation());
+        response.setSkill(markReport.getSkill());
+
+        // Calculate assignment completion
+        BigDecimal assignmentCompletion = BigDecimal.ZERO;
+        int totalAssignments = assignmentStudentRepository.countByStudentId(markReport.getStudent().getId());
+        if (totalAssignments > 0) {
+            int totalSubmittedAssignments = studentAssignmentRepository.countStudentAssignmentsWithValidMark(
+                    markReport.getStudent().getId(), StudentAssignment.Status.MARKED
+            );
+            if (totalSubmittedAssignments >= 0) {
+                assignmentCompletion = new BigDecimal(totalSubmittedAssignments)
+                        .divide(new BigDecimal(totalAssignments), 2, RoundingMode.HALF_UP)
+                        .multiply(new BigDecimal(10));
+                response.setAssignment(assignmentCompletion);
+            } else {
+                response.setAssignment(null);
+            }
+        } else {
+            response.setAssignment(null);
+        }
+
+        // Calculate attendance
+        int totalSlots = attendantRepository.countByStudentId(markReport.getStudent().getId());
+        if (totalSlots > 0) {
+            int attendedSlots = attendantRepository.countByStudentIdAndStatus(
+                    markReport.getStudent().getId(), Attendant.Status.PRESENT
+            );
+            BigDecimal attendance = BigDecimal.ZERO;
+            if (attendedSlots >= 0) {
+                attendance = new BigDecimal(attendedSlots)
+                        .divide(new BigDecimal(totalSlots), 2, RoundingMode.HALF_UP)
+                        .multiply(new BigDecimal(10));
+                response.setAttendant(attendance);
+            } else {
+                response.setAttendant(null);
+            }
+
+            // Calculate attitude and final mark
+            if (response.getAttendant() != null && response.getAssignment() != null
+                    && markReport.getSoftskill() != null && markReport.getSkill() != null) {
+                BigDecimal attitude = assignmentCompletion.add(attendance)
+                        .divide(new BigDecimal(2), 2, RoundingMode.HALF_UP);
+                markReport.setAttitude(attitude);
+
+                BigDecimal softSkillWeight = markReport.getSoftskill().multiply(new BigDecimal("0.3"));
+                BigDecimal skillWeight = markReport.getSkill().multiply(new BigDecimal("0.4"));
+                BigDecimal attitudeWeight = attitude.multiply(new BigDecimal("0.3"));
+                BigDecimal finalMark = softSkillWeight.add(skillWeight).add(attitudeWeight);
+
+                markReport.setFinal_mark(finalMark);
+                response.setFinal_mark(finalMark);
+            } else {
+                markReport.setFinal_mark(null);
+            }
+        } else {
+            response.setAttendant(null);
+            markReport.setAttitude(null);
+            markReport.setFinal_mark(null);
+        }
+
+        if (currentDate.before(semesterEndDate)) {
+            // If before semester end date, set assignment and attendant marks to null
+            response.setAssignment(null);
+            response.setAttendant(null);
+            response.setAttitude(null);
+            response.setFinal_mark(null);
+            return response;
+        }
+
+        // Save updated mark report
+        markReportRepository.save(markReport);
+        response.setAttitude(markReport.getAttitude());
+        response.setFinal_mark(markReport.getFinal_mark());
+        return response;
     }
 
 
