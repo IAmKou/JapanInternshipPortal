@@ -597,21 +597,28 @@
     function createForm() {
         const fileInput = document.querySelector('input[name="imgFile"]');
         const file = fileInput.files[0];
+        const errorContainer = fileInput.nextElementSibling.nextElementSibling; // Container thông báo lỗi ngay dưới input file
+
+        // Đặt lại thông báo lỗi
+        errorContainer.style.display = 'none';
+        errorContainer.textContent = '';
 
         // Kiểm tra nếu có file
         if (file) {
             const validFileTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/jpeg', 'image/png', 'image/gif'];
-            const maxFileSize = 5 * 1024 * 1024; // 5 MB
+            const maxFileSize = 125 * 1024 * 1024; // 5 MB
 
             // Kiểm tra loại file
             if (!validFileTypes.includes(file.type)) {
-                showError('Only PDF, DOCX, or image files are allowed.');
+                errorContainer.textContent = 'Only PDF, DOCX, or image files are allowed.';
+                errorContainer.style.display = 'block'; // Hiển thị lỗi
                 return;
             }
 
             // Kiểm tra dung lượng file
             if (file.size > maxFileSize) {
-                showError('File size must be less than 5MB.');
+                errorContainer.textContent = 'File size must be less than 5MB.';
+                errorContainer.style.display = 'block'; // Hiển thị lỗi
                 return;
             }
 
@@ -620,13 +627,17 @@
             const contentHTML = quill.root.innerHTML.trim();  // Lấy nội dung từ Quill
 
             if (!contentHTML) {
-                showError('Content is required.');  // Hiển thị thông báo lỗi thông qua Error Modal
-                return;  // Dừng việc gửi form nếu không có nội dung
+                const contentError = document.querySelector('div.error-message[style]');
+                if (contentError) {
+                    contentError.textContent = 'Content is required.';
+                    contentError.style.display = 'block';
+                }
+                return;
             }
 
             const textarea = document.querySelector('textarea[name="content"]');
             if (textarea) {
-                textarea.value = contentHTML;  // Gán HTML vào textarea
+                textarea.value = contentHTML; // Gán HTML vào textarea
             } else {
                 console.error('Textarea with name="content" not found!');
             }
@@ -636,9 +647,11 @@
             // Gọi thông báo thành công
             showSuccess('Material created successfully!');
         } else {
-            showError('Please choose a file to upload.');
+            errorContainer.textContent = 'Please choose a file to upload.';
+            errorContainer.style.display = 'block'; // Hiển thị lỗi
         }
     }
+
 
     function showError(message) {
         const errorModal = new bootstrap.Modal(document.getElementById('long-modal')); // Tạo modal
