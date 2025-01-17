@@ -422,6 +422,19 @@
             border-color: #28a745 !important; /* Màu border khi hover */
         }
 
+        input[name="searchDate"]:focus {
+            border-color: #28a745 !important; /* Giữ màu đỏ khi focus */
+            box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
+        }
+        input[name="searchDate"] {
+            border: 2px solid #007bff !important; /* Sử dụng !important để đảm bảo kiểu này ghi đè kiểu mặc định */
+            border-radius: 5px; /* Thêm góc bo tròn nếu cần */
+        }
+
+        input[name="searchDate"]:hover {
+            border-color: #28a745 !important; /* Màu border khi hover */
+        }
+
         input[name="username"]:focus {
             border-color: #28a745 !important; /* Giữ màu đỏ khi focus */
             box-shadow: 0 0 5px rgba(255, 99, 71, 0.5); /* Thêm hiệu ứng bóng khi focus */
@@ -674,7 +687,7 @@
                         <!-- Card Body -->
                         <form id="searchForm" style="padding-bottom: 20px; padding-top: 10px;">
                             <div class="row mb-3 align-items-center gx-3">
-                                <!-- Search Input -->
+                                <!-- Tìm kiếm tên phòng -->
                                 <div class="col-lg-3">
                                     <div class="input-group shadow-lg rounded">
                                         <input
@@ -687,6 +700,8 @@
                                         />
                                     </div>
                                 </div>
+
+                                <!-- Tìm kiếm theo ngày -->
                                 <div class="col-lg-3">
                                     <div class="input-group shadow-lg rounded">
                                         <input
@@ -695,12 +710,12 @@
                                                 name="searchDate"
                                                 style="font-size: 1.5rem; padding: 10px 15px;"
                                                 type="date"
-                                        placeholder="Search Date"
                                         />
+
                                     </div>
                                 </div>
 
-                                <!-- Filter Option và Dropdown -->
+                                <!-- Bộ lọc trạng thái -->
                                 <div class="col-lg-3 d-flex align-items-center">
                                     <div class="form-group d-flex flex-grow-1 align-items-center" style="padding-top: 8px;">
                                         <div class="position-relative w-100">
@@ -712,16 +727,19 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Nút tìm kiếm -->
                                 <div class="col-lg-3 d-flex align-items-center">
-                                <button
-                                        class="btn btn-gradient-yellow rounded-end text-white fw-bold"
-                                        id="searchButton"
-                                        type="button">
-                                    <i class="fas fa-search me-2"></i> SEARCH
-                                </button>
+                                    <button
+                                            class="btn btn-gradient-yellow rounded-end text-white fw-bold"
+                                            id="searchButton"
+                                            type="button">
+                                        <i class="fas fa-search me-2"></i> SEARCH
+                                    </button>
                                 </div>
                             </div>
                         </form>
+
 
                         <div class="table-responsive">
                             <table class="table display data-table text-nowrap">
@@ -924,80 +942,67 @@
 
 <!-- fetch user -->
 <script>
-    const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-    const roleTranslations = {
-        "en": {
-            "ADMIN": "Admin",
-            "TEACHER": "Teacher",
-            "STUDENT": "Student"
-        },
-        "ja": {
-            "ADMIN": "管理者",
-            "TEACHER": "教師",
-            "STUDENT": "学生"
+    (async function fetchUserData() {
+        try {
+            const response = await fetch('/user-detail');
+            if (response.ok) {
+                const userData = await response.json();
+                sessionStorage.setItem('userDetails', JSON.stringify(userData));
+                console.log("User data stored in sessionStorage:", userData);
+
+
+                getUserDetails(userData);
+            } else {
+                console.error("Failed to fetch user details:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error fetching user details:", error);
         }
-    };
-    if (userDetails) {
-        const userFullNameElements = document.querySelectorAll('.userFullName');
-        const userRoleElements = document.querySelectorAll('.userRole');
+    })();
 
-        // Lấy ngôn ngữ hiện tại từ localStorage
-        const currentLanguage = localStorage.getItem('language') || 'en';  // Mặc định là 'en'
+    function getUserDetails(userDetails) {
+        if (userDetails) {
+            console.log("Setting user details:", userDetails);
 
-        // Hiển thị thông tin người dùng với tên và vai trò dịch theo ngôn ngữ hiện tại
-        const translatedRoleName = roleTranslations[currentLanguage][userDetails.roleName] || userDetails.roleName;
 
-        if (userDetails.roleName === "ADMIN") {
-            // Hiển thị tên đăng nhập và vai trò cho ADMIN
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.username;
+            document.querySelectorAll('.userFullName').forEach(element => {
+                element.textContent = userDetails.fullName || "Unknown Name";
             });
-            userRoleElements.forEach(element => {
-                element.textContent = translatedRoleName;
+            document.querySelectorAll('.userRole').forEach(element => {
+                element.textContent = userDetails.roleName || "Unknown Role";
             });
 
-            // Ẩn các mục của người dùng khác (giáo viên và học sinh) vì ADMIN không cần
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "none";
-        } else if (userDetails.roleName === "TEACHER") {
-            // Hiển thị tên đầy đủ và vai trò cho giáo viên
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = translatedRoleName;
+            const userIdElement = document.getElementById('userId');
+            if (userIdElement) {
+                userIdElement.value = userDetails.id || "";
+            }
+
+
+            const imgContainers = document.querySelectorAll('.img');
+            imgContainers.forEach(container => {
+                const imgElement = container.querySelector('img');
+                if (imgElement) {
+                    imgElement.src = userDetails.img
+                        ? `${userDetails.img}?v=${new Date().getTime()}`
+                        : '/path/to/default-passport.jpg';
+                    console.log("Image source set to:", imgElement.src);
+                } else {
+                    console.error("Image element not found in:", container);
+                }
             });
 
-            // Chỉ hiển thị mục của giáo viên, ẩn mục của học sinh
-            document.getElementById("teacher-view").style.display = "block";
-            document.getElementById("student-view").style.display = "none";
-            document.getElementById("student-view1").style.display = "none";
-        } else if (userDetails.roleName === "STUDENT") {
-            // Hiển thị tên đầy đủ và vai trò cho học sinh
-            userFullNameElements.forEach(element => {
-                element.textContent = userDetails.fullName;
-            });
-            userRoleElements.forEach(element => {
-                element.textContent = translatedRoleName;
-            });
-
-            // Chỉ hiển thị mục của học sinh
-            document.getElementById("teacher-view").style.display = "none";
-            document.getElementById("student-view").style.display = "block";
-            document.getElementById("student-view1").style.display = "block";
         } else {
-            console.warn("Role not recognized: ", userDetails.roleName);
+            console.error("User details not found in sessionStorage");
         }
-    } else {
-        console.error("User details not found in sessionStorage");
+
     }
 </script>
 
 
 <script>
     let currentPage = 1;
-    let pageSize = 10; // Mỗi trang sẽ hiển thị bao nhiêu mục
-    let allData = []; // Dữ liệu tổng quát từ API
+    let pageSize = 10; // Số mục hiển thị trên mỗi trang
+    let allData = []; // Dữ liệu từ API
     let filteredData = []; // Dữ liệu sau khi áp dụng bộ lọc và tìm kiếm
 
     async function fetchRoomAvailability(filters = {}) {
@@ -1008,44 +1013,54 @@
             const response = await fetch(`/room/getRoomAvailability?${queryParams}`);
             if (!response.ok) {
                 console.error("API Error:", response.status, response.statusText);
-                populateTable([]); // Populate table with no data if API fails
+                populateTable([]); // Hiển thị bảng trống nếu lỗi xảy ra
                 return;
             }
 
             allData = await response.json();
-            filteredData = applyFilters(allData, filters); // Apply filters after fetching data
+            filteredData = applyFilters(allData, filters);
             console.log("API Response Data:", allData);
 
-            updatePagination(Math.ceil(filteredData.length / pageSize)); // Update pagination
-            populateTable(filteredData); // Display filtered data
+            updatePagination(Math.ceil(filteredData.length / pageSize)); // Cập nhật phân trang
+            populateTable(filteredData); // Hiển thị dữ liệu
         } catch (error) {
             console.error("Fetch Error:", error);
-            populateTable([]); // Populate table with no data if an error occurs
+            populateTable([]); // Hiển thị bảng trống nếu lỗi xảy ra
         }
     }
 
-    // Lọc dữ liệu theo các bộ lọc và tìm kiếm
     function applyFilters(data, filters) {
+        // Áp dụng tìm kiếm theo tên phòng
         if (filters.roomName) {
             data = data.filter(item => item.roomName.toLowerCase().includes(filters.roomName.toLowerCase()));
         }
+        // Áp dụng tìm kiếm theo ngày
         if (filters.date) {
             data = data.filter(item => item.date && item.date.includes(filters.date));
         }
+        // Áp dụng bộ lọc trạng thái
         if (filters.status) {
             data = data.filter(item => item.status === filters.status);
         }
         return data;
     }
 
-    // Hiển thị bảng dữ liệu theo phân trang
+    function formatDate(dateString) {
+        if (!dateString) return ""; // Nếu không có ngày thì trả về chuỗi rỗng
+        const date = new Date(dateString); // Chuyển chuỗi thành đối tượng Date
+        const day = String(date.getDate()).padStart(2, '0'); // Lấy ngày, đảm bảo 2 chữ số
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Lấy tháng (bắt đầu từ 0)
+        const year = date.getFullYear(); // Lấy năm
+        return `${day}/${month}/${year}`; // Kết hợp theo định dạng dd/mm/yyyy
+    }
+
     function populateTable(data) {
         const tableBody = document.querySelector("tbody");
-        tableBody.innerHTML = ""; // Xóa các dòng cũ trước khi thêm mới
+        tableBody.innerHTML = ""; // Xóa nội dung cũ
 
         const startIndex = (currentPage - 1) * pageSize;
         const endIndex = startIndex + pageSize;
-        const paginatedData = data.slice(startIndex, endIndex); // Chỉ lấy dữ liệu của trang hiện tại
+        const paginatedData = data.slice(startIndex, endIndex);
 
         if (paginatedData.length === 0) {
             tableBody.innerHTML = `<tr><td colspan="4">No data available</td></tr>`;
@@ -1053,64 +1068,67 @@
         }
 
         paginatedData.forEach((item, index) => {
+            const formattedDate = formatDate(item.date); // Định dạng ngày
+            const statusColor = item.status === "Available" ? "green" : "red"; // Xác định màu sắc dựa trên status
             const row = `
-        <tr>
-            <td>${startIndex + index + 1}</td>
-            <td>${item.roomName}</td>
-            <td>${item.date}</td>
-            <td>${item.status}</td>
-        </tr>`;
+            <tr>
+                <td>${startIndex + index + 1}</td>
+                <td>${item.roomName}</td>
+                <td>${formattedDate}</td>
+                <td style="color: ${statusColor}; font-weight: bold;">${item.status}</td>
+            </tr>`;
             tableBody.insertAdjacentHTML("beforeend", row);
         });
     }
 
-    // Cập nhật các nút phân trang
+
     function updatePagination(totalPages) {
         const pagination = document.querySelector(".pagination");
         pagination.innerHTML = `
-    <li class="page-item previous"><a class="page-link" href="#" onclick="changePage(currentPage - 1)"><</a></li>
-    ${generatePaginationButtons(totalPages)}
-    <li class="page-item next"><a class="page-link" href="#" onclick="changePage(currentPage + 1)">></a></li>
+        <li class="page-item previous"><a class="page-link" href="#" onclick="changePage(currentPage - 1)"><</a></li>
+        <li class="page-item next"><a class="page-link" href="#" onclick="changePage(currentPage + 1)">></a></li>
     `;
     }
 
-    // Tạo các nút phân trang (Số trang)
     function generatePaginationButtons(totalPages) {
         let buttons = '';
         for (let i = 1; i <= totalPages; i++) {
             buttons += `<li class="page-item ${i === currentPage ? 'active' : ''}">
-                    <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
-                </li>`;
+                        <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                    </li>`;
         }
         return buttons;
     }
 
-    // Chuyển sang trang khác
     function changePage(page) {
-        if (page < 1 || page > Math.ceil(filteredData.length / pageSize)) return; // Prevent invalid pages
+        if (page < 1 || page > Math.ceil(filteredData.length / pageSize)) return;
         currentPage = page;
-        populateTable(filteredData); // Hiển thị dữ liệu của trang mới
-        updatePagination(Math.ceil(filteredData.length / pageSize)); // Cập nhật lại phân trang
+        populateTable(filteredData);
+        updatePagination(Math.ceil(filteredData.length / pageSize));
     }
 
-    // Xử lý tìm kiếm
     function handleSearch() {
         const roomName = document.getElementById("searchInput").value.trim();
-        const date = document.getElementById("searchDate").value.trim(); // Use a dedicated date input
-        const status = document.getElementById("filterSelect").value;
+        const date = document.getElementById("searchDate").value.trim();
 
-        const filters = {};
+        const filters = { status: document.getElementById("filterSelect").value }; // Luôn có giá trị `status`
         if (roomName) filters.roomName = roomName;
-        if (date) filters.date = date; // Include date only if it exists
-        if (status) filters.status = status;
+        if (date) filters.date = date;
 
         console.log("Search Filters:", filters);
-        fetchRoomAvailability(filters); // Fetch with updated filters
+        fetchRoomAvailability(filters);
     }
 
-    // Các sự kiện gắn với các nút
+    function handleFilterChange() {
+        const status = document.getElementById("filterSelect").value;
+        const filters = { status };
+
+        console.log("Status Filter Changed:", status);
+        fetchRoomAvailability(filters); // Chỉ áp dụng trạng thái
+    }
+
     document.getElementById("searchButton").addEventListener("click", handleSearch);
-    document.getElementById("filterSelect").addEventListener("change", handleFilter);
+    document.getElementById("filterSelect").addEventListener("change", handleFilterChange);
 
     fetchRoomAvailability();
 
