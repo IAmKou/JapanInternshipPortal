@@ -21,7 +21,7 @@ public interface RoomAvailabilityRepository extends JpaRepository<RoomAvailabili
     @Query("SELECT new com.example.jip.dto.RoomAvailabilityDTO(r.id, r.name, ra.date, ra.status) " +
             "FROM RoomAvailability ra " +
             "JOIN ra.room r " +
-            "WHERE (:roomName IS NULL OR r.name = :roomName) " +
+            "WHERE (:roomName IS NULL OR r.name LIKE %:roomName%) " +
             "AND (:date IS NULL OR ra.date = :date) " +
             "AND (:status IS NULL OR ra.status = :status)")
     List<RoomAvailabilityDTO> findRoomAvailability(@Param("roomName") String roomName,
