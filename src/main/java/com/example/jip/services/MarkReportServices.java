@@ -61,6 +61,7 @@ public class MarkReportServices {
                     response.setScriptPresentation(markReport.getScript_presentation());
                     response.setPresentation(markReport.getPresentation());
                     response.setSkill(markReport.getSkill());
+                    response.setComment(markReport.getComment());
 
                     if (currentDate.before(semesterEndDate)) {
                         // If before semester end date, set assignment and attendant marks to null

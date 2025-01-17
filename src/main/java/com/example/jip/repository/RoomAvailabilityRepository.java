@@ -2,6 +2,7 @@ package com.example.jip.repository;
 
 import com.example.jip.dto.RoomAvailabilityDTO;
 import com.example.jip.entity.Room;
+import com.example.jip.entity.Class;
 import com.example.jip.entity.RoomAvailability;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,5 +28,21 @@ public interface RoomAvailabilityRepository extends JpaRepository<RoomAvailabili
     List<RoomAvailabilityDTO> findRoomAvailability(@Param("roomName") String roomName,
                                                    @Param("date") Date date,
                                                    @Param("status") RoomAvailability.Status status);
-    List<RoomAvailability> findByDateBetween(Date startDate, Date endDate);
+    @Query("""
+       SELECT ra
+       FROM RoomAvailability ra
+       LEFT JOIN ra.schedule s
+       WHERE (s.semester.id = :semesterId OR ra.schedule IS NULL)
+       AND ra.date BETWEEN :startDate AND :endDate
+       """)
+    List<RoomAvailability> findBySemesterIdIncludingUnlinked(
+            @Param("semesterId") int semesterId,
+            @Param("startDate") Date startDate,
+            @Param("endDate") Date endDate
+    );
+
+
+
+
+
 }
