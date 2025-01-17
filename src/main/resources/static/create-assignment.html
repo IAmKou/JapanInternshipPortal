@@ -396,7 +396,8 @@
 
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label for="description" style="color: #007bff; font-weight: bold;">Assignment Title <span style="color: red !important;">*</span></label>
-                                <input type="text"  class="form-control" name="description" id="description" >
+                                <input type="text" class="form-control" name="description" id="description">
+                                <span class="error-message text-danger" id="description-error"></span>
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label for="created_date" style="color: #007bff; font-weight: bold;">Start Date <span style="color: red !important;">*</span></label>
@@ -409,6 +410,7 @@
                             <div class="col-xl-6 col-lg-12 col-12 form-group">
                                 <label for="content" style="color: #007bff; font-weight: bold;">Description <span style="color: red !important;">*</span></label>
                                 <div id="content" class="form-control" style="height: 200px;"></div>
+                                <span class="error-message text-danger" id="content-error"></span>
                             </div>
                             <div class="col-xl-12 col-lg-24 col-12 form-group">
                                 <label  for="class_id" style="color: #007bff; font-weight: bold;">Select Class:</label>
@@ -649,7 +651,19 @@
             const description = document.getElementById('description').value.trim();
 
             if (!description) {
-                showErrorModal('Title is required.');
+                document.getElementById('description-error').textContent = 'Title is required.';
+                return;
+            }
+            if (description.length > 100) {
+                document.getElementById('description-error').textContent = 'Title cannot exceed 100 characters.';
+                return;
+            }
+            if (!content || content === '<p><br></p>') {
+                document.getElementById('content-error').textContent = 'Description is required.';
+                return;
+            }
+            if (content.length > 255) {
+                document.getElementById('content-error').textContent = 'Description cannot exceed 255 characters.';
                 return;
             }
 
