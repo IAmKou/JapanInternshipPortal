@@ -220,6 +220,10 @@
                         </ul>
                     </li>
                     <li class="nav-item">
+                        <a href="class-list-student.html" class="nav-link" onclick="toSchedule();"><i
+                                class="flaticon-shopping-list"></i><span>Class</span></a>
+                    </li>
+                    <li class="nav-item">
                         <a href="javascript:void(0);" class="nav-link"><i class="flaticon-shopping-list"></i><span>Personal Mark Report</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
@@ -239,12 +243,11 @@
                         <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Application</span></a>
                         <ul class="nav sub-group-menu">
                             <li class="nav-item">
-                                <a href="Send-application.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
+                                <a href="Send-application-student.html" class="nav-link"><i class="fas fa-angle-right"></i>Send
                                     application</a>
                             </li>
-
                             <li class="nav-item">
-                                <a href="View-my-application.html" class="nav-link"><i class="fas fa-angle-right"></i>My
+                                <a href="View-my-application-student.html" class="nav-link"><i class="fas fa-angle-right"></i>My
                                     application</a>
                             </li>
                         </ul>
@@ -299,6 +302,37 @@
     </div>
     <!-- Page Area End Here -->
 </div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-success" id="successModalLabel">
+                    <i class="fas fa-check-circle"></i> Success
+                </h5>
+            </div>
+            <div class="modal-body text-center">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-danger" id="errorModalLabel">
+                    <i class="fas fa-times-circle"></i> Error
+                </h5>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const tableBody = document.querySelector('.table tbody');
