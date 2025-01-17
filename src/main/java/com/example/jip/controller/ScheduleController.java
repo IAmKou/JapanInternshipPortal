@@ -182,21 +182,27 @@ public class ScheduleController {
             Class clasz = classRepository.findById(classId)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid Class ID: " + classId));
 
-            // Process each schedule
             for (ScheduleDTO scheduleDTO : schedules) {
                 try {
                     LocalDate localDate = LocalDate.parse(scheduleDTO.getDate()).plusDays(1);
                     java.sql.Date sqlDate = Date.valueOf(localDate);
 
-                    Schedule draftSchedule = null;
+                    // Validate if the class already has a schedule on the given date
+                    boolean isScheduleExists = scheduleRepository.existsByClaszAndDate(clasz, sqlDate);
+                    if (isScheduleExists) {
+                        return ResponseEntity.badRequest().body(
+                                "Class " + clasz.getName() + " already has a schedule "
+                        );
+                    }
 
                     // Check if the draft exists and retrieve it
+                    Schedule draftSchedule = null;
                     if (scheduleDTO.getId() != null) {
                         draftSchedule = scheduleRepository.findById(scheduleDTO.getId())
                                 .orElseThrow(() -> new IllegalArgumentException("Invalid Schedule ID: " + scheduleDTO.getId()));
                     }
 
-                    // Clone the draft schedule or create a new schedule for publishing
+                    // Create or clone the schedule
                     Schedule publishedSchedule = new Schedule();
                     publishedSchedule.setSemester(semester);
                     publishedSchedule.setClasz(clasz);
@@ -207,10 +213,10 @@ public class ScheduleController {
                     publishedSchedule.setRoom(scheduleDTO.getRoom());
                     publishedSchedule.setStatus(Schedule.status.Published);
 
-                    // Save the new published schedule
+                    // Save the schedule
                     scheduleRepository.save(publishedSchedule);
 
-                    // Optionally handle room availability and other related logic
+                    // Handle room availability and create attendants
                     if (scheduleDTO.getRoom() != null) {
                         Room availableRoom = roomRepository
                                 .findFirstAvailableRoomByStatusAndDate(String.valueOf(RoomAvailability.Status.Available), sqlDate)
@@ -222,11 +228,10 @@ public class ScheduleController {
                             roomAvailability.setClasz(clasz);
                             roomAvailabilityRepository.save(roomAvailability);
                         });
-                        createAttendantsForSchedule(publishedSchedule,scheduleDTO.getStart(),scheduleDTO.getEnd());
+                        createAttendantsForSchedule(publishedSchedule, scheduleDTO.getStart(), scheduleDTO.getEnd());
                     }
 
                 } catch (Exception ex) {
-                    // Log and continue
                     System.out.println("Error processing schedule: " + scheduleDTO + ". Error: " + ex.getMessage());
                     continue;
                 }
@@ -244,6 +249,7 @@ public class ScheduleController {
             ));
         }
     }
+
 
 
     private void createAttendantsForSchedule(Schedule schedule, Time startTime, Time endTime) {
