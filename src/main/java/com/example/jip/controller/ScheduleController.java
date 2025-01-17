@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
+import java.util.concurrent.ExecutorService;
+
 
 @Slf4j
 @RestController
@@ -49,6 +51,9 @@ public class ScheduleController {
 
     @Autowired
     private EmailServices emailServices;
+
+    private final ExecutorService executorService = Executors.newFixedThreadPool(10); // Thread pool with 10 threads
+
 
     @DeleteMapping("/delete/{id}")
     public boolean deleteSchedule(@PathVariable int id) {
@@ -110,8 +115,8 @@ public class ScheduleController {
 
 
                 scheduleRepository.save(schedule);
-
-
+                createAttendantsForSchedule(schedule);
+                sendScheduleUpdateNotifications(clasz, sqlDate);
             }
 
             return ResponseEntity.ok(Map.of(
@@ -126,6 +131,42 @@ public class ScheduleController {
             ));
         }
     }
+
+    private void sendScheduleUpdateNotifications(Class clasz, Date date) {
+        if (clasz != null) {
+            String teacherEmail = clasz.getTeacher().getEmail();
+            Set<String> studentEmails = clasz.getClassLists().stream()
+                    .map(list -> list.getStudent().getEmail())
+                    .collect(Collectors.toSet());
+
+            // Send email to the teacher
+            if (teacherEmail != null) {
+                executorService.submit(() -> {
+                    try {
+                        log.info("Sending schedule update email to teacher: {}", teacherEmail);
+                        emailServices.sendScheduleUpdate(teacherEmail, date);
+                        log.info("Email sent to teacher: {}", teacherEmail);
+                    } catch (Exception e) {
+                        log.error("Failed to send email to teacher: {}", teacherEmail, e);
+                    }
+                });
+            }
+
+            // Send emails to students concurrently
+            for (String email : studentEmails) {
+                executorService.submit(() -> {
+                    try {
+                        log.info("Sending schedule update email to student: {}", email);
+                        emailServices.sendScheduleUpdate(email, date);
+                        log.info("Email sent to student: {}", email);
+                    } catch (Exception e) {
+                        log.error("Failed to send email to student: {}", email, e);
+                    }
+                });
+            }
+        }
+    }
+
 
     @PostMapping("/savePublic")
     public ResponseEntity<?> savePublic(@RequestBody List<ScheduleDTO> schedules) {
@@ -345,12 +386,16 @@ public class ScheduleController {
                         .map(list -> list.getStudent().getEmail())
                         .collect(Collectors.toSet());
 
-                if (teacherEmail != null) {
-                    emailServices.sendScheduleUpdate(teacherEmail, existingSchedule.getDate());
-                }
+                log.info("Sending schedule update email to teacher: {}", teacherEmail);
+                emailServices.sendScheduleUpdate(teacherEmail, existingSchedule.getDate());
+                log.info("Email sent to teacher: {}", teacherEmail);
+
                 for (String email : studentEmails) {
+                    log.info("Sending schedule update email to student: {}", email);
                     emailServices.sendScheduleUpdate(email, existingSchedule.getDate());
+                    log.info("Email sent to student: {}", email);
                 }
+
             }
 
             return ResponseEntity.ok(Map.of("message", "Event updated successfully!"));
