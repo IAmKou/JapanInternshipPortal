@@ -671,14 +671,14 @@
   // Show success modal
   function showSuccessModal(message) {
     const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
-    document.querySelector('#success-modal .modal-body').innerHTML = `<p>${message}</p>`;
+    document.querySelector('#success-modal .modal-body').innerHTML = `<p style="font-size: 18px; font-weight: bold;">${message}</p>`;
     successModal.show();
   }
 
   // Show error modal
   function showErrorModal(message) {
     const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
-    document.querySelector('#long-modal .modal-body').innerHTML = `<p>${message}</p>`;
+    document.querySelector('#long-modal .modal-body').innerHTML = `<p style="font-size: 18px; font-weight: bold;">${message}</p>`;
     errorModal.show();
   }
 
@@ -917,7 +917,7 @@
       });
 
       if (response.ok) {
-        showSuccessModal("StudentAssignment updated successfully.");
+        showSuccessModal("Assignment's Submission updated successfully.");
         setTimeout(() => {
           window.location.href = '/list-submitted-assignments.html';
         }, 1500);

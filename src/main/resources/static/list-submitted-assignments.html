@@ -732,6 +732,11 @@
                 showSuccessModal('Assignment deleted successfully!');
                 fetchAndDisplaySubmittedAssignments();
                 closeDeleteConfirmModal();
+
+                // Refresh lại trang sau 2 giây
+                setTimeout(() => {
+                    location.reload(); // Refresh trang
+                }, 2000); // 2 giây
             } else if (response.status === 404) {
                 // Hiển thị modal lỗi và thông báo
                 showErrorModal('Assignment not found!');
