@@ -14,6 +14,7 @@ public class RoleInitializer {
 
     @PostConstruct
     public void initRoles() {
+        createRoleIfNotFound("ADMIN");
         createRoleIfNotFound("MANAGER");
         createRoleIfNotFound("STUDENT");
         createRoleIfNotFound("TEACHER");
