@@ -799,7 +799,7 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
     <td>${markrp.studentName}</td>
-    <td><a href="javascript:void(0);" onclick="showCommentModal('${markrp.comment}')">${truncatedComment}</a></td>
+    <td><a href="javascript:void(0);" onclick="showCommentModal('${markrp.comment ?? ' '}')">${truncatedComment}</a></td>
     <td>${markrp.avg_exam_mark ?? '-'}</td>
     <td>${markrp.middle_exam ?? '-'}</td>
     <td>${markrp.final_exam ?? '-'}</td>
