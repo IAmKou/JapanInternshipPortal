@@ -113,7 +113,7 @@ public class CreateAccountController {
                     .orElseThrow(() -> new RuntimeException("Role not found"));
 
             // Kiểm tra DOB nếu role là Student
-            if (role == 2 && (dob == null || dob.trim().isEmpty())) {
+            if (role == 3 && (dob == null || dob.trim().isEmpty())) {
                 return ResponseEntity.badRequest().body("Date of Birth is required for Student role");
             }
 

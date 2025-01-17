@@ -1431,7 +1431,7 @@
         const role = this.value;
         const dobContainer = document.getElementById('dobContainer');
 
-        if (role === '2') { // Role là Student
+        if (role === '3') { // Role là Student
             dobContainer.style.display = 'block'; // Hiển thị Date of Birth
         } else { // Role là Teacher hoặc Manager
             dobContainer.style.display = 'none'; // Ẩn Date of Birth
@@ -1443,7 +1443,7 @@
         const role = document.getElementById('role').value;
         const dobContainer = document.getElementById('dobContainer');
 
-        if (role === '2') {
+        if (role === '3') {
             dobContainer.style.display = 'block'; // Hiển thị Date of Birth
         } else {
             dobContainer.style.display = 'none'; // Ẩn Date of Birth
@@ -1464,7 +1464,7 @@
     });
     document.getElementById('accountForm').addEventListener('submit', function (event) {
         event.preventDefault();
-        form.reset();
+
 
         const formData = new FormData(this);
 
@@ -1525,7 +1525,7 @@
 
         // Kiểm tra ngày sinh chỉ khi role là Student
         const role = formData.get('role');
-        if (role === '2' && dob) {
+        if (role === '3' && dob) {
             const today = new Date();
             const birthYear = new Date(dob).getFullYear();  // Lấy năm sinh
             const currentYear = today.getFullYear();  // Lấy năm hiện tại
@@ -1534,7 +1534,7 @@
                 document.getElementById('DoB_error1').textContent = 'Must be at least 18 years old.';
                 isValid = false;
             }
-        } else if (role === '2' && !dob) {
+        } else if (role === '3' && !dob) {
             document.getElementById('DoB_error1').textContent = 'Date of Birth is required.';
             isValid = false;
         }
