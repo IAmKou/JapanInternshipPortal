@@ -754,8 +754,6 @@
 </footer>
 
 <script>
-
-
     // Function to show a modal with the full comment
     function showCommentModal(fullComment) {
         document.getElementById('comment-modal').querySelector('.modal-body').innerHTML = `<p>${fullComment}</p>`;
@@ -795,10 +793,10 @@
             const tableBody = document.getElementById('mark_list');
             tableBody.innerHTML = '';
             mark_reports.forEach(markrp => {
-                const truncatedComment = markrp.comment ? markrp.comment.substring(0, 10) + (markrp.comment.length > 10 ? '...' : '') : '-';
+                const truncatedComment = markrp.comment ? markrp.comment.substring(0, 10) + (markrp.comment.length > 10 ? '...' : '') : ' ';
                 const row = document.createElement('tr');
                 row.innerHTML = `
-    <td>${markrp.studentName}</td>
+    <td>${markrp.studentName ?? '-'}</td>
     <td><a href="javascript:void(0);" onclick="showCommentModal('${markrp.comment ?? ' '}')">${truncatedComment}</a></td>
     <td>${markrp.avg_exam_mark ?? '-'}</td>
     <td>${markrp.middle_exam ?? '-'}</td>
@@ -821,16 +819,6 @@
     }
     // Initialize the table with mark_reports on page load
     document.addEventListener('DOMContentLoaded', fetchAndDisplayMarks);
-
-    const viewClassButton = document.getElementById('viewGradesButton');
-    viewClassButton.addEventListener('click', toMarkClassManage);
-    function toMarkClassManage(){
-        if (!classId) {
-            console.error("classId is missing from the URL.");
-            return;
-        }
-        window.location.href=`/all-class-student.html?classId=${classId}`;
-    }
 </script>
 
 
@@ -913,19 +901,6 @@
             console.error("Teacher ID is missing or user details not found in sessionStorage");
         }
     }
-
-    function redirectSchedule() {
-        // Retrieve userDetails from sessionStorage
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-
-        if (userDetails && userDetails.teacherId) {
-            // Redirect to the appropriate URL with the teacherId
-            window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
-        } else {
-            console.error("Teacher ID is missing or user details not found in sessionStorage");
-        }
-    }
-
 </script>
 <!-- jquery-->
 <script src="js/jquery-3.3.1.min.js"></script>
