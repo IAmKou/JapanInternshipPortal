@@ -1489,11 +1489,7 @@
         let isValid = true;
 
         // Kiểm tra full name
-        const fullnameRegex = /^[A-Za-z\s]+$/;
-        if (!fullnameRegex.test(fullname)) {
-            document.getElementById('fullname_error1').textContent = 'Fullname cannot contain special characters or numbers.';
-            isValid = false;
-        } else if (fullname.length > 100) {
+         if (fullname.length > 100) {
             document.getElementById('fullname_error1').textContent = 'Fullname cannot exceed 100 characters.';
             isValid = false;
         }
