@@ -30,6 +30,41 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        #success-modal .modal-header {
+            background-color: #28a745; /* Màu nền của header */
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        #success-modal .modal-body {
+            font-size: 1.1rem;
+            padding: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #success-modal .modal-body .fas.fa-check-circle {
+            color: #28a745;
+        }
+
+        #success-modal .btn-success {
+            font-size: 1rem;
+            padding: 10px 20px;
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        #success-modal .btn-close {
+            color: white;
+        }
+
+        #success-modal .modal-body p {
+            font-size: 0.9rem;
+            color: #6c757d; /* Màu nhạt hơn cho mô tả */
+        }
+        .icon-green {
+            color: #28a745; /* Mã màu xanh lá cây */
+        }
         .d-none {
             display: none !important;
         }
@@ -476,7 +511,7 @@
 <div class="modal fade" id="confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog success-modal-content" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header border-0">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -484,10 +519,8 @@
 
             <div class="modal-body">
                 <div class="success-message">
-                    <div class="item-icon">
-                        <i class="fas fa-exclamation"></i>
-                    </div>
-                    <h3 class="item-title">You want to delete this class?</h3>
+
+                   <h3 class="item-title"> <i class="fas fa-trash-alt" style="color: red"></i>You want to delete this class?</h3>
                 </div>
             </div>
 
@@ -689,151 +722,191 @@
             successModalBody.textContent = message;
             $('#success-modal').modal('show');
         }
+        function showErrorModal(message) {
+            const errorModal = document.querySelector('#long-modal');
+            const errorModalBody = errorModal.querySelector('.modal-body');
+            errorModalBody.textContent = message;
+            $('#long-modal').modal('show');
+        }
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const tableBody = document.querySelector('.table tbody');
-            const confirmationModal = document.querySelector('#confirmation-modal');
-            const confirmButton = confirmationModal.querySelector('.footer-btn.bg-linkedin');
-            const updateClassBtn = document.querySelector('#update-class-btn');
 
-            let currentRoomId = null;
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tableBody = document.querySelector('.table tbody');
+        const confirmationModal = document.querySelector('#confirmation-modal');
+        const confirmButton = confirmationModal.querySelector('.footer-btn.bg-linkedin');
+        const updateClassBtn = document.querySelector('#update-class-btn');
 
-            // Fetch classes and populate the table
-            fetch("/room/get")
-                .then(response => {
-                    console.log('Response status:', response.status);
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch room data');
-                    }
-                    return response.json();
-                })
-                .then(room => {
-                    console.log('Fetched rooms:', room);
-                    room.forEach(room => {
-                        const row = document.createElement('tr');
+        let currentRoomId = null;
 
-                        // Semester Name cell
-                        const roomNameCell = document.createElement('td');
-                        roomNameCell.textContent = room.name;
-                        row.appendChild(roomNameCell);
-
-                        // Actions cell with dropdown
-                        const actionsCell = document.createElement('td');
-                        const dropdown = document.createElement('div');
-                        dropdown.className = 'dropdown';
-
-                        const dropdownToggle = document.createElement('a');
-                        dropdownToggle.className = 'dropdown-toggle';
-                        dropdownToggle.setAttribute('data-toggle', 'dropdown');
-                        dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
-                        dropdown.appendChild(dropdownToggle);
-
-                        const dropdownMenu = document.createElement('div');
-                        dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
-                        dropdownMenu.innerHTML = `
-                    <a class="dropdown-item delete-class" data-id="${room.id}">
-                        <i></i> Delete Room
-                    </a>
-                    <a class="dropdown-item update-class" data-id="${room.id}" data-name="${room.name}">
-                        <i></i> Update Room
-                    </a>
-                `;
-                        dropdown.appendChild(dropdownMenu);
-                        actionsCell.appendChild(dropdown);
-                        row.appendChild(actionsCell);
-                        tableBody.appendChild(row);
-                    });
-
-                    // Attach event listeners for delete buttons
-                    document.querySelectorAll('.delete-class').forEach(button => {
-                        button.addEventListener('click', function () {
-                            currentRoomId = this.getAttribute('data-id');
-                            $('#confirmation-modal').modal('show'); // Show modal
-                        });
-                    });
-
-                    // Attach event listeners for update buttons
-                    document.querySelectorAll('.update-class').forEach(button => {
-                        button.addEventListener('click', function () {
-                            const roomId = this.getAttribute('data-id');
-                            const roomName = this.getAttribute('data-name');
-
-                            // Populate modal fields
-                            document.getElementById('roomId').value = roomId;
-                            document.getElementById('roomName').value = roomName;
-
-                            // Show modal
-                            $('#update-modal').modal('show');
-                        });
-                    });
-                })
-                .catch(error => console.error('Error fetching room data:', error));
-
-            // Confirm delete action
-            confirmButton.addEventListener('click', function () {
-                if (currentRoomId) {
-                    fetch(`/room/delete/${currentRoomId}`, {
-                        method: 'DELETE',
-                    })
-                        .then(response => response.json()) // Parse JSON response
-                        .then(data => {
-                            if (response.ok) {
-                                showSuccessModal(data.message);
-                                location.reload(); // Refresh the page
-                            } else {
-                                showErrorModal(data.message);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error deleting room:', error);
-                            showErrorModal("An error occurred while communicating with the server.");
-                        });
+        // Fetch classes and populate the table
+        fetch("/room/get")
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch room data');
                 }
-            });
+                return response.json();
+            })
+            .then(rooms => {
+                console.log('Fetched rooms:', rooms);
 
-            // Handle class update via JSON
-            updateClassBtn.addEventListener('click', function () {
-                const roomId = document.getElementById('roomId').value;
-                const roomName = document.getElementById('roomName').value.trim(); // Trim input
+                // Lấy phần tử tbody
+                const tableBody = document.querySelector('.table tbody');
 
-                if (!roomName) {
-                    showErrorModal('Room name cannot be empty.');
-                    return;
-                }
+                // Xóa nội dung cũ trong bảng (nếu có)
+                tableBody.innerHTML = '';
 
-                fetch(`/room/update/${roomId}?roomName=${roomName}`, {
-                    method: 'PUT',
+                // Lặp qua từng phòng và tạo hàng
+                rooms.forEach((room, index) => {
+                    const row = document.createElement('tr');
+
+                    // Cột #
+                    const indexCell = document.createElement('td');
+                    indexCell.textContent = index + 1;
+                    row.appendChild(indexCell);
+
+                    // Cột Room Name
+                    const roomNameCell = document.createElement('td');
+                    roomNameCell.textContent = room.name;
+                    row.appendChild(roomNameCell);
+
+                    // Cột Actions
+                    const actionsCell = document.createElement('td');
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'dropdown';
+
+                    const dropdownToggle = document.createElement('a');
+                    dropdownToggle.className = 'dropdown-toggle';
+                    dropdownToggle.setAttribute('data-toggle', 'dropdown');
+                    dropdownToggle.innerHTML = '<span class="flaticon-more-button-of-three-dots"></span>';
+                    dropdown.appendChild(dropdownToggle);
+
+                    const dropdownMenu = document.createElement('div');
+                    dropdownMenu.className = 'dropdown-menu dropdown-menu-right';
+                    dropdownMenu.innerHTML = `
+                <a class="dropdown-item delete-class" data-id="${room.id}">
+    <i class="fas fa-trash-alt" style="color: red;"></i> Delete Room
+</a>
+<a class="dropdown-item update-class" data-id="${room.id}" data-name="${room.name}">
+    <i class="fas fa-edit" style="color: blue;"></i> Update Room
+</a>
+
+            `;
+                    dropdown.appendChild(dropdownMenu);
+                    actionsCell.appendChild(dropdown);
+                    row.appendChild(actionsCell);
+
+                    // Thêm hàng vào bảng
+                    tableBody.appendChild(row);
+                });
+
+
+
+                // Attach event listeners for delete buttons
+                document.querySelectorAll('.delete-class').forEach(button => {
+                    button.addEventListener('click', function () {
+                        currentRoomId = this.getAttribute('data-id');
+                        $('#confirmation-modal').modal('show'); // Show modal
+                    });
+                });
+
+                // Attach event listeners for update buttons
+                document.querySelectorAll('.update-class').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const roomId = this.getAttribute('data-id');
+                        const roomName = this.getAttribute('data-name');
+
+                        // Populate modal fields
+                        document.getElementById('roomId').value = roomId;
+                        document.getElementById('roomName').value = roomName;
+
+                        // Show modal
+                        $('#update-modal').modal('show');
+                    });
+                });
+            })
+            .catch(error => console.error('Error fetching room data:', error));
+
+        // Confirm delete action
+        confirmButton.addEventListener('click', function () {
+            if (currentRoomId) {
+                fetch(`/room/delete/${currentRoomId}`, {
+                    method: 'DELETE',
                 })
-                    .then(response => response.json()) // Parse JSON response
-                    .then(data => {
-                        if (data.status === "success") {
-                            showSuccessModal(data.message); // Show success message
-                            location.reload(); // Refresh the page
-                        } else if (data.status === "error") {
-                            showErrorModal(data.message); // Show error message
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json(); // Chỉ parse JSON nếu response OK
+                        } else {
+                            throw new Error("Failed to delete room. Server responded with an error.");
                         }
                     })
+                    .then(data => {
+                        // Ẩn modal confirm trước
+                        $('#confirmation-modal').modal('hide');
+
+                        // Hiển thị thông báo thành công sau khi modal đã ẩn
+                        setTimeout(() => {
+                            showSuccessModal(data.message);
+
+                            // Làm mới trang sau 2 giây
+                            setTimeout(() => {
+                                location.reload();
+                            }, 2000);
+                        }, 300); // Đảm bảo modal confirm ẩn hoàn toàn trước khi hiển thị thông báo
+                    })
                     .catch(error => {
-                        console.error('Error updating room:', error);
+                        console.error('Error deleting room:', error);
                         showErrorModal("An error occurred while communicating with the server.");
                     });
-            });
-
-            // Functions to show modals
-            function showSuccessModal(message) {
-                const successModal = document.querySelector('#success-modal');
-                const successModalBody = successModal.querySelector('.modal-body');
-                successModalBody.textContent = message;
-                $('#success-modal').modal('show');
-            }
-
-            function showErrorModal(message) {
-                const errorModal = document.querySelector('#long-modal');
-                const errorModalBody = errorModal.querySelector('.modal-body');
-                errorModalBody.textContent = message;
-                $('#long-modal').modal('show');
             }
         });
+
+
+        // Handle class update via JSON
+        updateClassBtn.addEventListener('click', function () {
+            const roomId = document.getElementById('roomId').value;
+            const roomName = document.getElementById('roomName').value.trim(); // Trim input
+
+            if (!roomName) {
+                showErrorModal('Room name cannot be empty.');
+                return;
+            }
+
+            fetch(`/room/update/${roomId}?roomName=${roomName}`, {
+                method: 'PUT',
+            })
+                .then(response => response.json()) // Parse JSON response
+                .then(data => {
+                    if (data.status === "success") {
+                        showSuccessModal(data.message); // Show success message
+                        location.reload(); // Refresh the page
+                    } else if (data.status === "error") {
+                        showErrorModal(data.message); // Show error message
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating room:', error);
+                    showErrorModal("An error occurred while communicating with the server.");
+                });
+        });
+
+        // Functions to show modals
+        function showSuccessModal(message) {
+            const successModal = document.querySelector('#success-modal');
+            const successModalBody = successModal.querySelector('.modal-body');
+            successModalBody.textContent = message;
+            $('#success-modal').modal('show');
+        }
+
+        function showErrorModal(message) {
+            const errorModal = document.querySelector('#long-modal');
+            const errorModalBody = errorModal.querySelector('.modal-body');
+            errorModalBody.textContent = message;
+            $('#long-modal').modal('show');
+        }
     });
 </script>
 <script>
