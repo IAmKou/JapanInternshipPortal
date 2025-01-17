@@ -31,6 +31,13 @@
     <script src='/dist/index.global.js'></script>
 
     <style>
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+
         .select2-container .select2-selection--single .select2-selection__rendered {
             color: #000 !important; /* Ghi đè màu chữ */
         }
@@ -368,20 +375,24 @@
                     <div class="form-group">
                         <label for="eventTitle">Title</label>
                         <input type="text" class="form-control" id="eventTitle" required/>
+                        <span class="error-message" id="error-eventTitle"></span>
                     </div>
                     <div class="form-group">
                         <label for="roomDropdown">Room</label>
                         <select class="form-control" id="roomDropdown" required>
                             <option value="">Select a room</option>
                         </select>
+                        <span class="error-message" id="error-roomDropdown"></span>
                     </div>
                     <div class="form-group">
                         <label for="start">Start Time</label>
                         <input type="time" name="start" id="start">
+                        <span class="error-message" id="error-start"></span>
                     </div>
                     <div class="form-group">
                         <label for="end">End Time</label>
                         <input type="time" name="end" id="end">
+                        <span class="error-message" id="error-end"></span>
                     </div>
                     <div class="form-group">
                         <label for="eventColor">Event Color</label>
@@ -821,6 +832,12 @@
 
                 // Save event on modal button click
                 document.getElementById('saveEventButton').onclick = function () {
+                    // Xóa các thông báo lỗi trước đó
+                    document.querySelectorAll('.error-message').forEach(function (el) {
+                        el.style.display = 'none';
+                        el.textContent = '';
+                    });
+
                     const title = document.getElementById('eventTitle').value.trim();
                     const roomDropdown = document.getElementById('roomDropdown');
                     const room = roomDropdown.value;
@@ -828,25 +845,63 @@
                     const start = document.getElementById('start').value;
                     const end = document.getElementById('end').value;
                     const clickedDate = document.getElementById('clicked-date').value; // Get the clicked date
+                    let hasError = false;
+
+                    // Quy định thời gian giới hạn
+                    const startLimit = "07:00"; // 7:30 AM
+                    const endLimit = "18:00";  // 6:00 PM
 
                     // Validation: Ensure title is provided
                     if (!title) {
-                        showErrorModal('Please provide a title.');
-                        return;
+                        const titleError = document.getElementById('error-eventTitle');
+                        titleError.textContent = 'Please provide a title.';
+                        titleError.style.display = 'block';
+                        hasError = true;
+                    }
+                    if (title.length > 100) {
+                        const titleError = document.getElementById('error-eventTitle');
+                        titleError.textContent = 'Title must not exceed 100 characters';
+                        titleError.style.display = 'block';
+                        hasError = true;
                     }
 
                     // Validation: Prevent test events on weekends
                     if (title.toLowerCase().includes('test') &&
                         (new Date(clickedDate).getDay() === 0 || new Date(clickedDate).getDay() === 6)) {
-                        showErrorModal('Test events cannot be scheduled on weekends.');
-                        return;
+                        const titleError = document.getElementById('error-eventTitle');
+                        titleError.textContent = 'Test events cannot be scheduled on weekends.';
+                        titleError.style.display = 'block';
+                        hasError = true;
                     }
+
+                    // Validation: Start time is required and after 7:30 AM
                     if (!start) {
-                        showErrorModal('Please provide start time.');
-                        return;
+                        const startError = document.getElementById('error-start');
+                        startError.textContent = 'Please provide start time.';
+                        startError.style.display = 'block';
+                        hasError = true;
+                    } else if (start < startLimit) {
+                        const startError = document.getElementById('error-start');
+                        startError.textContent = 'Start time must be after 7:00 AM.';
+                        startError.style.display = 'block';
+                        hasError = true;
                     }
+
+                    // Validation: End time is required and before 6:00 PM
                     if (!end) {
-                        showErrorModal('Please provide end time.');
+                        const endError = document.getElementById('error-end');
+                        endError.textContent = 'Please provide end time.';
+                        endError.style.display = 'block';
+                        hasError = true;
+                    } else if (end > endLimit) {
+                        const endError = document.getElementById('error-end');
+                        endError.textContent = 'End time must be before 6:00 PM.';
+                        endError.style.display = 'block';
+                        hasError = true;
+                    }
+
+                    // Ngăn gửi form nếu có lỗi
+                    if (hasError) {
                         return;
                     }
 
