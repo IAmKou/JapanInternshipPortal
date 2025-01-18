@@ -385,24 +385,8 @@ public class ScheduleController {
             scheduleRepository.save(existingSchedule);
 
             Class clas = existingSchedule.getClasz();
-            if (clas != null) {
-                String teacherEmail = clas.getTeacher().getEmail();
+            sendScheduleUpdateNotifications(clas, currentDate);
 
-                Set<String> studentEmails = clas.getClassLists().stream()
-                        .map(list -> list.getStudent().getEmail())
-                        .collect(Collectors.toSet());
-
-                log.info("Sending schedule update email to teacher: {}", teacherEmail);
-                emailServices.sendScheduleUpdate(teacherEmail, existingSchedule.getDate());
-                log.info("Email sent to teacher: {}", teacherEmail);
-
-                for (String email : studentEmails) {
-                    log.info("Sending schedule update email to student: {}", email);
-                    emailServices.sendScheduleUpdate(email, existingSchedule.getDate());
-                    log.info("Email sent to student: {}", email);
-                }
-
-            }
 
             return ResponseEntity.ok(Map.of("message", "Event updated successfully!"));
         } catch (Exception e) {
