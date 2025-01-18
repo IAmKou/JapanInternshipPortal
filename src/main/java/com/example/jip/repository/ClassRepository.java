@@ -26,7 +26,8 @@ public interface ClassRepository extends JpaRepository<Class,Integer> {
     @Query("SELECT c FROM Class c WHERE c.name = :name AND c.semester.id = :semesterId")
     Class findByNameAndSemesterId(@Param("name") String name, @Param("semesterId") int semesterId);
 
-
+    @Query("SELECT c FROM Class c WHERE c.semester.id = :semesterId")
+    List<Class> findBySemesterId(@Param("semesterId") int semesterId);
     @Modifying
     @Query("UPDATE Class c SET c.status = 'Active' WHERE c.semester.id = :semesterId")
     void activateClassesBySemester(int semesterId);
