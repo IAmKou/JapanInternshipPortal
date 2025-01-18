@@ -38,4 +38,8 @@ public interface SemesterRepository extends JpaRepository<Semester, Integer> {
 
     @Query("SELECT s FROM Semester s join Class c on s.id = c.semester.id WHERE c.id = :classId")
     Semester findSemesterByClassId(int classId);
+    @Query("SELECT s FROM Semester s join Class c on s.id = c.semester.id " +
+            "                        join Listt l on c.id = l.clas.id" +
+            "                        join MarkReport mr on mr.student.id = l.student.id WHERE mr.id = :markRpId")
+    Semester findSemesterByMarkRp(int markRpId);
 }

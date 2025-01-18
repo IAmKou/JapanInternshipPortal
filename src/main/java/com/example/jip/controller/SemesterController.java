@@ -176,4 +176,18 @@ public class SemesterController {
         return ResponseEntity.ok(semesterDTO);
     }
 
+    @GetMapping("/classSemester")
+    public ResponseEntity<SemesterDTO> getStudentSemester(@RequestParam("classId") int classId) {
+        Semester currentSemester = semesterRepository.findSemesterByClassId(classId);
+        SemesterDTO semesterDTO = new SemesterDTO(currentSemester);
+        return ResponseEntity.ok(semesterDTO);
+    }
+
+    @GetMapping("/markRpSemester")
+    public ResponseEntity<SemesterDTO> getCurrentSemester(@RequestParam("id") int markRpId) {
+        Semester currentSemester = semesterRepository.findSemesterByMarkRp(markRpId);
+        SemesterDTO semesterDTO = new SemesterDTO(currentSemester);
+        return ResponseEntity.ok(semesterDTO);
+    }
+
 }
