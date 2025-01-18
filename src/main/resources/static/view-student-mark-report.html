@@ -563,7 +563,7 @@
                             </tr>
                             </tbody>
                         </table>
-                        <button class="btn btn-gradient-yellow btn-search" onclick="updateMarkReport()" style="margin-top: 15px; margin-left: 8px">Update Report</button>
+                        <button class="btn btn-gradient-yellow btn-search" id="update-report-btn" onclick="updateMarkReport()" style="margin-top: 15px; margin-left: 8px">Update Report</button>
                     </div>
                 </div>
 
@@ -705,6 +705,7 @@
     }
 </script>
 <script>
+
     function showSuccessModal(message) {
         document.getElementById('success-modal').querySelector('.modal-body').innerHTML = `<p>${message}</p>`;
         const successModal = new bootstrap.Modal(document.getElementById('success-modal'));
@@ -717,6 +718,43 @@
         const errorModal = new bootstrap.Modal(document.getElementById('long-modal'));
         errorModal.show();
     }
+
+    const updateReportBtn = document.getElementById("update-report-btn");
+
+    let semesterStart, semesterEnd;
+
+    async function getCurrentSemester() {
+        try {
+            const response = await fetch('/semester/current');
+            if (!response.ok) throw new Error('Failed to fetch current semester.');
+
+            const semesterData = await response.json();
+            semesterStart = new Date(semesterData.semesterStart);
+            semesterEnd = new Date(semesterData.semesterEnd);
+            console.log("Current Semester Start:", semesterStart, "End:", semesterEnd);
+
+            // Check if the buttons should be disabled
+            checkAndDisableButtons();
+        } catch (error) {
+            console.error('Error fetching semester:', error);
+            showErrorModal('Unable to fetch current semester information. Please try again later.');
+        }
+    }
+
+    function checkAndDisableButtons() {
+        const currentDate = new Date();
+        if (currentDate > semesterEnd) {
+            updateReportBtn.disabled = true;
+            updateReportBtn.title = "The semester has ended. Updating the report is no longer allowed.";
+            updateReportBtn.classList.remove('btn-gradient-yellow');
+            updateReportBtn.classList.add('btn-gradient-gray');
+        } else {
+            updateReportBtn.disabled = false;
+        }
+    }
+
+    // Fetch the current semester when the page loads
+    window.addEventListener("DOMContentLoaded", getCurrentSemester);
 
     async function fetchMarkRpExamDetails() {
         const urlParams = new URLSearchParams(window.location.search);
