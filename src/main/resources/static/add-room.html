@@ -30,6 +30,23 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient-yellow {
+            background: linear-gradient(45deg, #ffcc00, #ff9900);
+            color: #fff;
+        }
         #success-modal .modal-header {
             background-color: #28a745; /* Màu nền của header */
             color: #fff;
@@ -496,7 +513,7 @@
                         </div>
                         <form id="update-class-form">
                             <input type="hidden" name="roomId" id="roomId" value="">
-                            <h5>Updating Room</h5>
+                            <h5 style="margin-left: 15px">Updating Room</h5>
                             <div class="form-group col-12">
                                 <input type="text" id="roomNam" name="name" class="form-control">
                             </div>
