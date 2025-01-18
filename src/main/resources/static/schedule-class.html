@@ -377,33 +377,59 @@
     </div>
 </div>
 
-<div id="success-modal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+<!-- Success Modal -->
+<div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"></h5>
-
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-success" id="successModalLabel">
+                    <i class="fas fa-check-circle"></i> Success
+                </h5>
             </div>
-            <div class="modal-body"></div>
-
+            <div class="modal-body text-center">
+                <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+            </div>
         </div>
     </div>
 </div>
 
-<div id="long-modal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+<!-- Error Modal -->
+<div aria-hidden="true" aria-labelledby="errorModalLabel" class="modal fade" id="long-modal" tabindex="-1">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"></h5>
-
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-danger" id="errorModalLabel">
+                    <i class="fas fa-times-circle"></i> Error
+                </h5>
             </div>
-            <div class="modal-body"></div>
-
+            <div class="modal-body">
+            </div>
         </div>
     </div>
 </div>
 
-
+<!-- Confirmation Modal -->
+<div aria-hidden="true" aria-labelledby="confirmationModalLabel" class="modal fade" id="confirmation-modal"
+     tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirm Deletion</h5>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this event?
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-secondary" data-dismiss="modal" style="font-size: 16px; width: 100px; padding: 6px 15px"
+                        type="button">Cancel
+                </button>
+                <button class="btn btn-danger footer-btn bg-linkedin" style="font-size: 16px; width: 100px;"
+                        type="button">Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- confirm modal -->
 <div class="modal fade" id="addEventModal" tabindex="-1" aria-hidden="true">
@@ -554,12 +580,20 @@
         function showModal(type, message) {
             const modalId = type === 'success' ? '#success-modal' : '#long-modal';
             const modalTitle = type === 'success' ? 'Success' : 'Error';
-            const modalIcon = type === 'success' ? 'fas fa-check-circle text-success' : 'fas fa-times-circle text-danger';
+            const modalIcon = type === 'success'
+                ? '<i class="fas fa-check-circle text-success"></i>'
+                : '<i class="fas fa-times-circle text-danger"></i>';
 
-            document.querySelector(`${modalId} .modal-title`).textContent = modalTitle;
+            // Update the modal title with icon
+            document.querySelector(`${modalId} .modal-title`).innerHTML = `${modalIcon} ${modalTitle}`;
+
+            // Update the modal body content
             document.querySelector(`${modalId} .modal-body`).innerHTML = `<p>${message}</p>`;
+
+            // Show the modal using Bootstrap's modal method
             $(modalId).modal('show');
         }
+
 
         fetch(`/semester/get/${semesterId}`)
             .then(response => {
