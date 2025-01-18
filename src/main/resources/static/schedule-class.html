@@ -678,6 +678,10 @@
                             showModal('error', 'You cannot update events in the past.');
                             return;
                         }
+                        if (info.event.extendedProps.isHoliday) {
+                            showErrorModal('You cannot delete holiday events.');
+                            return;
+                        }
 
                         const eventModal = document.getElementById('eventDetailModal');
                         document.getElementById('event-title').value = event.title;
