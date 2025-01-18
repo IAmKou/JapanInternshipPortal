@@ -1311,7 +1311,7 @@
             if (currentDate > semesterEnd) {
                 document.getElementById('assignmentPopup').style.display = 'none';
                 document.getElementById('overlay').style.display = 'none';
-                showErrorModal('The semester has already ended. Updates are disabled.');
+                showErrorModal(`The semester of this Assignment has already ended (${semesterStart.toDateString()} - ${semesterEnd.toDateString()}) . Updates are disabled.`);
                 return;
             }
 
@@ -1475,8 +1475,8 @@
         const classSelect = document.getElementById('class_id');
         const selectedClasses = Array.from(classSelect.selectedOptions).map((opt) => opt.value);
         if (selectedClasses.length === 0) {
-            setError('class_id', 'Please select at least one class.');
-            hasError = true;
+            showErrorModal('Please select at least one class.');
+            return;
         }
 
         // Check for file size
