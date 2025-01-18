@@ -827,8 +827,8 @@
         if (!content) {
             setError('content', 'Description cannot be empty');
             hasError = true;
-        } else if (content.length > 255) {
-            setError('content', 'Description cannot exceed 255 characters.');
+        } else if (content.length > 1000) {
+            setError('content', 'Description cannot exceed 1000 characters.');
             hasError = true;
         }
         if (hasError) {

@@ -899,8 +899,11 @@
                 .then(data => {
                     if (data.status === "success") {
                         showSuccessModal(data.message); // Show success message
-                        location.reload(); // Refresh the page
-                    } else if (data.status === "error") {
+                        setTimeout(() => {
+                            location.reload(); // Refresh the page after a delay
+                        }, 2000); // Delay in milliseconds (2 seconds)
+                    }
+                    else if (data.status === "error") {
                         showErrorModal(data.message); // Show error message
                     }
                 })
