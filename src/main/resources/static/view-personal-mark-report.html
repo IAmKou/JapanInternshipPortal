@@ -735,7 +735,7 @@
     function toSchedule() {
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
         if (userDetails && userDetails.studentId) {
-            window.location.href = `schedule-list-student.html?studentId=${userDetails.studentId}`;
+            window.location.href = `class-list-student.html?studentId=${userDetails.studentId}`;
         } else {
             console.error("Student ID missing or user details not found in sessionStorage");
         }
