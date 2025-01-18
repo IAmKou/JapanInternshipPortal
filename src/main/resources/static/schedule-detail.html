@@ -41,6 +41,7 @@
         .select2-container .select2-selection--single .select2-selection__rendered {
             color: #000 !important; /* Ghi đè màu chữ */
         }
+
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -72,6 +73,7 @@
             color: #ffcc00;
             text-decoration: none;
         }
+
         #wrap {
             display: flex;
             justify-content: flex-start;
@@ -124,6 +126,7 @@
             max-width: 100%;
             margin: 0 auto;
         }
+
         .btn {
             display: inline-block;
             padding: 10px 20px;
@@ -215,7 +218,8 @@
                 </li>
 
                 <li class="navbar-item dropdown header-notification">
-                    <a id="notification-bell" class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    <a id="notification-bell" class="navbar-nav-link dropdown-toggle" href="#" role="button"
+                       data-toggle="dropdown" aria-expanded="false">
                         <i class="far fa-bell"></i>
                         <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
                         <span id="notification-count">0</span>
@@ -231,15 +235,18 @@
                 </li>
 
                 <li class="navbar-item dropdown header-language">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
                         <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
-                            <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;"> English
+                            <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;">
+                            English
                         </a>
                         <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
-                            <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese" style="width: 20px; height: 15px;"> 日本語
+                            <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese"
+                                 style="width: 20px; height: 15px;"> 日本語
                         </a>
                     </div>
                 </li>
@@ -279,7 +286,8 @@
                                         class="flaticon-menu"></i><span>All Class</span></a>
                             </li>
                             <li class="nav-item">
-                                <a href="schedule-list.html" class="nav-link menu-active"><i class="flaticon-calendar"></i><span>Schedule List</span></a>
+                                <a href="schedule-list.html" class="nav-link menu-active"><i
+                                        class="flaticon-calendar"></i><span>Schedule List</span></a>
                             </li>
                         </ul>
                     </li>
@@ -313,7 +321,8 @@
                                 <a href="add-room.html" class="nav-link"><i class="fas fa-angle-right"></i>Add Room</a>
                             </li>
                             <li class="nav-item">
-                                <a href="list-room-availability.html" class="nav-link"><i class="fas fa-angle-right"></i>List Room Availability</a>
+                                <a href="list-room-availability.html" class="nav-link"><i
+                                        class="fas fa-angle-right"></i>List Room Availability</a>
                             </li>
                         </ul>
                     </li>
@@ -344,7 +353,8 @@
                                     <select id="class-dropdown" class="form-control select2">
                                         <option value="">Select a class</option>
                                     </select>
-                                    <button id="save-public" class="btn btn-gradient-yellow btn-search" style="margin-top: 15px">Save
+                                    <button id="save-public" class="btn btn-gradient-yellow btn-search"
+                                            style="margin-top: 15px">Save
                                     </button>
                                 </div>
                             </div>
@@ -840,14 +850,15 @@
                     const roomDropdown = document.getElementById('roomDropdown');
                     const room = roomDropdown.value;
                     const color = document.getElementById('eventColor').value;
-                    const start = document.getElementById('start').value;
-                    const end = document.getElementById('end').value;
+                    let start = document.getElementById('start').value;
+                    let end = document.getElementById('end').value;
                     const clickedDate = document.getElementById('clicked-date').value; // Get the clicked date
                     let hasError = false;
-
+                    if (start.length === 5) start += ':00';
+                    if (end.length === 5) end += ':00';
                     // Quy định thời gian giới hạn
-                    const startLimit = "07:00"; // 7:30 AM
-                    const endLimit = "18:00";  // 6:00 PM
+                    const startLimit = "07:00:00"; // 7:30 AM
+                    const endLimit = "18:00:00";  // 6:00 PM
 
                     // Validation: Ensure title is provided
                     if (!title) {
@@ -896,13 +907,19 @@
                         endError.textContent = 'End time must be before 6:00 PM.';
                         endError.style.display = 'block';
                         hasError = true;
+                    } else if (end <= start) {
+                        const endError = document.getElementById('error-end');
+                        endError.textContent = 'End time must be after start time.';
+                        endError.style.display = 'block';
+                        hasError = true;
                     }
 
                     // Ngăn gửi form nếu có lỗi
                     if (hasError) {
                         return;
                     }
-
+                    console.log("Start:", start); // Debug log
+                    console.log("End:", end);
                     // Prepare the new event
                     const newEvent = {
                         activity: title,
@@ -925,7 +942,7 @@
                         title,
                         start: clickedDate,
                         backgroundColor: color,
-                        extendedProps: { room, start, end },
+                        extendedProps: {room, start, end},
                     });
 
                     eventsToSave.push(newEvent);
@@ -953,22 +970,29 @@
                         return;
                     }
 
-                    const data = allEvents.map(event => ({
-                        id: event.id || null,
-                        activity: event.title,
-                        date: event.start.toISOString().split('T')[0],
-                        room: isPublic ? event.extendedProps.room : null,
-                        color: event.backgroundColor,
-                        semesterId: semesterId,
-                        classId: isPublic ? selectedClass : null,
-                        isHoliday: event.extendedProps.isHoliday || false,
-                        start: event.start,
-                        end: event.end,
-                    }));
+                    const data = allEvents.map(event => {
+                        const start = event.start ? event.start.toISOString() : null; // Convert start to ISO 8601
+                        const end = event.end ? event.end.toISOString() : null;       // Convert end to ISO 8601
+
+                        return {
+                            id: event.id || null,
+                            activity: event.title,
+                            date: start ? start.split('T')[0] : null, // Extract date from start
+                            room: isPublic ? event.extendedProps.room : null,
+                            color: event.backgroundColor,
+                            semesterId: semesterId,
+                            classId: isPublic ? selectedClass : null,
+                            isHoliday: event.extendedProps.isHoliday || false,
+                            start,
+                            end,
+                        };
+                    });
+
+                    console.log("Payload to be sent:", data); // Debug log
 
                     fetch(endpoint, {
                         method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(data),
                     })
                         .then(response => {
@@ -982,10 +1006,9 @@
                             eventsToSave = [];
                             calendar.refetchEvents();
 
-                            // Đặt timeout 2s trước khi chuyển hướng
                             setTimeout(() => {
                                 window.location.href = 'schedule-list.html';
-                            }, 2000); // 2000ms = 2s
+                            }, 2000);
                         })
                         .catch(error => {
                             console.error('Error saving events:', error);
@@ -1014,7 +1037,7 @@
 </script>
 <!-- fetch notification headbar-->
 <script>
-    window.onload = function() {
+    window.onload = function () {
         const notificationCount = document.getElementById('notification-count'); // Số lượng thông báo
         const notificationBell = document.getElementById('notification-bell'); // Biểu tượng chuông thông báo
 
