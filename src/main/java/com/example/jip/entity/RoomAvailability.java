@@ -34,7 +34,6 @@ public class RoomAvailability {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Schedule schedule;
 
     @ManyToOne(fetch = FetchType.LAZY)
