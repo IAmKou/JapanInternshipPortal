@@ -32,6 +32,11 @@
     <!-- Modernize js -->
     <script src="js/modernizr-3.6.0.min.js"></script>
     <style>
+        .col-4-xxxl {
+            width: 100%; /* Ensures the column takes up the full width */
+            max-width: 100%; /* Ensures it does not exceed the container width */
+            flex: 1; /* Allows the column to grow and fill available space */
+        }
         .pagination-controls {
             display: flex;
             justify-content: center;
@@ -315,7 +320,6 @@
             <div class="row">
                 <!-- Student Info Area Start Here -->
                 <div class="col-4-xxxl col-12">
-                    <div class="card dashboard-card-six">
                         <div class="card-body">
                             <div class="item-title">
                                 <h3>Notifications</h3>
@@ -329,29 +333,8 @@
                                 <button id="next-page" class="pagination-button">❯</button>
                             </div>
                         </div>
-                    </div>
                 </div>
                 <!-- Student Info Area End Here -->
-                <div class="col-8-xxxl col-12">
-                    <div class="row">
-                        <!-- Summery Area End Here -->
-                        <!-- Exam Result Area Start Here -->
-                        <div class="col-lg-12">
-                            <div class="card dashboard-card-eleven">
-                                <div class="card-body">
-                                    <div class="heading-layout1">
-
-                                        <div class="dropdown">
-
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Exam Result Area End Here -->
-                    </div>
-                </div>
             </div>
         </div>
     </div>

@@ -785,30 +785,48 @@
             // Clear existing options
             classDiv.innerHTML = '';
 
-            // Populate checkboxes
+            // Check if no classes are available
+            if (!classes || classes.length === 0) {
+                const noClassMessage = document.createElement('p');
+                noClassMessage.textContent = 'No class available';
+                noClassMessage.style.color = 'red';
+                noClassMessage.style.fontWeight = 'bold';
+                classDiv.appendChild(noClassMessage);
+                return;
+            }
+
+            // Populate checkboxes with available classes
             classes.forEach((cls) => {
                 const label = document.createElement('label');
-                label.classList.add('class-checkbox-label');  // Add custom styling class
+                label.classList.add('class-checkbox-label'); // Add custom styling class
 
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
-                checkbox.name = 'classIds';  // Use 'classIds' to collect multiple selections
-                checkbox.value = cls.id;  // Class ID as the value
-                checkbox.id = `class-${cls.id}`;  // ID for the checkbox
+                checkbox.name = 'classIds'; // Use 'classIds' to collect multiple selections
+                checkbox.value = cls.id; // Class ID as the value
+                checkbox.id = `class-${cls.id}`; // ID for the checkbox
 
-                const span = document.createElement('span');  // Add a span element for better text styling
-                span.textContent = cls.name;  // Class name as text
+                const span = document.createElement('span'); // Add a span element for better text styling
+                span.textContent = cls.name; // Class name as text
 
-                // Append checkbox and the span with label
+                // Append checkbox and the span to the label
                 label.appendChild(checkbox);
                 label.appendChild(span);
 
-                // Append label to the div
+                // Append the label to the classDiv
                 classDiv.appendChild(label);
             });
         } catch (error) {
             console.error('Error populating classes:', error);
-            showErrorModal('Could not fetch classes. Please try again later.');
+
+            // Display "No class available" in case of error
+            const classDiv = document.getElementById('class_id');
+            classDiv.innerHTML = ''; // Clear the div
+            const errorMessage = document.createElement('p');
+            errorMessage.textContent = 'No class available';
+            errorMessage.style.color = 'red';
+            errorMessage.style.fontWeight = 'bold';
+            classDiv.appendChild(errorMessage);
         }
     }
 
