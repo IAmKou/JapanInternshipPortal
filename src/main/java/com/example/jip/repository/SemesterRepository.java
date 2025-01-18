@@ -17,8 +17,8 @@ import java.util.Optional;
 public interface SemesterRepository extends JpaRepository<Semester, Integer> {
     boolean existsByName(String name);
     Optional<Semester> findById(int id);
-    @Query("SELECT s FROM Semester s WHERE s.start_time = CURRENT_DATE OR s.end_time = CURRENT_DATE")
-    List<Semester> findSemestersByCurrentDate();
+    @Query("SELECT s FROM Semester s WHERE s.start_time <= CURRENT_DATE OR s.end_time < CURRENT_DATE")
+    List<Semester> findRelevantSemesters();
     @Query("SELECT s FROM Semester s WHERE s.start_time = :startDate")
     List<Semester> findByStartDate(Date startDate);
     @Query("SELECT s FROM Semester s WHERE s.status = :status")
