@@ -513,15 +513,14 @@
     <div class="navbar navbar-expand-md header-menu-one bg-light">
         <div class="nav-bar-header-one">
             <div class="header-logo">
-                <a href="admin.html">
+                <a href="manager.html">
                     <div style="width: 180px; height: 70px; overflow: hidden;">
-                        <img alt="logo" src="img/JIP%20LOGO%20n.png"
-                             style="width: 100%; height: 100%; object-fit: contain;">
+                        <img src="img/JIP%20LOGO%20n.png" alt="logo" style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                 </a>
             </div>
             <div class="toggle-button sidebar-toggle">
-                <button class="item-link" type="button">
+                <button type="button" class="item-link">
                         <span class="btn-icon-wrap">
                             <span></span>
                             <span></span>
@@ -531,11 +530,10 @@
             </div>
         </div>
         <div class="d-md-none mobile-nav-bar">
-            <button aria-expanded="false" class="navbar-toggler pulse-animation" data-target="#mobile-navbar"
-                    data-toggle="collapse" type="button">
+            <button class="navbar-toggler pulse-animation" type="button" data-toggle="collapse" data-target="#mobile-navbar" aria-expanded="false">
                 <i class="far fa-arrow-alt-circle-down"></i>
             </button>
-            <button class="navbar-toggler sidebar-toggle-mobile" type="button">
+            <button type="button" class="navbar-toggler sidebar-toggle-mobile">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -543,19 +541,20 @@
             <ul class="navbar-nav">
                 <li class="navbar-item header-search-bar">
                     <div class="input-group stylish-input-group">
+
                     </div>
                 </li>
             </ul>
             <ul class="navbar-nav">
                 <li class="navbar-item dropdown header-admin">
-                    <a aria-expanded="false" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-                       role="button">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                       aria-expanded="false">
                         <div class="admin-title">
                             <h5 class="item-title userFullName"></h5>
                             <span class="userRole"></span>
                         </div>
-                        <div class="admin-img">
-                            <img alt="Admin" src="img/figure/admin.jpg">
+                        <div class="admin-img img">
+                            <img src="" style="width: 50px; height: 50px" alt="Admin">
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -564,28 +563,40 @@
                         </div>
                         <div class="item-content">
                             <ul class="settings-list">
-                                <li><a href="/logout"><i class="flaticon-turn-off"></i><span
-                                        data-i18n="log_out">Log Out</span></a></li>
+                                <li><a href="users-profile-manager.html"><i class="flaticon-user"></i>My Profile</a></li>
+                                <li><a href="change-password.html"><i class="flaticon-gear-loading"></i><span data-i18n="change_password">Change Password</span></a></li>
+                                <li><a href="/logout"><i class="flaticon-turn-off"></i>Log Out</a></li>
                             </ul>
                         </div>
                     </div>
                 </li>
 
-                <!--Notification-->
+                <li class="navbar-item dropdown header-notification">
+                    <a id="notification-bell" class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                        <i class="far fa-bell"></i>
+                        <div class="item-title d-md-none text-16 mg-l-10">Notification</div>
+                        <span id="notification-count">0</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" id="notification-dropdown">
+                        <div class="item-header">
+                            <h6 class="item-title" id="notification-title">Notifications</h6>
+                        </div>
+                        <div class="item-content" id="notification-list">
+                            <!-- Notifications will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </li>
 
                 <li class="navbar-item dropdown header-language">
-                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false">
+                    <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-globe-americas"></i> <span id="languageLabel">EN</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
-                            <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;">
-                            English
+                            <img src="img/figure/flag-anh.webp" alt="English" style="width: 20px; height: 15px;"> English
                         </a>
                         <a class="dropdown-item" href="#" onclick="changeLanguage('ja')">
-                            <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese"
-                                 style="width: 20px; height: 15px;"> 日本語
+                            <img src="img/figure/Flag_of_Japan.svg.webp" alt="Japanese" style="width: 20px; height: 15px;"> 日本語
                         </a>
                     </div>
                 </li>
