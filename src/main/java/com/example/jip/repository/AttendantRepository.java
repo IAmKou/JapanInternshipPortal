@@ -16,7 +16,7 @@ import java.util.Optional;
 public interface AttendantRepository extends JpaRepository<Attendant, Integer> {
 
     @Query("SELECT s FROM Schedule s WHERE s.clasz.id = :classId AND s.date = :date ORDER BY s.id ASC")
-    Optional<Schedule> findByClassAndDate(@Param("classId")int classId, @Param("date")Date date);
+    Optional<Schedule> findByClassAndDate(@Param("classId") int classId, @Param("date") Date date);
 
     @Query("SELECT a FROM Attendant a WHERE a.student.id = :studentId AND a.schedule.id = :scheduleId AND a.date = :date")
     List<Attendant> findByStudentIdAndScheduleIdAndDate(int studentId, int scheduleId, Date date);
@@ -46,7 +46,7 @@ public interface AttendantRepository extends JpaRepository<Attendant, Integer> {
             "    a.date = :date")
     List<AttendantDTO> findByDateAndClassId(
             @Param("date") Date date,
-            @Param("classId") int classId );
+            @Param("classId") int classId);
 
     @Query("SELECT new com.example.jip.dto.AttendantDTO( " +
             "   MIN(a.id),  a.date) " +
@@ -56,7 +56,6 @@ public interface AttendantRepository extends JpaRepository<Attendant, Integer> {
             "WHERE c.id = :classId " +
             "GROUP BY a.date")
     List<AttendantDTO> findByClassId(@Param("classId") int classId);
-
 
 
     @Query("SELECT CASE WHEN COUNT(a) > 0 THEN TRUE ELSE FALSE END " +

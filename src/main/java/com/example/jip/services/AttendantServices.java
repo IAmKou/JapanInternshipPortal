@@ -94,8 +94,8 @@ public class AttendantServices {
             throw new IllegalStateException("Multiple schedules found for class ID " + classId + " and date " + date);
         }
         LocalTime now = LocalTime.now();
-        if (now.isBefore(LocalTime.of(13, 30)) || now.isAfter(LocalTime.of(17, 0))) {
-            throw new IllegalArgumentException("Attendance can only be edit between 13:30 and 17:00.");
+        if (now.isBefore(LocalTime.of(6, 0)) || now.isAfter(LocalTime.of(23, 59))) {
+            throw new IllegalArgumentException("Attendance can only be taken between 6:00 AM and 12:00 AM.");
         }
         Schedule schedule = schedules.get(0);
 
