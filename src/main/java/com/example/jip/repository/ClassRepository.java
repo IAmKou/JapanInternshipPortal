@@ -1,5 +1,6 @@
 package com.example.jip.repository;
 
+import com.example.jip.entity.Semester;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.jip.entity.Class;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,6 +14,8 @@ import java.util.Optional;
 
 public interface ClassRepository extends JpaRepository<Class,Integer> {
     List<Class> findByTeacher_Id(Integer teacherId);
+    @Query("select c from Class c where c.teacher.id = :teacherId and c.semester.status = :status")
+    List<Class> findByTeacher_IdAndSemester(@Param("teacherId") Integer teacherId, @Param("status") Semester.status status);
     Optional<Class> findById(Integer id);
     @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END " +
             "FROM Class c WHERE c.name = :name AND c.semester.id = :semesterId")
@@ -26,7 +29,8 @@ public interface ClassRepository extends JpaRepository<Class,Integer> {
     @Query("SELECT c FROM Class c WHERE c.name = :name AND c.semester.id = :semesterId")
     Class findByNameAndSemesterId(@Param("name") String name, @Param("semesterId") int semesterId);
 
-
+    @Query("SELECT c FROM Class c WHERE c.semester.id = :semesterId")
+    List<Class> findBySemesterId(@Param("semesterId") int semesterId);
     @Modifying
     @Query("UPDATE Class c SET c.status = 'Active' WHERE c.semester.id = :semesterId")
     void activateClassesBySemester(int semesterId);

@@ -22,23 +22,29 @@ public class ClassStatusScheduler {
     @Autowired
     private ClassRepository classRepository;
 
-    @Scheduled(cron = "0 0 * * * ?")
+    @Scheduled(cron = "0 * * * * ?")
     @Transactional
     public void updateClassStatus() {
-        // Fetch semesters with start or end date matching today
-        List<Semester> currentSemesters = semesterRepository.findSemestersByCurrentDate();
-
-        for (Semester semester : currentSemesters) {
+        List<Semester> relevantSemesters  = semesterRepository.findRelevantSemesters();
+        for (Semester semester : relevantSemesters) {
             LocalDate today = LocalDate.now();
             Date todayDate = Date.valueOf(today);
-            if ( semester.getStart_time().equals(todayDate)) {
-                // Activate classes for the semester
+
+            // Activate classes if the semester is overdue for activation
+            if (semester.getStart_time().before(todayDate) && semester.getStatus() != Semester.status.Active) {
                 classRepository.activateClassesBySemester(semester.getId());
+                semester.setStatus(Semester.status.Active); // Update semester status
+                semesterRepository.save(semester); // Save the updated status
+                log.info("Activated classes for semester: " + semester.getId());
             }
-            if ( semester.getEnd_time().equals(todayDate)) {
-                // Deactivate classes for the semester
+
+            // Deactivate classes if the semester is overdue for deactivation
+            if (semester.getEnd_time().before(todayDate) && semester.getStatus() != Semester.status.Inactive) {
                 classRepository.deactivateClassesBySemester(semester.getId());
+                semester.setStatus(Semester.status.Inactive); // Update semester status
+                semesterRepository.save(semester); // Save the updated status
+                log.info("Deactivated classes for semester: " + semester.getId());
             }
         }
-    }
+        }
 }

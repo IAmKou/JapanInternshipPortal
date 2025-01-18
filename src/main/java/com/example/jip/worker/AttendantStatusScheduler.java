@@ -20,7 +20,7 @@ public class AttendantStatusScheduler {
     @Autowired
     AttendantRepository attendantRepository;
 
-    @Scheduled(cron = "0 0 17 * * ?") // Runs at 17:00 every day
+    @Scheduled(cron = "0 * * * * ?") // Runs at 17:00 every day
     public void finalizeAttendance() {
         System.out.println("Starting attendance finalization scheduler at " + LocalDate.now());
         List<Schedule> schedules = scheduleRepository.findAllByDate(LocalDate.now());
