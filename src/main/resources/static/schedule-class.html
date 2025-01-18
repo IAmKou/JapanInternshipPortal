@@ -409,8 +409,7 @@
 </div>
 
 <!-- Confirmation Modal -->
-<div aria-hidden="true" aria-labelledby="confirmationModalLabel" class="modal fade" id="confirmation-modal"
-     tabindex="-1">
+<div id="confirmation-modal" class="modal fade" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header border-0">
@@ -420,12 +419,8 @@
                 Are you sure you want to delete this event?
             </div>
             <div class="modal-footer border-0">
-                <button class="btn btn-secondary" data-dismiss="modal" style="font-size: 16px; width: 100px; padding: 6px 15px"
-                        type="button">Cancel
-                </button>
-                <button class="btn btn-danger footer-btn bg-linkedin" style="font-size: 16px; width: 100px;"
-                        type="button">Delete
-                </button>
+                <button id="cancel-delete" class="btn btn-secondary" style="font-size: 16px; width: 100px; padding: 6px 15px" type="button" data-dismiss="modal">Cancel</button>
+                <button id="confirm-delete" class="btn btn-danger footer-btn bg-linkedin" style="font-size: 16px; width: 100px;" type="button">Delete</button>
             </div>
         </div>
     </div>
@@ -777,34 +772,49 @@
                         };
 
                         document.getElementById('delete-event').onclick = function () {
-                            if (confirm('Are you sure you want to delete this event?')) {
+                            // Show the custom confirmation modal
+                            $('#confirmation-modal').modal('show');
+
+                            // Handle the confirmation button click
+                            document.getElementById('confirm-delete').onclick = function () {
+                                // Proceed with deletion
                                 fetch(`/schedule/delete/${event.id}`, {
                                     method: 'DELETE',
                                 })
                                     .then(response => {
                                         if (!response.ok) throw new Error('Failed to delete event');
 
-                                        // Xóa sự kiện khỏi giao diện
+                                        // Remove event from UI
                                         event.remove();
 
-
+                                        // Hide the event detail modal
                                         $('#eventDetailModal').modal('hide');
-                                        // Đóng modal chi tiết sự kiện sau 2 giây
+
+                                        // Show success modal after a short delay
                                         setTimeout(() => {
                                             showModal('success', 'Event deleted successfully!');
 
-                                            // Reload trang sau khi hiển thị thông báo
+                                            // Reload the page after showing the notification
                                             setTimeout(() => {
                                                 window.location.reload();
-                                            }, 2000); // Thêm 2 giây để người dùng nhìn thấy thông báo
-                                        }, 2000); // Hiển thị thông báo sau khi modal đóng
+                                            }, 2000); // 2 seconds to allow users to see the message
+                                        }, 2000); // Delay before showing the success modal
                                     })
                                     .catch(error => {
                                         $('#eventDetailModal').modal('hide');
                                         console.error('Error deleting event:', error);
                                         showModal('error', 'Failed to delete event.');
                                     });
-                            }
+
+                                // Close the confirmation modal
+                                $('#confirmation-modal').modal('hide');
+                            };
+
+                            // Optionally, handle the cancel button if any additional logic is required
+                            document.getElementById('cancel-delete').onclick = function () {
+                                // Just close the modal (no need for additional logic here unless needed)
+                                $('#confirmation-modal').modal('hide');
+                            };
                         };
 
                         $('#eventDetailModal').modal('show');
