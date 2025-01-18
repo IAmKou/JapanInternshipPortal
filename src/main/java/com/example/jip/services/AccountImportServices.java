@@ -205,9 +205,9 @@ public class AccountImportServices {
             String imgUrl = uploadImageToS3(imgPath, email, workbook).toString();
 
 
-            Optional<Role> roleOpt = roleRepository.findById(2);
+            Optional<Role> roleOpt = roleRepository.findById(3);
             if (roleOpt.isEmpty()) {
-                errors.add("Role ID " + 2 + " does not exist for user " + email);
+                errors.add("Role ID " + 3 + " does not exist for user " + email);
                 return;
             }
             String password = generateVerifyCode();
