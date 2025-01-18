@@ -845,15 +845,22 @@
         }
     }
 
-    function redirectSchedule() {
-        // Retrieve userDetails from sessionStorage
+    function toSchedule() {
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-
-        if (userDetails && userDetails.teacherId) {
-            // Redirect to the appropriate URL with the teacherId
-            window.location.href = `schedule-list-teacher.html?teacherId=${userDetails.teacherId}`;
+        if (userDetails && userDetails.studentId) {
+            window.location.href = `class-list-student.html?studentId=${userDetails.studentId}`;
         } else {
-            console.error("Teacher ID is missing or user details not found in sessionStorage");
+            console.error("Student ID missing or user details not found in sessionStorage");
+        }
+    }
+
+
+    function toMarkReport() {
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails && userDetails.studentId) {
+            window.location.href = `view-personal-mark-report.html?studentId=${userDetails.studentId}`;
+        } else {
+            console.error("Student ID missing or user details not found in sessionStorage");
         }
     }
 </script>
