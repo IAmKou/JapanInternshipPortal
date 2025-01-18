@@ -31,6 +31,18 @@
     <script src='/dist/index.global.js'></script>
 
     <style>
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
         /* Đảm bảo trang bao phủ toàn bộ chiều cao */
         html, body {
             margin: 0;
@@ -327,7 +339,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="eventDetailModalLabel">Event Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" onclick="closeModal()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -363,7 +375,6 @@
             <div class="modal-footer">
                 <button id="update-event" type="button" class="btn btn-primary">Update Event</button>
                 <button id="delete-event" type="button" class="btn btn-danger">Delete Event</button>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
         </div>
     </div>
@@ -501,6 +512,13 @@
 </script>
 
 <script>
+    function closeModal() {
+        // Find the modal by its ID
+        var modal = document.getElementById('myModal');
+
+        // Add a class or change the style to hide the modal
+        modal.style.display = 'none';  // Hides the modal
+    }
     document.addEventListener('DOMContentLoaded', function () {
         let holidays = [];
         const calendarEl = document.getElementById('calendar');
