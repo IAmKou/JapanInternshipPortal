@@ -251,7 +251,8 @@
                                 class="flaticon-shopping-list"></i><span>Class</span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="javascript:void(0);" class="nav-link"><i class="flaticon-shopping-list"></i><span>Personal Mark Report</span></a>
+                        <a href="javascript:void(0);" class="nav-link" onclick="toMarkReport();"><i
+                                class="flaticon-shopping-list"></i><span>Personal Mark Report</span></a>
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Material</span></a>
@@ -498,15 +499,22 @@
         }
     }
 
-    function toMarkReport() {
-        // Retrieve userDetails from sessionStorage
+    function toSchedule() {
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
-
         if (userDetails && userDetails.studentId) {
-            // Redirect to the appropriate URL with the teacherId
-            window.location.href = `personal-mark-report.html?studentId=${userDetails.studentId}`;
+            window.location.href = `class-list-student.html?studentId=${userDetails.studentId}`;
         } else {
-            console.error("Teacher ID is missing or user details not found in sessionStorage");
+            console.error("Student ID missing or user details not found in sessionStorage");
+        }
+    }
+
+
+    function toMarkReport() {
+        const userDetails = JSON.parse(sessionStorage.getItem('userDetails'));
+        if (userDetails && userDetails.studentId) {
+            window.location.href = `view-personal-mark-report.html?studentId=${userDetails.studentId}`;
+        } else {
+            console.error("Student ID missing or user details not found in sessionStorage");
         }
     }
 </script>
