@@ -352,19 +352,19 @@
                         </ul>
                     </li>
 
-<!--                    <li class="nav-item sidebar-nav-item">-->
-<!--                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>-->
-<!--                        <ul class="nav sub-group-menu">-->
-<!--                            <li class="nav-item">-->
-<!--                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list-->
-<!--                                    threads</a>-->
-<!--                            </li>-->
-<!--                            <li class="nav-item">-->
-<!--                                <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create-->
-<!--                                    Thread</a>-->
-<!--                            </li>-->
-<!--                        </ul>-->
-<!--                    </li>-->
+                    <!--                    <li class="nav-item sidebar-nav-item">-->
+                    <!--                        <a class="nav-link" href="#"><i class="flaticon-shopping-list"></i><span>Thread</span></a>-->
+                    <!--                        <ul class="nav sub-group-menu">-->
+                    <!--                            <li class="nav-item">-->
+                    <!--                                <a class="nav-link" href="forum.html"><i class="fas fa-angle-right"></i>View list-->
+                    <!--                                    threads</a>-->
+                    <!--                            </li>-->
+                    <!--                            <li class="nav-item">-->
+                    <!--                                <a class="nav-link" href="create-forum.html"><i class="fas fa-angle-right"></i>Create-->
+                    <!--                                    Thread</a>-->
+                    <!--                            </li>-->
+                    <!--                        </ul>-->
+                    <!--                    </li>-->
                 </ul>
             </div>
         </div>
@@ -667,6 +667,13 @@
                 return;
             }
 
+            // Kiểm tra chọn ít nhất 1 lớp
+            const selectedClasses = document.querySelectorAll('#class_id input[type="checkbox"]:checked');
+            if (selectedClasses.length === 0) {
+                showErrorModal('You must select at least one class.');
+                return;
+            }
+
             const isDescriptionUnique = await checkDescriptionExists(description);
             if (isDescriptionUnique) {
                 showErrorModal('Title already exists.');
@@ -694,7 +701,6 @@
             if (startDate > finishDate) return showErrorModal('End date must be greater than or equal to the start date.');
 
             // Check if dates are within the semester bounds
-
             if (finishDate < semesterStart || finishDate > semesterEnd) {
                 showErrorModal(
                     `End Date must fall within the current semester (${semesterStart.toDateString()} - ${semesterEnd.toDateString()}).`
@@ -747,6 +753,7 @@
         }
 
         document.querySelector('form').addEventListener('submit', addAssignment);
+
     });
 
 
