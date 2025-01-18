@@ -9,6 +9,8 @@ import java.io.*;
 import java.util.List;
 import java.util.Map;
 
+import java.nio.charset.StandardCharsets;
+
 @RestController
 public class FileController {
 
@@ -23,11 +25,14 @@ public class FileController {
             );
 
             // Configure CSV headers
-            response.setContentType("text/csv");
+            response.setContentType("text/csv; charset=UTF-8");
             response.setHeader("Content-Disposition", "attachment; filename=\"class_grades.csv\"");
 
-            // Write CSV data
-            try (PrintWriter writer = response.getWriter()) {
+            // Write CSV data with UTF-8 BOM
+            try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8), true)) {
+                // Write BOM for UTF-8
+                writer.write('\ufeff');
+
                 // Write headers
                 writer.println("\"Student Name\",\"Comment\",\"Avg Exam Mark\",\"Middle Exam\",\"Final Exam\",\"Skill\",\"Script\",\"Presentation\",\"Soft Skill\",\"Assignment\",\"Attendant\",\"Attitude\",\"Course Total\"");
 
@@ -58,5 +63,3 @@ public class FileController {
         return (value == null || value.isEmpty()) ? defaultValue : value;
     }
 }
-
-
