@@ -133,9 +133,9 @@ CREATE TABLE Attendant (
                            schedule_id int,
                            status ENUM('PRESENT', 'ABSENT')  NULL,
                            date DATE NOT NULL,
-                           start_time time default '13:30:00',
-                           end_time time default '17:00:00',
-                           is_finalized TINYINT(1) DEFAULT 0,
+                           start_time time null default '13:30:00',
+                           end_time time null default '17:00:00',
+                           isFinalized TINYINT(1) DEFAULT 0,
                            FOREIGN KEY (student_id) REFERENCES Student(Id) ,
                            FOREIGN KEY (schedule_id) REFERENCES Schedule(Id) On Delete cascade
 );

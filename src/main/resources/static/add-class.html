@@ -808,11 +808,10 @@
                 return;
             }
 
-            // Validate student selection
-            // if (selectedStudentIds.length < 10 || selectedStudentIds.length > 30) {
-            //     showErrorModal("A class must have at least 10 students and at most 30 students. Please adjust your selection.");
-            //     return;
-            // }
+            if (selectedStudentIds.length < 10 || selectedStudentIds.length > 30) {
+                showErrorModal("A class must have at least 10 students and at most 30 students. Please adjust your selection.");
+                return;
+            }
 
             const data = {
                 name: className,

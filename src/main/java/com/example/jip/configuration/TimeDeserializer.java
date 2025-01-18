@@ -21,6 +21,9 @@ public class TimeDeserializer extends JsonDeserializer<Time> {
         if (timeString.length() == 5) {
             timeString += ":00";  // Add seconds if missing
         }
+        if (timeString.contains("T")) {
+            timeString = timeString.substring(11, 19); // Extract HH:mm:ss
+        }
 
         try {
             // Return a Time object after validation
