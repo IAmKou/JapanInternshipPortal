@@ -183,14 +183,14 @@ public class ClassController {
     @GetMapping("/getCByAccId")
     public List<ClassDTO> getClassByAid(@RequestParam("accountId") int accountId) {
         Optional<Teacher> teacherOpt = teacherRepository.findByAccount_id(accountId);
-        return classRepository.findByTeacher_Id(teacherOpt.get().getId()).stream()
+        return classRepository.findByTeacher_IdAndSemester(teacherOpt.get().getId(), Semester.status.Active).stream()
                 .map(ClassDTO::new)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/getCByTid")
     public List<ClassDTO> getClassByTid(@RequestParam("teacherId") int teacherId) {
-        return classRepository.findByTeacher_Id(teacherId).stream()
+        return classRepository.findByTeacher_IdAndSemester(teacherId, Semester.status.Active).stream()
                 .map(ClassDTO::new)
                 .collect(Collectors.toList());
     }

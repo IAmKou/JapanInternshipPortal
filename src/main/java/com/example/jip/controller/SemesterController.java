@@ -176,6 +176,4 @@ public class SemesterController {
         return ResponseEntity.ok(semesterDTO);
     }
 
-
-
 }
