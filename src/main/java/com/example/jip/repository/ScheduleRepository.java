@@ -77,6 +77,10 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
             @Param("classId") int classId,
             @Param("studentId") int studentId
     );
+    @Query("SELECT CASE WHEN COUNT(s) > 0 THEN TRUE ELSE FALSE END " +
+            "FROM Schedule s WHERE s.clasz = :clasz AND s.date = :date")
+    boolean existsByClaszAndDate(@Param("clasz") com.example.jip.entity.Class clasz, @Param("date") java.sql.Date date);
+
 
 
     boolean existsBySemesterIdAndDateAndRoom(int semesterId, java.sql.Date date, String room);
