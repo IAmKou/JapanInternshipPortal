@@ -339,9 +339,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="eventDetailModalLabel">Event Details</h5>
-                <button type="button" class="close" onclick="closeModal()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
                 <form>
@@ -414,7 +411,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Add Event</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="addEventForm">
@@ -512,13 +508,6 @@
 </script>
 
 <script>
-    function closeModal() {
-        // Find the modal by its ID
-        var modal = document.getElementById('myModal');
-
-        // Add a class or change the style to hide the modal
-        modal.style.display = 'none';  // Hides the modal
-    }
     document.addEventListener('DOMContentLoaded', function () {
         let holidays = [];
         const calendarEl = document.getElementById('calendar');
@@ -747,6 +736,7 @@
                                     $('#eventDetailModal').modal('hide');
                                 })
                                 .catch(error => {
+                                    $('#eventDetailModal').modal('hide');
                                     console.error('Error updating event:', error);
                                     showModal('error', 'Failed to update event.');
                                 });
@@ -759,11 +749,24 @@
                                 })
                                     .then(response => {
                                         if (!response.ok) throw new Error('Failed to delete event');
+
+                                        // Xóa sự kiện khỏi giao diện
                                         event.remove();
-                                        showModal('success', 'Event deleted successfully!');
+
+
                                         $('#eventDetailModal').modal('hide');
+                                        // Đóng modal chi tiết sự kiện sau 2 giây
+                                        setTimeout(() => {
+                                            showModal('success', 'Event deleted successfully!');
+
+                                            // Reload trang sau khi hiển thị thông báo
+                                            setTimeout(() => {
+                                                window.location.reload();
+                                            }, 2000); // Thêm 2 giây để người dùng nhìn thấy thông báo
+                                        }, 2000); // Hiển thị thông báo sau khi modal đóng
                                     })
                                     .catch(error => {
+                                        $('#eventDetailModal').modal('hide');
                                         console.error('Error deleting event:', error);
                                         showModal('error', 'Failed to delete event.');
                                     });
