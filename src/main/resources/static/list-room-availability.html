@@ -1119,14 +1119,6 @@
         fetchRoomAvailability(filters);
     }
 
-    function handleFilterChange() {
-        const status = document.getElementById("filterSelect").value;
-        const filters = { status };
-
-        console.log("Status Filter Changed:", status);
-        fetchRoomAvailability(filters); // Chỉ áp dụng trạng thái
-    }
-
     document.getElementById("searchButton").addEventListener("click", handleSearch);
     document.getElementById("filterSelect").addEventListener("change", handleFilterChange);
 
