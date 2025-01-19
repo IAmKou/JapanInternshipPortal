@@ -1164,7 +1164,7 @@
                     const errorModal = new bootstrap.Modal(errorModalElement);
                     const errorList = errorModalElement.querySelector('.modal-body');
 
-                    // Xóa lỗi cũ trước khi thêm lỗi mới
+// Xóa lỗi cũ trước khi thêm lỗi mới
                     errorList.innerHTML = '';
                     result.data.forEach(error => {
                         const errorItem = document.createElement('p');
@@ -1172,7 +1172,13 @@
                         errorList.appendChild(errorItem);
                     });
 
+// Hiển thị modal
                     errorModal.show();
+
+// Lắng nghe sự kiện modal bị tắt để refresh trang
+                    errorModalElement.addEventListener('hidden.bs.modal', () => {
+                        location.reload();
+                    });
                 }
             })
             .catch(error => {
@@ -1494,11 +1500,7 @@
             isValid = false;
         }
 
-        const jnameRegex = /^[A-Za-z\s]+$/;
-        if (!jnameRegex.test(jname)) {
-            document.getElementById('jname_error1').textContent = 'Japan name cannot contain special characters or numbers.';
-            isValid = false;
-        } else if (jname.length > 255) {
+        if (jname.length > 255) {
             document.getElementById('jname_error1').textContent = 'Japan name cannot exceed 255 characters.';
             isValid = false;
         }
