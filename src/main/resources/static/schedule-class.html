@@ -339,9 +339,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="eventDetailModalLabel">Event Details</h5>
-                <button type="button" class="close" onclick="closeModal()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
                 <form>
@@ -414,7 +411,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Add Event</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="addEventForm">
@@ -512,13 +508,6 @@
 </script>
 
 <script>
-    function closeModal() {
-        // Find the modal by its ID
-        var modal = document.getElementById('myModal');
-
-        // Add a class or change the style to hide the modal
-        modal.style.display = 'none';  // Hides the modal
-    }
     document.addEventListener('DOMContentLoaded', function () {
         let holidays = [];
         const calendarEl = document.getElementById('calendar');
