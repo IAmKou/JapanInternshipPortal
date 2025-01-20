@@ -747,6 +747,7 @@
                                     $('#eventDetailModal').modal('hide');
                                 })
                                 .catch(error => {
+                                    $('#eventDetailModal').modal('hide');
                                     console.error('Error updating event:', error);
                                     showModal('error', 'Failed to update event.');
                                 });
@@ -759,11 +760,24 @@
                                 })
                                     .then(response => {
                                         if (!response.ok) throw new Error('Failed to delete event');
+
+                                        // Xóa sự kiện khỏi giao diện
                                         event.remove();
-                                        showModal('success', 'Event deleted successfully!');
+
+
                                         $('#eventDetailModal').modal('hide');
+                                        // Đóng modal chi tiết sự kiện sau 2 giây
+                                        setTimeout(() => {
+                                            showModal('success', 'Event deleted successfully!');
+
+                                            // Reload trang sau khi hiển thị thông báo
+                                            setTimeout(() => {
+                                                window.location.reload();
+                                            }, 2000); // Thêm 2 giây để người dùng nhìn thấy thông báo
+                                        }, 2000); // Hiển thị thông báo sau khi modal đóng
                                     })
                                     .catch(error => {
+                                        $('#eventDetailModal').modal('hide');
                                         console.error('Error deleting event:', error);
                                         showModal('error', 'Failed to delete event.');
                                     });

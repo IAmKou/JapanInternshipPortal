@@ -1411,7 +1411,7 @@
             console.log("Current Semester Start:", semesterStart, "End:", semesterEnd);
         } catch (error) {
             console.error('Error fetching semester:', error);
-            showErrorModal('Unable to fetch current semester information. Please try again later.');
+            showErrorModal('The semester has already ended');
             throw error; // Propagate the error if needed
         }
     }

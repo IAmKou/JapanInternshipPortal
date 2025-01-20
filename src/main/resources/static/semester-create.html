@@ -740,7 +740,7 @@
         </div>
     </div>
 
-    <div class="modal" id="updateModal" style="display: none; width: 80%; max-width: 600px; margin: 0 auto; overflow: hidden; max-height: 350px;" data-bs-backdrop="false" data-bs-keyboard="false">
+    <div class="modal" id="updateModal" style="display: none; width: 80%; max-width: 600px; margin: 0 auto; overflow: hidden; max-height: 400px;" data-bs-backdrop="false" data-bs-keyboard="false">
             <form id="updateSemesterForm">
                 <label for="semesterName" style="color: #007bff; font-weight: bold;">Semester Name <span style="color: red;">*</span></label>
                 <input type="text" maxlength="255" id="semesterName" required>
@@ -1296,6 +1296,26 @@
             document.getElementById('semesterStart').value = semester.semesterStart || '';
             document.getElementById('semesterEnd').value = semester.semesterEnd || '';
 
+            // Get today’s date
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Set the time to midnight for comparison
+
+            // Convert semester start date to a Date object
+            const semesterStartDate = new Date(semester.semesterStart);
+
+            // Disable start date input if the semester has already started
+            const semesterStartField = document.getElementById('semesterStart');
+            if (semesterStartDate >= today) {
+                // Semester has started or is today, disable the start date input
+                semesterStartField.disabled = true;  // Disable input
+                // Optionally, show a message indicating why it's disabled
+                document.getElementById('errorSemesterStart1').textContent = 'Start date cannot be updated as the semester has already started.';
+                document.getElementById('errorSemesterStart1').style.display = 'inline';
+            } else {
+                semesterStartField.disabled = false;  // Enable input if the semester hasn't started yet
+                document.getElementById('errorSemesterStart1').style.display = 'none'; // Hide error message
+            }
+
             // Show modal
             const modal = document.getElementById('updateModal');
             const updateModalInstance = new bootstrap.Modal(modal);
@@ -1320,10 +1340,8 @@
 
                 // Validate form data
                 let hasError = false;
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
 
-                // Validate semester name - check if empty and exceed 40 characters
+                // Validate semester name - check if empty and exceed 50 characters
                 if (!updatedSemesterName) {
                     document.getElementById('errorSemesterName1').textContent = 'Semester Name cannot be empty';
                     document.getElementById('errorSemesterName1').style.display = 'inline';
@@ -1334,8 +1352,13 @@
                     hasError = true;
                 }
 
-                // Validate start time
-                if (!updatedSemesterStart || new Date(updatedSemesterStart) < today) {
+                // Validate start time (only check if enabled)
+                if (!updatedSemesterStart) {
+                    document.getElementById('errorSemesterStart1').textContent = 'Start date cannot be empty';
+                    document.getElementById('errorSemesterStart1').style.display = 'inline';
+                    hasError = true;
+                } else if (semesterStartField.disabled === false && new Date(updatedSemesterStart) < today) {
+                    document.getElementById('errorSemesterStart1').textContent = 'Start date cannot be in the past';
                     document.getElementById('errorSemesterStart1').style.display = 'inline';
                     hasError = true;
                 }
@@ -1383,6 +1406,7 @@
                     });
             };
         }
+
 
 
         // Function to show success modal
