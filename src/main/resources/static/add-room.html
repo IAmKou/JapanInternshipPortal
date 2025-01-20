@@ -886,6 +886,7 @@
                 .then(data => {
                     if (data.status === "success") {
                         // Hiển thị thông báo thành công sau khi cập nhật thành công
+                        $('#update-modal').modal('hide');
                         showSuccessModal(data.message);
 
                         // Làm mới trang sau 2 giây

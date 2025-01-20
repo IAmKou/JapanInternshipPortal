@@ -809,10 +809,10 @@
             }
 
             // Validate student selection
-            // if (selectedStudentIds.length < 10 || selectedStudentIds.length > 30) {
-            //     showErrorModal("A class must have at least 10 students and at most 30 students. Please adjust your selection.");
-            //     return;
-            // }
+            if (selectedStudentIds.length < 10 || selectedStudentIds.length > 30) {
+                showErrorModal("A class must have at least 10 students and at most 30 students. Please adjust your selection.");
+                return;
+            }
 
             const data = {
                 name: className,
@@ -923,25 +923,44 @@
                 // Clear existing options
                 semesterSelect.innerHTML = '';
 
-                // Populate the dropdown with data
-                data.forEach(semester => {
+                // Get today's date
+                const today = new Date();
+
+                // Filter semesters that have not ended yet
+                const activeSemesters = data.filter(semester => {
+                    const endDate = new Date(semester.semesterEnd); // Convert end_time to Date object
+                    return endDate > today; // Only include semesters that haven't ended yet
+                });
+
+                // Populate the dropdown with active semesters
+                activeSemesters.forEach(semester => {
                     const option = document.createElement('option');
                     option.value = semester.semesterId; // Assuming the semester object has a `semesterId` field
                     option.textContent = semester.semesterName; // Assuming the semester object has a `semesterName` field
                     semesterSelect.appendChild(option);
                 });
 
-                // Initialize or re-initialize Select2
-                $('#semester').select2({
-                    placeholder: "Select a semester",
-                    allowClear: true
-                });
+                // If no active semesters, show a message
+                if (activeSemesters.length === 0) {
+                    const option = document.createElement('option');
+                    option.textContent = 'No active semesters available';
+                    semesterSelect.appendChild(option);
+                    semesterSelect.disabled = true; // Disable dropdown if no semesters are active
+                } else {
+                    // Initialize or re-initialize Select2
+                    $('#semester').select2({
+                        placeholder: "Select a semester",
+                        allowClear: true
+                    });
+                }
             })
             .catch(error => {
                 console.error('Error fetching semesters:', error);
                 showErrorModal("There was an error fetching the semesters. Please try again.");
             });
     }
+
+
 </script>
 <!-- fetch user -->
 <script>
