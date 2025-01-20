@@ -761,8 +761,17 @@
                             })
                                 .then(response => {
                                     if (!response.ok) throw new Error('Failed to update event');
-                                    showModal('success', 'Event updated successfully!');
+
+                                    // Đóng modal chi tiết sự kiện
                                     $('#eventDetailModal').modal('hide');
+
+                                    // Hiển thị thông báo thành công
+                                    showModal('success', 'Event updated successfully!');
+
+                                    // Reload trang sau 2 giây
+                                    setTimeout(() => {
+                                        window.location.reload();
+                                    }, 2000); // 2000ms = 2s
                                 })
                                 .catch(error => {
                                     $('#eventDetailModal').modal('hide');
@@ -772,8 +781,13 @@
                         };
 
                         document.getElementById('delete-event').onclick = function () {
-                            // Show the custom confirmation modal
-                            $('#confirmation-modal').modal('show');
+                            // Hide the event detail modal before showing the confirmation modal
+                            $('#eventDetailModal').modal('hide');
+
+                            // Delay showing the confirmation modal slightly to ensure proper animation flow
+                            setTimeout(() => {
+                                $('#confirmation-modal').modal('show');
+                            }, 300); // 300ms delay to ensure modal transition
 
                             // Handle the confirmation button click
                             document.getElementById('confirm-delete').onclick = function () {
@@ -787,8 +801,8 @@
                                         // Remove event from UI
                                         event.remove();
 
-                                        // Hide the event detail modal
-                                        $('#eventDetailModal').modal('hide');
+                                        // Hide the confirmation modal
+                                        $('#confirmation-modal').modal('hide');
 
                                         // Show success modal after a short delay
                                         setTimeout(() => {
@@ -801,14 +815,12 @@
                                         }, 2000); // Delay before showing the success modal
                                     })
                                     .catch(error => {
-                                        $('#eventDetailModal').modal('hide');
+                                        $('#confirmation-modal').modal('hide');
                                         console.error('Error deleting event:', error);
                                         showModal('error', 'Failed to delete event.');
                                     });
-
-                                // Close the confirmation modal
-                                $('#confirmation-modal').modal('hide');
                             };
+
 
                             // Optionally, handle the cancel button if any additional logic is required
                             document.getElementById('cancel-delete').onclick = function () {
