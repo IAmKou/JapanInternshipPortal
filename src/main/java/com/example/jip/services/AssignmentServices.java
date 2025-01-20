@@ -498,6 +498,8 @@ class ScheduledTask {
    @Scheduled(fixedRate = 1000) // 1000 milliseconds = 1 second
    public void updateAssignmentStatuses() {
        log.info("Scanning to update Assignment status...");
+       assignmentStatusService.updateAssignmentStatus();
+
    }
 
 }

@@ -775,7 +775,7 @@
     function checkAndDisableButton() {
         const currentDate = new Date();
 
-        if (currentDate < semesterEnd) {
+        if (currentDate > semesterEnd) {
             openModalBtn.disabled = true; // Disable the button
             openModalBtn.title = "The semester has ended. Importing marks is no longer allowed."; // Optional: Tooltip
             openModalBtn.classList.remove('btn-gradient-yellow');
