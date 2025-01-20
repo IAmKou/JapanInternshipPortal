@@ -750,6 +750,41 @@
         errorModal.show();
     }
 
+    let semesterStart, semesterEnd;
+
+    async function getCurrentSemester() {
+        try {
+            const response = await fetch('/semester/current');
+            if (!response.ok) throw new Error('Failed to fetch current semester.');
+
+            const semesterData = await response.json();
+            semesterStart = new Date(semesterData.semesterStart);
+            semesterEnd = new Date(semesterData.semesterEnd);
+            console.log("Current Semester Start:", semesterStart, "End:", semesterEnd);
+
+            // Check if the button should be disabled
+            checkAndDisableButton();
+        } catch (error) {
+            console.error('Error fetching semester:', error);
+            showErrorModal('Unable to fetch current semester information. Please try again later.');
+        }
+    }
+
+    function checkAndDisableButton() {
+        const currentDate = new Date();
+        if (currentDate > semesterEnd) {
+            openModalBtn.disabled = true; // Disable the button
+            openModalBtn.title = "The semester has ended. Importing marks is no longer allowed."; // Optional: Tooltip
+            openModalBtn.classList.remove('btn-gradient-yellow');
+            openModalBtn.classList.add('btn-gradient-gray');
+        } else {
+            openModalBtn.disabled = false; // Enable the button (if needed)
+        }
+    }
+
+    // Fetch the current semester when the page loads
+    window.addEventListener("DOMContentLoaded", getCurrentSemester);
+
     const API_BASE_URL = '/mark-report';
 
     async function fetchAndDisplayMarks() {
@@ -824,6 +859,13 @@
             return;
         }
 
+        // Validate file type
+        const allowedTypes = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'];
+        if (!allowedTypes.includes(fileInput.files[0].type)) {
+            showErrorModal("Invalid file type. Please upload an Excel file (.xlsx or .xls).");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("file", fileInput.files[0]);
 
@@ -856,6 +898,10 @@
             // Fetch the data from the database
             const response = await fetch(`${API_BASE_URL}/list?classId=${classId}`); // Update the endpoint as needed
             const data = await response.json();
+
+            const clasRp = await fetch(`/class/getCById?classId=${classId}`);
+            const clas = await clasRp.json();
+            console.log('Class: ', clas);
 
             const responseMRE = await fetch(`${API_BASE_URL}/listMRE?classId=${classId}`);
             const dataMRE = await responseMRE.json();
@@ -895,7 +941,8 @@
             XLSX.utils.book_append_sheet(wb, ws, "Marks");
 
             // Export the workbook to an Excel file
-            XLSX.writeFile(wb, "Mark_Report.xlsx");
+            const sanitizedClassName = clas.name.replace(/[<>:"\/\\|?*]/g, '_');
+            XLSX.writeFile(wb, "Mark_Report_Class_" + sanitizedClassName + ".xlsx");
         } catch (error) {
             console.error("Error exporting Excel file:", error);
         }
