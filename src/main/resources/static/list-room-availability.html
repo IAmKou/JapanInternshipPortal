@@ -654,7 +654,7 @@
                     </li>
                     <li class="nav-item sidebar-nav-item">
                         <a href="#" class="nav-link"><i class="flaticon-chat"></i><span>Room Management</span></a>
-                        <ul class="nav sub-group-menu">
+                        <ul class="nav sub-group-menu sub-group-active">
                             <li class="nav-item">
                                 <a href="add-room.html" class="nav-link"><i class="fas fa-angle-right"></i>Add Room</a>
                             </li>
@@ -1117,14 +1117,6 @@
 
         console.log("Search Filters:", filters);
         fetchRoomAvailability(filters);
-    }
-
-    function handleFilterChange() {
-        const status = document.getElementById("filterSelect").value;
-        const filters = { status };
-
-        console.log("Status Filter Changed:", status);
-        fetchRoomAvailability(filters); // Chỉ áp dụng trạng thái
     }
 
     document.getElementById("searchButton").addEventListener("click", handleSearch);
